@@ -510,6 +510,11 @@ export class TipPrompt implements Prompt {
 					message = div(h2("Loop End Point"), p("This specifies where the loop region of the chip wave ends. It's measured in \"samples\", or rather, it refers to a point on a waveform."), p("The button next to the input box sets this to end of the chip wave."), p("Be careful with tiny loop sizes (especially combined with high pitches), they may re-introduce aliasing even if the \"Aliasing\" checkbox is unchecked."));
 				}
 				break;
+			case "inStereo":
+			{
+				message = div(h2("Stereo"), p("If a chip wave is in stereo, this will enable both channels to be used, rather than only the left channel."));
+			}
+			break;
 			case "offset":
 				{
 					message = div(h2("Offset"), p("This specifies where the chip wave should start playing from. You can use this to chop up a large sample, to say, turn a drum loop into a drum kit! It's measured in \"samples\", or rather, it refers to a point on a waveform."));

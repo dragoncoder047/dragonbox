@@ -8299,7 +8299,7 @@ class InstrumentState {
     public synthesizer: Function | null = null;
     public waveL: Float32Array | null = null;
     public waveR: Float32Array | null = null;
-    public isStereo: boolean = true;
+    public isStereo: boolean = false;
 				 // advloop addition
             public isUsingAdvancedLoopControls = false;
             public chipWaveLoopStart = 0;
@@ -8346,8 +8346,10 @@ class InstrumentState {
     public distortionPrevInput: number = 0.0;
     public distortionNextOutput: number = 0.0;
 
-    public bitcrusherPrevInput: number = 0.0;
-    public bitcrusherCurrentOutput: number = 0.0;
+    public bitcrusherPrevInputL: number = 0.0;
+    public bitcrusherPrevInputR: number = 0.0;
+    public bitcrusherCurrentOutputL: number = 0.0;
+    public bitcrusherCurrentOutputR: number = 0.0;
     public bitcrusherPhase: number = 1.0;
     public bitcrusherPhaseDelta: number = 0.0;
     public bitcrusherPhaseDeltaScale: number = 1.0;
@@ -8483,8 +8485,10 @@ class InstrumentState {
     }
 
     public deactivate(): void {
-        this.bitcrusherPrevInput = 0.0;
-        this.bitcrusherCurrentOutput = 0.0;
+        this.bitcrusherPrevInputL = 0.0;
+        this.bitcrusherPrevInputR = 0.0;
+        this.bitcrusherCurrentOutputL = 0.0;
+        this.bitcrusherCurrentOutputR = 0.0;
         this.bitcrusherPhase = 1.0;
         for (let i: number = 0; i < this.eqFilterCount; i++) {
             this.eqFiltersL[i].resetOutput();

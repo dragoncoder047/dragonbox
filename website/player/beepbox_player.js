@@ -16661,7 +16661,7 @@ var beepbox = (function (exports) {
             this.synthesizer = null;
             this.waveL = null;
             this.waveR = null;
-            this.isStereo = true;
+            this.isStereo = false;
             this.isUsingAdvancedLoopControls = false;
             this.chipWaveLoopStart = 0;
             this.chipWaveLoopEnd = 0;
@@ -16702,8 +16702,10 @@ var beepbox = (function (exports) {
             this.distortionFractionalInputR3 = 0.0;
             this.distortionPrevInput = 0.0;
             this.distortionNextOutput = 0.0;
-            this.bitcrusherPrevInput = 0.0;
-            this.bitcrusherCurrentOutput = 0.0;
+            this.bitcrusherPrevInputL = 0.0;
+            this.bitcrusherPrevInputR = 0.0;
+            this.bitcrusherCurrentOutputL = 0.0;
+            this.bitcrusherCurrentOutputR = 0.0;
             this.bitcrusherPhase = 1.0;
             this.bitcrusherPhaseDelta = 0.0;
             this.bitcrusherPhaseDeltaScale = 1.0;
@@ -16821,8 +16823,10 @@ var beepbox = (function (exports) {
             }
         }
         deactivate() {
-            this.bitcrusherPrevInput = 0.0;
-            this.bitcrusherCurrentOutput = 0.0;
+            this.bitcrusherPrevInputL = 0.0;
+            this.bitcrusherPrevInputR = 0.0;
+            this.bitcrusherCurrentOutputL = 0.0;
+            this.bitcrusherCurrentOutputR = 0.0;
             this.bitcrusherPhase = 1.0;
             for (let i = 0; i < this.eqFilterCount; i++) {
                 this.eqFiltersL[i].resetOutput();

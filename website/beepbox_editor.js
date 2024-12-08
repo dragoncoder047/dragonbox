@@ -18554,7 +18554,7 @@ li.select2-results__option[role=group] > strong:hover {
             this.synthesizer = null;
             this.waveL = null;
             this.waveR = null;
-            this.isStereo = true;
+            this.isStereo = false;
             this.isUsingAdvancedLoopControls = false;
             this.chipWaveLoopStart = 0;
             this.chipWaveLoopEnd = 0;
@@ -18595,8 +18595,10 @@ li.select2-results__option[role=group] > strong:hover {
             this.distortionFractionalInputR3 = 0.0;
             this.distortionPrevInput = 0.0;
             this.distortionNextOutput = 0.0;
-            this.bitcrusherPrevInput = 0.0;
-            this.bitcrusherCurrentOutput = 0.0;
+            this.bitcrusherPrevInputL = 0.0;
+            this.bitcrusherPrevInputR = 0.0;
+            this.bitcrusherCurrentOutputL = 0.0;
+            this.bitcrusherCurrentOutputR = 0.0;
             this.bitcrusherPhase = 1.0;
             this.bitcrusherPhaseDelta = 0.0;
             this.bitcrusherPhaseDeltaScale = 1.0;
@@ -18714,8 +18716,10 @@ li.select2-results__option[role=group] > strong:hover {
             }
         }
         deactivate() {
-            this.bitcrusherPrevInput = 0.0;
-            this.bitcrusherCurrentOutput = 0.0;
+            this.bitcrusherPrevInputL = 0.0;
+            this.bitcrusherPrevInputR = 0.0;
+            this.bitcrusherCurrentOutputL = 0.0;
+            this.bitcrusherCurrentOutputR = 0.0;
             this.bitcrusherPhase = 1.0;
             for (let i = 0; i < this.eqFilterCount; i++) {
                 this.eqFiltersL[i].resetOutput();

@@ -13477,7 +13477,7 @@ export class Synth {
                 // I "downsample" these with a simple weighted sum.
 
                 effectsSource += `
-				
+
 				const distortionBaseVolume = +Config.distortionBaseVolume;
 				let distortion = instrumentState.distortion;
 				const distortionDelta = instrumentState.distortionDelta;
@@ -13497,7 +13497,7 @@ export class Synth {
 				const distortionPrevOutputWeight1 = 1.0 - distortionNextOutputWeight1;
 				const distortionPrevOutputWeight2 = 1.0 - distortionNextOutputWeight2;
 				const distortionPrevOutputWeight3 = 1.0 - distortionNextOutputWeight3;
-				
+
 				let distortionFractionalInputL1 = +instrumentState.distortionFractionalInputL1;
 				let distortionFractionalInputL2 = +instrumentState.distortionFractionalInputL2;
                 let distortionFractionalInputL3 = +instrumentState.distortionFractionalInputL3;
@@ -13913,7 +13913,7 @@ export class Synth {
 
             if (usesEcho) {
                 effectsSource += `
-					
+
 					const echoTapStartIndex = (echoDelayPos + echoDelayOffsetStart) & echoMask;
 					const echoTapEndIndex   = (echoDelayPos + echoDelayOffsetEnd  ) & echoMask;
 					const echoTapStartL = echoDelayLineL[echoTapStartIndex];
@@ -13922,14 +13922,14 @@ export class Synth {
 					const echoTapEndR   = echoDelayLineR[echoTapEndIndex];
 					const echoTapL = (echoTapStartL + (echoTapEndL - echoTapStartL) * echoDelayOffsetRatio) * echoMult;
 					const echoTapR = (echoTapStartR + (echoTapEndR - echoTapStartR) * echoDelayOffsetRatio) * echoMult;
-					
+
 					echoShelfSampleL = echoShelfB0 * echoTapL + echoShelfB1 * echoShelfPrevInputL - echoShelfA1 * echoShelfSampleL;
 					echoShelfSampleR = echoShelfB0 * echoTapR + echoShelfB1 * echoShelfPrevInputR - echoShelfA1 * echoShelfSampleR;
 					echoShelfPrevInputL = echoTapL;
 					echoShelfPrevInputR = echoTapR;
 					sampleL += echoShelfSampleL;
 					sampleR += echoShelfSampleR;
-					
+
 					echoDelayLineL[echoDelayPos] = sampleL * delayInputMult;
 					echoDelayLineR[echoDelayPos] = sampleR * delayInputMult;
 					echoDelayPos = (echoDelayPos + 1) & echoMask;
@@ -13940,7 +13940,7 @@ export class Synth {
 
             if (usesReverb) {
                 effectsSource += `
-					
+
 					// Reverb, implemented using a feedback delay network with a Hadamard matrix and lowpass filters.
 					// good ratios:    0.555235 + 0.618033 + 0.818 +   1.0 = 2.991268
 					// Delay lengths:  3041     + 3385     + 4481  +  5477 = 16384 = 2^14

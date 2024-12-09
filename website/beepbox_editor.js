@@ -18593,8 +18593,10 @@ li.select2-results__option[role=group] > strong:hover {
             this.distortionFractionalInputR1 = 0.0;
             this.distortionFractionalInputR2 = 0.0;
             this.distortionFractionalInputR3 = 0.0;
-            this.distortionPrevInput = 0.0;
-            this.distortionNextOutput = 0.0;
+            this.distortionPrevInputL = 0.0;
+            this.distortionPrevInputR = 0.0;
+            this.distortionNextOutputL = 0.0;
+            this.distortionNextOutputR = 0.0;
             this.bitcrusherPrevInputL = 0.0;
             this.bitcrusherPrevInputR = 0.0;
             this.bitcrusherCurrentOutputL = 0.0;
@@ -18736,8 +18738,10 @@ li.select2-results__option[role=group] > strong:hover {
             this.distortionFractionalInputR1 = 0.0;
             this.distortionFractionalInputR2 = 0.0;
             this.distortionFractionalInputR3 = 0.0;
-            this.distortionPrevInput = 0.0;
-            this.distortionNextOutput = 0.0;
+            this.distortionPrevInputL = 0.0;
+            this.distortionPrevInputR = 0.0;
+            this.distortionNextOutputL = 0.0;
+            this.distortionNextOutputR = 0.0;
             this.panningDelayPos = 0;
             if (this.panningDelayLine != null)
                 for (let i = 0; i < this.panningDelayLine.length; i++)
@@ -23216,39 +23220,6 @@ li.select2-results__option[role=group] > strong:hover {
                         let sampleR = tempInstrumentSampleBufferR[sampleIndex];
                         tempInstrumentSampleBufferL[sampleIndex] = 0.0;
                         tempInstrumentSampleBufferR[sampleIndex] = 0.0;`;
-                    if (usesDistortion) {
-                        effectsSource += `
-
-                        const distortionReverse = 1.0 - distortion;
-                        const distortionNextInputL = sampleL * distortionDrive;
-                        const distortionNextInputR = sampleR * distortionDrive;
-                        sampleL = distortionNextOutputL;
-                        sampleR = distortionNextOutputR;
-                        distortionNextOutputL = distortionNextInputL / (distortionReverse * Math.abs(distortionNextInputL) + distortion);
-                        distortionNextOutputR = distortionNextInputR / (distortionReverse * Math.abs(distortionNextInputR) + distortion);
-                        distortionFractionalInputL1 = distortionFractionalDelayG1 * distortionNextInputL + distortionPrevInputL - distortionFractionalDelayG1 * distortionFractionalInputL1;
-                        distortionFractionalInputL2 = distortionFractionalDelayG2 * distortionNextInputL + distortionPrevInputL - distortionFractionalDelayG2 * distortionFractionalInputL2;
-                        distortionFractionalInputL3 = distortionFractionalDelayG3 * distortionNextInputL + distortionPrevInputL - distortionFractionalDelayG3 * distortionFractionalInputL3;
-                        distortionFractionalInputR1 = distortionFractionalDelayG1 * distortionNextInputR + distortionPrevInputR - distortionFractionalDelayG1 * distortionFractionalInputR1;
-                        distortionFractionalInputR2 = distortionFractionalDelayG2 * distortionNextInputR + distortionPrevInputR - distortionFractionalDelayG2 * distortionFractionalInputR2;
-                        distortionFractionalInputR3 = distortionFractionalDelayG3 * distortionNextInputR + distortionPrevInputR - distortionFractionalDelayG3 * distortionFractionalInputR3;
-                        const distortionOutputL1 = distortionFractionalInputL1 / (distortionReverse * Math.abs(distortionFractionalInputL1) + distortion);
-                        const distortionOutputL2 = distortionFractionalInputL2 / (distortionReverse * Math.abs(distortionFractionalInputL2) + distortion);
-                        const distortionOutputL3 = distortionFractionalInputL3 / (distortionReverse * Math.abs(distortionFractionalInputL3) + distortion);
-                        const distortionOutputR1 = distortionFractionalInputR1 / (distortionReverse * Math.abs(distortionFractionalInputR1) + distortion);
-                        const distortionOutputR2 = distortionFractionalInputR2 / (distortionReverse * Math.abs(distortionFractionalInputR2) + distortion);
-                        const distortionOutputR3 = distortionFractionalInputR3 / (distortionReverse * Math.abs(distortionFractionalInputR3) + distortion);
-                        distortionNextOutputL += distortionOutputL1 * distortionNextOutputWeight1 + distortionOutputL2 * distortionNextOutputWeight2 + distortionOutputL3 * distortionNextOutputWeight3;
-                        distortionNextOutputR += distortionOutputR1 * distortionNextOutputWeight1 + distortionOutputR2 * distortionNextOutputWeight2 + distortionOutputR3 * distortionNextOutputWeight3;
-                        sampleL += distortionOutputL1 * distortionPrevOutputWeight1 + distortionOutputL2 * distortionPrevOutputWeight2 + distortionOutputL3 * distortionPrevOutputWeight3;
-                        sampleR += distortionOutputR1 * distortionPrevOutputWeight1 + distortionOutputR2 * distortionPrevOutputWeight2 + distortionOutputR3 * distortionPrevOutputWeight3;
-                        sampleL *= distortionOversampleCompensation;
-                        sampleR *= distortionOversampleCompensation;
-                        distortionPrevInputL = distortionNextInputL;
-                        distortionPrevInputR = distortionNextInputR;
-                        distortion += distortionDelta;
-                        distortionDrive += distortionDriveDelta;`;
-                    }
                     if (usesBitcrusher) {
                         effectsSource += `
 
@@ -23305,6 +23276,39 @@ li.select2-results__option[role=group] > strong:hover {
                     sampleL *= eqFilterVolume;
                     sampleR *= eqFilterVolume;
                     eqFilterVolume += eqFilterVolumeDelta;`;
+                    if (usesDistortion) {
+                        effectsSource += `
+
+                        const distortionReverse = 1.0 - distortion;
+                        const distortionNextInputL = sampleL * distortionDrive;
+                        const distortionNextInputR = sampleR * distortionDrive;
+                        sampleL = distortionNextOutputL;
+                        sampleR = distortionNextOutputR;
+                        distortionNextOutputL = distortionNextInputL / (distortionReverse * Math.abs(distortionNextInputL) + distortion);
+                        distortionNextOutputR = distortionNextInputR / (distortionReverse * Math.abs(distortionNextInputR) + distortion);
+                        distortionFractionalInputL1 = distortionFractionalDelayG1 * distortionNextInputL + distortionPrevInputL - distortionFractionalDelayG1 * distortionFractionalInputL1;
+                        distortionFractionalInputL2 = distortionFractionalDelayG2 * distortionNextInputL + distortionPrevInputL - distortionFractionalDelayG2 * distortionFractionalInputL2;
+                        distortionFractionalInputL3 = distortionFractionalDelayG3 * distortionNextInputL + distortionPrevInputL - distortionFractionalDelayG3 * distortionFractionalInputL3;
+                        distortionFractionalInputR1 = distortionFractionalDelayG1 * distortionNextInputR + distortionPrevInputR - distortionFractionalDelayG1 * distortionFractionalInputR1;
+                        distortionFractionalInputR2 = distortionFractionalDelayG2 * distortionNextInputR + distortionPrevInputR - distortionFractionalDelayG2 * distortionFractionalInputR2;
+                        distortionFractionalInputR3 = distortionFractionalDelayG3 * distortionNextInputR + distortionPrevInputR - distortionFractionalDelayG3 * distortionFractionalInputR3;
+                        const distortionOutputL1 = distortionFractionalInputL1 / (distortionReverse * Math.abs(distortionFractionalInputL1) + distortion);
+                        const distortionOutputL2 = distortionFractionalInputL2 / (distortionReverse * Math.abs(distortionFractionalInputL2) + distortion);
+                        const distortionOutputL3 = distortionFractionalInputL3 / (distortionReverse * Math.abs(distortionFractionalInputL3) + distortion);
+                        const distortionOutputR1 = distortionFractionalInputR1 / (distortionReverse * Math.abs(distortionFractionalInputR1) + distortion);
+                        const distortionOutputR2 = distortionFractionalInputR2 / (distortionReverse * Math.abs(distortionFractionalInputR2) + distortion);
+                        const distortionOutputR3 = distortionFractionalInputR3 / (distortionReverse * Math.abs(distortionFractionalInputR3) + distortion);
+                        distortionNextOutputL += distortionOutputL1 * distortionNextOutputWeight1 + distortionOutputL2 * distortionNextOutputWeight2 + distortionOutputL3 * distortionNextOutputWeight3;
+                        distortionNextOutputR += distortionOutputR1 * distortionNextOutputWeight1 + distortionOutputR2 * distortionNextOutputWeight2 + distortionOutputR3 * distortionNextOutputWeight3;
+                        sampleL += distortionOutputL1 * distortionPrevOutputWeight1 + distortionOutputL2 * distortionPrevOutputWeight2 + distortionOutputL3 * distortionPrevOutputWeight3;
+                        sampleR += distortionOutputR1 * distortionPrevOutputWeight1 + distortionOutputR2 * distortionPrevOutputWeight2 + distortionOutputR3 * distortionPrevOutputWeight3;
+                        sampleL *= distortionOversampleCompensation;
+                        sampleR *= distortionOversampleCompensation;
+                        distortionPrevInputL = distortionNextInputL;
+                        distortionPrevInputR = distortionNextInputR;
+                        distortion += distortionDelta;
+                        distortionDrive += distortionDriveDelta;`;
+                    }
                     if (usesPanning) {
                         effectsSource += `
 
@@ -23326,8 +23330,8 @@ li.select2-results__option[role=group] > strong:hover {
 
                     const distortionReverse = 1.0 - distortion;
                     const distortionNextInput = sample * distortionDrive;
-                    sample = distortionNextOutput;
-                    distortionNextOutput = distortionNextInput / (distortionReverse * Math.abs(distortionNextInputL) + distortion);
+                    sample = distortionNextOutputL;
+                    distortionNextOutputL = distortionNextInput / (distortionReverse * Math.abs(distortionNextInput) + distortion);
                     distortionFractionalInputL1 = distortionFractionalDelayG1 * distortionNextInput + distortionPrevInputL - distortionFractionalDelayG1 * distortionFractionalInputL1;
                     distortionFractionalInputL2 = distortionFractionalDelayG2 * distortionNextInput + distortionPrevInputL - distortionFractionalDelayG2 * distortionFractionalInputL2;
                     distortionFractionalInputL3 = distortionFractionalDelayG3 * distortionNextInput + distortionPrevInputL - distortionFractionalDelayG3 * distortionFractionalInputL3;
@@ -41210,12 +41214,12 @@ You should be redirected to the song at:<br /><br />
                     break;
                 case "eqFilter":
                     {
-                        message = div$5(h2$4("EQ Filter"), p("Filters are a way of emphasizing or diminishing different parts of a sound. Musical notes have a fundamental (base) frequency, but the sound of a musical note also has parts at higher frequencies and filters can adjust the volume of each of these parts based on their frequency."), p("Click in the filter editor to insert, delete, or drag a filter control point. The horizontal position of the point determines which frequencies it affects, and the vertical position determines how the volume is affected at that frequency."), p("Insert a new point on the left side of the filter editor to add a \"high-pass\" filter point, which additionally reduces the volume of lower frequencies, or insert a new point on the right side to add a \"low-pass\" filter point which reduces the volume of higher frequencies."), p("You can also enable a \"Note Filter\" as an effect. EQ and note filters are mostly the same, but have different purposes. EQ filters are for overall adjustments, whereas note filters are for dynamic control and can be moved with envelopes. Note filters also change how the distortion effect sounds."));
+                        message = div$5(h2$4("EQ Filter"), p("Filters are a way of emphasizing or diminishing different parts of a sound. Musical notes have a fundamental (base) frequency, but the sound of a musical note also has parts at higher frequencies and filters can adjust the volume of each of these parts based on their frequency."), p("Click in the filter editor to insert, delete, or drag a filter control point. The horizontal position of the point determines which frequencies it affects, and the vertical position determines how the volume is affected at that frequency."), p("Insert a new point on the left side of the filter editor to add a \"high-pass\" filter point, which additionally reduces the volume of lower frequencies, or insert a new point on the right side to add a \"low-pass\" filter point which reduces the volume of higher frequencies."), p("Post-EQ means that the filter is applied after all other effects, whereas Pre-EQ means that it is applied before effects."));
                     }
                     break;
                 case "noteFilter":
                     {
-                        message = div$5(h2$4("Note Filter"), p("Note filters are mostly the same as EQ filters, but have a different purpose. EQ filters are for overall adjustments, whereas note filters are for dynamic control and can be moved with envelopes. Note filters also change how the distortion effect sounds."), p("Filters are a way of emphasizing or diminishing different parts of a sound. Musical notes have a fundamental (base) frequency, but the sound of a musical note also has parts at higher frequencies and filters can adjust the volume of each of these parts based on their frequency."), p("Click in the filter editor to insert, delete, or drag a filter control point. The horizontal position of the point determines which frequencies it affects, and the vertical position determines how the volume is affected at that frequency."), p("Insert a new point on the left side of the filter editor to add a \"high-pass\" filter point, which additionally reduces the volume of lower frequencies, or insert a new point on the right side to add a \"low-pass\" filter point which reduces the volume of higher frequencies."));
+                        message = div$5(h2$4("EQ Filter"), p("Filters are a way of emphasizing or diminishing different parts of a sound. Musical notes have a fundamental (base) frequency, but the sound of a musical note also has parts at higher frequencies and filters can adjust the volume of each of these parts based on their frequency."), p("Click in the filter editor to insert, delete, or drag a filter control point. The horizontal position of the point determines which frequencies it affects, and the vertical position determines how the volume is affected at that frequency."), p("Insert a new point on the left side of the filter editor to add a \"high-pass\" filter point, which additionally reduces the volume of lower frequencies, or insert a new point on the right side to add a \"low-pass\" filter point which reduces the volume of higher frequencies."), p("Post-EQ means that the filter is applied after all other effects, whereas Pre-EQ means that it is applied before effects."));
                     }
                     break;
                 case "fadeInOut":
@@ -41455,7 +41459,7 @@ You should be redirected to the song at:<br /><br />
                     break;
                 case "filterType":
                     {
-                        message = div$5(h2$4("Filter Type"), p('Toggling these buttons lets you choose between a simple filter interface with two sliders, or the more advanced filter graph.'), p('The two-slider version controls a single low-pass filter and was used in legacy versions. It is not as powerful, but if you feel overwhelmed you can start with this.'), p('Note that switching from the simple interface to the advanced interface will convert your current settings, so you can also use it as a basis for later tweaking.'));
+                        message = div$5(h2$4("EQ Filter Type"), p('Toggling these buttons lets you choose between a simple filter interface with two sliders, or the more advanced filter graph.'), p('The two-slider version controls a single low-pass filter and was used in legacy versions. It is not as powerful, but if you feel overwhelmed you can start with this.'), p('Note that switching from the simple interface to the advanced interface will convert your current settings, so you can also use it as a basis for later tweaking.'));
                     }
                     break;
                 case "filterCutoff":
@@ -44126,10 +44130,10 @@ You should be redirected to the song at:<br /><br />
             this._effectsSelect = select(option({ selected: true, disabled: true, hidden: false }));
             this._eqFilterSimpleButton = button({ style: "font-size: x-small; width: 50%; height: 40%", class: "no-underline", onclick: () => this._switchEQFilterType(true) }, "simple");
             this._eqFilterAdvancedButton = button({ style: "font-size: x-small; width: 50%; height: 40%", class: "last-button no-underline", onclick: () => this._switchEQFilterType(false) }, "advanced");
-            this._eqFilterTypeRow = div({ class: "selectRow", style: "padding-top: 4px; margin-bottom: 0px;" }, span({ style: "font-size: x-small;", class: "tip", onclick: () => this._openPrompt("filterType") }, "EQ Filt.Type:"), div({ class: "instrument-bar" }, this._eqFilterSimpleButton, this._eqFilterAdvancedButton));
+            this._eqFilterTypeRow = div({ class: "selectRow", style: "padding-top: 4px; margin-bottom: 0px;" }, span({ style: "font-size: x-small;", class: "tip", onclick: () => this._openPrompt("filterType") }, "Post EQ Type:"), div({ class: "instrument-bar" }, this._eqFilterSimpleButton, this._eqFilterAdvancedButton));
             this._eqFilterEditor = new FilterEditor(this._doc);
             this._eqFilterZoom = button({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px;", onclick: () => this._openPrompt("customEQFilterSettings") }, "+");
-            this._eqFilterRow = div({ class: "selectRow" }, span({ class: "tip", onclick: () => this._openPrompt("eqFilter") }, "EQ Filt:"), this._eqFilterZoom, this._eqFilterEditor.container);
+            this._eqFilterRow = div({ class: "selectRow" }, span({ class: "tip", onclick: () => this._openPrompt("eqFilter") }, "Post EQ:"), this._eqFilterZoom, this._eqFilterEditor.container);
             this._eqFilterSimpleCutSlider = new Slider(input({ style: "margin: 0;", type: "range", min: "0", max: Config.filterSimpleCutRange - 1, value: "6", step: "1" }), this._doc, (oldValue, newValue) => new ChangeEQFilterSimpleCut(this._doc, oldValue, newValue), false);
             this._eqFilterSimpleCutRow = div({ class: "selectRow", title: "Low-pass Filter Cutoff Frequency" }, span({ class: "tip", onclick: () => this._openPrompt("filterCutoff") }, "Filter Cut:"), this._eqFilterSimpleCutSlider.container);
             this._eqFilterSimplePeakSlider = new Slider(input({ style: "margin: 0;", type: "range", min: "0", max: Config.filterSimplePeakRange - 1, value: "6", step: "1" }), this._doc, (oldValue, newValue) => new ChangeEQFilterSimplePeak(this._doc, oldValue, newValue), false);
@@ -45163,8 +45167,8 @@ You should be redirected to the song at:<br /><br />
                                 settingList.push("song eq");
                             }
                             else {
-                                settingList.push("note volume");
-                                settingList.push("mix volume");
+                                settingList.push("pre volume");
+                                settingList.push("post volume");
                                 let tgtInstrumentTypes = [];
                                 let anyInstrumentAdvancedEQ = false, anyInstrumentSimpleEQ = false, anyInstrumentAdvancedNote = false, anyInstrumentSimpleNote = false, anyInstrumentArps = false, anyInstrumentPitchShifts = false, anyInstrumentDetunes = false, anyInstrumentVibratos = false, anyInstrumentNoteFilters = false, anyInstrumentDistorts = false, anyInstrumentBitcrushes = false, anyInstrumentPans = false, anyInstrumentChorus = false, anyInstrumentEchoes = false, anyInstrumentReverbs = false, anyInstrumentHasEnvelopes = false;
                                 let allInstrumentPitchShifts = true, allInstrumentNoteFilters = true, allInstrumentDetunes = true, allInstrumentVibratos = true, allInstrumentDistorts = true, allInstrumentBitcrushes = true, allInstrumentPans = true, allInstrumentChorus = true, allInstrumentEchoes = true, allInstrumentReverbs = true;
@@ -45257,11 +45261,11 @@ You should be redirected to the song at:<br /><br />
                                     }
                                 }
                                 if (anyInstrumentAdvancedEQ) {
-                                    settingList.push("eq filter");
+                                    settingList.push("post eq");
                                 }
                                 if (anyInstrumentSimpleEQ) {
-                                    settingList.push("eq filt cut");
-                                    settingList.push("eq filt peak");
+                                    settingList.push("post eq cut");
+                                    settingList.push("post eq peak");
                                 }
                                 if (tgtInstrumentTypes.includes(1)) {
                                     settingList.push("fm slider 1");
@@ -45319,15 +45323,15 @@ You should be redirected to the song at:<br /><br />
                                 }
                                 if (anyInstrumentNoteFilters) {
                                     if (anyInstrumentAdvancedNote) {
-                                        settingList.push("note filter");
+                                        settingList.push("pre eq");
                                     }
                                     if (anyInstrumentSimpleNote) {
-                                        settingList.push("note filt cut");
-                                        settingList.push("note filt peak");
+                                        settingList.push("pre eq cut");
+                                        settingList.push("pre eq peak");
                                     }
                                 }
                                 if (!allInstrumentNoteFilters) {
-                                    unusedSettingList.push("+ note filter");
+                                    unusedSettingList.push("+ pre eq");
                                 }
                                 if (anyInstrumentDistorts) {
                                     settingList.push("distortion");

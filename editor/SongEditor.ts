@@ -910,10 +910,10 @@ export class SongEditor {
     private readonly _effectsSelect: HTMLSelectElement = select(option({ selected: true, disabled: true, hidden: false })); // todo: "hidden" should be true but looks wrong on mac chrome, adds checkmark next to first visible option even though it's not selected. :(
     private readonly _eqFilterSimpleButton: HTMLButtonElement = button({ style: "font-size: x-small; width: 50%; height: 40%", class: "no-underline", onclick: () => this._switchEQFilterType(true) }, "simple");
     private readonly _eqFilterAdvancedButton: HTMLButtonElement = button({ style: "font-size: x-small; width: 50%; height: 40%", class: "last-button no-underline", onclick: () => this._switchEQFilterType(false) }, "advanced");
-    private readonly _eqFilterTypeRow: HTMLElement = div({ class: "selectRow", style: "padding-top: 4px; margin-bottom: 0px;" }, span({ style: "font-size: x-small;", class: "tip", onclick: () => this._openPrompt("filterType") }, "EQ Filt.Type:"), div({ class: "instrument-bar" }, this._eqFilterSimpleButton, this._eqFilterAdvancedButton));
+    private readonly _eqFilterTypeRow: HTMLElement = div({ class: "selectRow", style: "padding-top: 4px; margin-bottom: 0px;" }, span({ style: "font-size: x-small;", class: "tip", onclick: () => this._openPrompt("filterType") }, "Post EQ Type:"), div({ class: "instrument-bar" }, this._eqFilterSimpleButton, this._eqFilterAdvancedButton));
     private readonly _eqFilterEditor: FilterEditor = new FilterEditor(this._doc);
     private readonly _eqFilterZoom: HTMLButtonElement = button({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px;", onclick: () => this._openPrompt("customEQFilterSettings") }, "+");
-    private readonly _eqFilterRow: HTMLElement = div({ class: "selectRow" }, span({ class: "tip", onclick: () => this._openPrompt("eqFilter") }, "EQ Filt:"), this._eqFilterZoom, this._eqFilterEditor.container);
+    private readonly _eqFilterRow: HTMLElement = div({ class: "selectRow" }, span({ class: "tip", onclick: () => this._openPrompt("eqFilter") }, "Post EQ:"), this._eqFilterZoom, this._eqFilterEditor.container);
     private readonly _eqFilterSimpleCutSlider: Slider = new Slider(input({ style: "margin: 0;", type: "range", min: "0", max: Config.filterSimpleCutRange - 1, value: "6", step: "1" }), this._doc, (oldValue: number, newValue: number) => new ChangeEQFilterSimpleCut(this._doc, oldValue, newValue), false);
     private _eqFilterSimpleCutRow: HTMLDivElement = div({ class: "selectRow", title: "Low-pass Filter Cutoff Frequency" }, span({ class: "tip", onclick: () => this._openPrompt("filterCutoff") }, "Filter Cut:"), this._eqFilterSimpleCutSlider.container);
     private readonly _eqFilterSimplePeakSlider: Slider = new Slider(input({ style: "margin: 0;", type: "range", min: "0", max: Config.filterSimplePeakRange - 1, value: "6", step: "1" }), this._doc, (oldValue: number, newValue: number) => new ChangeEQFilterSimplePeak(this._doc, oldValue, newValue), false);
@@ -3117,8 +3117,8 @@ export class SongEditor {
                     // Populate mod setting options for instrument scope.
                     else {
 
-                        settingList.push("note volume");
-                        settingList.push("mix volume");
+                        settingList.push("pre volume");
+                        settingList.push("post volume");
 
                         // Build a list of target instrument indices, types and other info. It will be a single type for a single instrument, but with "all" and "active" it could be more.
                         // All or active are included together. Active allows any to be set, just in case the user fiddles with which are active later.
@@ -3238,11 +3238,11 @@ export class SongEditor {
 
                         }
                         if (anyInstrumentAdvancedEQ) {
-                            settingList.push("eq filter");
+                            settingList.push("post eq");
                         }
                         if (anyInstrumentSimpleEQ) {
-                            settingList.push("eq filt cut");
-                            settingList.push("eq filt peak");
+                            settingList.push("post eq cut");
+                            settingList.push("post eq peak");
                         }
                         if (tgtInstrumentTypes.includes(InstrumentType.fm)) {
                             settingList.push("fm slider 1");
@@ -3300,15 +3300,15 @@ export class SongEditor {
                         }
                         if (anyInstrumentNoteFilters) {
                             if (anyInstrumentAdvancedNote) {
-                                settingList.push("note filter");
+                                settingList.push("pre eq");
                             }
                             if (anyInstrumentSimpleNote) {
-                                settingList.push("note filt cut");
-                                settingList.push("note filt peak");
+                                settingList.push("pre eq cut");
+                                settingList.push("pre eq peak");
                             }
                         }
                         if (!allInstrumentNoteFilters) {
-                            unusedSettingList.push("+ note filter");
+                            unusedSettingList.push("+ pre eq");
                         }
                         if (anyInstrumentDistorts) {
                             settingList.push("distortion");

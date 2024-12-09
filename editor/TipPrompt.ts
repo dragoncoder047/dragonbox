@@ -125,16 +125,16 @@ export class TipPrompt implements Prompt {
 					p("Filters are a way of emphasizing or diminishing different parts of a sound. Musical notes have a fundamental (base) frequency, but the sound of a musical note also has parts at higher frequencies and filters can adjust the volume of each of these parts based on their frequency."),
 					p("Click in the filter editor to insert, delete, or drag a filter control point. The horizontal position of the point determines which frequencies it affects, and the vertical position determines how the volume is affected at that frequency."),
 					p("Insert a new point on the left side of the filter editor to add a \"high-pass\" filter point, which additionally reduces the volume of lower frequencies, or insert a new point on the right side to add a \"low-pass\" filter point which reduces the volume of higher frequencies."),
-					p("You can also enable a \"Note Filter\" as an effect. EQ and note filters are mostly the same, but have different purposes. EQ filters are for overall adjustments, whereas note filters are for dynamic control and can be moved with envelopes. Note filters also change how the distortion effect sounds."),
+					p("Post-EQ means that the filter is applied after all other effects, whereas Pre-EQ means that it is applied before effects."),
 				);
 			} break;
 			case "noteFilter": {
 				message = div(
-					h2("Note Filter"),
-					p("Note filters are mostly the same as EQ filters, but have a different purpose. EQ filters are for overall adjustments, whereas note filters are for dynamic control and can be moved with envelopes. Note filters also change how the distortion effect sounds."),
+					h2("EQ Filter"),
 					p("Filters are a way of emphasizing or diminishing different parts of a sound. Musical notes have a fundamental (base) frequency, but the sound of a musical note also has parts at higher frequencies and filters can adjust the volume of each of these parts based on their frequency."),
 					p("Click in the filter editor to insert, delete, or drag a filter control point. The horizontal position of the point determines which frequencies it affects, and the vertical position determines how the volume is affected at that frequency."),
 					p("Insert a new point on the left side of the filter editor to add a \"high-pass\" filter point, which additionally reduces the volume of lower frequencies, or insert a new point on the right side to add a \"low-pass\" filter point which reduces the volume of higher frequencies."),
+					p("Post-EQ means that the filter is applied after all other effects, whereas Pre-EQ means that it is applied before effects."),
 				);
 			} break;
 			case "fadeInOut": {
@@ -469,7 +469,7 @@ export class TipPrompt implements Prompt {
 			} break;
 			case "filterType": {
 				message = div(
-					h2("Filter Type"),
+					h2("EQ Filter Type"),
 					p('Toggling these buttons lets you choose between a simple filter interface with two sliders, or the more advanced filter graph.'),
 					p('The two-slider version controls a single low-pass filter and was used in legacy versions. It is not as powerful, but if you feel overwhelmed you can start with this.'),
 					p('Note that switching from the simple interface to the advanced interface will convert your current settings, so you can also use it as a basis for later tweaking.'),

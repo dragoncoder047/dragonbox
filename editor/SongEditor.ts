@@ -1998,13 +1998,13 @@ export class SongEditor {
                 return this._reverbSlider;
             case Config.modulators.dictionary["distortion"].index:
                 return this._distortionSlider;
-            case Config.modulators.dictionary["note volume"].index:
+            case Config.modulators.dictionary["pre volume"].index:
                 // So, this should technically not affect this slider, but it will look better as legacy songs used this mod as 'volume'.
                 // In the case that mix volume is used as well, they'd fight for the display, so just don't use this.
-                if (!this._showModSliders[Config.modulators.dictionary["mix volume"].index])
+                if (!this._showModSliders[Config.modulators.dictionary["post volume"].index])
                     return this._instrumentVolumeSlider;
                 return null;
-            case Config.modulators.dictionary["mix volume"].index:
+            case Config.modulators.dictionary["post volume"].index:
                 return this._instrumentVolumeSlider;
             case Config.modulators.dictionary["vibrato depth"].index:
                 return this._vibratoDepthSlider;
@@ -3418,8 +3418,8 @@ export class SongEditor {
 
                 let filterType: string = Config.modulators[instrument.modulators[mod]].name;
                 let useSongEq: boolean = filterType == "song eq";
-                if (useSongEq) filterType = "eq filter";
-                if (filterType == "eq filter" || filterType == "note filter") {
+                if (useSongEq) filterType = "post eq";
+                if (filterType == "post eq" || filterType == "pre eq") {
                     $("#modFilterText" + mod).get(0)!.style.display = "";
                     $("#modEnvelopeText" + mod).get(0)!.style.display = "none";
                     $("#modSettingText" + mod).get(0)!.style.setProperty("margin-bottom", "2px");
@@ -3430,7 +3430,7 @@ export class SongEditor {
                     if (useInstrument >= modChannel.instruments.length) {
                         // Use greatest number of dots among all instruments if setting is 'all' or 'active'. If it won't have an effect on one, no worry.
                         for (let i: number = 0; i < modChannel.instruments.length; i++) {
-                            if (filterType == "eq filter") {
+                            if (filterType == "post eq") {
                                 if (modChannel.instruments[i].eqFilter.controlPointCount > tmpCount) {
                                     tmpCount = modChannel.instruments[i].eqFilter.controlPointCount;
                                     useInstrument = i;
@@ -3445,11 +3445,11 @@ export class SongEditor {
                     }
 
                     // Build options for modulator filters (make sure it has the right number of filter dots).
-                    let dotCount: number = (filterType == "eq filter")
+                    let dotCount: number = (filterType == "post eq")
                         ? channel.instruments[useInstrument].getLargestControlPointCount(false)
                         : channel.instruments[useInstrument].getLargestControlPointCount(true);
 
-                    const isSimple: boolean = useSongEq ? false : (filterType == "eq filter" ? channel.instruments[useInstrument].eqFilterType : channel.instruments[useInstrument].noteFilterType);
+                    const isSimple: boolean = useSongEq ? false : (filterType == "post eq" ? channel.instruments[useInstrument].eqFilterType : channel.instruments[useInstrument].noteFilterType);
                     if (isSimple)
                         dotCount = 0;
                     if (useSongEq) {
@@ -3544,7 +3544,7 @@ export class SongEditor {
 
                 } else {
                     $("#modEnvelopeText" + mod).get(0)!.style.display = "none";
-                    if (!(filterType == "eq filter" || filterType == "note filter")) {
+                    if (!(filterType == "post eq" || filterType == "pre eq")) {
                         $("#modSettingText" + mod).get(0)!.style.setProperty("margin-bottom", "0.9em");
                     }
 

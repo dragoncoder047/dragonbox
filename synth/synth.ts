@@ -9520,7 +9520,7 @@ export class Synth {
 
     private static readonly fmSynthFunctionCache: Dictionary<Function> = {};
     private static readonly fm6SynthFunctionCache: Dictionary<Function> = {};
-    private static readonly effectsFunctionCache: Function[] = Array(1 << 8).fill(undefined); // keep in sync with the number of post-process effects.
+    private static readonly effectsFunctionCache: { [signature: string]: Function } = {};
     private static readonly pickedStringFunctionCache: Function[] = Array(3).fill(undefined); // keep in sync with the number of unison voices.
 
     public readonly channels: ChannelState[] = [];
@@ -13459,16 +13459,17 @@ export class Synth {
         const usesEcho: boolean = effectsIncludeEcho(instrumentState.effects);
         const usesReverb: boolean = effectsIncludeReverb(instrumentState.effects);
         const isStereo: boolean = instrumentState.chipWaveInStereo && (instrumentState.synthesizer == Synth.loopableChipSynth || instrumentState.synthesizer == Synth.chipSynth); //TODO: make an instrumentIsStereo function
-        let signature: number = 0; if (usesDistortion) signature = signature | 1;
-        signature = signature << 1; if (usesBitcrusher) signature = signature | 1;
-        signature = signature << 1; if (usesEqFilter) signature = signature | 1;
-        signature = signature << 1; if (usesPanning) signature = signature | 1;
-        signature = signature << 1; if (usesChorus) signature = signature | 1;
-        signature = signature << 1; if (usesEcho) signature = signature | 1;
-        signature = signature << 1; if (usesReverb) signature = signature | 1;
-        signature = signature << 1; if (isStereo) signature = signature | 1;
+        let signature: string = "";
+        signature = usesDistortion ? signature + "1" : signature + "0";
+        signature = usesBitcrusher ? signature + "1" : signature + "0";
+        signature = usesEqFilter ? signature + "1" : signature + "0";
+        signature = usesPanning ? signature + "1" : signature + "0";
+        signature = usesChorus ? signature + "1" : signature + "0";
+        signature = usesEcho ? signature + "1" : signature + "0";
+        signature = usesReverb ? signature + "1" : signature + "0";
+        signature = isStereo ? signature + "1" : signature + "0";
         for (let i of instrumentState.effectOrder) {
-            signature = signature << 4; signature = signature | instrumentState.effectOrder[i]; // 4 is because there are 12 effects; it allows max. of 16
+            signature = signature + instrumentState.effectOrder[i].toString();
         }
 
         let effectsFunction: Function = Synth.effectsFunctionCache[signature];

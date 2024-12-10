@@ -14474,33 +14474,17 @@ var beepbox = (function (exports) {
             const usesEcho = effectsIncludeEcho(instrumentState.effects);
             const usesReverb = effectsIncludeReverb(instrumentState.effects);
             const isStereo = instrumentState.chipWaveInStereo && (instrumentState.synthesizer == Synth.loopableChipSynth || instrumentState.synthesizer == Synth.chipSynth);
-            let signature = 0;
-            if (usesDistortion)
-                signature = signature | 1;
-            signature = signature << 1;
-            if (usesBitcrusher)
-                signature = signature | 1;
-            signature = signature << 1;
-            if (usesEqFilter)
-                signature = signature | 1;
-            signature = signature << 1;
-            if (usesPanning)
-                signature = signature | 1;
-            signature = signature << 1;
-            if (usesChorus)
-                signature = signature | 1;
-            signature = signature << 1;
-            if (usesEcho)
-                signature = signature | 1;
-            signature = signature << 1;
-            if (usesReverb)
-                signature = signature | 1;
-            signature = signature << 1;
-            if (isStereo)
-                signature = signature | 1;
+            let signature = "";
+            signature = usesDistortion ? signature + "1" : signature + "0";
+            signature = usesBitcrusher ? signature + "1" : signature + "0";
+            signature = usesEqFilter ? signature + "1" : signature + "0";
+            signature = usesPanning ? signature + "1" : signature + "0";
+            signature = usesChorus ? signature + "1" : signature + "0";
+            signature = usesEcho ? signature + "1" : signature + "0";
+            signature = usesReverb ? signature + "1" : signature + "0";
+            signature = isStereo ? signature + "1" : signature + "0";
             for (let i of instrumentState.effectOrder) {
-                signature = signature << 4;
-                signature = signature | instrumentState.effectOrder[i];
+                signature = signature + instrumentState.effectOrder[i].toString();
             }
             let effectsFunction = Synth.effectsFunctionCache[signature];
             if (effectsFunction == undefined) {
@@ -15762,7 +15746,7 @@ var beepbox = (function (exports) {
     Synth.tempFilterEndCoefficients = new FilterCoefficients();
     Synth.fmSynthFunctionCache = {};
     Synth.fm6SynthFunctionCache = {};
-    Synth.effectsFunctionCache = Array(1 << 8).fill(undefined);
+    Synth.effectsFunctionCache = {};
     Synth.pickedStringFunctionCache = Array(3).fill(undefined);
     Synth.fmSourceTemplate = (`
 		const data = synth.tempInstrumentSampleBufferL;

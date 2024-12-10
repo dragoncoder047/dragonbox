@@ -1627,6 +1627,13 @@ export class ChangeToggleEffects extends Change {
         const wasSelected: boolean = ((oldValue & (1 << toggleFlag)) != 0);
         const newValue: number = wasSelected ? (oldValue & (~(1 << toggleFlag))) : (oldValue | (1 << toggleFlag));
         instrument.effects = newValue;
+        for (let i = 0; i < 12; i++) {
+            if(instrument.effectOrder[i] == toggleFlag) instrument.effectOrder.splice(i, 1); //was gonna try to use filter() but it didnt work
+        }
+        if (!wasSelected) {
+            instrument.effectOrder.splice(0, 0, toggleFlag);
+        }
+        console.log(instrument.effectOrder.toString())
         // As a special case, toggling the panning effect doesn't remove the preset.
         if (toggleFlag != EffectType.panning) instrument.preset = instrument.type;
         // Remove AA when distortion is turned off.

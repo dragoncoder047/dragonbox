@@ -1,18 +1,13 @@
 {
-	"name": "slarmoosbox",
-	"version": "1.3.3",
-	"description": "Slarmoo's Box is a mod of Ultrabox that aims to advance Beepbox's capabilities.",
-	"author": "Slarmoo",
+	"name": "theepbox",
+	"version": "1.0.0",
+	"description": "theepbox is a mod of Slarmoo's Box. It expands the world of BeepBox into a whole new realm!",
+	"author": "Theepicosity",
 	"contributors": [
-		"Slarmoo",
-		"Main",
-		"Neputendo",
-		"LeoV",
-		"Mid",
-		"Choptop84"
+		"Theepicosity"
 	],
 	"license": "MIT",
-	"homepage": "https://slarmoo.github.io/slarmoosbox/website/",
+	"homepage": "https://theepicosity.space/theepbox",
 	"type": "module",
 	"main": "main.js",
 	"icon": "path.join(__dirname, 'icon.ico')",
@@ -30,7 +25,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/slarmoo/slarmoosbox.git"
+		"url": "git+https://github.com/Theepicosity/theepbox.git"
 	},
 	"devDependencies": {
 		"@electron/packager": "^18.3.5",

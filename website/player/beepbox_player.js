@@ -688,7 +688,7 @@ var beepbox = (function (exports) {
         { name: "resonance", voices: 2, spread: 0.0025, offset: 0.1, expression: 0.8, sign: -1.5 },
         { name: "FART", voices: 2, spread: 13, offset: -5, expression: 1.0, sign: -3 },
     ]);
-    Config.effectNames = ["reverb", "chorus", "panning", "distortion", "bitcrusher", "pre EQ", "echo", "pitch shift", "detune", "vibrato", "transition type", "chord type"];
+    Config.effectNames = ["reverb", "chorus", "panning", "distortion", "bitcrusher", "post EQ", "echo", "pitch shift", "detune", "vibrato", "transition type", "chord type"];
     Config.effectOrder = [2, 10, 11, 7, 8, 9, 5, 3, 4, 1, 6, 0];
     Config.noteSizeMax = 6;
     Config.volumeRange = 50;
@@ -1535,7 +1535,7 @@ var beepbox = (function (exports) {
     function effectsIncludeVibrato(effects) {
         return (effects & (1 << 9)) != 0;
     }
-    function effectsIncludeNoteFilter(effects) {
+    function effectsIncludeEQFilter(effects) {
         return (effects & (1 << 5)) != 0;
     }
     function effectsIncludeDistortion(effects) {
@@ -10820,10 +10820,10 @@ var beepbox = (function (exports) {
             const instrumentObject = {
                 "type": Config.instrumentTypeNames[this.type],
                 "volume": this.volume,
-                "eqFilter": this.eqFilter.toJsonObject(),
-                "eqFilterType": this.eqFilterType,
-                "eqSimpleCut": this.eqFilterSimpleCut,
-                "eqSimplePeak": this.eqFilterSimplePeak,
+                "noteFilter": this.noteFilter.toJsonObject(),
+                "noteFilterType": this.noteFilterType,
+                "noteSimpleCut": this.noteFilterSimpleCut,
+                "noteSimplePeak": this.noteFilterSimplePeak,
                 "envelopeSpeed": this.envelopeSpeed,
                 "discreteEnvelope": this.discreteEnvelope,
             };
@@ -10831,8 +10831,8 @@ var beepbox = (function (exports) {
                 instrumentObject["preset"] = this.preset;
             }
             for (let i = 0; i < Config.filterMorphCount; i++) {
-                if (this.eqSubFilters[i] != null)
-                    instrumentObject["eqSubFilters" + i] = this.eqSubFilters[i].toJsonObject();
+                if (this.noteSubFilters[i] != null)
+                    instrumentObject["noteSubFilters" + i] = this.noteSubFilters[i].toJsonObject();
             }
             const effects = [];
             for (const effect of this.effectOrder) {
@@ -10872,14 +10872,14 @@ var beepbox = (function (exports) {
                 instrumentObject["vibratoSpeed"] = this.vibratoSpeed;
                 instrumentObject["vibratoType"] = this.vibratoType;
             }
-            if (effectsIncludeNoteFilter(this.effects)) {
-                instrumentObject["noteFilterType"] = this.noteFilterType;
-                instrumentObject["noteSimpleCut"] = this.noteFilterSimpleCut;
-                instrumentObject["noteSimplePeak"] = this.noteFilterSimplePeak;
-                instrumentObject["noteFilter"] = this.noteFilter.toJsonObject();
+            if (effectsIncludeEQFilter(this.effects)) {
+                instrumentObject["eqFilterType"] = this.eqFilterType;
+                instrumentObject["eqSimpleCut"] = this.eqFilterSimpleCut;
+                instrumentObject["eqSimplePeak"] = this.eqFilterSimplePeak;
+                instrumentObject["eqFilter"] = this.eqFilter.toJsonObject();
                 for (let i = 0; i < Config.filterMorphCount; i++) {
-                    if (this.noteSubFilters[i] != null)
-                        instrumentObject["noteSubFilters" + i] = this.noteSubFilters[i].toJsonObject();
+                    if (this.eqSubFilters[i] != null)
+                        instrumentObject["eqSubFilters" + i] = this.eqSubFilters[i].toJsonObject();
                 }
             }
             if (effectsIncludeDistortion(this.effects)) {
@@ -12157,33 +12157,33 @@ var beepbox = (function (exports) {
                     buffer.push(118, base64IntToCharCode[(instrument.volume + Config.volumeRange / 2) >> 6], base64IntToCharCode[(instrument.volume + Config.volumeRange / 2) & 0x3f]);
                     buffer.push(117, base64IntToCharCode[instrument.preset >> 6], base64IntToCharCode[instrument.preset & 63]);
                     buffer.push(102);
-                    buffer.push(base64IntToCharCode[+instrument.eqFilterType]);
-                    if (instrument.eqFilterType) {
-                        buffer.push(base64IntToCharCode[instrument.eqFilterSimpleCut]);
-                        buffer.push(base64IntToCharCode[instrument.eqFilterSimplePeak]);
+                    buffer.push(base64IntToCharCode[+instrument.noteFilterType]);
+                    if (instrument.noteFilterType) {
+                        buffer.push(base64IntToCharCode[instrument.noteFilterSimpleCut]);
+                        buffer.push(base64IntToCharCode[instrument.noteFilterSimplePeak]);
                     }
                     else {
-                        if (instrument.eqFilter == null) {
+                        if (instrument.noteFilter == null) {
                             buffer.push(base64IntToCharCode[0]);
-                            console.log("Null EQ filter settings detected in toBase64String for channelIndex " + channelIndex + ", instrumentIndex " + i);
+                            console.log("Null Note filter settings detected in toBase64String for channelIndex " + channelIndex + ", instrumentIndex " + i);
                         }
                         else {
-                            buffer.push(base64IntToCharCode[instrument.eqFilter.controlPointCount]);
-                            for (let j = 0; j < instrument.eqFilter.controlPointCount; j++) {
-                                const point = instrument.eqFilter.controlPoints[j];
+                            buffer.push(base64IntToCharCode[instrument.noteFilter.controlPointCount]);
+                            for (let j = 0; j < instrument.noteFilter.controlPointCount; j++) {
+                                const point = instrument.noteFilter.controlPoints[j];
                                 buffer.push(base64IntToCharCode[point.type], base64IntToCharCode[Math.round(point.freq)], base64IntToCharCode[Math.round(point.gain)]);
                             }
                         }
                         let usingSubFilterBitfield = 0;
                         for (let j = 0; j < Config.filterMorphCount - 1; j++) {
-                            usingSubFilterBitfield |= (+(instrument.eqSubFilters[j + 1] != null) << j);
+                            usingSubFilterBitfield |= (+(instrument.noteSubFilters[j + 1] != null) << j);
                         }
                         buffer.push(base64IntToCharCode[usingSubFilterBitfield >> 6], base64IntToCharCode[usingSubFilterBitfield & 63]);
                         for (let j = 0; j < Config.filterMorphCount - 1; j++) {
                             if (usingSubFilterBitfield & (1 << j)) {
-                                buffer.push(base64IntToCharCode[instrument.eqSubFilters[j + 1].controlPointCount]);
-                                for (let k = 0; k < instrument.eqSubFilters[j + 1].controlPointCount; k++) {
-                                    const point = instrument.eqSubFilters[j + 1].controlPoints[k];
+                                buffer.push(base64IntToCharCode[instrument.noteSubFilters[j + 1].controlPointCount]);
+                                for (let k = 0; k < instrument.noteSubFilters[j + 1].controlPointCount; k++) {
+                                    const point = instrument.noteSubFilters[j + 1].controlPoints[k];
                                     buffer.push(base64IntToCharCode[point.type], base64IntToCharCode[Math.round(point.freq)], base64IntToCharCode[Math.round(point.gain)]);
                                 }
                             }
@@ -12193,34 +12193,34 @@ var beepbox = (function (exports) {
                     for (let i = 0; i < 12; i++) {
                         buffer.push(base64IntToCharCode[instrument.effectOrder[i]]);
                     }
-                    if (effectsIncludeNoteFilter(instrument.effects)) {
-                        buffer.push(base64IntToCharCode[+instrument.noteFilterType]);
-                        if (instrument.noteFilterType) {
-                            buffer.push(base64IntToCharCode[instrument.noteFilterSimpleCut]);
-                            buffer.push(base64IntToCharCode[instrument.noteFilterSimplePeak]);
+                    if (effectsIncludeEQFilter(instrument.effects)) {
+                        buffer.push(base64IntToCharCode[+instrument.eqFilterType]);
+                        if (instrument.eqFilterType) {
+                            buffer.push(base64IntToCharCode[instrument.eqFilterSimpleCut]);
+                            buffer.push(base64IntToCharCode[instrument.eqFilterSimplePeak]);
                         }
                         else {
-                            if (instrument.noteFilter == null) {
+                            if (instrument.eqFilter == null) {
                                 buffer.push(base64IntToCharCode[0]);
-                                console.log("Null note filter settings detected in toBase64String for channelIndex " + channelIndex + ", instrumentIndex " + i);
+                                console.log("Null eq filter settings detected in toBase64String for channelIndex " + channelIndex + ", instrumentIndex " + i);
                             }
                             else {
-                                buffer.push(base64IntToCharCode[instrument.noteFilter.controlPointCount]);
-                                for (let j = 0; j < instrument.noteFilter.controlPointCount; j++) {
-                                    const point = instrument.noteFilter.controlPoints[j];
+                                buffer.push(base64IntToCharCode[instrument.eqFilter.controlPointCount]);
+                                for (let j = 0; j < instrument.eqFilter.controlPointCount; j++) {
+                                    const point = instrument.eqFilter.controlPoints[j];
                                     buffer.push(base64IntToCharCode[point.type], base64IntToCharCode[Math.round(point.freq)], base64IntToCharCode[Math.round(point.gain)]);
                                 }
                             }
                             let usingSubFilterBitfield = 0;
                             for (let j = 0; j < Config.filterMorphCount - 1; j++) {
-                                usingSubFilterBitfield |= (+(instrument.noteSubFilters[j + 1] != null) << j);
+                                usingSubFilterBitfield |= (+(instrument.eqSubFilters[j + 1] != null) << j);
                             }
                             buffer.push(base64IntToCharCode[usingSubFilterBitfield >> 6], base64IntToCharCode[usingSubFilterBitfield & 63]);
                             for (let j = 0; j < Config.filterMorphCount - 1; j++) {
                                 if (usingSubFilterBitfield & (1 << j)) {
-                                    buffer.push(base64IntToCharCode[instrument.noteSubFilters[j + 1].controlPointCount]);
-                                    for (let k = 0; k < instrument.noteSubFilters[j + 1].controlPointCount; k++) {
-                                        const point = instrument.noteSubFilters[j + 1].controlPoints[k];
+                                    buffer.push(base64IntToCharCode[instrument.eqSubFilters[j + 1].controlPointCount]);
+                                    for (let k = 0; k < instrument.eqSubFilters[j + 1].controlPointCount; k++) {
+                                        const point = instrument.eqSubFilters[j + 1].controlPoints[k];
                                         buffer.push(base64IntToCharCode[point.type], base64IntToCharCode[Math.round(point.freq)], base64IntToCharCode[Math.round(point.gain)]);
                                     }
                                 }
@@ -13313,53 +13313,102 @@ var beepbox = (function (exports) {
                             else {
                                 const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                                 let typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                                if (fromBeepBox || typeCheck == 0) {
-                                    instrument.eqFilterType = false;
-                                    if (fromJummBox || fromGoldBox || fromUltraBox || fromSlarmoosBox)
+                                if (fromTheepBox) {
+                                    if (typeCheck == 0) {
+                                        instrument.noteFilterType = false;
                                         typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                                    const originalControlPointCount = typeCheck;
-                                    instrument.eqFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalControlPointCount);
-                                    for (let i = instrument.eqFilter.controlPoints.length; i < instrument.eqFilter.controlPointCount; i++) {
-                                        instrument.eqFilter.controlPoints[i] = new FilterControlPoint();
-                                    }
-                                    for (let i = 0; i < instrument.eqFilter.controlPointCount; i++) {
-                                        const point = instrument.eqFilter.controlPoints[i];
-                                        point.type = clamp(0, 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                        point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                        point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                    }
-                                    for (let i = instrument.eqFilter.controlPointCount; i < originalControlPointCount; i++) {
-                                        charIndex += 3;
-                                    }
-                                    instrument.eqSubFilters[0] = instrument.eqFilter;
-                                    if ((fromJummBox && !beforeFive) || (fromGoldBox && !beforeFour) || fromUltraBox || fromSlarmoosBox) {
+                                        const originalControlPointCount = typeCheck;
+                                        instrument.noteFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalControlPointCount);
+                                        for (let i = instrument.noteFilter.controlPoints.length; i < instrument.noteFilter.controlPointCount; i++) {
+                                            instrument.noteFilter.controlPoints[i] = new FilterControlPoint();
+                                        }
+                                        for (let i = 0; i < instrument.noteFilter.controlPointCount; i++) {
+                                            const point = instrument.noteFilter.controlPoints[i];
+                                            point.type = clamp(0, 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                        }
+                                        for (let i = instrument.noteFilter.controlPointCount; i < originalControlPointCount; i++) {
+                                            charIndex += 3;
+                                        }
+                                        instrument.noteSubFilters[0] = instrument.noteFilter;
                                         let usingSubFilterBitfield = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                         for (let j = 0; j < Config.filterMorphCount - 1; j++) {
                                             if (usingSubFilterBitfield & (1 << j)) {
                                                 const originalSubfilterControlPointCount = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                                                if (instrument.eqSubFilters[j + 1] == null)
-                                                    instrument.eqSubFilters[j + 1] = new FilterSettings();
-                                                instrument.eqSubFilters[j + 1].controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalSubfilterControlPointCount);
-                                                for (let i = instrument.eqSubFilters[j + 1].controlPoints.length; i < instrument.eqSubFilters[j + 1].controlPointCount; i++) {
-                                                    instrument.eqSubFilters[j + 1].controlPoints[i] = new FilterControlPoint();
+                                                if (instrument.noteSubFilters[j + 1] == null)
+                                                    instrument.noteSubFilters[j + 1] = new FilterSettings();
+                                                instrument.noteSubFilters[j + 1].controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalSubfilterControlPointCount);
+                                                for (let i = instrument.noteSubFilters[j + 1].controlPoints.length; i < instrument.noteSubFilters[j + 1].controlPointCount; i++) {
+                                                    instrument.noteSubFilters[j + 1].controlPoints[i] = new FilterControlPoint();
                                                 }
-                                                for (let i = 0; i < instrument.eqSubFilters[j + 1].controlPointCount; i++) {
-                                                    const point = instrument.eqSubFilters[j + 1].controlPoints[i];
+                                                for (let i = 0; i < instrument.noteSubFilters[j + 1].controlPointCount; i++) {
+                                                    const point = instrument.noteSubFilters[j + 1].controlPoints[i];
                                                     point.type = clamp(0, 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                                     point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                                     point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                                 }
-                                                for (let i = instrument.eqSubFilters[j + 1].controlPointCount; i < originalSubfilterControlPointCount; i++) {
+                                                for (let i = instrument.noteSubFilters[j + 1].controlPointCount; i < originalSubfilterControlPointCount; i++) {
                                                     charIndex += 3;
                                                 }
                                             }
                                         }
                                     }
+                                    else {
+                                        instrument.noteFilterType = true;
+                                        instrument.noteFilterSimpleCut = clamp(0, Config.filterSimpleCutRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                        instrument.noteFilterSimplePeak = clamp(0, Config.filterSimplePeakRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                    }
                                 }
                                 else {
-                                    instrument.eqFilterType = true;
-                                    instrument.eqFilterSimpleCut = clamp(0, Config.filterSimpleCutRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                    instrument.eqFilterSimplePeak = clamp(0, Config.filterSimplePeakRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                    if (fromBeepBox || typeCheck == 0) {
+                                        instrument.eqFilterType = false;
+                                        if (fromJummBox || fromGoldBox || fromUltraBox || fromSlarmoosBox)
+                                            typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                        const originalControlPointCount = typeCheck;
+                                        instrument.eqFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalControlPointCount);
+                                        for (let i = instrument.eqFilter.controlPoints.length; i < instrument.eqFilter.controlPointCount; i++) {
+                                            instrument.eqFilter.controlPoints[i] = new FilterControlPoint();
+                                        }
+                                        for (let i = 0; i < instrument.eqFilter.controlPointCount; i++) {
+                                            const point = instrument.eqFilter.controlPoints[i];
+                                            point.type = clamp(0, 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                        }
+                                        for (let i = instrument.eqFilter.controlPointCount; i < originalControlPointCount; i++) {
+                                            charIndex += 3;
+                                        }
+                                        instrument.eqSubFilters[0] = instrument.eqFilter;
+                                        if ((fromJummBox && !beforeFive) || (fromGoldBox && !beforeFour) || fromUltraBox || fromSlarmoosBox) {
+                                            let usingSubFilterBitfield = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            for (let j = 0; j < Config.filterMorphCount - 1; j++) {
+                                                if (usingSubFilterBitfield & (1 << j)) {
+                                                    const originalSubfilterControlPointCount = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                                    if (instrument.eqSubFilters[j + 1] == null)
+                                                        instrument.eqSubFilters[j + 1] = new FilterSettings();
+                                                    instrument.eqSubFilters[j + 1].controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalSubfilterControlPointCount);
+                                                    for (let i = instrument.eqSubFilters[j + 1].controlPoints.length; i < instrument.eqSubFilters[j + 1].controlPointCount; i++) {
+                                                        instrument.eqSubFilters[j + 1].controlPoints[i] = new FilterControlPoint();
+                                                    }
+                                                    for (let i = 0; i < instrument.eqSubFilters[j + 1].controlPointCount; i++) {
+                                                        const point = instrument.eqSubFilters[j + 1].controlPoints[i];
+                                                        point.type = clamp(0, 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                                        point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                                        point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                                    }
+                                                    for (let i = instrument.eqSubFilters[j + 1].controlPointCount; i < originalSubfilterControlPointCount; i++) {
+                                                        charIndex += 3;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        instrument.eqFilterType = true;
+                                        instrument.eqFilterSimpleCut = clamp(0, Config.filterSimpleCutRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                        instrument.eqFilterSimplePeak = clamp(0, Config.filterSimplePeakRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                    }
                                 }
                             }
                         }
@@ -13815,6 +13864,7 @@ var beepbox = (function (exports) {
                                     instrument.effects |= 1 << 3;
                                 else
                                     instrument.effects &= ~(1 << 3);
+                                instrument.effects |= 1 << 5;
                                 const legacySettings = legacySettingsCache[instrumentChannelIterator][instrumentIndexIterator];
                                 instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
                             }
@@ -13824,59 +13874,108 @@ var beepbox = (function (exports) {
                                     for (let i = 0; i < 12; i++) {
                                         instrument.effectOrder[i] = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                     }
-                                    console.log(instrument.effectOrder.toString());
                                 }
                                 else
                                     instrument.effectOrder = [2, 10, 11, 7, 8, 9, 5, 3, 4, 1, 6, 0];
-                                if (effectsIncludeNoteFilter(instrument.effects)) {
+                                if (effectsIncludeEQFilter(instrument.effects)) {
                                     let typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                                    if (fromBeepBox || typeCheck == 0) {
-                                        instrument.noteFilterType = false;
-                                        if (fromJummBox || fromGoldBox || fromUltraBox || fromSlarmoosBox)
+                                    if (fromTheepBox) {
+                                        if (typeCheck == 0) {
+                                            instrument.eqFilterType = false;
                                             typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                                        instrument.noteFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, typeCheck);
-                                        for (let i = instrument.noteFilter.controlPoints.length; i < instrument.noteFilter.controlPointCount; i++) {
-                                            instrument.noteFilter.controlPoints[i] = new FilterControlPoint();
-                                        }
-                                        for (let i = 0; i < instrument.noteFilter.controlPointCount; i++) {
-                                            const point = instrument.noteFilter.controlPoints[i];
-                                            point.type = clamp(0, 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                            point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                            point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                        }
-                                        for (let i = instrument.noteFilter.controlPointCount; i < typeCheck; i++) {
-                                            charIndex += 3;
-                                        }
-                                        instrument.noteSubFilters[0] = instrument.noteFilter;
-                                        if ((fromJummBox && !beforeFive) || (fromGoldBox) || (fromUltraBox) || (fromSlarmoosBox)) {
+                                            instrument.eqFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, typeCheck);
+                                            for (let i = instrument.eqFilter.controlPoints.length; i < instrument.eqFilter.controlPointCount; i++) {
+                                                instrument.eqFilter.controlPoints[i] = new FilterControlPoint();
+                                            }
+                                            for (let i = 0; i < instrument.eqFilter.controlPointCount; i++) {
+                                                const point = instrument.eqFilter.controlPoints[i];
+                                                point.type = clamp(0, 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                                point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                                point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            }
+                                            for (let i = instrument.eqFilter.controlPointCount; i < typeCheck; i++) {
+                                                charIndex += 3;
+                                            }
+                                            instrument.eqSubFilters[0] = instrument.eqFilter;
                                             let usingSubFilterBitfield = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                             for (let j = 0; j < Config.filterMorphCount - 1; j++) {
                                                 if (usingSubFilterBitfield & (1 << j)) {
                                                     const originalSubfilterControlPointCount = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                                                    if (instrument.noteSubFilters[j + 1] == null)
-                                                        instrument.noteSubFilters[j + 1] = new FilterSettings();
-                                                    instrument.noteSubFilters[j + 1].controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalSubfilterControlPointCount);
-                                                    for (let i = instrument.noteSubFilters[j + 1].controlPoints.length; i < instrument.noteSubFilters[j + 1].controlPointCount; i++) {
-                                                        instrument.noteSubFilters[j + 1].controlPoints[i] = new FilterControlPoint();
+                                                    if (instrument.eqSubFilters[j + 1] == null)
+                                                        instrument.eqSubFilters[j + 1] = new FilterSettings();
+                                                    instrument.eqSubFilters[j + 1].controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalSubfilterControlPointCount);
+                                                    for (let i = instrument.eqSubFilters[j + 1].controlPoints.length; i < instrument.eqSubFilters[j + 1].controlPointCount; i++) {
+                                                        instrument.eqSubFilters[j + 1].controlPoints[i] = new FilterControlPoint();
                                                     }
-                                                    for (let i = 0; i < instrument.noteSubFilters[j + 1].controlPointCount; i++) {
-                                                        const point = instrument.noteSubFilters[j + 1].controlPoints[i];
+                                                    for (let i = 0; i < instrument.eqSubFilters[j + 1].controlPointCount; i++) {
+                                                        const point = instrument.eqSubFilters[j + 1].controlPoints[i];
                                                         point.type = clamp(0, 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                                         point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                                         point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                                     }
-                                                    for (let i = instrument.noteSubFilters[j + 1].controlPointCount; i < originalSubfilterControlPointCount; i++) {
+                                                    for (let i = instrument.eqSubFilters[j + 1].controlPointCount; i < originalSubfilterControlPointCount; i++) {
                                                         charIndex += 3;
                                                     }
                                                 }
                                             }
                                         }
+                                        else {
+                                            instrument.eqFilterType = true;
+                                            instrument.eqFilter.reset();
+                                            instrument.eqFilterSimpleCut = clamp(0, Config.filterSimpleCutRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            instrument.eqFilterSimplePeak = clamp(0, Config.filterSimplePeakRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                        }
                                     }
                                     else {
-                                        instrument.noteFilterType = true;
-                                        instrument.noteFilter.reset();
-                                        instrument.noteFilterSimpleCut = clamp(0, Config.filterSimpleCutRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                        instrument.noteFilterSimplePeak = clamp(0, Config.filterSimplePeakRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                        instrument.effects |= 1 << 5;
+                                        if (fromBeepBox || typeCheck == 0) {
+                                            instrument.noteFilterType = false;
+                                            if (fromJummBox || fromGoldBox || fromUltraBox || fromSlarmoosBox)
+                                                typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                            instrument.noteFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, typeCheck);
+                                            for (let i = instrument.noteFilter.controlPoints.length; i < instrument.noteFilter.controlPointCount; i++) {
+                                                instrument.noteFilter.controlPoints[i] = new FilterControlPoint();
+                                            }
+                                            for (let i = 0; i < instrument.noteFilter.controlPointCount; i++) {
+                                                const point = instrument.noteFilter.controlPoints[i];
+                                                point.type = clamp(0, 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                                point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                                point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            }
+                                            for (let i = instrument.noteFilter.controlPointCount; i < typeCheck; i++) {
+                                                charIndex += 3;
+                                            }
+                                            instrument.noteSubFilters[0] = instrument.noteFilter;
+                                            if ((fromJummBox && !beforeFive) || (fromGoldBox) || (fromUltraBox) || (fromSlarmoosBox)) {
+                                                let usingSubFilterBitfield = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                                for (let j = 0; j < Config.filterMorphCount - 1; j++) {
+                                                    if (usingSubFilterBitfield & (1 << j)) {
+                                                        const originalSubfilterControlPointCount = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                                        if (instrument.noteSubFilters[j + 1] == null)
+                                                            instrument.noteSubFilters[j + 1] = new FilterSettings();
+                                                        instrument.noteSubFilters[j + 1].controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalSubfilterControlPointCount);
+                                                        for (let i = instrument.noteSubFilters[j + 1].controlPoints.length; i < instrument.noteSubFilters[j + 1].controlPointCount; i++) {
+                                                            instrument.noteSubFilters[j + 1].controlPoints[i] = new FilterControlPoint();
+                                                        }
+                                                        for (let i = 0; i < instrument.noteSubFilters[j + 1].controlPointCount; i++) {
+                                                            const point = instrument.noteSubFilters[j + 1].controlPoints[i];
+                                                            point.type = clamp(0, 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                                            point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                                            point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                                        }
+                                                        for (let i = instrument.noteSubFilters[j + 1].controlPointCount; i < originalSubfilterControlPointCount; i++) {
+                                                            charIndex += 3;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            instrument.noteFilterType = true;
+                                            instrument.noteFilter.reset();
+                                            instrument.noteFilterSimpleCut = clamp(0, Config.filterSimpleCutRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            instrument.noteFilterSimplePeak = clamp(0, Config.filterSimplePeakRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                        }
                                     }
                                 }
                                 if (effectsIncludeTransition(instrument.effects)) {
@@ -14570,7 +14669,7 @@ var beepbox = (function (exports) {
                                                 instrument.modEnvelopeNumbers[mod] = bits.read(6);
                                             }
                                             if (jumfive && instrument.modChannels[mod] >= 0) {
-                                                let forNoteFilter = effectsIncludeNoteFilter(this.channels[instrument.modChannels[mod]].instruments[instrument.modInstruments[mod]].effects);
+                                                let forNoteFilter = effectsIncludeEQFilter(this.channels[instrument.modChannels[mod]].instruments[instrument.modInstruments[mod]].effects);
                                                 if (instrument.modulators[mod] == 7) {
                                                     if (forNoteFilter) {
                                                         instrument.modulators[mod] = Config.modulators.dictionary["note filt cut"].index;
@@ -16971,6 +17070,7 @@ var beepbox = (function (exports) {
             const usesChorus = effectsIncludeChorus(this.effects);
             const usesEcho = effectsIncludeEcho(this.effects);
             const usesReverb = effectsIncludeReverb(this.effects);
+            const usesEQFilter = effectsIncludeEQFilter(this.effects);
             if (usesDistortion) {
                 let useDistortionStart = instrument.distortion;
                 let useDistortionEnd = instrument.distortion;
@@ -17019,7 +17119,7 @@ var beepbox = (function (exports) {
                 this.bitcrusherFoldLevelScale = Math.pow(foldLevelEnd / foldLevelStart, 1.0 / roundedSamplesPerTick);
             }
             let eqFilterVolume = 1.0;
-            if (instrument.eqFilterType) {
+            if (instrument.eqFilterType && usesEQFilter) {
                 const eqFilterSettingsStart = instrument.eqFilter;
                 if (instrument.eqSubFilters[1] == null)
                     instrument.eqSubFilters[1] = new FilterSettings();
@@ -19781,52 +19881,47 @@ var beepbox = (function (exports) {
                 tone.drumsetPitch = Math.max(0, Math.min(Config.drumCount - 1, tone.drumsetPitch));
             }
             let noteFilterExpression = envelopeComputer.lowpassCutoffDecayVolumeCompensation;
-            if (!effectsIncludeNoteFilter(instrument.effects)) {
-                tone.noteFilterCount = 0;
+            const noteAllFreqsEnvelopeStart = envelopeStarts[2];
+            const noteAllFreqsEnvelopeEnd = envelopeEnds[2];
+            if (instrument.noteFilterType) {
+                const noteFreqEnvelopeStart = envelopeStarts[22];
+                const noteFreqEnvelopeEnd = envelopeEnds[22];
+                const notePeakEnvelopeStart = envelopeStarts[30];
+                const notePeakEnvelopeEnd = envelopeEnds[30];
+                startPoint.toCoefficients(Synth.tempFilterStartCoefficients, this.samplesPerSecond, noteAllFreqsEnvelopeStart * noteFreqEnvelopeStart, notePeakEnvelopeStart);
+                endPoint.toCoefficients(Synth.tempFilterEndCoefficients, this.samplesPerSecond, noteAllFreqsEnvelopeEnd * noteFreqEnvelopeEnd, notePeakEnvelopeEnd);
+                if (tone.noteFiltersL.length < 1)
+                    tone.noteFiltersL[0] = new DynamicBiquadFilter();
+                if (tone.noteFiltersR.length < 1)
+                    tone.noteFiltersR[0] = new DynamicBiquadFilter();
+                tone.noteFiltersL[0].loadCoefficientsWithGradient(Synth.tempFilterStartCoefficients, Synth.tempFilterEndCoefficients, 1.0 / roundedSamplesPerTick, startPoint.type == 0);
+                tone.noteFiltersR[0].loadCoefficientsWithGradient(Synth.tempFilterStartCoefficients, Synth.tempFilterEndCoefficients, 1.0 / roundedSamplesPerTick, startPoint.type == 0);
+                noteFilterExpression *= startPoint.getVolumeCompensationMult();
+                tone.noteFilterCount = 1;
             }
             else {
-                const noteAllFreqsEnvelopeStart = envelopeStarts[2];
-                const noteAllFreqsEnvelopeEnd = envelopeEnds[2];
-                if (instrument.noteFilterType) {
-                    const noteFreqEnvelopeStart = envelopeStarts[22];
-                    const noteFreqEnvelopeEnd = envelopeEnds[22];
-                    const notePeakEnvelopeStart = envelopeStarts[30];
-                    const notePeakEnvelopeEnd = envelopeEnds[30];
+                const noteFilterSettings = (instrument.tmpNoteFilterStart != null) ? instrument.tmpNoteFilterStart : instrument.noteFilter;
+                for (let i = 0; i < noteFilterSettings.controlPointCount; i++) {
+                    const noteFreqEnvelopeStart = envelopeStarts[22 + i];
+                    const noteFreqEnvelopeEnd = envelopeEnds[22 + i];
+                    const notePeakEnvelopeStart = envelopeStarts[30 + i];
+                    const notePeakEnvelopeEnd = envelopeEnds[30 + i];
+                    let startPoint = noteFilterSettings.controlPoints[i];
+                    const endPoint = (instrument.tmpNoteFilterEnd != null && instrument.tmpNoteFilterEnd.controlPoints[i] != null) ? instrument.tmpNoteFilterEnd.controlPoints[i] : noteFilterSettings.controlPoints[i];
+                    if (startPoint.type != endPoint.type) {
+                        startPoint = endPoint;
+                    }
                     startPoint.toCoefficients(Synth.tempFilterStartCoefficients, this.samplesPerSecond, noteAllFreqsEnvelopeStart * noteFreqEnvelopeStart, notePeakEnvelopeStart);
                     endPoint.toCoefficients(Synth.tempFilterEndCoefficients, this.samplesPerSecond, noteAllFreqsEnvelopeEnd * noteFreqEnvelopeEnd, notePeakEnvelopeEnd);
-                    if (tone.noteFiltersL.length < 1)
-                        tone.noteFiltersL[0] = new DynamicBiquadFilter();
-                    if (tone.noteFiltersR.length < 1)
-                        tone.noteFiltersR[0] = new DynamicBiquadFilter();
-                    tone.noteFiltersL[0].loadCoefficientsWithGradient(Synth.tempFilterStartCoefficients, Synth.tempFilterEndCoefficients, 1.0 / roundedSamplesPerTick, startPoint.type == 0);
-                    tone.noteFiltersR[0].loadCoefficientsWithGradient(Synth.tempFilterStartCoefficients, Synth.tempFilterEndCoefficients, 1.0 / roundedSamplesPerTick, startPoint.type == 0);
+                    if (tone.noteFiltersL.length <= i)
+                        tone.noteFiltersL[i] = new DynamicBiquadFilter();
+                    if (tone.noteFiltersR.length <= i)
+                        tone.noteFiltersR[i] = new DynamicBiquadFilter();
+                    tone.noteFiltersL[i].loadCoefficientsWithGradient(Synth.tempFilterStartCoefficients, Synth.tempFilterEndCoefficients, 1.0 / roundedSamplesPerTick, startPoint.type == 0);
+                    tone.noteFiltersR[i].loadCoefficientsWithGradient(Synth.tempFilterStartCoefficients, Synth.tempFilterEndCoefficients, 1.0 / roundedSamplesPerTick, startPoint.type == 0);
                     noteFilterExpression *= startPoint.getVolumeCompensationMult();
-                    tone.noteFilterCount = 1;
                 }
-                else {
-                    const noteFilterSettings = (instrument.tmpNoteFilterStart != null) ? instrument.tmpNoteFilterStart : instrument.noteFilter;
-                    for (let i = 0; i < noteFilterSettings.controlPointCount; i++) {
-                        const noteFreqEnvelopeStart = envelopeStarts[22 + i];
-                        const noteFreqEnvelopeEnd = envelopeEnds[22 + i];
-                        const notePeakEnvelopeStart = envelopeStarts[30 + i];
-                        const notePeakEnvelopeEnd = envelopeEnds[30 + i];
-                        let startPoint = noteFilterSettings.controlPoints[i];
-                        const endPoint = (instrument.tmpNoteFilterEnd != null && instrument.tmpNoteFilterEnd.controlPoints[i] != null) ? instrument.tmpNoteFilterEnd.controlPoints[i] : noteFilterSettings.controlPoints[i];
-                        if (startPoint.type != endPoint.type) {
-                            startPoint = endPoint;
-                        }
-                        startPoint.toCoefficients(Synth.tempFilterStartCoefficients, this.samplesPerSecond, noteAllFreqsEnvelopeStart * noteFreqEnvelopeStart, notePeakEnvelopeStart);
-                        endPoint.toCoefficients(Synth.tempFilterEndCoefficients, this.samplesPerSecond, noteAllFreqsEnvelopeEnd * noteFreqEnvelopeEnd, notePeakEnvelopeEnd);
-                        if (tone.noteFiltersL.length <= i)
-                            tone.noteFiltersL[i] = new DynamicBiquadFilter();
-                        if (tone.noteFiltersR.length <= i)
-                            tone.noteFiltersR[i] = new DynamicBiquadFilter();
-                        tone.noteFiltersL[i].loadCoefficientsWithGradient(Synth.tempFilterStartCoefficients, Synth.tempFilterEndCoefficients, 1.0 / roundedSamplesPerTick, startPoint.type == 0);
-                        tone.noteFiltersR[i].loadCoefficientsWithGradient(Synth.tempFilterStartCoefficients, Synth.tempFilterEndCoefficients, 1.0 / roundedSamplesPerTick, startPoint.type == 0);
-                        noteFilterExpression *= startPoint.getVolumeCompensationMult();
-                    }
-                    tone.noteFilterCount = noteFilterSettings.controlPointCount;
-                }
+                tone.noteFilterCount = noteFilterSettings.controlPointCount;
             }
             if (instrument.type == 4) {
                 const drumsetEnvelopeComputer = tone.envelopeComputer;
@@ -21123,7 +21218,7 @@ var beepbox = (function (exports) {
         static effectsSynth(synth, outputDataL, outputDataR, bufferIndex, runLength, instrumentState) {
             const usesDistortion = effectsIncludeDistortion(instrumentState.effects);
             const usesBitcrusher = effectsIncludeBitcrusher(instrumentState.effects);
-            const usesEqFilter = instrumentState.eqFilterCount > 0;
+            const usesEqFilter = effectsIncludeEQFilter(instrumentState.effects);
             const usesPanning = effectsIncludePanning(instrumentState.effects);
             const usesChorus = effectsIncludeChorus(instrumentState.effects);
             const usesEcho = effectsIncludeEcho(instrumentState.effects);
@@ -21542,18 +21637,18 @@ var beepbox = (function (exports) {
                     sampleR += reverbSample0 + reverbSample2 - reverbSample3;
                     reverb += reverbDelta;`;
                     }
-                }
-                if (usesEqFilter) {
-                    effectsSource += `
+                    else if (usesEqFilter && i == 5) {
+                        effectsSource += `
 
-                const inputSampleL = sampleL;
-                const inputSampleR = sampleR;
-                sampleL = applyFilters(inputSampleL, initialFilterInputL1, initialFilterInputL2, filterCount, filtersL);
-                sampleR = applyFilters(inputSampleR, initialFilterInputR1, initialFilterInputR2, filterCount, filtersR);
-                initialFilterInputL2 = initialFilterInputL1;
-                initialFilterInputR2 = initialFilterInputR1;
-                initialFilterInputL1 = inputSampleL;
-                initialFilterInputR1 = inputSampleR;`;
+                    const inputSampleL = sampleL;
+                    const inputSampleR = sampleR;
+                    sampleL = applyFilters(inputSampleL, initialFilterInputL1, initialFilterInputL2, filterCount, filtersL);
+                    sampleR = applyFilters(inputSampleR, initialFilterInputR1, initialFilterInputR2, filterCount, filtersR);
+                    initialFilterInputL2 = initialFilterInputL1;
+                    initialFilterInputR2 = initialFilterInputR1;
+                    initialFilterInputL1 = inputSampleL;
+                    initialFilterInputR1 = inputSampleR;`;
+                    }
                 }
                 effectsSource += `
 					

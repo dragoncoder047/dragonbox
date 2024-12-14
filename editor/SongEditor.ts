@@ -1,7 +1,7 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
 //import {Layout} from "./Layout";
-import { sampleLoadEvents, SampleLoadedEvent, InstrumentType, EffectType, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeNoteFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, DropdownID } from "../synth/SynthConfig";
+import { sampleLoadEvents, SampleLoadedEvent, InstrumentType, EffectType, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, DropdownID } from "../synth/SynthConfig";
 import { BarScrollBar } from "./BarScrollBar";
 import { BeatsPerBarPrompt } from "./BeatsPerBarPrompt";
 import { Change, ChangeGroup } from "./Change";
@@ -1149,10 +1149,10 @@ export class SongEditor {
         this._chipWavePlayBackwardsRow,
         this._chipWaveInStereoRow,
         this._customWaveDraw,
-        this._eqFilterTypeRow,
-        this._eqFilterRow,
-        this._eqFilterSimpleCutRow,
-        this._eqFilterSimplePeakRow,
+        this._noteFilterTypeRow,
+        this._noteFilterRow,
+        this._noteFilterSimpleCutRow,
+        this._noteFilterSimplePeakRow,
         this._fadeInOutRow,
         this._algorithmSelectRow,
         this._algorithm6OpSelectRow,
@@ -1185,10 +1185,10 @@ export class SongEditor {
         this._detuneSliderRow,
         this._vibratoSelectRow,
         this._vibratoDropdownGroup,
-        this._noteFilterTypeRow,
-        this._noteFilterRow,
-        this._noteFilterSimpleCutRow,
-        this._noteFilterSimplePeakRow,
+        this._eqFilterTypeRow,
+        this._eqFilterRow,
+        this._eqFilterSimpleCutRow,
+        this._eqFilterSimplePeakRow,
         this._distortionRow,
         this._aliasingRow,
         this._bitcrusherQuantizationRow,
@@ -2773,39 +2773,39 @@ export class SongEditor {
                 this._vibratoSelectRow.style.display = "none";
             }
 
-            if (effectsIncludeNoteFilter(instrument.effects)) {
+            if (effectsIncludeEQFilter(instrument.effects)) {
 
-                this._noteFilterTypeRow.style.setProperty("--text-color-lit", colors.primaryNote);
-                this._noteFilterTypeRow.style.setProperty("--text-color-dim", colors.secondaryNote);
-                this._noteFilterTypeRow.style.setProperty("--background-color-lit", colors.primaryChannel);
-                this._noteFilterTypeRow.style.setProperty("--background-color-dim", colors.secondaryChannel);
-                this._noteFilterTypeRow.style.display = "";
+                this._eqFilterTypeRow.style.setProperty("--text-color-lit", colors.primaryNote);
+                this._eqFilterTypeRow.style.setProperty("--text-color-dim", colors.secondaryNote);
+                this._eqFilterTypeRow.style.setProperty("--background-color-lit", colors.primaryChannel);
+                this._eqFilterTypeRow.style.setProperty("--background-color-dim", colors.secondaryChannel);
+                this._eqFilterTypeRow.style.display = "";
 
                 if (this._doc.synth.isFilterModActive(true, this._doc.channel, this._doc.getCurrentInstrument())) {
-                    this._noteFilterEditor.render(true, this._ctrlHeld || this._shiftHeld);
+                    this._eqFilterEditor.render(true, this._ctrlHeld || this._shiftHeld);
                 }
                 else {
-                    this._noteFilterEditor.render();
+                    this._eqFilterEditor.render();
                 }
 
-                if (instrument.noteFilterType) {
-                    this._noteFilterSimpleButton.classList.remove("deactivated");
-                    this._noteFilterAdvancedButton.classList.add("deactivated");
-                    this._noteFilterRow.style.display = "none";
-                    this._noteFilterSimpleCutRow.style.display = "";
-                    this._noteFilterSimplePeakRow.style.display = "";
+                if (instrument.eqFilterType) {
+                    this._eqFilterSimpleButton.classList.remove("deactivated");
+                    this._eqFilterAdvancedButton.classList.add("deactivated");
+                    this._eqFilterRow.style.display = "none";
+                    this._eqFilterSimpleCutRow.style.display = "";
+                    this._eqFilterSimplePeakRow.style.display = "";
                 } else {
-                    this._noteFilterSimpleButton.classList.add("deactivated");
-                    this._noteFilterAdvancedButton.classList.remove("deactivated");
-                    this._noteFilterRow.style.display = "";
-                    this._noteFilterSimpleCutRow.style.display = "none";
-                    this._noteFilterSimplePeakRow.style.display = "none";
+                    this._eqFilterSimpleButton.classList.add("deactivated");
+                    this._eqFilterAdvancedButton.classList.remove("deactivated");
+                    this._eqFilterRow.style.display = "";
+                    this._eqFilterSimpleCutRow.style.display = "none";
+                    this._eqFilterSimplePeakRow.style.display = "none";
                 }
             } else {
-                this._noteFilterRow.style.display = "none";
-                this._noteFilterSimpleCutRow.style.display = "none";
-                this._noteFilterSimplePeakRow.style.display = "none";
-                this._noteFilterTypeRow.style.display = "none";
+                this._eqFilterRow.style.display = "none";
+                this._eqFilterSimpleCutRow.style.display = "none";
+                this._eqFilterSimplePeakRow.style.display = "none";
+                this._eqFilterTypeRow.style.display = "none";
             }
 
             if (effectsIncludeDistortion(instrument.effects)) {
@@ -3186,9 +3186,9 @@ export class SongEditor {
                             else {
                                 allInstrumentVibratos = false;
                             }
-                            if (effectsIncludeNoteFilter(channel.instruments[instrumentIndex].effects)) {
+                            if (effectsIncludeEQFilter(channel.instruments[instrumentIndex].effects)) {
                                 anyInstrumentNoteFilters = true;
-                                if (channel.instruments[instrumentIndex].noteFilterType)
+                                if (channel.instruments[instrumentIndex].eqFilterType)
                                     anyInstrumentSimpleNote = true;
                                 else
                                     anyInstrumentAdvancedNote = true;
@@ -3583,9 +3583,9 @@ export class SongEditor {
         this._instrumentSettingsGroup.style.color = colors.primaryNote;
 
         if (this._doc.synth.isFilterModActive(false, this._doc.channel, this._doc.getCurrentInstrument())) {
-            this._eqFilterEditor.render(true, this._ctrlHeld || this._shiftHeld);
+            this._noteFilterEditor.render(true, this._ctrlHeld || this._shiftHeld);
         } else {
-            this._eqFilterEditor.render();
+            this._noteFilterEditor.render();
         }
         if (this._doc.synth.isFilterModActive(false, 0, 0, true)) {
             this._songEqFilterEditor.render(true, this._ctrlHeld || this._shiftHeld);
@@ -4188,8 +4188,8 @@ export class SongEditor {
                 if (canPlayNotes) break;
                 if (event.shiftKey) {
                     const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-                    if (!instrument.eqFilterType && this._doc.channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
-                        this._openPrompt("customEQFilterSettings");
+                    if (!instrument.noteFilterType && this._doc.channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
+                        this._openPrompt("customNoteFilterSettings");
                 } else if (event.altKey) {
                     //open / close all envelope dropdowns
                     const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
@@ -4327,8 +4327,8 @@ export class SongEditor {
 
                 if (event.shiftKey) {
                     const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-                    if (effectsIncludeNoteFilter(instrument.effects) && !instrument.noteFilterType && this._doc.channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
-                        this._openPrompt("customNoteFilterSettings");
+                    if (effectsIncludeEQFilter(instrument.effects) && !instrument.noteFilterType && this._doc.channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
+                        this._openPrompt("customEQFilterSettings");
                     break;
                 }
                 else if (event.ctrlKey) {

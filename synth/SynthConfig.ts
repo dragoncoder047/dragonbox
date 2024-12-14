@@ -1200,7 +1200,7 @@ export class Config {
 		
         //for modbox; voices = riffapp, spread = intervals, offset = offsets, expression = volume, and sign = signs
     ]);
-    public static readonly effectNames: ReadonlyArray<string> = ["reverb", "chorus", "panning", "distortion", "bitcrusher", "pre EQ", "echo", "pitch shift", "detune", "vibrato", "transition type", "chord type"];
+    public static readonly effectNames: ReadonlyArray<string> = ["reverb", "chorus", "panning", "distortion", "bitcrusher", "post EQ", "echo", "pitch shift", "detune", "vibrato", "transition type", "chord type"];
     public static readonly effectOrder: ReadonlyArray<EffectType> = [EffectType.panning, EffectType.transition, EffectType.chord, EffectType.pitchShift, EffectType.detune, EffectType.vibrato, EffectType.noteFilter, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb];
     public static readonly noteSizeMax: number = 6;
     public static readonly volumeRange: number = 50;
@@ -2172,7 +2172,7 @@ export function effectsIncludeDetune(effects: number): boolean {
 export function effectsIncludeVibrato(effects: number): boolean {
     return (effects & (1 << EffectType.vibrato)) != 0;
 }
-export function effectsIncludeNoteFilter(effects: number): boolean {
+export function effectsIncludeEQFilter(effects: number): boolean {
     return (effects & (1 << EffectType.noteFilter)) != 0;
 }
 export function effectsIncludeDistortion(effects: number): boolean {

@@ -2365,7 +2365,7 @@ export class SongEditor {
         }
         this._effectsSelect.selectedIndex = -1;
         for (let i: number = 0; i < Config.effectOrder.length; i++) {
-            let effectFlag: number = Config.effectOrder[i];
+            let effectFlag: number = instrument.effectOrder[i];
             const selected: boolean = ((instrument.effects & (1 << effectFlag)) != 0);
             const label: string = (selected ? textOnIcon : textOffIcon) + Config.effectNames[effectFlag];
             const option: HTMLOptionElement = <HTMLOptionElement>this._effectsSelect.children[i + 1];
@@ -5178,7 +5178,7 @@ export class SongEditor {
     private _whenSetEffects = (): void => {
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         const oldValue: number = instrument.effects;
-        const toggleFlag: number = Config.effectOrder[this._effectsSelect.selectedIndex - 1];
+        const toggleFlag: number = instrument.effectOrder[this._effectsSelect.selectedIndex - 1];
         this._doc.record(new ChangeToggleEffects(this._doc, toggleFlag, null));
         this._effectsSelect.selectedIndex = 0;
         if (instrument.effects > oldValue) {

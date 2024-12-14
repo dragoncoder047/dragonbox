@@ -13729,8 +13729,8 @@ export class Synth {
                         bitcrusherPhase = bitcrusherPhase % 1.0;
                         const ratio = bitcrusherPhase / bitcrusherPhaseDelta;
 
-                        const lerpedInputL = sampleL + (bitcrusherPrevInputL - sample) * ratio;
-                        const lerpedInputR = sampleR + (bitcrusherPrevInputR - sample) * ratio;
+                        const lerpedInputL = sampleL + (bitcrusherPrevInputL - sampleL) * ratio;
+                        const lerpedInputR = sampleR + (bitcrusherPrevInputR - sampleR) * ratio;
                         bitcrusherPrevInputL = sampleL;
                         bitcrusherPrevInputR = sampleR;
 

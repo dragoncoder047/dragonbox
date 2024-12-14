@@ -23262,8 +23262,8 @@ li.select2-results__option[role=group] > strong:hover {
                         bitcrusherPhase = bitcrusherPhase % 1.0;
                         const ratio = bitcrusherPhase / bitcrusherPhaseDelta;
 
-                        const lerpedInputL = sampleL + (bitcrusherPrevInputL - sample) * ratio;
-                        const lerpedInputR = sampleR + (bitcrusherPrevInputR - sample) * ratio;
+                        const lerpedInputL = sampleL + (bitcrusherPrevInputL - sampleL) * ratio;
+                        const lerpedInputR = sampleR + (bitcrusherPrevInputR - sampleR) * ratio;
                         bitcrusherPrevInputL = sampleL;
                         bitcrusherPrevInputR = sampleR;
 
@@ -44439,7 +44439,7 @@ You should be redirected to the song at:<br /><br />
                 }
                 this._effectsSelect.selectedIndex = -1;
                 for (let i = 0; i < Config.effectOrder.length; i++) {
-                    let effectFlag = Config.effectOrder[i];
+                    let effectFlag = instrument.effectOrder[i];
                     const selected = ((instrument.effects & (1 << effectFlag)) != 0);
                     const label = (selected ? textOnIcon : textOffIcon) + Config.effectNames[effectFlag];
                     const option = this._effectsSelect.children[i + 1];
@@ -46716,7 +46716,7 @@ You should be redirected to the song at:<br /><br />
             this._whenSetEffects = () => {
                 const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
                 const oldValue = instrument.effects;
-                const toggleFlag = Config.effectOrder[this._effectsSelect.selectedIndex - 1];
+                const toggleFlag = instrument.effectOrder[this._effectsSelect.selectedIndex - 1];
                 this._doc.record(new ChangeToggleEffects(this._doc, toggleFlag, null));
                 this._effectsSelect.selectedIndex = 0;
                 if (instrument.effects > oldValue) {

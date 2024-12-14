@@ -839,7 +839,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 ])].index;
             }
             if (Math.random() < 0.8) {
-                instrument.effects |= 1 << EffectType.noteFilter;
+                instrument.effects |= 1 << EffectType.eqFilter;
                 applyFilterPoints(instrument.noteFilter, [
                     new PotentialFilterPoint(1.0, FilterType.lowPass, midFreq, maxFreq, 8000.0, -1),
                 ]);
@@ -1121,14 +1121,14 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 }
             }
             if (effectsIncludeDistortion(instrument.effects) && Math.random() < 0.8) {
-                instrument.effects |= 1 << EffectType.noteFilter;
+                instrument.effects |= 1 << EffectType.eqFilter;
                 applyFilterPoints(instrument.noteFilter, [
                     new PotentialFilterPoint(1.0, FilterType.lowPass, midFreq, maxFreq, 2000.0, -1),
                     new PotentialFilterPoint(0.9, FilterType.highPass, 0, midFreq - 1, 500.0, -1),
                     new PotentialFilterPoint(0.4, FilterType.peak, 0, maxFreq, 1400.0, 0),
                 ]);
             } else if (Math.random() < 0.5) {
-                instrument.effects |= 1 << EffectType.noteFilter;
+                instrument.effects |= 1 << EffectType.eqFilter;
                 applyFilterPoints(instrument.noteFilter, [
                     new PotentialFilterPoint(1.0, FilterType.lowPass, midFreq, maxFreq, 8000.0, -1),
                 ]);
@@ -2630,7 +2630,7 @@ export class ChangeFilterAddPoint extends UndoableChange {
                 // point and clear them, and all envelopes that targeted later points and
                 // decrement those to keep them in sync with the new list of points.
                 const automationTarget: AutomationTarget = Config.instrumentAutomationTargets[target];
-                if (automationTarget.isFilter && (automationTarget.effect == EffectType.noteFilter) == isNoteFilter) {
+                if (automationTarget.isFilter && (automationTarget.effect == EffectType.eqFilter) == isNoteFilter) {
                     if (automationTarget.maxCount == Config.filterMaxPoints) {
                         if (targetIndex == index) {
                             target = Config.instrumentAutomationTargets.dictionary["none"].index;

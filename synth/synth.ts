@@ -1648,7 +1648,7 @@ export class Instrument {
     public unisonExpression: number = 1.4;
     public unisonSign: number = 1.0;
     public effects: number = 0;
-    public effectOrder: Array<EffectType> = [EffectType.panning, EffectType.transition, EffectType.chord, EffectType.pitchShift, EffectType.detune, EffectType.vibrato, EffectType.noteFilter, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb];;
+    public effectOrder: Array<EffectType> = [EffectType.panning, EffectType.transition, EffectType.chord, EffectType.pitchShift, EffectType.detune, EffectType.vibrato, EffectType.eqFilter, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb];;
     public chord: number = 1;
     public volume: number = 0;
     public pan: number = Config.panCenter;
@@ -1996,7 +1996,7 @@ export class Instrument {
             this.noteFilter.reset();
             this.noteFilterType = false;
             this.eqFilter.convertLegacySettings(legacyCutoffSetting, legacyResonanceSetting, legacyFilterEnv);
-            this.effects &= ~(1 << EffectType.noteFilter);
+            this.effects &= ~(1 << EffectType.eqFilter);
             if (forceSimpleFilter || this.eqFilterType) {
                 this.eqFilterType = true;
                 this.eqFilterSimpleCut = legacyCutoffSetting;
@@ -2008,7 +2008,7 @@ export class Instrument {
             this.eqFilterType = false;
             this.noteFilterType = false;
             this.noteFilter.convertLegacySettings(legacyCutoffSetting, legacyResonanceSetting, legacyFilterEnv);
-            this.effects |= 1 << EffectType.noteFilter;
+            this.effects |= 1 << EffectType.eqFilter;
             this.addEnvelope(Config.instrumentAutomationTargets.dictionary["noteFilterAllFreqs"].index, 0, legacyFilterEnv.index, false);
             if (forceSimpleFilter || this.noteFilterType) {
                 this.noteFilterType = true;
@@ -5320,7 +5320,7 @@ export class Song {
                         instrument.effects |= 1 << EffectType.distortion;
                     else
                         instrument.effects &= ~(1 << EffectType.distortion);
-                    instrument.effects |= 1 << EffectType.noteFilter; // enable eq filter for theepbox :)
+                    instrument.effects |= 1 << EffectType.eqFilter; // enable eq filter for theepbox :)
 
                     // convertLegacySettings may need to force-enable note filter, call
                     // it again here to make sure that this override takes precedence.
@@ -5335,7 +5335,7 @@ export class Song {
                             instrument.effectOrder[i] = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         }
                     }
-                    else instrument.effectOrder = [EffectType.panning, EffectType.transition, EffectType.chord, EffectType.pitchShift, EffectType.detune, EffectType.vibrato, EffectType.noteFilter, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb];
+                    else instrument.effectOrder = [EffectType.panning, EffectType.transition, EffectType.chord, EffectType.pitchShift, EffectType.detune, EffectType.vibrato, EffectType.eqFilter, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb];
 
                     if (effectsIncludeEQFilter(instrument.effects)) {
                         let typeCheck: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
@@ -5388,7 +5388,7 @@ export class Song {
                                 instrument.eqFilterSimplePeak = clamp(0, Config.filterSimplePeakRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             }
                         } else {
-                            instrument.effects |= 1 << EffectType.noteFilter; // i know the variable says note filter but trust me this is eq filter
+                            instrument.effects |= 1 << EffectType.eqFilter; // i know the variable says note filter but trust me this is eq filter
                             if (fromBeepBox || typeCheck == 0) {
                                 instrument.noteFilterType = false;
                                 if (fromJummBox || fromGoldBox || fromUltraBox || fromSlarmoosBox)
@@ -8440,7 +8440,7 @@ class InstrumentState {
     public unisonSign: number = 1.0;
     public chord: Chord | null = null;
     public effects: number = 0;
-    public effectOrder: Array<EffectType> = [EffectType.panning, EffectType.transition, EffectType.chord, EffectType.pitchShift, EffectType.detune, EffectType.vibrato, EffectType.noteFilter, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb];;
+    public effectOrder: Array<EffectType> = [EffectType.panning, EffectType.transition, EffectType.chord, EffectType.pitchShift, EffectType.detune, EffectType.vibrato, EffectType.eqFilter, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb];;
 
     public volumeScale: number = 0;
     public aliases: boolean = false;
@@ -13813,7 +13813,7 @@ export class Synth {
             sampleR *= eqFilterVolume;
             eqFilterVolume += eqFilterVolumeDelta;`
 
-            //[EffectType.panning, EffectType.transition, EffectType.chord, EffectType.pitchShift, EffectType.detune, EffectType.vibrato, EffectType.noteFilter, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb];
+            //[EffectType.panning, EffectType.transition, EffectType.chord, EffectType.pitchShift, EffectType.detune, EffectType.vibrato, EffectType.eqFilter, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb];
 
             for (let i of instrumentState.effectOrder) {
                 if (usesBitcrusher && i == EffectType.bitcrusher) {
@@ -14002,7 +14002,7 @@ export class Synth {
                     sampleR += reverbSample0 + reverbSample2 - reverbSample3;
                     reverb += reverbDelta;`
                 }
-                else if (usesEqFilter && i == EffectType.noteFilter) {
+                else if (usesEqFilter && i == EffectType.eqFilter) {
                     effectsSource += `
 
                     const inputSampleL = sampleL;

@@ -12509,6 +12509,7 @@ li.select2-results__option[role=group] > strong:hover {
                     break;
                 case 9:
                     this.chipWave = 2;
+                    this.chipWaveInStereo = false;
                     this.chord = Config.chords.dictionary["arpeggio"].index;
                     for (let i = 0; i < 64; i++) {
                         this.customChipWave[i] = 24 - (Math.floor(i * (48 / 64)));
@@ -19319,6 +19320,7 @@ li.select2-results__option[role=group] > strong:hover {
             }
             else if (instrument.type == 9) {
                 this.waveL = (this.aliases) ? instrument.customChipWave : instrument.customChipWaveIntegral;
+                this.waveR = (this.aliases) ? instrument.customChipWave : instrument.customChipWaveIntegral;
                 this.volumeScale = 0.05;
                 this.unisonVoices = instrument.unisonVoices;
                 this.unisonSpread = instrument.unisonSpread;
@@ -44554,23 +44556,23 @@ You should be redirected to the song at:<br /><br />
                 else {
                     this._songEqFilterEditor.render();
                 }
-                this._eqFilterTypeRow.style.setProperty("--text-color-lit", colors.primaryNote);
-                this._eqFilterTypeRow.style.setProperty("--text-color-dim", colors.secondaryNote);
-                this._eqFilterTypeRow.style.setProperty("--background-color-lit", colors.primaryChannel);
-                this._eqFilterTypeRow.style.setProperty("--background-color-dim", colors.secondaryChannel);
-                if (instrument.eqFilterType) {
-                    this._eqFilterSimpleButton.classList.remove("deactivated");
-                    this._eqFilterAdvancedButton.classList.add("deactivated");
-                    this._eqFilterRow.style.display = "none";
-                    this._eqFilterSimpleCutRow.style.display = "";
-                    this._eqFilterSimplePeakRow.style.display = "";
+                this._noteFilterTypeRow.style.setProperty("--text-color-lit", colors.primaryNote);
+                this._noteFilterTypeRow.style.setProperty("--text-color-dim", colors.secondaryNote);
+                this._noteFilterTypeRow.style.setProperty("--background-color-lit", colors.primaryChannel);
+                this._noteFilterTypeRow.style.setProperty("--background-color-dim", colors.secondaryChannel);
+                if (instrument.noteFilterType) {
+                    this._noteFilterSimpleButton.classList.remove("deactivated");
+                    this._noteFilterAdvancedButton.classList.add("deactivated");
+                    this._noteFilterRow.style.display = "none";
+                    this._noteFilterSimpleCutRow.style.display = "";
+                    this._noteFilterSimplePeakRow.style.display = "";
                 }
                 else {
-                    this._eqFilterSimpleButton.classList.add("deactivated");
-                    this._eqFilterAdvancedButton.classList.remove("deactivated");
-                    this._eqFilterRow.style.display = "";
-                    this._eqFilterSimpleCutRow.style.display = "none";
-                    this._eqFilterSimplePeakRow.style.display = "none";
+                    this._noteFilterSimpleButton.classList.add("deactivated");
+                    this._noteFilterAdvancedButton.classList.remove("deactivated");
+                    this._noteFilterRow.style.display = "";
+                    this._noteFilterSimpleCutRow.style.display = "none";
+                    this._noteFilterSimplePeakRow.style.display = "none";
                 }
                 setSelectedValue(this._rhythmSelect, this._doc.song.rhythm);
                 if (!this._doc.song.getChannelIsMod(this._doc.channel)) {

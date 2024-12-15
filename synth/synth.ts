@@ -1822,6 +1822,7 @@ export class Instrument {
                 break;
             case InstrumentType.customChipWave:
                 this.chipWave = 2;
+                this.chipWaveInStereo = false;
                 this.chord = Config.chords.dictionary["arpeggio"].index;
                 for (let i: number = 0; i < 64; i++) {
                     this.customChipWave[i] = 24 - (Math.floor(i * (48 / 64)));
@@ -9180,6 +9181,7 @@ class InstrumentState {
             this.unisonSign = instrument.unisonSign;
         } else if (instrument.type == InstrumentType.customChipWave) {
             this.waveL = (this.aliases) ? instrument.customChipWave! : instrument.customChipWaveIntegral!;
+            this.waveR = (this.aliases) ? instrument.customChipWave! : instrument.customChipWaveIntegral!;
             this.volumeScale = 0.05;
             this.unisonVoices = instrument.unisonVoices;
             this.unisonSpread = instrument.unisonSpread;

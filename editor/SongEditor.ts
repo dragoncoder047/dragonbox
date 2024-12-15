@@ -2385,23 +2385,23 @@ export class SongEditor {
             this._songEqFilterEditor.render();
         }
 
-        this._eqFilterTypeRow.style.setProperty("--text-color-lit", colors.primaryNote);
-        this._eqFilterTypeRow.style.setProperty("--text-color-dim", colors.secondaryNote);
-        this._eqFilterTypeRow.style.setProperty("--background-color-lit", colors.primaryChannel);
-        this._eqFilterTypeRow.style.setProperty("--background-color-dim", colors.secondaryChannel);
+        this._noteFilterTypeRow.style.setProperty("--text-color-lit", colors.primaryNote);
+        this._noteFilterTypeRow.style.setProperty("--text-color-dim", colors.secondaryNote);
+        this._noteFilterTypeRow.style.setProperty("--background-color-lit", colors.primaryChannel);
+        this._noteFilterTypeRow.style.setProperty("--background-color-dim", colors.secondaryChannel);
 
-        if (instrument.eqFilterType) {
-            this._eqFilterSimpleButton.classList.remove("deactivated");
-            this._eqFilterAdvancedButton.classList.add("deactivated");
-            this._eqFilterRow.style.display = "none";
-            this._eqFilterSimpleCutRow.style.display = "";
-            this._eqFilterSimplePeakRow.style.display = "";
+        if (instrument.noteFilterType) {
+            this._noteFilterSimpleButton.classList.remove("deactivated");
+            this._noteFilterAdvancedButton.classList.add("deactivated");
+            this._noteFilterRow.style.display = "none";
+            this._noteFilterSimpleCutRow.style.display = "";
+            this._noteFilterSimplePeakRow.style.display = "";
         } else {
-            this._eqFilterSimpleButton.classList.add("deactivated");
-            this._eqFilterAdvancedButton.classList.remove("deactivated");
-            this._eqFilterRow.style.display = "";
-            this._eqFilterSimpleCutRow.style.display = "none";
-            this._eqFilterSimplePeakRow.style.display = "none";
+            this._noteFilterSimpleButton.classList.add("deactivated");
+            this._noteFilterAdvancedButton.classList.remove("deactivated");
+            this._noteFilterRow.style.display = "";
+            this._noteFilterSimpleCutRow.style.display = "none";
+            this._noteFilterSimplePeakRow.style.display = "none";
         }
 
         setSelectedValue(this._rhythmSelect, this._doc.song.rhythm);

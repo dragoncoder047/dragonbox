@@ -10616,6 +10616,7 @@ var beepbox = (function (exports) {
                     break;
                 case 9:
                     this.chipWave = 2;
+                    this.chipWaveInStereo = false;
                     this.chord = Config.chords.dictionary["arpeggio"].index;
                     for (let i = 0; i < 64; i++) {
                         this.customChipWave[i] = 24 - (Math.floor(i * (48 / 64)));
@@ -17426,6 +17427,7 @@ var beepbox = (function (exports) {
             }
             else if (instrument.type == 9) {
                 this.waveL = (this.aliases) ? instrument.customChipWave : instrument.customChipWaveIntegral;
+                this.waveR = (this.aliases) ? instrument.customChipWave : instrument.customChipWaveIntegral;
                 this.volumeScale = 0.05;
                 this.unisonVoices = instrument.unisonVoices;
                 this.unisonSpread = instrument.unisonSpread;

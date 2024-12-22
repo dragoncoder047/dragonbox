@@ -427,13 +427,15 @@ export class Note {
     public start: number;
     public end: number;
     public continuesLastPattern: boolean;
+    public chipWaveStartOffset: number;
 
-    public constructor(pitch: number, start: number, end: number, size: number, fadeout: boolean = false) {
+    public constructor(pitch: number, start: number, end: number, size: number, fadeout: boolean = false, chipWaveStartOffset: number = 0) {
         this.pitches = [pitch];
         this.pins = [makeNotePin(0, 0, size), makeNotePin(0, end - start, fadeout ? 0 : size)];
         this.start = start;
         this.end = end;
         this.continuesLastPattern = false;
+        this.chipWaveStartOffset = chipWaveStartOffset;
     }
 
     public pickMainInterval(): number {
@@ -4003,6 +4005,14 @@ export class Song {
                             shapeBits.write(3, note.pitches.length - 2);
                         }
 
+                        // chip wave start offset is similar but with more bits: 31, to be exact. this is a lot, (and a TODO is probably to make it more efficient) but it is necessary for my purposes
+                        if (note.chipWaveStartOffset == 0) {
+                            shapeBits.write(1, 0);
+                        } else {
+                            shapeBits.write(1, 1);
+                            shapeBits.write(31, note.chipWaveStartOffset);
+                        }
+
                         shapeBits.writePinCount(note.pins.length - 1);
 
                         if (!isModChannel) {
@@ -4031,7 +4041,7 @@ export class Song {
                             if (!isModChannel) {
                                 shapeBits.write(bitsPerNoteSize, pin.size);
                             } else {
-                                shapeBits.write(9, pin.size);
+                                shapeBits.write(11, pin.size);
                             }
                         }
 
@@ -6284,6 +6294,14 @@ export class Song {
                                         }
                                     }
 
+                                    if (fromTheepBox) {
+                                        if (bits.read(1) == 1) {
+                                            shape.startOffset = bits.read(31);
+                                        }
+                                    } else {
+                                        shape.startOffset = 0;
+                                    }
+
                                     shape.pinCount = bits.readPinCount();
                                     if (fromBeepBox) {
                                         shape.initialSize = bits.read(2) * 2;
@@ -6320,7 +6338,7 @@ export class Song {
 
                                 let note: Note;
                                 if (newNotes.length <= noteCount) {
-                                    note = new Note(0, curPart, curPart + shape.length, shape.initialSize);
+                                    note = new Note(0, curPart, curPart + shape.length, shape.initialSize, false, shape.startOffset);
                                     newNotes[noteCount++] = note;
                                 } else {
                                     note = newNotes[noteCount++];
@@ -8295,6 +8313,7 @@ class Tone {
     public ticksSinceReleased: number = 0;
     public liveInputSamplesHeld: number = 0;
     public lastInterval: number = 0;
+    public chipWaveStartOffset: number = 0;
     public noiseSample: number = 0.0;
     public noiseSampleA: number = 0.0;
     public noiseSampleB: number = 0.0;
@@ -11711,7 +11730,7 @@ export class Synth {
 			    // advloop addition
             if (instrument.type == InstrumentType.chip && instrument.isUsingAdvancedLoopControls) {
                 const chipWaveLength = Config.rawRawChipWaves[instrument.chipWave].samples.length - 1;
-                const firstOffset = instrument.chipWaveStartOffset / chipWaveLength;
+                const firstOffset = (tone.chipWaveStartOffset + instrument.chipWaveStartOffset) / chipWaveLength;
                 // const lastOffset = (chipWaveLength - 0.01) / chipWaveLength;
                 // @TODO: This is silly and I should actually figure out how to
                 // properly keep lastOffset as 1.0 and not get it wrapped back
@@ -11790,6 +11809,8 @@ export class Synth {
             intervalStart = startPin.interval + (endPin.interval - startPin.interval) * pinRatioStart;
             intervalEnd = startPin.interval + (endPin.interval - startPin.interval) * pinRatioEnd;
             tone.lastInterval = intervalEnd;
+
+            tone.chipWaveStartOffset = note.chipWaveStartOffset
 
             if ((!transition.isSeamless && !tone.forceContinueAtEnd) || nextNote == null) {
                 const fadeOutTicks: number = -instrument.getFadeOutTicks();

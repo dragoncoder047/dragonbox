@@ -4335,6 +4335,18 @@ export class ChangeNoteAdded extends UndoableChange {
     }
 }
 
+export class ChangeNoteStartOffset extends UndoableChange {
+    private _doc: SongDocument;
+    private _note: Note;
+    constructor(doc: SongDocument, pattern: Pattern, startOffset: number, note: Note) {
+        super(false);
+        this._note = note;
+        this._note.chipWaveStartOffset = startOffset;
+        this._didSomething();
+        this._doc.notifier.changed();
+    }
+}
+
 export class ChangeNoteLength extends ChangePins {
     constructor(doc: SongDocument | null, note: Note, truncStart: number, truncEnd: number) {
         super(doc, note);

@@ -8,7 +8,7 @@ import { Slider } from "./HTMLWrapper";
 import { SongEditor } from "./SongEditor";
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
 import { ChangeSequence, UndoableChange } from "./Change";
-import { ChangeVolume, FilterMoveData, ChangeTempo, ChangePan, ChangeReverb, ChangeDistortion, ChangeOperatorAmplitude, ChangeFeedbackAmplitude, ChangePulseWidth, ChangeDetune, ChangeVibratoDepth, ChangeVibratoSpeed, ChangeVibratoDelay, ChangePanDelay, ChangeChorus, ChangeEQFilterSimplePeak, ChangeNoteFilterSimplePeak, ChangeStringSustain, ChangeEnvelopeSpeed, ChangeSupersawDynamism, ChangeSupersawShape, ChangeSupersawSpread, ChangePitchShift, ChangeChannelBar, ChangeDragSelectedNotes, ChangeEnsurePatternExists, ChangeNoteTruncate, ChangeNoteAdded, ChangePatternSelection, ChangePinTime, ChangeSizeBend, ChangePitchBend, ChangePitchAdded, ChangeArpeggioSpeed, ChangeBitcrusherQuantization, ChangeBitcrusherFreq, ChangeEchoSustain, ChangeEQFilterSimpleCut, ChangeNoteFilterSimpleCut, ChangeFilterMovePoint, ChangeDuplicateSelectedReusedPatterns, ChangeHoldingModRecording, ChangeDecimalOffset } from "./changes";
+import { ChangeVolume, FilterMoveData, ChangeTempo, ChangePan, ChangeReverb, ChangeDistortion, ChangeOperatorAmplitude, ChangeFeedbackAmplitude, ChangePulseWidth, ChangeDetune, ChangeVibratoDepth, ChangeVibratoSpeed, ChangeVibratoDelay, ChangePanDelay, ChangeChorus, ChangeEQFilterSimplePeak, ChangeNoteFilterSimplePeak, ChangeStringSustain, ChangeEnvelopeSpeed, ChangeSupersawDynamism, ChangeSupersawShape, ChangeSupersawSpread, ChangePitchShift, ChangeChannelBar, ChangeDragSelectedNotes, ChangeEnsurePatternExists, ChangeNoteTruncate, ChangeNoteAdded, ChangeNoteStartOffset, ChangePatternSelection, ChangePinTime, ChangeSizeBend, ChangePitchBend, ChangePitchAdded, ChangeArpeggioSpeed, ChangeBitcrusherQuantization, ChangeBitcrusherFreq, ChangeEchoSustain, ChangeEQFilterSimpleCut, ChangeNoteFilterSimpleCut, ChangeFilterMovePoint, ChangeDuplicateSelectedReusedPatterns, ChangeHoldingModRecording, ChangeDecimalOffset } from "./changes";
 import { prettyNumber } from "./EditorConfig";
 
 function makeEmptyReplacementElement<T extends Node>(node: T): T {
@@ -31,6 +31,7 @@ class PatternCursor {
     public exactPart: number = 0;
     public nearPinIndex: number = 0;
     public pins: NotePin[] = [];
+    public chipWaveSampleOffset: number = 0;
 }
 
 export class PatternEditor {
@@ -95,6 +96,7 @@ export class PatternEditor {
     private _mouseYStart: number = 0;
     private _touchTime: number = 0;
     private _shiftHeld: boolean = false;
+    private _ctrlHeld: boolean = false;
     private _dragConfirmed: boolean = false;
     private _draggingStartOfSelection: boolean = false;
     private _draggingEndOfSelection: boolean = false;
@@ -612,7 +614,7 @@ export class PatternEditor {
         if (this._usingTouch && !this.shiftMode && !this._mouseDragging && this._mouseDown && performance.now() > this._touchTime + 1000 && this._cursor.valid && this._doc.lastChangeWas(this._dragChange)) {
             // On a mobile device, the pattern editor supports using a long stationary touch to activate selection.
             this._dragChange!.undo();
-            this._shiftHeld = true;
+            this._shiftHeld = true;  //TODO: how can the mobile editor support control?
             this._dragConfirmed = false;
             this._whenCursorPressed();
             // The full interface is usually only rerendered in response to user input events, not animation events, but in this case go ahead and rerender everything.
@@ -690,6 +692,7 @@ export class PatternEditor {
         if (isNaN(this._mouseY)) this._mouseY = 0;
         this._usingTouch = false;
         this._shiftHeld = event.shiftKey;
+        this._ctrlHeld = event.altKey; //originally was control but thats already to record
         this._dragConfirmed = false;
         this._whenCursorPressed();
     }
@@ -703,6 +706,7 @@ export class PatternEditor {
         if (isNaN(this._mouseY)) this._mouseY = 0;
         this._usingTouch = true;
         this._shiftHeld = event.shiftKey;
+        this._ctrlHeld = event.altKey;
         this._dragConfirmed = false;
         this._touchTime = performance.now();
         this._whenCursorPressed();
@@ -1677,7 +1681,7 @@ export class PatternEditor {
                 // a drag follows, so we couldn't add the note yet without being
                 // confusing.
 
-                const note: Note = new Note(this._cursor.pitch, this._cursor.start, this._cursor.end, Config.noteSizeMax, this._doc.song.getChannelIsNoise(this._doc.channel));
+                const note: Note = new Note(this._cursor.pitch, this._cursor.start, this._cursor.end, Config.noteSizeMax, this._doc.song.getChannelIsNoise(this._doc.channel), this._cursor.chipWaveSampleOffset);
                 note.pins = [];
                 for (const oldPin of this._cursor.pins) {
                     note.pins.push(makeNotePin(0, oldPin.time, oldPin.size));
@@ -1936,8 +1940,18 @@ export class PatternEditor {
                         this._pattern.notes.sort(function (a, b) { return (a.start == b.start) ? a.pitches[0] - b.pitches[0] : a.start - b.start; });
                     }
 
-                } else if (this._mouseHorizontal) {
+                } else if (this._mouseHorizontal && this._ctrlHeld) {
+                    sequence.append(new ChangePatternSelection(this._doc, 0, 0));
 
+                    const shift: number = this._mouseX - this._mouseXStart;
+                    let shiftedTime: number = this._cursor.curNote.chipWaveStartOffset - shift * 100
+                    if (this._pattern == null) throw new Error();
+
+                    const startOffset: number = Math.max(shiftedTime, 0);
+
+                    sequence.append(new ChangeNoteStartOffset(this._doc, this._pattern, startOffset, this._cursor.curNote));
+                    this._copyPins(this._cursor.curNote);
+                } else if (this._mouseHorizontal) {
                     sequence.append(new ChangePatternSelection(this._doc, 0, 0));
 
                     const shift: number = (this._mouseX - this._mouseXStart) / this._partWidth;

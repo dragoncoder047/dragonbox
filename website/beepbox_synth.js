@@ -2776,12 +2776,13 @@ var beepbox = (function (exports) {
         return { interval: interval, time: time, size: size };
     }
     class Note {
-        constructor(pitch, start, end, size, fadeout = false) {
+        constructor(pitch, start, end, size, fadeout = false, chipWaveStartOffset = 0) {
             this.pitches = [pitch];
             this.pins = [makeNotePin(0, 0, size), makeNotePin(0, end - start, fadeout ? 0 : size)];
             this.start = start;
             this.end = end;
             this.continuesLastPattern = false;
+            this.chipWaveStartOffset = chipWaveStartOffset;
         }
         pickMainInterval() {
             let longestFlatIntervalDuration = 0;
@@ -5932,6 +5933,13 @@ var beepbox = (function (exports) {
                                 shapeBits.write(1, 1);
                                 shapeBits.write(3, note.pitches.length - 2);
                             }
+                            if (note.chipWaveStartOffset == 0) {
+                                shapeBits.write(1, 0);
+                            }
+                            else {
+                                shapeBits.write(1, 1);
+                                shapeBits.write(31, note.chipWaveStartOffset);
+                            }
                             shapeBits.writePinCount(note.pins.length - 1);
                             if (!isModChannel) {
                                 shapeBits.write(bitsPerNoteSize, note.pins[0].size);
@@ -5960,7 +5968,7 @@ var beepbox = (function (exports) {
                                     shapeBits.write(bitsPerNoteSize, pin.size);
                                 }
                                 else {
-                                    shapeBits.write(9, pin.size);
+                                    shapeBits.write(11, pin.size);
                                 }
                             }
                             const shapeString = String.fromCharCode.apply(null, shapeBits.encodeBase64([]));
@@ -8137,6 +8145,14 @@ var beepbox = (function (exports) {
                                                         shape.pitchCount = 1;
                                                     }
                                                 }
+                                                if (fromTheepBox) {
+                                                    if (bits.read(1) == 1) {
+                                                        shape.startOffset = bits.read(31);
+                                                    }
+                                                }
+                                                else {
+                                                    shape.startOffset = 0;
+                                                }
                                                 shape.pinCount = bits.readPinCount();
                                                 if (fromBeepBox) {
                                                     shape.initialSize = bits.read(2) * 2;
@@ -8176,7 +8192,7 @@ var beepbox = (function (exports) {
                                                 recentShapes.pop();
                                             let note;
                                             if (newNotes.length <= noteCount) {
-                                                note = new Note(0, curPart, curPart + shape.length, shape.initialSize);
+                                                note = new Note(0, curPart, curPart + shape.length, shape.initialSize, false, shape.startOffset);
                                                 newNotes[noteCount++] = note;
                                             }
                                             else {
@@ -10011,6 +10027,7 @@ var beepbox = (function (exports) {
             this.ticksSinceReleased = 0;
             this.liveInputSamplesHeld = 0;
             this.lastInterval = 0;
+            this.chipWaveStartOffset = 0;
             this.noiseSample = 0.0;
             this.noiseSampleA = 0.0;
             this.noiseSampleB = 0.0;
@@ -12962,7 +12979,7 @@ var beepbox = (function (exports) {
                 instrumentState.envelopeComputer.reset();
                 if (instrument.type == 0 && instrument.isUsingAdvancedLoopControls) {
                     const chipWaveLength = Config.rawRawChipWaves[instrument.chipWave].samples.length - 1;
-                    const firstOffset = instrument.chipWaveStartOffset / chipWaveLength;
+                    const firstOffset = (tone.chipWaveStartOffset + instrument.chipWaveStartOffset) / chipWaveLength;
                     const lastOffset = 0.999999999999999;
                     for (let i = 0; i < Config.maxPitchOrOperatorCount; i++) {
                         tone.phases[i] = instrument.chipWavePlayBackwards ? Math.max(0, Math.min(lastOffset, firstOffset)) : Math.max(0, firstOffset);
@@ -13030,6 +13047,7 @@ var beepbox = (function (exports) {
                 intervalStart = startPin.interval + (endPin.interval - startPin.interval) * pinRatioStart;
                 intervalEnd = startPin.interval + (endPin.interval - startPin.interval) * pinRatioEnd;
                 tone.lastInterval = intervalEnd;
+                tone.chipWaveStartOffset = note.chipWaveStartOffset;
                 if ((!transition.isSeamless && !tone.forceContinueAtEnd) || nextNote == null) {
                     const fadeOutTicks = -instrument.getFadeOutTicks();
                     if (fadeOutTicks > 0.0) {

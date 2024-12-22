@@ -11324,12 +11324,13 @@ li.select2-results__option[role=group] > strong:hover {
         return { interval: interval, time: time, size: size };
     }
     class Note {
-        constructor(pitch, start, end, size, fadeout = false) {
+        constructor(pitch, start, end, size, fadeout = false, chipWaveStartOffset = 0) {
             this.pitches = [pitch];
             this.pins = [makeNotePin(0, 0, size), makeNotePin(0, end - start, fadeout ? 0 : size)];
             this.start = start;
             this.end = end;
             this.continuesLastPattern = false;
+            this.chipWaveStartOffset = chipWaveStartOffset;
         }
         pickMainInterval() {
             let longestFlatIntervalDuration = 0;
@@ -14480,6 +14481,13 @@ li.select2-results__option[role=group] > strong:hover {
                                 shapeBits.write(1, 1);
                                 shapeBits.write(3, note.pitches.length - 2);
                             }
+                            if (note.chipWaveStartOffset == 0) {
+                                shapeBits.write(1, 0);
+                            }
+                            else {
+                                shapeBits.write(1, 1);
+                                shapeBits.write(31, note.chipWaveStartOffset);
+                            }
                             shapeBits.writePinCount(note.pins.length - 1);
                             if (!isModChannel) {
                                 shapeBits.write(bitsPerNoteSize, note.pins[0].size);
@@ -14508,7 +14516,7 @@ li.select2-results__option[role=group] > strong:hover {
                                     shapeBits.write(bitsPerNoteSize, pin.size);
                                 }
                                 else {
-                                    shapeBits.write(9, pin.size);
+                                    shapeBits.write(11, pin.size);
                                 }
                             }
                             const shapeString = String.fromCharCode.apply(null, shapeBits.encodeBase64([]));
@@ -16685,6 +16693,14 @@ li.select2-results__option[role=group] > strong:hover {
                                                         shape.pitchCount = 1;
                                                     }
                                                 }
+                                                if (fromTheepBox) {
+                                                    if (bits.read(1) == 1) {
+                                                        shape.startOffset = bits.read(31);
+                                                    }
+                                                }
+                                                else {
+                                                    shape.startOffset = 0;
+                                                }
                                                 shape.pinCount = bits.readPinCount();
                                                 if (fromBeepBox) {
                                                     shape.initialSize = bits.read(2) * 2;
@@ -16724,7 +16740,7 @@ li.select2-results__option[role=group] > strong:hover {
                                                 recentShapes.pop();
                                             let note;
                                             if (newNotes.length <= noteCount) {
-                                                note = new Note(0, curPart, curPart + shape.length, shape.initialSize);
+                                                note = new Note(0, curPart, curPart + shape.length, shape.initialSize, false, shape.startOffset);
                                                 newNotes[noteCount++] = note;
                                             }
                                             else {
@@ -18559,6 +18575,7 @@ li.select2-results__option[role=group] > strong:hover {
             this.ticksSinceReleased = 0;
             this.liveInputSamplesHeld = 0;
             this.lastInterval = 0;
+            this.chipWaveStartOffset = 0;
             this.noiseSample = 0.0;
             this.noiseSampleA = 0.0;
             this.noiseSampleB = 0.0;
@@ -21510,7 +21527,7 @@ li.select2-results__option[role=group] > strong:hover {
                 instrumentState.envelopeComputer.reset();
                 if (instrument.type == 0 && instrument.isUsingAdvancedLoopControls) {
                     const chipWaveLength = Config.rawRawChipWaves[instrument.chipWave].samples.length - 1;
-                    const firstOffset = instrument.chipWaveStartOffset / chipWaveLength;
+                    const firstOffset = (tone.chipWaveStartOffset + instrument.chipWaveStartOffset) / chipWaveLength;
                     const lastOffset = 0.999999999999999;
                     for (let i = 0; i < Config.maxPitchOrOperatorCount; i++) {
                         tone.phases[i] = instrument.chipWavePlayBackwards ? Math.max(0, Math.min(lastOffset, firstOffset)) : Math.max(0, firstOffset);
@@ -21578,6 +21595,7 @@ li.select2-results__option[role=group] > strong:hover {
                 intervalStart = startPin.interval + (endPin.interval - startPin.interval) * pinRatioStart;
                 intervalEnd = startPin.interval + (endPin.interval - startPin.interval) * pinRatioEnd;
                 tone.lastInterval = intervalEnd;
+                tone.chipWaveStartOffset = note.chipWaveStartOffset;
                 if ((!transition.isSeamless && !tone.forceContinueAtEnd) || nextNote == null) {
                     const fadeOutTicks = -instrument.getFadeOutTicks();
                     if (fadeOutTicks > 0.0) {
@@ -28420,6 +28438,15 @@ li.select2-results__option[role=group] > strong:hover {
         }
         _doBackwards() {
             this._pattern.notes.splice(this._index, 1);
+            this._doc.notifier.changed();
+        }
+    }
+    class ChangeNoteStartOffset extends UndoableChange {
+        constructor(doc, pattern, startOffset, note) {
+            super(false);
+            this._note = note;
+            this._note.chipWaveStartOffset = startOffset;
+            this._didSomething();
             this._doc.notifier.changed();
         }
     }
@@ -37455,6 +37482,7 @@ You should be redirected to the song at:<br /><br />
             this.exactPart = 0;
             this.nearPinIndex = 0;
             this.pins = [];
+            this.chipWaveSampleOffset = 0;
         }
     }
     class PatternEditor {
@@ -37499,6 +37527,7 @@ You should be redirected to the song at:<br /><br />
             this._mouseYStart = 0;
             this._touchTime = 0;
             this._shiftHeld = false;
+            this._ctrlHeld = false;
             this._dragConfirmed = false;
             this._draggingStartOfSelection = false;
             this._draggingEndOfSelection = false;
@@ -37639,6 +37668,7 @@ You should be redirected to the song at:<br /><br />
                     this._mouseY = 0;
                 this._usingTouch = false;
                 this._shiftHeld = event.shiftKey;
+                this._ctrlHeld = event.altKey;
                 this._dragConfirmed = false;
                 this._whenCursorPressed();
             };
@@ -37653,6 +37683,7 @@ You should be redirected to the song at:<br /><br />
                     this._mouseY = 0;
                 this._usingTouch = true;
                 this._shiftHeld = event.shiftKey;
+                this._ctrlHeld = event.altKey;
                 this._dragConfirmed = false;
                 this._touchTime = performance.now();
                 this._whenCursorPressed();
@@ -38950,7 +38981,7 @@ You should be redirected to the song at:<br /><br />
                 }
                 else if (this._cursor.valid && this._cursor.curNote == null) {
                     sequence.append(new ChangePatternSelection(this._doc, 0, 0));
-                    const note = new Note(this._cursor.pitch, this._cursor.start, this._cursor.end, Config.noteSizeMax, this._doc.song.getChannelIsNoise(this._doc.channel));
+                    const note = new Note(this._cursor.pitch, this._cursor.start, this._cursor.end, Config.noteSizeMax, this._doc.song.getChannelIsNoise(this._doc.channel), this._cursor.chipWaveSampleOffset);
                     note.pins = [];
                     for (const oldPin of this._cursor.pins) {
                         note.pins.push(makeNotePin(0, oldPin.time, oldPin.size));
@@ -39162,6 +39193,16 @@ You should be redirected to the song at:<br /><br />
                         if (this._pattern != null && this._doc.song.getChannelIsMod(this._doc.channel) && this._interactive && prevPattern != this._pattern) {
                             this._pattern.notes.sort(function (a, b) { return (a.start == b.start) ? a.pitches[0] - b.pitches[0] : a.start - b.start; });
                         }
+                    }
+                    else if (this._mouseHorizontal && this._ctrlHeld) {
+                        sequence.append(new ChangePatternSelection(this._doc, 0, 0));
+                        const shift = this._mouseX - this._mouseXStart;
+                        let shiftedTime = this._cursor.curNote.chipWaveStartOffset - shift * 100;
+                        if (this._pattern == null)
+                            throw new Error();
+                        const startOffset = Math.max(shiftedTime, 0);
+                        sequence.append(new ChangeNoteStartOffset(this._doc, this._pattern, startOffset, this._cursor.curNote));
+                        this._copyPins(this._cursor.curNote);
                     }
                     else if (this._mouseHorizontal) {
                         sequence.append(new ChangePatternSelection(this._doc, 0, 0));

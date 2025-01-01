@@ -1,8 +1,8 @@
 {
-	"files": [ "synth/synth.ts" ],
+	"files": [ "../synth/synth.ts" ],
 	"compilerOptions": {
-		"rootDir": "./",
-		"outDir": "build",
+		"rootDir": "../",
+		"outDir": "../build",
 		"target": "es6",
 		"moduleResolution": "node",
 		"sourceMap": true,

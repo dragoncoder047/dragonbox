@@ -11,8 +11,7 @@ const { button, div, h2, select, option, optgroup } = HTML;
 export class ThemePrompt implements Prompt {
 	private readonly _themeSelect: HTMLSelectElement = select({ style: "width: 100%;" },
 		optgroup({ label: "Default Themes" },
-			option({ value: "slarmoosbox" }, "Slarmoo's Box"),
-			option({ value: "ultrabox dark" }, "UltraBox"),
+			option({ value: "modbox classic" }, "Modbox"),
 			option({ value: "forest" }, "Forest"),
 			option({ value: "canyon" }, "Canyon"),
 			option({ value: "midnight" }, "Midnight"),
@@ -66,6 +65,8 @@ export class ThemePrompt implements Prompt {
 			option({ value: "abyssbox classic"}, "AbyssBox Classic"),
 			option({ value: "abyssbox light"}, "AbyssBox Light"),
 			option({ value: "nepbox" }, "Nepbox"),
+			option({ value: "slarmoosbox" }, "Slarmoo's Box"),
+			option({ value: "ultrabox dark" }, "UltraBox"),
 		),
 		optgroup({ label: "Misc" },
 			option({ value: "azur lane" }, "Azur Lane"),

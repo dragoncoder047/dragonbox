@@ -11726,6 +11726,7 @@ export class Synth {
 
         if ((tone.atNoteStart && !transition.isSeamless && !tone.forceContinueAtStart) || tone.freshlyAllocated) {
             tone.reset();
+            if (tone.note != null) tone.chipWaveStartOffset = tone.note.chipWaveStartOffset;
             instrumentState.envelopeComputer.reset();
 			    // advloop addition
             if (instrument.type == InstrumentType.chip && instrument.isUsingAdvancedLoopControls) {
@@ -11809,8 +11810,6 @@ export class Synth {
             intervalStart = startPin.interval + (endPin.interval - startPin.interval) * pinRatioStart;
             intervalEnd = startPin.interval + (endPin.interval - startPin.interval) * pinRatioEnd;
             tone.lastInterval = intervalEnd;
-
-            tone.chipWaveStartOffset = note.chipWaveStartOffset
 
             if ((!transition.isSeamless && !tone.forceContinueAtEnd) || nextNote == null) {
                 const fadeOutTicks: number = -instrument.getFadeOutTicks();

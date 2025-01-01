@@ -19631,6 +19631,8 @@ var beepbox = (function (exports) {
             }
             if ((tone.atNoteStart && !transition.isSeamless && !tone.forceContinueAtStart) || tone.freshlyAllocated) {
                 tone.reset();
+                if (tone.note != null)
+                    tone.chipWaveStartOffset = tone.note.chipWaveStartOffset;
                 instrumentState.envelopeComputer.reset();
                 if (instrument.type == 0 && instrument.isUsingAdvancedLoopControls) {
                     const chipWaveLength = Config.rawRawChipWaves[instrument.chipWave].samples.length - 1;
@@ -19702,7 +19704,6 @@ var beepbox = (function (exports) {
                 intervalStart = startPin.interval + (endPin.interval - startPin.interval) * pinRatioStart;
                 intervalEnd = startPin.interval + (endPin.interval - startPin.interval) * pinRatioEnd;
                 tone.lastInterval = intervalEnd;
-                tone.chipWaveStartOffset = note.chipWaveStartOffset;
                 if ((!transition.isSeamless && !tone.forceContinueAtEnd) || nextNote == null) {
                     const fadeOutTicks = -instrument.getFadeOutTicks();
                     if (fadeOutTicks > 0.0) {

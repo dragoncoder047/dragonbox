@@ -38,11 +38,14 @@ export class AdditiveEditor {
     private _renderedPath: String = "";
     private _renderedFifths: boolean = true;
 
-    private _instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-    private _initial: AdditiveWave = this._instrument.additiveWave;
-    private _current: AdditiveWave = this._initial;
+    private _instrument: Instrument;
+    private _initial: AdditiveWave;
+    private _current: AdditiveWave;
 
     constructor(private _doc: SongDocument) {
+        this._instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+        this._initial = this._instrument.additiveWave;
+        this._current = this._initial;
         for (let i: number = 1; i <= Config.additiveControlPoints; i = i * 2) {
             this._octaves.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: (i - 0.5) * (this._editorWidth - 8) / (Config.additiveControlPoints - 1) - 1, y: 0, width: 2, height: this._editorHeight }));
         }

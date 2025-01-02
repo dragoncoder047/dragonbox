@@ -729,6 +729,7 @@ class CustomAlgorythmCanvas {
 export class SongEditor {
     public prompt: Prompt | null = null;
 
+    public _doc: SongDocument = new SongDocument(); // @TODO: Maybe this should have the underscore dropped. Also maybe all of these should be initialized in the constructor instead of here, but I'm trying to minimize the diff.
     private readonly _keyboardLayout: KeyboardLayout = new KeyboardLayout(this._doc);
     private readonly _patternEditorPrev: PatternEditor = new PatternEditor(this._doc, false, -1);
     private readonly _patternEditor: PatternEditor = new PatternEditor(this._doc, true, 0);
@@ -1428,7 +1429,7 @@ export class SongEditor {
     public patternUsed: boolean = false;
     private _modRecTimeout: number = -1;
 
-    constructor(private _doc: SongDocument) {
+    constructor() {
 
         this._doc.notifier.watch(this.whenUpdated);
         this._doc.modRecordingHandler = () => { this.handleModRecording() };

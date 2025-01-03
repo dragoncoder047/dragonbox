@@ -2066,7 +2066,6 @@ export class Instrument {
         instrumentObject["effects"] = effects;
         instrumentObject["effectOrder"] = this.effectOrder;
 
-
         if (effectsIncludeTransition(this.effects)) {
             instrumentObject["transition"] = Config.transitions[this.transition].name;
             instrumentObject["clicklessTransition"] = this.clicklessTransition;
@@ -2371,6 +2370,11 @@ export class Instrument {
             const legacyEffectsNames: string[] = ["none", "reverb", "chorus", "chorus & reverb"];
             this.effects = legacyEffectsNames.indexOf(instrumentObject["effects"]);
             if (this.effects == -1) this.effects = (this.type == InstrumentType.noise) ? 0 : 1;
+        }
+        if (instrumentObject["effectOrder"] != undefined) {
+            this.effectOrder = instrumentObject["effectOrder"];
+        } else {
+            this.effectOrder = [...Config.effectOrder];
         }
 
         this.transition = Config.transitions.dictionary["normal"].index; // default value.

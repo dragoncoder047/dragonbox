@@ -101,9 +101,7 @@ function buildPresetOptions(isNoise: boolean, idSet: string): HTMLSelectElement 
         menu.appendChild(option({ value: InstrumentType.noise }, EditorConfig.valueToPreset(InstrumentType.noise)!.name));
     }
 
-    // TODO - When you port over the Dogebox2 import/export buttons be sure to uncomment these
     const randomGroup: HTMLElement = optgroup({ label: "Randomize ▾" });
-    // const randomGroup: HTMLElement = optgroup({ label: "▾ Randomize" });
     randomGroup.appendChild(option({ value: "randomPreset" }, "Random Preset"));
     randomGroup.appendChild(option({ value: "randomGenerated" }, "Random Generated"));
     menu.appendChild(randomGroup);
@@ -114,7 +112,6 @@ function buildPresetOptions(isNoise: boolean, idSet: string): HTMLSelectElement 
     for (let categoryIndex: number = 1; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
         const category: PresetCategory = EditorConfig.presetCategories[categoryIndex];
         const group: HTMLElement = optgroup({ label: category.name + " ▾" });
-        // const group: HTMLElement = optgroup({ label: "▾ " + category.name });
         let foundAny: boolean = false;
         for (let presetIndex: number = 0; presetIndex < category.presets.length; presetIndex++) {
             const preset: Preset = category.presets[presetIndex];
@@ -1137,6 +1134,28 @@ export class SongEditor {
     );
     */
     private readonly _addEnvelopeButton: HTMLButtonElement = button({ type: "button", class: "add-envelope" });
+    private _effectsGroup: HTMLDivElement = div({ class: "editor-controls" },
+        this._transitionRow,
+        this._transitionDropdownGroup,
+        this._chordSelectRow,
+        this._chordDropdownGroup,
+        this._pitchShiftRow,
+        this._detuneSliderRow,
+        this._vibratoSelectRow,
+        this._vibratoDropdownGroup,
+        this._eqFilterTypeRow,
+        this._eqFilterRow,
+        this._eqFilterSimpleCutRow,
+        this._eqFilterSimplePeakRow,
+        this._distortionRow,
+        this._aliasingRow,
+        this._bitcrusherQuantizationRow,
+        this._bitcrusherFreqRow,
+        this._chorusRow,
+        this._echoSustainRow,
+        this._echoDelayRow,
+        this._reverbRow,
+    );
     private readonly _customInstrumentSettingsGroup: HTMLDivElement = div({ class: "editor-controls" },
         this._panSliderRow,
         this._panDropdownGroup,
@@ -1178,26 +1197,7 @@ export class SongEditor {
             span({ style: `flex-grow: 1; text-align: center;` }, span({ class: "tip", onclick: () => this._openPrompt("effects") }, "Effects")),
             div({ class: "effects-menu" }, this._effectsSelect),
         ),
-        this._transitionRow,
-        this._transitionDropdownGroup,
-        this._chordSelectRow,
-        this._chordDropdownGroup,
-        this._pitchShiftRow,
-        this._detuneSliderRow,
-        this._vibratoSelectRow,
-        this._vibratoDropdownGroup,
-        this._eqFilterTypeRow,
-        this._eqFilterRow,
-        this._eqFilterSimpleCutRow,
-        this._eqFilterSimplePeakRow,
-        this._distortionRow,
-        this._aliasingRow,
-        this._bitcrusherQuantizationRow,
-        this._bitcrusherFreqRow,
-        this._chorusRow,
-        this._echoSustainRow,
-        this._echoDelayRow,
-        this._reverbRow,
+        this._effectsGroup,
         div({ style: `padding: 2px 0; margin-left: 2em; display: flex; align-items: center;` },
             span({ style: `flex-grow: 1; text-align: center;` }, span({ class: "tip", onclick: () => this._openPrompt("envelopes") }, "Envelopes")),
             this._envelopeDropdown,
@@ -2366,7 +2366,7 @@ export class SongEditor {
         }
         this._effectsSelect.selectedIndex = -1;
         for (let i: number = 0; i < Config.effectOrder.length; i++) {
-            let effectFlag: number = instrument.effectOrder[i];
+            let effectFlag: number = Config.effectOrder[i];
             const selected: boolean = ((instrument.effects & (1 << effectFlag)) != 0);
             const label: string = (selected ? textOnIcon : textOffIcon) + Config.effectNames[effectFlag];
             const option: HTMLOptionElement = <HTMLOptionElement>this._effectsSelect.children[i + 1];
@@ -2723,147 +2723,94 @@ export class SongEditor {
             }
             this._pulseWidthSlider.input.title = prettyNumber(instrument.pulseWidth) + "%";
 
-
-            if (effectsIncludeTransition(instrument.effects)) {
-                this._transitionRow.style.display = "";
-                if (this._openTransitionDropdown)
-                    this._transitionDropdownGroup.style.display = "";
-                setSelectedValue(this._transitionSelect, instrument.transition);
-            } else {
-                this._transitionDropdownGroup.style.display = "none";
-                this._transitionRow.style.display = "none";
-            }
-
-            if (effectsIncludeChord(instrument.effects)) {
-                this._chordSelectRow.style.display = "";
-                this._chordDropdown.style.display = (instrument.chord == Config.chords.dictionary["arpeggio"].index) ? "" : "none";
-                this._chordDropdownGroup.style.display = (instrument.chord == Config.chords.dictionary["arpeggio"].index && this._openChordDropdown) ? "" : "none";
-                setSelectedValue(this._chordSelect, instrument.chord);
-            } else {
-                this._chordSelectRow.style.display = "none";
-                this._chordDropdown.style.display = "none";
-                this._chordDropdownGroup.style.display = "none";
-            }
-
-            if (effectsIncludePitchShift(instrument.effects)) {
-                this._pitchShiftRow.style.display = "";
-                this._pitchShiftSlider.updateValue(instrument.pitchShift);
-                this._pitchShiftSlider.input.title = (instrument.pitchShift - Config.pitchShiftCenter) + " semitone(s)";
-                for (const marker of this._pitchShiftFifthMarkers) {
-                    marker.style.display = prefs.showFifth ? "" : "none";
+            this._effectsGroup.replaceChildren();
+            for (var i=0; i < instrument.effectOrder.length; i++) {
+                if (instrument.effectOrder[i] == EffectType.transition && effectsIncludeTransition(instrument.effects)) {
+                    this._effectsGroup.append(this._transitionRow)
+                    this._effectsGroup.append(this._transitionDropdownGroup);
+                    if (this._openTransitionDropdown) this._transitionDropdownGroup.style.display = "";
                 }
-            } else {
-                this._pitchShiftRow.style.display = "none";
-            }
-
-            if (effectsIncludeDetune(instrument.effects)) {
-                this._detuneSliderRow.style.display = "";
-                this._detuneSlider.updateValue(instrument.detune - Config.detuneCenter);
-                this._detuneSlider.input.title = (Synth.detuneToCents(instrument.detune)) + " cent(s)";
-            } else {
-                this._detuneSliderRow.style.display = "none";
-            }
-
-            if (effectsIncludeVibrato(instrument.effects)) {
-                this._vibratoSelectRow.style.display = "";
-                if (this._openVibratoDropdown)
-                    this._vibratoDropdownGroup.style.display = "";
-                setSelectedValue(this._vibratoSelect, instrument.vibrato);
-            } else {
-                this._vibratoDropdownGroup.style.display = "none";
-                this._vibratoSelectRow.style.display = "none";
-            }
-
-            if (effectsIncludeEQFilter(instrument.effects)) {
-
-                this._eqFilterTypeRow.style.setProperty("--text-color-lit", colors.primaryNote);
-                this._eqFilterTypeRow.style.setProperty("--text-color-dim", colors.secondaryNote);
-                this._eqFilterTypeRow.style.setProperty("--background-color-lit", colors.primaryChannel);
-                this._eqFilterTypeRow.style.setProperty("--background-color-dim", colors.secondaryChannel);
-                this._eqFilterTypeRow.style.display = "";
-
-                if (this._doc.synth.isFilterModActive(true, this._doc.channel, this._doc.getCurrentInstrument())) {
-                    this._eqFilterEditor.render(true, this._ctrlHeld || this._shiftHeld);
+                else if (instrument.effectOrder[i] == EffectType.chord && effectsIncludeChord(instrument.effects)) {
+                    this._effectsGroup.append(this._chordSelectRow)
+                    this._effectsGroup.append(this._chordDropdownGroup)
+                    this._chordDropdown.style.display = (instrument.chord == Config.chords.dictionary["arpeggio"].index) ? "" : "none";
+                    this._chordDropdownGroup.style.display = (instrument.chord == Config.chords.dictionary["arpeggio"].index && this._openChordDropdown) ? "" : "none";
                 }
-                else {
-                    this._eqFilterEditor.render();
+                else if (instrument.effectOrder[i] == EffectType.pitchShift && effectsIncludePitchShift(instrument.effects)) {
+                    this._effectsGroup.append(this._pitchShiftRow)
+                    this._pitchShiftSlider.updateValue(instrument.pitchShift);
+                    this._pitchShiftSlider.input.title = (instrument.pitchShift - Config.pitchShiftCenter) + " semitone(s)";
+                    for (const marker of this._pitchShiftFifthMarkers) {
+                        marker.style.display = prefs.showFifth ? "" : "none";
+                    }
                 }
-
-                if (instrument.eqFilterType) {
-                    this._eqFilterSimpleButton.classList.remove("deactivated");
-                    this._eqFilterAdvancedButton.classList.add("deactivated");
-                    this._eqFilterRow.style.display = "none";
-                    this._eqFilterSimpleCutRow.style.display = "";
-                    this._eqFilterSimplePeakRow.style.display = "";
-                } else {
-                    this._eqFilterSimpleButton.classList.add("deactivated");
-                    this._eqFilterAdvancedButton.classList.remove("deactivated");
-                    this._eqFilterRow.style.display = "";
-                    this._eqFilterSimpleCutRow.style.display = "none";
-                    this._eqFilterSimplePeakRow.style.display = "none";
+                else if (instrument.effectOrder[i] == EffectType.detune && effectsIncludeDetune(instrument.effects)) {
+                    this._effectsGroup.append(this._detuneSliderRow)
+                    this._detuneSlider.updateValue(instrument.detune - Config.detuneCenter);
+                    this._detuneSlider.input.title = (Synth.detuneToCents(instrument.detune)) + " cent(s)";
                 }
-            } else {
-                this._eqFilterRow.style.display = "none";
-                this._eqFilterSimpleCutRow.style.display = "none";
-                this._eqFilterSimplePeakRow.style.display = "none";
-                this._eqFilterTypeRow.style.display = "none";
-            }
-
-            if (effectsIncludeDistortion(instrument.effects)) {
-                this._distortionRow.style.display = "";
-                if (instrument.type == InstrumentType.chip || instrument.type == InstrumentType.customChipWave || instrument.type == InstrumentType.pwm || instrument.type == InstrumentType.supersaw)
-                    this._aliasingRow.style.display = "";
-                else
-                    this._aliasingRow.style.display = "none";
-                this._distortionSlider.updateValue(instrument.distortion);
-            } else {
-                this._distortionRow.style.display = "none";
-                this._aliasingRow.style.display = "none";
-            }
-
-            if (effectsIncludeBitcrusher(instrument.effects)) {
-                this._bitcrusherQuantizationRow.style.display = "";
-                this._bitcrusherFreqRow.style.display = "";
-                this._bitcrusherQuantizationSlider.updateValue(instrument.bitcrusherQuantization);
-                this._bitcrusherFreqSlider.updateValue(instrument.bitcrusherFreq);
-            } else {
-                this._bitcrusherQuantizationRow.style.display = "none";
-                this._bitcrusherFreqRow.style.display = "none";
-            }
-
-            if (effectsIncludePanning(instrument.effects)) {
-                this._panSliderRow.style.display = "";
-                if (this._openPanDropdown)
-                    this._panDropdownGroup.style.display = "";
-                this._panSlider.updateValue(instrument.pan);
-            } else {
-                this._panSliderRow.style.display = "none";
-                this._panDropdownGroup.style.display = "none";
-            }
-
-            if (effectsIncludeChorus(instrument.effects)) {
-                this._chorusRow.style.display = "";
-                this._chorusSlider.updateValue(instrument.chorus);
-            } else {
-                this._chorusRow.style.display = "none";
-            }
-
-            if (effectsIncludeEcho(instrument.effects)) {
-                this._echoSustainRow.style.display = "";
-                this._echoSustainSlider.updateValue(instrument.echoSustain);
-                this._echoDelayRow.style.display = "";
-                this._echoDelaySlider.updateValue(instrument.echoDelay);
-                this._echoDelaySlider.input.title = (Math.round((instrument.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat) * 1000) / 1000) + " beat(s)";
-            } else {
-                this._echoSustainRow.style.display = "none";
-                this._echoDelayRow.style.display = "none";
-            }
-
-            if (effectsIncludeReverb(instrument.effects)) {
-                this._reverbRow.style.display = "";
-                this._reverbSlider.updateValue(instrument.reverb);
-            } else {
-                this._reverbRow.style.display = "none";
+                else if (instrument.effectOrder[i] == EffectType.vibrato && effectsIncludeVibrato(instrument.effects)) {
+                    this._effectsGroup.append(this._vibratoSelectRow)
+                    this._effectsGroup.append(this._vibratoDropdownGroup)
+                    if (this._openVibratoDropdown) this._vibratoDropdownGroup.style.display = "";
+                }
+                else if (instrument.effectOrder[i] == EffectType.eqFilter && effectsIncludeEQFilter(instrument.effects)) {
+                    this._effectsGroup.append(this._eqFilterTypeRow)
+                    this._eqFilterTypeRow.style.setProperty("--text-color-lit", colors.primaryNote);
+                    this._eqFilterTypeRow.style.setProperty("--text-color-dim", colors.secondaryNote);
+                    this._eqFilterTypeRow.style.setProperty("--background-color-lit", colors.primaryChannel);
+                    this._eqFilterTypeRow.style.setProperty("--background-color-dim", colors.secondaryChannel);
+                    if (this._doc.synth.isFilterModActive(true, this._doc.channel, this._doc.getCurrentInstrument())) {
+                        this._eqFilterEditor.render(true, this._ctrlHeld || this._shiftHeld);
+                    }
+                    else {
+                        this._eqFilterEditor.render();
+                    }
+                    if (instrument.eqFilterType) {
+                        this._eqFilterSimpleButton.classList.remove("deactivated");
+                        this._eqFilterAdvancedButton.classList.add("deactivated");
+                        this._effectsGroup.append(this._eqFilterSimpleCutRow)
+                        this._effectsGroup.append(this._eqFilterSimplePeakRow)
+                    } else {
+                        this._eqFilterSimpleButton.classList.add("deactivated");
+                        this._eqFilterAdvancedButton.classList.remove("deactivated");
+                        this._effectsGroup.append(this._eqFilterRow)
+                    }
+                }
+                else if (instrument.effectOrder[i] == EffectType.distortion && effectsIncludeDistortion(instrument.effects)) {
+                    this._effectsGroup.append(this._distortionRow)
+                    this._effectsGroup.append(this._aliasingRow)
+                    if (instrument.type == InstrumentType.chip || instrument.type == InstrumentType.customChipWave || instrument.type == InstrumentType.pwm || instrument.type == InstrumentType.supersaw) this._aliasingRow.style.display = "";
+                    else this._aliasingRow.style.display = "none";
+                    this._distortionSlider.updateValue(instrument.distortion);
+                }
+                else if (instrument.effectOrder[i] == EffectType.bitcrusher && effectsIncludeBitcrusher(instrument.effects)) {
+                    this._effectsGroup.append(this._bitcrusherQuantizationRow)
+                    this._effectsGroup.append(this._bitcrusherFreqRow)
+                    this._bitcrusherQuantizationSlider.updateValue(instrument.bitcrusherQuantization);
+                    this._bitcrusherFreqSlider.updateValue(instrument.bitcrusherFreq);
+                }
+                else if (instrument.effectOrder[i] == EffectType.panning && effectsIncludePanning(instrument.effects)) {
+                    this._effectsGroup.append(this._panSliderRow)
+                    this._effectsGroup.append(this._panDropdownGroup)
+                    if (this._openPanDropdown) this._panDropdownGroup.style.display = "";
+                    this._panSlider.updateValue(instrument.pan);
+                }
+                else if (instrument.effectOrder[i] == EffectType.chorus && effectsIncludeChorus(instrument.effects)) {
+                    this._effectsGroup.append(this._chorusRow)
+                    this._chorusSlider.updateValue(instrument.chorus);
+                }
+                else if (instrument.effectOrder[i] == EffectType.echo && effectsIncludeEcho(instrument.effects)) {
+                    this._effectsGroup.append(this._echoSustainRow)
+                    this._effectsGroup.append(this._echoDelayRow)
+                    this._echoSustainSlider.updateValue(instrument.echoSustain);
+                    this._echoDelaySlider.updateValue(instrument.echoDelay);
+                    this._echoDelaySlider.input.title = (Math.round((instrument.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat) * 1000) / 1000) + " beat(s)";
+                }
+                else if (instrument.effectOrder[i] == EffectType.reverb && effectsIncludeReverb(instrument.effects)) {
+                    this._effectsGroup.append(this._reverbRow)
+                    this._reverbSlider.updateValue(instrument.reverb);
+                }
             }
 
             if (instrument.type == InstrumentType.chip || instrument.type == InstrumentType.customChipWave || instrument.type == InstrumentType.harmonics || instrument.type == InstrumentType.pickedString || instrument.type == InstrumentType.spectrum || instrument.type == InstrumentType.pwm || instrument.type == InstrumentType.noise) {
@@ -5170,8 +5117,6 @@ export class SongEditor {
         this._doc.record(new ChangeNoiseWave(this._doc, this._chipNoiseSelect.selectedIndex));
     }
 
-
-
     private _whenSetTransition = (): void => {
         this._doc.record(new ChangeTransition(this._doc, this._transitionSelect.selectedIndex));
     }
@@ -5179,7 +5124,7 @@ export class SongEditor {
     private _whenSetEffects = (): void => {
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         const oldValue: number = instrument.effects;
-        const toggleFlag: number = instrument.effectOrder[this._effectsSelect.selectedIndex - 1];
+        const toggleFlag: number = Config.effectOrder[this._effectsSelect.selectedIndex - 1];
         this._doc.record(new ChangeToggleEffects(this._doc, toggleFlag, null));
         this._effectsSelect.selectedIndex = 0;
         if (instrument.effects > oldValue) {

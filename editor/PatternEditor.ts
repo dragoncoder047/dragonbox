@@ -1,7 +1,10 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
 import { getLocalStorageItem, Chord, Transition, Config } from "../synth/SynthConfig";
-import { NotePin, Note, makeNotePin, FilterSettings, Channel, Pattern, Instrument, FilterControlPoint } from "../synth/synth";
+import { Channel } from "../synth/synth";
+import { Instrument } from "../synth/Instrument";
+import { FilterSettings, FilterControlPoint } from "../synth/Filter";
+import { NotePin, Note, makeNotePin, Pattern } from "../synth/Pattern";
 import { ColorConfig } from "./ColorConfig";
 import { SongDocument } from "./SongDocument";
 import { Slider } from "./HTMLWrapper";

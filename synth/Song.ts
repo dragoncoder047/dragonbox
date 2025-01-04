@@ -1,20 +1,12 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { startLoadingSample, sampleLoadingState, SampleLoadingState, sampleLoadEvents, SampleLoadedEvent, SampleLoadingStatus, loadBuiltInSamples, Dictionary, DictionaryArray, toNameMap, FilterType, SustainType, EnvelopeType, InstrumentType, EffectType, EnvelopeComputeIndex, Transition, Unison, Chord, Vibrato, Envelope, AutomationTarget, Config, getDrumWave, drawNoiseSpectrum, getArpeggioPitchIndex, performIntegralOld, getPulseWidthRatio, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, OperatorWave, BaseWaveTypes, RandomEnvelopeTypes } from "./SynthConfig";
+import { startLoadingSample, sampleLoadingState, SampleLoadingState, sampleLoadEvents, SampleLoadedEvent, SampleLoadingStatus, loadBuiltInSamples, Dictionary, DictionaryArray, toNameMap, FilterType, SustainType, EnvelopeType, InstrumentType, EffectType, Envelope, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, BaseWaveTypes } from "./SynthConfig";
 import { Preset, EditorConfig } from "../editor/EditorConfig";
-import { scaleElementsByFactor, inverseRealFourierTransform } from "./FFT";
-import { Deque } from "./Deque";
-import { Song } from "./Song";
 import { Channel } from "./Channel";
-import { ChannelState } from "./ChannelState";
-import { Operator, CustomAlgorithm, CustomFeedBack, SpectrumWave, HarmonicsWave, AdditiveWave, Instrument } from "./Instrument";
-import { SpectrumWaveState, HarmonicsWaveState, AdditiveWaveState, PickedString, InstrumentState } from "./InstrumentState";
+import { Instrument, LegacySettings } from "./Instrument";
 import { Note, NotePin, makeNotePin, Pattern } from "./Pattern";
-import { EnvelopeSettings } from "./Envelope";
 import { FilterSettings, FilterControlPoint } from "./Filter";
-import { clamp, validateRange } from "./synth";
-import { events } from "../global/Events";
-import { FilterCoefficients, FrequencyResponse, DynamicBiquadFilter, warpInfinityToNyquist } from "./filtering";
+import { clamp, validateRange, parseFloatWithDefault, parseIntWithDefault, Synth } from "./synth";
 
 function encode32BitNumber(buffer: number[], x: number): void {
     // 0b11_
@@ -379,7 +371,7 @@ class BitFieldWriter {
     }
 }
 
-interface HeldMod {
+export interface HeldMod {
     volume: number;
     channelIndex: number;
     instrumentIndex: number;
@@ -858,6 +850,7 @@ export class Song {
                 if (effectsIncludePanning(instrument.effects)) {
                     buffer.push(base64IntToCharCode[instrument.pan >> 6], base64IntToCharCode[instrument.pan & 0x3f]);
                     buffer.push(base64IntToCharCode[instrument.panDelay]);
+                    buffer.push(base64IntToCharCode[instrument.panMode]);
                 }
                 if (effectsIncludeChorus(instrument.effects)) {
                     buffer.push(base64IntToCharCode[instrument.chorus]);
@@ -2534,9 +2527,8 @@ export class Song {
                     } else if (effectsIncludeReverb(instrument.effects)) {
                         instrument.reverb = legacyGlobalReverb;
                     }
-                    // @jummbus - Enabling pan effect on song import no matter what to make it a default.
                     //if (instrument.pan != Config.panCenter) {
-                    instrument.effects |= 1 << EffectType.panning;
+                        instrument.effects |= 1 << EffectType.panning;
                     //}
                     if (instrument.vibrato != Config.vibratos.dictionary["none"].index) {
                         // Enable vibrato if it was used.
@@ -2732,8 +2724,8 @@ export class Song {
                         }
 
                         // Now, pan delay follows on new versions of jummbox.
-                        if ((fromJummBox && !beforeTwo) || fromGoldBox || fromUltraBox || fromSlarmoosBox)
-                            instrument.panDelay = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                        if ((fromJummBox && !beforeTwo) || fromGoldBox || fromUltraBox || fromSlarmoosBox) instrument.panDelay = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                        if (fromTheepBox) instrument.panMode = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     }
                     if (effectsIncludeChorus(instrument.effects)) {
                         if (fromBeepBox) {

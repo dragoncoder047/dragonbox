@@ -5,11 +5,14 @@ import { isMobile, EditorConfig } from "./EditorConfig";
 import { ColorConfig } from "./ColorConfig";
 import "./style"; // Import for the side effects, there's no exports.
 import { SongEditor } from "./SongEditor";
-import { NotePin, Note, Pattern, Instrument, Channel, Song, Synth } from "../synth/synth";
+import { NotePin, Note, Pattern } from "../synth/Pattern";
+import { Instrument } from "../synth/Instrument";
+import { Channel } from "../synth/Channel";
+import { Song } from "../synth/Song";
+import { Synth } from "../synth/synth";
 import { SongDocument } from "./SongDocument";
 import { ExportPrompt } from "./ExportPrompt";
 import { ChangePreset } from "./changes";
-
 
 //namespace beepbox {
 // const doc: SongDocument = new SongDocument();//debug only

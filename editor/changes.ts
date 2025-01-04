@@ -4911,6 +4911,15 @@ export class ChangePanDelay extends Change {
     }
 }
 
+export class ChangePanMode extends Change {
+    constructor(doc: SongDocument, newValue: number) {
+        super();
+        doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()].panMode = newValue;
+        doc.notifier.changed();
+        this._didSomething();
+    }
+}
+
 export class ChangeSizeBend extends UndoableChange {
     private _doc: SongDocument;
     private _note: Note;

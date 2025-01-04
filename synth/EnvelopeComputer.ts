@@ -1,7 +1,13 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { EnvelopeType, EnvelopeComputeIndex, BaseWaveTypes, RandomEnvelopeTypes, Config } from "./SynthConfig";
-import { Synth } from "./synth";
+import { EnvelopeType, EnvelopeComputeIndex, BaseWaveTypes, RandomEnvelopeTypes, Config, Envelope, getArpeggioPitchIndex, FilterType, AutomationTarget, Transition } from "./SynthConfig";
+import { Synth, Tone } from "./synth";
+import { Instrument } from "./Instrument";
+import { InstrumentState } from "./InstrumentState";
+import { FilterSettings } from "./Filter";
+import { EnvelopeSettings } from "./Envelope";
+import { NotePin } from "./Pattern";
+import { xxHash32 } from "js-xxhash";
 
 export class EnvelopeComputer {
     // "Unscaled" values do not increase with Envelope Speed's timescale factor. Thus they are "real" seconds since the start of the note.

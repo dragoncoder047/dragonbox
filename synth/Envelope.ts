@@ -1,6 +1,7 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { EnvelopeType, BaseWaveTypes, Config } from "./SynthConfig";
+import { Config, BaseWaveTypes, EnvelopeType, Envelope, AutomationTarget } from "./SynthConfig";
+import { clamp } from "./synth";
 
 export class EnvelopeSettings {
     public target: number = 0;

@@ -1,14 +1,13 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { startLoadingSample, sampleLoadingState, SampleLoadingState, sampleLoadEvents, SampleLoadedEvent, SampleLoadingStatus, loadBuiltInSamples, Dictionary, DictionaryArray, toNameMap, FilterType, SustainType, EnvelopeType, InstrumentType, EffectType, EnvelopeComputeIndex, Transition, Unison, Chord, Vibrato, Envelope, AutomationTarget, Config, getDrumWave, drawNoiseSpectrum, getArpeggioPitchIndex, performIntegralOld, getPulseWidthRatio, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, OperatorWave, BaseWaveTypes, RandomEnvelopeTypes } from "./SynthConfig";
-import { Preset, EditorConfig } from "../editor/EditorConfig";
+import { FilterType, SustainType,  InstrumentType, EffectType, EnvelopeComputeIndex, Unison, Chord, Config, getDrumWave, drawNoiseSpectrum, performIntegralOld,  effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, BaseWaveTypes } from "./SynthConfig";
 import { scaleElementsByFactor, inverseRealFourierTransform } from "./FFT";
 import { Deque } from "./Deque";
-import { events } from "../global/Events";
-import { FilterCoefficients, FrequencyResponse, DynamicBiquadFilter, warpInfinityToNyquist } from "./filtering";
-import { Instrument } from "./Instrument";
-import { clamp, Synth } from "./synth";
+import { DynamicBiquadFilter, warpInfinityToNyquist } from "./filtering";
+import { SpectrumWave, HarmonicsWave, AdditiveWave, Instrument } from "./Instrument";
+import { Synth, Tone } from "./synth";
 import { EnvelopeComputer } from "./EnvelopeComputer";
+import { FilterSettings, FilterControlPoint } from "./Filter";
 
 export class SpectrumWaveState {
     public wave: Float32Array | null = null;
@@ -61,7 +60,7 @@ export class SpectrumWaveState {
     }
 }
 
-class HarmonicsWaveState {
+export class HarmonicsWaveState {
     public wave: Float32Array | null = null;
     private _hash: number = -1;
     private _generatedForType: InstrumentType;
@@ -123,7 +122,7 @@ class HarmonicsWaveState {
     }
 }
 
-class AdditiveWaveState {
+export class AdditiveWaveState {
     public wave: Float32Array | null = null;
     private _hash: number = -1;
 
@@ -507,6 +506,7 @@ export class InstrumentState {
     public panningOffsetR: number = 0.0;
     public panningOffsetDeltaL: number = 0.0;
     public panningOffsetDeltaR: number = 0.0;
+    public panningMode: number = 0;
 
     public chorusDelayLineL: Float32Array | null = null;
     public chorusDelayLineR: Float32Array | null = null;
@@ -703,6 +703,7 @@ export class InstrumentState {
 
         this.aliases = instrument.aliases;
         this.volumeScale = 1.0;
+        this.panningMode = instrument.panMode;
 
         this.allocateNecessaryBuffers(synth, instrument, samplesPerTick);
 

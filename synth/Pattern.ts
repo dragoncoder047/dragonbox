@@ -1,5 +1,11 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
+import { Config } from "./SynthConfig";
+import { Instrument } from "./Instrument";
+import { clamp } from "./synth";
+import { Channel } from "./Channel";
+import { Song } from "./Song";
+
 export interface NotePin {
     interval: number;
     time: number;

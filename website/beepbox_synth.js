@@ -1575,6 +1575,107 @@ var beepbox = (function (exports) {
         return result;
     }
 
+    class Deque {
+        constructor() {
+            this._capacity = 1;
+            this._buffer = [undefined];
+            this._mask = 0;
+            this._offset = 0;
+            this._count = 0;
+        }
+        pushFront(element) {
+            if (this._count >= this._capacity)
+                this._expandCapacity();
+            this._offset = (this._offset - 1) & this._mask;
+            this._buffer[this._offset] = element;
+            this._count++;
+        }
+        pushBack(element) {
+            if (this._count >= this._capacity)
+                this._expandCapacity();
+            this._buffer[(this._offset + this._count) & this._mask] = element;
+            this._count++;
+        }
+        popFront() {
+            if (this._count <= 0)
+                throw new Error("No elements left to pop.");
+            const element = this._buffer[this._offset];
+            this._buffer[this._offset] = undefined;
+            this._offset = (this._offset + 1) & this._mask;
+            this._count--;
+            return element;
+        }
+        popBack() {
+            if (this._count <= 0)
+                throw new Error("No elements left to pop.");
+            this._count--;
+            const index = (this._offset + this._count) & this._mask;
+            const element = this._buffer[index];
+            this._buffer[index] = undefined;
+            return element;
+        }
+        peakFront() {
+            if (this._count <= 0)
+                throw new Error("No elements left to pop.");
+            return this._buffer[this._offset];
+        }
+        peakBack() {
+            if (this._count <= 0)
+                throw new Error("No elements left to pop.");
+            return this._buffer[(this._offset + this._count - 1) & this._mask];
+        }
+        count() {
+            return this._count;
+        }
+        set(index, element) {
+            if (index < 0 || index >= this._count)
+                throw new Error("Invalid index");
+            this._buffer[(this._offset + index) & this._mask] = element;
+        }
+        get(index) {
+            if (index < 0 || index >= this._count)
+                throw new Error("Invalid index");
+            return this._buffer[(this._offset + index) & this._mask];
+        }
+        remove(index) {
+            if (index < 0 || index >= this._count)
+                throw new Error("Invalid index");
+            if (index <= (this._count >> 1)) {
+                while (index > 0) {
+                    this.set(index, this.get(index - 1));
+                    index--;
+                }
+                this.popFront();
+            }
+            else {
+                index++;
+                while (index < this._count) {
+                    this.set(index - 1, this.get(index));
+                    index++;
+                }
+                this.popBack();
+            }
+        }
+        _expandCapacity() {
+            if (this._capacity >= 0x40000000)
+                throw new Error("Capacity too big.");
+            this._capacity = this._capacity << 1;
+            const oldBuffer = this._buffer;
+            const newBuffer = new Array(this._capacity);
+            const size = this._count | 0;
+            const offset = this._offset | 0;
+            for (let i = 0; i < size; i++) {
+                newBuffer[i] = oldBuffer[(offset + i) & this._mask];
+            }
+            for (let i = size; i < this._capacity; i++) {
+                newBuffer[i] = undefined;
+            }
+            this._offset = 0;
+            this._buffer = newBuffer;
+            this._mask = this._capacity - 1;
+        }
+    }
+
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|android|ipad|playbook|silk/i.test(navigator.userAgent);
     class EditorConfig {
         static valueToPreset(presetValue) {
@@ -1956,248 +2057,16 @@ var beepbox = (function (exports) {
         }
     ]);
 
-    function scaleElementsByFactor(array, factor) {
-        for (let i = 0; i < array.length; i++) {
-            array[i] *= factor;
-        }
-    }
-    function isPowerOf2(n) {
-        return !!n && !(n & (n - 1));
-    }
-    function countBits(n) {
-        if (!isPowerOf2(n))
-            throw new Error("FFT array length must be a power of 2.");
-        return Math.round(Math.log(n) / Math.log(2));
-    }
-    function reverseIndexBits(array, fullArrayLength) {
-        const bitCount = countBits(fullArrayLength);
-        if (bitCount > 16)
-            throw new Error("FFT array length must not be greater than 2^16.");
-        const finalShift = 16 - bitCount;
-        for (let i = 0; i < fullArrayLength; i++) {
-            let j;
-            j = ((i & 0xaaaa) >> 1) | ((i & 0x5555) << 1);
-            j = ((j & 0xcccc) >> 2) | ((j & 0x3333) << 2);
-            j = ((j & 0xf0f0) >> 4) | ((j & 0x0f0f) << 4);
-            j = ((j >> 8) | ((j & 0xff) << 8)) >> finalShift;
-            if (j > i) {
-                let temp = array[i];
-                array[i] = array[j];
-                array[j] = temp;
-            }
-        }
-    }
-    function inverseRealFourierTransform(array, fullArrayLength) {
-        const totalPasses = countBits(fullArrayLength);
-        if (fullArrayLength < 4)
-            throw new Error("FFT array length must be at least 4.");
-        for (let pass = totalPasses - 1; pass >= 2; pass--) {
-            const subStride = 1 << pass;
-            const midSubStride = subStride >> 1;
-            const stride = subStride << 1;
-            const radiansIncrement = Math.PI * 2.0 / stride;
-            const cosIncrement = Math.cos(radiansIncrement);
-            const sinIncrement = Math.sin(radiansIncrement);
-            const oscillatorMultiplier = 2.0 * cosIncrement;
-            for (let startIndex = 0; startIndex < fullArrayLength; startIndex += stride) {
-                const startIndexA = startIndex;
-                const midIndexA = startIndexA + midSubStride;
-                const startIndexB = startIndexA + subStride;
-                const midIndexB = startIndexB + midSubStride;
-                const stopIndex = startIndexB + subStride;
-                const realStartA = array[startIndexA];
-                const imagStartB = array[startIndexB];
-                array[startIndexA] = realStartA + imagStartB;
-                array[midIndexA] *= 2;
-                array[startIndexB] = realStartA - imagStartB;
-                array[midIndexB] *= 2;
-                let c = cosIncrement;
-                let s = -sinIncrement;
-                let cPrev = 1.0;
-                let sPrev = 0.0;
-                for (let index = 1; index < midSubStride; index++) {
-                    const indexA0 = startIndexA + index;
-                    const indexA1 = startIndexB - index;
-                    const indexB0 = startIndexB + index;
-                    const indexB1 = stopIndex - index;
-                    const real0 = array[indexA0];
-                    const real1 = array[indexA1];
-                    const imag0 = array[indexB0];
-                    const imag1 = array[indexB1];
-                    const tempA = real0 - real1;
-                    const tempB = imag0 + imag1;
-                    array[indexA0] = real0 + real1;
-                    array[indexA1] = imag1 - imag0;
-                    array[indexB0] = tempA * c - tempB * s;
-                    array[indexB1] = tempB * c + tempA * s;
-                    const cTemp = oscillatorMultiplier * c - cPrev;
-                    const sTemp = oscillatorMultiplier * s - sPrev;
-                    cPrev = c;
-                    sPrev = s;
-                    c = cTemp;
-                    s = sTemp;
-                }
-            }
-        }
-        for (let index = 0; index < fullArrayLength; index += 4) {
-            const index1 = index + 1;
-            const index2 = index + 2;
-            const index3 = index + 3;
-            const real0 = array[index];
-            const real1 = array[index1] * 2;
-            const imag2 = array[index2];
-            const imag3 = array[index3] * 2;
-            const tempA = real0 + imag2;
-            const tempB = real0 - imag2;
-            array[index] = tempA + real1;
-            array[index1] = tempA - real1;
-            array[index2] = tempB + imag3;
-            array[index3] = tempB - imag3;
-        }
-        reverseIndexBits(array, fullArrayLength);
-    }
-
-    class Deque {
+    class Channel {
         constructor() {
-            this._capacity = 1;
-            this._buffer = [undefined];
-            this._mask = 0;
-            this._offset = 0;
-            this._count = 0;
-        }
-        pushFront(element) {
-            if (this._count >= this._capacity)
-                this._expandCapacity();
-            this._offset = (this._offset - 1) & this._mask;
-            this._buffer[this._offset] = element;
-            this._count++;
-        }
-        pushBack(element) {
-            if (this._count >= this._capacity)
-                this._expandCapacity();
-            this._buffer[(this._offset + this._count) & this._mask] = element;
-            this._count++;
-        }
-        popFront() {
-            if (this._count <= 0)
-                throw new Error("No elements left to pop.");
-            const element = this._buffer[this._offset];
-            this._buffer[this._offset] = undefined;
-            this._offset = (this._offset + 1) & this._mask;
-            this._count--;
-            return element;
-        }
-        popBack() {
-            if (this._count <= 0)
-                throw new Error("No elements left to pop.");
-            this._count--;
-            const index = (this._offset + this._count) & this._mask;
-            const element = this._buffer[index];
-            this._buffer[index] = undefined;
-            return element;
-        }
-        peakFront() {
-            if (this._count <= 0)
-                throw new Error("No elements left to pop.");
-            return this._buffer[this._offset];
-        }
-        peakBack() {
-            if (this._count <= 0)
-                throw new Error("No elements left to pop.");
-            return this._buffer[(this._offset + this._count - 1) & this._mask];
-        }
-        count() {
-            return this._count;
-        }
-        set(index, element) {
-            if (index < 0 || index >= this._count)
-                throw new Error("Invalid index");
-            this._buffer[(this._offset + index) & this._mask] = element;
-        }
-        get(index) {
-            if (index < 0 || index >= this._count)
-                throw new Error("Invalid index");
-            return this._buffer[(this._offset + index) & this._mask];
-        }
-        remove(index) {
-            if (index < 0 || index >= this._count)
-                throw new Error("Invalid index");
-            if (index <= (this._count >> 1)) {
-                while (index > 0) {
-                    this.set(index, this.get(index - 1));
-                    index--;
-                }
-                this.popFront();
-            }
-            else {
-                index++;
-                while (index < this._count) {
-                    this.set(index - 1, this.get(index));
-                    index++;
-                }
-                this.popBack();
-            }
-        }
-        _expandCapacity() {
-            if (this._capacity >= 0x40000000)
-                throw new Error("Capacity too big.");
-            this._capacity = this._capacity << 1;
-            const oldBuffer = this._buffer;
-            const newBuffer = new Array(this._capacity);
-            const size = this._count | 0;
-            const offset = this._offset | 0;
-            for (let i = 0; i < size; i++) {
-                newBuffer[i] = oldBuffer[(offset + i) & this._mask];
-            }
-            for (let i = size; i < this._capacity; i++) {
-                newBuffer[i] = undefined;
-            }
-            this._offset = 0;
-            this._buffer = newBuffer;
-            this._mask = this._capacity - 1;
+            this.octave = 0;
+            this.instruments = [];
+            this.patterns = [];
+            this.bars = [];
+            this.muted = false;
+            this.name = "";
         }
     }
-
-    class EventManager {
-        constructor() {
-            this.activeEvents = [];
-            this.listeners = {};
-            this.activeEvents = [];
-            this.listeners = {};
-        }
-        raise(eventType, eventData, extraEventData) {
-            if (this.listeners[eventType] == undefined) {
-                return;
-            }
-            this.activeEvents.push(eventType);
-            for (let i = 0; i < this.listeners[eventType].length; i++) {
-                this.listeners[eventType][i](eventData, extraEventData);
-            }
-            this.activeEvents.pop();
-        }
-        listen(eventType, callback) {
-            if (this.listeners[eventType] == undefined) {
-                this.listeners[eventType] = [];
-            }
-            this.listeners[eventType].push(callback);
-        }
-        unlisten(eventType, callback) {
-            if (this.listeners[eventType] == undefined) {
-                return;
-            }
-            const lisen = this.listeners[eventType].indexOf(callback);
-            if (lisen != -1) {
-                this.listeners[eventType].splice(lisen, 1);
-            }
-        }
-        unlistenAll(eventType) {
-            if (this.listeners[eventType] == undefined) {
-                return;
-            }
-            this.listeners[eventType] = [];
-        }
-    }
-    const events = new EventManager();
 
     class FilterCoefficients {
         constructor() {
@@ -2401,1001 +2270,6 @@ var beepbox = (function (exports) {
         return 2.0 * Math.atan(radians * 0.5);
     }
 
-    const PRIME32_1 = 2654435761;
-    const PRIME32_2 = 2246822519;
-    const PRIME32_3 = 3266489917;
-    const PRIME32_4 = 668265263;
-    const PRIME32_5 = 374761393;
-    let encoder;
-    /**
-     *
-     * @param input - byte array or string
-     * @param seed - optional seed (32-bit unsigned);
-     */
-    function xxHash32(input, seed = 0) {
-        const buffer = typeof input === 'string' ? (encoder ??= new TextEncoder()).encode(input) : input;
-        const b = buffer;
-        /*
-            Step 1. Initialize internal accumulators
-            Each accumulator gets an initial value based on optional seed input. Since the seed is optional, it can be 0.
-
-            ```
-                u32 acc1 = seed + PRIME32_1 + PRIME32_2;
-                u32 acc2 = seed + PRIME32_2;
-                u32 acc3 = seed + 0;
-                u32 acc4 = seed - PRIME32_1;
-            ```
-            Special case : input is less than 16 bytes
-            When input is too small (< 16 bytes), the algorithm will not process any stripe. Consequently, it will not
-            make use of parallel accumulators.
-
-            In which case, a simplified initialization is performed, using a single accumulator :
-
-            u32 acc  = seed + PRIME32_5;
-            The algorithm then proceeds directly to step 4.
-        */
-        let acc = (seed + PRIME32_5) & 0xffffffff;
-        let offset = 0;
-        if (b.length >= 16) {
-            const accN = [
-                (seed + PRIME32_1 + PRIME32_2) & 0xffffffff,
-                (seed + PRIME32_2) & 0xffffffff,
-                (seed + 0) & 0xffffffff,
-                (seed - PRIME32_1) & 0xffffffff,
-            ];
-            /*
-                Step 2. Process stripes
-                A stripe is a contiguous segment of 16 bytes. It is evenly divided into 4 lanes, of 4 bytes each.
-                The first lane is used to update accumulator 1, the second lane is used to update accumulator 2, and so on.
-
-                Each lane read its associated 32-bit value using little-endian convention.
-
-                For each {lane, accumulator}, the update process is called a round, and applies the following formula :
-
-                ```
-                accN = accN + (laneN * PRIME32_2);
-                accN = accN <<< 13;
-                accN = accN * PRIME32_1;
-                ```
-
-                This shuffles the bits so that any bit from input lane impacts several bits in output accumulator.
-                All operations are performed modulo 2^32.
-
-                Input is consumed one full stripe at a time. Step 2 is looped as many times as necessary to consume
-                the whole input, except the last remaining bytes which cannot form a stripe (< 16 bytes). When that
-                happens, move to step 3.
-            */
-            const b = buffer;
-            const limit = b.length - 16;
-            let lane = 0;
-            for (offset = 0; (offset & 0xfffffff0) <= limit; offset += 4) {
-                const i = offset;
-                const laneN0 = b[i + 0] + (b[i + 1] << 8);
-                const laneN1 = b[i + 2] + (b[i + 3] << 8);
-                const laneNP = laneN0 * PRIME32_2 + ((laneN1 * PRIME32_2) << 16);
-                let acc = (accN[lane] + laneNP) & 0xffffffff;
-                acc = (acc << 13) | (acc >>> 19);
-                const acc0 = acc & 0xffff;
-                const acc1 = acc >>> 16;
-                accN[lane] = (acc0 * PRIME32_1 + ((acc1 * PRIME32_1) << 16)) & 0xffffffff;
-                lane = (lane + 1) & 0x3;
-            }
-            /*
-                Step 3. Accumulator convergence
-                All 4 lane accumulators from previous steps are merged to produce a single remaining accumulator
-                of same width (32-bit). The associated formula is as follows :
-
-                ```
-                acc = (acc1 <<< 1) + (acc2 <<< 7) + (acc3 <<< 12) + (acc4 <<< 18);
-                ```
-            */
-            acc =
-                (((accN[0] << 1) | (accN[0] >>> 31)) +
-                    ((accN[1] << 7) | (accN[1] >>> 25)) +
-                    ((accN[2] << 12) | (accN[2] >>> 20)) +
-                    ((accN[3] << 18) | (accN[3] >>> 14))) &
-                    0xffffffff;
-        }
-        /*
-            Step 4. Add input length
-            The input total length is presumed known at this stage. This step is just about adding the length to
-            accumulator, so that it participates to final mixing.
-
-            ```
-            acc = acc + (u32)inputLength;
-            ```
-        */
-        acc = (acc + buffer.length) & 0xffffffff;
-        /*
-            Step 5. Consume remaining input
-            There may be up to 15 bytes remaining to consume from the input. The final stage will digest them according
-            to following pseudo-code :
-            ```
-            while (remainingLength >= 4) {
-                lane = read_32bit_little_endian(input_ptr);
-                acc = acc + lane * PRIME32_3;
-                acc = (acc <<< 17) * PRIME32_4;
-                input_ptr += 4; remainingLength -= 4;
-            }
-            ```
-            This process ensures that all input bytes are present in the final mix.
-        */
-        const limit = buffer.length - 4;
-        for (; offset <= limit; offset += 4) {
-            const i = offset;
-            const laneN0 = b[i + 0] + (b[i + 1] << 8);
-            const laneN1 = b[i + 2] + (b[i + 3] << 8);
-            const laneP = laneN0 * PRIME32_3 + ((laneN1 * PRIME32_3) << 16);
-            acc = (acc + laneP) & 0xffffffff;
-            acc = (acc << 17) | (acc >>> 15);
-            acc = ((acc & 0xffff) * PRIME32_4 + (((acc >>> 16) * PRIME32_4) << 16)) & 0xffffffff;
-        }
-        /*
-            ```
-            while (remainingLength >= 1) {
-                lane = read_byte(input_ptr);
-                acc = acc + lane * PRIME32_5;
-                acc = (acc <<< 11) * PRIME32_1;
-                input_ptr += 1; remainingLength -= 1;
-            }
-            ```
-        */
-        for (; offset < b.length; ++offset) {
-            const lane = b[offset];
-            acc = acc + lane * PRIME32_5;
-            acc = (acc << 11) | (acc >>> 21);
-            acc = ((acc & 0xffff) * PRIME32_1 + (((acc >>> 16) * PRIME32_1) << 16)) & 0xffffffff;
-        }
-        /*
-            Step 6. Final mix (avalanche)
-            The final mix ensures that all input bits have a chance to impact any bit in the output digest,
-            resulting in an unbiased distribution. This is also called avalanche effect.
-            ```
-            acc = acc xor (acc >> 15);
-            acc = acc * PRIME32_2;
-            acc = acc xor (acc >> 13);
-            acc = acc * PRIME32_3;
-            acc = acc xor (acc >> 16);
-            ```
-        */
-        acc = acc ^ (acc >>> 15);
-        acc = (((acc & 0xffff) * PRIME32_2) & 0xffffffff) + (((acc >>> 16) * PRIME32_2) << 16);
-        acc = acc ^ (acc >>> 13);
-        acc = (((acc & 0xffff) * PRIME32_3) & 0xffffffff) + (((acc >>> 16) * PRIME32_3) << 16);
-        acc = acc ^ (acc >>> 16);
-        // turn any negatives back into a positive number;
-        return acc < 0 ? acc + 4294967296 : acc;
-    }
-
-    const epsilon = (1.0e-24);
-    function clamp(min, max, val) {
-        max = max - 1;
-        if (val <= max) {
-            if (val >= min)
-                return val;
-            else
-                return min;
-        }
-        else {
-            return max;
-        }
-    }
-    function validateRange(min, max, val) {
-        if (min <= val && val <= max)
-            return val;
-        throw new Error(`Value ${val} not in range [${min}, ${max}]`);
-    }
-    function parseFloatWithDefault(s, defaultValue) {
-        let result = parseFloat(s);
-        if (Number.isNaN(result))
-            result = defaultValue;
-        return result;
-    }
-    function parseIntWithDefault(s, defaultValue) {
-        let result = parseInt(s);
-        if (Number.isNaN(result))
-            result = defaultValue;
-        return result;
-    }
-    function encode32BitNumber(buffer, x) {
-        buffer.push(base64IntToCharCode[(x >>> (6 * 5)) & 0x3]);
-        buffer.push(base64IntToCharCode[(x >>> (6 * 4)) & 0x3f]);
-        buffer.push(base64IntToCharCode[(x >>> (6 * 3)) & 0x3f]);
-        buffer.push(base64IntToCharCode[(x >>> (6 * 2)) & 0x3f]);
-        buffer.push(base64IntToCharCode[(x >>> (6 * 1)) & 0x3f]);
-        buffer.push(base64IntToCharCode[(x >>> (6 * 0)) & 0x3f]);
-    }
-    function decode32BitNumber(compressed, charIndex) {
-        let x = 0;
-        x |= base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << (6 * 5);
-        x |= base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << (6 * 4);
-        x |= base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << (6 * 3);
-        x |= base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << (6 * 2);
-        x |= base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << (6 * 1);
-        x |= base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << (6 * 0);
-        return x;
-    }
-    function encodeUnisonSettings(buffer, v, s, o, e, i) {
-        buffer.push(base64IntToCharCode[v]);
-        buffer.push(base64IntToCharCode[Number((s > 0))]);
-        let cleanS = Math.round(Math.abs(s) * 1000);
-        let cleanSDivided = Math.floor(cleanS / 63);
-        buffer.push(base64IntToCharCode[cleanS % 63], base64IntToCharCode[cleanSDivided % 63], base64IntToCharCode[Math.floor(cleanSDivided / 63)]);
-        buffer.push(base64IntToCharCode[Number((o > 0))]);
-        let cleanO = Math.round(Math.abs(o) * 1000);
-        let cleanODivided = Math.floor(cleanO / 63);
-        buffer.push(base64IntToCharCode[cleanO % 63], base64IntToCharCode[cleanODivided % 63], base64IntToCharCode[Math.floor(cleanODivided / 63)]);
-        buffer.push(base64IntToCharCode[Number((e > 0))]);
-        let cleanE = Math.round(Math.abs(e) * 1000);
-        buffer.push(base64IntToCharCode[cleanE % 63], base64IntToCharCode[Math.floor(cleanE / 63)]);
-        buffer.push(base64IntToCharCode[Number((i > 0))]);
-        let cleanI = Math.round(Math.abs(i) * 1000);
-        buffer.push(base64IntToCharCode[cleanI % 63], base64IntToCharCode[Math.floor(cleanI / 63)]);
-    }
-    function convertLegacyKeyToKeyAndOctave(rawKeyIndex) {
-        let key = clamp(0, Config.keys.length, rawKeyIndex);
-        let octave = 0;
-        if (rawKeyIndex === 12) {
-            key = 0;
-            octave = 1;
-        }
-        else if (rawKeyIndex === 13) {
-            key = 6;
-            octave = -1;
-        }
-        else if (rawKeyIndex === 14) {
-            key = 0;
-            octave = -1;
-        }
-        else if (rawKeyIndex === 15) {
-            key = 5;
-            octave = -1;
-        }
-        return [key, octave];
-    }
-    const base64IntToCharCode = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 45, 95];
-    const base64CharCodeToInt = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 62, 62, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0, 0, 0, 0, 0, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 0, 0, 0, 0, 63, 0, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 0, 0, 0, 0, 0];
-    class BitFieldReader {
-        constructor(source, startIndex, stopIndex) {
-            this._bits = [];
-            this._readIndex = 0;
-            for (let i = startIndex; i < stopIndex; i++) {
-                const value = base64CharCodeToInt[source.charCodeAt(i)];
-                this._bits.push((value >> 5) & 0x1);
-                this._bits.push((value >> 4) & 0x1);
-                this._bits.push((value >> 3) & 0x1);
-                this._bits.push((value >> 2) & 0x1);
-                this._bits.push((value >> 1) & 0x1);
-                this._bits.push(value & 0x1);
-            }
-        }
-        read(bitCount) {
-            let result = 0;
-            while (bitCount > 0) {
-                result = result << 1;
-                result += this._bits[this._readIndex++];
-                bitCount--;
-            }
-            return result;
-        }
-        readLongTail(minValue, minBits) {
-            let result = minValue;
-            let numBits = minBits;
-            while (this._bits[this._readIndex++]) {
-                result += 1 << numBits;
-                numBits++;
-            }
-            while (numBits > 0) {
-                numBits--;
-                if (this._bits[this._readIndex++]) {
-                    result += 1 << numBits;
-                }
-            }
-            return result;
-        }
-        readPartDuration() {
-            return this.readLongTail(1, 3);
-        }
-        readLegacyPartDuration() {
-            return this.readLongTail(1, 2);
-        }
-        readPinCount() {
-            return this.readLongTail(1, 0);
-        }
-        readPitchInterval() {
-            if (this.read(1)) {
-                return -this.readLongTail(1, 3);
-            }
-            else {
-                return this.readLongTail(1, 3);
-            }
-        }
-    }
-    class BitFieldWriter {
-        constructor() {
-            this._index = 0;
-            this._bits = [];
-        }
-        clear() {
-            this._index = 0;
-        }
-        write(bitCount, value) {
-            bitCount--;
-            while (bitCount >= 0) {
-                this._bits[this._index++] = (value >>> bitCount) & 1;
-                bitCount--;
-            }
-        }
-        writeLongTail(minValue, minBits, value) {
-            if (value < minValue)
-                throw new Error("value out of bounds");
-            value -= minValue;
-            let numBits = minBits;
-            while (value >= (1 << numBits)) {
-                this._bits[this._index++] = 1;
-                value -= 1 << numBits;
-                numBits++;
-            }
-            this._bits[this._index++] = 0;
-            while (numBits > 0) {
-                numBits--;
-                this._bits[this._index++] = (value >>> numBits) & 1;
-            }
-        }
-        writePartDuration(value) {
-            this.writeLongTail(1, 3, value);
-        }
-        writePinCount(value) {
-            this.writeLongTail(1, 0, value);
-        }
-        writePitchInterval(value) {
-            if (value < 0) {
-                this.write(1, 1);
-                this.writeLongTail(1, 3, -value);
-            }
-            else {
-                this.write(1, 0);
-                this.writeLongTail(1, 3, value);
-            }
-        }
-        concat(other) {
-            for (let i = 0; i < other._index; i++) {
-                this._bits[this._index++] = other._bits[i];
-            }
-        }
-        encodeBase64(buffer) {
-            for (let i = 0; i < this._index; i += 6) {
-                const value = (this._bits[i] << 5) | (this._bits[i + 1] << 4) | (this._bits[i + 2] << 3) | (this._bits[i + 3] << 2) | (this._bits[i + 4] << 1) | this._bits[i + 5];
-                buffer.push(base64IntToCharCode[value]);
-            }
-            return buffer;
-        }
-        lengthBase64() {
-            return Math.ceil(this._index / 6);
-        }
-    }
-    function makeNotePin(interval, time, size) {
-        return { interval: interval, time: time, size: size };
-    }
-    class Note {
-        constructor(pitch, start, end, size, fadeout = false, chipWaveStartOffset = 0) {
-            this.pitches = [pitch];
-            this.pins = [makeNotePin(0, 0, size), makeNotePin(0, end - start, fadeout ? 0 : size)];
-            this.start = start;
-            this.end = end;
-            this.continuesLastPattern = false;
-            this.chipWaveStartOffset = chipWaveStartOffset;
-        }
-        pickMainInterval() {
-            let longestFlatIntervalDuration = 0;
-            let mainInterval = 0;
-            for (let pinIndex = 1; pinIndex < this.pins.length; pinIndex++) {
-                const pinA = this.pins[pinIndex - 1];
-                const pinB = this.pins[pinIndex];
-                if (pinA.interval == pinB.interval) {
-                    const duration = pinB.time - pinA.time;
-                    if (longestFlatIntervalDuration < duration) {
-                        longestFlatIntervalDuration = duration;
-                        mainInterval = pinA.interval;
-                    }
-                }
-            }
-            if (longestFlatIntervalDuration == 0) {
-                let loudestSize = 0;
-                for (let pinIndex = 0; pinIndex < this.pins.length; pinIndex++) {
-                    const pin = this.pins[pinIndex];
-                    if (loudestSize < pin.size) {
-                        loudestSize = pin.size;
-                        mainInterval = pin.interval;
-                    }
-                }
-            }
-            return mainInterval;
-        }
-        clone() {
-            const newNote = new Note(-1, this.start, this.end, 3);
-            newNote.pitches = this.pitches.concat();
-            newNote.pins = [];
-            for (const pin of this.pins) {
-                newNote.pins.push(makeNotePin(pin.interval, pin.time, pin.size));
-            }
-            newNote.continuesLastPattern = this.continuesLastPattern;
-            return newNote;
-        }
-        getEndPinIndex(part) {
-            let endPinIndex;
-            for (endPinIndex = 1; endPinIndex < this.pins.length - 1; endPinIndex++) {
-                if (this.pins[endPinIndex].time + this.start > part)
-                    break;
-            }
-            return endPinIndex;
-        }
-    }
-    class Pattern {
-        constructor() {
-            this.notes = [];
-            this.instruments = [0];
-        }
-        cloneNotes() {
-            const result = [];
-            for (const note of this.notes) {
-                result.push(note.clone());
-            }
-            return result;
-        }
-        reset() {
-            this.notes.length = 0;
-            this.instruments[0] = 0;
-            this.instruments.length = 1;
-        }
-        toJsonObject(song, channel, isModChannel) {
-            const noteArray = [];
-            for (const note of this.notes) {
-                let instrument = channel.instruments[this.instruments[0]];
-                let mod = Math.max(0, Config.modCount - note.pitches[0] - 1);
-                let volumeCap = song.getVolumeCapForSetting(isModChannel, instrument.modulators[mod], instrument.modFilterTypes[mod]);
-                const pointArray = [];
-                for (const pin of note.pins) {
-                    let useVol = isModChannel ? Math.round(pin.size) : Math.round(pin.size * 100 / volumeCap);
-                    pointArray.push({
-                        "tick": (pin.time + note.start) * Config.rhythms[song.rhythm].stepsPerBeat / Config.partsPerBeat,
-                        "pitchBend": pin.interval,
-                        "volume": useVol,
-                        "forMod": isModChannel,
-                    });
-                }
-                const noteObject = {
-                    "pitches": note.pitches,
-                    "points": pointArray,
-                };
-                if (note.start == 0) {
-                    noteObject["continuesLastPattern"] = note.continuesLastPattern;
-                }
-                noteArray.push(noteObject);
-            }
-            const patternObject = { "notes": noteArray };
-            if (song.patternInstruments) {
-                patternObject["instruments"] = this.instruments.map(i => i + 1);
-            }
-            return patternObject;
-        }
-        fromJsonObject(patternObject, song, channel, importedPartsPerBeat, isNoiseChannel, isModChannel, jsonFormat = "auto") {
-            const format = jsonFormat.toLowerCase();
-            if (song.patternInstruments) {
-                if (Array.isArray(patternObject["instruments"])) {
-                    const instruments = patternObject["instruments"];
-                    const instrumentCount = clamp(Config.instrumentCountMin, song.getMaxInstrumentsPerPatternForChannel(channel) + 1, instruments.length);
-                    for (let j = 0; j < instrumentCount; j++) {
-                        this.instruments[j] = clamp(0, channel.instruments.length, (instruments[j] | 0) - 1);
-                    }
-                    this.instruments.length = instrumentCount;
-                }
-                else {
-                    this.instruments[0] = clamp(0, channel.instruments.length, (patternObject["instrument"] | 0) - 1);
-                    this.instruments.length = 1;
-                }
-            }
-            if (patternObject["notes"] && patternObject["notes"].length > 0) {
-                const maxNoteCount = Math.min(song.beatsPerBar * Config.partsPerBeat * (isModChannel ? Config.modCount : 1), patternObject["notes"].length >>> 0);
-                for (let j = 0; j < patternObject["notes"].length; j++) {
-                    if (j >= maxNoteCount)
-                        break;
-                    const noteObject = patternObject["notes"][j];
-                    if (!noteObject || !noteObject["pitches"] || !(noteObject["pitches"].length >= 1) || !noteObject["points"] || !(noteObject["points"].length >= 2)) {
-                        continue;
-                    }
-                    const note = new Note(0, 0, 0, 0);
-                    note.pitches = [];
-                    note.pins = [];
-                    for (let k = 0; k < noteObject["pitches"].length; k++) {
-                        const pitch = noteObject["pitches"][k] | 0;
-                        if (note.pitches.indexOf(pitch) != -1)
-                            continue;
-                        note.pitches.push(pitch);
-                        if (note.pitches.length >= Config.maxChordSize)
-                            break;
-                    }
-                    if (note.pitches.length < 1)
-                        continue;
-                    let startInterval = 0;
-                    let instrument = channel.instruments[this.instruments[0]];
-                    let mod = Math.max(0, Config.modCount - note.pitches[0] - 1);
-                    for (let k = 0; k < noteObject["points"].length; k++) {
-                        const pointObject = noteObject["points"][k];
-                        if (pointObject == undefined || pointObject["tick"] == undefined)
-                            continue;
-                        const interval = (pointObject["pitchBend"] == undefined) ? 0 : (pointObject["pitchBend"] | 0);
-                        const time = Math.round((+pointObject["tick"]) * Config.partsPerBeat / importedPartsPerBeat);
-                        let volumeCap = song.getVolumeCapForSetting(isModChannel, instrument.modulators[mod], instrument.modFilterTypes[mod]);
-                        let size;
-                        if (pointObject["volume"] == undefined) {
-                            size = volumeCap;
-                        }
-                        else if (pointObject["forMod"] == undefined) {
-                            size = Math.max(0, Math.min(volumeCap, Math.round((pointObject["volume"] | 0) * volumeCap / 100)));
-                        }
-                        else {
-                            size = ((pointObject["forMod"] | 0) > 0) ? Math.round(pointObject["volume"] | 0) : Math.max(0, Math.min(volumeCap, Math.round((pointObject["volume"] | 0) * volumeCap / 100)));
-                        }
-                        if (time > song.beatsPerBar * Config.partsPerBeat)
-                            continue;
-                        if (note.pins.length == 0) {
-                            note.start = time;
-                            startInterval = interval;
-                        }
-                        note.pins.push(makeNotePin(interval - startInterval, time - note.start, size));
-                    }
-                    if (note.pins.length < 2)
-                        continue;
-                    note.end = note.pins[note.pins.length - 1].time + note.start;
-                    const maxPitch = isNoiseChannel ? Config.drumCount - 1 : Config.maxPitch;
-                    let lowestPitch = maxPitch;
-                    let highestPitch = 0;
-                    for (let k = 0; k < note.pitches.length; k++) {
-                        note.pitches[k] += startInterval;
-                        if (note.pitches[k] < 0 || note.pitches[k] > maxPitch) {
-                            note.pitches.splice(k, 1);
-                            k--;
-                        }
-                        if (note.pitches[k] < lowestPitch)
-                            lowestPitch = note.pitches[k];
-                        if (note.pitches[k] > highestPitch)
-                            highestPitch = note.pitches[k];
-                    }
-                    if (note.pitches.length < 1)
-                        continue;
-                    for (let k = 0; k < note.pins.length; k++) {
-                        const pin = note.pins[k];
-                        if (pin.interval + lowestPitch < 0)
-                            pin.interval = -lowestPitch;
-                        if (pin.interval + highestPitch > maxPitch)
-                            pin.interval = maxPitch - highestPitch;
-                        if (k >= 2) {
-                            if (pin.interval == note.pins[k - 1].interval &&
-                                pin.interval == note.pins[k - 2].interval &&
-                                pin.size == note.pins[k - 1].size &&
-                                pin.size == note.pins[k - 2].size) {
-                                note.pins.splice(k - 1, 1);
-                                k--;
-                            }
-                        }
-                    }
-                    if (note.start == 0) {
-                        note.continuesLastPattern = (noteObject["continuesLastPattern"] === true);
-                    }
-                    else {
-                        note.continuesLastPattern = false;
-                    }
-                    if ((format != "ultrabox" && format != "slarmoosbox") && instrument.modulators[mod] == Config.modulators.dictionary["tempo"].index) {
-                        for (const pin of note.pins) {
-                            const oldMin = 30;
-                            const newMin = 1;
-                            const old = pin.size + oldMin;
-                            pin.size = old - newMin;
-                        }
-                    }
-                    this.notes.push(note);
-                }
-            }
-        }
-    }
-    class Operator {
-        constructor(index) {
-            this.frequency = 4;
-            this.amplitude = 0;
-            this.waveform = 0;
-            this.pulseWidth = 0.5;
-            this.reset(index);
-        }
-        reset(index) {
-            this.frequency = 4;
-            this.amplitude = (index <= 1) ? Config.operatorAmplitudeMax : 0;
-            this.waveform = 0;
-            this.pulseWidth = 5;
-        }
-        copy(other) {
-            this.frequency = other.frequency;
-            this.amplitude = other.amplitude;
-            this.waveform = other.waveform;
-            this.pulseWidth = other.pulseWidth;
-        }
-    }
-    class CustomAlgorithm {
-        constructor() {
-            this.name = "";
-            this.carrierCount = 0;
-            this.modulatedBy = [[], [], [], [], [], []];
-            this.associatedCarrier = [];
-            this.fromPreset(1);
-        }
-        set(carriers, modulation) {
-            this.reset();
-            this.carrierCount = carriers;
-            for (let i = 0; i < this.modulatedBy.length; i++) {
-                this.modulatedBy[i] = modulation[i];
-                if (i < carriers) {
-                    this.associatedCarrier[i] = i + 1;
-                }
-                this.name += (i + 1);
-                for (let j = 0; j < modulation[i].length; j++) {
-                    this.name += modulation[i][j];
-                    if (modulation[i][j] > carriers - 1) {
-                        this.associatedCarrier[modulation[i][j] - 1] = i + 1;
-                    }
-                    this.name += ",";
-                }
-                if (i < carriers) {
-                    this.name += "|";
-                }
-                else {
-                    this.name += ".";
-                }
-            }
-        }
-        reset() {
-            this.name = "";
-            this.carrierCount = 1;
-            this.modulatedBy = [[2, 3, 4, 5, 6], [], [], [], [], []];
-            this.associatedCarrier = [1, 1, 1, 1, 1, 1];
-        }
-        copy(other) {
-            this.name = other.name;
-            this.carrierCount = other.carrierCount;
-            this.modulatedBy = other.modulatedBy;
-            this.associatedCarrier = other.associatedCarrier;
-        }
-        fromPreset(other) {
-            this.reset();
-            let preset = Config.algorithms6Op[other];
-            this.name = preset.name;
-            this.carrierCount = preset.carrierCount;
-            for (var i = 0; i < preset.modulatedBy.length; i++) {
-                this.modulatedBy[i] = Array.from(preset.modulatedBy[i]);
-                this.associatedCarrier[i] = preset.associatedCarrier[i];
-            }
-        }
-    }
-    class CustomFeedBack {
-        constructor() {
-            this.name = "";
-            this.indices = [[], [], [], [], [], []];
-            this.fromPreset(1);
-        }
-        set(inIndices) {
-            this.reset();
-            for (let i = 0; i < this.indices.length; i++) {
-                this.indices[i] = inIndices[i];
-                for (let j = 0; j < inIndices[i].length; j++) {
-                    this.name += inIndices[i][j];
-                    this.name += ",";
-                }
-                this.name += ".";
-            }
-        }
-        reset() {
-            this.reset;
-            this.name = "";
-            this.indices = [[1], [], [], [], [], []];
-        }
-        copy(other) {
-            this.name = other.name;
-            this.indices = other.indices;
-        }
-        fromPreset(other) {
-            this.reset();
-            let preset = Config.feedbacks6Op[other];
-            for (var i = 0; i < preset.indices.length; i++) {
-                this.indices[i] = Array.from(preset.indices[i]);
-                for (let j = 0; j < preset.indices[i].length; j++) {
-                    this.name += preset.indices[i][j];
-                    this.name += ",";
-                }
-                this.name += ".";
-            }
-        }
-    }
-    class SpectrumWave {
-        constructor(isNoiseChannel) {
-            this.spectrum = [];
-            this.hash = -1;
-            this.reset(isNoiseChannel);
-        }
-        reset(isNoiseChannel) {
-            for (let i = 0; i < Config.spectrumControlPoints; i++) {
-                if (isNoiseChannel) {
-                    this.spectrum[i] = Math.round(Config.spectrumMax * (1 / Math.sqrt(1 + i / 3)));
-                }
-                else {
-                    const isHarmonic = i == 0 || i == 7 || i == 11 || i == 14 || i == 16 || i == 18 || i == 21 || i == 23 || i >= 25;
-                    this.spectrum[i] = isHarmonic ? Math.max(0, Math.round(Config.spectrumMax * (1 - i / 30))) : 0;
-                }
-            }
-            this.markCustomWaveDirty();
-        }
-        markCustomWaveDirty() {
-            const hashMult = Synth.fittingPowerOfTwo(Config.spectrumMax + 2) - 1;
-            let hash = 0;
-            for (const point of this.spectrum)
-                hash = ((hash * hashMult) + point) >>> 0;
-            this.hash = hash;
-        }
-    }
-    class SpectrumWaveState {
-        constructor() {
-            this.wave = null;
-            this._hash = -1;
-        }
-        getCustomWave(settings, lowestOctave) {
-            if (this._hash == settings.hash)
-                return this.wave;
-            this._hash = settings.hash;
-            const waveLength = Config.spectrumNoiseLength;
-            if (this.wave == null || this.wave.length != waveLength + 1) {
-                this.wave = new Float32Array(waveLength + 1);
-            }
-            const wave = this.wave;
-            for (let i = 0; i < waveLength; i++) {
-                wave[i] = 0;
-            }
-            const highestOctave = 14;
-            const falloffRatio = 0.25;
-            const pitchTweak = [0, 1 / 7, Math.log2(5 / 4), 3 / 7, Math.log2(3 / 2), 5 / 7, 6 / 7];
-            function controlPointToOctave(point) {
-                return lowestOctave + Math.floor(point / Config.spectrumControlPointsPerOctave) + pitchTweak[(point + Config.spectrumControlPointsPerOctave) % Config.spectrumControlPointsPerOctave];
-            }
-            let combinedAmplitude = 1;
-            for (let i = 0; i < Config.spectrumControlPoints + 1; i++) {
-                const value1 = (i <= 0) ? 0 : settings.spectrum[i - 1];
-                const value2 = (i >= Config.spectrumControlPoints) ? settings.spectrum[Config.spectrumControlPoints - 1] : settings.spectrum[i];
-                const octave1 = controlPointToOctave(i - 1);
-                let octave2 = controlPointToOctave(i);
-                if (i >= Config.spectrumControlPoints)
-                    octave2 = highestOctave + (octave2 - highestOctave) * falloffRatio;
-                if (value1 == 0 && value2 == 0)
-                    continue;
-                combinedAmplitude += 0.02 * drawNoiseSpectrum(wave, waveLength, octave1, octave2, value1 / Config.spectrumMax, value2 / Config.spectrumMax, -0.5);
-            }
-            if (settings.spectrum[Config.spectrumControlPoints - 1] > 0) {
-                combinedAmplitude += 0.02 * drawNoiseSpectrum(wave, waveLength, highestOctave + (controlPointToOctave(Config.spectrumControlPoints) - highestOctave) * falloffRatio, highestOctave, settings.spectrum[Config.spectrumControlPoints - 1] / Config.spectrumMax, 0, -0.5);
-            }
-            inverseRealFourierTransform(wave, waveLength);
-            scaleElementsByFactor(wave, 5.0 / (Math.sqrt(waveLength) * Math.pow(combinedAmplitude, 0.75)));
-            wave[waveLength] = wave[0];
-            return wave;
-        }
-    }
-    class HarmonicsWave {
-        constructor() {
-            this.harmonics = [];
-            this.hash = -1;
-            this.reset();
-        }
-        reset() {
-            for (let i = 0; i < Config.harmonicsControlPoints; i++) {
-                this.harmonics[i] = 0;
-            }
-            this.harmonics[0] = Config.harmonicsMax;
-            this.harmonics[3] = Config.harmonicsMax;
-            this.harmonics[6] = Config.harmonicsMax;
-            this.markCustomWaveDirty();
-        }
-        markCustomWaveDirty() {
-            const hashMult = Synth.fittingPowerOfTwo(Config.harmonicsMax + 2) - 1;
-            let hash = 0;
-            for (const point of this.harmonics)
-                hash = ((hash * hashMult) + point) >>> 0;
-            this.hash = hash;
-        }
-    }
-    class HarmonicsWaveState {
-        constructor() {
-            this.wave = null;
-            this._hash = -1;
-        }
-        getCustomWave(settings, instrumentType) {
-            if (this._hash == settings.hash && this._generatedForType == instrumentType)
-                return this.wave;
-            this._hash = settings.hash;
-            this._generatedForType = instrumentType;
-            const harmonicsRendered = (instrumentType == 7) ? Config.harmonicsRenderedForPickedString : Config.harmonicsRendered;
-            const waveLength = Config.harmonicsWavelength;
-            const retroWave = getDrumWave(0, null, null);
-            if (this.wave == null || this.wave.length != waveLength + 1) {
-                this.wave = new Float32Array(waveLength + 1);
-            }
-            const wave = this.wave;
-            for (let i = 0; i < waveLength; i++) {
-                wave[i] = 0;
-            }
-            const overallSlope = -0.25;
-            let combinedControlPointAmplitude = 1;
-            for (let harmonicIndex = 0; harmonicIndex < harmonicsRendered; harmonicIndex++) {
-                const harmonicFreq = harmonicIndex + 1;
-                let controlValue = harmonicIndex < Config.harmonicsControlPoints ? settings.harmonics[harmonicIndex] : settings.harmonics[Config.harmonicsControlPoints - 1];
-                if (harmonicIndex >= Config.harmonicsControlPoints) {
-                    controlValue *= 1 - (harmonicIndex - Config.harmonicsControlPoints) / (harmonicsRendered - Config.harmonicsControlPoints);
-                }
-                const normalizedValue = controlValue / Config.harmonicsMax;
-                let amplitude = Math.pow(2, controlValue - Config.harmonicsMax + 1) * Math.sqrt(normalizedValue);
-                if (harmonicIndex < Config.harmonicsControlPoints) {
-                    combinedControlPointAmplitude += amplitude;
-                }
-                amplitude *= Math.pow(harmonicFreq, overallSlope);
-                amplitude *= retroWave[harmonicIndex + 589];
-                wave[waveLength - harmonicFreq] = amplitude;
-            }
-            inverseRealFourierTransform(wave, waveLength);
-            const mult = 1 / Math.pow(combinedControlPointAmplitude, 0.7);
-            for (let i = 0; i < wave.length; i++)
-                wave[i] *= mult;
-            performIntegralOld(wave);
-            wave[waveLength] = wave[0];
-            return wave;
-        }
-    }
-    class AdditiveWave {
-        constructor() {
-            this.additives = [];
-            this.hash = -1;
-            this.waveTypes = [];
-            this.reset();
-        }
-        reset() {
-            for (let i = 0; i < Config.additiveControlPoints; i++) {
-                this.additives[i] = 0;
-                this.waveTypes[i] = 2;
-            }
-            this.additives[0] = Config.harmonicsMax;
-            this.additives[3] = Config.harmonicsMax;
-            this.additives[6] = Config.harmonicsMax;
-            this.markCustomWaveDirty();
-        }
-        markCustomWaveDirty() {
-            const hashMult = Synth.fittingPowerOfTwo(Config.additiveMax + 2) - 1;
-            let hash = 0;
-            for (const point of this.additives)
-                hash = ((hash * hashMult) + point) >>> 0;
-            this.hash = hash;
-        }
-    }
-    class AdditiveWaveState {
-        constructor() {
-            this.wave = null;
-            this._hash = -1;
-        }
-        getCustomWave(settings) {
-            if (this._hash == settings.hash)
-                return this.wave;
-            this._hash = settings.hash;
-            const additiveRendered = Config.additiveRendered;
-            const waveLength = Config.additiveWavelength;
-            if (this.wave == null || this.wave.length != waveLength + 1) {
-                this.wave = new Float32Array(waveLength + 1);
-            }
-            const wave = this.wave;
-            for (let i = 0; i < waveLength; i++) {
-                wave[i] = 1;
-            }
-            const overallSlope = -0.25;
-            let combinedControlPointAmplitude = 1;
-            for (let additiveIndex = 1; additiveIndex < additiveRendered; additiveIndex++) {
-                const additiveFreq = additiveIndex + 1;
-                for (let i = 0; i < waveLength; i++) {
-                    let additiveHarmonic = this.waveExpressions(settings.waveTypes[additiveIndex], i / waveLength, additiveFreq) * (settings.additives[additiveIndex] != undefined ? settings.additives[additiveIndex] / Config.additiveMax : 1);
-                    additiveHarmonic *= Math.pow(additiveFreq, overallSlope);
-                    wave[i] += additiveHarmonic;
-                }
-            }
-            const mult = 1 / Math.pow(combinedControlPointAmplitude, 0.7);
-            for (let i = 0; i < wave.length; i++)
-                wave[i] *= mult;
-            performIntegralOld(wave);
-            wave[waveLength] = wave[0];
-            return wave;
-        }
-        waveExpressions(waveType, time, harmonic) {
-            switch (waveType) {
-                case 0:
-                    return (Math.sin(time * harmonic * Math.PI * 2)) / harmonic;
-                case 1:
-                    return (2 * (Math.floor((time * harmonic - 1) % 2 + 2) % 2) - 1) / harmonic;
-                case 2:
-                    return (2 * (Math.abs(((time * harmonic / 2 + 1 / 2) % 1 + 1) % 1) * 2 - 1) - 1) / harmonic;
-                case 3:
-                    return (2 * Math.abs(((time * harmonic / 2 + 1 / 2) % 1 + 1) % 1) - 1) / harmonic;
-                default:
-                    return (Math.sin(time * harmonic * Math.PI * 2)) / harmonic;
-            }
-        }
-    }
-    class FilterControlPoint {
-        constructor() {
-            this.freq = 0;
-            this.gain = Config.filterGainCenter;
-            this.type = 2;
-        }
-        set(freqSetting, gainSetting) {
-            this.freq = freqSetting;
-            this.gain = gainSetting;
-        }
-        getHz() {
-            return FilterControlPoint.getHzFromSettingValue(this.freq);
-        }
-        static getHzFromSettingValue(value) {
-            return Config.filterFreqReferenceHz * Math.pow(2.0, (value - Config.filterFreqReferenceSetting) * Config.filterFreqStep);
-        }
-        static getSettingValueFromHz(hz) {
-            return Math.log2(hz / Config.filterFreqReferenceHz) / Config.filterFreqStep + Config.filterFreqReferenceSetting;
-        }
-        static getRoundedSettingValueFromHz(hz) {
-            return Math.max(0, Math.min(Config.filterFreqRange - 1, Math.round(FilterControlPoint.getSettingValueFromHz(hz))));
-        }
-        getLinearGain(peakMult = 1.0) {
-            const power = (this.gain - Config.filterGainCenter) * Config.filterGainStep;
-            const neutral = (this.type == 2) ? 0.0 : -0.5;
-            const interpolatedPower = neutral + (power - neutral) * peakMult;
-            return Math.pow(2.0, interpolatedPower);
-        }
-        static getRoundedSettingValueFromLinearGain(linearGain) {
-            return Math.max(0, Math.min(Config.filterGainRange - 1, Math.round(Math.log2(linearGain) / Config.filterGainStep + Config.filterGainCenter)));
-        }
-        toCoefficients(filter, sampleRate, freqMult = 1.0, peakMult = 1.0) {
-            const cornerRadiansPerSample = 2.0 * Math.PI * Math.max(Config.filterFreqMinHz, Math.min(Config.filterFreqMaxHz, freqMult * this.getHz())) / sampleRate;
-            const linearGain = this.getLinearGain(peakMult);
-            switch (this.type) {
-                case 0:
-                    filter.lowPass2ndOrderButterworth(cornerRadiansPerSample, linearGain);
-                    break;
-                case 1:
-                    filter.highPass2ndOrderButterworth(cornerRadiansPerSample, linearGain);
-                    break;
-                case 2:
-                    filter.peak2ndOrder(cornerRadiansPerSample, linearGain, 1.0);
-                    break;
-                default:
-                    throw new Error();
-            }
-        }
-        getVolumeCompensationMult() {
-            const octave = (this.freq - Config.filterFreqReferenceSetting) * Config.filterFreqStep;
-            const gainPow = (this.gain - Config.filterGainCenter) * Config.filterGainStep;
-            switch (this.type) {
-                case 0:
-                    const freqRelativeTo8khz = Math.pow(2.0, octave) * Config.filterFreqReferenceHz / 8000.0;
-                    const warpedFreq = (Math.sqrt(1.0 + 4.0 * freqRelativeTo8khz) - 1.0) / 2.0;
-                    const warpedOctave = Math.log2(warpedFreq);
-                    return Math.pow(0.5, 0.2 * Math.max(0.0, gainPow + 1.0) + Math.min(0.0, Math.max(-3.0, 0.595 * warpedOctave + 0.35 * Math.min(0.0, gainPow + 1.0))));
-                case 1:
-                    return Math.pow(0.5, 0.125 * Math.max(0.0, gainPow + 1.0) + Math.min(0.0, 0.3 * (-octave - Math.log2(Config.filterFreqReferenceHz / 125.0)) + 0.2 * Math.min(0.0, gainPow + 1.0)));
-                case 2:
-                    const distanceFromCenter = octave + Math.log2(Config.filterFreqReferenceHz / 2000.0);
-                    const freqLoudness = Math.pow(1.0 / (1.0 + Math.pow(distanceFromCenter / 3.0, 2.0)), 2.0);
-                    return Math.pow(0.5, 0.125 * Math.max(0.0, gainPow) + 0.1 * freqLoudness * Math.min(0.0, gainPow));
-                default:
-                    throw new Error();
-            }
-        }
-    }
     class FilterSettings {
         constructor() {
             this.controlPoints = [];
@@ -3609,6 +2483,75 @@ var beepbox = (function (exports) {
             }
         }
     }
+    class FilterControlPoint {
+        constructor() {
+            this.freq = 0;
+            this.gain = Config.filterGainCenter;
+            this.type = 2;
+        }
+        set(freqSetting, gainSetting) {
+            this.freq = freqSetting;
+            this.gain = gainSetting;
+        }
+        getHz() {
+            return FilterControlPoint.getHzFromSettingValue(this.freq);
+        }
+        static getHzFromSettingValue(value) {
+            return Config.filterFreqReferenceHz * Math.pow(2.0, (value - Config.filterFreqReferenceSetting) * Config.filterFreqStep);
+        }
+        static getSettingValueFromHz(hz) {
+            return Math.log2(hz / Config.filterFreqReferenceHz) / Config.filterFreqStep + Config.filterFreqReferenceSetting;
+        }
+        static getRoundedSettingValueFromHz(hz) {
+            return Math.max(0, Math.min(Config.filterFreqRange - 1, Math.round(FilterControlPoint.getSettingValueFromHz(hz))));
+        }
+        getLinearGain(peakMult = 1.0) {
+            const power = (this.gain - Config.filterGainCenter) * Config.filterGainStep;
+            const neutral = (this.type == 2) ? 0.0 : -0.5;
+            const interpolatedPower = neutral + (power - neutral) * peakMult;
+            return Math.pow(2.0, interpolatedPower);
+        }
+        static getRoundedSettingValueFromLinearGain(linearGain) {
+            return Math.max(0, Math.min(Config.filterGainRange - 1, Math.round(Math.log2(linearGain) / Config.filterGainStep + Config.filterGainCenter)));
+        }
+        toCoefficients(filter, sampleRate, freqMult = 1.0, peakMult = 1.0) {
+            const cornerRadiansPerSample = 2.0 * Math.PI * Math.max(Config.filterFreqMinHz, Math.min(Config.filterFreqMaxHz, freqMult * this.getHz())) / sampleRate;
+            const linearGain = this.getLinearGain(peakMult);
+            switch (this.type) {
+                case 0:
+                    filter.lowPass2ndOrderButterworth(cornerRadiansPerSample, linearGain);
+                    break;
+                case 1:
+                    filter.highPass2ndOrderButterworth(cornerRadiansPerSample, linearGain);
+                    break;
+                case 2:
+                    filter.peak2ndOrder(cornerRadiansPerSample, linearGain, 1.0);
+                    break;
+                default:
+                    throw new Error();
+            }
+        }
+        getVolumeCompensationMult() {
+            const octave = (this.freq - Config.filterFreqReferenceSetting) * Config.filterFreqStep;
+            const gainPow = (this.gain - Config.filterGainCenter) * Config.filterGainStep;
+            switch (this.type) {
+                case 0:
+                    const freqRelativeTo8khz = Math.pow(2.0, octave) * Config.filterFreqReferenceHz / 8000.0;
+                    const warpedFreq = (Math.sqrt(1.0 + 4.0 * freqRelativeTo8khz) - 1.0) / 2.0;
+                    const warpedOctave = Math.log2(warpedFreq);
+                    return Math.pow(0.5, 0.2 * Math.max(0.0, gainPow + 1.0) + Math.min(0.0, Math.max(-3.0, 0.595 * warpedOctave + 0.35 * Math.min(0.0, gainPow + 1.0))));
+                case 1:
+                    return Math.pow(0.5, 0.125 * Math.max(0.0, gainPow + 1.0) + Math.min(0.0, 0.3 * (-octave - Math.log2(Config.filterFreqReferenceHz / 125.0)) + 0.2 * Math.min(0.0, gainPow + 1.0)));
+                case 2:
+                    const distanceFromCenter = octave + Math.log2(Config.filterFreqReferenceHz / 2000.0);
+                    const freqLoudness = Math.pow(1.0 / (1.0 + Math.pow(distanceFromCenter / 3.0, 2.0)), 2.0);
+                    return Math.pow(0.5, 0.125 * Math.max(0.0, gainPow) + 0.1 * freqLoudness * Math.min(0.0, gainPow));
+                default:
+                    throw new Error();
+            }
+        }
+    }
+
     class EnvelopeSettings {
         constructor(isNoiseEnvelope) {
             this.isNoiseEnvelope = isNoiseEnvelope;
@@ -3781,6 +2724,196 @@ var beepbox = (function (exports) {
             }
         }
     }
+
+    class Operator {
+        constructor(index) {
+            this.frequency = 4;
+            this.amplitude = 0;
+            this.waveform = 0;
+            this.pulseWidth = 0.5;
+            this.reset(index);
+        }
+        reset(index) {
+            this.frequency = 4;
+            this.amplitude = (index <= 1) ? Config.operatorAmplitudeMax : 0;
+            this.waveform = 0;
+            this.pulseWidth = 5;
+        }
+        copy(other) {
+            this.frequency = other.frequency;
+            this.amplitude = other.amplitude;
+            this.waveform = other.waveform;
+            this.pulseWidth = other.pulseWidth;
+        }
+    }
+    class CustomAlgorithm {
+        constructor() {
+            this.name = "";
+            this.carrierCount = 0;
+            this.modulatedBy = [[], [], [], [], [], []];
+            this.associatedCarrier = [];
+            this.fromPreset(1);
+        }
+        set(carriers, modulation) {
+            this.reset();
+            this.carrierCount = carriers;
+            for (let i = 0; i < this.modulatedBy.length; i++) {
+                this.modulatedBy[i] = modulation[i];
+                if (i < carriers) {
+                    this.associatedCarrier[i] = i + 1;
+                }
+                this.name += (i + 1);
+                for (let j = 0; j < modulation[i].length; j++) {
+                    this.name += modulation[i][j];
+                    if (modulation[i][j] > carriers - 1) {
+                        this.associatedCarrier[modulation[i][j] - 1] = i + 1;
+                    }
+                    this.name += ",";
+                }
+                if (i < carriers) {
+                    this.name += "|";
+                }
+                else {
+                    this.name += ".";
+                }
+            }
+        }
+        reset() {
+            this.name = "";
+            this.carrierCount = 1;
+            this.modulatedBy = [[2, 3, 4, 5, 6], [], [], [], [], []];
+            this.associatedCarrier = [1, 1, 1, 1, 1, 1];
+        }
+        copy(other) {
+            this.name = other.name;
+            this.carrierCount = other.carrierCount;
+            this.modulatedBy = other.modulatedBy;
+            this.associatedCarrier = other.associatedCarrier;
+        }
+        fromPreset(other) {
+            this.reset();
+            let preset = Config.algorithms6Op[other];
+            this.name = preset.name;
+            this.carrierCount = preset.carrierCount;
+            for (var i = 0; i < preset.modulatedBy.length; i++) {
+                this.modulatedBy[i] = Array.from(preset.modulatedBy[i]);
+                this.associatedCarrier[i] = preset.associatedCarrier[i];
+            }
+        }
+    }
+    class CustomFeedBack {
+        constructor() {
+            this.name = "";
+            this.indices = [[], [], [], [], [], []];
+            this.fromPreset(1);
+        }
+        set(inIndices) {
+            this.reset();
+            for (let i = 0; i < this.indices.length; i++) {
+                this.indices[i] = inIndices[i];
+                for (let j = 0; j < inIndices[i].length; j++) {
+                    this.name += inIndices[i][j];
+                    this.name += ",";
+                }
+                this.name += ".";
+            }
+        }
+        reset() {
+            this.reset;
+            this.name = "";
+            this.indices = [[1], [], [], [], [], []];
+        }
+        copy(other) {
+            this.name = other.name;
+            this.indices = other.indices;
+        }
+        fromPreset(other) {
+            this.reset();
+            let preset = Config.feedbacks6Op[other];
+            for (var i = 0; i < preset.indices.length; i++) {
+                this.indices[i] = Array.from(preset.indices[i]);
+                for (let j = 0; j < preset.indices[i].length; j++) {
+                    this.name += preset.indices[i][j];
+                    this.name += ",";
+                }
+                this.name += ".";
+            }
+        }
+    }
+    class SpectrumWave {
+        constructor(isNoiseChannel) {
+            this.spectrum = [];
+            this.hash = -1;
+            this.reset(isNoiseChannel);
+        }
+        reset(isNoiseChannel) {
+            for (let i = 0; i < Config.spectrumControlPoints; i++) {
+                if (isNoiseChannel) {
+                    this.spectrum[i] = Math.round(Config.spectrumMax * (1 / Math.sqrt(1 + i / 3)));
+                }
+                else {
+                    const isHarmonic = i == 0 || i == 7 || i == 11 || i == 14 || i == 16 || i == 18 || i == 21 || i == 23 || i >= 25;
+                    this.spectrum[i] = isHarmonic ? Math.max(0, Math.round(Config.spectrumMax * (1 - i / 30))) : 0;
+                }
+            }
+            this.markCustomWaveDirty();
+        }
+        markCustomWaveDirty() {
+            const hashMult = Synth.fittingPowerOfTwo(Config.spectrumMax + 2) - 1;
+            let hash = 0;
+            for (const point of this.spectrum)
+                hash = ((hash * hashMult) + point) >>> 0;
+            this.hash = hash;
+        }
+    }
+    class HarmonicsWave {
+        constructor() {
+            this.harmonics = [];
+            this.hash = -1;
+            this.reset();
+        }
+        reset() {
+            for (let i = 0; i < Config.harmonicsControlPoints; i++) {
+                this.harmonics[i] = 0;
+            }
+            this.harmonics[0] = Config.harmonicsMax;
+            this.harmonics[3] = Config.harmonicsMax;
+            this.harmonics[6] = Config.harmonicsMax;
+            this.markCustomWaveDirty();
+        }
+        markCustomWaveDirty() {
+            const hashMult = Synth.fittingPowerOfTwo(Config.harmonicsMax + 2) - 1;
+            let hash = 0;
+            for (const point of this.harmonics)
+                hash = ((hash * hashMult) + point) >>> 0;
+            this.hash = hash;
+        }
+    }
+    class AdditiveWave {
+        constructor() {
+            this.additives = [];
+            this.hash = -1;
+            this.waveTypes = [];
+            this.reset();
+        }
+        reset() {
+            for (let i = 0; i < Config.additiveControlPoints; i++) {
+                this.additives[i] = 0;
+                this.waveTypes[i] = 2;
+            }
+            this.additives[0] = Config.harmonicsMax;
+            this.additives[3] = Config.harmonicsMax;
+            this.additives[6] = Config.harmonicsMax;
+            this.markCustomWaveDirty();
+        }
+        markCustomWaveDirty() {
+            const hashMult = Synth.fittingPowerOfTwo(Config.additiveMax + 2) - 1;
+            let hash = 0;
+            for (const point of this.additives)
+                hash = ((hash * hashMult) + point) >>> 0;
+            this.hash = hash;
+        }
+    }
     class Instrument {
         ;
         constructor(isNoiseChannel, isModChannel) {
@@ -3832,6 +2965,7 @@ var beepbox = (function (exports) {
             this.volume = 0;
             this.pan = Config.panCenter;
             this.panDelay = 0;
+            this.panMode = 0;
             this.arpeggioSpeed = 12;
             this.fastTwoNoteArp = false;
             this.legacyTieOver = false;
@@ -5249,14 +4383,408 @@ var beepbox = (function (exports) {
             return Config.envelopes[this.drumsetEnvelopes[pitch]];
         }
     }
-    class Channel {
+
+    function makeNotePin(interval, time, size) {
+        return { interval: interval, time: time, size: size };
+    }
+    class Note {
+        constructor(pitch, start, end, size, fadeout = false, chipWaveStartOffset = 0) {
+            this.pitches = [pitch];
+            this.pins = [makeNotePin(0, 0, size), makeNotePin(0, end - start, fadeout ? 0 : size)];
+            this.start = start;
+            this.end = end;
+            this.continuesLastPattern = false;
+            this.chipWaveStartOffset = chipWaveStartOffset;
+        }
+        pickMainInterval() {
+            let longestFlatIntervalDuration = 0;
+            let mainInterval = 0;
+            for (let pinIndex = 1; pinIndex < this.pins.length; pinIndex++) {
+                const pinA = this.pins[pinIndex - 1];
+                const pinB = this.pins[pinIndex];
+                if (pinA.interval == pinB.interval) {
+                    const duration = pinB.time - pinA.time;
+                    if (longestFlatIntervalDuration < duration) {
+                        longestFlatIntervalDuration = duration;
+                        mainInterval = pinA.interval;
+                    }
+                }
+            }
+            if (longestFlatIntervalDuration == 0) {
+                let loudestSize = 0;
+                for (let pinIndex = 0; pinIndex < this.pins.length; pinIndex++) {
+                    const pin = this.pins[pinIndex];
+                    if (loudestSize < pin.size) {
+                        loudestSize = pin.size;
+                        mainInterval = pin.interval;
+                    }
+                }
+            }
+            return mainInterval;
+        }
+        clone() {
+            const newNote = new Note(-1, this.start, this.end, 3);
+            newNote.pitches = this.pitches.concat();
+            newNote.pins = [];
+            for (const pin of this.pins) {
+                newNote.pins.push(makeNotePin(pin.interval, pin.time, pin.size));
+            }
+            newNote.continuesLastPattern = this.continuesLastPattern;
+            return newNote;
+        }
+        getEndPinIndex(part) {
+            let endPinIndex;
+            for (endPinIndex = 1; endPinIndex < this.pins.length - 1; endPinIndex++) {
+                if (this.pins[endPinIndex].time + this.start > part)
+                    break;
+            }
+            return endPinIndex;
+        }
+    }
+    class Pattern {
         constructor() {
-            this.octave = 0;
-            this.instruments = [];
-            this.patterns = [];
-            this.bars = [];
-            this.muted = false;
-            this.name = "";
+            this.notes = [];
+            this.instruments = [0];
+        }
+        cloneNotes() {
+            const result = [];
+            for (const note of this.notes) {
+                result.push(note.clone());
+            }
+            return result;
+        }
+        reset() {
+            this.notes.length = 0;
+            this.instruments[0] = 0;
+            this.instruments.length = 1;
+        }
+        toJsonObject(song, channel, isModChannel) {
+            const noteArray = [];
+            for (const note of this.notes) {
+                let instrument = channel.instruments[this.instruments[0]];
+                let mod = Math.max(0, Config.modCount - note.pitches[0] - 1);
+                let volumeCap = song.getVolumeCapForSetting(isModChannel, instrument.modulators[mod], instrument.modFilterTypes[mod]);
+                const pointArray = [];
+                for (const pin of note.pins) {
+                    let useVol = isModChannel ? Math.round(pin.size) : Math.round(pin.size * 100 / volumeCap);
+                    pointArray.push({
+                        "tick": (pin.time + note.start) * Config.rhythms[song.rhythm].stepsPerBeat / Config.partsPerBeat,
+                        "pitchBend": pin.interval,
+                        "volume": useVol,
+                        "forMod": isModChannel,
+                    });
+                }
+                const noteObject = {
+                    "pitches": note.pitches,
+                    "points": pointArray,
+                };
+                if (note.start == 0) {
+                    noteObject["continuesLastPattern"] = note.continuesLastPattern;
+                }
+                noteArray.push(noteObject);
+            }
+            const patternObject = { "notes": noteArray };
+            if (song.patternInstruments) {
+                patternObject["instruments"] = this.instruments.map(i => i + 1);
+            }
+            return patternObject;
+        }
+        fromJsonObject(patternObject, song, channel, importedPartsPerBeat, isNoiseChannel, isModChannel, jsonFormat = "auto") {
+            const format = jsonFormat.toLowerCase();
+            if (song.patternInstruments) {
+                if (Array.isArray(patternObject["instruments"])) {
+                    const instruments = patternObject["instruments"];
+                    const instrumentCount = clamp(Config.instrumentCountMin, song.getMaxInstrumentsPerPatternForChannel(channel) + 1, instruments.length);
+                    for (let j = 0; j < instrumentCount; j++) {
+                        this.instruments[j] = clamp(0, channel.instruments.length, (instruments[j] | 0) - 1);
+                    }
+                    this.instruments.length = instrumentCount;
+                }
+                else {
+                    this.instruments[0] = clamp(0, channel.instruments.length, (patternObject["instrument"] | 0) - 1);
+                    this.instruments.length = 1;
+                }
+            }
+            if (patternObject["notes"] && patternObject["notes"].length > 0) {
+                const maxNoteCount = Math.min(song.beatsPerBar * Config.partsPerBeat * (isModChannel ? Config.modCount : 1), patternObject["notes"].length >>> 0);
+                for (let j = 0; j < patternObject["notes"].length; j++) {
+                    if (j >= maxNoteCount)
+                        break;
+                    const noteObject = patternObject["notes"][j];
+                    if (!noteObject || !noteObject["pitches"] || !(noteObject["pitches"].length >= 1) || !noteObject["points"] || !(noteObject["points"].length >= 2)) {
+                        continue;
+                    }
+                    const note = new Note(0, 0, 0, 0);
+                    note.pitches = [];
+                    note.pins = [];
+                    for (let k = 0; k < noteObject["pitches"].length; k++) {
+                        const pitch = noteObject["pitches"][k] | 0;
+                        if (note.pitches.indexOf(pitch) != -1)
+                            continue;
+                        note.pitches.push(pitch);
+                        if (note.pitches.length >= Config.maxChordSize)
+                            break;
+                    }
+                    if (note.pitches.length < 1)
+                        continue;
+                    let startInterval = 0;
+                    let instrument = channel.instruments[this.instruments[0]];
+                    let mod = Math.max(0, Config.modCount - note.pitches[0] - 1);
+                    for (let k = 0; k < noteObject["points"].length; k++) {
+                        const pointObject = noteObject["points"][k];
+                        if (pointObject == undefined || pointObject["tick"] == undefined)
+                            continue;
+                        const interval = (pointObject["pitchBend"] == undefined) ? 0 : (pointObject["pitchBend"] | 0);
+                        const time = Math.round((+pointObject["tick"]) * Config.partsPerBeat / importedPartsPerBeat);
+                        let volumeCap = song.getVolumeCapForSetting(isModChannel, instrument.modulators[mod], instrument.modFilterTypes[mod]);
+                        let size;
+                        if (pointObject["volume"] == undefined) {
+                            size = volumeCap;
+                        }
+                        else if (pointObject["forMod"] == undefined) {
+                            size = Math.max(0, Math.min(volumeCap, Math.round((pointObject["volume"] | 0) * volumeCap / 100)));
+                        }
+                        else {
+                            size = ((pointObject["forMod"] | 0) > 0) ? Math.round(pointObject["volume"] | 0) : Math.max(0, Math.min(volumeCap, Math.round((pointObject["volume"] | 0) * volumeCap / 100)));
+                        }
+                        if (time > song.beatsPerBar * Config.partsPerBeat)
+                            continue;
+                        if (note.pins.length == 0) {
+                            note.start = time;
+                            startInterval = interval;
+                        }
+                        note.pins.push(makeNotePin(interval - startInterval, time - note.start, size));
+                    }
+                    if (note.pins.length < 2)
+                        continue;
+                    note.end = note.pins[note.pins.length - 1].time + note.start;
+                    const maxPitch = isNoiseChannel ? Config.drumCount - 1 : Config.maxPitch;
+                    let lowestPitch = maxPitch;
+                    let highestPitch = 0;
+                    for (let k = 0; k < note.pitches.length; k++) {
+                        note.pitches[k] += startInterval;
+                        if (note.pitches[k] < 0 || note.pitches[k] > maxPitch) {
+                            note.pitches.splice(k, 1);
+                            k--;
+                        }
+                        if (note.pitches[k] < lowestPitch)
+                            lowestPitch = note.pitches[k];
+                        if (note.pitches[k] > highestPitch)
+                            highestPitch = note.pitches[k];
+                    }
+                    if (note.pitches.length < 1)
+                        continue;
+                    for (let k = 0; k < note.pins.length; k++) {
+                        const pin = note.pins[k];
+                        if (pin.interval + lowestPitch < 0)
+                            pin.interval = -lowestPitch;
+                        if (pin.interval + highestPitch > maxPitch)
+                            pin.interval = maxPitch - highestPitch;
+                        if (k >= 2) {
+                            if (pin.interval == note.pins[k - 1].interval &&
+                                pin.interval == note.pins[k - 2].interval &&
+                                pin.size == note.pins[k - 1].size &&
+                                pin.size == note.pins[k - 2].size) {
+                                note.pins.splice(k - 1, 1);
+                                k--;
+                            }
+                        }
+                    }
+                    if (note.start == 0) {
+                        note.continuesLastPattern = (noteObject["continuesLastPattern"] === true);
+                    }
+                    else {
+                        note.continuesLastPattern = false;
+                    }
+                    if ((format != "ultrabox" && format != "slarmoosbox") && instrument.modulators[mod] == Config.modulators.dictionary["tempo"].index) {
+                        for (const pin of note.pins) {
+                            const oldMin = 30;
+                            const newMin = 1;
+                            const old = pin.size + oldMin;
+                            pin.size = old - newMin;
+                        }
+                    }
+                    this.notes.push(note);
+                }
+            }
+        }
+    }
+
+    function encode32BitNumber(buffer, x) {
+        buffer.push(base64IntToCharCode[(x >>> (6 * 5)) & 0x3]);
+        buffer.push(base64IntToCharCode[(x >>> (6 * 4)) & 0x3f]);
+        buffer.push(base64IntToCharCode[(x >>> (6 * 3)) & 0x3f]);
+        buffer.push(base64IntToCharCode[(x >>> (6 * 2)) & 0x3f]);
+        buffer.push(base64IntToCharCode[(x >>> (6 * 1)) & 0x3f]);
+        buffer.push(base64IntToCharCode[(x >>> (6 * 0)) & 0x3f]);
+    }
+    function decode32BitNumber(compressed, charIndex) {
+        let x = 0;
+        x |= base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << (6 * 5);
+        x |= base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << (6 * 4);
+        x |= base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << (6 * 3);
+        x |= base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << (6 * 2);
+        x |= base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << (6 * 1);
+        x |= base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << (6 * 0);
+        return x;
+    }
+    function encodeUnisonSettings(buffer, v, s, o, e, i) {
+        buffer.push(base64IntToCharCode[v]);
+        buffer.push(base64IntToCharCode[Number((s > 0))]);
+        let cleanS = Math.round(Math.abs(s) * 1000);
+        let cleanSDivided = Math.floor(cleanS / 63);
+        buffer.push(base64IntToCharCode[cleanS % 63], base64IntToCharCode[cleanSDivided % 63], base64IntToCharCode[Math.floor(cleanSDivided / 63)]);
+        buffer.push(base64IntToCharCode[Number((o > 0))]);
+        let cleanO = Math.round(Math.abs(o) * 1000);
+        let cleanODivided = Math.floor(cleanO / 63);
+        buffer.push(base64IntToCharCode[cleanO % 63], base64IntToCharCode[cleanODivided % 63], base64IntToCharCode[Math.floor(cleanODivided / 63)]);
+        buffer.push(base64IntToCharCode[Number((e > 0))]);
+        let cleanE = Math.round(Math.abs(e) * 1000);
+        buffer.push(base64IntToCharCode[cleanE % 63], base64IntToCharCode[Math.floor(cleanE / 63)]);
+        buffer.push(base64IntToCharCode[Number((i > 0))]);
+        let cleanI = Math.round(Math.abs(i) * 1000);
+        buffer.push(base64IntToCharCode[cleanI % 63], base64IntToCharCode[Math.floor(cleanI / 63)]);
+    }
+    function convertLegacyKeyToKeyAndOctave(rawKeyIndex) {
+        let key = clamp(0, Config.keys.length, rawKeyIndex);
+        let octave = 0;
+        if (rawKeyIndex === 12) {
+            key = 0;
+            octave = 1;
+        }
+        else if (rawKeyIndex === 13) {
+            key = 6;
+            octave = -1;
+        }
+        else if (rawKeyIndex === 14) {
+            key = 0;
+            octave = -1;
+        }
+        else if (rawKeyIndex === 15) {
+            key = 5;
+            octave = -1;
+        }
+        return [key, octave];
+    }
+    const base64IntToCharCode = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 45, 95];
+    const base64CharCodeToInt = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 62, 62, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0, 0, 0, 0, 0, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 0, 0, 0, 0, 63, 0, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 0, 0, 0, 0, 0];
+    class BitFieldReader {
+        constructor(source, startIndex, stopIndex) {
+            this._bits = [];
+            this._readIndex = 0;
+            for (let i = startIndex; i < stopIndex; i++) {
+                const value = base64CharCodeToInt[source.charCodeAt(i)];
+                this._bits.push((value >> 5) & 0x1);
+                this._bits.push((value >> 4) & 0x1);
+                this._bits.push((value >> 3) & 0x1);
+                this._bits.push((value >> 2) & 0x1);
+                this._bits.push((value >> 1) & 0x1);
+                this._bits.push(value & 0x1);
+            }
+        }
+        read(bitCount) {
+            let result = 0;
+            while (bitCount > 0) {
+                result = result << 1;
+                result += this._bits[this._readIndex++];
+                bitCount--;
+            }
+            return result;
+        }
+        readLongTail(minValue, minBits) {
+            let result = minValue;
+            let numBits = minBits;
+            while (this._bits[this._readIndex++]) {
+                result += 1 << numBits;
+                numBits++;
+            }
+            while (numBits > 0) {
+                numBits--;
+                if (this._bits[this._readIndex++]) {
+                    result += 1 << numBits;
+                }
+            }
+            return result;
+        }
+        readPartDuration() {
+            return this.readLongTail(1, 3);
+        }
+        readLegacyPartDuration() {
+            return this.readLongTail(1, 2);
+        }
+        readPinCount() {
+            return this.readLongTail(1, 0);
+        }
+        readPitchInterval() {
+            if (this.read(1)) {
+                return -this.readLongTail(1, 3);
+            }
+            else {
+                return this.readLongTail(1, 3);
+            }
+        }
+    }
+    class BitFieldWriter {
+        constructor() {
+            this._index = 0;
+            this._bits = [];
+        }
+        clear() {
+            this._index = 0;
+        }
+        write(bitCount, value) {
+            bitCount--;
+            while (bitCount >= 0) {
+                this._bits[this._index++] = (value >>> bitCount) & 1;
+                bitCount--;
+            }
+        }
+        writeLongTail(minValue, minBits, value) {
+            if (value < minValue)
+                throw new Error("value out of bounds");
+            value -= minValue;
+            let numBits = minBits;
+            while (value >= (1 << numBits)) {
+                this._bits[this._index++] = 1;
+                value -= 1 << numBits;
+                numBits++;
+            }
+            this._bits[this._index++] = 0;
+            while (numBits > 0) {
+                numBits--;
+                this._bits[this._index++] = (value >>> numBits) & 1;
+            }
+        }
+        writePartDuration(value) {
+            this.writeLongTail(1, 3, value);
+        }
+        writePinCount(value) {
+            this.writeLongTail(1, 0, value);
+        }
+        writePitchInterval(value) {
+            if (value < 0) {
+                this.write(1, 1);
+                this.writeLongTail(1, 3, -value);
+            }
+            else {
+                this.write(1, 0);
+                this.writeLongTail(1, 3, value);
+            }
+        }
+        concat(other) {
+            for (let i = 0; i < other._index; i++) {
+                this._bits[this._index++] = other._bits[i];
+            }
+        }
+        encodeBase64(buffer) {
+            for (let i = 0; i < this._index; i += 6) {
+                const value = (this._bits[i] << 5) | (this._bits[i + 1] << 4) | (this._bits[i + 2] << 3) | (this._bits[i + 3] << 2) | (this._bits[i + 4] << 1) | this._bits[i + 5];
+                buffer.push(base64IntToCharCode[value]);
+            }
+            return buffer;
+        }
+        lengthBase64() {
+            return Math.ceil(this._index / 6);
         }
     }
     class Song {
@@ -5617,6 +5145,7 @@ var beepbox = (function (exports) {
                     if (effectsIncludePanning(instrument.effects)) {
                         buffer.push(base64IntToCharCode[instrument.pan >> 6], base64IntToCharCode[instrument.pan & 0x3f]);
                         buffer.push(base64IntToCharCode[instrument.panDelay]);
+                        buffer.push(base64IntToCharCode[instrument.panMode]);
                     }
                     if (effectsIncludeChorus(instrument.effects)) {
                         buffer.push(base64IntToCharCode[instrument.chorus]);
@@ -7395,6 +6924,8 @@ var beepbox = (function (exports) {
                                     }
                                     if ((fromJummBox && !beforeTwo) || fromGoldBox || fromUltraBox || fromSlarmoosBox)
                                         instrument.panDelay = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                    if (fromTheepBox)
+                                        instrument.panMode = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                 }
                                 if (effectsIncludeChorus(instrument.effects)) {
                                     if (fromBeepBox) {
@@ -9312,176 +8843,282 @@ var beepbox = (function (exports) {
     Song._oldestSlarmoosBoxVersion = 1;
     Song._latestSlarmoosBoxVersion = 4;
     Song._variant = 0x74;
-    class PickedString {
+
+    class ChannelState {
         constructor() {
-            this.delayLine = null;
-            this.allPassG = 0.0;
-            this.allPassGDelta = 0.0;
-            this.sustainFilterA1 = 0.0;
-            this.sustainFilterA1Delta = 0.0;
-            this.sustainFilterA2 = 0.0;
-            this.sustainFilterA2Delta = 0.0;
-            this.sustainFilterB0 = 0.0;
-            this.sustainFilterB0Delta = 0.0;
-            this.sustainFilterB1 = 0.0;
-            this.sustainFilterB1Delta = 0.0;
-            this.sustainFilterB2 = 0.0;
-            this.sustainFilterB2Delta = 0.0;
-            this.reset();
+            this.instruments = [];
+            this.muted = false;
+            this.singleSeamlessInstrument = null;
         }
-        reset() {
-            this.delayIndex = -1;
-            this.allPassSample = 0.0;
-            this.allPassPrevInput = 0.0;
-            this.sustainFilterSample = 0.0;
-            this.sustainFilterPrevOutput2 = 0.0;
-            this.sustainFilterPrevInput1 = 0.0;
-            this.sustainFilterPrevInput2 = 0.0;
-            this.fractionalDelaySample = 0.0;
-            this.prevDelayLength = -1.0;
-            this.delayResetOffset = 0;
+    }
+
+    function scaleElementsByFactor(array, factor) {
+        for (let i = 0; i < array.length; i++) {
+            array[i] *= factor;
         }
-        update(synth, instrumentState, tone, stringIndex, roundedSamplesPerTick, stringDecayStart, stringDecayEnd, sustainType) {
-            const allPassCenter = 2.0 * Math.PI * Config.pickedStringDispersionCenterFreq / synth.samplesPerSecond;
-            const prevDelayLength = this.prevDelayLength;
-            const phaseDeltaStart = tone.phaseDeltas[stringIndex];
-            const phaseDeltaScale = tone.phaseDeltaScales[stringIndex];
-            const phaseDeltaEnd = phaseDeltaStart * Math.pow(phaseDeltaScale, roundedSamplesPerTick);
-            const radiansPerSampleStart = Math.PI * 2.0 * phaseDeltaStart;
-            const radiansPerSampleEnd = Math.PI * 2.0 * phaseDeltaEnd;
-            const centerHarmonicStart = radiansPerSampleStart * 2.0;
-            const centerHarmonicEnd = radiansPerSampleEnd * 2.0;
-            const allPassRadiansStart = Math.min(Math.PI, radiansPerSampleStart * Config.pickedStringDispersionFreqMult * Math.pow(allPassCenter / radiansPerSampleStart, Config.pickedStringDispersionFreqScale));
-            const allPassRadiansEnd = Math.min(Math.PI, radiansPerSampleEnd * Config.pickedStringDispersionFreqMult * Math.pow(allPassCenter / radiansPerSampleEnd, Config.pickedStringDispersionFreqScale));
-            const shelfRadians = 2.0 * Math.PI * Config.pickedStringShelfHz / synth.samplesPerSecond;
-            const decayCurveStart = (Math.pow(100.0, stringDecayStart) - 1.0) / 99.0;
-            const decayCurveEnd = (Math.pow(100.0, stringDecayEnd) - 1.0) / 99.0;
-            const register = sustainType == 1 ? 0.25 : 0.0;
-            const registerShelfCenter = 15.6;
-            const registerLowpassCenter = 3.0 * synth.samplesPerSecond / 48000;
-            const decayRateStart = Math.pow(0.5, decayCurveStart * Math.pow(shelfRadians / (radiansPerSampleStart * registerShelfCenter), (1.0 + 2.0 * register)) * registerShelfCenter);
-            const decayRateEnd = Math.pow(0.5, decayCurveEnd * Math.pow(shelfRadians / (radiansPerSampleEnd * registerShelfCenter), (1.0 + 2.0 * register)) * registerShelfCenter);
-            const expressionDecayStart = Math.pow(decayRateStart, 0.002);
-            const expressionDecayEnd = Math.pow(decayRateEnd, 0.002);
-            Synth.tempFilterStartCoefficients.allPass1stOrderInvertPhaseAbove(allPassRadiansStart);
-            synth.tempFrequencyResponse.analyze(Synth.tempFilterStartCoefficients, centerHarmonicStart);
-            const allPassGStart = Synth.tempFilterStartCoefficients.b[0];
-            const allPassPhaseDelayStart = -synth.tempFrequencyResponse.angle() / centerHarmonicStart;
-            Synth.tempFilterEndCoefficients.allPass1stOrderInvertPhaseAbove(allPassRadiansEnd);
-            synth.tempFrequencyResponse.analyze(Synth.tempFilterEndCoefficients, centerHarmonicEnd);
-            const allPassGEnd = Synth.tempFilterEndCoefficients.b[0];
-            const allPassPhaseDelayEnd = -synth.tempFrequencyResponse.angle() / centerHarmonicEnd;
-            const brightnessType = sustainType == 0 ? 0 : 1;
-            if (brightnessType == 0) {
-                const shelfGainStart = Math.pow(decayRateStart, Config.stringDecayRate);
-                const shelfGainEnd = Math.pow(decayRateEnd, Config.stringDecayRate);
-                Synth.tempFilterStartCoefficients.highShelf2ndOrder(shelfRadians, shelfGainStart, 0.5);
-                Synth.tempFilterEndCoefficients.highShelf2ndOrder(shelfRadians, shelfGainEnd, 0.5);
-            }
-            else {
-                const cornerHardness = Math.pow(brightnessType == 1 ? 0.0 : 1.0, 0.25);
-                const lowpass1stOrderCutoffRadiansStart = Math.pow(registerLowpassCenter * registerLowpassCenter * radiansPerSampleStart * 3.3 * 48000 / synth.samplesPerSecond, 0.5 + register) / registerLowpassCenter / Math.pow(decayCurveStart, .5);
-                const lowpass1stOrderCutoffRadiansEnd = Math.pow(registerLowpassCenter * registerLowpassCenter * radiansPerSampleEnd * 3.3 * 48000 / synth.samplesPerSecond, 0.5 + register) / registerLowpassCenter / Math.pow(decayCurveEnd, .5);
-                const lowpass2ndOrderCutoffRadiansStart = lowpass1stOrderCutoffRadiansStart * Math.pow(2.0, 0.5 - 1.75 * (1.0 - Math.pow(1.0 - cornerHardness, 0.85)));
-                const lowpass2ndOrderCutoffRadiansEnd = lowpass1stOrderCutoffRadiansEnd * Math.pow(2.0, 0.5 - 1.75 * (1.0 - Math.pow(1.0 - cornerHardness, 0.85)));
-                const lowpass2ndOrderGainStart = Math.pow(2.0, -Math.pow(2.0, -Math.pow(cornerHardness, 0.9)));
-                const lowpass2ndOrderGainEnd = Math.pow(2.0, -Math.pow(2.0, -Math.pow(cornerHardness, 0.9)));
-                Synth.tempFilterStartCoefficients.lowPass2ndOrderButterworth(warpInfinityToNyquist(lowpass2ndOrderCutoffRadiansStart), lowpass2ndOrderGainStart);
-                Synth.tempFilterEndCoefficients.lowPass2ndOrderButterworth(warpInfinityToNyquist(lowpass2ndOrderCutoffRadiansEnd), lowpass2ndOrderGainEnd);
-            }
-            synth.tempFrequencyResponse.analyze(Synth.tempFilterStartCoefficients, centerHarmonicStart);
-            const sustainFilterA1Start = Synth.tempFilterStartCoefficients.a[1];
-            const sustainFilterA2Start = Synth.tempFilterStartCoefficients.a[2];
-            const sustainFilterB0Start = Synth.tempFilterStartCoefficients.b[0] * expressionDecayStart;
-            const sustainFilterB1Start = Synth.tempFilterStartCoefficients.b[1] * expressionDecayStart;
-            const sustainFilterB2Start = Synth.tempFilterStartCoefficients.b[2] * expressionDecayStart;
-            const sustainFilterPhaseDelayStart = -synth.tempFrequencyResponse.angle() / centerHarmonicStart;
-            synth.tempFrequencyResponse.analyze(Synth.tempFilterEndCoefficients, centerHarmonicEnd);
-            const sustainFilterA1End = Synth.tempFilterEndCoefficients.a[1];
-            const sustainFilterA2End = Synth.tempFilterEndCoefficients.a[2];
-            const sustainFilterB0End = Synth.tempFilterEndCoefficients.b[0] * expressionDecayEnd;
-            const sustainFilterB1End = Synth.tempFilterEndCoefficients.b[1] * expressionDecayEnd;
-            const sustainFilterB2End = Synth.tempFilterEndCoefficients.b[2] * expressionDecayEnd;
-            const sustainFilterPhaseDelayEnd = -synth.tempFrequencyResponse.angle() / centerHarmonicEnd;
-            const periodLengthStart = 1.0 / phaseDeltaStart;
-            const periodLengthEnd = 1.0 / phaseDeltaEnd;
-            const minBufferLength = Math.ceil(Math.max(periodLengthStart, periodLengthEnd) * 2);
-            const delayLength = periodLengthStart - allPassPhaseDelayStart - sustainFilterPhaseDelayStart;
-            const delayLengthEnd = periodLengthEnd - allPassPhaseDelayEnd - sustainFilterPhaseDelayEnd;
-            this.prevDelayLength = delayLength;
-            this.delayLengthDelta = (delayLengthEnd - delayLength) / roundedSamplesPerTick;
-            this.allPassG = allPassGStart;
-            this.sustainFilterA1 = sustainFilterA1Start;
-            this.sustainFilterA2 = sustainFilterA2Start;
-            this.sustainFilterB0 = sustainFilterB0Start;
-            this.sustainFilterB1 = sustainFilterB1Start;
-            this.sustainFilterB2 = sustainFilterB2Start;
-            this.allPassGDelta = (allPassGEnd - allPassGStart) / roundedSamplesPerTick;
-            this.sustainFilterA1Delta = (sustainFilterA1End - sustainFilterA1Start) / roundedSamplesPerTick;
-            this.sustainFilterA2Delta = (sustainFilterA2End - sustainFilterA2Start) / roundedSamplesPerTick;
-            this.sustainFilterB0Delta = (sustainFilterB0End - sustainFilterB0Start) / roundedSamplesPerTick;
-            this.sustainFilterB1Delta = (sustainFilterB1End - sustainFilterB1Start) / roundedSamplesPerTick;
-            this.sustainFilterB2Delta = (sustainFilterB2End - sustainFilterB2Start) / roundedSamplesPerTick;
-            const pitchChanged = Math.abs(Math.log2(delayLength / prevDelayLength)) > 0.01;
-            const reinitializeImpulse = (this.delayIndex == -1 || pitchChanged);
-            if (this.delayLine == null || this.delayLine.length <= minBufferLength) {
-                const likelyMaximumLength = Math.ceil(2 * synth.samplesPerSecond / Instrument.frequencyFromPitch(12));
-                const newDelayLine = new Float32Array(Synth.fittingPowerOfTwo(Math.max(likelyMaximumLength, minBufferLength)));
-                if (!reinitializeImpulse && this.delayLine != null) {
-                    const oldDelayBufferMask = (this.delayLine.length - 1) >> 0;
-                    const startCopyingFromIndex = this.delayIndex + this.delayResetOffset;
-                    this.delayIndex = this.delayLine.length - this.delayResetOffset;
-                    for (let i = 0; i < this.delayLine.length; i++) {
-                        newDelayLine[i] = this.delayLine[(startCopyingFromIndex + i) & oldDelayBufferMask];
-                    }
-                }
-                this.delayLine = newDelayLine;
-            }
-            const delayLine = this.delayLine;
-            const delayBufferMask = (delayLine.length - 1) >> 0;
-            if (reinitializeImpulse) {
-                this.delayIndex = 0;
-                this.allPassSample = 0.0;
-                this.allPassPrevInput = 0.0;
-                this.sustainFilterSample = 0.0;
-                this.sustainFilterPrevOutput2 = 0.0;
-                this.sustainFilterPrevInput1 = 0.0;
-                this.sustainFilterPrevInput2 = 0.0;
-                this.fractionalDelaySample = 0.0;
-                const startImpulseFrom = -delayLength;
-                const startZerosFrom = Math.floor(startImpulseFrom - periodLengthStart / 2);
-                const stopZerosAt = Math.ceil(startZerosFrom + periodLengthStart * 2);
-                this.delayResetOffset = stopZerosAt;
-                for (let i = startZerosFrom; i <= stopZerosAt; i++) {
-                    delayLine[i & delayBufferMask] = 0.0;
-                }
-                const impulseWave = instrumentState.waveL;
-                const impulseWaveLength = impulseWave.length - 1;
-                const impulsePhaseDelta = impulseWaveLength / periodLengthStart;
-                const fadeDuration = Math.min(periodLengthStart * 0.2, synth.samplesPerSecond * 0.003);
-                const startImpulseFromSample = Math.ceil(startImpulseFrom);
-                const stopImpulseAt = startImpulseFrom + periodLengthStart + fadeDuration;
-                const stopImpulseAtSample = stopImpulseAt;
-                let impulsePhase = (startImpulseFromSample - startImpulseFrom) * impulsePhaseDelta;
-                let prevWaveIntegral = 0.0;
-                for (let i = startImpulseFromSample; i <= stopImpulseAtSample; i++) {
-                    const impulsePhaseInt = impulsePhase | 0;
-                    const index = impulsePhaseInt % impulseWaveLength;
-                    let nextWaveIntegral = impulseWave[index];
-                    const phaseRatio = impulsePhase - impulsePhaseInt;
-                    nextWaveIntegral += (impulseWave[index + 1] - nextWaveIntegral) * phaseRatio;
-                    const sample = (nextWaveIntegral - prevWaveIntegral) / impulsePhaseDelta;
-                    const fadeIn = Math.min(1.0, (i - startImpulseFrom) / fadeDuration);
-                    const fadeOut = Math.min(1.0, (stopImpulseAt - i) / fadeDuration);
-                    const combinedFade = fadeIn * fadeOut;
-                    const curvedFade = combinedFade * combinedFade * (3.0 - 2.0 * combinedFade);
-                    delayLine[i & delayBufferMask] += sample * curvedFade;
-                    prevWaveIntegral = nextWaveIntegral;
-                    impulsePhase += impulsePhaseDelta;
-                }
+    }
+    function isPowerOf2(n) {
+        return !!n && !(n & (n - 1));
+    }
+    function countBits(n) {
+        if (!isPowerOf2(n))
+            throw new Error("FFT array length must be a power of 2.");
+        return Math.round(Math.log(n) / Math.log(2));
+    }
+    function reverseIndexBits(array, fullArrayLength) {
+        const bitCount = countBits(fullArrayLength);
+        if (bitCount > 16)
+            throw new Error("FFT array length must not be greater than 2^16.");
+        const finalShift = 16 - bitCount;
+        for (let i = 0; i < fullArrayLength; i++) {
+            let j;
+            j = ((i & 0xaaaa) >> 1) | ((i & 0x5555) << 1);
+            j = ((j & 0xcccc) >> 2) | ((j & 0x3333) << 2);
+            j = ((j & 0xf0f0) >> 4) | ((j & 0x0f0f) << 4);
+            j = ((j >> 8) | ((j & 0xff) << 8)) >> finalShift;
+            if (j > i) {
+                let temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
             }
         }
     }
+    function inverseRealFourierTransform(array, fullArrayLength) {
+        const totalPasses = countBits(fullArrayLength);
+        if (fullArrayLength < 4)
+            throw new Error("FFT array length must be at least 4.");
+        for (let pass = totalPasses - 1; pass >= 2; pass--) {
+            const subStride = 1 << pass;
+            const midSubStride = subStride >> 1;
+            const stride = subStride << 1;
+            const radiansIncrement = Math.PI * 2.0 / stride;
+            const cosIncrement = Math.cos(radiansIncrement);
+            const sinIncrement = Math.sin(radiansIncrement);
+            const oscillatorMultiplier = 2.0 * cosIncrement;
+            for (let startIndex = 0; startIndex < fullArrayLength; startIndex += stride) {
+                const startIndexA = startIndex;
+                const midIndexA = startIndexA + midSubStride;
+                const startIndexB = startIndexA + subStride;
+                const midIndexB = startIndexB + midSubStride;
+                const stopIndex = startIndexB + subStride;
+                const realStartA = array[startIndexA];
+                const imagStartB = array[startIndexB];
+                array[startIndexA] = realStartA + imagStartB;
+                array[midIndexA] *= 2;
+                array[startIndexB] = realStartA - imagStartB;
+                array[midIndexB] *= 2;
+                let c = cosIncrement;
+                let s = -sinIncrement;
+                let cPrev = 1.0;
+                let sPrev = 0.0;
+                for (let index = 1; index < midSubStride; index++) {
+                    const indexA0 = startIndexA + index;
+                    const indexA1 = startIndexB - index;
+                    const indexB0 = startIndexB + index;
+                    const indexB1 = stopIndex - index;
+                    const real0 = array[indexA0];
+                    const real1 = array[indexA1];
+                    const imag0 = array[indexB0];
+                    const imag1 = array[indexB1];
+                    const tempA = real0 - real1;
+                    const tempB = imag0 + imag1;
+                    array[indexA0] = real0 + real1;
+                    array[indexA1] = imag1 - imag0;
+                    array[indexB0] = tempA * c - tempB * s;
+                    array[indexB1] = tempB * c + tempA * s;
+                    const cTemp = oscillatorMultiplier * c - cPrev;
+                    const sTemp = oscillatorMultiplier * s - sPrev;
+                    cPrev = c;
+                    sPrev = s;
+                    c = cTemp;
+                    s = sTemp;
+                }
+            }
+        }
+        for (let index = 0; index < fullArrayLength; index += 4) {
+            const index1 = index + 1;
+            const index2 = index + 2;
+            const index3 = index + 3;
+            const real0 = array[index];
+            const real1 = array[index1] * 2;
+            const imag2 = array[index2];
+            const imag3 = array[index3] * 2;
+            const tempA = real0 + imag2;
+            const tempB = real0 - imag2;
+            array[index] = tempA + real1;
+            array[index1] = tempA - real1;
+            array[index2] = tempB + imag3;
+            array[index3] = tempB - imag3;
+        }
+        reverseIndexBits(array, fullArrayLength);
+    }
+
+    const PRIME32_1 = 2654435761;
+    const PRIME32_2 = 2246822519;
+    const PRIME32_3 = 3266489917;
+    const PRIME32_4 = 668265263;
+    const PRIME32_5 = 374761393;
+    let encoder;
+    /**
+     *
+     * @param input - byte array or string
+     * @param seed - optional seed (32-bit unsigned);
+     */
+    function xxHash32(input, seed = 0) {
+        const buffer = typeof input === 'string' ? (encoder ??= new TextEncoder()).encode(input) : input;
+        const b = buffer;
+        /*
+            Step 1. Initialize internal accumulators
+            Each accumulator gets an initial value based on optional seed input. Since the seed is optional, it can be 0.
+
+            ```
+                u32 acc1 = seed + PRIME32_1 + PRIME32_2;
+                u32 acc2 = seed + PRIME32_2;
+                u32 acc3 = seed + 0;
+                u32 acc4 = seed - PRIME32_1;
+            ```
+            Special case : input is less than 16 bytes
+            When input is too small (< 16 bytes), the algorithm will not process any stripe. Consequently, it will not
+            make use of parallel accumulators.
+
+            In which case, a simplified initialization is performed, using a single accumulator :
+
+            u32 acc  = seed + PRIME32_5;
+            The algorithm then proceeds directly to step 4.
+        */
+        let acc = (seed + PRIME32_5) & 0xffffffff;
+        let offset = 0;
+        if (b.length >= 16) {
+            const accN = [
+                (seed + PRIME32_1 + PRIME32_2) & 0xffffffff,
+                (seed + PRIME32_2) & 0xffffffff,
+                (seed + 0) & 0xffffffff,
+                (seed - PRIME32_1) & 0xffffffff,
+            ];
+            /*
+                Step 2. Process stripes
+                A stripe is a contiguous segment of 16 bytes. It is evenly divided into 4 lanes, of 4 bytes each.
+                The first lane is used to update accumulator 1, the second lane is used to update accumulator 2, and so on.
+
+                Each lane read its associated 32-bit value using little-endian convention.
+
+                For each {lane, accumulator}, the update process is called a round, and applies the following formula :
+
+                ```
+                accN = accN + (laneN * PRIME32_2);
+                accN = accN <<< 13;
+                accN = accN * PRIME32_1;
+                ```
+
+                This shuffles the bits so that any bit from input lane impacts several bits in output accumulator.
+                All operations are performed modulo 2^32.
+
+                Input is consumed one full stripe at a time. Step 2 is looped as many times as necessary to consume
+                the whole input, except the last remaining bytes which cannot form a stripe (< 16 bytes). When that
+                happens, move to step 3.
+            */
+            const b = buffer;
+            const limit = b.length - 16;
+            let lane = 0;
+            for (offset = 0; (offset & 0xfffffff0) <= limit; offset += 4) {
+                const i = offset;
+                const laneN0 = b[i + 0] + (b[i + 1] << 8);
+                const laneN1 = b[i + 2] + (b[i + 3] << 8);
+                const laneNP = laneN0 * PRIME32_2 + ((laneN1 * PRIME32_2) << 16);
+                let acc = (accN[lane] + laneNP) & 0xffffffff;
+                acc = (acc << 13) | (acc >>> 19);
+                const acc0 = acc & 0xffff;
+                const acc1 = acc >>> 16;
+                accN[lane] = (acc0 * PRIME32_1 + ((acc1 * PRIME32_1) << 16)) & 0xffffffff;
+                lane = (lane + 1) & 0x3;
+            }
+            /*
+                Step 3. Accumulator convergence
+                All 4 lane accumulators from previous steps are merged to produce a single remaining accumulator
+                of same width (32-bit). The associated formula is as follows :
+
+                ```
+                acc = (acc1 <<< 1) + (acc2 <<< 7) + (acc3 <<< 12) + (acc4 <<< 18);
+                ```
+            */
+            acc =
+                (((accN[0] << 1) | (accN[0] >>> 31)) +
+                    ((accN[1] << 7) | (accN[1] >>> 25)) +
+                    ((accN[2] << 12) | (accN[2] >>> 20)) +
+                    ((accN[3] << 18) | (accN[3] >>> 14))) &
+                    0xffffffff;
+        }
+        /*
+            Step 4. Add input length
+            The input total length is presumed known at this stage. This step is just about adding the length to
+            accumulator, so that it participates to final mixing.
+
+            ```
+            acc = acc + (u32)inputLength;
+            ```
+        */
+        acc = (acc + buffer.length) & 0xffffffff;
+        /*
+            Step 5. Consume remaining input
+            There may be up to 15 bytes remaining to consume from the input. The final stage will digest them according
+            to following pseudo-code :
+            ```
+            while (remainingLength >= 4) {
+                lane = read_32bit_little_endian(input_ptr);
+                acc = acc + lane * PRIME32_3;
+                acc = (acc <<< 17) * PRIME32_4;
+                input_ptr += 4; remainingLength -= 4;
+            }
+            ```
+            This process ensures that all input bytes are present in the final mix.
+        */
+        const limit = buffer.length - 4;
+        for (; offset <= limit; offset += 4) {
+            const i = offset;
+            const laneN0 = b[i + 0] + (b[i + 1] << 8);
+            const laneN1 = b[i + 2] + (b[i + 3] << 8);
+            const laneP = laneN0 * PRIME32_3 + ((laneN1 * PRIME32_3) << 16);
+            acc = (acc + laneP) & 0xffffffff;
+            acc = (acc << 17) | (acc >>> 15);
+            acc = ((acc & 0xffff) * PRIME32_4 + (((acc >>> 16) * PRIME32_4) << 16)) & 0xffffffff;
+        }
+        /*
+            ```
+            while (remainingLength >= 1) {
+                lane = read_byte(input_ptr);
+                acc = acc + lane * PRIME32_5;
+                acc = (acc <<< 11) * PRIME32_1;
+                input_ptr += 1; remainingLength -= 1;
+            }
+            ```
+        */
+        for (; offset < b.length; ++offset) {
+            const lane = b[offset];
+            acc = acc + lane * PRIME32_5;
+            acc = (acc << 11) | (acc >>> 21);
+            acc = ((acc & 0xffff) * PRIME32_1 + (((acc >>> 16) * PRIME32_1) << 16)) & 0xffffffff;
+        }
+        /*
+            Step 6. Final mix (avalanche)
+            The final mix ensures that all input bits have a chance to impact any bit in the output digest,
+            resulting in an unbiased distribution. This is also called avalanche effect.
+            ```
+            acc = acc xor (acc >> 15);
+            acc = acc * PRIME32_2;
+            acc = acc xor (acc >> 13);
+            acc = acc * PRIME32_3;
+            acc = acc xor (acc >> 16);
+            ```
+        */
+        acc = acc ^ (acc >>> 15);
+        acc = (((acc & 0xffff) * PRIME32_2) & 0xffffffff) + (((acc >>> 16) * PRIME32_2) << 16);
+        acc = acc ^ (acc >>> 13);
+        acc = (((acc & 0xffff) * PRIME32_3) & 0xffffffff) + (((acc >>> 16) * PRIME32_3) << 16);
+        acc = acc ^ (acc >>> 16);
+        // turn any negatives back into a positive number;
+        return acc < 0 ? acc + 4294967296 : acc;
+    }
+
     class EnvelopeComputer {
         constructor() {
             this.noteSecondsStart = [];
@@ -10043,126 +9680,315 @@ var beepbox = (function (exports) {
             this.drumsetFilterEnvelopeEnd = drumsetFilterEnvelopeEnd;
         }
     }
-    class Tone {
+
+    class SpectrumWaveState {
         constructor() {
-            this.pitches = Array(Config.maxChordSize + 2).fill(0);
-            this.pitchCount = 0;
-            this.chordSize = 0;
-            this.drumsetPitch = null;
-            this.note = null;
-            this.prevNote = null;
-            this.nextNote = null;
-            this.prevNotePitchIndex = 0;
-            this.nextNotePitchIndex = 0;
-            this.freshlyAllocated = true;
-            this.atNoteStart = false;
-            this.isOnLastTick = false;
-            this.passedEndOfNote = false;
-            this.forceContinueAtStart = false;
-            this.forceContinueAtEnd = false;
-            this.noteStartPart = 0;
-            this.noteEndPart = 0;
-            this.ticksSinceReleased = 0;
-            this.liveInputSamplesHeld = 0;
-            this.lastInterval = 0;
-            this.chipWaveStartOffset = 0;
-            this.noiseSample = 0.0;
-            this.noiseSampleA = 0.0;
-            this.noiseSampleB = 0.0;
-            this.stringSustainStart = 0;
-            this.stringSustainEnd = 0;
-            this.phases = [];
-            this.operatorWaves = [];
-            this.phaseDeltas = [];
-            this.directions = [];
-            this.chipWaveCompletions = [];
-            this.chipWavePrevWavesL = [];
-            this.chipWavePrevWavesR = [];
-            this.chipWaveCompletionsLastWaveL = [];
-            this.chipWaveCompletionsLastWaveR = [];
-            this.phaseDeltaScales = [];
-            this.expression = 0.0;
-            this.expressionDelta = 0.0;
-            this.operatorExpressions = [];
-            this.operatorExpressionDeltas = [];
-            this.prevPitchExpressions = Array(Config.maxPitchOrOperatorCount).fill(null);
-            this.prevVibrato = null;
-            this.prevStringDecay = null;
-            this.pulseWidth = 0.0;
-            this.pulseWidthDelta = 0.0;
-            this.decimalOffset = 0.0;
-            this.supersawDynamism = 0.0;
-            this.supersawDynamismDelta = 0.0;
-            this.supersawUnisonDetunes = [];
-            this.supersawShape = 0.0;
-            this.supersawShapeDelta = 0.0;
-            this.supersawDelayLength = 0.0;
-            this.supersawDelayLengthDelta = 0.0;
-            this.supersawDelayLine = null;
-            this.supersawDelayIndex = -1;
-            this.supersawPrevPhaseDelta = null;
-            this.pickedStrings = [];
-            this.noteFiltersL = [];
-            this.noteFiltersR = [];
-            this.noteFilterCount = 0;
-            this.initialNoteFilterInputL1 = 0.0;
-            this.initialNoteFilterInputR1 = 0.0;
-            this.initialNoteFilterInputL2 = 0.0;
-            this.initialNoteFilterInputR2 = 0.0;
-            this.specialIntervalExpressionMult = 1.0;
-            this.feedbackOutputs = [];
-            this.feedbackMult = 0.0;
-            this.feedbackDelta = 0.0;
-            this.stereoVolumeLStart = 0.0;
-            this.stereoVolumeRStart = 0.0;
-            this.stereoVolumeLDelta = 0.0;
-            this.stereoVolumeRDelta = 0.0;
-            this.stereoDelayStart = 0.0;
-            this.stereoDelayEnd = 0.0;
-            this.stereoDelayDelta = 0.0;
-            this.customVolumeStart = 0.0;
-            this.customVolumeEnd = 0.0;
-            this.filterResonanceStart = 0.0;
-            this.filterResonanceDelta = 0.0;
-            this.isFirstOrder = false;
-            this.envelopeComputer = new EnvelopeComputer();
+            this.wave = null;
+            this._hash = -1;
+        }
+        getCustomWave(settings, lowestOctave) {
+            if (this._hash == settings.hash)
+                return this.wave;
+            this._hash = settings.hash;
+            const waveLength = Config.spectrumNoiseLength;
+            if (this.wave == null || this.wave.length != waveLength + 1) {
+                this.wave = new Float32Array(waveLength + 1);
+            }
+            const wave = this.wave;
+            for (let i = 0; i < waveLength; i++) {
+                wave[i] = 0;
+            }
+            const highestOctave = 14;
+            const falloffRatio = 0.25;
+            const pitchTweak = [0, 1 / 7, Math.log2(5 / 4), 3 / 7, Math.log2(3 / 2), 5 / 7, 6 / 7];
+            function controlPointToOctave(point) {
+                return lowestOctave + Math.floor(point / Config.spectrumControlPointsPerOctave) + pitchTweak[(point + Config.spectrumControlPointsPerOctave) % Config.spectrumControlPointsPerOctave];
+            }
+            let combinedAmplitude = 1;
+            for (let i = 0; i < Config.spectrumControlPoints + 1; i++) {
+                const value1 = (i <= 0) ? 0 : settings.spectrum[i - 1];
+                const value2 = (i >= Config.spectrumControlPoints) ? settings.spectrum[Config.spectrumControlPoints - 1] : settings.spectrum[i];
+                const octave1 = controlPointToOctave(i - 1);
+                let octave2 = controlPointToOctave(i);
+                if (i >= Config.spectrumControlPoints)
+                    octave2 = highestOctave + (octave2 - highestOctave) * falloffRatio;
+                if (value1 == 0 && value2 == 0)
+                    continue;
+                combinedAmplitude += 0.02 * drawNoiseSpectrum(wave, waveLength, octave1, octave2, value1 / Config.spectrumMax, value2 / Config.spectrumMax, -0.5);
+            }
+            if (settings.spectrum[Config.spectrumControlPoints - 1] > 0) {
+                combinedAmplitude += 0.02 * drawNoiseSpectrum(wave, waveLength, highestOctave + (controlPointToOctave(Config.spectrumControlPoints) - highestOctave) * falloffRatio, highestOctave, settings.spectrum[Config.spectrumControlPoints - 1] / Config.spectrumMax, 0, -0.5);
+            }
+            inverseRealFourierTransform(wave, waveLength);
+            scaleElementsByFactor(wave, 5.0 / (Math.sqrt(waveLength) * Math.pow(combinedAmplitude, 0.75)));
+            wave[waveLength] = wave[0];
+            return wave;
+        }
+    }
+    class HarmonicsWaveState {
+        constructor() {
+            this.wave = null;
+            this._hash = -1;
+        }
+        getCustomWave(settings, instrumentType) {
+            if (this._hash == settings.hash && this._generatedForType == instrumentType)
+                return this.wave;
+            this._hash = settings.hash;
+            this._generatedForType = instrumentType;
+            const harmonicsRendered = (instrumentType == 7) ? Config.harmonicsRenderedForPickedString : Config.harmonicsRendered;
+            const waveLength = Config.harmonicsWavelength;
+            const retroWave = getDrumWave(0, null, null);
+            if (this.wave == null || this.wave.length != waveLength + 1) {
+                this.wave = new Float32Array(waveLength + 1);
+            }
+            const wave = this.wave;
+            for (let i = 0; i < waveLength; i++) {
+                wave[i] = 0;
+            }
+            const overallSlope = -0.25;
+            let combinedControlPointAmplitude = 1;
+            for (let harmonicIndex = 0; harmonicIndex < harmonicsRendered; harmonicIndex++) {
+                const harmonicFreq = harmonicIndex + 1;
+                let controlValue = harmonicIndex < Config.harmonicsControlPoints ? settings.harmonics[harmonicIndex] : settings.harmonics[Config.harmonicsControlPoints - 1];
+                if (harmonicIndex >= Config.harmonicsControlPoints) {
+                    controlValue *= 1 - (harmonicIndex - Config.harmonicsControlPoints) / (harmonicsRendered - Config.harmonicsControlPoints);
+                }
+                const normalizedValue = controlValue / Config.harmonicsMax;
+                let amplitude = Math.pow(2, controlValue - Config.harmonicsMax + 1) * Math.sqrt(normalizedValue);
+                if (harmonicIndex < Config.harmonicsControlPoints) {
+                    combinedControlPointAmplitude += amplitude;
+                }
+                amplitude *= Math.pow(harmonicFreq, overallSlope);
+                amplitude *= retroWave[harmonicIndex + 589];
+                wave[waveLength - harmonicFreq] = amplitude;
+            }
+            inverseRealFourierTransform(wave, waveLength);
+            const mult = 1 / Math.pow(combinedControlPointAmplitude, 0.7);
+            for (let i = 0; i < wave.length; i++)
+                wave[i] *= mult;
+            performIntegralOld(wave);
+            wave[waveLength] = wave[0];
+            return wave;
+        }
+    }
+    class AdditiveWaveState {
+        constructor() {
+            this.wave = null;
+            this._hash = -1;
+        }
+        getCustomWave(settings) {
+            if (this._hash == settings.hash)
+                return this.wave;
+            this._hash = settings.hash;
+            const additiveRendered = Config.additiveRendered;
+            const waveLength = Config.additiveWavelength;
+            if (this.wave == null || this.wave.length != waveLength + 1) {
+                this.wave = new Float32Array(waveLength + 1);
+            }
+            const wave = this.wave;
+            for (let i = 0; i < waveLength; i++) {
+                wave[i] = 1;
+            }
+            const overallSlope = -0.25;
+            let combinedControlPointAmplitude = 1;
+            for (let additiveIndex = 1; additiveIndex < additiveRendered; additiveIndex++) {
+                const additiveFreq = additiveIndex + 1;
+                for (let i = 0; i < waveLength; i++) {
+                    let additiveHarmonic = this.waveExpressions(settings.waveTypes[additiveIndex], i / waveLength, additiveFreq) * (settings.additives[additiveIndex] != undefined ? settings.additives[additiveIndex] / Config.additiveMax : 1);
+                    additiveHarmonic *= Math.pow(additiveFreq, overallSlope);
+                    wave[i] += additiveHarmonic;
+                }
+            }
+            const mult = 1 / Math.pow(combinedControlPointAmplitude, 0.7);
+            for (let i = 0; i < wave.length; i++)
+                wave[i] *= mult;
+            performIntegralOld(wave);
+            wave[waveLength] = wave[0];
+            return wave;
+        }
+        waveExpressions(waveType, time, harmonic) {
+            switch (waveType) {
+                case 0:
+                    return (Math.sin(time * harmonic * Math.PI * 2)) / harmonic;
+                case 1:
+                    return (2 * (Math.floor((time * harmonic - 1) % 2 + 2) % 2) - 1) / harmonic;
+                case 2:
+                    return (2 * (Math.abs(((time * harmonic / 2 + 1 / 2) % 1 + 1) % 1) * 2 - 1) - 1) / harmonic;
+                case 3:
+                    return (2 * Math.abs(((time * harmonic / 2 + 1 / 2) % 1 + 1) % 1) - 1) / harmonic;
+                default:
+                    return (Math.sin(time * harmonic * Math.PI * 2)) / harmonic;
+            }
+        }
+    }
+    class PickedString {
+        constructor() {
+            this.delayLine = null;
+            this.allPassG = 0.0;
+            this.allPassGDelta = 0.0;
+            this.sustainFilterA1 = 0.0;
+            this.sustainFilterA1Delta = 0.0;
+            this.sustainFilterA2 = 0.0;
+            this.sustainFilterA2Delta = 0.0;
+            this.sustainFilterB0 = 0.0;
+            this.sustainFilterB0Delta = 0.0;
+            this.sustainFilterB1 = 0.0;
+            this.sustainFilterB1Delta = 0.0;
+            this.sustainFilterB2 = 0.0;
+            this.sustainFilterB2Delta = 0.0;
             this.reset();
         }
         reset() {
-            this.noiseSample = 0.0;
-            this.noiseSampleA = 0.0;
-            this.noiseSampleB = 0.0;
-            for (let i = 0; i < Config.maxPitchOrOperatorCount; i++) {
-                this.phases[i] = 0.0;
-                this.directions[i] = 1;
-                this.chipWaveCompletions[i] = 0;
-                this.chipWavePrevWavesL[i] = 0;
-                this.chipWavePrevWavesR[i] = 0;
-                this.chipWaveCompletionsLastWaveL[i] = 0;
-                this.chipWaveCompletionsLastWaveR[i] = 0;
-                this.operatorWaves[i] = Config.operatorWaves[0];
-                this.feedbackOutputs[i] = 0.0;
-                this.prevPitchExpressions[i] = null;
+            this.delayIndex = -1;
+            this.allPassSample = 0.0;
+            this.allPassPrevInput = 0.0;
+            this.sustainFilterSample = 0.0;
+            this.sustainFilterPrevOutput2 = 0.0;
+            this.sustainFilterPrevInput1 = 0.0;
+            this.sustainFilterPrevInput2 = 0.0;
+            this.fractionalDelaySample = 0.0;
+            this.prevDelayLength = -1.0;
+            this.delayResetOffset = 0;
+        }
+        update(synth, instrumentState, tone, stringIndex, roundedSamplesPerTick, stringDecayStart, stringDecayEnd, sustainType) {
+            const allPassCenter = 2.0 * Math.PI * Config.pickedStringDispersionCenterFreq / synth.samplesPerSecond;
+            const prevDelayLength = this.prevDelayLength;
+            const phaseDeltaStart = tone.phaseDeltas[stringIndex];
+            const phaseDeltaScale = tone.phaseDeltaScales[stringIndex];
+            const phaseDeltaEnd = phaseDeltaStart * Math.pow(phaseDeltaScale, roundedSamplesPerTick);
+            const radiansPerSampleStart = Math.PI * 2.0 * phaseDeltaStart;
+            const radiansPerSampleEnd = Math.PI * 2.0 * phaseDeltaEnd;
+            const centerHarmonicStart = radiansPerSampleStart * 2.0;
+            const centerHarmonicEnd = radiansPerSampleEnd * 2.0;
+            const allPassRadiansStart = Math.min(Math.PI, radiansPerSampleStart * Config.pickedStringDispersionFreqMult * Math.pow(allPassCenter / radiansPerSampleStart, Config.pickedStringDispersionFreqScale));
+            const allPassRadiansEnd = Math.min(Math.PI, radiansPerSampleEnd * Config.pickedStringDispersionFreqMult * Math.pow(allPassCenter / radiansPerSampleEnd, Config.pickedStringDispersionFreqScale));
+            const shelfRadians = 2.0 * Math.PI * Config.pickedStringShelfHz / synth.samplesPerSecond;
+            const decayCurveStart = (Math.pow(100.0, stringDecayStart) - 1.0) / 99.0;
+            const decayCurveEnd = (Math.pow(100.0, stringDecayEnd) - 1.0) / 99.0;
+            const register = sustainType == 1 ? 0.25 : 0.0;
+            const registerShelfCenter = 15.6;
+            const registerLowpassCenter = 3.0 * synth.samplesPerSecond / 48000;
+            const decayRateStart = Math.pow(0.5, decayCurveStart * Math.pow(shelfRadians / (radiansPerSampleStart * registerShelfCenter), (1.0 + 2.0 * register)) * registerShelfCenter);
+            const decayRateEnd = Math.pow(0.5, decayCurveEnd * Math.pow(shelfRadians / (radiansPerSampleEnd * registerShelfCenter), (1.0 + 2.0 * register)) * registerShelfCenter);
+            const expressionDecayStart = Math.pow(decayRateStart, 0.002);
+            const expressionDecayEnd = Math.pow(decayRateEnd, 0.002);
+            Synth.tempFilterStartCoefficients.allPass1stOrderInvertPhaseAbove(allPassRadiansStart);
+            synth.tempFrequencyResponse.analyze(Synth.tempFilterStartCoefficients, centerHarmonicStart);
+            const allPassGStart = Synth.tempFilterStartCoefficients.b[0];
+            const allPassPhaseDelayStart = -synth.tempFrequencyResponse.angle() / centerHarmonicStart;
+            Synth.tempFilterEndCoefficients.allPass1stOrderInvertPhaseAbove(allPassRadiansEnd);
+            synth.tempFrequencyResponse.analyze(Synth.tempFilterEndCoefficients, centerHarmonicEnd);
+            const allPassGEnd = Synth.tempFilterEndCoefficients.b[0];
+            const allPassPhaseDelayEnd = -synth.tempFrequencyResponse.angle() / centerHarmonicEnd;
+            const brightnessType = sustainType == 0 ? 0 : 1;
+            if (brightnessType == 0) {
+                const shelfGainStart = Math.pow(decayRateStart, Config.stringDecayRate);
+                const shelfGainEnd = Math.pow(decayRateEnd, Config.stringDecayRate);
+                Synth.tempFilterStartCoefficients.highShelf2ndOrder(shelfRadians, shelfGainStart, 0.5);
+                Synth.tempFilterEndCoefficients.highShelf2ndOrder(shelfRadians, shelfGainEnd, 0.5);
             }
-            for (let i = 0; i < this.noteFilterCount; i++) {
-                this.noteFiltersL[i].resetOutput();
-                this.noteFiltersR[i].resetOutput();
+            else {
+                const cornerHardness = Math.pow(brightnessType == 1 ? 0.0 : 1.0, 0.25);
+                const lowpass1stOrderCutoffRadiansStart = Math.pow(registerLowpassCenter * registerLowpassCenter * radiansPerSampleStart * 3.3 * 48000 / synth.samplesPerSecond, 0.5 + register) / registerLowpassCenter / Math.pow(decayCurveStart, .5);
+                const lowpass1stOrderCutoffRadiansEnd = Math.pow(registerLowpassCenter * registerLowpassCenter * radiansPerSampleEnd * 3.3 * 48000 / synth.samplesPerSecond, 0.5 + register) / registerLowpassCenter / Math.pow(decayCurveEnd, .5);
+                const lowpass2ndOrderCutoffRadiansStart = lowpass1stOrderCutoffRadiansStart * Math.pow(2.0, 0.5 - 1.75 * (1.0 - Math.pow(1.0 - cornerHardness, 0.85)));
+                const lowpass2ndOrderCutoffRadiansEnd = lowpass1stOrderCutoffRadiansEnd * Math.pow(2.0, 0.5 - 1.75 * (1.0 - Math.pow(1.0 - cornerHardness, 0.85)));
+                const lowpass2ndOrderGainStart = Math.pow(2.0, -Math.pow(2.0, -Math.pow(cornerHardness, 0.9)));
+                const lowpass2ndOrderGainEnd = Math.pow(2.0, -Math.pow(2.0, -Math.pow(cornerHardness, 0.9)));
+                Synth.tempFilterStartCoefficients.lowPass2ndOrderButterworth(warpInfinityToNyquist(lowpass2ndOrderCutoffRadiansStart), lowpass2ndOrderGainStart);
+                Synth.tempFilterEndCoefficients.lowPass2ndOrderButterworth(warpInfinityToNyquist(lowpass2ndOrderCutoffRadiansEnd), lowpass2ndOrderGainEnd);
             }
-            this.noteFilterCount = 0;
-            this.initialNoteFilterInputL1 = 0.0;
-            this.initialNoteFilterInputR1 = 0.0;
-            this.initialNoteFilterInputL2 = 0.0;
-            this.initialNoteFilterInputR2 = 0.0;
-            this.liveInputSamplesHeld = 0;
-            this.supersawDelayIndex = -1;
-            for (const pickedString of this.pickedStrings) {
-                pickedString.reset();
+            synth.tempFrequencyResponse.analyze(Synth.tempFilterStartCoefficients, centerHarmonicStart);
+            const sustainFilterA1Start = Synth.tempFilterStartCoefficients.a[1];
+            const sustainFilterA2Start = Synth.tempFilterStartCoefficients.a[2];
+            const sustainFilterB0Start = Synth.tempFilterStartCoefficients.b[0] * expressionDecayStart;
+            const sustainFilterB1Start = Synth.tempFilterStartCoefficients.b[1] * expressionDecayStart;
+            const sustainFilterB2Start = Synth.tempFilterStartCoefficients.b[2] * expressionDecayStart;
+            const sustainFilterPhaseDelayStart = -synth.tempFrequencyResponse.angle() / centerHarmonicStart;
+            synth.tempFrequencyResponse.analyze(Synth.tempFilterEndCoefficients, centerHarmonicEnd);
+            const sustainFilterA1End = Synth.tempFilterEndCoefficients.a[1];
+            const sustainFilterA2End = Synth.tempFilterEndCoefficients.a[2];
+            const sustainFilterB0End = Synth.tempFilterEndCoefficients.b[0] * expressionDecayEnd;
+            const sustainFilterB1End = Synth.tempFilterEndCoefficients.b[1] * expressionDecayEnd;
+            const sustainFilterB2End = Synth.tempFilterEndCoefficients.b[2] * expressionDecayEnd;
+            const sustainFilterPhaseDelayEnd = -synth.tempFrequencyResponse.angle() / centerHarmonicEnd;
+            const periodLengthStart = 1.0 / phaseDeltaStart;
+            const periodLengthEnd = 1.0 / phaseDeltaEnd;
+            const minBufferLength = Math.ceil(Math.max(periodLengthStart, periodLengthEnd) * 2);
+            const delayLength = periodLengthStart - allPassPhaseDelayStart - sustainFilterPhaseDelayStart;
+            const delayLengthEnd = periodLengthEnd - allPassPhaseDelayEnd - sustainFilterPhaseDelayEnd;
+            this.prevDelayLength = delayLength;
+            this.delayLengthDelta = (delayLengthEnd - delayLength) / roundedSamplesPerTick;
+            this.allPassG = allPassGStart;
+            this.sustainFilterA1 = sustainFilterA1Start;
+            this.sustainFilterA2 = sustainFilterA2Start;
+            this.sustainFilterB0 = sustainFilterB0Start;
+            this.sustainFilterB1 = sustainFilterB1Start;
+            this.sustainFilterB2 = sustainFilterB2Start;
+            this.allPassGDelta = (allPassGEnd - allPassGStart) / roundedSamplesPerTick;
+            this.sustainFilterA1Delta = (sustainFilterA1End - sustainFilterA1Start) / roundedSamplesPerTick;
+            this.sustainFilterA2Delta = (sustainFilterA2End - sustainFilterA2Start) / roundedSamplesPerTick;
+            this.sustainFilterB0Delta = (sustainFilterB0End - sustainFilterB0Start) / roundedSamplesPerTick;
+            this.sustainFilterB1Delta = (sustainFilterB1End - sustainFilterB1Start) / roundedSamplesPerTick;
+            this.sustainFilterB2Delta = (sustainFilterB2End - sustainFilterB2Start) / roundedSamplesPerTick;
+            const pitchChanged = Math.abs(Math.log2(delayLength / prevDelayLength)) > 0.01;
+            const reinitializeImpulse = (this.delayIndex == -1 || pitchChanged);
+            if (this.delayLine == null || this.delayLine.length <= minBufferLength) {
+                const likelyMaximumLength = Math.ceil(2 * synth.samplesPerSecond / Instrument.frequencyFromPitch(12));
+                const newDelayLine = new Float32Array(Synth.fittingPowerOfTwo(Math.max(likelyMaximumLength, minBufferLength)));
+                if (!reinitializeImpulse && this.delayLine != null) {
+                    const oldDelayBufferMask = (this.delayLine.length - 1) >> 0;
+                    const startCopyingFromIndex = this.delayIndex + this.delayResetOffset;
+                    this.delayIndex = this.delayLine.length - this.delayResetOffset;
+                    for (let i = 0; i < this.delayLine.length; i++) {
+                        newDelayLine[i] = this.delayLine[(startCopyingFromIndex + i) & oldDelayBufferMask];
+                    }
+                }
+                this.delayLine = newDelayLine;
             }
-            this.envelopeComputer.reset();
-            this.prevVibrato = null;
-            this.prevStringDecay = null;
-            this.supersawPrevPhaseDelta = null;
-            this.drumsetPitch = null;
+            const delayLine = this.delayLine;
+            const delayBufferMask = (delayLine.length - 1) >> 0;
+            if (reinitializeImpulse) {
+                this.delayIndex = 0;
+                this.allPassSample = 0.0;
+                this.allPassPrevInput = 0.0;
+                this.sustainFilterSample = 0.0;
+                this.sustainFilterPrevOutput2 = 0.0;
+                this.sustainFilterPrevInput1 = 0.0;
+                this.sustainFilterPrevInput2 = 0.0;
+                this.fractionalDelaySample = 0.0;
+                const startImpulseFrom = -delayLength;
+                const startZerosFrom = Math.floor(startImpulseFrom - periodLengthStart / 2);
+                const stopZerosAt = Math.ceil(startZerosFrom + periodLengthStart * 2);
+                this.delayResetOffset = stopZerosAt;
+                for (let i = startZerosFrom; i <= stopZerosAt; i++) {
+                    delayLine[i & delayBufferMask] = 0.0;
+                }
+                const impulseWave = instrumentState.waveL;
+                const impulseWaveLength = impulseWave.length - 1;
+                const impulsePhaseDelta = impulseWaveLength / periodLengthStart;
+                const fadeDuration = Math.min(periodLengthStart * 0.2, synth.samplesPerSecond * 0.003);
+                const startImpulseFromSample = Math.ceil(startImpulseFrom);
+                const stopImpulseAt = startImpulseFrom + periodLengthStart + fadeDuration;
+                const stopImpulseAtSample = stopImpulseAt;
+                let impulsePhase = (startImpulseFromSample - startImpulseFrom) * impulsePhaseDelta;
+                let prevWaveIntegral = 0.0;
+                for (let i = startImpulseFromSample; i <= stopImpulseAtSample; i++) {
+                    const impulsePhaseInt = impulsePhase | 0;
+                    const index = impulsePhaseInt % impulseWaveLength;
+                    let nextWaveIntegral = impulseWave[index];
+                    const phaseRatio = impulsePhase - impulsePhaseInt;
+                    nextWaveIntegral += (impulseWave[index + 1] - nextWaveIntegral) * phaseRatio;
+                    const sample = (nextWaveIntegral - prevWaveIntegral) / impulsePhaseDelta;
+                    const fadeIn = Math.min(1.0, (i - startImpulseFrom) / fadeDuration);
+                    const fadeOut = Math.min(1.0, (stopImpulseAt - i) / fadeDuration);
+                    const combinedFade = fadeIn * fadeOut;
+                    const curvedFade = combinedFade * combinedFade * (3.0 - 2.0 * combinedFade);
+                    delayLine[i & delayBufferMask] += sample * curvedFade;
+                    prevWaveIntegral = nextWaveIntegral;
+                    impulsePhase += impulsePhaseDelta;
+                }
+            }
         }
     }
     class InstrumentState {
@@ -10255,6 +10081,7 @@ var beepbox = (function (exports) {
             this.panningOffsetR = 0.0;
             this.panningOffsetDeltaL = 0.0;
             this.panningOffsetDeltaR = 0.0;
+            this.panningMode = 0;
             this.chorusDelayLineL = null;
             this.chorusDelayLineR = null;
             this.chorusDelayLineDirty = false;
@@ -10434,6 +10261,7 @@ var beepbox = (function (exports) {
             this.effectOrder = instrument.effectOrder;
             this.aliases = instrument.aliases;
             this.volumeScale = 1.0;
+            this.panningMode = instrument.panMode;
             this.allocateNecessaryBuffers(synth, instrument, samplesPerTick);
             const samplesPerSecond = synth.samplesPerSecond;
             this.updateWaves(instrument, samplesPerSecond);
@@ -10895,11 +10723,198 @@ var beepbox = (function (exports) {
             return 15 + Math.log2(InstrumentState.drumsetIndexReferenceDelta(index));
         }
     }
-    class ChannelState {
+
+    class EventManager {
         constructor() {
-            this.instruments = [];
-            this.muted = false;
-            this.singleSeamlessInstrument = null;
+            this.activeEvents = [];
+            this.listeners = {};
+            this.activeEvents = [];
+            this.listeners = {};
+        }
+        raise(eventType, eventData, extraEventData) {
+            if (this.listeners[eventType] == undefined) {
+                return;
+            }
+            this.activeEvents.push(eventType);
+            for (let i = 0; i < this.listeners[eventType].length; i++) {
+                this.listeners[eventType][i](eventData, extraEventData);
+            }
+            this.activeEvents.pop();
+        }
+        listen(eventType, callback) {
+            if (this.listeners[eventType] == undefined) {
+                this.listeners[eventType] = [];
+            }
+            this.listeners[eventType].push(callback);
+        }
+        unlisten(eventType, callback) {
+            if (this.listeners[eventType] == undefined) {
+                return;
+            }
+            const lisen = this.listeners[eventType].indexOf(callback);
+            if (lisen != -1) {
+                this.listeners[eventType].splice(lisen, 1);
+            }
+        }
+        unlistenAll(eventType) {
+            if (this.listeners[eventType] == undefined) {
+                return;
+            }
+            this.listeners[eventType] = [];
+        }
+    }
+    const events = new EventManager();
+
+    const epsilon = (1.0e-24);
+    function clamp(min, max, val) {
+        max = max - 1;
+        if (val <= max) {
+            if (val >= min)
+                return val;
+            else
+                return min;
+        }
+        else {
+            return max;
+        }
+    }
+    function validateRange(min, max, val) {
+        if (min <= val && val <= max)
+            return val;
+        throw new Error(`Value ${val} not in range [${min}, ${max}]`);
+    }
+    function parseFloatWithDefault(s, defaultValue) {
+        let result = parseFloat(s);
+        if (Number.isNaN(result))
+            result = defaultValue;
+        return result;
+    }
+    function parseIntWithDefault(s, defaultValue) {
+        let result = parseInt(s);
+        if (Number.isNaN(result))
+            result = defaultValue;
+        return result;
+    }
+    class Tone {
+        constructor() {
+            this.pitches = Array(Config.maxChordSize + 2).fill(0);
+            this.pitchCount = 0;
+            this.chordSize = 0;
+            this.drumsetPitch = null;
+            this.note = null;
+            this.prevNote = null;
+            this.nextNote = null;
+            this.prevNotePitchIndex = 0;
+            this.nextNotePitchIndex = 0;
+            this.freshlyAllocated = true;
+            this.atNoteStart = false;
+            this.isOnLastTick = false;
+            this.passedEndOfNote = false;
+            this.forceContinueAtStart = false;
+            this.forceContinueAtEnd = false;
+            this.noteStartPart = 0;
+            this.noteEndPart = 0;
+            this.ticksSinceReleased = 0;
+            this.liveInputSamplesHeld = 0;
+            this.lastInterval = 0;
+            this.chipWaveStartOffset = 0;
+            this.noiseSample = 0.0;
+            this.noiseSampleA = 0.0;
+            this.noiseSampleB = 0.0;
+            this.stringSustainStart = 0;
+            this.stringSustainEnd = 0;
+            this.phases = [];
+            this.operatorWaves = [];
+            this.phaseDeltas = [];
+            this.directions = [];
+            this.chipWaveCompletions = [];
+            this.chipWavePrevWavesL = [];
+            this.chipWavePrevWavesR = [];
+            this.chipWaveCompletionsLastWaveL = [];
+            this.chipWaveCompletionsLastWaveR = [];
+            this.phaseDeltaScales = [];
+            this.expression = 0.0;
+            this.expressionDelta = 0.0;
+            this.operatorExpressions = [];
+            this.operatorExpressionDeltas = [];
+            this.prevPitchExpressions = Array(Config.maxPitchOrOperatorCount).fill(null);
+            this.prevVibrato = null;
+            this.prevStringDecay = null;
+            this.pulseWidth = 0.0;
+            this.pulseWidthDelta = 0.0;
+            this.decimalOffset = 0.0;
+            this.supersawDynamism = 0.0;
+            this.supersawDynamismDelta = 0.0;
+            this.supersawUnisonDetunes = [];
+            this.supersawShape = 0.0;
+            this.supersawShapeDelta = 0.0;
+            this.supersawDelayLength = 0.0;
+            this.supersawDelayLengthDelta = 0.0;
+            this.supersawDelayLine = null;
+            this.supersawDelayIndex = -1;
+            this.supersawPrevPhaseDelta = null;
+            this.pickedStrings = [];
+            this.noteFiltersL = [];
+            this.noteFiltersR = [];
+            this.noteFilterCount = 0;
+            this.initialNoteFilterInputL1 = 0.0;
+            this.initialNoteFilterInputR1 = 0.0;
+            this.initialNoteFilterInputL2 = 0.0;
+            this.initialNoteFilterInputR2 = 0.0;
+            this.specialIntervalExpressionMult = 1.0;
+            this.feedbackOutputs = [];
+            this.feedbackMult = 0.0;
+            this.feedbackDelta = 0.0;
+            this.stereoVolumeLStart = 0.0;
+            this.stereoVolumeRStart = 0.0;
+            this.stereoVolumeLDelta = 0.0;
+            this.stereoVolumeRDelta = 0.0;
+            this.stereoDelayStart = 0.0;
+            this.stereoDelayEnd = 0.0;
+            this.stereoDelayDelta = 0.0;
+            this.customVolumeStart = 0.0;
+            this.customVolumeEnd = 0.0;
+            this.filterResonanceStart = 0.0;
+            this.filterResonanceDelta = 0.0;
+            this.isFirstOrder = false;
+            this.envelopeComputer = new EnvelopeComputer();
+            this.reset();
+        }
+        reset() {
+            this.noiseSample = 0.0;
+            this.noiseSampleA = 0.0;
+            this.noiseSampleB = 0.0;
+            for (let i = 0; i < Config.maxPitchOrOperatorCount; i++) {
+                this.phases[i] = 0.0;
+                this.directions[i] = 1;
+                this.chipWaveCompletions[i] = 0;
+                this.chipWavePrevWavesL[i] = 0;
+                this.chipWavePrevWavesR[i] = 0;
+                this.chipWaveCompletionsLastWaveL[i] = 0;
+                this.chipWaveCompletionsLastWaveR[i] = 0;
+                this.operatorWaves[i] = Config.operatorWaves[0];
+                this.feedbackOutputs[i] = 0.0;
+                this.prevPitchExpressions[i] = null;
+            }
+            for (let i = 0; i < this.noteFilterCount; i++) {
+                this.noteFiltersL[i].resetOutput();
+                this.noteFiltersR[i].resetOutput();
+            }
+            this.noteFilterCount = 0;
+            this.initialNoteFilterInputL1 = 0.0;
+            this.initialNoteFilterInputR1 = 0.0;
+            this.initialNoteFilterInputL2 = 0.0;
+            this.initialNoteFilterInputR2 = 0.0;
+            this.liveInputSamplesHeld = 0;
+            this.supersawDelayIndex = -1;
+            for (const pickedString of this.pickedStrings) {
+                pickedString.reset();
+            }
+            this.envelopeComputer.reset();
+            this.prevVibrato = null;
+            this.prevStringDecay = null;
+            this.supersawPrevPhaseDelta = null;
+            this.drumsetPitch = null;
         }
     }
     class Synth {
@@ -14628,6 +14643,7 @@ var beepbox = (function (exports) {
             const usesEcho = effectsIncludeEcho(instrumentState.effects);
             const usesReverb = effectsIncludeReverb(instrumentState.effects);
             const isStereo = instrumentState.chipWaveInStereo && (instrumentState.synthesizer == Synth.loopableChipSynth || instrumentState.synthesizer == Synth.chipSynth);
+            const panMode = instrumentState.panningMode;
             let signature = "";
             signature = usesDistortion ? signature + "1" : signature + "0";
             signature = usesBitcrusher ? signature + "1" : signature + "0";
@@ -14637,6 +14653,7 @@ var beepbox = (function (exports) {
             signature = usesEcho ? signature + "1" : signature + "0";
             signature = usesReverb ? signature + "1" : signature + "0";
             signature = isStereo ? signature + "1" : signature + "0";
+            signature = signature + panMode.toString();
             for (let i of instrumentState.effectOrder) {
                 signature = signature + instrumentState.effectOrder[i].toString();
             }
@@ -14928,12 +14945,34 @@ var beepbox = (function (exports) {
                     distortionDrive += distortionDriveDelta;`;
                     }
                     else if (usesPanning && i == 2) {
-                        effectsSource += `
+                        if (panMode == 0) {
+                            effectsSource += `
 
-                    sampleL *= panningVolumeL;
-                    sampleR *= panningVolumeR;
-                    panningVolumeL += panningVolumeDeltaL;
-                    panningVolumeR += panningVolumeDeltaR;`;
+                        sampleL *= panningVolumeL;
+                        sampleR *= panningVolumeR;
+                        panningVolumeL += panningVolumeDeltaL;
+                        panningVolumeR += panningVolumeDeltaR;`;
+                        }
+                        else if (panMode == 1) {
+                            effectsSource += `
+
+                        const inputSampleL = sampleL;
+                        sampleL = sampleL * panningVolumeL + Math.max(0, panningVolumeL - panningVolumeR) * sampleR;
+                        sampleR = sampleR * panningVolumeR + Math.max(0, panningVolumeR - panningVolumeL) * inputSampleL;
+                        panningVolumeL += panningVolumeDeltaL;
+                        panningVolumeR += panningVolumeDeltaR;`;
+                        }
+                        else if (panMode == 2) {
+                            effectsSource += `
+
+                        sampleL = (sampleL + sampleR) / 2.0
+                        sampleR = sampleL
+                        sampleL *= panningVolumeL;
+                        sampleR *= panningVolumeR;
+                        panningVolumeL += panningVolumeDeltaL;
+                        panningVolumeR += panningVolumeDeltaR;`;
+                        }
+                        console.log(panMode);
                     }
                     else if (usesChorus && i == 1) {
                         effectsSource += `
@@ -15971,26 +16010,13 @@ var beepbox = (function (exports) {
 				const operator#Scaled   = operator#OutputMult * operator#Output;
 		`).split("\n");
 
-    exports.AdditiveWave = AdditiveWave;
-    exports.Channel = Channel;
     exports.Config = Config;
-    exports.CustomAlgorithm = CustomAlgorithm;
-    exports.CustomFeedBack = CustomFeedBack;
-    exports.EnvelopeSettings = EnvelopeSettings;
-    exports.FilterControlPoint = FilterControlPoint;
-    exports.FilterSettings = FilterSettings;
-    exports.HarmonicsWave = HarmonicsWave;
-    exports.Instrument = Instrument;
-    exports.Note = Note;
-    exports.Operator = Operator;
-    exports.Pattern = Pattern;
-    exports.Song = Song;
-    exports.SpectrumWave = SpectrumWave;
     exports.Synth = Synth;
+    exports.Tone = Tone;
     exports.clamp = clamp;
-    exports.makeNotePin = makeNotePin;
     exports.parseFloatWithDefault = parseFloatWithDefault;
     exports.parseIntWithDefault = parseIntWithDefault;
+    exports.validateRange = validateRange;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

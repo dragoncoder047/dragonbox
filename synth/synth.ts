@@ -1,20 +1,17 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { startLoadingSample, sampleLoadingState, SampleLoadingState, sampleLoadEvents, SampleLoadedEvent, SampleLoadingStatus, loadBuiltInSamples, Dictionary, DictionaryArray, toNameMap, FilterType, SustainType, EnvelopeType, InstrumentType, EffectType, EnvelopeComputeIndex, Transition, Unison, Chord, Vibrato, Envelope, AutomationTarget, Config, getDrumWave, drawNoiseSpectrum, getArpeggioPitchIndex, performIntegralOld, getPulseWidthRatio, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, OperatorWave, BaseWaveTypes, RandomEnvelopeTypes } from "./SynthConfig";
-import { Preset, EditorConfig } from "../editor/EditorConfig";
-import { scaleElementsByFactor, inverseRealFourierTransform } from "./FFT";
+import { Dictionary, DictionaryArray, FilterType, EnvelopeType, InstrumentType, EffectType, EnvelopeComputeIndex, Transition, Chord, Envelope, Config, getArpeggioPitchIndex, getPulseWidthRatio, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, OperatorWave } from "./SynthConfig";
 import { Deque } from "./Deque";
-import { Song } from "./Song";
+import { Song, HeldMod } from "./Song";
 import { Channel } from "./Channel";
 import { ChannelState } from "./ChannelState";
-import { Operator, CustomAlgorithm, CustomFeedBack, SpectrumWave, HarmonicsWave, AdditiveWave, Instrument } from "./Instrument";
-import { SpectrumWaveState, HarmonicsWaveState, AdditiveWaveState, PickedString, InstrumentState } from "./InstrumentState";
-import { Note, NotePin, makeNotePin, Pattern } from "./Pattern";
-import { EnvelopeSettings } from "./Envelope";
+import { Instrument } from "./Instrument";
+import { PickedString, InstrumentState } from "./InstrumentState";
+import { Note, NotePin, Pattern } from "./Pattern";
 import { EnvelopeComputer } from "./EnvelopeComputer";
 import { FilterSettings, FilterControlPoint } from "./Filter";
 import { events } from "../global/Events";
-import { FilterCoefficients, FrequencyResponse, DynamicBiquadFilter, warpInfinityToNyquist } from "./filtering";
+import { FilterCoefficients, FrequencyResponse, DynamicBiquadFilter } from "./filtering";
 
 declare global {
     interface Window {
@@ -56,7 +53,9 @@ export function parseIntWithDefault<T>(s: string, defaultValue: T): number | T {
     return result;
 }
 
-class Tone {
+//TODO: move these to utils.ts anu seme
+
+export class Tone {
     public instrumentIndex: number;
     public readonly pitches: number[] = Array(Config.maxChordSize+2).fill(0);
     public pitchCount: number = 0;
@@ -4500,6 +4499,7 @@ export class Synth {
         const usesEcho: boolean = effectsIncludeEcho(instrumentState.effects);
         const usesReverb: boolean = effectsIncludeReverb(instrumentState.effects);
         const isStereo: boolean = instrumentState.chipWaveInStereo && (instrumentState.synthesizer == Synth.loopableChipSynth || instrumentState.synthesizer == Synth.chipSynth); //TODO: make an instrumentIsStereo function
+        const panMode: number = instrumentState.panningMode;
         let signature: string = "";
         signature = usesDistortion ? signature + "1" : signature + "0";
         signature = usesBitcrusher ? signature + "1" : signature + "0";
@@ -4509,6 +4509,7 @@ export class Synth {
         signature = usesEcho ? signature + "1" : signature + "0";
         signature = usesReverb ? signature + "1" : signature + "0";
         signature = isStereo ? signature + "1" : signature + "0";
+        signature = signature + panMode.toString();
         for (let i of instrumentState.effectOrder) {
             signature = signature + instrumentState.effectOrder[i].toString();
         }
@@ -4830,12 +4831,34 @@ export class Synth {
                     distortionDrive += distortionDriveDelta;`
                 }
                 else if (usesPanning && i == EffectType.panning) { //TODO: add panning delay
-                    effectsSource += `
+                    if (panMode == 0) {
+                        effectsSource += `
 
-                    sampleL *= panningVolumeL;
-                    sampleR *= panningVolumeR;
-                    panningVolumeL += panningVolumeDeltaL;
-                    panningVolumeR += panningVolumeDeltaR;`
+                        sampleL *= panningVolumeL;
+                        sampleR *= panningVolumeR;
+                        panningVolumeL += panningVolumeDeltaL;
+                        panningVolumeR += panningVolumeDeltaR;`
+                    }
+                    else if (panMode == 1) {
+                        effectsSource += `
+
+                        const inputSampleL = sampleL;
+                        sampleL = sampleL * panningVolumeL + Math.max(0, panningVolumeL - panningVolumeR) * sampleR;
+                        sampleR = sampleR * panningVolumeR + Math.max(0, panningVolumeR - panningVolumeL) * inputSampleL;
+                        panningVolumeL += panningVolumeDeltaL;
+                        panningVolumeR += panningVolumeDeltaR;`
+                    }
+                    else if (panMode == 2) {
+                        effectsSource += `
+
+                        sampleL = (sampleL + sampleR) / 2.0
+                        sampleR = sampleL
+                        sampleL *= panningVolumeL;
+                        sampleR *= panningVolumeR;
+                        panningVolumeL += panningVolumeDeltaL;
+                        panningVolumeR += panningVolumeDeltaR;`
+                    }
+                    console.log(panMode);
                 }
                 else if (usesChorus && i == EffectType.chorus) {
                     effectsSource += `

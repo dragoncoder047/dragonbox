@@ -2,7 +2,10 @@
 
 import { Dictionary, DictionaryArray, EnvelopeType, InstrumentType, Transition, Chord, Envelope, Config } from "../synth/SynthConfig";
 import { ColorConfig } from "../editor/ColorConfig";
-import { NotePin, Note, Pattern, Instrument, Channel, Synth } from "../synth/synth";
+import { NotePin, Note, Pattern } from "../synth/Pattern";
+import { Instrument } from "../synth/Instrument";
+import { Channel } from "../synth/Channel";
+import { Synth } from "../synth/synth";
 import { oscilloscopeCanvas } from "../global/Oscilloscope";
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
 

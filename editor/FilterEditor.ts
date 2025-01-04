@@ -2,7 +2,7 @@
 
 import { FilterCoefficients, FrequencyResponse } from "../synth/filtering";
 import { FilterType, Config } from "../synth/SynthConfig";
-import { Song } from "../synth/synth";
+import { Song } from "../synth/Song";
 import { Instrument } from "../synth/Instrument";
 import { FilterSettings, FilterControlPoint } from "../synth/Filter";
 import { SongDocument } from "./SongDocument";

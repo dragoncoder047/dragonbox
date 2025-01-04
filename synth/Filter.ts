@@ -1,6 +1,7 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { FilterType, Config } from "./SynthConfig";
+import { EnvelopeType, FilterType, Config, Envelope } from "./SynthConfig";
+import { FilterCoefficients, FrequencyResponse } from "./filtering";
 
 export class FilterSettings {
     public readonly controlPoints: FilterControlPoint[] = [];

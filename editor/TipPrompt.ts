@@ -623,6 +623,13 @@ export class TipPrompt implements Prompt {
 					p("Random Envelopes can switch between being determined by the time in the song, the pitch of the note, or per note trigger."),
 				);
 			} break;
+			case "panMode": {
+				message = div(
+					h2("Pan Mode"),
+					p("The panning mode changes the way panning works with regards to stereo inputs. The default mode, \"stereo,\" will pan the sound by lowering the volume of one stereo channel and raising the volume of the other. The \"split stereo\" mode will pan the sound in a more realistic way, by blending the two channels together. The \"mono\" mode will mix down both channels into a single mono channel before panning."),
+					p("A good way to hear the difference between the panning modes is to use a stereo sample that has one of the stereo channels empty. Try it out!"),
+				);
+			} break;
 
 			default:
 				// Check for modSetinfo#

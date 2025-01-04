@@ -16685,7 +16685,7 @@ li.select2-results__option[role=group] > strong:hover {
                     "wave": name,
                     "unison": "none",
                     "envelopes": [],
-                    "chipWaveInStereo": false,
+                    "chipWaveInStereo": true,
                 };
                 if (presetIsUsingAdvancedLoopControls) {
                     customSamplePresetSettings["isUsingAdvancedLoopControls"] = true;

@@ -3966,7 +3966,7 @@ export class Song {
                 "wave": name,
                 "unison": "none",
                 "envelopes": [],
-                "chipWaveInStereo": false,
+                "chipWaveInStereo": true,
             };
             if (presetIsUsingAdvancedLoopControls) {
                 customSamplePresetSettings["isUsingAdvancedLoopControls"] = true;

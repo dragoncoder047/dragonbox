@@ -8137,7 +8137,7 @@ var beepbox = (function (exports) {
                     "wave": name,
                     "unison": "none",
                     "envelopes": [],
-                    "chipWaveInStereo": false,
+                    "chipWaveInStereo": true,
                 };
                 if (presetIsUsingAdvancedLoopControls) {
                     customSamplePresetSettings["isUsingAdvancedLoopControls"] = true;

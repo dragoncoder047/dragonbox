@@ -23504,9 +23504,9 @@ li.select2-results__option[role=group] > strong:hover {
                         else if (panMode == 1) {
                             effectsSource += `
 
-                        const inputSampleL = sampleL;
+                        const panInputSampleL = sampleL;
                         sampleL = sampleL * panningVolumeL + Math.max(0, panningVolumeL - panningVolumeR) * sampleR;
-                        sampleR = sampleR * panningVolumeR + Math.max(0, panningVolumeR - panningVolumeL) * inputSampleL;
+                        sampleR = sampleR * panningVolumeR + Math.max(0, panningVolumeR - panningVolumeL) * panInputSampleL;
                         panningVolumeL += panningVolumeDeltaL;
                         panningVolumeR += panningVolumeDeltaR;`;
                         }

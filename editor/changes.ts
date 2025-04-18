@@ -1004,7 +1004,6 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 { item: InstrumentType.supersaw, weight: 2 },
                 { item: InstrumentType.customChipWave, weight: 2 },
                 { item: InstrumentType.harmonics, weight: 2 },
-                // { item: InstrumentType.additive, weight: 2},
                 { item: InstrumentType.pickedString, weight: 2 },
                 { item: InstrumentType.spectrum, weight: 2 },
                 { item: InstrumentType.fm, weight: 2 },
@@ -1120,7 +1119,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                         { item: "rise", weight: 8 },
                         { item: "fall", weight: 2 },
                     ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 45, 20)], envelopeLowerBound, envelopeUpperBound, selectCurvedDistribution(2, 16, 2, 6), selectCurvedDistribution(1, 64, 32, 31),
-                        selectWeightedRandom([{ item: BaseWaveTypes.sine, weight: 2 }, { item: BaseWaveTypes.triangle, weight: 5 }]));
+                        selectWeightedRandom([{ item: LFOEnvelopeTypes.sine, weight: 2 }, { item: LFOEnvelopeTypes.triangle, weight: 5 }]));
                 }
             }
             if (effectsIncludeDistortion(instrument.effects) && Math.random() < 0.8) {
@@ -1155,7 +1154,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                     { item: "rise", weight: 8},
                     { item: "fall", weight: 2 },
                 ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 30, 30)], envelopeLowerBound, envelopeUpperBound, 2, 2,
-                    selectWeightedRandom([{ item: BaseWaveTypes.sine, weight: 8 }, { item: BaseWaveTypes.triangle, weight: 4 }, { item: BaseWaveTypes.sawtooth, weight: 2 }, {item: BaseWaveTypes.square, weight: 1}]));
+                    selectWeightedRandom([{ item: LFOEnvelopeTypes.sine, weight: 8 }, { item: LFOEnvelopeTypes.triangle, weight: 4 }, { item: LFOEnvelopeTypes.sawtooth, weight: 2 }, { item: LFOEnvelopeTypes.square, weight: 1}]));
             }
             if (Math.random() < 0.1) {
                 instrument.effects |= 1 << EffectType.bitcrusher;
@@ -1183,7 +1182,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                         { item: "blip", weight: 12 },
                         { item: "fall", weight: 2 },
                     ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 20, 34)], envelopeLowerBound, envelopeUpperBound, selectCurvedDistribution(2, 16, 2, 6), selectCurvedDistribution(1, 64, 32, 31),
-                        selectWeightedRandom([{ item: BaseWaveTypes.sine, weight: 3 }, { item: BaseWaveTypes.triangle, weight: 1 }]));
+                        selectWeightedRandom([{ item: LFOEnvelopeTypes.sine, weight: 3 }, { item: LFOEnvelopeTypes.triangle, weight: 1 }]));
                 }
                 if (Math.random() < 0.5) {
                     instrument.addEnvelope(Config.instrumentAutomationTargets.dictionary["bitcrusherQuantization"].index, 0, Config.newEnvelopes.dictionary[selectWeightedRandom([
@@ -1201,7 +1200,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                         { item: "blip", weight: 12 },
                         { item: "fall", weight: 2 },
                     ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 20, 34)], envelopeLowerBound, envelopeUpperBound, selectCurvedDistribution(2, 16, 2, 6), selectCurvedDistribution(1, 64, 32, 31),
-                        selectWeightedRandom([{ item: BaseWaveTypes.sine, weight: 3 }, { item: BaseWaveTypes.triangle, weight: 1 }]));
+                        selectWeightedRandom([{ item: LFOEnvelopeTypes.sine, weight: 3 }, { item: LFOEnvelopeTypes.triangle, weight: 1 }]));
                 } else if (type == InstrumentType.spectrum) {
                     instrument.addEnvelope(Config.instrumentAutomationTargets.dictionary["noteVolume"].index, 0, Config.newEnvelopes.dictionary["note size"].index, true);
                     instrument.addEnvelope(Config.instrumentAutomationTargets.dictionary["bitcrusherQuantization"].index, 0, Config.newEnvelopes.dictionary["note size"].index, true);
@@ -1232,7 +1231,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                         { item: "rise", weight: 8 },
                         { item: "fall", weight: 2 },
                     ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 45, 20)], envelopeLowerBound, envelopeUpperBound, selectCurvedDistribution(2, 16, 2, 6), selectCurvedDistribution(1, 64, 32, 31),
-                        selectWeightedRandom([{ item: BaseWaveTypes.sine, weight: 2 }, { item: BaseWaveTypes.triangle, weight: 5 }]));
+                        selectWeightedRandom([{ item: LFOEnvelopeTypes.sine, weight: 2 }, { item: LFOEnvelopeTypes.triangle, weight: 5 }]));
                 }
             }
             if (Math.random() < 0.1) {
@@ -1241,6 +1240,13 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 if (instrument.echoSustain != 0 || instrument.echoDelay != 0) {
                     instrument.effects |= 1 << EffectType.echo;
                 }
+            }
+            if (Math.random() < 0.07) {
+                instrument.effects |= 1 << EffectType.ringModulation;
+                instrument.ringModulation = selectCurvedDistribution(1, Config.ringModRange - 1, Config.ringModRange - 1, 1);
+                instrument.ringModulationHz = selectCurvedDistribution(1, Config.ringModHzRange - 1, 1, 1);
+                instrument.ringModWaveformIndex = 0;
+                //add envelopes
             }
             if (Math.random() < 0.5) {
                 instrument.effects |= 1 << EffectType.reverb;
@@ -1267,8 +1273,16 @@ export class ChangeRandomGeneratedInstrument extends Change {
                         { item: "rise", weight: 8 },
                         { item: "fall", weight: 2 },
                     ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 45, 20)], envelopeLowerBound, envelopeUpperBound, selectCurvedDistribution(2, 16, 2, 6), selectCurvedDistribution(1, 64, 32, 31),
-                        selectWeightedRandom([{ item: BaseWaveTypes.sine, weight: 2 }, { item: BaseWaveTypes.triangle, weight: 5 }]));
+                        selectWeightedRandom([{ item: LFOEnvelopeTypes.sine, weight: 2 }, { item: LFOEnvelopeTypes.triangle, weight: 5 }]));
                 }
+            }
+            if (Math.random() < 0.1) {
+                instrument.effects |= 1 << EffectType.granular;
+                instrument.granular = selectCurvedDistribution(1, Config.granularRange - 1, Config.granularRange / 2, Config.granularRange / 3);
+                instrument.grainAmounts = selectCurvedDistribution(1, Config.grainAmountsMax - 1, Config.grainAmountsMax-2, 3);
+                instrument.grainSize = selectCurvedDistribution(Config.grainSizeMin / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep / 2);
+                instrument.grainRange = selectCurvedDistribution(0, Config.grainRangeMax / Config.grainSizeStep, Config.grainRangeMax / Config.grainSizeStep / 2, Config.grainSizeMax / Config.grainSizeStep / 2);
+                //add envelopes
             }
             if (Math.random() < 0.2) {
                 let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1479,7 +1493,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                                 { item: "rise", weight: 5 },
                                 { item: "fall", weight: 2 },
                             ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 30, 30)], envelopeLowerBound, envelopeUpperBound, 2, 2,
-                                selectWeightedRandom([{ item: BaseWaveTypes.sine, weight: 8 }, { item: BaseWaveTypes.triangle, weight: 4 }, { item: BaseWaveTypes.sawtooth, weight: 2 }, { item: BaseWaveTypes.square, weight: 1 }]));
+                                selectWeightedRandom([{ item: LFOEnvelopeTypes.sine, weight: 8 }, { item: LFOEnvelopeTypes.triangle, weight: 4 }, { item: LFOEnvelopeTypes.sawtooth, weight: 2 }, { item: LFOEnvelopeTypes.square, weight: 1 }]));
                         }
                         if (instrument.envelopeCount < Config.maxEnvelopeCount && Math.random() < 0.15) {
                             let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1501,7 +1515,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                                 { item: "rise", weight: 5 },
                                 { item: "fall", weight: 2 },
                             ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 30, 30)], envelopeLowerBound, envelopeUpperBound, 2, 2,
-                                selectWeightedRandom([{ item: BaseWaveTypes.sine, weight: 8 }, { item: BaseWaveTypes.triangle, weight: 4 }, { item: BaseWaveTypes.sawtooth, weight: 4 }, { item: BaseWaveTypes.square, weight: 1 }]));
+                                selectWeightedRandom([{ item: LFOEnvelopeTypes.sine, weight: 8 }, { item: LFOEnvelopeTypes.triangle, weight: 4 }, { item: LFOEnvelopeTypes.sawtooth, weight: 4 }, { item: LFOEnvelopeTypes.square, weight: 1 }]));
                         }
                         instrument.operators[i].waveform = Config.operatorWaves.dictionary[selectWeightedRandom([
                             { item: "sine", weight: 10 },
@@ -1550,7 +1564,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                             { item: "rise", weight: 3 },
                             { item: "fall", weight: 3 },
                         ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 30, 30)], envelopeLowerBound, envelopeUpperBound, 2, 2,
-                            selectWeightedRandom([{ item: BaseWaveTypes.sine, weight: 8 }, { item: BaseWaveTypes.triangle, weight: 4 }, { item: BaseWaveTypes.sawtooth, weight: 2 }, { item: BaseWaveTypes.square, weight: 1 }]));
+                            selectWeightedRandom([{ item: LFOEnvelopeTypes.sine, weight: 8 }, { item: LFOEnvelopeTypes.triangle, weight: 4 }, { item: LFOEnvelopeTypes.sawtooth, weight: 2 }, { item: LFOEnvelopeTypes.square, weight: 1 }]));
                     }
                 } break;
                 case InstrumentType.customChipWave: {
@@ -2252,6 +2266,21 @@ export class ChangeFastTwoNoteArp extends Change {
     }
 }
 
+export class ChangeMonophonicTone extends Change {
+    constructor(doc: SongDocument, newValue: number) {
+        super();
+        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.monoChordTone;
+
+        doc.notifier.changed();
+        if (oldValue != newValue) {
+            instrument.monoChordTone = newValue;
+            instrument.preset = instrument.type;
+            this._didSomething();
+        }
+    }
+}
+
 export class ChangeClicklessTransition extends Change {
     constructor(doc: SongDocument, newValue: boolean) {
         super();
@@ -2282,21 +2311,6 @@ export class ChangeAliasing extends Change {
     }
 }
 
-export class ChangeDiscreteEnvelope extends Change {
-    constructor(doc: SongDocument, newValue: boolean) {
-        super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue = instrument.discreteEnvelope;
-
-        doc.notifier.changed();
-        if (oldValue != newValue) {
-            instrument.discreteEnvelope = newValue;
-            instrument.preset = instrument.type;
-            this._didSomething();
-        }
-    }
-}
-
 export class ChangeSpectrum extends Change {
     constructor(doc: SongDocument, instrument: Instrument, spectrumWave: SpectrumWave) {
         super();
@@ -2311,20 +2325,6 @@ export class ChangeHarmonics extends Change {
     constructor(doc: SongDocument, instrument: Instrument, harmonicsWave: HarmonicsWave) {
         super();
         harmonicsWave.markCustomWaveDirty();
-        instrument.preset = instrument.type;
-        doc.notifier.changed();
-        this._didSomething();
-    }
-}
-
-export class ChangeAdditive extends Change {
-    constructor(doc: SongDocument, instrument: Instrument, additiveWave: AdditiveWave) {
-        super();
-        for (let i: number = 0; i < additiveWave.waveTypes.length; i++) {
-            instrument.additiveWave.waveTypes[i] = additiveWave.waveTypes[i];
-            instrument.additiveWave.additives[i] = additiveWave.additives[i];
-        }
-        additiveWave.markCustomWaveDirty();
         instrument.preset = instrument.type;
         doc.notifier.changed();
         this._didSomething();
@@ -2357,6 +2357,21 @@ class ChangeInstrumentSlider extends Change {
             this._instrument.preset = this._instrument.type;
             this._doc.notifier.changed();
         }
+    }
+}
+
+
+//for envelope mod recording
+class IndexableChange extends ChangeInstrumentSlider {
+    constructor(index: number, _doc: SongDocument) {
+        super(_doc);
+        this.index = index;
+    }
+
+    private index: number = 0;
+
+    public getIndex(): number {
+        return this.index;
     }
 }
 
@@ -2423,6 +2438,78 @@ export class ChangeDetune extends ChangeInstrumentSlider {
         this._instrument.detune = newValue + Config.detuneCenter;
         doc.notifier.changed();
         doc.synth.unsetMod(Config.modulators.dictionary["detune"].index, doc.channel, doc.getCurrentInstrument());
+        if (oldValue != newValue) this._didSomething();
+    }
+}
+
+export class ChangeRingMod extends ChangeInstrumentSlider {
+    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+        super(doc);
+        this._instrument.ringModulation = newValue;
+        doc.notifier.changed();
+        doc.synth.unsetMod(Config.modulators.dictionary["ring modulation"].index, doc.channel, doc.getCurrentInstrument());
+        if (oldValue != newValue) this._didSomething();
+    }
+}
+
+export class ChangeRingModHz extends ChangeInstrumentSlider {
+    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+        super(doc);
+        this._instrument.ringModulationHz = newValue;
+        doc.notifier.changed();
+        doc.synth.unsetMod(Config.modulators.dictionary["ring mod hertz"].index, doc.channel, doc.getCurrentInstrument());
+        if (oldValue != newValue) this._didSomething();
+    }
+}
+
+export class ChangeRingModChipWave extends Change {
+    constructor(doc: SongDocument, newValue: number) {
+        super();
+        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        if (instrument.ringModWaveformIndex != newValue) {
+            instrument.ringModWaveformIndex = newValue;
+            doc.notifier.changed();
+            this._didSomething();
+        }
+    }
+}
+
+export class ChangeGranular extends ChangeInstrumentSlider {
+    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+        super(doc);
+        this._instrument.granular = newValue;
+        doc.notifier.changed();
+        doc.synth.unsetMod(Config.modulators.dictionary["granular"].index, doc.channel, doc.getCurrentInstrument());
+        if (oldValue != newValue) this._didSomething();
+    }
+}
+
+export class ChangeGrainSize extends ChangeInstrumentSlider {
+    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+        super(doc);
+        this._instrument.grainSize = newValue;
+        doc.notifier.changed();
+        doc.synth.unsetMod(Config.modulators.dictionary["grain size"].index, doc.channel, doc.getCurrentInstrument());
+        if (oldValue != newValue) this._didSomething();
+    }
+}
+
+export class ChangeGrainAmounts extends ChangeInstrumentSlider {
+    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+        super(doc);
+        this._instrument.grainAmounts = newValue;
+        doc.notifier.changed();
+        // doc.synth.unsetMod(Config.modulators.dictionary["granular"].index, doc.channel, doc.getCurrentInstrument());
+        if (oldValue != newValue) this._didSomething();
+    }
+}
+
+export class ChangeGrainRange extends ChangeInstrumentSlider {
+    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+        super(doc);
+        this._instrument.grainRange = newValue;
+        doc.notifier.changed();
+        // doc.synth.unsetMod(Config.modulators.dictionary["grain size"].index, doc.channel, doc.getCurrentInstrument());
         if (oldValue != newValue) this._didSomething();
     }
 }
@@ -4286,6 +4373,7 @@ export class ChangeChorus extends ChangeInstrumentSlider {
     constructor(doc: SongDocument, oldValue: number, newValue: number) {
         super(doc);
         this._instrument.chorus = newValue;
+        doc.synth.unsetMod(Config.modulators.dictionary["chorus"].index, doc.channel, doc.getCurrentInstrument());
         doc.notifier.changed();
         if (oldValue != newValue) this._didSomething();
     }
@@ -5135,6 +5223,7 @@ export class ChangeRemoveEnvelope extends Change {
             instrument.envelopes[i].steps = instrument.envelopes[i + 1].steps;
             instrument.envelopes[i].seed = instrument.envelopes[i + 1].seed;
             instrument.envelopes[i].waveform = instrument.envelopes[i + 1].waveform;
+            instrument.envelopes[i].discrete = instrument.envelopes[i + 1].discrete;
         }
         // TODO: Shift any envelopes that were targeting other envelope indices after the removed one.
         instrument.preset = instrument.type;
@@ -5178,8 +5267,8 @@ export class ChangeEnvelopePitchStart extends Change {
         super();
         const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         const oldStartNote: number = instrument.envelopes[index].pitchEnvelopeStart;
+        instrument.envelopes[index].pitchEnvelopeStart = startNote;
         if (oldStartNote != startNote) {
-            instrument.envelopes[index].pitchEnvelopeStart = startNote;
             instrument.preset = instrument.type;
             doc.notifier.changed();
             this._didSomething();
@@ -5192,8 +5281,8 @@ export class ChangeEnvelopePitchEnd extends Change {
         super();
         const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         const oldEndNote: number = instrument.envelopes[index].pitchEnvelopeEnd;
+        instrument.envelopes[index].pitchEnvelopeEnd = endNote;
         if (oldEndNote != endNote) {
-            instrument.envelopes[index].pitchEnvelopeEnd = endNote;
             instrument.preset = instrument.type;
             doc.notifier.changed();
             this._didSomething();
@@ -5206,8 +5295,8 @@ export class ChangeEnvelopeInverse extends Change {
         super();
         const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         const oldValue: boolean = instrument.envelopes[index].inverse;
+        instrument.envelopes[index].inverse = value;
         if (oldValue != value) {
-            instrument.envelopes[index].inverse = value;
             instrument.preset = instrument.type;
             doc.notifier.changed();
             this._didSomething();
@@ -5215,47 +5304,50 @@ export class ChangeEnvelopeInverse extends Change {
     }
 }
 
-export class ChangePerEnvelopeSpeed extends Change {
-    constructor(doc: SongDocument, speed: number, index: number) {
+export class ChangeDiscreteEnvelope extends Change {
+    constructor(doc: SongDocument, newValue: boolean, index: number) {
         super();
         const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldSpeed: number = instrument.envelopes[index].perEnvelopeSpeed;
-        if (oldSpeed != speed) {
-            instrument.envelopes[index].perEnvelopeSpeed = speed;
+        const oldValue = instrument.envelopes[index].discrete;
+
+        doc.notifier.changed();
+        if (oldValue != newValue) {
+            instrument.envelopes[index].discrete = newValue;
             instrument.preset = instrument.type;
-            doc.notifier.changed();
             this._didSomething();
         }
     }
 }
 
-export class ChangeEnvelopeLowerBound extends Change {
-    constructor(doc: SongDocument, bound: number, index: number) {
-        super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldBound: number = instrument.envelopes[index].perEnvelopeLowerBound;
-        if (oldBound != bound) {
-            bound = bound > Config.perEnvelopeBoundMax ? Config.perEnvelopeBoundMax : bound < Config.perEnvelopeBoundMin ? Config.perEnvelopeBoundMin : Math.round(bound * 10) != bound * 10 ? Config.perEnvelopeBoundMin : bound;
-            instrument.envelopes[index].perEnvelopeLowerBound = bound;
-            instrument.preset = instrument.type;
-            doc.notifier.changed();
-            this._didSomething();
-        }
+export class ChangePerEnvelopeSpeed extends IndexableChange {
+    constructor(doc: SongDocument, oldSpeed: number, speed: number, index: number) {
+        super(index, doc);
+        this._instrument.envelopes[index].perEnvelopeSpeed = speed;
+        doc.synth.unsetMod(Config.modulators.dictionary["individual envelope speed"].index, doc.channel, doc.getCurrentInstrument());
+        doc.notifier.changed();
+        if (oldSpeed != speed) this._didSomething();
     }
 }
 
-export class ChangeEnvelopeUpperBound extends Change {
-    constructor(doc: SongDocument, bound: number, index: number) {
-        super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldBound: number = instrument.envelopes[index].perEnvelopeUpperBound;
-        if (oldBound != bound) {
-            bound = bound > Config.perEnvelopeBoundMax ? Config.perEnvelopeBoundMax : bound < Config.perEnvelopeBoundMin ? Config.perEnvelopeBoundMin : Math.round(bound * 10) != bound * 10 ? Config.perEnvelopeBoundMin : bound;
-            instrument.envelopes[index].perEnvelopeUpperBound = bound;
-            instrument.preset = instrument.type;
-            doc.notifier.changed();
-            this._didSomething();
-        }
+export class ChangeEnvelopeLowerBound extends IndexableChange {
+    constructor(doc: SongDocument, oldBound: number, bound: number, index: number) {
+        super(index, doc);
+        bound = bound > Config.perEnvelopeBoundMax ? Config.perEnvelopeBoundMax : bound < Config.perEnvelopeBoundMin ? Config.perEnvelopeBoundMin : Math.round(bound * 10) != bound * 10 ? Config.perEnvelopeBoundMin : bound;
+        this._instrument.envelopes[index].perEnvelopeLowerBound = bound;
+        doc.synth.unsetMod(Config.modulators.dictionary["individual envelope lower bound"].index, doc.channel, doc.getCurrentInstrument());
+        doc.notifier.changed();
+        if (oldBound != bound) this._didSomething();
+    }
+}
+
+export class ChangeEnvelopeUpperBound extends IndexableChange {
+    constructor(doc: SongDocument, oldBound: number, bound: number, index: number) {
+        super(index, doc);
+        bound = bound > Config.perEnvelopeBoundMax ? Config.perEnvelopeBoundMax : bound < Config.perEnvelopeBoundMin ? Config.perEnvelopeBoundMin : Math.round(bound * 10) != bound * 10 ? Config.perEnvelopeBoundMin : bound;
+        this._instrument.envelopes[index].perEnvelopeUpperBound = bound;
+        doc.synth.unsetMod(Config.modulators.dictionary["individual envelope upper bound"].index, doc.channel, doc.getCurrentInstrument());
+        doc.notifier.changed();
+        if (oldBound != bound) this._didSomething();
     }
 }
 
@@ -5264,9 +5356,9 @@ export class ChangeRandomEnvelopeSteps extends Change {
         super();
         const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         const oldSteps: number = instrument.envelopes[index].steps;
+        steps = steps > Config.randomEnvelopeStepsMax ? Config.randomEnvelopeStepsMax : steps < 1 ? 2 : Math.floor(steps);
+        instrument.envelopes[index].steps = steps;
         if (oldSteps != steps) {
-            steps = steps > 64 ? 64 : steps < 1 ? 2 : Math.round(steps) != steps ? 2 : steps;
-            instrument.envelopes[index].steps = steps;
             instrument.preset = instrument.type;
             doc.notifier.changed();
             this._didSomething();
@@ -5279,10 +5371,10 @@ export class ChangeRandomEnvelopeSeed extends Change {
         super();
         const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         const oldSeed: number = instrument.envelopes[index].seed;
+        seed = seed > Config.randomEnvelopeSeedMax ? Config.randomEnvelopeSeedMax : seed < 1 ? 2 : Math.floor(seed);
+        instrument.envelopes[index].seed = seed;
         if (oldSeed != seed) {
-            seed = seed > 64 ? 64 : seed < 1 ? 2 : Math.round(seed) != seed ? 2 : seed;
-            instrument.envelopes[index].seed = seed;
-            instrument.preset = instrument.type;
+            //changing the seed does not change the preset
             doc.notifier.changed();
             this._didSomething();
         }
@@ -5308,13 +5400,11 @@ export class ChangeSetEnvelopeWaveform extends Change {
         const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         const oldWaveform: number = instrument.envelopes[index].waveform;
         waveform = parseInt(waveform + ""); //make sure waveform isn't a string
+        instrument.envelopes[index].waveform = waveform;
         if (oldWaveform != waveform) {
-            instrument.envelopes[index].waveform = waveform;
+            instrument.preset = instrument.type;
+            doc.notifier.changed();
+            this._didSomething();
         }
-
-
-        instrument.preset = instrument.type;
-        doc.notifier.changed();
-        this._didSomething();
     }
 }

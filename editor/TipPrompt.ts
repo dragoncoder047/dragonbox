@@ -105,6 +105,12 @@ export class TipPrompt implements Prompt {
 					);
 				}
 				break;
+			case "monophonic": {
+				message = div(
+					h2("Monophonic Note"),
+					p(`This setting controls which note of the chord your instrument will play. `),
+				);
+			} break;
 			case "detune": {
 				message = div(
 					h2("Detune"),
@@ -195,16 +201,17 @@ export class TipPrompt implements Prompt {
 			case "unison": {
 				message = div(
 					h2("Unison"),
-					p("This instrument can play two identical waves at different frequencies. When two waves play at slightly different frequencies, they move in and out of phase with each other over time as different parts of the waves line up. This creates a dynamic, shifting sound. Pianos are a common example of this kind of sound, because each piano key strikes multiple strings that are tuned to slightly different frequencies."),
+					p("This instrument can play multiple identical waves at different frequencies. When two waves play at slightly different frequencies, they move in and out of phase with each other over time as different parts of the waves line up. This creates a dynamic, shifting sound. Pianos are a common example of this kind of sound, because each piano key strikes multiple strings that are tuned to slightly different frequencies."),
 					p("The distance between two frequencies is called an \"interval\", and this setting controls how large it is. If the interval is too wide, then the waves may sound out-of-tune and \"dissonant\". However, if the interval is even larger, then the two frequencies can even be distinct pitches."),
+					p("Adding more than two waves amplifies these effects. "),
 				);
 			} break;
 			case "chords": {
 				message = div(
 					h2("Chords"),
-					p("When multiple different notes occur at the same time, this is called a chord. Chords can be created in theepbox's pattern editor by adding notes above or below another note."),
-					p("This setting determines how chords are played. The standard option is \"simultaneous\" which starts playing all of the pitches in a chord at the same instant. The \"strum\" option is similar, but plays the notes starting at slightly different times. The \"arpeggio\" option is used in \"chiptune\" style music and plays a single tone that rapidly alternates between all of the pitches in the chord."),
-					p("Some theepbox instruments have an option called \"custom interval\" which uses the chord notes to control the interval between the waves of a single tone. This can create strange sound effects when combined with FM modulators."),
+					p("When multiple different notes occur at the same time, this is called a chord. Chords can be created in the pattern editor by adding notes above or below another note."),
+					p("This setting determines how chords are played. The standard option is \"simultaneous\" which starts playing all of the pitches in a chord at the same instant. The \"strum\" option is similar, but plays the notes starting at slightly different times. The \"arpeggio\" option is used in \"chiptune\" style music and plays a single tone that rapidly alternates between all of the pitches in the chord. The \"monophonic\" option allows you to have only one tone in a chord play at a time."),
+					p("Some instruments have an option called \"custom interval\" which uses the chord notes to control the interval between the waves of a single tone. This can create strange sound effects when combined with FM modulators."),
 				);
 			} break;
 			case "vibrato": {
@@ -528,52 +535,53 @@ export class TipPrompt implements Prompt {
 			case "unisonVoices": {
 				message = div(
 					h2("Unison Voices"),
-					p("This setting controls how many voices there are in a unison. Unisons such as \"none\" or \"detune\" use 1 voice, while most other unisons use 2 voices."),
+					p("This setting controls how many voices there are in a unison. Unisons such as \"none\" or \"detune\" use 1 voice, many other unisons use 2 voices, and some use up to " + Config.unisonVoicesMax + " voices"),
 				);
 			} break;
 			case "unisonSpread": {
 				message = div(
 					h2("Unison Spread"),
-					p("This setting controls the distance between the two voices, in semitones. A small amount of spread causes the voice's waves to shift in and out from each other, causing a shimmering effect. Larger spread will cause the voices to act like separate notes."),
+					p("This setting controls the distance between the voices, in semitones. A small amount of spread causes the voice's waves to shift in and out from each other, causing a shimmering effect. Larger spread will cause the voices to act like separate notes."),
 				);
 			} break;
 			case "unisonOffset": {
 				message = div(
 					h2("Unison Offset"),
-					p("This setting controls the detune applied to BOTH voices, in semitones."),
+					p("This setting controls the detune applied to ALL voices, in semitones."),
 				);
 			} break;
 			case "unisonExpression": {
 				message = div(
 					h2("Unison Volume"),
 					p("This setting controls the unison volume. Use this if the unison makes your instrument too loud in comparison to other instruments."),
+					p("If this is set to a negative value, it will invert the wave!"),
 				);
 			} break;
 			case "unisonSign": {
 				message = div(
 					h2("Unison Sign"),
-					p("This setting is a volume multiplier applied to the second voice. This setting will only work correctly with two voices."),
+					p("This setting is a volume multiplier applied to every voice EXCEPT the first. This setting will only work correctly with more than one voices."),
 				);
 			} break;
 			case "pitchRange": {
 				message = div(
 					h2("Pitch Envelope Start and End"),
-					p("These two settings will adjust where the start and end of the pitch envelope affects. Everything below start envelope will be 0, everything above end envelope will be 1, and everything inbetween will scale linearly based on pitch (the opposite is true if inverted)."),
+					p("These two settings will adjust where the start and end of the pitch envelope affects. Everything below start envelope will be the value of the lower bound, everything above end envelope will be upper bound, and everything inbetween will scale linearly based on pitch (the opposite is true if inverted)."),
 					p("This will NOT work properly if pitch start is greater than pitch end."),
 					p("These values are different than the MIDI numbers. These correspond to how many paino keys from the bottom of the song player a specific pitch is"),
+				);
+			} break;
+			case "noteSizeRange": {
+				message = div(
+					h2("Note Size Envelope Start and End"),
+					p("These two settings work vert similarly to the pitch range bounds, except for note size envelopes instead. Everything below start envelope will be the value of the lower bound, everything above end envelope will be upper bound, and everything inbetween will scale linearly based on note size (the opposite is true if inverted)."),
+					p("This will NOT work properly if note size start is greater than note size end."),
 				);
 			} break;
 			case "envelopeInvert": {
 				message = div(
 					h2("Envelope Inversion"),
 					p("This setting will invert the envelope curve. So instead of, for example, lower pitches leading to a smaller output, lower pitches can lead to a greater output."),
-				);
-			} break;
-			case "additive": {
-				message = div(
-					h2("Additive Instrument"),
-					p("The \"Additive\" instrument type works very similar to harmonics, but instead of working with just sine waves, you can combine many different types of waves."),
-					p("These waves are: sines, squares, triangles, sawtooths, and ramps (a sawtooth wave flipped over the y-axis). All of these are technically sine approximations of each waveform, but they function effectively the same."),
 				);
 			} break;
 			case "envelopeRange": {
@@ -614,7 +622,7 @@ export class TipPrompt implements Prompt {
 				message = div(
 					h2("LFO Envelope Waveform"),
 					p("LFO envelopes can output a variety of different waveforms, from old tremolo's sine to more complex ones."),
-					p("These waves are: sines, squares, triangles, and sawtooths."),
+					p("These waves are: sines, squares, triangles, sawtooths, trapezoids, and stepped variants of triangles and sawtooths."),
 				);
 			} break;
 			case "randomEnvelopeType": {
@@ -628,6 +636,44 @@ export class TipPrompt implements Prompt {
 					h2("Pan Mode"),
 					p("The panning mode changes the way panning works with regards to stereo inputs. The default mode, \"stereo,\" will pan the sound by lowering the volume of one stereo channel and raising the volume of the other. The \"split stereo\" mode will pan the sound in a more realistic way, by blending the two channels together. The \"mono\" mode will mix down both channels into a single mono channel before panning."),
 					p("A good way to hear the difference between the panning modes is to use a stereo sample that has one of the stereo channels empty. Try it out!"),
+				);
+			} break;
+			case "ringMod": {
+				message = div(
+					h2("Ring Modulation"),
+					p(`This setting multiplies a selected wave's frequency with an instrument frequency, this is useful for "bell-like" instruments.`),
+				);
+			} break;
+			case "RingModHz": {
+				message = div(
+					h2("Ring Modulation (Hertz)"),
+					p(`This setting changes the Hertz of the multiplied frequency.`),
+					// p(`The offset allows you to increment the Hertz by 1.`),
+				);
+			} break;
+			case "granular": {
+				message = div(
+					h2("Granular Synthesis"),
+					p(`This effect is based on granular synthesis! It takes random points from a wave and rearranges them to form "sonic clouds".`),
+					p(`This particular slider controls the wet/dry mix of the granulation.`)
+				);
+			} break;
+			case "grainSize": {
+				message = div(
+					h2("Grain Size"),
+					p(`This setting controls the size of the grain.`),
+				);
+			} break;
+			case "grainAmount": {
+				message = div(
+					h2("Grain Freq"),
+					p(`This setting controls about how often a grain (a group of audio samples) is added to the output, from rarely to multiple at once.`),
+				);
+			} break;
+			case "grainRange": {
+				message = div(
+					h2("Grain Range"),
+					p(`This setting controls the range of randomization for grain sizes. `),
 				);
 			} break;
 

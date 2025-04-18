@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <link rel='shortcut icon' type='image/x-icon' href='../favicon.ico' />
+    <link rel='shortcut icon' type='image/x-icon' href='./favicon.ico' />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Slarmoo's Box FAQ</title>
@@ -18,8 +18,8 @@
     <meta name="msapplication-config" content="/browserconfig.xml" />
     <meta name="format-detection" content="telephone=no" />
     <meta property="og:image" content="https://slarmoo.github.io/slarmoosbox/website/icon_shadow_192.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="../icon_32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./icon_32.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link href="https://fonts.googleapis.com/css?family=B612" rel="stylesheet" media="none"
         onload="if (this.media != 'all') this.media='all';" /> <!-- this is a trick to load CSS asynchronously. -->
@@ -121,7 +121,18 @@
         <p> However, there are some cool additions to be aware of in Slarmoo's Box: </p>
         <ul>
             <li>
-                New envelopeable effects: reverb, chorus, bitcrush, frequency crush, panning, distortion, and arpeggio speed
+                Two new effects:
+            </li>
+            <ul>
+                <li>
+                    Ring Modulation (borrowed from Abyssbox): multiplies the instrument by a waveform to produce a buzzing sound
+                </li>
+                <li>
+                    Granular Synthesis: splices and shuffles the outputted waveform to create "sonic clouds"
+                </li>
+            </ul>
+            <li>
+                New envelopeable effects: reverb, echo, chorus, bitcrush, frequency crush, panning, distortion, and arpeggio speed (+ granular and ring mod)
             </li>
             <li>
                 Four new envelope types:
@@ -134,14 +145,14 @@
                     Fall: Similar to twang, except instead of decreasing quickly to slowly, fall decreases slowly to quickly
                 </li>
                 <li>
-                    Random: Produces a random value based on either the time or the pitch. This envelope has an adjustable seed (and steps for time) setting
+                    Random: Produces a random value based on either the time or the pitch. This envelope has adjustable seed and steps for time settings depending on which type you select
                 </li>
                 <li>
                     LFO: Modulates a value based on a waveform. This envelope type replaced the old tremolo envelope
                 </li>
             </ul>
             <li>
-                Individual envelope speeds (with modulation support), bounds, and inversions
+                Individual envelope speeds, bounds, inversions, and discrete
             </li>
             <li> 
                 Increased max envelope count to 16 (from ultrabox's 12)
@@ -150,24 +161,28 @@
                 New Song EQ filter, along with modulation support
             </li>
             <li>
-                The x128 and x256 fm frequencies
+                Nine voice unisons
             </li>
             <li>
-                A better spectrum and harmonics editor (zoom, copy and paste)
+                A new monophonic chord type
+            </li>
+            <li>
+                The ×128 and ×256 fm frequencies
             </li>
             <li>
                 Several new keybinds in the Song player (shorten link, toggle loop, toggle zoom, and copy link) and 2 new keybinds for opening and closing several dropdowns at once (envelopes and fm dropdowns)
             </li>
             <li>
-                Two new themes: Greyscale and Slarmoo's Box
+                And probably several other things that I'm forgetting
             </li>
         </ul>
     </details>
 
     <details>
         <summary> Is Slarmoo's Box compatible with Ultrabox? </summary>
-        <span> Yes, Slarmoo's Box will promperly import all songs from Ultrabox. </span>
+        <span> Yes, Slarmoo's Box will properly import all songs from Ultrabox. </span>
         <span> Both changing the domain of the link and importing an Ultrabox json will work </span>
+        <span> If you ever encounter any bugs with this please contact the developers at the links below </span>
     </details>
 
     <details>
@@ -175,8 +190,7 @@
         Since Slarmoo's Box doesn't have a web server of its own, you'll have to first upload your sample to a CORS-friendly
         website.
         <ul>
-            <li>The easiest to use are <a href="https://filegarden.com/">File Garden</a> or <a
-                    href="https://catbox.moe/">Catbox</a>.</li>
+            <li>The easiest to use is <a href="https://filegarden.com/">File Garden</a>.</li>
         </ul>
     
         Next, you have to copy the URL of the sound itself. The URL should end with the filetype, such as <code>.wav</code>
@@ -535,7 +549,7 @@
 
     <details>
         <summary> What can I do with Pitch Envelopes? </summary>
-        <span> Slarmoo's Box's unique pitch envelopes has a variety of unique uses. </span>
+        <span> Slarmoo's Box's unique pitch envelopes have a variety of unique uses. </span>
         <span> You can: </span>
         <ul>
             <li>Set it to target pitch shift or detune (or custom unisons) to get anything from subtle pitch stretching to microtonality </li>
@@ -552,7 +566,8 @@
         <summary>Does Slarmoo's Box have an offline version?</summary>
         Yes. You can access it here <a href="https://github.com/slarmoo/slarmoosbox/releases">here</a>.<br>
         You can either download an OS-specific version that has custom sampling support, or the generic HTML version that
-        lacks custom sampling support.
+        lacks custom sampling support.<br>
+        The offline version tends to update for every other online update
     </details>
     
     <details>
@@ -567,7 +582,7 @@
         <summary>When will <code>x</code> feature be added?</summary>
         Features can be requested at the links below, but after that it's up to Slarmoo to work on features if/when they can. 
         <br>
-        Please be patient; Slarmoo works on Slarmoo's Box in their free time. I can't guarantee that anything will be out
+        Please be patient; Slarmoo works on Slarmoo's Box in their free time. They can't guarantee that anything will be out
         in a timely manner, or at all.
     </details>
     

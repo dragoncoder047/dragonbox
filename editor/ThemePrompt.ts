@@ -43,7 +43,6 @@ export class ThemePrompt implements Prompt {
 			option({ value: "jummbox classic" }, "JummBox Dark"),
 			// let's retire this again.
 			// option({ value: "jummbox light" }, "JummBox Light"), 
-			option({ value: "modbox classic" }, "Modbox"),
 			option({ value: "sandbox classic" }, "Sandbox"),
 			option({ value: "harrybox" }, "Haileybox"),
 			option({ value: "brucebox" }, "Brucebox"),

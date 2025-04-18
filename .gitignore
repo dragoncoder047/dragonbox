@@ -24,3 +24,5 @@ offline/node_modules
 #for deployment
 deployFiles.sh
 pm2handler.cjs
+#for me
+/synth/effects_wip

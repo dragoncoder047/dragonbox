@@ -1,7 +1,7 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
 import { Config } from "../synth/SynthConfig";
-import { clamp, Synth } from "../synth/synth";
+import { clamp, fadeOutSettingToTicks } from "../synth/utils";
 import { Instrument } from "../synth/Instrument";
 import { SongDocument } from "./SongDocument";
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
@@ -164,7 +164,7 @@ export class FadeInOutEditor {
         let fadePath: string = "";
         fadePath += `M 0 ${this._editorHeight} `;
         fadePath += `L ${fadeInX} 0 `;
-        if (Synth.fadeOutSettingToTicks(instrument.fadeOut) > 0) {
+        if (fadeOutSettingToTicks(instrument.fadeOut) > 0) {
             fadePath += `L ${dottedLineX} 0 `;
             fadePath += `L ${fadeOutX} ${this._editorHeight} `;
         } else {

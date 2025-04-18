@@ -17,7 +17,7 @@ import { ExportPrompt } from "./ExportPrompt";
 import "./Layout"; // Imported here for the sake of ensuring this code is transpiled early.
 import { Instrument } from "../synth/Instrument";
 import { Channel } from "../synth/Channel";
-import { Synth } from "../synth/synth";
+import { detuneToCents } from "../synth/utils";
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
 import { Preferences } from "./Preferences";
 import { HarmonicsEditor, HarmonicsEditorPrompt } from "./HarmonicsEditor";
@@ -2807,7 +2807,7 @@ export class SongEditor {
                 else if (instrument.effectOrder[i] == EffectType.detune && effectsIncludeDetune(instrument.effects)) {
                     this._effectsGroup.append(this._detuneSliderRow)
                     this._detuneSlider.updateValue(instrument.detune - Config.detuneCenter);
-                    this._detuneSlider.input.title = (Synth.detuneToCents(instrument.detune)) + " cent(s)";
+                    this._detuneSlider.input.title = (detuneToCents(instrument.detune)) + " cent(s)";
                 }
                 else if (instrument.effectOrder[i] == EffectType.vibrato && effectsIncludeVibrato(instrument.effects)) {
                     this._effectsGroup.append(this._vibratoSelectRow)

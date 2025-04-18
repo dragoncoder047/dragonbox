@@ -3,7 +3,7 @@
 import { Dictionary, DictionaryArray, toNameMap, SustainType, EnvelopeType, InstrumentType, EffectType, Transition, Unison, Chord, Vibrato, Envelope, AutomationTarget, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, effectsIncludeRingModulation, effectsIncludeGranular, LFOEnvelopeTypes } from "./SynthConfig";
 import { FilterSettings } from "./Filter";
 import { EnvelopeSettings } from "./Envelope";
-import { clamp, Synth } from "./synth";
+import { clamp, fadeInSettingToSeconds, secondsToFadeInSetting, fadeOutSettingToTicks, ticksToFadeOutSetting, detuneToCents, centsToDetune, fittingPowerOfTwo } from "./utils";
 
 // Settings that were available to old versions of BeepBox but are no longer available in the
 // current version that need to be reinterpreted as a group to determine the best way to
@@ -168,7 +168,7 @@ export class SpectrumWave {
     }
 
     public markCustomWaveDirty(): void {
-        const hashMult: number = Synth.fittingPowerOfTwo(Config.spectrumMax + 2) - 1;
+        const hashMult: number = fittingPowerOfTwo(Config.spectrumMax + 2) - 1;
         let hash: number = 0;
         for (const point of this.spectrum) hash = ((hash * hashMult) + point) >>> 0;
         this.hash = hash;
@@ -194,7 +194,7 @@ export class HarmonicsWave {
     }
 
     public markCustomWaveDirty(): void {
-        const hashMult: number = Synth.fittingPowerOfTwo(Config.harmonicsMax + 2) - 1;
+        const hashMult: number = fittingPowerOfTwo(Config.harmonicsMax + 2) - 1;
         let hash: number = 0;
         for (const point of this.harmonics) hash = ((hash * hashMult) + point) >>> 0;
         this.hash = hash;
@@ -694,7 +694,7 @@ export class Instrument {
             instrumentObject["pitchShiftSemitones"] = this.pitchShift;
         }
         if (effectsIncludeDetune(this.effects)) {
-            instrumentObject["detuneCents"] = Synth.detuneToCents(this.detune);
+            instrumentObject["detuneCents"] = detuneToCents(this.detune);
         }
         if (effectsIncludeVibrato(this.effects)) {
             if (this.vibrato == -1) {
@@ -758,8 +758,8 @@ export class Instrument {
         }
 
         if (this.type != InstrumentType.drumset) {
-            instrumentObject["fadeInSeconds"] = Math.round(10000 * Synth.fadeInSettingToSeconds(this.fadeIn)) / 10000;
-            instrumentObject["fadeOutTicks"] = Synth.fadeOutSettingToTicks(this.fadeOut);
+            instrumentObject["fadeInSeconds"] = Math.round(10000 * fadeInSettingToSeconds(this.fadeIn)) / 10000;
+            instrumentObject["fadeOutTicks"] = fadeOutSettingToTicks(this.fadeOut);
         }
 
         if (this.type == InstrumentType.harmonics || this.type == InstrumentType.pickedString) {
@@ -1022,8 +1022,8 @@ export class Instrument {
                 if (legacySettings != undefined) {
                     transition = Config.transitions.dictionary[legacySettings.transition];
                     // These may be overridden below.
-                    this.fadeIn = Synth.secondsToFadeInSetting(legacySettings.fadeInSeconds);
-                    this.fadeOut = Synth.ticksToFadeOutSetting(legacySettings.fadeOutTicks);
+                    this.fadeIn = secondsToFadeInSetting(legacySettings.fadeInSeconds);
+                    this.fadeOut = ticksToFadeOutSetting(legacySettings.fadeOutTicks);
                 }
             }
             if (transition != undefined) this.transition = transition.index;
@@ -1036,10 +1036,10 @@ export class Instrument {
 
         // Overrides legacy settings in transition above.
         if (instrumentObject["fadeInSeconds"] != undefined) {
-            this.fadeIn = Synth.secondsToFadeInSetting(+instrumentObject["fadeInSeconds"]);
+            this.fadeIn = secondsToFadeInSetting(+instrumentObject["fadeInSeconds"]);
         }
         if (instrumentObject["fadeOutTicks"] != undefined) {
-            this.fadeOut = Synth.ticksToFadeOutSetting(+instrumentObject["fadeOutTicks"]);
+            this.fadeOut = ticksToFadeOutSetting(+instrumentObject["fadeOutTicks"]);
         }
 
         {
@@ -1111,7 +1111,7 @@ export class Instrument {
             }
         }
         if (instrumentObject["detuneCents"] != undefined) {
-            this.detune = clamp(Config.detuneMin, Config.detuneMax + 1, Math.round(Synth.centsToDetune(+instrumentObject["detuneCents"])));
+            this.detune = clamp(Config.detuneMin, Config.detuneMax + 1, Math.round(centsToDetune(+instrumentObject["detuneCents"])));
         }
 
         this.vibrato = Config.vibratos.dictionary["none"].index; // default value.
@@ -1793,11 +1793,11 @@ export class Instrument {
     }
 
     public getFadeInSeconds(): number {
-        return (this.type == InstrumentType.drumset) ? 0.0 : Synth.fadeInSettingToSeconds(this.fadeIn);
+        return (this.type == InstrumentType.drumset) ? 0.0 : fadeInSettingToSeconds(this.fadeIn);
     }
 
     public getFadeOutTicks(): number {
-        return (this.type == InstrumentType.drumset) ? Config.drumsetFadeOutTicks : Synth.fadeOutSettingToTicks(this.fadeOut)
+        return (this.type == InstrumentType.drumset) ? Config.drumsetFadeOutTicks : fadeOutSettingToTicks(this.fadeOut)
     }
 
     public getChord(): Chord {

@@ -2,7 +2,7 @@
 
 import { Config } from "./SynthConfig";
 import { Instrument } from "./Instrument";
-import { clamp } from "./synth";
+import { clamp } from "./utils";
 import { Channel } from "./Channel";
 import { Song } from "./Song";
 

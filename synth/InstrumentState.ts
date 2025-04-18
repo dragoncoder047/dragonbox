@@ -8,6 +8,7 @@ import { SpectrumWave, HarmonicsWave, Instrument } from "./Instrument";
 import { Synth, Tone } from "./synth";
 import { EnvelopeComputer } from "./EnvelopeComputer";
 import { FilterSettings, FilterControlPoint } from "./Filter";
+import { fittingPowerOfTwo } from "./utils";
 
 export class SpectrumWaveState {
     public wave: Float32Array | null = null;
@@ -277,7 +278,7 @@ export class PickedString {
             // The delay line buffer will get reused for other tones so might as well
             // start off with a buffer size that is big enough for most notes.
             const likelyMaximumLength: number = Math.ceil(2 * synth.samplesPerSecond / Instrument.frequencyFromPitch(12));
-            const newDelayLine: Float32Array = new Float32Array(Synth.fittingPowerOfTwo(Math.max(likelyMaximumLength, minBufferLength)));
+            const newDelayLine: Float32Array = new Float32Array(fittingPowerOfTwo(Math.max(likelyMaximumLength, minBufferLength)));
             if (!reinitializeImpulse && this.delayLine != null) {
                 // If the tone has already started but the buffer needs to be reallocated,
                 // transfer the old data to the new buffer.
@@ -628,7 +629,7 @@ export class InstrumentState {
             const granularDelayLineSizeInMilliseconds: number = 2500;
             const granularDelayLineSizeInSeconds: number = granularDelayLineSizeInMilliseconds / 1000; // Maximum possible delay time
             this.granularMaximumDelayTimeInSeconds = granularDelayLineSizeInSeconds;
-            const granularDelayLineSizeInSamples: number = Synth.fittingPowerOfTwo(Math.floor(granularDelayLineSizeInSeconds * synth.samplesPerSecond));
+            const granularDelayLineSizeInSamples: number = fittingPowerOfTwo(Math.floor(granularDelayLineSizeInSeconds * synth.samplesPerSecond));
             if (this.granularDelayLine == null || this.granularDelayLine.length != granularDelayLineSizeInSamples) {
                 this.granularDelayLine = new Float32Array(granularDelayLineSizeInSamples);
                 this.granularDelayLineIndex = 0;
@@ -648,7 +649,7 @@ export class InstrumentState {
     public allocateEchoBuffers(samplesPerTick: number, echoDelay: number) {
         // account for tempo and delay automation changing delay length during a tick?
         const safeEchoDelaySteps: number = Math.max(Config.echoDelayRange >> 1, (echoDelay + 1)); // The delay may be very short now, but if it increases later make sure we have enough sample history.
-        const baseEchoDelayBufferSize: number = Synth.fittingPowerOfTwo(safeEchoDelaySteps * Config.echoDelayStepTicks * samplesPerTick);
+        const baseEchoDelayBufferSize: number = fittingPowerOfTwo(safeEchoDelaySteps * Config.echoDelayStepTicks * samplesPerTick);
         const safeEchoDelayBufferSize: number = baseEchoDelayBufferSize * 2; // If the tempo or delay changes and we suddenly need a longer delay, make sure that we have enough sample history to accomodate the longer delay.
 
         if (this.echoDelayLineL == null || this.echoDelayLineR == null) {

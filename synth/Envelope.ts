@@ -1,7 +1,7 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
 import { Config, LFOEnvelopeTypes, EnvelopeType, Envelope, AutomationTarget } from "./SynthConfig";
-import { clamp } from "./synth";
+import { clamp } from "./utils";
 export class EnvelopeSettings {
     public target: number = 0;
     public index: number = 0;

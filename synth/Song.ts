@@ -6,7 +6,8 @@ import { Channel } from "./Channel";
 import { Instrument, LegacySettings } from "./Instrument";
 import { Note, NotePin, makeNotePin, Pattern } from "./Pattern";
 import { FilterSettings, FilterControlPoint } from "./Filter";
-import { clamp, validateRange, parseFloatWithDefault, parseIntWithDefault, Synth } from "./synth";
+import { clamp, validateRange, parseFloatWithDefault, parseIntWithDefault, secondsToFadeInSetting, ticksToFadeOutSetting } from "./utils";
+//import { Synth } from "./synth";
 
 function encode32BitNumber(buffer: number[], x: number): void {
     // 0b11_
@@ -653,6 +654,21 @@ export class Song {
 
     public getChannelIsMod(channelIndex: number): boolean {
         return (channelIndex >= this.pitchChannelCount + this.noiseChannelCount);
+    }
+
+    public static secondsToFadeInSetting(seconds: number): number {
+        return clamp(0, Config.fadeInRange, Math.round((-0.95 + Math.sqrt(0.9025 + 0.2 * seconds / 0.0125)) / 0.1));
+    }
+
+    public static ticksToFadeOutSetting(ticks: number): number {
+        let lower: number = Config.fadeOutTicks[0];
+        if (ticks <= lower) return 0;
+        for (let i: number = 1; i < Config.fadeOutTicks.length; i++) {
+            let upper: number = Config.fadeOutTicks[i];
+            if (ticks <= upper) return (ticks < (lower + upper) / 2) ? i - 1 : i;
+            lower = upper;
+        }
+        return Config.fadeOutTicks.length - 1;
     }
 
     public initToDefault(andResetChannels: boolean = true): void {
@@ -2332,8 +2348,8 @@ export class Song {
                         const channelIndex: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         const settings = legacySettings[clamp(0, legacySettings.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
                         const instrument: Instrument = this.channels[channelIndex].instruments[0];
-                        instrument.fadeIn = Synth.secondsToFadeInSetting(settings.fadeInSeconds);
-                        instrument.fadeOut = Synth.ticksToFadeOutSetting(settings.fadeOutTicks);
+                        instrument.fadeIn = secondsToFadeInSetting(settings.fadeInSeconds);
+                        instrument.fadeOut = ticksToFadeOutSetting(settings.fadeOutTicks);
                         instrument.transition = Config.transitions.dictionary[settings.transition].index;
                         if (instrument.transition != Config.transitions.dictionary["normal"].index) {
                             // Enable transition if it was used.
@@ -2343,8 +2359,8 @@ export class Song {
                         for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
                             for (const instrument of this.channels[channelIndex].instruments) {
                                 const settings = legacySettings[clamp(0, legacySettings.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
-                                instrument.fadeIn = Synth.secondsToFadeInSetting(settings.fadeInSeconds);
-                                instrument.fadeOut = Synth.ticksToFadeOutSetting(settings.fadeOutTicks);
+                                instrument.fadeIn = secondsToFadeInSetting(settings.fadeInSeconds);
+                                instrument.fadeOut = ticksToFadeOutSetting(settings.fadeOutTicks);
                                 instrument.transition = Config.transitions.dictionary[settings.transition].index;
                                 if (instrument.transition != Config.transitions.dictionary["normal"].index) {
                                     // Enable transition if it was used.
@@ -2355,8 +2371,8 @@ export class Song {
                     } else if ((beforeFour && !fromGoldBox && !fromUltraBox && !fromSlarmoosBox) || fromBeepBox) {
                         const settings = legacySettings[clamp(0, legacySettings.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
                         const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                        instrument.fadeIn = Synth.secondsToFadeInSetting(settings.fadeInSeconds);
-                        instrument.fadeOut = Synth.ticksToFadeOutSetting(settings.fadeOutTicks);
+                        instrument.fadeIn = secondsToFadeInSetting(settings.fadeInSeconds);
+                        instrument.fadeOut = ticksToFadeOutSetting(settings.fadeOutTicks);
                         instrument.transition = Config.transitions.dictionary[settings.transition].index;
                         if (instrument.transition != Config.transitions.dictionary["normal"].index) {
                             // Enable transition if it was used.
@@ -2365,8 +2381,8 @@ export class Song {
                     } else {
                         const settings = legacySettings[clamp(0, legacySettings.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
                         const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                        instrument.fadeIn = Synth.secondsToFadeInSetting(settings.fadeInSeconds);
-                        instrument.fadeOut = Synth.ticksToFadeOutSetting(settings.fadeOutTicks);
+                        instrument.fadeIn = secondsToFadeInSetting(settings.fadeInSeconds);
+                        instrument.fadeOut = ticksToFadeOutSetting(settings.fadeOutTicks);
                         instrument.transition = Config.transitions.dictionary[settings.transition].index;
 
                         // Read tie-note

@@ -12,6 +12,7 @@ import { EnvelopeComputer } from "./EnvelopeComputer";
 import { FilterSettings, FilterControlPoint } from "./Filter";
 import { events } from "../global/Events";
 import { FilterCoefficients, FrequencyResponse, DynamicBiquadFilter } from "./filtering";
+import { clamp, detuneToCents, fittingPowerOfTwo } from "./utils";
 
 declare global {
     interface Window {
@@ -25,35 +26,6 @@ const epsilon: number = (1.0e-24); // For detecting and avoiding float denormals
 // For performance debugging:
 //let samplesAccumulated: number = 0;
 //let samplePerformance: number = 0;
-
-export function clamp(min: number, max: number, val: number): number {
-    max = max - 1;
-    if (val <= max) {
-        if (val >= min) return val;
-        else return min;
-    } else {
-        return max;
-    }
-}
-
-export function validateRange(min: number, max: number, val: number): number {
-    if (min <= val && val <= max) return val;
-    throw new Error(`Value ${val} not in range [${min}, ${max}]`);
-}
-
-export function parseFloatWithDefault<T>(s: string, defaultValue: T): number | T {
-    let result: number | T = parseFloat(s);
-    if (Number.isNaN(result)) result = defaultValue;
-    return result;
-}
-
-export function parseIntWithDefault<T>(s: string, defaultValue: T): number | T {
-    let result: number | T = parseInt(s);
-    if (Number.isNaN(result)) result = defaultValue;
-    return result;
-}
-
-//TODO: move these to utils.ts anu seme
 
 export class Tone {
     public instrumentIndex: number;
@@ -879,9 +851,9 @@ export class Synth {
     }
 
     private computeDelayBufferSizes(): void {
-        this.panningDelayBufferSize = Synth.fittingPowerOfTwo(this.samplesPerSecond * Config.panDelaySecondsMax);
+        this.panningDelayBufferSize = fittingPowerOfTwo(this.samplesPerSecond * Config.panDelaySecondsMax);
         this.panningDelayBufferMask = this.panningDelayBufferSize - 1;
-        this.chorusDelayBufferSize = Synth.fittingPowerOfTwo(this.samplesPerSecond * Config.chorusMaxDelay);
+        this.chorusDelayBufferSize = fittingPowerOfTwo(this.samplesPerSecond * Config.chorusMaxDelay);
         this.chorusDelayBufferMask = this.chorusDelayBufferSize - 1;
     }
 
@@ -2878,8 +2850,8 @@ export class Synth {
                 modDetuneStart += 4 * this.getModValue(Config.modulators.dictionary["song detune"].index, channelIndex, tone.instrumentIndex, false);
                 modDetuneEnd += 4 * this.getModValue(Config.modulators.dictionary["song detune"].index, channelIndex, tone.instrumentIndex, true);
             }
-            intervalStart += Synth.detuneToCents(modDetuneStart) * envelopeStart * Config.pitchesPerOctave / (12.0 * 100.0);
-            intervalEnd += Synth.detuneToCents(modDetuneEnd) * envelopeEnd * Config.pitchesPerOctave / (12.0 * 100.0);
+            intervalStart += detuneToCents(modDetuneStart) * envelopeStart * Config.pitchesPerOctave / (12.0 * 100.0);
+            intervalEnd += detuneToCents(modDetuneEnd) * envelopeEnd * Config.pitchesPerOctave / (12.0 * 100.0);
         }
 
         if (effectsIncludeVibrato(instrument.effects)) {
@@ -3461,7 +3433,7 @@ export class Synth {
                     // The delay line buffer will get reused for other tones so might as well
                     // start off with a buffer size that is big enough for most notes.
                     const likelyMaximumLength: number = Math.ceil(0.5 * this.samplesPerSecond / Instrument.frequencyFromPitch(24));
-                    const newDelayLine: Float32Array = new Float32Array(Synth.fittingPowerOfTwo(Math.max(likelyMaximumLength, minBufferLength)));
+                    const newDelayLine: Float32Array = new Float32Array(fittingPowerOfTwo(Math.max(likelyMaximumLength, minBufferLength)));
                     if (!initializeSupersaw && tone.supersawDelayLine != null) {
                         // If the tone has already started but the buffer needs to be reallocated,
                         // transfer the old data to the new buffer.
@@ -6166,45 +6138,6 @@ export class Synth {
         return Math.pow(Math.max(0.0, volumeMult), 1 / 1.5) * Config.noteSizeMax;
     }
 
-    public static fadeInSettingToSeconds(setting: number): number {
-        return 0.0125 * (0.95 * setting + 0.05 * setting * setting);
-    }
-    public static secondsToFadeInSetting(seconds: number): number {
-        return clamp(0, Config.fadeInRange, Math.round((-0.95 + Math.sqrt(0.9025 + 0.2 * seconds / 0.0125)) / 0.1));
-    }
-    public static fadeOutSettingToTicks(setting: number): number {
-        return Config.fadeOutTicks[setting];
-    }
-    public static ticksToFadeOutSetting(ticks: number): number {
-        let lower: number = Config.fadeOutTicks[0];
-        if (ticks <= lower) return 0;
-        for (let i: number = 1; i < Config.fadeOutTicks.length; i++) {
-            let upper: number = Config.fadeOutTicks[i];
-            if (ticks <= upper) return (ticks < (lower + upper) / 2) ? i - 1 : i;
-            lower = upper;
-        }
-        return Config.fadeOutTicks.length - 1;
-    }
-
-    // public static lerp(t: number, a: number, b: number): number {
-    //     return a + (b - a) * t;
-    // }
-
-    // public static unlerp(x: number, a: number, b: number): number {
-    //     return (x - a) / (b - a);
-    // }
-
-    public static detuneToCents(detune: number): number {
-        // BeepBox formula, for reference:
-        // return detune * (Math.abs(detune) + 1) / 2;
-        return detune - Config.detuneCenter;
-    }
-    public static centsToDetune(cents: number): number {
-        // BeepBox formula, for reference:
-        // return Math.sign(cents) * (Math.sqrt(1 + 8 * Math.abs(cents)) - 1) / 2.0;
-        return cents + Config.detuneCenter;
-    }
-
     public static getOperatorWave(waveform: number, pulseWidth: number) {
         if (waveform != 2) {
             return Config.operatorWaves[waveform];
@@ -6228,10 +6161,6 @@ export class Synth {
         const partsPerSecond: number = Config.partsPerBeat * beatsPerSecond;
         const tickPerSecond: number = Config.ticksPerPart * partsPerSecond;
         return this.samplesPerSecond / tickPerSecond;
-    }
-
-    public static fittingPowerOfTwo(x: number): number {
-        return 1 << (32 - Math.clz32(Math.ceil(x) - 1));
     }
 
     private sanitizeFilters(filters: DynamicBiquadFilter[]): void {

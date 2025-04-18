@@ -2623,6 +2623,66 @@ var beepbox = (function (exports) {
         }
     }
 
+    function clamp(min, max, val) {
+        max = max - 1;
+        if (val <= max) {
+            if (val >= min)
+                return val;
+            else
+                return min;
+        }
+        else {
+            return max;
+        }
+    }
+    function validateRange(min, max, val) {
+        if (min <= val && val <= max)
+            return val;
+        throw new Error(`Value ${val} not in range [${min}, ${max}]`);
+    }
+    function parseFloatWithDefault(s, defaultValue) {
+        let result = parseFloat(s);
+        if (Number.isNaN(result))
+            result = defaultValue;
+        return result;
+    }
+    function parseIntWithDefault(s, defaultValue) {
+        let result = parseInt(s);
+        if (Number.isNaN(result))
+            result = defaultValue;
+        return result;
+    }
+    function fadeInSettingToSeconds(setting) {
+        return 0.0125 * (0.95 * setting + 0.05 * setting * setting);
+    }
+    function secondsToFadeInSetting(seconds) {
+        return clamp(0, Config.fadeInRange, Math.round((-0.95 + Math.sqrt(0.9025 + 0.2 * seconds / 0.0125)) / 0.1));
+    }
+    function fadeOutSettingToTicks(setting) {
+        return Config.fadeOutTicks[setting];
+    }
+    function ticksToFadeOutSetting(ticks) {
+        let lower = Config.fadeOutTicks[0];
+        if (ticks <= lower)
+            return 0;
+        for (let i = 1; i < Config.fadeOutTicks.length; i++) {
+            let upper = Config.fadeOutTicks[i];
+            if (ticks <= upper)
+                return (ticks < (lower + upper) / 2) ? i - 1 : i;
+            lower = upper;
+        }
+        return Config.fadeOutTicks.length - 1;
+    }
+    function detuneToCents(detune) {
+        return detune - Config.detuneCenter;
+    }
+    function centsToDetune(cents) {
+        return cents + Config.detuneCenter;
+    }
+    function fittingPowerOfTwo(x) {
+        return 1 << (32 - Math.clz32(Math.ceil(x) - 1));
+    }
+
     class EnvelopeSettings {
         constructor(isNoiseEnvelope) {
             this.isNoiseEnvelope = isNoiseEnvelope;
@@ -2944,7 +3004,7 @@ var beepbox = (function (exports) {
             this.markCustomWaveDirty();
         }
         markCustomWaveDirty() {
-            const hashMult = Synth.fittingPowerOfTwo(Config.spectrumMax + 2) - 1;
+            const hashMult = fittingPowerOfTwo(Config.spectrumMax + 2) - 1;
             let hash = 0;
             for (const point of this.spectrum)
                 hash = ((hash * hashMult) + point) >>> 0;
@@ -2967,7 +3027,7 @@ var beepbox = (function (exports) {
             this.markCustomWaveDirty();
         }
         markCustomWaveDirty() {
-            const hashMult = Synth.fittingPowerOfTwo(Config.harmonicsMax + 2) - 1;
+            const hashMult = fittingPowerOfTwo(Config.harmonicsMax + 2) - 1;
             let hash = 0;
             for (const point of this.harmonics)
                 hash = ((hash * hashMult) + point) >>> 0;
@@ -3411,7 +3471,7 @@ var beepbox = (function (exports) {
                 instrumentObject["pitchShiftSemitones"] = this.pitchShift;
             }
             if (effectsIncludeDetune(this.effects)) {
-                instrumentObject["detuneCents"] = Synth.detuneToCents(this.detune);
+                instrumentObject["detuneCents"] = detuneToCents(this.detune);
             }
             if (effectsIncludeVibrato(this.effects)) {
                 if (this.vibrato == -1) {
@@ -3474,8 +3534,8 @@ var beepbox = (function (exports) {
                 instrumentObject["reverb"] = Math.round(100 * this.reverb / (Config.reverbRange - 1));
             }
             if (this.type != 4) {
-                instrumentObject["fadeInSeconds"] = Math.round(10000 * Synth.fadeInSettingToSeconds(this.fadeIn)) / 10000;
-                instrumentObject["fadeOutTicks"] = Synth.fadeOutSettingToTicks(this.fadeOut);
+                instrumentObject["fadeInSeconds"] = Math.round(10000 * fadeInSettingToSeconds(this.fadeIn)) / 10000;
+                instrumentObject["fadeOutTicks"] = fadeOutSettingToTicks(this.fadeOut);
             }
             if (this.type == 5 || this.type == 7) {
                 instrumentObject["harmonics"] = [];
@@ -3729,8 +3789,8 @@ var beepbox = (function (exports) {
                     }[transitionProperty];
                     if (legacySettings != undefined) {
                         transition = Config.transitions.dictionary[legacySettings.transition];
-                        this.fadeIn = Synth.secondsToFadeInSetting(legacySettings.fadeInSeconds);
-                        this.fadeOut = Synth.ticksToFadeOutSetting(legacySettings.fadeOutTicks);
+                        this.fadeIn = secondsToFadeInSetting(legacySettings.fadeInSeconds);
+                        this.fadeOut = ticksToFadeOutSetting(legacySettings.fadeOutTicks);
                     }
                 }
                 if (transition != undefined)
@@ -3740,10 +3800,10 @@ var beepbox = (function (exports) {
                 }
             }
             if (instrumentObject["fadeInSeconds"] != undefined) {
-                this.fadeIn = Synth.secondsToFadeInSetting(+instrumentObject["fadeInSeconds"]);
+                this.fadeIn = secondsToFadeInSetting(+instrumentObject["fadeInSeconds"]);
             }
             if (instrumentObject["fadeOutTicks"] != undefined) {
-                this.fadeOut = Synth.ticksToFadeOutSetting(+instrumentObject["fadeOutTicks"]);
+                this.fadeOut = ticksToFadeOutSetting(+instrumentObject["fadeOutTicks"]);
             }
             {
                 const chordProperty = instrumentObject["chord"];
@@ -3815,7 +3875,7 @@ var beepbox = (function (exports) {
                 }
             }
             if (instrumentObject["detuneCents"] != undefined) {
-                this.detune = clamp(Config.detuneMin, Config.detuneMax + 1, Math.round(Synth.centsToDetune(+instrumentObject["detuneCents"])));
+                this.detune = clamp(Config.detuneMin, Config.detuneMax + 1, Math.round(centsToDetune(+instrumentObject["detuneCents"])));
             }
             this.vibrato = Config.vibratos.dictionary["none"].index;
             const vibratoProperty = instrumentObject["vibrato"] || instrumentObject["effect"];
@@ -4473,10 +4533,10 @@ var beepbox = (function (exports) {
                 (this.type == 10 ? Config.transitions.dictionary["interrupt"] : Config.transitions.dictionary["normal"]);
         }
         getFadeInSeconds() {
-            return (this.type == 4) ? 0.0 : Synth.fadeInSettingToSeconds(this.fadeIn);
+            return (this.type == 4) ? 0.0 : fadeInSettingToSeconds(this.fadeIn);
         }
         getFadeOutTicks() {
-            return (this.type == 4) ? Config.drumsetFadeOutTicks : Synth.fadeOutSettingToTicks(this.fadeOut);
+            return (this.type == 4) ? Config.drumsetFadeOutTicks : fadeOutSettingToTicks(this.fadeOut);
         }
         getChord() {
             return effectsIncludeChord(this.effects) ? Config.chords[this.chord] : Config.chords.dictionary["simultaneous"];
@@ -5102,6 +5162,21 @@ var beepbox = (function (exports) {
         }
         getChannelIsMod(channelIndex) {
             return (channelIndex >= this.pitchChannelCount + this.noiseChannelCount);
+        }
+        static secondsToFadeInSetting(seconds) {
+            return clamp(0, Config.fadeInRange, Math.round((-0.95 + Math.sqrt(0.9025 + 0.2 * seconds / 0.0125)) / 0.1));
+        }
+        static ticksToFadeOutSetting(ticks) {
+            let lower = Config.fadeOutTicks[0];
+            if (ticks <= lower)
+                return 0;
+            for (let i = 1; i < Config.fadeOutTicks.length; i++) {
+                let upper = Config.fadeOutTicks[i];
+                if (ticks <= upper)
+                    return (ticks < (lower + upper) / 2) ? i - 1 : i;
+                lower = upper;
+            }
+            return Config.fadeOutTicks.length - 1;
         }
         initToDefault(andResetChannels = true) {
             this.scale = 0;
@@ -6669,8 +6744,8 @@ var beepbox = (function (exports) {
                                     const channelIndex = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                     const settings = legacySettings[clamp(0, legacySettings.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
                                     const instrument = this.channels[channelIndex].instruments[0];
-                                    instrument.fadeIn = Synth.secondsToFadeInSetting(settings.fadeInSeconds);
-                                    instrument.fadeOut = Synth.ticksToFadeOutSetting(settings.fadeOutTicks);
+                                    instrument.fadeIn = secondsToFadeInSetting(settings.fadeInSeconds);
+                                    instrument.fadeOut = ticksToFadeOutSetting(settings.fadeOutTicks);
                                     instrument.transition = Config.transitions.dictionary[settings.transition].index;
                                     if (instrument.transition != Config.transitions.dictionary["normal"].index) {
                                         instrument.effects |= 1 << 10;
@@ -6680,8 +6755,8 @@ var beepbox = (function (exports) {
                                     for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
                                         for (const instrument of this.channels[channelIndex].instruments) {
                                             const settings = legacySettings[clamp(0, legacySettings.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
-                                            instrument.fadeIn = Synth.secondsToFadeInSetting(settings.fadeInSeconds);
-                                            instrument.fadeOut = Synth.ticksToFadeOutSetting(settings.fadeOutTicks);
+                                            instrument.fadeIn = secondsToFadeInSetting(settings.fadeInSeconds);
+                                            instrument.fadeOut = ticksToFadeOutSetting(settings.fadeOutTicks);
                                             instrument.transition = Config.transitions.dictionary[settings.transition].index;
                                             if (instrument.transition != Config.transitions.dictionary["normal"].index) {
                                                 instrument.effects |= 1 << 10;
@@ -6692,8 +6767,8 @@ var beepbox = (function (exports) {
                                 else if ((beforeFour && !fromGoldBox && !fromUltraBox && !fromSlarmoosBox) || fromBeepBox) {
                                     const settings = legacySettings[clamp(0, legacySettings.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
                                     const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                                    instrument.fadeIn = Synth.secondsToFadeInSetting(settings.fadeInSeconds);
-                                    instrument.fadeOut = Synth.ticksToFadeOutSetting(settings.fadeOutTicks);
+                                    instrument.fadeIn = secondsToFadeInSetting(settings.fadeInSeconds);
+                                    instrument.fadeOut = ticksToFadeOutSetting(settings.fadeOutTicks);
                                     instrument.transition = Config.transitions.dictionary[settings.transition].index;
                                     if (instrument.transition != Config.transitions.dictionary["normal"].index) {
                                         instrument.effects |= 1 << 10;
@@ -6702,8 +6777,8 @@ var beepbox = (function (exports) {
                                 else {
                                     const settings = legacySettings[clamp(0, legacySettings.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
                                     const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                                    instrument.fadeIn = Synth.secondsToFadeInSetting(settings.fadeInSeconds);
-                                    instrument.fadeOut = Synth.ticksToFadeOutSetting(settings.fadeOutTicks);
+                                    instrument.fadeIn = secondsToFadeInSetting(settings.fadeInSeconds);
+                                    instrument.fadeOut = ticksToFadeOutSetting(settings.fadeOutTicks);
                                     instrument.transition = Config.transitions.dictionary[settings.transition].index;
                                     if (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] > 0) {
                                         instrument.legacyTieOver = true;
@@ -10164,7 +10239,7 @@ var beepbox = (function (exports) {
             const reinitializeImpulse = (this.delayIndex == -1 || pitchChanged);
             if (this.delayLine == null || this.delayLine.length <= minBufferLength) {
                 const likelyMaximumLength = Math.ceil(2 * synth.samplesPerSecond / Instrument.frequencyFromPitch(12));
-                const newDelayLine = new Float32Array(Synth.fittingPowerOfTwo(Math.max(likelyMaximumLength, minBufferLength)));
+                const newDelayLine = new Float32Array(fittingPowerOfTwo(Math.max(likelyMaximumLength, minBufferLength)));
                 if (!reinitializeImpulse && this.delayLine != null) {
                     const oldDelayBufferMask = (this.delayLine.length - 1) >> 0;
                     const startCopyingFromIndex = this.delayIndex + this.delayResetOffset;
@@ -10452,7 +10527,7 @@ var beepbox = (function (exports) {
                 const granularDelayLineSizeInMilliseconds = 2500;
                 const granularDelayLineSizeInSeconds = granularDelayLineSizeInMilliseconds / 1000;
                 this.granularMaximumDelayTimeInSeconds = granularDelayLineSizeInSeconds;
-                const granularDelayLineSizeInSamples = Synth.fittingPowerOfTwo(Math.floor(granularDelayLineSizeInSeconds * synth.samplesPerSecond));
+                const granularDelayLineSizeInSamples = fittingPowerOfTwo(Math.floor(granularDelayLineSizeInSeconds * synth.samplesPerSecond));
                 if (this.granularDelayLine == null || this.granularDelayLine.length != granularDelayLineSizeInSamples) {
                     this.granularDelayLine = new Float32Array(granularDelayLineSizeInSamples);
                     this.granularDelayLineIndex = 0;
@@ -10470,7 +10545,7 @@ var beepbox = (function (exports) {
         }
         allocateEchoBuffers(samplesPerTick, echoDelay) {
             const safeEchoDelaySteps = Math.max(Config.echoDelayRange >> 1, (echoDelay + 1));
-            const baseEchoDelayBufferSize = Synth.fittingPowerOfTwo(safeEchoDelaySteps * Config.echoDelayStepTicks * samplesPerTick);
+            const baseEchoDelayBufferSize = fittingPowerOfTwo(safeEchoDelaySteps * Config.echoDelayStepTicks * samplesPerTick);
             const safeEchoDelayBufferSize = baseEchoDelayBufferSize * 2;
             if (this.echoDelayLineL == null || this.echoDelayLineR == null) {
                 this.echoDelayLineL = new Float32Array(safeEchoDelayBufferSize);
@@ -11190,35 +11265,6 @@ var beepbox = (function (exports) {
     const events = new EventManager();
 
     const epsilon = (1.0e-24);
-    function clamp(min, max, val) {
-        max = max - 1;
-        if (val <= max) {
-            if (val >= min)
-                return val;
-            else
-                return min;
-        }
-        else {
-            return max;
-        }
-    }
-    function validateRange(min, max, val) {
-        if (min <= val && val <= max)
-            return val;
-        throw new Error(`Value ${val} not in range [${min}, ${max}]`);
-    }
-    function parseFloatWithDefault(s, defaultValue) {
-        let result = parseFloat(s);
-        if (Number.isNaN(result))
-            result = defaultValue;
-        return result;
-    }
-    function parseIntWithDefault(s, defaultValue) {
-        let result = parseInt(s);
-        if (Number.isNaN(result))
-            result = defaultValue;
-        return result;
-    }
     class Tone {
         constructor() {
             this.pitches = Array(Config.maxChordSize + 2).fill(0);
@@ -11939,9 +11985,9 @@ var beepbox = (function (exports) {
             this.prevBar = null;
         }
         computeDelayBufferSizes() {
-            this.panningDelayBufferSize = Synth.fittingPowerOfTwo(this.samplesPerSecond * Config.panDelaySecondsMax);
+            this.panningDelayBufferSize = fittingPowerOfTwo(this.samplesPerSecond * Config.panDelaySecondsMax);
             this.panningDelayBufferMask = this.panningDelayBufferSize - 1;
-            this.chorusDelayBufferSize = Synth.fittingPowerOfTwo(this.samplesPerSecond * Config.chorusMaxDelay);
+            this.chorusDelayBufferSize = fittingPowerOfTwo(this.samplesPerSecond * Config.chorusMaxDelay);
             this.chorusDelayBufferMask = this.chorusDelayBufferSize - 1;
         }
         activateAudio() {
@@ -13657,8 +13703,8 @@ var beepbox = (function (exports) {
                     modDetuneStart += 4 * this.getModValue(Config.modulators.dictionary["song detune"].index, channelIndex, tone.instrumentIndex, false);
                     modDetuneEnd += 4 * this.getModValue(Config.modulators.dictionary["song detune"].index, channelIndex, tone.instrumentIndex, true);
                 }
-                intervalStart += Synth.detuneToCents(modDetuneStart) * envelopeStart * Config.pitchesPerOctave / (12.0 * 100.0);
-                intervalEnd += Synth.detuneToCents(modDetuneEnd) * envelopeEnd * Config.pitchesPerOctave / (12.0 * 100.0);
+                intervalStart += detuneToCents(modDetuneStart) * envelopeStart * Config.pitchesPerOctave / (12.0 * 100.0);
+                intervalEnd += detuneToCents(modDetuneEnd) * envelopeEnd * Config.pitchesPerOctave / (12.0 * 100.0);
             }
             if (effectsIncludeVibrato(instrument.effects)) {
                 let delayTicks;
@@ -14111,7 +14157,7 @@ var beepbox = (function (exports) {
                     const minBufferLength = Math.ceil(Math.max(delayLengthStart, delayLengthEnd)) + 2;
                     if (tone.supersawDelayLine == null || tone.supersawDelayLine.length <= minBufferLength) {
                         const likelyMaximumLength = Math.ceil(0.5 * this.samplesPerSecond / Instrument.frequencyFromPitch(24));
-                        const newDelayLine = new Float32Array(Synth.fittingPowerOfTwo(Math.max(likelyMaximumLength, minBufferLength)));
+                        const newDelayLine = new Float32Array(fittingPowerOfTwo(Math.max(likelyMaximumLength, minBufferLength)));
                         if (!initializeSupersaw && tone.supersawDelayLine != null) {
                             const oldDelayBufferMask = (tone.supersawDelayLine.length - 1) >> 0;
                             const startCopyingFromIndex = tone.supersawDelayIndex;
@@ -16314,33 +16360,6 @@ var beepbox = (function (exports) {
         static volumeMultToNoteSize(volumeMult) {
             return Math.pow(Math.max(0.0, volumeMult), 1 / 1.5) * Config.noteSizeMax;
         }
-        static fadeInSettingToSeconds(setting) {
-            return 0.0125 * (0.95 * setting + 0.05 * setting * setting);
-        }
-        static secondsToFadeInSetting(seconds) {
-            return clamp(0, Config.fadeInRange, Math.round((-0.95 + Math.sqrt(0.9025 + 0.2 * seconds / 0.0125)) / 0.1));
-        }
-        static fadeOutSettingToTicks(setting) {
-            return Config.fadeOutTicks[setting];
-        }
-        static ticksToFadeOutSetting(ticks) {
-            let lower = Config.fadeOutTicks[0];
-            if (ticks <= lower)
-                return 0;
-            for (let i = 1; i < Config.fadeOutTicks.length; i++) {
-                let upper = Config.fadeOutTicks[i];
-                if (ticks <= upper)
-                    return (ticks < (lower + upper) / 2) ? i - 1 : i;
-                lower = upper;
-            }
-            return Config.fadeOutTicks.length - 1;
-        }
-        static detuneToCents(detune) {
-            return detune - Config.detuneCenter;
-        }
-        static centsToDetune(cents) {
-            return cents + Config.detuneCenter;
-        }
         static getOperatorWave(waveform, pulseWidth) {
             if (waveform != 2) {
                 return Config.operatorWaves[waveform];
@@ -16363,9 +16382,6 @@ var beepbox = (function (exports) {
             const partsPerSecond = Config.partsPerBeat * beatsPerSecond;
             const tickPerSecond = Config.ticksPerPart * partsPerSecond;
             return this.samplesPerSecond / tickPerSecond;
-        }
-        static fittingPowerOfTwo(x) {
-            return 1 << (32 - Math.clz32(Math.ceil(x) - 1));
         }
         sanitizeFilters(filters) {
             let reset = false;
@@ -16512,10 +16528,6 @@ var beepbox = (function (exports) {
     exports.Config = Config;
     exports.Synth = Synth;
     exports.Tone = Tone;
-    exports.clamp = clamp;
-    exports.parseFloatWithDefault = parseFloatWithDefault;
-    exports.parseIntWithDefault = parseIntWithDefault;
-    exports.validateRange = validateRange;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

@@ -1,6 +1,6 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { EnvelopeType, EnvelopeComputeIndex, BaseWaveTypes, RandomEnvelopeTypes, Config, Envelope, getArpeggioPitchIndex, FilterType, AutomationTarget, Transition } from "./SynthConfig";
+import { EnvelopeType, EnvelopeComputeIndex, LFOEnvelopeTypes, RandomEnvelopeTypes, Config, Envelope, getArpeggioPitchIndex, FilterType, AutomationTarget, Transition } from "./SynthConfig";
 import { Synth, Tone } from "./synth";
 import { Instrument } from "./Instrument";
 import { InstrumentState } from "./InstrumentState";

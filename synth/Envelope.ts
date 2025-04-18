@@ -1,8 +1,7 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Config, BaseWaveTypes, EnvelopeType, Envelope, AutomationTarget } from "./SynthConfig";
+import { Config, LFOEnvelopeTypes, EnvelopeType, Envelope, AutomationTarget } from "./SynthConfig";
 import { clamp } from "./synth";
-
 export class EnvelopeSettings {
     public target: number = 0;
     public index: number = 0;
@@ -17,11 +16,15 @@ export class EnvelopeSettings {
     public perEnvelopeUpperBound: number = 1;
     //modulation support
     public tempEnvelopeSpeed: number | null = null;
+    public tempEnvelopeLowerBound: number | null = null;
+    public tempEnvelopeUpperBound: number | null = null;
     //pseudo random
     public steps: number = 2;
     public seed: number = 2;
-    //lfo
-    public waveform: number = BaseWaveTypes.sine;
+    //lfo and random types
+    public waveform: number = LFOEnvelopeTypes.sine;
+    //moved discrete into here
+    public discrete: boolean = false;
 
     constructor(public isNoiseEnvelope: boolean) {
         this.reset();
@@ -32,16 +35,19 @@ export class EnvelopeSettings {
         this.index = 0;
         this.envelope = 0;
         this.pitchEnvelopeStart = 0;
-        this.pitchEnvelopeEnd = this.isNoiseEnvelope ? Config.drumCount-1 : Config.maxPitch;
+        this.pitchEnvelopeEnd = this.isNoiseEnvelope ? Config.drumCount - 1 : Config.maxPitch;
         this.inverse = false;
         this.isNoiseEnvelope = false;
         this.perEnvelopeSpeed = Config.envelopes[this.envelope].speed;
         this.perEnvelopeLowerBound = 0;
         this.perEnvelopeUpperBound = 1;
         this.tempEnvelopeSpeed = null;
+        this.tempEnvelopeLowerBound = null;
+        this.tempEnvelopeUpperBound = null;
         this.steps = 2;
         this.seed = 2;
-        this.waveform = BaseWaveTypes.sine;
+        this.waveform = LFOEnvelopeTypes.sine;
+        this.discrete = false;
     }
 
     public toJsonObject(): Object {
@@ -52,6 +58,7 @@ export class EnvelopeSettings {
             "perEnvelopeSpeed": this.perEnvelopeSpeed,
             "perEnvelopeLowerBound": this.perEnvelopeLowerBound,
             "perEnvelopeUpperBound": this.perEnvelopeUpperBound,
+            "discrete": this.discrete,
         };
         if (Config.instrumentAutomationTargets[this.target].maxCount > 1) {
             envelopeObject["index"] = this.index;
@@ -65,6 +72,7 @@ export class EnvelopeSettings {
             envelopeObject["waveform"] = this.waveform;
         } else if (Config.newEnvelopes[this.envelope].name == "lfo") {
             envelopeObject["waveform"] = this.waveform;
+            envelopeObject["steps"] = this.steps;
         }
         return envelopeObject;
     }
@@ -176,7 +184,13 @@ export class EnvelopeSettings {
         if (envelopeObject["waveform"] != undefined) {
             this.waveform = envelopeObject["waveform"];
         } else {
-            this.waveform = BaseWaveTypes.sine;
+            this.waveform = LFOEnvelopeTypes.sine;
+        }
+
+        if (envelopeObject["discrete"] != undefined) {
+            this.discrete = envelopeObject["discrete"];
+        } else {
+            this.discrete = false;
         }
     }
 }

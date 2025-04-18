@@ -1,10 +1,10 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Algorithm, Dictionary, FilterType, SustainType, InstrumentType, EffectType, AutomationTarget, Config, effectsIncludeDistortion, BaseWaveTypes, RandomEnvelopeTypes } from "../synth/SynthConfig";
+import { Algorithm, Dictionary, FilterType, SustainType, InstrumentType, EffectType, AutomationTarget, Config, effectsIncludeDistortion, LFOEnvelopeTypes, RandomEnvelopeTypes } from "../synth/SynthConfig";
 import { Synth, clamp } from "../synth/synth";
 import { Song } from "../synth/Song";
 import { Channel } from "../synth/Channel";
-import { SpectrumWave, HarmonicsWave, AdditiveWave, Instrument } from "../synth/Instrument";
+import { SpectrumWave, HarmonicsWave, Instrument } from "../synth/Instrument";
 import { NotePin, Note, makeNotePin, Pattern } from "../synth/Pattern";
 import { FilterSettings, FilterControlPoint } from "../synth/Filter";
 import { Preset, PresetCategory, EditorConfig } from "./EditorConfig";
@@ -1644,7 +1644,7 @@ export class ChangeToggleEffects extends Change {
         const wasSelected: boolean = ((oldValue & (1 << toggleFlag)) != 0);
         const newValue: number = wasSelected ? (oldValue & (~(1 << toggleFlag))) : (oldValue | (1 << toggleFlag));
         instrument.effects = newValue;
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 15; i++) {
             if(instrument.effectOrder[i] == toggleFlag) instrument.effectOrder.splice(i, 1); //was gonna try to use filter() but it didnt work
         }
         if (wasSelected) instrument.effectOrder.splice(0, 0, toggleFlag);

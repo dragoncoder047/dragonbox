@@ -35,10 +35,8 @@ export class HarmonicsEditor {
     private _change: ChangeHarmonics | null = null;
     private _renderedPath: String = "";
     private _renderedFifths: boolean = true;
-    //private instrument: Instrument;
-    //private readonly _initial: HarmonicsWave;
-    private instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-    //private readonly _initial: HarmonicsWave = this.instrument.harmonicsWave;
+    private instrument: Instrument;
+    private readonly _initial: HarmonicsWave;
 
     private _undoHistoryState: number = 0;
     private _changeQueue: number[][] = [];
@@ -68,7 +66,6 @@ export class HarmonicsEditor {
         this.container.addEventListener("touchmove", this._whenTouchMoved);
         this.container.addEventListener("touchend", this._whenCursorReleased);
         this.container.addEventListener("touchcancel", this._whenCursorReleased);
-
     }
 
     public storeChange = (): void => {
@@ -224,15 +221,12 @@ export class HarmonicsEditor {
         return instrument.harmonicsWave;
     }
 
-    public setHarmonicsWave(harmonics: number[], saveHistory: boolean = false) {
+    public setHarmonicsWave(harmonics: number[]) {
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         for (let i = 0; i < Config.harmonicsControlPoints; i++) {
             instrument.harmonicsWave.harmonics[i] = harmonics[i];
         }
-        const harmonicsChange = new ChangeHarmonics(this._doc, instrument, instrument.harmonicsWave)
-        if (saveHistory || !this._isPrompt) {
-            this._doc.record(harmonicsChange);
-        }
+        this._doc.record(new ChangeHarmonics(this._doc, instrument, instrument.harmonicsWave));
         this.render();
     }
 
@@ -242,11 +236,9 @@ export class HarmonicsEditor {
     }
 
     public resetToInitial() {
-        //const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-        //this.setHarmonicsWave(this._initial.harmonics);
-        this._changeQueue = [];
-        this._undoHistoryState = 0;
-        //this._doc.record(new ChangeHarmonics(this._doc, instrument, this._initial));
+        const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+        this.setHarmonicsWave(this._initial.harmonics);
+        this._doc.record(new ChangeHarmonics(this._doc, instrument, this._initial));
     }
 
     public render(): void {
@@ -304,23 +296,23 @@ export class HarmonicsEditorPrompt implements Prompt {
         // Paste icon:
         SVG.svg({ style: "flex-shrink: 0; position: absolute; left: 0; top: 50%; margin-top: -1em; pointer-events: none;", width: "2em", height: "2em", viewBox: "0 0 26 26" }, [
             SVG.path({ d: "M 8 18 L 6 18 L 6 5 L 17 5 L 17 7 M 9 8 L 16 8 L 20 12 L 20 22 L 9 22 z", stroke: "currentColor", fill: "none" }),
-            SVG.path({ d: "M 9 3 L 14 3 L 14 6 L 9 6 L 9 3 z M 16 8 L 20 12 L 16 12 L 16 8 z", fill: "currentColor", }),
+                SVG.path({ d: "M 9 3 L 14 3 L 14 6 L 9 6 L 9 3 z M 16 8 L 20 12 L 16 12 L 16 8 z", fill: "currentColor", }),
         ]),
     ]);
     private readonly copyPasteContainer: HTMLDivElement = HTML.div({ style: "width: 185px;" }, this.copyButton, this.pasteButton);
-    public readonly container: HTMLDivElement = HTML.div({ class: "prompt noSelection", style: "width: 500px;" },
+    public readonly container: HTMLDivElement = HTML.div({ class: "prompt noSelection", style: "width: 500px;"},
         HTML.h2("Edit Harmonics Instrument"),
-        HTML.div({ style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
-            this._playButton,
-        ),
-        HTML.div({ style: "display: flex; flex-direction: row; align-items: center; justify-content: center;" },
-            this.harmonicsEditor.container,
-        ),
-        HTML.div({ style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-            this._okayButton,
-            this.copyPasteContainer,
-        ),
-        this._cancelButton,
+                                                         HTML.div({ style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
+                                                                  this._playButton,
+                                                         ),
+                                                         HTML.div({ style: "display: flex; flex-direction: row; align-items: center; justify-content: center;"},
+                                                                  this.harmonicsEditor.container,
+                                                         ),
+                                                         HTML.div({ style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
+                                                                  this._okayButton,
+                                                                  this.copyPasteContainer,
+                                                         ),
+                                                         this._cancelButton,
     );
 
     constructor(private _doc: SongDocument, private _songEditor: SongEditor) {
@@ -333,7 +325,7 @@ export class HarmonicsEditorPrompt implements Prompt {
         this.harmonicsEditor.container.addEventListener("mousemove", () => this.harmonicsEditor.render());
         this.harmonicsEditor.container.addEventListener("mousedown", () => this.harmonicsEditor.render());
         this.container.addEventListener("mousemove", () => this.harmonicsEditor.render());
-
+        this.container.addEventListener("mousedown", () => this.harmonicsEditor.render());
         this.updatePlayButton();
 
         setTimeout(() => this._playButton.focus());

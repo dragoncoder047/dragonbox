@@ -1,6 +1,6 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { startLoadingSample, sampleLoadingState, SampleLoadingState, sampleLoadEvents, SampleLoadedEvent, SampleLoadingStatus, loadBuiltInSamples, Dictionary, DictionaryArray, toNameMap, FilterType, SustainType, EnvelopeType, InstrumentType, EffectType, Envelope, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, BaseWaveTypes } from "./SynthConfig";
+import { startLoadingSample, sampleLoadingState, SampleLoadingState, sampleLoadEvents, SampleLoadedEvent, SampleLoadingStatus, loadBuiltInSamples, Dictionary, DictionaryArray, toNameMap, FilterType, SustainType, EnvelopeType, InstrumentType, EffectType, Envelope, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, effectsIncludeRingModulation, effectsIncludeGranular, LFOEnvelopeTypes, RandomEnvelopeTypes } from "./SynthConfig";
 import { Preset, EditorConfig } from "../editor/EditorConfig";
 import { Channel } from "./Channel";
 import { Instrument, LegacySettings } from "./Instrument";
@@ -173,7 +173,7 @@ const enum SongTagCode {
 	songEq              = CharCode.c, // added in BeepBox URL version 2 for vibrato, switched to song eq in Slarmoo's Box 1.3
 	fadeInOut           = CharCode.d, // added in BeepBox URL version 3 for transition, switched to fadeInOut in 9
 	loopEnd             = CharCode.e, // added in BeepBox URL version 2
-	eqFilter            = CharCode.f, // added in BeepBox URL version 3
+	noteFilter          = CharCode.f, // added in BeepBox URL version 3
 	barCount            = CharCode.g, // added in BeepBox URL version 3
 	unison              = CharCode.h, // added in BeepBox URL version 2
 	instrumentCount     = CharCode.i, // added in BeepBox URL version 3
@@ -870,10 +870,10 @@ export class Song {
                     }
                 }
 
-                // The list of enabled effects is represented as a 12-bit bitfield using two six-bit characters.
-                buffer.push(SongTagCode.effects, base64IntToCharCode[instrument.effects >> 6], base64IntToCharCode[instrument.effects & 63]);
+                // slarmoos box describes this as a "14 bit bitfield" but im pretty sure its actually 18 bits and 15 of them are used. weird! - theepie
+                buffer.push(SongTagCode.effects, base64IntToCharCode[(instrument.effects >> 12) & 63], base64IntToCharCode[(instrument.effects >> 6) & 63], base64IntToCharCode[instrument.effects & 63]);
                 // the effect order is not so simple. eventually i will merge these two!
-                for (let i = 0; i < 12; i++) {
+                for (let i = 0; i < Config.effectCount; i++) {
                     buffer.push(base64IntToCharCode[instrument.effectOrder[i]]);
                 }
                 // technically it is not necessary to store *all* effects in the url, since some of them are immune to reordering. i will seperate out midi effects (which cant really be reordered), transition type (which is not an effect), and the True effects. pali mute! -theepie
@@ -2667,15 +2667,18 @@ export class Song {
                     const legacySettings: LegacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
                     instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
                 } else {
-                    // BeepBox currently uses two base64 characters at 6 bits each for a bitfield representing all the enabled effects.
-                    if (EffectType.length > 12) throw new Error();
-                    instrument.effects = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                    if (EffectType.length > Config.effectCount) throw new Error();
+                    if (fromSlarmoosBox && !beforeFive) {
+                        instrument.effects = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 12) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                    } else {
+                        instrument.effects = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                    }
                     if (fromTheepBox) {
-                        for (let i = 0; i < 12; i++) {
+                        for (let i = 0; i < Config.effectCount; i++) {
                             instrument.effectOrder[i] = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         }
                     }
-                    else instrument.effectOrder = [EffectType.panning, EffectType.transition, EffectType.chord, EffectType.pitchShift, EffectType.detune, EffectType.vibrato, EffectType.eqFilter, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb];
+                    else instrument.effectOrder = [EffectType.panning, EffectType.transition, EffectType.chord, EffectType.pitchShift, EffectType.detune, EffectType.vibrato, EffectType.eqFilter, EffectType.granular, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb, EffectType.ringModulation];
 
                     if (effectsIncludeEQFilter(instrument.effects)) {
                         let typeCheck: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
@@ -2771,8 +2774,7 @@ export class Song {
                                             }
                                         }
                                     }
-                                }
-                            } else {
+                                } else {
                                 instrument.noteFilterType = true;
                                 instrument.noteFilter.reset();
                                 instrument.noteFilterSimpleCut = clamp(0, Config.filterSimpleCutRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);

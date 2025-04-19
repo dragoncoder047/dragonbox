@@ -4827,7 +4827,6 @@ export class Synth {
             //[EffectType.panning, EffectType.transition, EffectType.chord, EffectType.pitchShift, EffectType.detune, EffectType.vibrato, EffectType.eqFilter, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb];
 
             for (let i of instrumentState.effectOrder) {
-				console.log(i)
                 if (usesBitcrusher && i == EffectType.bitcrusher) {
                     effectsSource += `
 

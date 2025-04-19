@@ -883,6 +883,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 if (instrument.echoSustain != 0 || instrument.echoDelay != 0) {
                     instrument.effects |= 1 << EffectType.echo;
                 }
+                instrument.echoDelay = selectCurvedDistribution(0, Config.panMax - 1, Config.panMax >> 1, 2);
             }
             if (Math.random() < 0.5) {
                 instrument.effects |= 1 << EffectType.reverb;
@@ -4546,6 +4547,16 @@ export class ChangeEchoSustain extends ChangeInstrumentSlider {
         super(doc);
         this._instrument.echoSustain = newValue;
         doc.synth.unsetMod(Config.modulators.dictionary["echo"].index, doc.channel, doc.getCurrentInstrument());
+        doc.notifier.changed();
+        if (oldValue != newValue) this._didSomething();
+    }
+}
+
+export class ChangeEchoPingPong extends ChangeInstrumentSlider {
+    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+        super(doc);
+        this._instrument.echoPingPong = newValue;
+        doc.synth.unsetMod(Config.modulators.dictionary["echo ping pong"].index, doc.channel, doc.getCurrentInstrument());
         doc.notifier.changed();
         if (oldValue != newValue) this._didSomething();
     }

@@ -335,6 +335,12 @@ export class TipPrompt implements Prompt {
 					p("The echo effect repeats the instrument's sound after a delay, and this setting controls how long the delay is."),
 				);
 			} break;
+			case "echoPingPong": {
+				message = div(
+					h2("Echo Ping Pong"),
+					p("The echo effect repeats the instrument's sound after a delay. This setting will bounce the repeats between the left and right ears to provide a stereo image."),
+				);
+			} break;
 			case "pitchShift": {
 				message = div(
 					h2("Pitch Shift"),

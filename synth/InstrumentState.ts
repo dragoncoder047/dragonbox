@@ -552,13 +552,15 @@ export class InstrumentState {
     public echoDelayLineL: Float32Array | null = null;
     public echoDelayLineR: Float32Array | null = null;
     public echoDelayLineDirty: boolean = false;
-    public echoDelayPos: number = 0;
+    public echoDelayPosL: number = 0;
+    public echoDelayPosR: number = 0;
     public echoDelayOffsetStart: number = 0;
     public echoDelayOffsetEnd: number | null = null;
     public echoDelayOffsetRatio: number = 0.0;
     public echoDelayOffsetRatioDelta: number = 0.0;
     public echoMult: number = 0.0;
     public echoMultDelta: number = 0.0;
+    public echoPingPong: number = 0.0;
     public echoShelfA1: number = 0.0;
     public echoShelfB0: number = 0.0;
     public echoShelfB1: number = 0.0;
@@ -668,11 +670,12 @@ export class InstrumentState {
             const oldMask: number = this.echoDelayLineL.length - 1;
 
             for (let i = 0; i < this.echoDelayLineL.length; i++) {
-                newDelayLineL[i] = this.echoDelayLineL[(this.echoDelayPos + i) & oldMask];
-                newDelayLineR[i] = this.echoDelayLineL[(this.echoDelayPos + i) & oldMask];
+                newDelayLineL[i] = this.echoDelayLineL[(this.echoDelayPosL + i) & oldMask];
+                newDelayLineR[i] = this.echoDelayLineR[(this.echoDelayPosR + i) & oldMask];
             }
 
-            this.echoDelayPos = this.echoDelayLineL.length;
+            this.echoDelayPosL = this.echoDelayLineL.length;
+            this.echoDelayPosR = this.echoDelayLineR.length;
             this.echoDelayLineL = newDelayLineL;
             this.echoDelayLineR = newDelayLineR;
         }
@@ -1228,6 +1231,9 @@ export class InstrumentState {
 
             this.echoDelayOffsetRatio = 0.0;
             this.echoDelayOffsetRatioDelta = 1.0 / roundedSamplesPerTick;
+
+            this.echoPingPong = ((instrument.echoPingPong / Config.panMax) - 0.5) * (this.echoDelayOffsetStart + this.echoDelayOffsetEnd);
+            //const echoPingPongEnd
 
             const shelfRadians: number = 2.0 * Math.PI * Config.echoShelfHz / synth.samplesPerSecond;
             Synth.tempFilterStartCoefficients.highShelf1stOrder(shelfRadians, Config.echoShelfGain);

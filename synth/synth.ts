@@ -4669,11 +4669,13 @@ export class Synth {
 				const echoMask = (echoDelayLineL.length - 1) >>> 0;
 				instrumentState.echoDelayLineDirty = true;
 				
-				let echoDelayPos = instrumentState.echoDelayPos & echoMask;
+                let echoDelayPosL = instrumentState.echoDelayPosL & echoMask;
+                let echoDelayPosR = instrumentState.echoDelayPosR & echoMask;
 				const echoDelayOffsetStart = (echoDelayLineL.length - instrumentState.echoDelayOffsetStart) & echoMask;
 				const echoDelayOffsetEnd   = (echoDelayLineL.length - instrumentState.echoDelayOffsetEnd) & echoMask;
 				let echoDelayOffsetRatio = +instrumentState.echoDelayOffsetRatio;
-				const echoDelayOffsetRatioDelta = +instrumentState.echoDelayOffsetRatioDelta;
+                const echoDelayOffsetRatioDelta = +instrumentState.echoDelayOffsetRatioDelta;
+                const echoPingPong = instrumentState.echoPingPong;
 				
 				const echoShelfA1 = +instrumentState.echoShelfA1;
 				const echoShelfB0 = +instrumentState.echoShelfB0;
@@ -4993,12 +4995,14 @@ export class Synth {
                 else if (usesEcho && i == EffectType.echo) {
                     effectsSource += `
 
-                    const echoTapStartIndex = (echoDelayPos + echoDelayOffsetStart) & echoMask;
-                    const echoTapEndIndex   = (echoDelayPos + echoDelayOffsetEnd  ) & echoMask;
-                    const echoTapStartL = echoDelayLineL[echoTapStartIndex];
-                    const echoTapEndL   = echoDelayLineL[echoTapEndIndex];
-                    const echoTapStartR = echoDelayLineR[echoTapStartIndex];
-                    const echoTapEndR   = echoDelayLineR[echoTapEndIndex];
+                    const echoTapStartIndexL = (echoDelayPosL - echoPingPong + echoDelayOffsetStart) & echoMask;
+                    const echoTapStartIndexR = (echoDelayPosR + echoPingPong + echoDelayOffsetStart) & echoMask;
+                    const echoTapEndIndexL   = (echoDelayPosL - echoPingPong + echoDelayOffsetEnd  ) & echoMask;
+                    const echoTapEndIndexR   = (echoDelayPosR + echoPingPong + echoDelayOffsetEnd  ) & echoMask;
+                    const echoTapStartL = echoDelayLineL[echoTapStartIndexL];
+                    const echoTapEndL   = echoDelayLineL[echoTapEndIndexL];
+                    const echoTapStartR = echoDelayLineR[echoTapStartIndexR];
+                    const echoTapEndR   = echoDelayLineR[echoTapEndIndexR];
                     const echoTapL = (echoTapStartL + (echoTapEndL - echoTapStartL) * echoDelayOffsetRatio) * echoMult;
                     const echoTapR = (echoTapStartR + (echoTapEndR - echoTapStartR) * echoDelayOffsetRatio) * echoMult;
 
@@ -5009,9 +5013,10 @@ export class Synth {
                     sampleL += echoShelfSampleL;
                     sampleR += echoShelfSampleR;
 
-                    echoDelayLineL[echoDelayPos] = sampleL * delayInputMult;
-                    echoDelayLineR[echoDelayPos] = sampleR * delayInputMult;
-                    echoDelayPos = (echoDelayPos + 1) & echoMask;
+                    echoDelayLineL[echoDelayPosL] = sampleL * delayInputMult;
+                    echoDelayLineR[echoDelayPosR] = sampleR * delayInputMult;
+                    echoDelayPosL = (echoDelayPosL + 1) & echoMask;
+                    echoDelayPosR = (echoDelayPosR + 1) & echoMask;
                     echoDelayOffsetRatio += echoDelayOffsetRatioDelta;
                     echoMult += echoMultDelta;
                     `
@@ -5412,9 +5417,10 @@ export class Synth {
             if (usesEcho) {
                 effectsSource += `
 				
-				Synth.sanitizeDelayLine(echoDelayLineL, echoDelayPos, echoMask);
-				Synth.sanitizeDelayLine(echoDelayLineR, echoDelayPos, echoMask);
-				instrumentState.echoDelayPos = echoDelayPos;
+				Synth.sanitizeDelayLine(echoDelayLineL, echoDelayPosL, echoMask);
+				Synth.sanitizeDelayLine(echoDelayLineR, echoDelayPosR, echoMask);
+                instrumentState.echoDelayPosL = echoDelayPosL;
+                instrumentState.echoDelayPosR = echoDelayPosR;
 				instrumentState.echoMult = echoMult;
 				instrumentState.echoDelayOffsetRatio = echoDelayOffsetRatio;
 				

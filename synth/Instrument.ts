@@ -285,6 +285,7 @@ export class Instrument {
     public reverb: number = 0;
     public echoSustain: number = 0;
     public echoDelay: number = 0;
+    public echoPingPong: number = 0;
     public algorithm: number = 0;
     public feedbackType: number = 0;
     public algorithm6Op: number = 1;
@@ -383,6 +384,7 @@ export class Instrument {
         this.reverb = 0;
         this.echoSustain = Math.floor((Config.echoSustainRange - 1) * 0.5);
         this.echoDelay = Math.floor((Config.echoDelayRange - 1) * 0.5);
+        this.echoPingPong = Config.panCenter;
         this.eqFilter.reset();
         this.eqFilterType = false;
         this.eqFilterSimpleCut = Config.filterSimpleCutRange - 1;
@@ -752,6 +754,7 @@ export class Instrument {
         if (effectsIncludeEcho(this.effects)) {
             instrumentObject["echoSustain"] = Math.round(100 * this.echoSustain / (Config.echoSustainRange - 1));
             instrumentObject["echoDelayBeats"] = Math.round(1000 * (this.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat)) / 1000;
+            instrumentObject["echoPingPong"] = Math.round(100 * (this.echoPingPong - Config.panCenter) / Config.panCenter);
         }
         if (effectsIncludeReverb(this.effects)) {
             instrumentObject["reverb"] = Math.round(100 * this.reverb / (Config.reverbRange - 1));
@@ -1216,6 +1219,9 @@ export class Instrument {
         }
         if (instrumentObject["echoDelayBeats"] != undefined) {
             this.echoDelay = clamp(0, Config.echoDelayRange, Math.round((+instrumentObject["echoDelayBeats"]) * (Config.ticksPerPart * Config.partsPerBeat) / Config.echoDelayStepTicks - 1.0));
+        }
+        if (instrumentObject["echoPingPong"] != undefined) {
+            this.echoPingPong = clamp(0, Config.panMax + 1, Math.round(Config.panCenter + (instrumentObject["echoPingPong"] | 0) * Config.panCenter / 100));
         }
 
         if (!isNaN(instrumentObject["chorus"])) {

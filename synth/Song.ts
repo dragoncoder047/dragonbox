@@ -471,6 +471,7 @@ export class Song {
                 let freqCrushIndex: number = Config.modulators.dictionary["freq crush"].index;
                 let echoIndex: number = Config.modulators.dictionary["echo"].index;
                 let echoDelayIndex: number = Config.modulators.dictionary["echo delay"].index;
+                let echoPingPongIndex: number = Config.modulators.dictionary["echo ping pong"].index;
                 let pitchShiftIndex: number = Config.modulators.dictionary["pitch shift"].index;
                 let ringModIndex: number = Config.modulators.dictionary["ring modulation"].index;
                 let ringModHertzIndex: number = Config.modulators.dictionary["ring mod hertz"].index;
@@ -526,6 +527,9 @@ export class Song {
                         break;
                     case echoDelayIndex:
                         vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].echoDelay - Config.modulators[echoDelayIndex].convertRealFactor;
+                        break;
+                    case echoPingPongIndex:
+                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].echoPingPong - Config.modulators[echoPingPongIndex].convertRealFactor;
                         break;
                     case pitchShiftIndex:
                         vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].pitchShift;
@@ -981,7 +985,7 @@ export class Song {
                     buffer.push(base64IntToCharCode[instrument.chorus]);
                 }
                 if (effectsIncludeEcho(instrument.effects)) {
-                    buffer.push(base64IntToCharCode[instrument.echoSustain], base64IntToCharCode[instrument.echoDelay]);
+                    buffer.push(base64IntToCharCode[instrument.echoSustain], base64IntToCharCode[instrument.echoDelay], base64IntToCharCode[instrument.echoPingPong]);
                 }
                 if (effectsIncludeReverb(instrument.effects)) {
                     buffer.push(base64IntToCharCode[instrument.reverb]);
@@ -2877,6 +2881,7 @@ export class Song {
                     if (effectsIncludeEcho(instrument.effects)) {
                         instrument.echoSustain = clamp(0, Config.echoSustainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         instrument.echoDelay = clamp(0, Config.echoDelayRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                        instrument.echoPingPong = clamp(0, Config.panMax + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     }
                     if (effectsIncludeReverb(instrument.effects)) {
                         if (fromBeepBox) {

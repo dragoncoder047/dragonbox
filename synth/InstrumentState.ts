@@ -469,7 +469,8 @@ export class InstrumentState {
 
     public granularMix: number = 1.0;
     public granularMixDelta: number = 0.0;
-    public granularDelayLine: Float32Array | null = null;
+    public granularDelayLineL: Float32Array | null = null;
+    public granularDelayLineR: Float32Array | null = null;
     public granularDelayLineIndex: number = 0;
     public granularMaximumDelayTimeInSeconds: number = 1;
     public granularGrains: Grain[];
@@ -525,7 +526,8 @@ export class InstrumentState {
     public initialEqFilterInputL2: number = 0.0;
     public initialEqFilterInputR2: number = 0.0;
 
-    public panningDelayLine: Float32Array | null = null;
+    public panningDelayLineL: Float32Array | null = null;
+    public panningDelayLineR: Float32Array | null = null;
     public panningDelayPos: number = 0;
     public panningVolumeL: number = 0.0;
     public panningVolumeR: number = 0.0;
@@ -604,8 +606,9 @@ export class InstrumentState {
 
     public allocateNecessaryBuffers(synth: Synth, instrument: Instrument, samplesPerTick: number): void {
         if (effectsIncludePanning(instrument.effects)) {
-            if (this.panningDelayLine == null || this.panningDelayLine.length < synth.panningDelayBufferSize) {
-                this.panningDelayLine = new Float32Array(synth.panningDelayBufferSize);
+            if (this.panningDelayLineL == null || this.panningDelayLineR == null || this.panningDelayLineL.length < synth.panningDelayBufferSize || this.panningDelayLineR.length < synth.panningDelayBufferSize) {
+                this.panningDelayLineL = new Float32Array(synth.panningDelayBufferSize);
+                this.panningDelayLineR = new Float32Array(synth.panningDelayBufferSize);
             }
         }
         if (effectsIncludeChorus(instrument.effects)) {
@@ -630,8 +633,9 @@ export class InstrumentState {
             const granularDelayLineSizeInSeconds: number = granularDelayLineSizeInMilliseconds / 1000; // Maximum possible delay time
             this.granularMaximumDelayTimeInSeconds = granularDelayLineSizeInSeconds;
             const granularDelayLineSizeInSamples: number = fittingPowerOfTwo(Math.floor(granularDelayLineSizeInSeconds * synth.samplesPerSecond));
-            if (this.granularDelayLine == null || this.granularDelayLine.length != granularDelayLineSizeInSamples) {
-                this.granularDelayLine = new Float32Array(granularDelayLineSizeInSamples);
+            if (this.granularDelayLineL == null || this.granularDelayLineR == null || this.granularDelayLineL.length != granularDelayLineSizeInSamples || this.granularDelayLineR.length != granularDelayLineSizeInSamples) {
+                this.granularDelayLineL = new Float32Array(granularDelayLineSizeInSamples);
+                this.granularDelayLineR = new Float32Array(granularDelayLineSizeInSamples);
                 this.granularDelayLineIndex = 0;
             }
             const oldGrainsLength: number = this.granularGrains.length;
@@ -700,7 +704,8 @@ export class InstrumentState {
         this.distortionNextOutputL = 0.0;
         this.distortionNextOutputR = 0.0;
         this.panningDelayPos = 0;
-        if (this.panningDelayLine != null) for (let i: number = 0; i < this.panningDelayLine.length; i++) this.panningDelayLine[i] = 0.0;
+        if (this.panningDelayLineL != null) for (let i: number = 0; i < this.panningDelayLineL.length; i++) this.panningDelayLineL[i] = 0.0;
+        if (this.panningDelayLineR != null) for (let i: number = 0; i < this.panningDelayLineR.length; i++) this.panningDelayLineR[i] = 0.0;
         this.echoDelayOffsetEnd = null;
         this.echoShelfSampleL = 0.0;
         this.echoShelfSampleR = 0.0;
@@ -746,7 +751,8 @@ export class InstrumentState {
             for (let i: number = 0; i < this.reverbDelayLine!.length; i++) this.reverbDelayLine![i] = 0.0;
         }
         if (this.granularDelayLineDirty) {
-            for (let i: number = 0; i < this.granularDelayLine!.length; i++) this.granularDelayLine![i] = 0.0;
+            for (let i: number = 0; i < this.granularDelayLineL!.length; i++) this.granularDelayLineL![i] = 0.0;
+            for (let i: number = 0; i < this.granularDelayLineR!.length; i++) this.granularDelayLineR![i] = 0.0;
         }
 
         this.chorusPhase = 0.0;
@@ -852,7 +858,7 @@ export class InstrumentState {
                     const granularGrainSizeInMilliseconds: number = granularMinGrainSizeInMilliseconds + (granularMaxGrainSizeInMilliseconds - granularMinGrainSizeInMilliseconds) * Math.random();
                     const granularGrainSizeInSeconds: number = granularGrainSizeInMilliseconds / 1000.0;
                     const granularGrainSizeInSamples: number = Math.floor(granularGrainSizeInSeconds * samplesPerSecond);
-                    const granularDelayLineLength: number = this.granularDelayLine!.length;
+                    const granularDelayLineLength: number = this.granularDelayLineL!.length;
                     const grainIndex: number = this.granularGrainsLength;
 
                     this.granularGrainsLength++;

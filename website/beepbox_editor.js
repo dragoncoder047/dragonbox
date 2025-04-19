@@ -18947,7 +18947,8 @@ li.select2-results__option[role=group] > strong:hover {
             this.delayInputMultDelta = 0.0;
             this.granularMix = 1.0;
             this.granularMixDelta = 0.0;
-            this.granularDelayLine = null;
+            this.granularDelayLineL = null;
+            this.granularDelayLineR = null;
             this.granularDelayLineIndex = 0;
             this.granularMaximumDelayTimeInSeconds = 1;
             this.usesRandomGrainLocation = true;
@@ -18995,7 +18996,8 @@ li.select2-results__option[role=group] > strong:hover {
             this.initialEqFilterInputR1 = 0.0;
             this.initialEqFilterInputL2 = 0.0;
             this.initialEqFilterInputR2 = 0.0;
-            this.panningDelayLine = null;
+            this.panningDelayLineL = null;
+            this.panningDelayLineR = null;
             this.panningDelayPos = 0;
             this.panningVolumeL = 0.0;
             this.panningVolumeR = 0.0;
@@ -19064,8 +19066,9 @@ li.select2-results__option[role=group] > strong:hover {
         }
         allocateNecessaryBuffers(synth, instrument, samplesPerTick) {
             if (effectsIncludePanning(instrument.effects)) {
-                if (this.panningDelayLine == null || this.panningDelayLine.length < synth.panningDelayBufferSize) {
-                    this.panningDelayLine = new Float32Array(synth.panningDelayBufferSize);
+                if (this.panningDelayLineL == null || this.panningDelayLineR == null || this.panningDelayLineL.length < synth.panningDelayBufferSize || this.panningDelayLineR.length < synth.panningDelayBufferSize) {
+                    this.panningDelayLineL = new Float32Array(synth.panningDelayBufferSize);
+                    this.panningDelayLineR = new Float32Array(synth.panningDelayBufferSize);
                 }
             }
             if (effectsIncludeChorus(instrument.effects)) {
@@ -19089,8 +19092,9 @@ li.select2-results__option[role=group] > strong:hover {
                 const granularDelayLineSizeInSeconds = granularDelayLineSizeInMilliseconds / 1000;
                 this.granularMaximumDelayTimeInSeconds = granularDelayLineSizeInSeconds;
                 const granularDelayLineSizeInSamples = fittingPowerOfTwo(Math.floor(granularDelayLineSizeInSeconds * synth.samplesPerSecond));
-                if (this.granularDelayLine == null || this.granularDelayLine.length != granularDelayLineSizeInSamples) {
-                    this.granularDelayLine = new Float32Array(granularDelayLineSizeInSamples);
+                if (this.granularDelayLineL == null || this.granularDelayLineR == null || this.granularDelayLineL.length != granularDelayLineSizeInSamples || this.granularDelayLineR.length != granularDelayLineSizeInSamples) {
+                    this.granularDelayLineL = new Float32Array(granularDelayLineSizeInSamples);
+                    this.granularDelayLineR = new Float32Array(granularDelayLineSizeInSamples);
                     this.granularDelayLineIndex = 0;
                 }
                 const oldGrainsLength = this.granularGrains.length;
@@ -19151,9 +19155,12 @@ li.select2-results__option[role=group] > strong:hover {
             this.distortionNextOutputL = 0.0;
             this.distortionNextOutputR = 0.0;
             this.panningDelayPos = 0;
-            if (this.panningDelayLine != null)
-                for (let i = 0; i < this.panningDelayLine.length; i++)
-                    this.panningDelayLine[i] = 0.0;
+            if (this.panningDelayLineL != null)
+                for (let i = 0; i < this.panningDelayLineL.length; i++)
+                    this.panningDelayLineL[i] = 0.0;
+            if (this.panningDelayLineR != null)
+                for (let i = 0; i < this.panningDelayLineR.length; i++)
+                    this.panningDelayLineR[i] = 0.0;
             this.echoDelayOffsetEnd = null;
             this.echoShelfSampleL = 0.0;
             this.echoShelfSampleR = 0.0;
@@ -19200,8 +19207,10 @@ li.select2-results__option[role=group] > strong:hover {
                     this.reverbDelayLine[i] = 0.0;
             }
             if (this.granularDelayLineDirty) {
-                for (let i = 0; i < this.granularDelayLine.length; i++)
-                    this.granularDelayLine[i] = 0.0;
+                for (let i = 0; i < this.granularDelayLineL.length; i++)
+                    this.granularDelayLineL[i] = 0.0;
+                for (let i = 0; i < this.granularDelayLineR.length; i++)
+                    this.granularDelayLineR[i] = 0.0;
             }
             this.chorusPhase = 0.0;
             this.ringModPhase = 0.0;
@@ -19294,7 +19303,7 @@ li.select2-results__option[role=group] > strong:hover {
                         const granularGrainSizeInMilliseconds = granularMinGrainSizeInMilliseconds + (granularMaxGrainSizeInMilliseconds - granularMinGrainSizeInMilliseconds) * Math.random();
                         const granularGrainSizeInSeconds = granularGrainSizeInMilliseconds / 1000.0;
                         const granularGrainSizeInSamples = Math.floor(granularGrainSizeInSeconds * samplesPerSecond);
-                        const granularDelayLineLength = this.granularDelayLine.length;
+                        const granularDelayLineLength = this.granularDelayLineL.length;
                         const grainIndex = this.granularGrainsLength;
                         this.granularGrainsLength++;
                         const grain = this.granularGrains[grainIndex];
@@ -23686,10 +23695,11 @@ li.select2-results__option[role=group] > strong:hover {
                 let granularWet = instrumentState.granularMix;
                 const granularMixDelta = instrumentState.granularMixDelta;
                 let granularDry = 1.0 - granularWet; 
-                const granularDelayLine = instrumentState.granularDelayLine;
+                const granularDelayLineL = instrumentState.granularDelayLineL;
+                const granularDelayLineR = instrumentState.granularDelayLineR;
                 const granularGrains = instrumentState.granularGrains;
                 let granularGrainCount = instrumentState.granularGrainsLength;
-                const granularDelayLineLength = granularDelayLine.length;
+                const granularDelayLineLength = granularDelayLineL.length;
                 const granularDelayLineMask = granularDelayLineLength - 1;
                 let granularDelayLineIndex = instrumentState.granularDelayLineIndex;
                 const usesRandomGrainLocation = instrumentState.usesRandomGrainLocation;
@@ -23787,7 +23797,8 @@ li.select2-results__option[role=group] > strong:hover {
                     effectsSource += `
 				
 				const panningMask = synth.panningDelayBufferMask >>> 0;
-				const panningDelayLine = instrumentState.panningDelayLine;
+                const panningDelayLineL = instrumentState.panningDelayLineL;
+                const panningDelayLineR = instrumentState.panningDelayLineR;
 				let panningDelayPos = instrumentState.panningDelayPos & panningMask;
 				let   panningVolumeL      = +instrumentState.panningVolumeL;
 				let   panningVolumeR      = +instrumentState.panningVolumeR;
@@ -23990,32 +24001,53 @@ li.select2-results__option[role=group] > strong:hover {
                     distortionDrive += distortionDriveDelta;`;
                     }
                     else if (usesPanning && i == 2) {
+                        effectsSource += `
+
+                    panningDelayLineL[panningDelayPos] = sampleL;
+                    panningDelayLineR[panningDelayPos] = sampleR;
+                    const panningRatioL  = panningOffsetL % 1;
+                    const panningRatioR  = panningOffsetR % 1;
+                    const panningTapLA   = panningDelayLineL[(panningOffsetL) & panningMask];
+                    const panningTapLB   = panningDelayLineL[(panningOffsetL + 1) & panningMask];
+                    const panningTapRA   = panningDelayLineR[(panningOffsetR) & panningMask];
+                    const panningTapRB   = panningDelayLineR[(panningOffsetR + 1) & panningMask];
+                    const panningTapL    = panningTapLA + (panningTapLB - panningTapLA) * panningRatioL;
+                    const panningTapR    = panningTapRA + (panningTapRB - panningTapRA) * panningRatioR;
+                    `;
                         if (panMode == 0) {
                             effectsSource += `
 
-                        sampleL *= panningVolumeL;
-                        sampleR *= panningVolumeR;
+                        sampleL = panningTapL * panningVolumeL;
+                        sampleR = panningTapR * panningVolumeR;
+                        panningDelayPos = (panningDelayPos + 1) & panningMask;
                         panningVolumeL += panningVolumeDeltaL;
-                        panningVolumeR += panningVolumeDeltaR;`;
+                        panningVolumeR += panningVolumeDeltaR;
+                        panningOffsetL += panningOffsetDeltaL;
+                        panningOffsetR += panningOffsetDeltaR;`;
                         }
                         else if (panMode == 1) {
                             effectsSource += `
 
-                        const panInputSampleL = sampleL;
-                        sampleL = sampleL * panningVolumeL + Math.max(0, panningVolumeL - panningVolumeR) * sampleR;
-                        sampleR = sampleR * panningVolumeR + Math.max(0, panningVolumeR - panningVolumeL) * panInputSampleL;
+                        sampleL = panningTapL * panningVolumeL + Math.max(0, panningVolumeL - panningVolumeR) * panningTapR;
+                        sampleR = panningTapR * panningVolumeR + Math.max(0, panningVolumeR - panningVolumeL) * panningTapL;
+                        panningDelayPos = (panningDelayPos + 1) & panningMask;
                         panningVolumeL += panningVolumeDeltaL;
-                        panningVolumeR += panningVolumeDeltaR;`;
+                        panningVolumeR += panningVolumeDeltaR;
+                        panningOffsetL += panningOffsetDeltaL;
+                        panningOffsetR += panningOffsetDeltaR;`;
                         }
                         else if (panMode == 2) {
                             effectsSource += `
 
-                        sampleL = (sampleL + sampleR) / 2.0
+                        sampleL = (panningTapL + panningTapR) / 2.0
                         sampleR = sampleL
                         sampleL *= panningVolumeL;
                         sampleR *= panningVolumeR;
+                        panningDelayPos = (panningDelayPos + 1) & panningMask;
                         panningVolumeL += panningVolumeDeltaL;
-                        panningVolumeR += panningVolumeDeltaR;`;
+                        panningVolumeR += panningVolumeDeltaR;
+                        panningOffsetL += panningOffsetDeltaL;
+                        panningOffsetR += panningOffsetDeltaR;`;
                         }
                     }
                     else if (usesChorus && i == 1) {
@@ -24152,6 +24184,88 @@ li.select2-results__option[role=group] > strong:hover {
 					ringModMixFade += ringModMixFadeDelta;
 					`;
                     }
+                    else if (usesGranular && i == 14) {
+                        effectsSource += `
+                    let granularOutputL = 0;
+                    let granularOutputR = 0;
+                    for (let grainIndex = 0; grainIndex < granularGrainCount; grainIndex++) {
+                        const grain = granularGrains[grainIndex];
+                        if(computeGrains) {
+                            if(grain.delay > 0) {
+                                grain.delay--;
+                            } else {
+                                const grainDelayLinePosition = grain.delayLinePosition;
+                                const grainDelayLinePositionInt = grainDelayLinePosition | 0;
+                                // const grainDelayLinePositionT = grainDelayLinePosition - grainDelayLinePositionInt;
+                                let grainAgeInSamples = grain.ageInSamples;
+                                const grainMaxAgeInSamples = grain.maxAgeInSamples;
+                                // const grainSample0 = granularDelayLine[((granularDelayLineIndex + (granularDelayLineLength - grainDelayLinePositionInt))    ) & granularDelayLineMask];
+                                // const grainSample1 = granularDelayLine[((granularDelayLineIndex + (granularDelayLineLength - grainDelayLinePositionInt)) + 1) & granularDelayLineMask];
+                                // let grainSample = grainSample0 + (grainSample1 - grainSample0) * grainDelayLinePositionT; // Linear interpolation (@TODO: sounds quite bad?)
+                                let grainSampleL = granularDelayLineL[((granularDelayLineIndex + (granularDelayLineLength - grainDelayLinePositionInt))    ) & granularDelayLineMask];
+                                let grainSampleR = granularDelayLineR[((granularDelayLineIndex + (granularDelayLineLength - grainDelayLinePositionInt))    ) & granularDelayLineMask]; // No interpolation
+                                `;
+                        if (Config.granularEnvelopeType == 0) {
+                            effectsSource += `
+                                    const grainEnvelope = grain.parabolicEnvelopeAmplitude;
+                                    `;
+                        }
+                        else if (Config.granularEnvelopeType == 1) {
+                            effectsSource += `
+                                    const grainEnvelope = grain.rcbEnvelopeAmplitude;
+                                    `;
+                        }
+                        effectsSource += `
+                                grainSampleL *= grainEnvelope;
+                                grainSampleR *= grainEnvelope;
+                                granularOutputL += grainSampleL;
+                                granularOutputR += grainSampleR;
+                                if (grainAgeInSamples > grainMaxAgeInSamples) {
+                                    if (granularGrainCount > 0) {
+                                        // Faster equivalent of .pop, ignoring the order in the array.
+                                        const lastGrainIndex = granularGrainCount - 1;
+                                        const lastGrain = granularGrains[lastGrainIndex];
+                                        granularGrains[grainIndex] = lastGrain;
+                                        granularGrains[lastGrainIndex] = grain;
+                                        granularGrainCount--;
+                                        grainIndex--;
+                                        // ^ Dangerous, since this could end up causing an infinite loop,
+                                        // but should be okay in this case.
+                                    }
+                                } else {
+                                    grainAgeInSamples++;
+                                    `;
+                        if (Config.granularEnvelopeType == 0) {
+                            effectsSource += `
+                                        grain.parabolicEnvelopeAmplitude += grain.parabolicEnvelopeSlope;
+                                        grain.parabolicEnvelopeSlope += grain.parabolicEnvelopeCurve;
+                                        `;
+                        }
+                        else if (Config.granularEnvelopeType == 1) {
+                            effectsSource += `
+                                        grain.updateRCBEnvelope();
+                                        `;
+                        }
+                        effectsSource += `
+                                    grain.ageInSamples = grainAgeInSamples;
+                                    // if(usesRandomGrainLocation) {
+                                    //     grain.delayLine -= grainPitchShift;
+                                    // }
+                                }
+                            }
+                        }
+                    }
+                    granularWet += granularMixDelta;
+                    granularDry -= granularMixDelta;
+                    granularOutputL *= Config.granularOutputLoudnessCompensation;
+                    granularOutputR *= Config.granularOutputLoudnessCompensation;
+                    granularDelayLineL[granularDelayLineIndex] = sampleL;
+                    granularDelayLineR[granularDelayLineIndex] = sampleR;
+                    granularDelayLineIndex = (granularDelayLineIndex + 1) & granularDelayLineMask;
+                    sampleL = sampleL * granularDry + granularOutputL * granularWet;
+                    sampleR = sampleR * granularDry + granularOutputR * granularWet;
+                    `;
+                    }
                 }
                 effectsSource += `
 					
@@ -24264,7 +24378,8 @@ li.select2-results__option[role=group] > strong:hover {
                 if (usesPanning) {
                     effectsSource += `
 				
-				Synth.sanitizeDelayLine(panningDelayLine, panningDelayPos, panningMask);
+				Synth.sanitizeDelayLine(panningDelayLineL, panningDelayPos, panningMask);
+                Synth.sanitizeDelayLine(panningDelayLineR, panningDelayPos, panningMask);
 				instrumentState.panningDelayPos = panningDelayPos;
 				instrumentState.panningVolumeL = panningVolumeL;
 				instrumentState.panningVolumeR = panningVolumeR;

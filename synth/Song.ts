@@ -984,8 +984,8 @@ export class Song {
                 if (effectsIncludeChorus(instrument.effects)) {
                     buffer.push(base64IntToCharCode[instrument.chorus]);
                 }
-                if (effectsIncludeEcho(instrument.effects)) {
-                    buffer.push(base64IntToCharCode[instrument.echoSustain], base64IntToCharCode[instrument.echoDelay], base64IntToCharCode[instrument.echoPingPong]);
+                if (effectsIncludeEcho(instrument.effects)) { // echo ping pong probably didnt need to have such a massive range. oh well!
+                    buffer.push(base64IntToCharCode[instrument.echoSustain], base64IntToCharCode[instrument.echoDelay], base64IntToCharCode[instrument.echoPingPong >> 6], base64IntToCharCode[instrument.echoPingPong & 0x3f]);
                 }
                 if (effectsIncludeReverb(instrument.effects)) {
                     buffer.push(base64IntToCharCode[instrument.reverb]);
@@ -2879,9 +2879,10 @@ export class Song {
                         }
                     }
                     if (effectsIncludeEcho(instrument.effects)) {
-                        instrument.echoSustain = clamp(0, Config.echoSustainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                        if (!fromTheepBox) instrument.echoSustain = clamp(0, Config.echoSustainRange / 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 3;
+                        else instrument.echoSustain = clamp(0, Config.echoSustainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         instrument.echoDelay = clamp(0, Config.echoDelayRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                        instrument.echoPingPong = clamp(0, Config.panMax + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                        instrument.echoPingPong = clamp(0, Config.panMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     }
                     if (effectsIncludeReverb(instrument.effects)) {
                         if (fromBeepBox) {

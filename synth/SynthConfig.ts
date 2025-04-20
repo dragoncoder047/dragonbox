@@ -949,7 +949,7 @@ export class Config {
     public static readonly octaveMax: number = 2;
     public static readonly echoDelayRange: number = 24;
     public static readonly echoDelayStepTicks: number = 4;
-    public static readonly echoSustainRange: number = 8;
+    public static readonly echoSustainRange: number = 24;
     public static readonly echoShelfHz: number = 4000.0; // The cutoff freq of the shelf filter that is used to decay echoes.
     public static readonly echoShelfGain: number = Math.pow(2.0, -0.5);
     public static readonly reverbShelfHz: number = 8000.0; // The cutoff freq of the shelf filter that is used to decay reverb.

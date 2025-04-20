@@ -537,7 +537,7 @@ var beepbox = (function (exports) {
     Config.octaveMax = 2;
     Config.echoDelayRange = 24;
     Config.echoDelayStepTicks = 4;
-    Config.echoSustainRange = 8;
+    Config.echoSustainRange = 24;
     Config.echoShelfHz = 4000.0;
     Config.echoShelfGain = Math.pow(2.0, -0.5);
     Config.reverbShelfHz = 8000.0;
@@ -14017,7 +14017,7 @@ li.select2-results__option[role=group] > strong:hover {
                         buffer.push(base64IntToCharCode[instrument.chorus]);
                     }
                     if (effectsIncludeEcho(instrument.effects)) {
-                        buffer.push(base64IntToCharCode[instrument.echoSustain], base64IntToCharCode[instrument.echoDelay], base64IntToCharCode[instrument.echoPingPong]);
+                        buffer.push(base64IntToCharCode[instrument.echoSustain], base64IntToCharCode[instrument.echoDelay], base64IntToCharCode[instrument.echoPingPong >> 6], base64IntToCharCode[instrument.echoPingPong & 0x3f]);
                     }
                     if (effectsIncludeReverb(instrument.effects)) {
                         buffer.push(base64IntToCharCode[instrument.reverb]);
@@ -15817,9 +15817,12 @@ li.select2-results__option[role=group] > strong:hover {
                                     }
                                 }
                                 if (effectsIncludeEcho(instrument.effects)) {
-                                    instrument.echoSustain = clamp(0, Config.echoSustainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                    if (!fromTheepBox)
+                                        instrument.echoSustain = clamp(0, Config.echoSustainRange / 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 3;
+                                    else
+                                        instrument.echoSustain = clamp(0, Config.echoSustainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     instrument.echoDelay = clamp(0, Config.echoDelayRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                    instrument.echoPingPong = clamp(0, Config.panMax + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                    instrument.echoPingPong = clamp(0, Config.panMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 }
                                 if (effectsIncludeReverb(instrument.effects)) {
                                     if (fromBeepBox) {
@@ -27850,7 +27853,7 @@ li.select2-results__option[role=group] > strong:hover {
                             for (let j = 0; j < Config.instrumentCountMin; j++) {
                                 const instrument = new Instrument(isNoise, isMod);
                                 if (!isMod) {
-                                    const presetValue = pickRandomPresetValue(isNoise);
+                                    const presetValue = pickDefaultPresetValue(isNoise);
                                     const preset = EditorConfig.valueToPreset(presetValue);
                                     instrument.fromJsonObject(preset.settings, isNoise, isMod, doc.song.rhythm == 0 || doc.song.rhythm == 2, doc.song.rhythm >= 2);
                                     instrument.preset = presetValue;
@@ -28985,7 +28988,7 @@ li.select2-results__option[role=group] > strong:hover {
             const maxInstruments = doc.song.getMaxInstrumentsPerChannel();
             if (channel.instruments.length >= maxInstruments)
                 return;
-            const presetValue = pickRandomPresetValue(isNoise);
+            const presetValue = pickDefaultPresetValue(isNoise);
             const preset = EditorConfig.valueToPreset(presetValue);
             const instrument = new Instrument(isNoise, isMod);
             instrument.fromJsonObject(preset.settings, isNoise, isMod, false, false, 1);
@@ -29834,6 +29837,21 @@ li.select2-results__option[role=group] > strong:hover {
             }
         }
     }
+    function pickDefaultPresetValue(isNoise) {
+        const eligiblePresetValues = [];
+        for (let categoryIndex = 0; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
+            const category = EditorConfig.presetCategories[categoryIndex];
+            if (category.name == "Novelty Presets")
+                continue;
+            for (let presetIndex = 0; presetIndex < category.presets.length; presetIndex++) {
+                const preset = category.presets[presetIndex];
+                if (preset.settings != undefined && (preset.isNoise == true) == isNoise) {
+                    eligiblePresetValues.push((categoryIndex << 6) + presetIndex);
+                }
+            }
+        }
+        return eligiblePresetValues[0];
+    }
     function pickRandomPresetValue(isNoise) {
         const eligiblePresetValues = [];
         for (let categoryIndex = 0; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
@@ -29854,7 +29872,7 @@ li.select2-results__option[role=group] > strong:hover {
             for (const instrument of song.channels[channelIndex].instruments) {
                 const isNoise = song.getChannelIsNoise(channelIndex);
                 const isMod = song.getChannelIsMod(channelIndex);
-                const presetValue = (channelIndex == song.pitchChannelCount) ? EditorConfig.nameToPresetValue(Math.random() > 0.5 ? "chip noise" : "standard drumset") : pickRandomPresetValue(isNoise);
+                const presetValue = (channelIndex == song.pitchChannelCount) ? EditorConfig.nameToPresetValue(Math.random() > 0.5 ? "chip noise" : "standard drumset") : pickDefaultPresetValue(isNoise);
                 const preset = EditorConfig.valueToPreset(presetValue);
                 instrument.fromJsonObject(preset.settings, isNoise, isMod, song.rhythm == 0 || song.rhythm == 2, song.rhythm >= 2, 1);
                 instrument.preset = presetValue;

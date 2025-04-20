@@ -1,6 +1,6 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Algorithm, Dictionary, FilterType, SustainType, InstrumentType, EffectType, AutomationTarget, Config, effectsIncludeDistortion, LFOEnvelopeTypes, RandomEnvelopeTypes } from "../synth/SynthConfig";
+import { Algorithm, Dictionary, FilterType, SustainType, InstrumentType, MDEffectType, EffectType, AutomationTarget, Config, effectsIncludeDistortion, LFOEnvelopeTypes, RandomEnvelopeTypes } from "../synth/SynthConfig";
 import { Synth } from "../synth/synth";
 import { clamp } from "../synth/utils";
 import { Song } from "../synth/Song";
@@ -804,7 +804,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
             }
 
             if (Math.random() < 0.1) {
-                instrument.effects |= 1 << EffectType.transition;
+                instrument.mdeffects |= 1 << MDEffectType.transition;
                 instrument.transition = Config.transitions.dictionary[selectWeightedRandom([
                     { item: "normal", weight: 30 },
                     { item: "interrupt", weight: 1 },
@@ -812,7 +812,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 ])].index;
             }
             if (Math.random() < 0.2) {
-                instrument.effects |= 1 << EffectType.chord;
+                instrument.mdeffects |= 1 << MDEffectType.chord;
                 instrument.chord = Config.chords.dictionary[selectWeightedRandom([
                     { item: "strum", weight: 2 },
                     { item: "arpeggio", weight: 1 },
@@ -821,7 +821,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
             if (Math.random() < 0.1) {
                 instrument.pitchShift = selectCurvedDistribution(0, Config.pitchShiftRange - 1, Config.pitchShiftCenter, 2);
                 if (instrument.pitchShift != Config.pitchShiftCenter) {
-                    instrument.effects |= 1 << EffectType.pitchShift;
+                    instrument.mdeffects |= 1 << MDEffectType.pitchShift;
                     instrument.addEnvelope(Config.instrumentAutomationTargets.dictionary["pitchShift"].index, 0, Config.newEnvelopes.dictionary[selectWeightedRandom([
                         { item: "note size", weight: 1 },
                         { item: "random", weight: 2},
@@ -836,7 +836,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 }
             }
             if (Math.random() < 0.1) {
-                instrument.effects |= 1 << EffectType.vibrato;
+                instrument.mdeffects |= 1 << MDEffectType.vibrato;
                 instrument.vibrato = selectCurvedDistribution(0, Config.echoSustainRange - 1, Config.echoSustainRange >> 1, 2);
                 instrument.vibrato = Config.vibratos.dictionary[selectWeightedRandom([
                     { item: "light", weight: 2 },
@@ -1068,7 +1068,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
             }
 
             if (Math.random() < 0.1) {
-                instrument.effects |= 1 << EffectType.transition;
+                instrument.mdeffects |= 1 << MDEffectType.transition;
                 instrument.transition = Config.transitions.dictionary[selectWeightedRandom([
                     { item: "interrupt", weight: 1 },
                     { item: "slide", weight: 2 },
@@ -1076,7 +1076,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 ])].index;
             }
             if (Math.random() < 0.2) {
-                instrument.effects |= 1 << EffectType.chord;
+                instrument.mdeffects |= 1 << MDEffectType.chord;
                 instrument.chord = Config.chords.dictionary[selectWeightedRandom([
                     { item: "strum", weight: 2 },
                     { item: "arpeggio", weight: 1 },
@@ -1085,7 +1085,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
             if (Math.random() < 0.05) {
                 instrument.pitchShift = selectCurvedDistribution(0, Config.pitchShiftRange - 1, Config.pitchShiftCenter, 1);
                 if (instrument.pitchShift != Config.pitchShiftCenter) {
-                    instrument.effects |= 1 << EffectType.pitchShift;
+                    instrument.mdeffects |= 1 << MDEffectType.pitchShift;
                     instrument.addEnvelope(Config.instrumentAutomationTargets.dictionary["pitchShift"].index, 0, Config.newEnvelopes.dictionary[selectWeightedRandom([
                         { item: "note size", weight: 2 },
                         { item: "pitch", weight: 2 },
@@ -1100,7 +1100,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 }
             }
             if (Math.random() < 0.25) {
-                instrument.effects |= 1 << EffectType.vibrato;
+                instrument.mdeffects |= 1 << MDEffectType.vibrato;
                 instrument.vibrato = selectCurvedDistribution(0, Config.echoSustainRange - 1, Config.echoSustainRange >> 1, 2);
                 instrument.vibrato = Config.vibratos.dictionary[selectWeightedRandom([
                     { item: "light", weight: 2 },
@@ -1844,6 +1844,21 @@ export class ChangeToggleEffects extends Change {
     }
 }
 
+export class ChangeToggleMDEffects extends Change {
+    constructor(doc: SongDocument, toggleFlag: number, useInstrument: Instrument | null) {
+        super();
+        let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        if (useInstrument != null)
+            instrument = useInstrument;
+        const oldValue: number = instrument.mdeffects;
+        const wasSelected: boolean = ((oldValue & (1 << toggleFlag)) != 0);
+        const newValue: number = wasSelected ? (oldValue & (~(1 << toggleFlag))) : (oldValue | (1 << toggleFlag));
+        instrument.mdeffects = newValue;
+        if (wasSelected) instrument.clearInvalidEnvelopeTargets();
+        this._didSomething();
+        doc.notifier.changed();
+    }
+}
 
 export class ChangePatternNumbers extends Change {
     constructor(doc: SongDocument, value: number, startBar: number, startChannel: number, width: number, height: number) {
@@ -3716,6 +3731,9 @@ export class ChangeModSetting extends Change {
                 const tgtInstrument: Instrument = usedInstruments[i];
                 if (!(tgtInstrument.effects & (1 << Config.modulators.dictionary[text].associatedEffect))) {
                     doc.record(new ChangeToggleEffects(doc, Config.modulators.dictionary[text].associatedEffect, tgtInstrument));
+                }
+                if (!(tgtInstrument.mdeffects & (1 << Config.modulators.dictionary[text].associatedMDEffect))) {
+                    doc.record(new ChangeToggleMDEffects(doc, Config.modulators.dictionary[text].associatedMDEffect, tgtInstrument));
                 }
             }
         }

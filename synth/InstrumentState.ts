@@ -451,7 +451,7 @@ export class InstrumentState {
     public unisonSign: number = 1.0;
     public chord: Chord | null = null;
     public effects: number = 0;
-    public effectOrder: Array<EffectType> = [EffectType.panning, EffectType.transition, EffectType.chord, EffectType.pitchShift, EffectType.detune, EffectType.vibrato, EffectType.eqFilter, EffectType.noteRange, EffectType.granular, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb, EffectType.ringModulation];
+    public effectOrder: Array<EffectType> = [EffectType.panning, EffectType.eqFilter, EffectType.granular, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb, EffectType.ringModulation];
 
     public volumeScale: number = 0;
     public aliases: boolean = false;

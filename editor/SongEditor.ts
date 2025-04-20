@@ -48,7 +48,7 @@ import { SpectrumEditor, SpectrumEditorPrompt } from "./SpectrumEditor";
 import { CustomThemePrompt } from "./CustomThemePrompt";
 import { ThemePrompt } from "./ThemePrompt";
 import { TipPrompt } from "./TipPrompt";
-import { ChangeTempo, ChangeKeyOctave, ChangeChorus, ChangeEchoDelay, ChangeEchoSustain, ChangeEchoPingPong, ChangeReverb, ChangeVolume, ChangePan, ChangePatternSelection, ChangePatternsPerChannel, ChangePatternNumbers, ChangeSupersawDynamism, ChangeSupersawSpread, ChangeSupersawShape, ChangePulseWidth, ChangeFeedbackAmplitude, ChangeOperatorAmplitude, ChangeOperatorFrequency, ChangeDrumsetEnvelope, ChangePasteInstrument, ChangePreset, pickRandomPresetValue, ChangeRandomGeneratedInstrument, ChangeEQFilterType, ChangeNoteFilterType, ChangeEQFilterSimpleCut, ChangeEQFilterSimplePeak, ChangeNoteFilterSimpleCut, ChangeNoteFilterSimplePeak, ChangeScale, ChangeDetectKey, ChangeKey, ChangeRhythm, ChangeFeedbackType, ChangeAlgorithm, ChangeChipWave, ChangeChipWaveInStereo, ChangeNoiseWave, ChangeTransition, ChangeToggleEffects, ChangeVibrato, ChangeUnison, ChangeChord, ChangeSong, ChangePitchShift, ChangeDetune, ChangeDistortion, ChangeStringSustain, ChangeBitcrusherFreq, ChangeBitcrusherQuantization, ChangeAddEnvelope, ChangeEnvelopeSpeed, ChangeAddChannelInstrument, ChangeRemoveChannelInstrument, ChangeCustomWave, ChangeOperatorWaveform, ChangeOperatorPulseWidth, ChangeSongTitle, ChangeVibratoDepth, ChangeVibratoSpeed, ChangeVibratoDelay, ChangeVibratoType, ChangePanDelay, ChangePanMode, ChangeArpeggioSpeed, ChangeFastTwoNoteArp, ChangeClicklessTransition, ChangeAliasing, ChangeSetPatternInstruments, ChangeHoldingModRecording, ChangeChipWavePlayBackwards, ChangeChipWaveStartOffset, ChangeChipWaveLoopEnd, ChangeChipWaveLoopStart, ChangeChipWaveLoopMode, ChangeChipWaveUseAdvancedLoopControls, ChangeDecimalOffset, ChangeUnisonVoices, ChangeUnisonSpread, ChangeUnisonOffset, ChangeUnisonExpression, ChangeUnisonSign, Change6OpFeedbackType, Change6OpAlgorithm, ChangeCustomAlgorythmorFeedback, ChangeRingMod, ChangeRingModHz, ChangeRingModChipWave, ChangeGranular, ChangeGrainSize, ChangeGrainAmounts, ChangeGrainRange, ChangeMonophonicTone } from "./changes";
+import { ChangeTempo, ChangeKeyOctave, ChangeChorus, ChangeEchoDelay, ChangeEchoSustain, ChangeEchoPingPong, ChangeReverb, ChangeVolume, ChangePan, ChangePatternSelection, ChangePatternsPerChannel, ChangePatternNumbers, ChangeSupersawDynamism, ChangeSupersawSpread, ChangeSupersawShape, ChangePulseWidth, ChangeFeedbackAmplitude, ChangeOperatorAmplitude, ChangeOperatorFrequency, ChangeDrumsetEnvelope, ChangePasteInstrument, ChangePreset, pickRandomPresetValue, ChangeRandomGeneratedInstrument, ChangeEQFilterType, ChangeNoteFilterType, ChangeEQFilterSimpleCut, ChangeEQFilterSimplePeak, ChangeNoteFilterSimpleCut, ChangeNoteFilterSimplePeak, ChangeScale, ChangeDetectKey, ChangeKey, ChangeRhythm, ChangeFeedbackType, ChangeAlgorithm, ChangeChipWave, ChangeChipWaveInStereo, ChangeNoiseWave, ChangeTransition, ChangeToggleEffects, ChangeToggleMDEffects, ChangeVibrato, ChangeUnison, ChangeChord, ChangeSong, ChangePitchShift, ChangeDetune, ChangeDistortion, ChangeStringSustain, ChangeBitcrusherFreq, ChangeBitcrusherQuantization, ChangeAddEnvelope, ChangeEnvelopeSpeed, ChangeAddChannelInstrument, ChangeRemoveChannelInstrument, ChangeCustomWave, ChangeOperatorWaveform, ChangeOperatorPulseWidth, ChangeSongTitle, ChangeVibratoDepth, ChangeVibratoSpeed, ChangeVibratoDelay, ChangeVibratoType, ChangePanDelay, ChangePanMode, ChangeArpeggioSpeed, ChangeFastTwoNoteArp, ChangeClicklessTransition, ChangeAliasing, ChangeSetPatternInstruments, ChangeHoldingModRecording, ChangeChipWavePlayBackwards, ChangeChipWaveStartOffset, ChangeChipWaveLoopEnd, ChangeChipWaveLoopStart, ChangeChipWaveLoopMode, ChangeChipWaveUseAdvancedLoopControls, ChangeDecimalOffset, ChangeUnisonVoices, ChangeUnisonSpread, ChangeUnisonOffset, ChangeUnisonExpression, ChangeUnisonSign, Change6OpFeedbackType, Change6OpAlgorithm, ChangeCustomAlgorythmorFeedback, ChangeRingMod, ChangeRingModHz, ChangeRingModChipWave, ChangeGranular, ChangeGrainSize, ChangeGrainAmounts, ChangeGrainRange, ChangeMonophonicTone } from "./changes";
 import { TrackEditor } from "./TrackEditor";
 import { oscilloscopeCanvas } from "../global/Oscilloscope";
 import { VisualLoopControlsPrompt } from "./VisualLoopControlsPrompt";
@@ -947,6 +947,7 @@ export class SongEditor {
     private readonly _transitionDropdownGroup: HTMLElement = div({ class: "editor-controls", style: "display: none;" }, this._clicklessTransitionRow);
 
     private readonly _effectsSelect: HTMLSelectElement = select(option({ selected: true, disabled: true, hidden: false })); // todo: "hidden" should be true but looks wrong on mac chrome, adds checkmark next to first visible option even though it's not selected. :(
+    private readonly _mdeffectsSelect: HTMLSelectElement = select(option({ selected: true, disabled: true, hidden: false })); // todo: "hidden" should be true but looks wrong on mac chrome, adds checkmark next to first visible option even though it's not selected. :(
     private readonly _eqFilterSimpleButton: HTMLButtonElement = button({ style: "font-size: x-small; width: 50%; height: 40%", class: "no-underline", onclick: () => this._switchEQFilterType(true) }, "simple");
     private readonly _eqFilterAdvancedButton: HTMLButtonElement = button({ style: "font-size: x-small; width: 50%; height: 40%", class: "last-button no-underline", onclick: () => this._switchEQFilterType(false) }, "advanced");
     private readonly _eqFilterTypeRow: HTMLElement = div({ class: "selectRow", style: "padding-top: 4px; margin-bottom: 0px;" }, span({ style: "font-size: x-small;", class: "tip", onclick: () => this._openPrompt("filterType") }, "Post EQ Type:"), div({ class: "instrument-bar" }, this._eqFilterSimpleButton, this._eqFilterAdvancedButton));
@@ -1172,7 +1173,7 @@ export class SongEditor {
     );
     */
     private readonly _addEnvelopeButton: HTMLButtonElement = button({ type: "button", class: "add-envelope" });
-    private _effectsGroup: HTMLDivElement = div({ class: "editor-controls" },
+    private _mdeffectsGroup: HTMLDivElement = div({ class: "editor-controls" },
         this._transitionRow,
         this._transitionDropdownGroup,
         this._chordSelectRow,
@@ -1181,6 +1182,8 @@ export class SongEditor {
         this._detuneSliderRow,
         this._vibratoSelectRow,
         this._vibratoDropdownGroup,
+    );
+    private _effectsGroup: HTMLDivElement = div({ class: "editor-controls" },
         this._eqFilterTypeRow,
         this._eqFilterRow,
         this._eqFilterSimpleCutRow,
@@ -1233,6 +1236,11 @@ export class SongEditor {
         this._stringSustainRow,
         this._unisonSelectRow,
         this._unisonDropdownGroup,
+        div({ style: `padding: 2px 0; margin-left: 2em; display: flex; align-items: center;` },
+            span({ style: `flex-grow: 1; text-align: center;` }, span({ class: "tip", onclick: () => this._openPrompt("mdeffects") }, "MD Effects")),
+            div({ class: "effects-menu" }, this._mdeffectsSelect),
+        ),
+        this._mdeffectsGroup,
         div({ style: `padding: 2px 0; margin-left: 2em; display: flex; align-items: center;` },
             span({ style: `flex-grow: 1; text-align: center;` }, span({ class: "tip", onclick: () => this._openPrompt("effects") }, "Effects")),
             div({ class: "effects-menu" }, this._effectsSelect),
@@ -1672,6 +1680,7 @@ export class SongEditor {
         this._sampleLoadingStatusContainer.addEventListener("click", this._whenSampleLoadingStatusClicked);
         this._chipNoiseSelect.addEventListener("change", this._whenSetNoiseWave);
         this._transitionSelect.addEventListener("change", this._whenSetTransition);
+        this._mdeffectsSelect.addEventListener("change", this._whenSetMDEffects);
         this._effectsSelect.addEventListener("change", this._whenSetEffects);
         this._unisonSelect.addEventListener("change", this._whenSetUnison);
         this._chordSelect.addEventListener("change", this._whenSetChord);
@@ -2442,6 +2451,18 @@ export class SongEditor {
         const activeElement: Element | null = document.activeElement;
         const colors: ChannelColors = ColorConfig.getChannelColor(this._doc.song, this._doc.channel);
 
+        for (let i: number = this._mdeffectsSelect.childElementCount - 1; i < Config.mdeffectOrder.length; i++) {
+            this._mdeffectsSelect.appendChild(option({ value: i }));
+        }
+        for (let i: number = 0; i < Config.mdeffectOrder.length; i++) {
+            let effectFlag: number = Config.mdeffectOrder[i];
+            const selected: boolean = ((instrument.mdeffects & (1 << effectFlag)) != 0);
+            const label: string = (selected ? textOnIcon : textOffIcon) + Config.mdeffectNames[effectFlag];
+            const option: HTMLOptionElement = <HTMLOptionElement>this._mdeffectsSelect.children[i + 1];
+            if (option.textContent != label) option.textContent = label;
+        }
+
+        this._effectsSelect.selectedIndex = -1;
         for (let i: number = this._effectsSelect.childElementCount - 1; i < Config.effectOrder.length; i++) {
             this._effectsSelect.appendChild(option({ value: i }));
         }
@@ -2788,38 +2809,40 @@ export class SongEditor {
             }
             this._pulseWidthSlider.input.title = prettyNumber(instrument.pulseWidth) + "%";
 
+            this._mdeffectsGroup.replaceChildren();
+            if(effectsIncludeTransition(instrument.mdeffects)) {
+                this._mdeffectsGroup.append(this._transitionRow)
+                this._mdeffectsGroup.append(this._transitionDropdownGroup);
+                if (this._openTransitionDropdown) this._transitionDropdownGroup.style.display = "";
+            }
+            if(effectsIncludeChord(instrument.mdeffects)) {
+                this._mdeffectsGroup.append(this._chordSelectRow)
+                this._mdeffectsGroup.append(this._chordDropdownGroup)
+                this._chordDropdown.style.display = (instrument.chord == Config.chords.dictionary["arpeggio"].index) ? "" : "none";
+                this._chordDropdownGroup.style.display = (instrument.chord == Config.chords.dictionary["arpeggio"].index && this._openChordDropdown) ? "" : "none";
+            }
+            if(effectsIncludePitchShift(instrument.mdeffects)) {
+                this._mdeffectsGroup.append(this._pitchShiftRow)
+                this._pitchShiftSlider.updateValue(instrument.pitchShift);
+                this._pitchShiftSlider.input.title = (instrument.pitchShift - Config.pitchShiftCenter) + " semitone(s)";
+                for (const marker of this._pitchShiftFifthMarkers) {
+                    marker.style.display = prefs.showFifth ? "" : "none";
+                }
+            }
+            if(effectsIncludeDetune(instrument.mdeffects)) {
+                this._mdeffectsGroup.append(this._detuneSliderRow)
+                this._detuneSlider.updateValue(instrument.detune - Config.detuneCenter);
+                this._detuneSlider.input.title = (detuneToCents(instrument.detune)) + " cent(s)";
+            }
+            if(effectsIncludeVibrato(instrument.mdeffects)) {
+                this._mdeffectsGroup.append(this._vibratoSelectRow)
+                this._mdeffectsGroup.append(this._vibratoDropdownGroup)
+                if (this._openVibratoDropdown) this._vibratoDropdownGroup.style.display = "";
+            }
+
             this._effectsGroup.replaceChildren();
             for (var i=0; i < instrument.effectOrder.length; i++) {
-                if (instrument.effectOrder[i] == EffectType.transition && effectsIncludeTransition(instrument.effects)) {
-                    this._effectsGroup.append(this._transitionRow)
-                    this._effectsGroup.append(this._transitionDropdownGroup);
-                    if (this._openTransitionDropdown) this._transitionDropdownGroup.style.display = "";
-                }
-                else if (instrument.effectOrder[i] == EffectType.chord && effectsIncludeChord(instrument.effects)) {
-                    this._effectsGroup.append(this._chordSelectRow)
-                    this._effectsGroup.append(this._chordDropdownGroup)
-                    this._chordDropdown.style.display = (instrument.chord == Config.chords.dictionary["arpeggio"].index) ? "" : "none";
-                    this._chordDropdownGroup.style.display = (instrument.chord == Config.chords.dictionary["arpeggio"].index && this._openChordDropdown) ? "" : "none";
-                }
-                else if (instrument.effectOrder[i] == EffectType.pitchShift && effectsIncludePitchShift(instrument.effects)) {
-                    this._effectsGroup.append(this._pitchShiftRow)
-                    this._pitchShiftSlider.updateValue(instrument.pitchShift);
-                    this._pitchShiftSlider.input.title = (instrument.pitchShift - Config.pitchShiftCenter) + " semitone(s)";
-                    for (const marker of this._pitchShiftFifthMarkers) {
-                        marker.style.display = prefs.showFifth ? "" : "none";
-                    }
-                }
-                else if (instrument.effectOrder[i] == EffectType.detune && effectsIncludeDetune(instrument.effects)) {
-                    this._effectsGroup.append(this._detuneSliderRow)
-                    this._detuneSlider.updateValue(instrument.detune - Config.detuneCenter);
-                    this._detuneSlider.input.title = (detuneToCents(instrument.detune)) + " cent(s)";
-                }
-                else if (instrument.effectOrder[i] == EffectType.vibrato && effectsIncludeVibrato(instrument.effects)) {
-                    this._effectsGroup.append(this._vibratoSelectRow)
-                    this._effectsGroup.append(this._vibratoDropdownGroup)
-                    if (this._openVibratoDropdown) this._vibratoDropdownGroup.style.display = "";
-                }
-                else if (instrument.effectOrder[i] == EffectType.eqFilter && effectsIncludeEQFilter(instrument.effects)) {
+                if (instrument.effectOrder[i] == EffectType.eqFilter && effectsIncludeEQFilter(instrument.effects)) {
                     this._effectsGroup.append(this._eqFilterTypeRow)
                     this._eqFilterTypeRow.style.setProperty("--text-color-lit", colors.primaryNote);
                     this._eqFilterTypeRow.style.setProperty("--text-color-dim", colors.secondaryNote);
@@ -3199,21 +3222,21 @@ export class SongEditor {
                                 anyInstrumentSimpleEQ = true;
                             else
                                 anyInstrumentAdvancedEQ = true;
-                            if (effectsIncludeChord(channel.instruments[instrumentIndex].effects) && channel.instruments[instrumentIndex].getChord().arpeggiates) {
+                            if (effectsIncludeChord(channel.instruments[instrumentIndex].mdeffects) && channel.instruments[instrumentIndex].getChord().arpeggiates) {
                                 anyInstrumentArps = true;
                             }
-                            if (effectsIncludePitchShift(channel.instruments[instrumentIndex].effects)) {
+                            if (effectsIncludePitchShift(channel.instruments[instrumentIndex].mdeffects)) {
                                 anyInstrumentPitchShifts = true;
                             } else {
                                 allInstrumentPitchShifts = false;
                             }
-                            if (effectsIncludeDetune(channel.instruments[instrumentIndex].effects)) {
+                            if (effectsIncludeDetune(channel.instruments[instrumentIndex].mdeffects)) {
                                 anyInstrumentDetunes = true;
                             }
                             else {
                                 allInstrumentDetunes = false;
                             }
-                            if (effectsIncludeVibrato(channel.instruments[instrumentIndex].effects)) {
+                            if (effectsIncludeVibrato(channel.instruments[instrumentIndex].mdeffects)) {
                                 anyInstrumentVibratos = true;
                             }
                             else {
@@ -3391,8 +3414,8 @@ export class SongEditor {
                         }
                         if (!allInstrumentEchoes) {
                             unusedSettingList.push("+ echo");
-                            unusedSettingList.push("echo delay");
-                            unusedSettingList.push("echo ping pong");
+                            unusedSettingList.push("+ echo delay");
+                            unusedSettingList.push("+ echo ping pong");
                         }
                         if (anyInstrumentReverbs) {
                             settingList.push("reverb");
@@ -5246,6 +5269,19 @@ export class SongEditor {
 
     private _whenSetTransition = (): void => {
         this._doc.record(new ChangeTransition(this._doc, this._transitionSelect.selectedIndex));
+    }
+
+    private _whenSetMDEffects = (): void => {
+        const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+        const oldValue: number = instrument.mdeffects;
+        const toggleFlag: number = Config.mdeffectOrder[this._mdeffectsSelect.selectedIndex - 1];
+        console.log(toggleFlag)
+        this._doc.record(new ChangeToggleMDEffects(this._doc, toggleFlag, null));
+        this._mdeffectsSelect.selectedIndex = 0;
+        if (instrument.mdeffects > oldValue) {
+            this._doc.addedEffect = true;
+        }
+        this._doc.notifier.changed();
     }
 
     private _whenSetEffects = (): void => {

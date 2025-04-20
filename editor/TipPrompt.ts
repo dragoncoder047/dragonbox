@@ -304,6 +304,12 @@ export class TipPrompt implements Prompt {
 					p("theepbox has many different kinds of special effects you can add to instruments. You can turn on multiple effects at once, and they can be configured individually. Try them all out!"),
 				);
 			} break;
+			case "mdeffects": {
+				message = div(
+					h2("Musical Data Effects"),
+					p("theepbox (and BeepBox) has two different types of effects. Musical data effects only affect musical data, like notes and pitch, as opposed to other effects which manipulate the signal wave itself. In theepbox, MD effects can't be re-ordered like other effects and so they get their own special category!"),
+				);
+			} break;
 			case "drumsetEnvelope": {
 				message = div(
 					h2("Drumset Envelope"),
@@ -375,7 +381,7 @@ export class TipPrompt implements Prompt {
 				message = div(
 					h2("Envelopes"),
 					p("Envelopes are a way to dynamically adjust various other settings over time, usually based on how long the note lasts. Press the + button to add an envelope, then use the menus below to select which setting to control and the curve of the envelope. Try different combinations to see how they sound!"),
-					p("Most envelope curves restart from the beginning every time a new note plays. The \"note size\" option is based on the note width as drawn in the pattern editor while the \"pitch\" option is based on the pitch of the note played. The \"random\" envelope type deterministally produces a random result based on either the time or pitch of a note."),
+					p("Most envelope curves restart from the beginning every time a new note plays. The \"note size\" option is based on the note width as drawn in the pattern editor while the \"pitch\" option is based on the pitch of the note played. The \"random\" envelope type deterministically produces a random result based on either the time or pitch of a note."),
 					p("Envelope curves move in the range from 0 to 1 (or vice versa), where 0 means as quiet as possible and 1 is the same as the corresponding position selected in the instrument settings above. If multiple envelopes are targetting the same setting, they are multiplied before applying to the setting."),
 				);
 			} break;

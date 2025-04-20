@@ -1,6 +1,6 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Dictionary, DictionaryArray, FilterType, EnvelopeType, InstrumentType, EffectType, EnvelopeComputeIndex, Transition, Chord, Envelope, Config, getArpeggioPitchIndex, getPulseWidthRatio, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, effectsIncludeRingModulation, effectsIncludeGranular, OperatorWave, GranularEnvelopeType }from "./SynthConfig";
+import { Dictionary, DictionaryArray, FilterType, EnvelopeType, InstrumentType, MDEffectType, EffectType, EnvelopeComputeIndex, Transition, Chord, Envelope, Config, getArpeggioPitchIndex, getPulseWidthRatio, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, effectsIncludeRingModulation, effectsIncludeGranular, OperatorWave, GranularEnvelopeType }from "./SynthConfig";
 import { Deque } from "./Deque";
 import { Song, HeldMod } from "./Song";
 import { Channel } from "./Channel";
@@ -452,7 +452,7 @@ export class Synth {
                 if (tgtInstrument == null) continue;
                 const str: string = Config.modulators[instrument.modulators[mod]].name;
                 // Check effects
-                if (!((Config.modulators[instrument.modulators[mod]].associatedEffect != EffectType.length && !(tgtInstrument.effects & (1 << Config.modulators[instrument.modulators[mod]].associatedEffect)))
+                if (!(Config.modulators[instrument.modulators[mod]].associatedEffect != EffectType.length && !(tgtInstrument.effects & (1 << Config.modulators[instrument.modulators[mod]].associatedEffect))) && !(Config.modulators[instrument.modulators[mod]].associatedMDEffect != MDEffectType.length && !(tgtInstrument.mdeffects & (1 << Config.modulators[instrument.modulators[mod]].associatedMDEffect)))
                     // Instrument type specific
                     || ((tgtInstrument.type != InstrumentType.fm && tgtInstrument.type != InstrumentType.fm6op) && (str == "fm slider 1" || str == "fm slider 2" || str == "fm slider 3" || str == "fm slider 4" || str == "fm feedback"))
                     || tgtInstrument.type != InstrumentType.fm6op && (str == "fm slider 5" || str == "fm slider 6")
@@ -467,7 +467,7 @@ export class Synth {
                     // Note Filter check
                     || (tgtInstrument.noteFilterType && str == "note filter")
                     || (!tgtInstrument.noteFilterType && (str == "note filt cut" || str == "note filt peak"))
-                    || (str == "note filter" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(true)))) {
+                    || (str == "note filter" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(true))) {
 
                     instrument.invalidModulators[mod] = false;
                     i = tgtInstrumentList.length;
@@ -2823,7 +2823,7 @@ export class Synth {
             }
         }
 
-        if (effectsIncludePitchShift(instrument.effects)) {
+        if (effectsIncludePitchShift(instrument.mdeffects)) {
             let pitchShift: number = Config.justIntonationSemitones[instrument.pitchShift] / intervalScale;
             let pitchShiftScalarStart: number = 1.0;
             let pitchShiftScalarEnd: number = 1.0;
@@ -2837,7 +2837,7 @@ export class Synth {
             intervalStart += pitchShift * envelopeStart * pitchShiftScalarStart;
             intervalEnd += pitchShift * envelopeEnd * pitchShiftScalarEnd;
         }
-        if (effectsIncludeDetune(instrument.effects) || this.isModActive(Config.modulators.dictionary["song detune"].index, channelIndex, tone.instrumentIndex)) {
+        if (effectsIncludeDetune(instrument.mdeffects) || this.isModActive(Config.modulators.dictionary["song detune"].index, channelIndex, tone.instrumentIndex)) {
             const envelopeStart: number = envelopeStarts[EnvelopeComputeIndex.detune];
             const envelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.detune];
             let modDetuneStart: number = instrument.detune;
@@ -2854,7 +2854,7 @@ export class Synth {
             intervalEnd += detuneToCents(modDetuneEnd) * envelopeEnd * Config.pitchesPerOctave / (12.0 * 100.0);
         }
 
-        if (effectsIncludeVibrato(instrument.effects)) {
+        if (effectsIncludeVibrato(instrument.mdeffects)) {
             let delayTicks: number;
             let vibratoAmplitudeStart: number;
             let vibratoAmplitudeEnd: number;
@@ -4451,6 +4451,7 @@ export class Synth {
         signature = isStereo ? signature + "1" : signature + "0";
         signature = signature + panMode.toString();
         for (let i of instrumentState.effectOrder) {
+            //console.log(instrumentState.effectOrder[i])
             signature = signature + instrumentState.effectOrder[i].toString();
         }
 

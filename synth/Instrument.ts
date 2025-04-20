@@ -1,6 +1,6 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Dictionary, DictionaryArray, toNameMap, SustainType, EnvelopeType, InstrumentType, EffectType, Transition, Unison, Chord, Vibrato, Envelope, AutomationTarget, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, effectsIncludeRingModulation, effectsIncludeGranular, LFOEnvelopeTypes } from "./SynthConfig";
+import { Dictionary, DictionaryArray, toNameMap, SustainType, EnvelopeType, InstrumentType, EffectType, MDEffectType, Transition, Unison, Chord, Vibrato, Envelope, AutomationTarget, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, effectsIncludeRingModulation, effectsIncludeGranular, LFOEnvelopeTypes } from "./SynthConfig";
 import { FilterSettings } from "./Filter";
 import { EnvelopeSettings } from "./Envelope";
 import { clamp, fadeInSettingToSeconds, secondsToFadeInSetting, fadeOutSettingToTicks, ticksToFadeOutSetting, detuneToCents, centsToDetune, fittingPowerOfTwo } from "./utils";
@@ -250,7 +250,8 @@ export class Instrument {
     public unisonExpression: number = 1.4;
     public unisonSign: number = 1.0;
     public effects: number = 0;
-    public effectOrder: Array<EffectType> = [EffectType.panning, EffectType.transition, EffectType.chord, EffectType.pitchShift, EffectType.detune, EffectType.vibrato, EffectType.eqFilter, EffectType.noteRange, EffectType.granular, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb, EffectType.ringModulation];
+    public effectOrder: Array<EffectType> = [EffectType.panning, EffectType.eqFilter, EffectType.granular, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb, EffectType.ringModulation];
+    public mdeffects: number = 0;
     public chord: number = 1;
     public volume: number = 0;
     public pan: number = Config.panCenter;
@@ -380,6 +381,7 @@ export class Instrument {
         this.preset = type;
         this.volume = 0;
         this.effects = (1 << EffectType.panning); // Panning enabled by default in JB.
+        this.mdeffects = 0;
         this.chorus = Config.chorusRange - 1;
         this.reverb = 0;
         this.echoSustain = Math.floor((Config.echoSustainRange - 1) * 0.5);
@@ -557,7 +559,7 @@ export class Instrument {
         // will otherwise get overridden when reading SongTagCode.startInstrument.
         if (this.chord != Config.chords.dictionary["simultaneous"].index) {
             // Enable chord if it was used.
-            this.effects = (this.effects | (1 << EffectType.chord));
+            this.mdeffects = (this.mdeffects | (1 << MDEffectType.chord));
         }
     }
 
@@ -681,24 +683,25 @@ export class Instrument {
         }
         instrumentObject["effects"] = effects;
         instrumentObject["effectOrder"] = this.effectOrder;
+        instrumentObject["mdeffects"] = this.mdeffects;
 
-        if (effectsIncludeTransition(this.effects)) {
+        if (effectsIncludeTransition(this.mdeffects)) {
             instrumentObject["transition"] = Config.transitions[this.transition].name;
             instrumentObject["clicklessTransition"] = this.clicklessTransition;
         }
-        if (effectsIncludeChord(this.effects)) {
+        if (effectsIncludeChord(this.mdeffects)) {
             instrumentObject["chord"] = this.getChord().name;
             instrumentObject["fastTwoNoteArp"] = this.fastTwoNoteArp;
             instrumentObject["arpeggioSpeed"] = this.arpeggioSpeed;
             instrumentObject["monoChordTone"] = this.monoChordTone;
         }
-        if (effectsIncludePitchShift(this.effects)) {
+        if (effectsIncludePitchShift(this.mdeffects)) {
             instrumentObject["pitchShiftSemitones"] = this.pitchShift;
         }
-        if (effectsIncludeDetune(this.effects)) {
+        if (effectsIncludeDetune(this.mdeffects)) {
             instrumentObject["detuneCents"] = detuneToCents(this.detune);
         }
-        if (effectsIncludeVibrato(this.effects)) {
+        if (effectsIncludeVibrato(this.mdeffects)) {
             if (this.vibrato == -1) {
                 this.vibrato = 5;
             }
@@ -1000,6 +1003,10 @@ export class Instrument {
         } else {
             this.effectOrder = [...Config.effectOrder];
         }
+        if (instrumentObject["mdeffects"] != undefined) {
+            this.mdeffects = instrumentObject["mdeffects"];
+        }
+        else this.mdeffects = 0; //TODO: convert old effect list into md effects
 
         this.transition = Config.transitions.dictionary["normal"].index; // default value.
         const transitionProperty: any = instrumentObject["transition"] || instrumentObject["envelope"]; // the transition property used to be called envelope, so check that too.
@@ -1033,7 +1040,7 @@ export class Instrument {
 
             if (this.transition != Config.transitions.dictionary["normal"].index) {
                 // Enable transition if it was used.
-                this.effects = (this.effects | (1 << EffectType.transition));
+                this.mdeffects = (this.mdeffects | (1 << MDEffectType.transition));
             }
         }
 
@@ -1088,9 +1095,9 @@ export class Instrument {
             this.unison = Config.unisons.dictionary["hum"].index;
             this.chord = Config.chords.dictionary["custom interval"].index;
         }
-        if (this.chord != Config.chords.dictionary["simultaneous"].index && !Array.isArray(instrumentObject["effects"])) {
+        if (this.chord != Config.chords.dictionary["simultaneous"].index && !Array.isArray(instrumentObject["mdeffects"])) {
             // Enable chord if it was used.
-            this.effects = (this.effects | (1 << EffectType.chord));
+            this.mdeffects = (this.mdeffects | (1 << MDEffectType.chord));
         }
 
         if (instrumentObject["pitchShiftSemitones"] != undefined) {
@@ -1099,7 +1106,7 @@ export class Instrument {
         // modbox pitch shift, known in that mod as "octave offset"
         if (instrumentObject["octoff"] != undefined) {
             let potentialPitchShift: string = instrumentObject["octoff"];
-            this.effects = (this.effects | (1 << EffectType.pitchShift));
+            this.mdeffects = (this.mdeffects | (1 << MDEffectType.pitchShift));
 
             if ((potentialPitchShift == "+1 (octave)") || (potentialPitchShift == "+2 (2 octaves)")) {
                 this.pitchShift = 24;
@@ -1143,7 +1150,7 @@ export class Instrument {
 
             // Old songs may have a vibrato effect without explicitly enabling it.
             if (vibrato != Config.vibratos.dictionary["none"]) {
-                this.effects = (this.effects | (1 << EffectType.vibrato));
+                this.mdeffects = (this.mdeffects | (1 << MDEffectType.vibrato));
             }
         }
 
@@ -1794,7 +1801,7 @@ export class Instrument {
     }
 
     public getTransition(): Transition {
-        return effectsIncludeTransition(this.effects) ? Config.transitions[this.transition] :
+        return effectsIncludeTransition(this.mdeffects) ? Config.transitions[this.transition] :
             (this.type == InstrumentType.mod ? Config.transitions.dictionary["interrupt"] : Config.transitions.dictionary["normal"]);
     }
 
@@ -1807,7 +1814,7 @@ export class Instrument {
     }
 
     public getChord(): Chord {
-        return effectsIncludeChord(this.effects) ? Config.chords[this.chord] : Config.chords.dictionary["simultaneous"];
+        return effectsIncludeChord(this.mdeffects) ? Config.chords[this.chord] : Config.chords.dictionary["simultaneous"];
     }
 
     public getDrumsetEnvelope(pitch: number): Envelope {

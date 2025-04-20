@@ -1,6 +1,6 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { startLoadingSample, sampleLoadingState, SampleLoadingState, sampleLoadEvents, SampleLoadedEvent, SampleLoadingStatus, loadBuiltInSamples, Dictionary, DictionaryArray, toNameMap, FilterType, SustainType, EnvelopeType, InstrumentType, EffectType, Envelope, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, effectsIncludeRingModulation, effectsIncludeGranular, LFOEnvelopeTypes, RandomEnvelopeTypes } from "./SynthConfig";
+import { startLoadingSample, sampleLoadingState, SampleLoadingState, sampleLoadEvents, SampleLoadedEvent, SampleLoadingStatus, loadBuiltInSamples, Dictionary, DictionaryArray, toNameMap, FilterType, SustainType, EnvelopeType, InstrumentType, EffectType, MDEffectType, Envelope, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, effectsIncludeRingModulation, effectsIncludeGranular, LFOEnvelopeTypes, RandomEnvelopeTypes } from "./SynthConfig";
 import { Preset, EditorConfig } from "../editor/EditorConfig";
 import { Channel } from "./Channel";
 import { Instrument, LegacySettings } from "./Instrument";
@@ -896,7 +896,8 @@ export class Song {
                 for (let i = 0; i < Config.effectCount; i++) {
                     buffer.push(base64IntToCharCode[instrument.effectOrder[i]]);
                 }
-                // technically it is not necessary to store *all* effects in the url, since some of them are immune to reordering. i will seperate out midi effects (which cant really be reordered), transition type (which is not an effect), and the True effects. pali mute! -theepie
+                // this is a six bit bitfield
+                buffer.push(base64IntToCharCode[instrument.mdeffects & 63]);
 
                 // theepbox swaps note filter (pre eq) and eq filter (post eq) in order to allow post eq to be re-ordered.
                 if (effectsIncludeEQFilter(instrument.effects)) {
@@ -938,10 +939,10 @@ export class Song {
                         }
                     }
                 }
-                if (effectsIncludeTransition(instrument.effects)) {
+                if (effectsIncludeTransition(instrument.mdeffects)) {
                     buffer.push(base64IntToCharCode[instrument.transition]);
                 }
-                if (effectsIncludeChord(instrument.effects)) {
+                if (effectsIncludeChord(instrument.mdeffects)) {
                     buffer.push(base64IntToCharCode[instrument.chord]);
                     // Custom arpeggio speed... only if the instrument arpeggiates.
                     if (instrument.chord == Config.chords.dictionary["arpeggio"].index) {
@@ -952,13 +953,13 @@ export class Song {
                         buffer.push(base64IntToCharCode[instrument.monoChordTone]); //which note is selected
                     }
                 }
-                if (effectsIncludePitchShift(instrument.effects)) {
+                if (effectsIncludePitchShift(instrument.mdeffects)) {
                     buffer.push(base64IntToCharCode[instrument.pitchShift]);
                 }
-                if (effectsIncludeDetune(instrument.effects)) {
+                if (effectsIncludeDetune(instrument.mdeffects)) {
                     buffer.push(base64IntToCharCode[(instrument.detune - Config.detuneMin) >> 6], base64IntToCharCode[(instrument.detune - Config.detuneMin) & 0x3F]);
                 }
-                if (effectsIncludeVibrato(instrument.effects)) {
+                if (effectsIncludeVibrato(instrument.mdeffects)) {
                     buffer.push(base64IntToCharCode[instrument.vibrato]);
                     // Custom vibrato settings
                     if (instrument.vibrato == Config.vibratos.length) {
@@ -1661,7 +1662,7 @@ export class Song {
             // Originally, the only instrument transition was "instant" and the only drum wave was "retro".
             for (const channel of this.channels) {
                 channel.instruments[0].transition = Config.transitions.dictionary["interrupt"].index;
-                channel.instruments[0].effects |= 1 << EffectType.transition;
+                channel.instruments[0].mdeffects |= 1 << MDEffectType.transition;
             }
             this.channels[3].instruments[0].chipNoise = 0;
         }
@@ -1950,7 +1951,7 @@ export class Song {
                     // explicitly saved the chorus setting beforeSeven so enable it here.
                     if (instrument.chord != Config.chords.dictionary["simultaneous"].index) {
                         // Enable chord if it was used.
-                        instrument.effects |= 1 << EffectType.chord;
+                        instrument.mdeffects |= 1 << MDEffectType.chord;
                     }
                 }
             } break;
@@ -2357,7 +2358,7 @@ export class Song {
                         instrument.transition = Config.transitions.dictionary[settings.transition].index;
                         if (instrument.transition != Config.transitions.dictionary["normal"].index) {
                             // Enable transition if it was used.
-                            instrument.effects |= 1 << EffectType.transition;
+                            instrument.mdeffects |= 1 << MDEffectType.transition;
                         }
                     } else if (beforeSix && fromBeepBox) {
                         for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
@@ -2368,7 +2369,7 @@ export class Song {
                                 instrument.transition = Config.transitions.dictionary[settings.transition].index;
                                 if (instrument.transition != Config.transitions.dictionary["normal"].index) {
                                     // Enable transition if it was used.
-                                    instrument.effects |= 1 << EffectType.transition;
+                                    instrument.mdeffects |= 1 << MDEffectType.transition;
                                 }
                             }
                         }
@@ -2380,7 +2381,7 @@ export class Song {
                         instrument.transition = Config.transitions.dictionary[settings.transition].index;
                         if (instrument.transition != Config.transitions.dictionary["normal"].index) {
                             // Enable transition if it was used.
-                            instrument.effects |= 1 << EffectType.transition;
+                            instrument.mdeffects |= 1 << MDEffectType.transition;
                         }
                     } else {
                         const settings = legacySettings[clamp(0, legacySettings.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
@@ -2399,7 +2400,7 @@ export class Song {
 
                         if (instrument.transition != Config.transitions.dictionary["normal"].index || instrument.clicklessTransition) {
                             // Enable transition if it was used.
-                            instrument.effects |= 1 << EffectType.transition;
+                            instrument.mdeffects |= 1 << MDEffectType.transition;
                         }
                     }
                 } else {
@@ -2428,7 +2429,7 @@ export class Song {
                             }
                             if (instrument.vibrato != Config.vibratos.dictionary["none"].index) {
                                 // Enable vibrato if it was used.
-                                instrument.effects |= 1 << EffectType.vibrato;
+                                instrument.mdeffects |= 1 << MDEffectType.vibrato;
                             }
                         } else if (beforeSix && fromBeepBox) {
                             const legacyEffects: number[] = [0, 1, 2, 3, 0, 0];
@@ -2446,7 +2447,7 @@ export class Song {
                                     }
                                     if (instrument.vibrato != Config.vibratos.dictionary["none"].index) {
                                         // Enable vibrato if it was used.
-                                        instrument.effects |= 1 << EffectType.vibrato;
+                                        instrument.mdeffects |= 1 << MDEffectType.vibrato;
                                     }
                                     if ((legacyGlobalReverb != 0 || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) && !this.getChannelIsNoise(channelIndex)) {
                                         // Enable reverb if it was used globaly before. (Global reverb was added before the effects option so I need to pick somewhere else to initialize instrument reverb, and I picked the vibrato command.)
@@ -2469,7 +2470,7 @@ export class Song {
                             }
                             if (instrument.vibrato != Config.vibratos.dictionary["none"].index) {
                                 // Enable vibrato if it was used.
-                                instrument.effects |= 1 << EffectType.vibrato;
+                                instrument.effects |= 1 << MDEffectType.vibrato;
                             }
                             if (legacyGlobalReverb != 0 || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
                                 // Enable reverb if it was used globaly before. (Global reverb was added before the effects option so I need to pick somewhere else to initialize instrument reverb, and I picked the vibrato command.)
@@ -2483,7 +2484,7 @@ export class Song {
                         instrument.vibrato = vibrato;
                         if (instrument.vibrato != Config.vibratos.dictionary["none"].index) {
                             // Enable vibrato if it was used.
-                            instrument.effects |= 1 << EffectType.vibrato;
+                            instrument.mdeffects |= 1 << MDEffectType.vibrato;
                         }
                         // Custom vibrato
                         if (vibrato == Config.vibratos.length) {
@@ -2491,7 +2492,7 @@ export class Song {
                             instrument.vibratoSpeed = clamp(0, Config.modulators.dictionary["vibrato speed"].maxRawVol + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             instrument.vibratoDelay = clamp(0, Config.modulators.dictionary["vibrato delay"].maxRawVol + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) / 2;
                             instrument.vibratoType = clamp(0, Config.vibratoTypes.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                            instrument.effects |= 1 << EffectType.vibrato;
+                            instrument.mdeffects |= 1 << MDEffectType.vibrato;
                         }
                         // Enforce standard vibrato settings
                         else {
@@ -2649,7 +2650,7 @@ export class Song {
                     instrument.chord = clamp(0, Config.chords.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     if (instrument.chord != Config.chords.dictionary["simultaneous"].index) {
                         // Enable chord if it was used.
-                        instrument.effects |= 1 << EffectType.chord;
+                        instrument.mdeffects |= 1 << MDEffectType.chord;
                     }
                 } else {
                     // Do nothing? This song tag code is deprecated for now.
@@ -2670,11 +2671,11 @@ export class Song {
                     //}
                     if (instrument.vibrato != Config.vibratos.dictionary["none"].index) {
                         // Enable vibrato if it was used.
-                        instrument.effects |= 1 << EffectType.vibrato;
+                        instrument.mdeffects |= 1 << MDEffectType.vibrato;
                     }
                     if (instrument.detune != Config.detuneCenter) {
                         // Enable detune if it was used.
-                        instrument.effects |= 1 << EffectType.detune;
+                        instrument.mdeffects |= 1 << MDEffectType.detune;
                     }
                     if (instrument.aliases)
                         instrument.effects |= 1 << EffectType.distortion;
@@ -2697,8 +2698,12 @@ export class Song {
                         for (let i = 0; i < Config.effectCount; i++) {
                             instrument.effectOrder[i] = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         }
+                        instrument.mdeffects = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     }
-                    else instrument.effectOrder = [EffectType.panning, EffectType.transition, EffectType.chord, EffectType.pitchShift, EffectType.detune, EffectType.vibrato, EffectType.eqFilter, EffectType.granular, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb, EffectType.ringModulation];
+                    else {
+                        instrument.effectOrder = [EffectType.panning, EffectType.eqFilter, EffectType.granular, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb, EffectType.ringModulation];
+                        instrument.mdeffects = 0 // ?
+                    }
 
                     if (effectsIncludeEQFilter(instrument.effects)) {
                         let typeCheck: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
@@ -2803,10 +2808,10 @@ export class Song {
                             }
                         }
                     }
-                    if (effectsIncludeTransition(instrument.effects)) {
+                    if (effectsIncludeTransition(instrument.mdeffects)) {
                         instrument.transition = clamp(0, Config.transitions.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     }
-                    if (effectsIncludeChord(instrument.effects)) {
+                    if (effectsIncludeChord(instrument.mdeffects)) {
                         instrument.chord = clamp(0, Config.chords.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         // Custom arpeggio speed... only in JB, and only if the instrument arpeggiates.
                         if (instrument.chord == Config.chords.dictionary["arpeggio"].index && (fromJummBox||fromGoldBox||fromUltraBox||fromSlarmoosBox)) {
@@ -2817,10 +2822,10 @@ export class Song {
                             instrument.monoChordTone = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         }
                     }
-                    if (effectsIncludePitchShift(instrument.effects)) {
+                    if (effectsIncludePitchShift(instrument.mdeffects)) {
                         instrument.pitchShift = clamp(0, Config.pitchShiftRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     }
-                    if (effectsIncludeDetune(instrument.effects)) {
+                    if (effectsIncludeDetune(instrument.mdeffects)) {
                         if (fromBeepBox) {
                             // Convert from BeepBox's formula
                             instrument.detune = clamp(Config.detuneMin, Config.detuneMax + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
@@ -2829,7 +2834,7 @@ export class Song {
                             instrument.detune = clamp(Config.detuneMin, Config.detuneMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         }
                     }
-                    if (effectsIncludeVibrato(instrument.effects)) {
+                    if (effectsIncludeVibrato(instrument.mdeffects)) {
                         instrument.vibrato = clamp(0, Config.vibratos.length + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
 
                         // Custom vibrato
@@ -2954,7 +2959,7 @@ export class Song {
                 if ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox)) {
                     // Before jummbox v5, detune was -50 to 50. Now it is 0 to 400
                     instrument.detune = clamp(Config.detuneMin, Config.detuneMax + 1, ((base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 4);
-                    instrument.effects |= 1 << EffectType.detune;
+                    instrument.mdeffects |= 1 << MDEffectType.detune;
                 } else {
                     // Now in v5, tag code is deprecated and handled thru detune effects.
                 }
@@ -4116,6 +4121,7 @@ export class Song {
                 "type": "chip",
                 "eqFilter": [],
                 "effects": [],
+                "mdeffects": [],
                 "transition": "normal",
                 "fadeInSeconds": 0,
                 "fadeOutTicks": -3,

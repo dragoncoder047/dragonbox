@@ -4995,10 +4995,12 @@ export class Synth {
                 else if (usesEcho && i == EffectType.echo) {
                     effectsSource += `
 
-                    const echoTapStartIndexL = (echoDelayPosL - echoPingPong + echoDelayOffsetStart) & echoMask;
-                    const echoTapStartIndexR = (echoDelayPosR + echoPingPong + echoDelayOffsetStart) & echoMask;
-                    const echoTapEndIndexL   = (echoDelayPosL - echoPingPong + echoDelayOffsetEnd  ) & echoMask;
-                    const echoTapEndIndexR   = (echoDelayPosR + echoPingPong + echoDelayOffsetEnd  ) & echoMask;
+                    const echoNextInputL = (sampleL + sampleR) / 2;
+                    const echoNextInputR = (sampleL + sampleR) / 2;
+                    const echoTapStartIndexL = (echoDelayPosL + echoDelayOffsetStart) & echoMask;
+                    const echoTapStartIndexR = (echoDelayPosR + echoDelayOffsetStart) & echoMask;
+                    const echoTapEndIndexL   = (echoDelayPosL + echoDelayOffsetEnd) & echoMask;
+                    const echoTapEndIndexR   = (echoDelayPosR + echoDelayOffsetEnd) & echoMask;
                     const echoTapStartL = echoDelayLineL[echoTapStartIndexL];
                     const echoTapEndL   = echoDelayLineL[echoTapEndIndexL];
                     const echoTapStartR = echoDelayLineR[echoTapStartIndexR];
@@ -5013,8 +5015,8 @@ export class Synth {
                     sampleL += echoShelfSampleL;
                     sampleR += echoShelfSampleR;
 
-                    echoDelayLineL[echoDelayPosL] = sampleL * delayInputMult;
-                    echoDelayLineR[echoDelayPosR] = sampleR * delayInputMult;
+                    echoDelayLineL[echoDelayPosL] = (sampleL * (1 - Math.abs(echoPingPong)) + (echoNextInputL * Math.max(0, echoPingPong) + echoShelfSampleR) * Math.abs(echoPingPong)) * delayInputMult;
+                    echoDelayLineR[echoDelayPosR] = (sampleR * (1 - Math.abs(echoPingPong)) + (echoNextInputR * Math.max(0, -echoPingPong) + echoShelfSampleL) * Math.abs(echoPingPong)) * delayInputMult;
                     echoDelayPosL = (echoDelayPosL + 1) & echoMask;
                     echoDelayPosR = (echoDelayPosR + 1) & echoMask;
                     echoDelayOffsetRatio += echoDelayOffsetRatioDelta;

@@ -1276,6 +1276,9 @@ var beepbox = (function (exports) {
         { name: "echo delay", pianoName: "Echo Delay", maxRawVol: _a.echoDelayRange, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 15, maxIndex: 0,
             promptName: "Instrument Echo Delay", promptDesc: ["This setting controls the echo delay of your instrument, just like the echo delay slider.", "At $LO, your instrument will have very little echo delay, and this increases up to 2 beats of delay at $HI.", "[OVERWRITING] [$LO - $HI] [~beats ÷12]"]
         },
+        { name: "echo ping pong", pianoName: "Ping-Pong", maxRawVol: _a.panMax, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 15, maxIndex: 0,
+            promptName: "Instrument Echo Delay", promptDesc: ["This setting controls the echo ping-pong of your instrument, just like the echo delay slider.", "At $LO, the echo will start fully from the left-ear side. At $MID there will be no echo ping pong, and at $HI, it will start coming fully from the right.", "[OVERWRITING] [$LO - $HI] [L-R]"]
+        },
         { name: "chorus", pianoName: "Chorus", maxRawVol: _a.chorusRange - 1, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 1, maxIndex: 0,
             promptName: "Instrument Chorus", promptDesc: ["This setting controls the chorus strength of your instrument, just like the chorus slider.", "At $LO, the chorus effect will be disabled. The strength of the chorus effect increases up to the max value, $HI.", "[OVERWRITING] [$LO - $HI]"] },
         { name: "eq filt cut", pianoName: "EQFlt Cut", maxRawVol: _a.filterSimpleCutRange - 1, newNoteVol: _a.filterSimpleCutRange - 1, forSong: false, convertRealFactor: 0, associatedEffect: 15, maxIndex: 0,
@@ -3118,6 +3121,7 @@ var beepbox = (function (exports) {
             this.reverb = 0;
             this.echoSustain = 0;
             this.echoDelay = 0;
+            this.echoPingPong = 0;
             this.algorithm = 0;
             this.feedbackType = 0;
             this.algorithm6Op = 1;
@@ -3182,6 +3186,7 @@ var beepbox = (function (exports) {
             this.reverb = 0;
             this.echoSustain = Math.floor((Config.echoSustainRange - 1) * 0.5);
             this.echoDelay = Math.floor((Config.echoDelayRange - 1) * 0.5);
+            this.echoPingPong = Config.panCenter;
             this.eqFilter.reset();
             this.eqFilterType = false;
             this.eqFilterSimpleCut = Config.filterSimpleCutRange - 1;
@@ -3533,6 +3538,7 @@ var beepbox = (function (exports) {
             if (effectsIncludeEcho(this.effects)) {
                 instrumentObject["echoSustain"] = Math.round(100 * this.echoSustain / (Config.echoSustainRange - 1));
                 instrumentObject["echoDelayBeats"] = Math.round(1000 * (this.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat)) / 1000;
+                instrumentObject["echoPingPong"] = Math.round(100 * (this.echoPingPong - Config.panCenter) / Config.panCenter);
             }
             if (effectsIncludeReverb(this.effects)) {
                 instrumentObject["reverb"] = Math.round(100 * this.reverb / (Config.reverbRange - 1));
@@ -3971,6 +3977,9 @@ var beepbox = (function (exports) {
             }
             if (instrumentObject["echoDelayBeats"] != undefined) {
                 this.echoDelay = clamp(0, Config.echoDelayRange, Math.round((+instrumentObject["echoDelayBeats"]) * (Config.ticksPerPart * Config.partsPerBeat) / Config.echoDelayStepTicks - 1.0));
+            }
+            if (instrumentObject["echoPingPong"] != undefined) {
+                this.echoPingPong = clamp(0, Config.panMax + 1, Math.round(Config.panCenter + (instrumentObject["echoPingPong"] | 0) * Config.panCenter / 100));
             }
             if (!isNaN(instrumentObject["chorus"])) {
                 this.chorus = clamp(0, Config.chorusRange, Math.round((Config.chorusRange - 1) * (instrumentObject["chorus"] | 0) / 100));
@@ -4999,6 +5008,7 @@ var beepbox = (function (exports) {
                         let freqCrushIndex = Config.modulators.dictionary["freq crush"].index;
                         let echoIndex = Config.modulators.dictionary["echo"].index;
                         let echoDelayIndex = Config.modulators.dictionary["echo delay"].index;
+                        let echoPingPongIndex = Config.modulators.dictionary["echo ping pong"].index;
                         let pitchShiftIndex = Config.modulators.dictionary["pitch shift"].index;
                         let ringModIndex = Config.modulators.dictionary["ring modulation"].index;
                         let ringModHertzIndex = Config.modulators.dictionary["ring mod hertz"].index;
@@ -5053,6 +5063,9 @@ var beepbox = (function (exports) {
                                 break;
                             case echoDelayIndex:
                                 vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].echoDelay - Config.modulators[echoDelayIndex].convertRealFactor;
+                                break;
+                            case echoPingPongIndex:
+                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].echoPingPong - Config.modulators[echoPingPongIndex].convertRealFactor;
                                 break;
                             case pitchShiftIndex:
                                 vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].pitchShift;
@@ -5443,7 +5456,7 @@ var beepbox = (function (exports) {
                         buffer.push(base64IntToCharCode[instrument.chorus]);
                     }
                     if (effectsIncludeEcho(instrument.effects)) {
-                        buffer.push(base64IntToCharCode[instrument.echoSustain], base64IntToCharCode[instrument.echoDelay]);
+                        buffer.push(base64IntToCharCode[instrument.echoSustain], base64IntToCharCode[instrument.echoDelay], base64IntToCharCode[instrument.echoPingPong]);
                     }
                     if (effectsIncludeReverb(instrument.effects)) {
                         buffer.push(base64IntToCharCode[instrument.reverb]);
@@ -7245,6 +7258,7 @@ var beepbox = (function (exports) {
                                 if (effectsIncludeEcho(instrument.effects)) {
                                     instrument.echoSustain = clamp(0, Config.echoSustainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     instrument.echoDelay = clamp(0, Config.echoDelayRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                    instrument.echoPingPong = clamp(0, Config.panMax + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 }
                                 if (effectsIncludeReverb(instrument.effects)) {
                                     if (fromBeepBox) {
@@ -10463,13 +10477,15 @@ var beepbox = (function (exports) {
             this.echoDelayLineL = null;
             this.echoDelayLineR = null;
             this.echoDelayLineDirty = false;
-            this.echoDelayPos = 0;
+            this.echoDelayPosL = 0;
+            this.echoDelayPosR = 0;
             this.echoDelayOffsetStart = 0;
             this.echoDelayOffsetEnd = null;
             this.echoDelayOffsetRatio = 0.0;
             this.echoDelayOffsetRatioDelta = 0.0;
             this.echoMult = 0.0;
             this.echoMultDelta = 0.0;
+            this.echoPingPong = 0.0;
             this.echoShelfA1 = 0.0;
             this.echoShelfB0 = 0.0;
             this.echoShelfB1 = 0.0;
@@ -10564,10 +10580,11 @@ var beepbox = (function (exports) {
                 const newDelayLineR = new Float32Array(safeEchoDelayBufferSize);
                 const oldMask = this.echoDelayLineL.length - 1;
                 for (let i = 0; i < this.echoDelayLineL.length; i++) {
-                    newDelayLineL[i] = this.echoDelayLineL[(this.echoDelayPos + i) & oldMask];
-                    newDelayLineR[i] = this.echoDelayLineL[(this.echoDelayPos + i) & oldMask];
+                    newDelayLineL[i] = this.echoDelayLineL[(this.echoDelayPosL + i) & oldMask];
+                    newDelayLineR[i] = this.echoDelayLineR[(this.echoDelayPosR + i) & oldMask];
                 }
-                this.echoDelayPos = this.echoDelayLineL.length;
+                this.echoDelayPosL = this.echoDelayLineL.length;
+                this.echoDelayPosR = this.echoDelayLineR.length;
                 this.echoDelayLineL = newDelayLineL;
                 this.echoDelayLineR = newDelayLineR;
             }
@@ -11035,6 +11052,7 @@ var beepbox = (function (exports) {
                 averageEchoDelaySeconds = (this.echoDelayOffsetStart + this.echoDelayOffsetEnd) * 0.5 / samplesPerSecond;
                 this.echoDelayOffsetRatio = 0.0;
                 this.echoDelayOffsetRatioDelta = 1.0 / roundedSamplesPerTick;
+                this.echoPingPong = ((instrument.echoPingPong / Config.panMax) - 0.5) * 2;
                 const shelfRadians = 2.0 * Math.PI * Config.echoShelfHz / synth.samplesPerSecond;
                 Synth.tempFilterStartCoefficients.highShelf1stOrder(shelfRadians, Config.echoShelfGain);
                 this.echoShelfA1 = Synth.tempFilterStartCoefficients.a[1];
@@ -15306,11 +15324,13 @@ var beepbox = (function (exports) {
 				const echoMask = (echoDelayLineL.length - 1) >>> 0;
 				instrumentState.echoDelayLineDirty = true;
 				
-				let echoDelayPos = instrumentState.echoDelayPos & echoMask;
+                let echoDelayPosL = instrumentState.echoDelayPosL & echoMask;
+                let echoDelayPosR = instrumentState.echoDelayPosR & echoMask;
 				const echoDelayOffsetStart = (echoDelayLineL.length - instrumentState.echoDelayOffsetStart) & echoMask;
 				const echoDelayOffsetEnd   = (echoDelayLineL.length - instrumentState.echoDelayOffsetEnd) & echoMask;
 				let echoDelayOffsetRatio = +instrumentState.echoDelayOffsetRatio;
-				const echoDelayOffsetRatioDelta = +instrumentState.echoDelayOffsetRatioDelta;
+                const echoDelayOffsetRatioDelta = +instrumentState.echoDelayOffsetRatioDelta;
+                const echoPingPong = instrumentState.echoPingPong;
 				
 				const echoShelfA1 = +instrumentState.echoShelfA1;
 				const echoShelfB0 = +instrumentState.echoShelfB0;
@@ -15536,12 +15556,16 @@ var beepbox = (function (exports) {
                     else if (usesEcho && i == 6) {
                         effectsSource += `
 
-                    const echoTapStartIndex = (echoDelayPos + echoDelayOffsetStart) & echoMask;
-                    const echoTapEndIndex   = (echoDelayPos + echoDelayOffsetEnd  ) & echoMask;
-                    const echoTapStartL = echoDelayLineL[echoTapStartIndex];
-                    const echoTapEndL   = echoDelayLineL[echoTapEndIndex];
-                    const echoTapStartR = echoDelayLineR[echoTapStartIndex];
-                    const echoTapEndR   = echoDelayLineR[echoTapEndIndex];
+                    const echoNextInputL = (sampleL + sampleR) / 2;
+                    const echoNextInputR = (sampleL + sampleR) / 2;
+                    const echoTapStartIndexL = (echoDelayPosL + echoDelayOffsetStart) & echoMask;
+                    const echoTapStartIndexR = (echoDelayPosR + echoDelayOffsetStart) & echoMask;
+                    const echoTapEndIndexL   = (echoDelayPosL + echoDelayOffsetEnd) & echoMask;
+                    const echoTapEndIndexR   = (echoDelayPosR + echoDelayOffsetEnd) & echoMask;
+                    const echoTapStartL = echoDelayLineL[echoTapStartIndexL];
+                    const echoTapEndL   = echoDelayLineL[echoTapEndIndexL];
+                    const echoTapStartR = echoDelayLineR[echoTapStartIndexR];
+                    const echoTapEndR   = echoDelayLineR[echoTapEndIndexR];
                     const echoTapL = (echoTapStartL + (echoTapEndL - echoTapStartL) * echoDelayOffsetRatio) * echoMult;
                     const echoTapR = (echoTapStartR + (echoTapEndR - echoTapStartR) * echoDelayOffsetRatio) * echoMult;
 
@@ -15552,9 +15576,10 @@ var beepbox = (function (exports) {
                     sampleL += echoShelfSampleL;
                     sampleR += echoShelfSampleR;
 
-                    echoDelayLineL[echoDelayPos] = sampleL * delayInputMult;
-                    echoDelayLineR[echoDelayPos] = sampleR * delayInputMult;
-                    echoDelayPos = (echoDelayPos + 1) & echoMask;
+                    echoDelayLineL[echoDelayPosL] = (sampleL * (1 - Math.abs(echoPingPong)) + (echoNextInputL * Math.max(0, echoPingPong) + echoShelfSampleR) * Math.abs(echoPingPong)) * delayInputMult;
+                    echoDelayLineR[echoDelayPosR] = (sampleR * (1 - Math.abs(echoPingPong)) + (echoNextInputR * Math.max(0, -echoPingPong) + echoShelfSampleL) * Math.abs(echoPingPong)) * delayInputMult;
+                    echoDelayPosL = (echoDelayPosL + 1) & echoMask;
+                    echoDelayPosR = (echoDelayPosR + 1) & echoMask;
                     echoDelayOffsetRatio += echoDelayOffsetRatioDelta;
                     echoMult += echoMultDelta;
                     `;
@@ -15841,9 +15866,10 @@ var beepbox = (function (exports) {
                 if (usesEcho) {
                     effectsSource += `
 				
-				Synth.sanitizeDelayLine(echoDelayLineL, echoDelayPos, echoMask);
-				Synth.sanitizeDelayLine(echoDelayLineR, echoDelayPos, echoMask);
-				instrumentState.echoDelayPos = echoDelayPos;
+				Synth.sanitizeDelayLine(echoDelayLineL, echoDelayPosL, echoMask);
+				Synth.sanitizeDelayLine(echoDelayLineR, echoDelayPosR, echoMask);
+                instrumentState.echoDelayPosL = echoDelayPosL;
+                instrumentState.echoDelayPosR = echoDelayPosR;
 				instrumentState.echoMult = echoMult;
 				instrumentState.echoDelayOffsetRatio = echoDelayOffsetRatio;
 				

@@ -1232,7 +1232,7 @@ export class InstrumentState {
             this.echoDelayOffsetRatio = 0.0;
             this.echoDelayOffsetRatioDelta = 1.0 / roundedSamplesPerTick;
 
-            this.echoPingPong = ((instrument.echoPingPong / Config.panMax) - 0.5) * (this.echoDelayOffsetStart + this.echoDelayOffsetEnd);
+            this.echoPingPong = ((instrument.echoPingPong / Config.panMax) - 0.5) * 2;
             //const echoPingPongEnd
 
             const shelfRadians: number = 2.0 * Math.PI * Config.echoShelfHz / synth.samplesPerSecond;

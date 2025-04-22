@@ -3674,7 +3674,22 @@ export class ChangeModChannel extends Change {
             instrument.modulators[mod] = Config.modulators.dictionary["none"].index;
         }
 
-        instrument.modChannels[mod] = index - 2;
+        let tgtIndex: number = 0;
+
+        //turn selection index into channel + instrument NOTE: this only works for the boxes but this function is called in other places
+        for (let i: number = 0; i < doc.song.pitchChannelCount + doc.song.noiseChannelCount; i++) {
+            for (let j: number = 0; j < doc.song.channels[i].instruments.length; j++) {
+                if(index - 2 == tgtIndex) {
+                    instrument.modChannels[mod] = i;
+                    instrument.modInstruments[mod] = j;
+                    console.log(i + " " + j)
+                    tgtIndex = -5;
+                    break;
+                }
+                else tgtIndex++;
+            }
+            if(tgtIndex == -5) break;
+        }
 
         doc.notifier.changed();
         this._didSomething();

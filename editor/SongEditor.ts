@@ -1095,7 +1095,6 @@ export class SongEditor {
     private readonly _modulatorGroup: HTMLElement = div({ class: "editor-controls" });
     private readonly _modNameRows: HTMLElement[];
     private readonly _modChannelBoxes: HTMLSelectElement[];
-    private readonly _modInstrumentBoxes: HTMLSelectElement[];
     private readonly _modSetRows: HTMLElement[];
     private readonly _modSetBoxes: HTMLSelectElement[];
     private readonly _modFilterRows: HTMLElement[];
@@ -1589,7 +1588,6 @@ export class SongEditor {
 
         this._modNameRows = [];
         this._modChannelBoxes = [];
-        this._modInstrumentBoxes = [];
         this._modSetRows = [];
         this._modSetBoxes = [];
         this._modFilterRows = [];
@@ -1600,13 +1598,10 @@ export class SongEditor {
         for (let mod: number = 0; mod < Config.modCount; mod++) {
 
             let modChannelBox: HTMLSelectElement = select({ style: "width: 100%; color: currentColor; text-overflow:ellipsis;" });
-            let modInstrumentBox: HTMLSelectElement = select({ style: "width: 100%; color: currentColor;" });
 
             let modNameRow: HTMLDivElement = div({ class: "operatorRow", style: "height: 1em; margin-bottom: 0.65em;" },
                 div({ class: "tip", style: "width: 10%; max-width: 5.4em;", id: "modChannelText" + mod, onclick: () => this._openPrompt("modChannel") }, "Ch:"),
                 div({ class: "selectContainer", style: 'width: 35%;' }, modChannelBox),
-                div({ class: "tip", style: "width: 1.2em; margin-left: 0.8em;", id: "modInstrumentText" + mod, onclick: () => this._openPrompt("modInstrument") }, "Ins:"),
-                div({ class: "selectContainer", style: "width: 10%;" }, modInstrumentBox),
             );
 
             let modSetBox: HTMLSelectElement = select();
@@ -1627,7 +1622,6 @@ export class SongEditor {
 
             this._modNameRows.push(modNameRow);
             this._modChannelBoxes.push(modChannelBox);
-            this._modInstrumentBoxes.push(modInstrumentBox);
             this._modSetRows.push(modSetRow);
             this._modSetBoxes.push(modSetBox);
             this._modFilterRows.push(modFilterRow);
@@ -1735,7 +1729,6 @@ export class SongEditor {
         let thisRef: SongEditor = this;
         for (let mod: number = 0; mod < Config.modCount; mod++) {
             this._modChannelBoxes[mod].addEventListener("change", function () { thisRef._whenSetModChannel(mod); });
-            this._modInstrumentBoxes[mod].addEventListener("change", function () { thisRef._whenSetModInstrument(mod); });
             this._modSetBoxes[mod].addEventListener("change", function () { thisRef._whenSetModSetting(mod); });
             this._modFilterBoxes[mod].addEventListener("change", function () { thisRef._whenSetModFilter(mod); });
             this._modEnvelopeBoxes[mod].addEventListener("change", function () { thisRef._whenSetModEnvelope(mod); })
@@ -2810,7 +2803,6 @@ export class SongEditor {
             this._pulseWidthSlider.input.title = prettyNumber(instrument.pulseWidth) + "%";
 
             this._mdeffectsGroup.replaceChildren();
-            console.log(instrument.mdeffects)
             if(effectsIncludeTransition(instrument.mdeffects)) {
                 this._mdeffectsGroup.append(this._transitionRow)
                 this._mdeffectsGroup.append(this._transitionDropdownGroup);
@@ -3080,36 +3072,47 @@ export class SongEditor {
                     instrument.modulators[mod] = 0;
                 }
 
+                let totalInstruments: number = 0;
+                for (let i: number = 0; i < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; i++) totalInstruments += this._doc.song.channels[i].instruments.length;
+
                 // Build options for modulator channels (make sure it has the right number).
-                if (this._doc.recalcChannelNames || (this._modChannelBoxes[mod].children.length != 2 + this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)) {
+                if (this._doc.recalcChannelNames || (this._modChannelBoxes[mod].children.length != 2 + totalInstruments)) {
                     while (this._modChannelBoxes[mod].firstChild) this._modChannelBoxes[mod].remove(0);
                     const channelList: string[] = [];
                     channelList.push("none");
                     channelList.push("song");
                     for (let i: number = 0; i < this._doc.song.pitchChannelCount; i++) {
-                        if (this._doc.song.channels[i].name == "") {
-                            channelList.push("pitch " + (i + 1));
-                        }
-                        else {
-                            channelList.push(this._doc.song.channels[i].name);
+                        let tgtchannel: Channel = this._doc.song.channels[i];
+                        for (let j: number = 0; j < tgtchannel.instruments.length; j++) {
+                            if (this._doc.song.channels[i].name == "") {
+                                channelList.push("pitch " + (i + 1) + " ins " + (j + 1));
+                            }
+                            else {
+                                channelList.push(this._doc.song.channels[i].name);
+                            }
                         }
                     }
                     for (let i: number = 0; i < this._doc.song.noiseChannelCount; i++) {
-                        if (this._doc.song.channels[i + this._doc.song.pitchChannelCount].name == "") {
-                            channelList.push("noise " + (i + 1));
-                        }
-                        else {
-                            channelList.push(this._doc.song.channels[i + this._doc.song.pitchChannelCount].name);
+                        let tgtchannel: Channel = this._doc.song.channels[i + this._doc.song.pitchChannelCount];
+                        for (let j: number = 0; j < tgtchannel.instruments.length; j++) {
+                            if (this._doc.song.channels[i + this._doc.song.pitchChannelCount].name == "") {
+                                channelList.push("noise " + (i + 1) + " ins " + (j + 1));
+                            }
+                            else {
+                                channelList.push(this._doc.song.channels[i].name);
+                            }
                         }
                     }
                     buildOptions(this._modChannelBoxes[mod], channelList);
                 }
 
+                let channel: Channel = this._doc.song.channels[modChannel];
+
                 // Set selected index based on channel info.
 
-                this._modChannelBoxes[mod].selectedIndex = instrument.modChannels[mod] + 2; // Offset to get to first pitch channel
+                /*
 
-                let channel: Channel = this._doc.song.channels[modChannel];
+                this._modChannelBoxes[mod].selectedIndex = instrument.modChannels[mod] + 2; // Offset to get to first pitch channel
 
                 // Build options for modulator instruments (make sure it has the right number).
                 if (this._modInstrumentBoxes[mod].children.length != channel.instruments.length + 2) {
@@ -3146,6 +3149,8 @@ export class SongEditor {
 
                 // Set selected index based on instrument info.
                 this._modInstrumentBoxes[mod].selectedIndex = instrument.modInstruments[mod];
+
+                */
 
                 // Build options for modulator settings (based on channel settings)
 
@@ -3483,9 +3488,7 @@ export class SongEditor {
                 //Hide instrument select if channel is "none" or "song"
                 //Hopefully the !. don't ruin something...
                 if (instrument.modChannels[mod] < 0) {
-                    ((this._modInstrumentBoxes[mod].parentElement) as HTMLDivElement).style.display = "none";
-                    $("#modInstrumentText" + mod).get(0)!.style.display = "none";
-                    $("#modChannelText" + mod).get(0)!.innerText = "Channel:";
+                    $("#modChannelText" + mod).get(0)!.innerText = "Instr.:";
 
                     //Hide setting select if channel is "none"
                     if (instrument.modChannels[mod] == -2) {
@@ -3500,9 +3503,6 @@ export class SongEditor {
                     this._modTargetIndicators[mod].classList.remove("modTarget");
 
                 } else {
-                    ((this._modInstrumentBoxes[mod].parentElement) as HTMLDivElement).style.display = (channel.instruments.length > 1) ? "" : "none";
-                    $("#modInstrumentText" + mod).get(0)!.style.display = (channel.instruments.length > 1) ? "" : "none";
-                    $("#modChannelText" + mod).get(0)!.innerText = (channel.instruments.length > 1) ? "Ch:" : "Channel:";
                     $("#modSettingText" + mod).get(0)!.style.display = "";
                     ((this._modSetBoxes[mod].parentElement) as HTMLDivElement).style.display = "";
 
@@ -5152,13 +5152,6 @@ export class SongEditor {
                 this._doc.selection.setModInstrument(mod, this._doc.song.channels[modChannel].patterns[this._doc.song.channels[modChannel].bars[this._doc.bar] - 1].instruments[0]);
             }
         }
-
-        // Force piano to re-show
-        this._piano.forceRender();
-    }
-
-    private _whenSetModInstrument = (mod: number): void => {
-        this._doc.selection.setModInstrument(mod, this._modInstrumentBoxes[mod].selectedIndex);
 
         // Force piano to re-show
         this._piano.forceRender();

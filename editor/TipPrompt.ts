@@ -306,8 +306,8 @@ export class TipPrompt implements Prompt {
 			} break;
 			case "mdeffects": {
 				message = div(
-					h2("Musical Data Effects"),
-					p("theepbox (and BeepBox) has two different types of effects. Musical data effects only affect musical data, like notes and pitch, as opposed to other effects which manipulate the signal wave itself. In theepbox, MD effects can't be re-ordered like other effects and so they get their own special category!"),
+					h2("Musical Effects"),
+					p("theepbox (and BeepBox) has two different types of effects. Musical effects only affect musical data, like notes and pitch, as opposed to other effects which manipulate the signal wave itself. In theepbox, Musical effects can't be re-ordered like other effects and so they get their own special category!"),
 				);
 			} break;
 			case "drumsetEnvelope": {

@@ -1237,7 +1237,7 @@ export class SongEditor {
         this._unisonSelectRow,
         this._unisonDropdownGroup,
         div({ style: `padding: 2px 0; margin-left: 2em; display: flex; align-items: center;` },
-            span({ style: `flex-grow: 1; text-align: center;` }, span({ class: "tip", onclick: () => this._openPrompt("mdeffects") }, "MD Effects")),
+            span({ style: `flex-grow: 1; text-align: center;` }, span({ class: "tip", onclick: () => this._openPrompt("mdeffects") }, "Musical Effects")),
             div({ class: "effects-menu" }, this._mdeffectsSelect),
         ),
         this._mdeffectsGroup,
@@ -2810,6 +2810,7 @@ export class SongEditor {
             this._pulseWidthSlider.input.title = prettyNumber(instrument.pulseWidth) + "%";
 
             this._mdeffectsGroup.replaceChildren();
+            console.log(instrument.mdeffects)
             if(effectsIncludeTransition(instrument.mdeffects)) {
                 this._mdeffectsGroup.append(this._transitionRow)
                 this._mdeffectsGroup.append(this._transitionDropdownGroup);
@@ -3032,9 +3033,9 @@ export class SongEditor {
             this._chipWaveInStereoRow.style.display = "none";
             this._spectrumRow.style.display = "none";
             this._harmonicsRow.style.display = "none";
-            this._transitionRow.style.display = "none";
-            this._chordSelectRow.style.display = "none";
-            this._chordDropdownGroup.style.display = "none";
+            //this._transitionRow.style.display = "none";
+            //this._chordSelectRow.style.display = "none";
+            //this._chordDropdownGroup.style.display = "none";
             //this._filterCutoffRow.style.display = "none";
             //this._filterResonanceRow.style.display = "none";
             //this._filterEnvelopeRow.style.display = "none";
@@ -3050,11 +3051,11 @@ export class SongEditor {
             //this._pulseEnvelopeRow.style.display = "none";
             this._pulseWidthRow.style.display = "none";
             // this._decimalOffsetRow.style.display = "none";
-            this._vibratoSelectRow.style.display = "none";
-            this._vibratoDropdownGroup.style.display = "none";
+            //this._vibratoSelectRow.style.display = "none";
+            //this._vibratoDropdownGroup.style.display = "none";
             this._envelopeDropdownGroup.style.display = "none";
             //this._intervalSelectRow.style.display = "none";
-            this._detuneSliderRow.style.display = "none";
+            //this._detuneSliderRow.style.display = "none";
             this._panSliderRow.style.display = "none";
             this._panDropdownGroup.style.display = "none";
             this._pulseWidthDropdownGroup.style.display = "none";
@@ -5275,7 +5276,6 @@ export class SongEditor {
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         const oldValue: number = instrument.mdeffects;
         const toggleFlag: number = Config.mdeffectOrder[this._mdeffectsSelect.selectedIndex - 1];
-        console.log(toggleFlag)
         this._doc.record(new ChangeToggleMDEffects(this._doc, toggleFlag, null));
         this._mdeffectsSelect.selectedIndex = 0;
         if (instrument.mdeffects > oldValue) {

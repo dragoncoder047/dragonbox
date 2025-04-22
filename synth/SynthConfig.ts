@@ -1241,7 +1241,7 @@ export class Config {
     public static readonly grainRangeMax: number = 1600;
     public static readonly grainAmountsMax: number = 10; //2^grainAmountsMax is what is actually used
     public static readonly granularEnvelopeType: number = GranularEnvelopeType.parabolic; //here you can change which envelope implementation is used for grains (RaisedCosineBell still needs work)
-    public static readonly chorusRange: number = 8;
+    public static readonly chorusRange: number = 24;
     public static readonly chorusPeriodSeconds: number = 2.0;
     public static readonly chorusDelayRange: number = 0.0034;
     public static readonly chorusDelayOffsets: ReadonlyArray<ReadonlyArray<number>> = [[1.51, 2.10, 3.35], [1.47, 2.15, 3.25]];

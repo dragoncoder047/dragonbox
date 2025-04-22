@@ -3701,7 +3701,7 @@ export class Song {
                                             pinObj.size = bits.read(bitsPerNoteSize);
                                         }
                                         else {
-                                            pinObj.size = bits.read(9);
+                                            pinObj.size = bits.read(11);
                                         }
                                         shape.pins.push(pinObj);
                                     }

@@ -17522,7 +17522,7 @@ li.select2-results__option[role=group] > strong:hover {
                         } else if (!isModChannel) {
                           pinObj.size = bits.read(bitsPerNoteSize);
                         } else {
-                          pinObj.size = bits.read(9);
+                          pinObj.size = bits.read(11);
                         }
                         shape.pins.push(pinObj);
                       }

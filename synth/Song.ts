@@ -456,7 +456,7 @@ export class Song {
             let tempoIndex: number = Config.modulators.dictionary["tempo"].index;
             if(currentIndex == tempoIndex) vol = this.tempo - Config.modulators[tempoIndex].convertRealFactor;
             //for effects and envelopes, use the user defined value of the selected instrument (or the default value if all or active is selected)
-            if (!Config.modulators[currentIndex].forSong && instrument.modInstruments[modCount] < this.channels[instrument.modChannels[modCount]].instruments.length) {
+            if (!Config.modulators[currentIndex].forSong && instrument.modInstruments[modCount][0] < this.channels[instrument.modChannels[modCount][0]].instruments.length) {
                 let chorusIndex: number = Config.modulators.dictionary["chorus"].index;
                 let reverbIndex: number = Config.modulators.dictionary["reverb"].index;
                 let panningIndex: number = Config.modulators.dictionary["pan"].index;
@@ -483,86 +483,86 @@ export class Song {
                 let perEnvSpeedIndex: number = Config.modulators.dictionary["individual envelope speed"].index;
                 let perEnvLowerIndex: number = Config.modulators.dictionary["individual envelope lower bound"].index;
                 let perEnvUpperIndex: number = Config.modulators.dictionary["individual envelope upper bound"].index;
-                let instrumentIndex: number = instrument.modInstruments[modCount];
+                let instrumentIndex: number = instrument.modInstruments[modCount][0];
 
                 switch (currentIndex) {
                     case chorusIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].chorus - Config.modulators[chorusIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].chorus - Config.modulators[chorusIndex].convertRealFactor;
                         break;
                     case reverbIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].reverb - Config.modulators[reverbIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].reverb - Config.modulators[reverbIndex].convertRealFactor;
                         break;
                     case panningIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].pan - Config.modulators[panningIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].pan - Config.modulators[panningIndex].convertRealFactor;
                         break;
                     case panDelayIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].panDelay - Config.modulators[panDelayIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].panDelay - Config.modulators[panDelayIndex].convertRealFactor;
                         break;
                     case distortionIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].distortion - Config.modulators[distortionIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].distortion - Config.modulators[distortionIndex].convertRealFactor;
                         break;
                     case detuneIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].detune;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].detune;
                         break;
                     case vibratoDepthIndex:
-                        vol = Math.round(this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].vibratoDepth * 25 - Config.modulators[vibratoDepthIndex].convertRealFactor);
+                        vol = Math.round(this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].vibratoDepth * 25 - Config.modulators[vibratoDepthIndex].convertRealFactor);
                         break;
                     case vibratoSpeedIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].vibratoSpeed - Config.modulators[vibratoSpeedIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].vibratoSpeed - Config.modulators[vibratoSpeedIndex].convertRealFactor;
                         break;
                     case vibratoDelayIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].vibratoDelay - Config.modulators[vibratoDelayIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].vibratoDelay - Config.modulators[vibratoDelayIndex].convertRealFactor;
                         break;
                     case arpSpeedIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].arpeggioSpeed - Config.modulators[arpSpeedIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].arpeggioSpeed - Config.modulators[arpSpeedIndex].convertRealFactor;
                         break;
                     case bitCrushIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].bitcrusherQuantization - Config.modulators[bitCrushIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].bitcrusherQuantization - Config.modulators[bitCrushIndex].convertRealFactor;
                         break;
                     case freqCrushIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].bitcrusherFreq - Config.modulators[freqCrushIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].bitcrusherFreq - Config.modulators[freqCrushIndex].convertRealFactor;
                         break;
                     case echoIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].echoSustain - Config.modulators[echoIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].echoSustain - Config.modulators[echoIndex].convertRealFactor;
                         break;
                     case echoDelayIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].echoDelay - Config.modulators[echoDelayIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].echoDelay - Config.modulators[echoDelayIndex].convertRealFactor;
                         break;
                     case echoPingPongIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].echoPingPong - Config.modulators[echoPingPongIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].echoPingPong - Config.modulators[echoPingPongIndex].convertRealFactor;
                         break;
                     case pitchShiftIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].pitchShift;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].pitchShift;
                         break;
                     case ringModIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].ringModulation - Config.modulators[ringModIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].ringModulation - Config.modulators[ringModIndex].convertRealFactor;
                         break;
                     case ringModHertzIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].ringModulationHz - Config.modulators[ringModHertzIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].ringModulationHz - Config.modulators[ringModHertzIndex].convertRealFactor;
                         break;
                     case granularIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].granular - Config.modulators[granularIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].granular - Config.modulators[granularIndex].convertRealFactor;
                         break;
                     case grainAmountIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].grainAmounts - Config.modulators[grainAmountIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].grainAmounts - Config.modulators[grainAmountIndex].convertRealFactor;
                         break;
                     case grainSizeIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].grainSize - Config.modulators[grainSizeIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].grainSize - Config.modulators[grainSizeIndex].convertRealFactor;
                         break;
                     case grainRangeIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].grainRange - Config.modulators[grainRangeIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].grainRange - Config.modulators[grainRangeIndex].convertRealFactor;
                         break;
                     case envSpeedIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].envelopeSpeed - Config.modulators[envSpeedIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].envelopeSpeed - Config.modulators[envSpeedIndex].convertRealFactor;
                         break;
                     case perEnvSpeedIndex:
-                        vol = Config.perEnvelopeSpeedToIndices[this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].envelopes[instrument.modEnvelopeNumbers[modCount]].perEnvelopeSpeed] - Config.modulators[perEnvSpeedIndex].convertRealFactor;
+                        vol = Config.perEnvelopeSpeedToIndices[this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].envelopes[instrument.modEnvelopeNumbers[modCount]].perEnvelopeSpeed] - Config.modulators[perEnvSpeedIndex].convertRealFactor;
                         break;
                     case perEnvLowerIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].envelopes[instrument.modEnvelopeNumbers[modCount]].perEnvelopeLowerBound - Config.modulators[perEnvLowerIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].envelopes[instrument.modEnvelopeNumbers[modCount]].perEnvelopeLowerBound - Config.modulators[perEnvLowerIndex].convertRealFactor;
                         break;
                     case perEnvUpperIndex:
-                        vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].envelopes[instrument.modEnvelopeNumbers[modCount]].perEnvelopeUpperBound - Config.modulators[perEnvUpperIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].envelopes[instrument.modEnvelopeNumbers[modCount]].perEnvelopeUpperBound - Config.modulators[perEnvUpperIndex].convertRealFactor;
                         break;
                 }
             }
@@ -1268,8 +1268,8 @@ export class Song {
                     let instrument: Instrument = this.channels[channelIndex].instruments[instrumentIndex];
 
                     for (let mod: number = 0; mod < Config.modCount; mod++) {
-                        const modChannel: number = instrument.modChannels[mod];
-                        const modInstrument: number = instrument.modInstruments[mod];
+                        const modChannels: number[] = instrument.modChannels[mod];
+                        const modInstruments: number[] = instrument.modInstruments[mod];
                         const modSetting: number = instrument.modulators[mod];
                         const modFilter: number = instrument.modFilterTypes[mod];
                         const modEnvelope: number = instrument.modEnvelopeNumbers[mod];
@@ -1288,8 +1288,10 @@ export class Song {
 
                         // Channel/Instrument is only used if the status isn't "song" or "none".
                         if (status == 0 || status == 1) {
-                            bits.write(8, modChannel);
-                            bits.write(neededModInstrumentIndexBits, modInstrument);
+                            bits.write(8, modChannels.length);
+                            for (let i: number = 0; i < modChannels.length; i++) bits.write(8, modChannels[i]);
+                            bits.write(8, modInstruments.length);
+                            for (let i: number = 0; i < modInstruments.length; i++) bits.write(neededModInstrumentIndexBits, modInstruments[i]);
                         }
 
                         // Only used if setting isn't "none".
@@ -3488,19 +3490,21 @@ export class Song {
 
                                 switch (status) {
                                     case 0: // Pitch
-                                        instrument.modChannels[mod] = clamp(0, this.pitchChannelCount + this.noiseChannelCount + 1, bits.read(8));
-                                        instrument.modInstruments[mod] = clamp(0, this.channels[instrument.modChannels[mod]].instruments.length + 2, bits.read(neededModInstrumentIndexBits));
+                                        let modChannelLength: number = bits.read(8);
+                                        for (let i: number = 0; i < modChannelLength; i++) instrument.modChannels[mod][i] = clamp(0, this.pitchChannelCount + this.noiseChannelCount + 1, bits.read(8));
+                                        let modInstrumentLength: number = bits.read(8);
+                                        for (let i: number = 0; i < modInstrumentLength; i++) instrument.modInstruments[mod][i] = clamp(0, this.channels[instrument.modChannels[mod][i]].instruments.length + 2, bits.read(neededModInstrumentIndexBits));
                                         break;
                                     case 1: // Noise
                                         // Getting a status of 1 means this is legacy mod info. Need to add pitch channel count, as it used to just store noise channel index and not overall channel index
-                                        instrument.modChannels[mod] = this.pitchChannelCount + clamp(0, this.noiseChannelCount + 1, bits.read(8));
-                                        instrument.modInstruments[mod] = clamp(0, this.channels[instrument.modChannels[mod]].instruments.length + 2, bits.read(neededInstrumentIndexBits));
+                                        instrument.modChannels[mod][0] = this.pitchChannelCount + clamp(0, this.noiseChannelCount + 1, bits.read(8));
+                                        instrument.modInstruments[mod][0] = clamp(0, this.channels[instrument.modChannels[mod][0]].instruments.length + 2, bits.read(neededInstrumentIndexBits));
                                         break;
                                     case 2: // For song
-                                        instrument.modChannels[mod] = -1;
+                                        instrument.modChannels[mod][0] = -1;
                                         break;
                                     case 3: // None
-                                        instrument.modChannels[mod] = -2;
+                                        instrument.modChannels[mod][0] = -2;
                                         break;
                                 }
 
@@ -3521,8 +3525,8 @@ export class Song {
                                     instrument.modEnvelopeNumbers[mod] = bits.read(6);
                                 }
 
-                                if (jumfive && instrument.modChannels[mod] >= 0) {
-                                    let forNoteFilter: boolean = effectsIncludeEQFilter(this.channels[instrument.modChannels[mod]].instruments[instrument.modInstruments[mod]].effects);
+                                if (jumfive && instrument.modChannels[mod][0] >= 0) {
+                                    let forNoteFilter: boolean = effectsIncludeEQFilter(this.channels[instrument.modChannels[mod][0]].instruments[instrument.modInstruments[mod][0]].effects);
 
                                     // For legacy filter cut/peak, need to denote since scaling must be applied
                                     if (instrument.modulators[mod] == 7) {
@@ -3564,7 +3568,7 @@ export class Song {
                                 // Only used on import of old songs, because sometimes an invalid effect can be set in a mod in the new version that is actually unused. In that case,
                                 // keeping the mod invalid is better since it preserves the state.
                                 if (jumfive && Config.modulators[instrument.modulators[mod]].associatedEffect != EffectType.length) {
-                                    this.channels[instrument.modChannels[mod]].instruments[instrument.modInstruments[mod]].effects |= 1 << Config.modulators[instrument.modulators[mod]].associatedEffect;
+                                    this.channels[instrument.modChannels[mod][0]].instruments[instrument.modInstruments[mod][0]].effects |= 1 << Config.modulators[instrument.modulators[mod]].associatedEffect;
                                 }
                             }
                         }

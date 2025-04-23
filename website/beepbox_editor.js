@@ -11708,8 +11708,8 @@ li.select2-results__option[role=group] > strong:hover {
             this.isNoiseInstrument = false;
             if (isModChannel) {
                 for (let mod = 0; mod < Config.modCount; mod++) {
-                    this.modChannels.push(-2);
-                    this.modInstruments.push(0);
+                    this.modChannels.push([-2]);
+                    this.modInstruments.push([0]);
                     this.modulators.push(Config.modulators.dictionary["none"].index);
                 }
             }
@@ -11893,8 +11893,8 @@ li.select2-results__option[role=group] > strong:hover {
                     this.modInstruments = [];
                     this.modulators = [];
                     for (let mod = 0; mod < Config.modCount; mod++) {
-                        this.modChannels.push(-2);
-                        this.modInstruments.push(0);
+                        this.modChannels.push([-2]);
+                        this.modInstruments.push([0]);
                         this.modulators.push(Config.modulators.dictionary["none"].index);
                         this.invalidModulators[mod] = false;
                         this.modFilterTypes[mod] = 0;
@@ -13564,7 +13564,7 @@ li.select2-results__option[role=group] > strong:hover {
                     let tempoIndex = Config.modulators.dictionary["tempo"].index;
                     if (currentIndex == tempoIndex)
                         vol = this.tempo - Config.modulators[tempoIndex].convertRealFactor;
-                    if (!Config.modulators[currentIndex].forSong && instrument.modInstruments[modCount] < this.channels[instrument.modChannels[modCount]].instruments.length) {
+                    if (!Config.modulators[currentIndex].forSong && instrument.modInstruments[modCount][0] < this.channels[instrument.modChannels[modCount][0]].instruments.length) {
                         let chorusIndex = Config.modulators.dictionary["chorus"].index;
                         let reverbIndex = Config.modulators.dictionary["reverb"].index;
                         let panningIndex = Config.modulators.dictionary["pan"].index;
@@ -13591,85 +13591,85 @@ li.select2-results__option[role=group] > strong:hover {
                         let perEnvSpeedIndex = Config.modulators.dictionary["individual envelope speed"].index;
                         let perEnvLowerIndex = Config.modulators.dictionary["individual envelope lower bound"].index;
                         let perEnvUpperIndex = Config.modulators.dictionary["individual envelope upper bound"].index;
-                        let instrumentIndex = instrument.modInstruments[modCount];
+                        let instrumentIndex = instrument.modInstruments[modCount][0];
                         switch (currentIndex) {
                             case chorusIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].chorus - Config.modulators[chorusIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].chorus - Config.modulators[chorusIndex].convertRealFactor;
                                 break;
                             case reverbIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].reverb - Config.modulators[reverbIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].reverb - Config.modulators[reverbIndex].convertRealFactor;
                                 break;
                             case panningIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].pan - Config.modulators[panningIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].pan - Config.modulators[panningIndex].convertRealFactor;
                                 break;
                             case panDelayIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].panDelay - Config.modulators[panDelayIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].panDelay - Config.modulators[panDelayIndex].convertRealFactor;
                                 break;
                             case distortionIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].distortion - Config.modulators[distortionIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].distortion - Config.modulators[distortionIndex].convertRealFactor;
                                 break;
                             case detuneIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].detune;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].detune;
                                 break;
                             case vibratoDepthIndex:
-                                vol = Math.round(this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].vibratoDepth * 25 - Config.modulators[vibratoDepthIndex].convertRealFactor);
+                                vol = Math.round(this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].vibratoDepth * 25 - Config.modulators[vibratoDepthIndex].convertRealFactor);
                                 break;
                             case vibratoSpeedIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].vibratoSpeed - Config.modulators[vibratoSpeedIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].vibratoSpeed - Config.modulators[vibratoSpeedIndex].convertRealFactor;
                                 break;
                             case vibratoDelayIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].vibratoDelay - Config.modulators[vibratoDelayIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].vibratoDelay - Config.modulators[vibratoDelayIndex].convertRealFactor;
                                 break;
                             case arpSpeedIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].arpeggioSpeed - Config.modulators[arpSpeedIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].arpeggioSpeed - Config.modulators[arpSpeedIndex].convertRealFactor;
                                 break;
                             case bitCrushIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].bitcrusherQuantization - Config.modulators[bitCrushIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].bitcrusherQuantization - Config.modulators[bitCrushIndex].convertRealFactor;
                                 break;
                             case freqCrushIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].bitcrusherFreq - Config.modulators[freqCrushIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].bitcrusherFreq - Config.modulators[freqCrushIndex].convertRealFactor;
                                 break;
                             case echoIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].echoSustain - Config.modulators[echoIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].echoSustain - Config.modulators[echoIndex].convertRealFactor;
                                 break;
                             case echoDelayIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].echoDelay - Config.modulators[echoDelayIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].echoDelay - Config.modulators[echoDelayIndex].convertRealFactor;
                                 break;
                             case echoPingPongIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].echoPingPong - Config.modulators[echoPingPongIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].echoPingPong - Config.modulators[echoPingPongIndex].convertRealFactor;
                                 break;
                             case pitchShiftIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].pitchShift;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].pitchShift;
                                 break;
                             case ringModIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].ringModulation - Config.modulators[ringModIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].ringModulation - Config.modulators[ringModIndex].convertRealFactor;
                                 break;
                             case ringModHertzIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].ringModulationHz - Config.modulators[ringModHertzIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].ringModulationHz - Config.modulators[ringModHertzIndex].convertRealFactor;
                                 break;
                             case granularIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].granular - Config.modulators[granularIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].granular - Config.modulators[granularIndex].convertRealFactor;
                                 break;
                             case grainAmountIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].grainAmounts - Config.modulators[grainAmountIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].grainAmounts - Config.modulators[grainAmountIndex].convertRealFactor;
                                 break;
                             case grainSizeIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].grainSize - Config.modulators[grainSizeIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].grainSize - Config.modulators[grainSizeIndex].convertRealFactor;
                                 break;
                             case grainRangeIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].grainRange - Config.modulators[grainRangeIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].grainRange - Config.modulators[grainRangeIndex].convertRealFactor;
                                 break;
                             case envSpeedIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].envelopeSpeed - Config.modulators[envSpeedIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].envelopeSpeed - Config.modulators[envSpeedIndex].convertRealFactor;
                                 break;
                             case perEnvSpeedIndex:
-                                vol = Config.perEnvelopeSpeedToIndices[this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].envelopes[instrument.modEnvelopeNumbers[modCount]].perEnvelopeSpeed] - Config.modulators[perEnvSpeedIndex].convertRealFactor;
+                                vol = Config.perEnvelopeSpeedToIndices[this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].envelopes[instrument.modEnvelopeNumbers[modCount]].perEnvelopeSpeed] - Config.modulators[perEnvSpeedIndex].convertRealFactor;
                                 break;
                             case perEnvLowerIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].envelopes[instrument.modEnvelopeNumbers[modCount]].perEnvelopeLowerBound - Config.modulators[perEnvLowerIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].envelopes[instrument.modEnvelopeNumbers[modCount]].perEnvelopeLowerBound - Config.modulators[perEnvLowerIndex].convertRealFactor;
                                 break;
                             case perEnvUpperIndex:
-                                vol = this.channels[instrument.modChannels[modCount]].instruments[instrumentIndex].envelopes[instrument.modEnvelopeNumbers[modCount]].perEnvelopeUpperBound - Config.modulators[perEnvUpperIndex].convertRealFactor;
+                                vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].envelopes[instrument.modEnvelopeNumbers[modCount]].perEnvelopeUpperBound - Config.modulators[perEnvUpperIndex].convertRealFactor;
                                 break;
                         }
                     }
@@ -14293,8 +14293,8 @@ li.select2-results__option[role=group] > strong:hover {
                     for (let instrumentIndex = 0; instrumentIndex < channel.instruments.length; instrumentIndex++) {
                         let instrument = this.channels[channelIndex].instruments[instrumentIndex];
                         for (let mod = 0; mod < Config.modCount; mod++) {
-                            const modChannel = instrument.modChannels[mod];
-                            const modInstrument = instrument.modInstruments[mod];
+                            const modChannels = instrument.modChannels[mod];
+                            const modInstruments = instrument.modInstruments[mod];
                             const modSetting = instrument.modulators[mod];
                             const modFilter = instrument.modFilterTypes[mod];
                             const modEnvelope = instrument.modEnvelopeNumbers[mod];
@@ -14303,8 +14303,12 @@ li.select2-results__option[role=group] > strong:hover {
                                 status = 3;
                             bits.write(2, status);
                             if (status == 0 || status == 1) {
-                                bits.write(8, modChannel);
-                                bits.write(neededModInstrumentIndexBits, modInstrument);
+                                bits.write(8, modChannels.length);
+                                for (let i = 0; i < modChannels.length; i++)
+                                    bits.write(8, modChannels[i]);
+                                bits.write(8, modInstruments.length);
+                                for (let i = 0; i < modInstruments.length; i++)
+                                    bits.write(neededModInstrumentIndexBits, modInstruments[i]);
                             }
                             if (status != 3) {
                                 bits.write(6, modSetting);
@@ -16445,18 +16449,22 @@ li.select2-results__option[role=group] > strong:hover {
                                             let status = bits.read(2);
                                             switch (status) {
                                                 case 0:
-                                                    instrument.modChannels[mod] = clamp(0, this.pitchChannelCount + this.noiseChannelCount + 1, bits.read(8));
-                                                    instrument.modInstruments[mod] = clamp(0, this.channels[instrument.modChannels[mod]].instruments.length + 2, bits.read(neededModInstrumentIndexBits));
+                                                    let modChannelLength = bits.read(8);
+                                                    for (let i = 0; i < modChannelLength; i++)
+                                                        instrument.modChannels[mod][i] = clamp(0, this.pitchChannelCount + this.noiseChannelCount + 1, bits.read(8));
+                                                    let modInstrumentLength = bits.read(8);
+                                                    for (let i = 0; i < modInstrumentLength; i++)
+                                                        instrument.modInstruments[mod][i] = clamp(0, this.channels[instrument.modChannels[mod][i]].instruments.length + 2, bits.read(neededModInstrumentIndexBits));
                                                     break;
                                                 case 1:
-                                                    instrument.modChannels[mod] = this.pitchChannelCount + clamp(0, this.noiseChannelCount + 1, bits.read(8));
-                                                    instrument.modInstruments[mod] = clamp(0, this.channels[instrument.modChannels[mod]].instruments.length + 2, bits.read(neededInstrumentIndexBits));
+                                                    instrument.modChannels[mod][0] = this.pitchChannelCount + clamp(0, this.noiseChannelCount + 1, bits.read(8));
+                                                    instrument.modInstruments[mod][0] = clamp(0, this.channels[instrument.modChannels[mod][0]].instruments.length + 2, bits.read(neededInstrumentIndexBits));
                                                     break;
                                                 case 2:
-                                                    instrument.modChannels[mod] = -1;
+                                                    instrument.modChannels[mod][0] = -1;
                                                     break;
                                                 case 3:
-                                                    instrument.modChannels[mod] = -2;
+                                                    instrument.modChannels[mod][0] = -2;
                                                     break;
                                             }
                                             if (status != 3) {
@@ -16471,8 +16479,8 @@ li.select2-results__option[role=group] > strong:hover {
                                                 Config.modulators[instrument.modulators[mod]].name == "individual envelope upper bound") {
                                                 instrument.modEnvelopeNumbers[mod] = bits.read(6);
                                             }
-                                            if (jumfive && instrument.modChannels[mod] >= 0) {
-                                                let forNoteFilter = effectsIncludeEQFilter(this.channels[instrument.modChannels[mod]].instruments[instrument.modInstruments[mod]].effects);
+                                            if (jumfive && instrument.modChannels[mod][0] >= 0) {
+                                                let forNoteFilter = effectsIncludeEQFilter(this.channels[instrument.modChannels[mod][0]].instruments[instrument.modInstruments[mod][0]].effects);
                                                 if (instrument.modulators[mod] == 7) {
                                                     if (forNoteFilter) {
                                                         instrument.modulators[mod] = Config.modulators.dictionary["note filt cut"].index;
@@ -16500,7 +16508,7 @@ li.select2-results__option[role=group] > strong:hover {
                                                 }
                                             }
                                             if (jumfive && Config.modulators[instrument.modulators[mod]].associatedEffect != 9) {
-                                                this.channels[instrument.modChannels[mod]].instruments[instrument.modInstruments[mod]].effects |= 1 << Config.modulators[instrument.modulators[mod]].associatedEffect;
+                                                this.channels[instrument.modChannels[mod][0]].instruments[instrument.modInstruments[mod][0]].effects |= 1 << Config.modulators[instrument.modulators[mod]].associatedEffect;
                                             }
                                         }
                                     }
@@ -20145,24 +20153,32 @@ li.select2-results__option[role=group] > strong:hover {
                                                     }
                                                     tgtSong.tmpEqFilterEnd = tgtSong.tmpEqFilterStart;
                                                 }
-                                                this.setModValue(latestPinValues[mod], latestPinValues[mod], instrument.modChannels[mod], instrument.modInstruments[mod], instrument.modulators[mod]);
+                                                for (let i = 0; i < instrument.modChannels[mod].length; i++)
+                                                    this.setModValue(latestPinValues[mod], latestPinValues[mod], instrument.modChannels[mod][i], instrument.modInstruments[mod][i], instrument.modulators[mod]);
                                                 latestModTimes[instrument.modulators[mod]] = currentBar * Config.partsPerBeat * this.song.beatsPerBar + latestPinParts[mod];
                                             }
                                         }
                                         else {
+                                            let usedChannels = [];
                                             let usedInstruments = [];
-                                            if (instrument.modInstruments[mod] == this.song.channels[instrument.modChannels[mod]].instruments.length) {
-                                                for (let i = 0; i < this.song.channels[instrument.modChannels[mod]].instruments.length; i++) {
+                                            if (instrument.modInstruments[mod][0] == this.song.channels[instrument.modChannels[mod][0]].instruments.length) {
+                                                for (let i = 0; i < this.song.channels[instrument.modChannels[mod][0]].instruments.length; i++) {
+                                                    usedChannels.push(instrument.modChannels[mod][0]);
                                                     usedInstruments.push(i);
                                                 }
                                             }
-                                            else if (instrument.modInstruments[mod] > this.song.channels[instrument.modChannels[mod]].instruments.length) {
-                                                const tgtPattern = this.song.getPattern(instrument.modChannels[mod], currentBar);
-                                                if (tgtPattern != null)
+                                            else if (instrument.modInstruments[mod][0] > this.song.channels[instrument.modChannels[mod][0]].instruments.length) {
+                                                const tgtPattern = this.song.getPattern(instrument.modChannels[mod][0], currentBar);
+                                                if (tgtPattern != null) {
+                                                    usedChannels.push(instrument.modChannels[mod][0]);
                                                     usedInstruments = tgtPattern.instruments;
+                                                }
                                             }
                                             else {
-                                                usedInstruments.push(instrument.modInstruments[mod]);
+                                                for (let i = 0; i < instrument.modChannels[mod].length; i++) {
+                                                    usedChannels.push(instrument.modChannels[mod][i]);
+                                                    usedInstruments.push(instrument.modInstruments[mod][i]);
+                                                }
                                             }
                                             for (let instrumentIndex = 0; instrumentIndex < usedInstruments.length; instrumentIndex++) {
                                                 const eqFilterParam = instrument.modulators[mod] == Config.modulators.dictionary["eq filter"].index;
@@ -20174,10 +20190,10 @@ li.select2-results__option[role=group] > strong:hover {
                                                 else if (noteFilterParam) {
                                                     modulatorAdjust = Config.modulators.length + 1 + (2 * Config.filterMaxPoints) + (instrument.modFilterTypes[mod] | 0);
                                                 }
-                                                if (latestModInsTimes[instrument.modChannels[mod]][usedInstruments[instrumentIndex]][modulatorAdjust] == null
-                                                    || currentBar * Config.partsPerBeat * this.song.beatsPerBar + latestPinParts[mod] > latestModInsTimes[instrument.modChannels[mod]][usedInstruments[instrumentIndex]][modulatorAdjust]) {
+                                                if (latestModInsTimes[instrument.modChannels[mod][instrumentIndex]][usedInstruments[instrumentIndex]][modulatorAdjust] == null
+                                                    || currentBar * Config.partsPerBeat * this.song.beatsPerBar + latestPinParts[mod] > latestModInsTimes[instrument.modChannels[mod][instrumentIndex]][usedInstruments[instrumentIndex]][modulatorAdjust]) {
                                                     if (eqFilterParam) {
-                                                        let tgtInstrument = this.song.channels[instrument.modChannels[mod]].instruments[usedInstruments[instrumentIndex]];
+                                                        let tgtInstrument = this.song.channels[instrument.modChannels[mod][instrumentIndex]].instruments[usedInstruments[instrumentIndex]];
                                                         if (instrument.modFilterTypes[mod] == 0) {
                                                             tgtInstrument.tmpEqFilterStart = tgtInstrument.eqSubFilters[latestPinValues[mod]];
                                                         }
@@ -20199,7 +20215,7 @@ li.select2-results__option[role=group] > strong:hover {
                                                         tgtInstrument.tmpEqFilterEnd = tgtInstrument.tmpEqFilterStart;
                                                     }
                                                     else if (noteFilterParam) {
-                                                        let tgtInstrument = this.song.channels[instrument.modChannels[mod]].instruments[usedInstruments[instrumentIndex]];
+                                                        let tgtInstrument = this.song.channels[instrument.modChannels[mod][instrumentIndex]].instruments[usedInstruments[instrumentIndex]];
                                                         if (instrument.modFilterTypes[mod] == 0) {
                                                             tgtInstrument.tmpNoteFilterStart = tgtInstrument.noteSubFilters[latestPinValues[mod]];
                                                         }
@@ -20221,8 +20237,8 @@ li.select2-results__option[role=group] > strong:hover {
                                                         tgtInstrument.tmpNoteFilterEnd = tgtInstrument.tmpNoteFilterStart;
                                                     }
                                                     else
-                                                        this.setModValue(latestPinValues[mod], latestPinValues[mod], instrument.modChannels[mod], usedInstruments[instrumentIndex], modulatorAdjust);
-                                                    latestModInsTimes[instrument.modChannels[mod]][usedInstruments[instrumentIndex]][modulatorAdjust] = currentBar * Config.partsPerBeat * this.song.beatsPerBar + latestPinParts[mod];
+                                                        this.setModValue(latestPinValues[mod], latestPinValues[mod], instrument.modChannels[mod][instrumentIndex], usedInstruments[instrumentIndex], modulatorAdjust);
+                                                    latestModInsTimes[instrument.modChannels[mod][instrumentIndex]][usedInstruments[instrumentIndex]][modulatorAdjust] = currentBar * Config.partsPerBeat * this.song.beatsPerBar + latestPinParts[mod];
                                                 }
                                             }
                                         }
@@ -20239,40 +20255,42 @@ li.select2-results__option[role=group] > strong:hover {
                 return;
             for (let mod = 0; mod < Config.modCount; mod++) {
                 instrument.invalidModulators[mod] = true;
-                if (instrument.modChannels[mod] == -1) {
+                if (instrument.modChannels[mod][0] == -1) {
                     if (instrument.modulators[mod] != 0)
                         instrument.invalidModulators[mod] = false;
                     continue;
                 }
-                const channel = this.song.channels[instrument.modChannels[mod]];
-                if (channel == null)
-                    continue;
-                let tgtInstrumentList = [];
-                if (instrument.modInstruments[mod] >= channel.instruments.length) {
-                    tgtInstrumentList = channel.instruments;
-                }
-                else {
-                    tgtInstrumentList = [channel.instruments[instrument.modInstruments[mod]]];
-                }
-                for (let i = 0; i < tgtInstrumentList.length; i++) {
-                    const tgtInstrument = tgtInstrumentList[i];
-                    if (tgtInstrument == null)
+                for (let channelIndex = 0; channelIndex < instrument.modChannels[mod].length; channelIndex++) {
+                    const channel = this.song.channels[instrument.modChannels[mod][channelIndex]];
+                    if (channel == null)
                         continue;
-                    const str = Config.modulators[instrument.modulators[mod]].name;
-                    if (!(Config.modulators[instrument.modulators[mod]].associatedEffect != 9 && !(tgtInstrument.effects & (1 << Config.modulators[instrument.modulators[mod]].associatedEffect))) && !(Config.modulators[instrument.modulators[mod]].associatedMDEffect != 6 && !(tgtInstrument.mdeffects & (1 << Config.modulators[instrument.modulators[mod]].associatedMDEffect)))
-                        || ((tgtInstrument.type != 1 && tgtInstrument.type != 11) && (str == "fm slider 1" || str == "fm slider 2" || str == "fm slider 3" || str == "fm slider 4" || str == "fm feedback"))
-                        || tgtInstrument.type != 11 && (str == "fm slider 5" || str == "fm slider 6")
-                        || ((tgtInstrument.type != 6 && tgtInstrument.type != 8) && (str == "pulse width" || str == "decimal offset"))
-                        || ((tgtInstrument.type != 8) && (str == "dynamism" || str == "spread" || str == "saw shape"))
-                        || (!tgtInstrument.getChord().arpeggiates && (str == "arp speed" || str == "reset arp"))
-                        || (tgtInstrument.eqFilterType && str == "eq filter")
-                        || (!tgtInstrument.eqFilterType && (str == "eq filt cut" || str == "eq filt peak"))
-                        || (str == "eq filter" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(false))
-                        || (tgtInstrument.noteFilterType && str == "note filter")
-                        || (!tgtInstrument.noteFilterType && (str == "note filt cut" || str == "note filt peak"))
-                        || (str == "note filter" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(true))) {
-                        instrument.invalidModulators[mod] = false;
-                        i = tgtInstrumentList.length;
+                    let tgtInstrumentList = [];
+                    if (instrument.modInstruments[mod][channelIndex] >= channel.instruments.length) {
+                        tgtInstrumentList = channel.instruments;
+                    }
+                    else {
+                        tgtInstrumentList = [channel.instruments[instrument.modInstruments[mod][channelIndex]]];
+                    }
+                    for (let i = 0; i < tgtInstrumentList.length; i++) {
+                        const tgtInstrument = tgtInstrumentList[i];
+                        if (tgtInstrument == null)
+                            continue;
+                        const str = Config.modulators[instrument.modulators[mod]].name;
+                        if (!(Config.modulators[instrument.modulators[mod]].associatedEffect != 9 && !(tgtInstrument.effects & (1 << Config.modulators[instrument.modulators[mod]].associatedEffect))) && !(Config.modulators[instrument.modulators[mod]].associatedMDEffect != 6 && !(tgtInstrument.mdeffects & (1 << Config.modulators[instrument.modulators[mod]].associatedMDEffect)))
+                            || ((tgtInstrument.type != 1 && tgtInstrument.type != 11) && (str == "fm slider 1" || str == "fm slider 2" || str == "fm slider 3" || str == "fm slider 4" || str == "fm feedback"))
+                            || tgtInstrument.type != 11 && (str == "fm slider 5" || str == "fm slider 6")
+                            || ((tgtInstrument.type != 6 && tgtInstrument.type != 8) && (str == "pulse width" || str == "decimal offset"))
+                            || ((tgtInstrument.type != 8) && (str == "dynamism" || str == "spread" || str == "saw shape"))
+                            || (!tgtInstrument.getChord().arpeggiates && (str == "arp speed" || str == "reset arp"))
+                            || (tgtInstrument.eqFilterType && str == "eq filter")
+                            || (!tgtInstrument.eqFilterType && (str == "eq filt cut" || str == "eq filt peak"))
+                            || (str == "eq filter" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(false))
+                            || (tgtInstrument.noteFilterType && str == "note filter")
+                            || (!tgtInstrument.noteFilterType && (str == "note filt cut" || str == "note filt peak"))
+                            || (str == "note filter" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(true))) {
+                            instrument.invalidModulators[mod] = false;
+                            i = tgtInstrumentList.length;
+                        }
                     }
                 }
             }
@@ -24844,42 +24862,49 @@ li.select2-results__option[role=group] > strong:hover {
             if (instrument.invalidModulators[mod])
                 return;
             let setting = instrument.modulators[mod];
+            let usedChannels = [];
             let usedInstruments = [];
             if (Config.modulators[instrument.modulators[mod]].forSong) {
                 usedInstruments.push(0);
             }
             else {
-                if (instrument.modInstruments[mod] == synth.song.channels[instrument.modChannels[mod]].instruments.length) {
-                    for (let i = 0; i < synth.song.channels[instrument.modChannels[mod]].instruments.length; i++) {
+                if (instrument.modInstruments[mod][0] == synth.song.channels[instrument.modChannels[mod][0]].instruments.length) {
+                    for (let i = 0; i < synth.song.channels[instrument.modChannels[mod][0]].instruments.length; i++) {
                         usedInstruments.push(i);
+                        usedChannels.push(0);
                     }
                 }
-                else if (instrument.modInstruments[mod] > synth.song.channels[instrument.modChannels[mod]].instruments.length) {
-                    if (synth.song.getPattern(instrument.modChannels[mod], synth.bar) != null)
-                        usedInstruments = synth.song.getPattern(instrument.modChannels[mod], synth.bar).instruments;
+                else if (instrument.modInstruments[mod][0] > synth.song.channels[instrument.modChannels[mod][0]].instruments.length) {
+                    if (synth.song.getPattern(instrument.modChannels[mod][0], synth.bar) != null) {
+                        usedInstruments = synth.song.getPattern(instrument.modChannels[mod][0], synth.bar).instruments;
+                        usedChannels.push(0);
+                    }
                 }
                 else {
-                    usedInstruments.push(instrument.modInstruments[mod]);
+                    for (let i = 0; i < instrument.modChannels[mod].length; i++) {
+                        usedChannels.push(instrument.modChannels[mod][i]);
+                        usedInstruments.push(instrument.modInstruments[mod][i]);
+                    }
                 }
             }
             for (let instrumentIndex = 0; instrumentIndex < usedInstruments.length; instrumentIndex++) {
-                synth.setModValue(tone.expression, tone.expression + tone.expressionDelta, instrument.modChannels[mod], usedInstruments[instrumentIndex], setting);
+                synth.setModValue(tone.expression, tone.expression + tone.expressionDelta, instrument.modChannels[mod][instrumentIndex], usedInstruments[instrumentIndex], setting);
                 for (let i = 0; i < synth.heldMods.length; i++) {
                     if (Config.modulators[instrument.modulators[mod]].forSong) {
                         if (synth.heldMods[i].setting == setting)
-                            synth.setModValue(synth.heldMods[i].volume, synth.heldMods[i].volume, instrument.modChannels[mod], usedInstruments[instrumentIndex], setting);
+                            synth.setModValue(synth.heldMods[i].volume, synth.heldMods[i].volume, instrument.modChannels[mod][instrumentIndex], usedInstruments[instrumentIndex], setting);
                     }
-                    else if (synth.heldMods[i].channelIndex == instrument.modChannels[mod] && synth.heldMods[i].instrumentIndex == usedInstruments[instrumentIndex] && synth.heldMods[i].setting == setting) {
-                        synth.setModValue(synth.heldMods[i].volume, synth.heldMods[i].volume, instrument.modChannels[mod], usedInstruments[instrumentIndex], setting);
+                    else if (synth.heldMods[i].channelIndex == instrument.modChannels[mod][instrumentIndex] && synth.heldMods[i].instrumentIndex == usedInstruments[instrumentIndex] && synth.heldMods[i].setting == setting) {
+                        synth.setModValue(synth.heldMods[i].volume, synth.heldMods[i].volume, instrument.modChannels[mod][instrumentIndex], usedInstruments[instrumentIndex], setting);
                     }
                 }
                 if (setting == Config.modulators.dictionary["reset arp"].index && synth.tick == 0 && tone.noteStartPart == synth.beat * Config.partsPerBeat + synth.part) {
-                    synth.channels[instrument.modChannels[mod]].instruments[usedInstruments[instrumentIndex]].arpTime = 0;
+                    synth.channels[instrument.modChannels[mod][instrumentIndex]].instruments[usedInstruments[instrumentIndex]].arpTime = 0;
                 }
                 else if (setting == Config.modulators.dictionary["reset envelope"].index && synth.tick == 0 && tone.noteStartPart == synth.beat * Config.partsPerBeat + synth.part) {
                     let envelopeTarget = instrument.modEnvelopeNumbers[mod];
-                    const tgtInstrumentState = synth.channels[instrument.modChannels[mod]].instruments[usedInstruments[instrumentIndex]];
-                    const tgtInstrument = synth.song.channels[instrument.modChannels[mod]].instruments[usedInstruments[instrumentIndex]];
+                    const tgtInstrumentState = synth.channels[instrument.modChannels[mod][instrumentIndex]].instruments[usedInstruments[instrumentIndex]];
+                    const tgtInstrument = synth.song.channels[instrument.modChannels[mod][instrumentIndex]].instruments[usedInstruments[instrumentIndex]];
                     if (tgtInstrument.envelopeCount > envelopeTarget) {
                         tgtInstrumentState.envelopeTime[envelopeTarget] = 0;
                     }
@@ -24925,7 +24950,7 @@ li.select2-results__option[role=group] > strong:hover {
                     }
                 }
                 else if (setting == Config.modulators.dictionary["eq filter"].index) {
-                    const tgtInstrument = synth.song.channels[instrument.modChannels[mod]].instruments[usedInstruments[instrumentIndex]];
+                    const tgtInstrument = synth.song.channels[instrument.modChannels[mod][instrumentIndex]].instruments[usedInstruments[instrumentIndex]];
                     if (!tgtInstrument.eqFilterType) {
                         let dotTarget = instrument.modFilterTypes[mod] | 0;
                         if (dotTarget == 0) {
@@ -24964,7 +24989,7 @@ li.select2-results__option[role=group] > strong:hover {
                     }
                 }
                 else if (setting == Config.modulators.dictionary["note filter"].index) {
-                    const tgtInstrument = synth.song.channels[instrument.modChannels[mod]].instruments[usedInstruments[instrumentIndex]];
+                    const tgtInstrument = synth.song.channels[instrument.modChannels[mod][instrumentIndex]].instruments[usedInstruments[instrumentIndex]];
                     if (!tgtInstrument.noteFilterType) {
                         let dotTarget = instrument.modFilterTypes[mod] | 0;
                         if (dotTarget == 0) {
@@ -25003,7 +25028,7 @@ li.select2-results__option[role=group] > strong:hover {
                     }
                 }
                 else if (setting == Config.modulators.dictionary["individual envelope speed"].index) {
-                    const tgtInstrument = synth.song.channels[instrument.modChannels[mod]].instruments[usedInstruments[instrumentIndex]];
+                    const tgtInstrument = synth.song.channels[instrument.modChannels[mod][instrumentIndex]].instruments[usedInstruments[instrumentIndex]];
                     let envelopeTarget = instrument.modEnvelopeNumbers[mod];
                     let speed = tone.expression + tone.expressionDelta;
                     if (tgtInstrument.envelopeCount > envelopeTarget) {
@@ -25017,7 +25042,7 @@ li.select2-results__option[role=group] > strong:hover {
                     }
                 }
                 else if (setting == Config.modulators.dictionary["individual envelope lower bound"].index) {
-                    const tgtInstrument = synth.song.channels[instrument.modChannels[mod]].instruments[usedInstruments[instrumentIndex]];
+                    const tgtInstrument = synth.song.channels[instrument.modChannels[mod][instrumentIndex]].instruments[usedInstruments[instrumentIndex]];
                     let envelopeTarget = instrument.modEnvelopeNumbers[mod];
                     let bound = tone.expression + tone.expressionDelta;
                     if (tgtInstrument.envelopeCount > envelopeTarget) {
@@ -25025,7 +25050,7 @@ li.select2-results__option[role=group] > strong:hover {
                     }
                 }
                 else if (setting == Config.modulators.dictionary["individual envelope upper bound"].index) {
-                    const tgtInstrument = synth.song.channels[instrument.modChannels[mod]].instruments[usedInstruments[instrumentIndex]];
+                    const tgtInstrument = synth.song.channels[instrument.modChannels[mod][instrumentIndex]].instruments[usedInstruments[instrumentIndex]];
                     let envelopeTarget = instrument.modEnvelopeNumbers[mod];
                     let bound = tone.expression + tone.expressionDelta;
                     if (tgtInstrument.envelopeCount > envelopeTarget) {
@@ -27843,11 +27868,13 @@ li.select2-results__option[role=group] > strong:hover {
                 for (let instrumentIdx = 0; instrumentIdx < doc.song.channels[channelIndex].instruments.length; instrumentIdx++) {
                     let instrument = doc.song.channels[channelIndex].instruments[instrumentIdx];
                     for (let i = 0; i < Config.modCount; i++) {
-                        if (instrument.modChannels[i] >= selectionMin && instrument.modChannels[i] <= selectionMax) {
-                            instrument.modChannels[i] += offset;
-                        }
-                        else if (instrument.modChannels[i] >= selectionMin + offset && instrument.modChannels[i] <= selectionMax + offset) {
-                            instrument.modChannels[i] -= offset * (selectionMax - selectionMin + 1);
+                        for (let j = 0; j < instrument.modChannels[i].length; j++) {
+                            if (instrument.modChannels[i][j] >= selectionMin && instrument.modChannels[i][j] <= selectionMax) {
+                                instrument.modChannels[i][j] += offset;
+                            }
+                            else if (instrument.modChannels[i][j] >= selectionMin + offset && instrument.modChannels[i][j] <= selectionMax + offset) {
+                                instrument.modChannels[i][j] -= offset * (selectionMax - selectionMin + 1);
+                            }
                         }
                     }
                 }
@@ -27918,14 +27945,16 @@ li.select2-results__option[role=group] > strong:hover {
                 doc.channel = Math.min(doc.channel, newPitchChannelCount + newNoiseChannelCount + newModChannelCount - 1);
                 for (let channelIndex = doc.song.pitchChannelCount + doc.song.noiseChannelCount; channelIndex < doc.song.getChannelCount(); channelIndex++) {
                     for (let instrumentIdx = 0; instrumentIdx < doc.song.channels[channelIndex].instruments.length; instrumentIdx++) {
+                        let instrument = doc.song.channels[channelIndex].instruments[instrumentIdx];
                         for (let mod = 0; mod < Config.modCount; mod++) {
-                            let instrument = doc.song.channels[channelIndex].instruments[instrumentIdx];
-                            let modChannel = instrument.modChannels[mod];
-                            if ((modChannel >= doc.song.pitchChannelCount && modChannel < oldPitchCount) || modChannel >= doc.song.pitchChannelCount + doc.song.noiseChannelCount) {
-                                instrument.modulators[mod] = Config.modulators.dictionary["none"].index;
-                            }
-                            if (modChannel >= oldPitchCount && oldPitchCount < newPitchChannelCount) {
-                                instrument.modChannels[mod] += newPitchChannelCount - oldPitchCount;
+                            for (let i = 0; i < instrument.modChannels[mod].length; i++) {
+                                let modChannel = instrument.modChannels[mod][i];
+                                if (instrument.modChannels[mod].length == 1 && ((modChannel >= doc.song.pitchChannelCount && modChannel < oldPitchCount) || modChannel >= doc.song.pitchChannelCount + doc.song.noiseChannelCount)) {
+                                    instrument.modulators[mod] = Config.modulators.dictionary["none"].index;
+                                }
+                                if (modChannel >= oldPitchCount && oldPitchCount < newPitchChannelCount) {
+                                    instrument.modChannels[mod][i] += newPitchChannelCount - oldPitchCount;
+                                }
                             }
                         }
                     }
@@ -27961,11 +27990,13 @@ li.select2-results__option[role=group] > strong:hover {
                 for (let instrumentIndex = 0; instrumentIndex < doc.song.channels[modChannel].instruments.length; instrumentIndex++) {
                     const modInstrument = doc.song.channels[modChannel].instruments[instrumentIndex];
                     for (let mod = 0; mod < Config.modCount; mod++) {
-                        if (modInstrument.modChannels[mod] >= minIndex && modInstrument.modChannels[mod] <= oldMax) {
-                            this.append(new ChangeModChannel(doc, mod, 0, modInstrument));
-                        }
-                        else if (modInstrument.modChannels[mod] > oldMax) {
-                            this.append(new ChangeModChannel(doc, mod, modInstrument.modChannels[mod] - (oldMax - minIndex + 1) + 2, modInstrument));
+                        for (let i = 0; i < modInstrument.modChannels[mod].length; i++) {
+                            if (modInstrument.modChannels[mod][i] >= minIndex && modInstrument.modChannels[mod][i] <= oldMax) {
+                                this.append(new ChangeModChannel(doc, mod, 0, modInstrument));
+                            }
+                            else if (modInstrument.modChannels[mod][i] > oldMax) {
+                                this.append(new ChangeModChannel(doc, mod, modInstrument.modChannels[mod][i] - (oldMax - minIndex + 1) + 2, modInstrument));
+                            }
                         }
                     }
                 }
@@ -29034,10 +29065,10 @@ li.select2-results__option[role=group] > strong:hover {
                 for (let instrumentIndex = 0; instrumentIndex < doc.song.channels[channelIndex].instruments.length; instrumentIndex++) {
                     for (let mod = 0; mod < Config.modCount; mod++) {
                         let instrument = doc.song.channels[channelIndex].instruments[instrumentIndex];
-                        let modInstrument = instrument.modInstruments[mod];
-                        let modChannel = instrument.modChannels[mod];
+                        let modInstrument = instrument.modInstruments[mod][0];
+                        let modChannel = instrument.modChannels[mod][0];
                         if (modChannel == doc.channel && modInstrument >= doc.song.channels[modChannel].instruments.length - 1) {
-                            instrument.modInstruments[mod]++;
+                            instrument.modInstruments[mod][0]++;
                         }
                     }
                 }
@@ -29073,16 +29104,16 @@ li.select2-results__option[role=group] > strong:hover {
             }
             for (let channelIndex = doc.song.pitchChannelCount + doc.song.noiseChannelCount; channelIndex < doc.song.getChannelCount(); channelIndex++) {
                 for (let instrumentIdx = 0; instrumentIdx < doc.song.channels[channelIndex].instruments.length; instrumentIdx++) {
+                    let instrument = doc.song.channels[channelIndex].instruments[instrumentIdx];
                     for (let mod = 0; mod < Config.modCount; mod++) {
-                        let instrument = doc.song.channels[channelIndex].instruments[instrumentIdx];
-                        let modInstrument = instrument.modInstruments[mod];
-                        let modChannel = instrument.modChannels[mod];
-                        if (modChannel == doc.channel) {
-                            if (modInstrument > removedIndex) {
-                                instrument.modInstruments[mod]--;
-                            }
-                            else if (modInstrument == removedIndex) {
-                                instrument.modInstruments[mod] = 0;
+                        let modInstruments = instrument.modInstruments[mod];
+                        let modChannels = instrument.modChannels[mod];
+                        if (modChannels[0] == doc.channel && modInstruments[0] > removedIndex) {
+                            instrument.modInstruments[mod][0]--;
+                        }
+                        for (let i = 0; i < instrument.modChannels[mod].length; i++) {
+                            if (modChannels[i] == doc.channel && modInstruments[i] == removedIndex) {
+                                instrument.modInstruments[mod][i] = 0;
                                 instrument.modulators[mod] = 0;
                             }
                         }
@@ -29284,16 +29315,14 @@ li.select2-results__option[role=group] > strong:hover {
             let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
             if (useInstrument != undefined)
                 instrument = useInstrument;
-            if (index == 0 || (Config.modulators[instrument.modulators[mod]].forSong && index >= 2) || (!Config.modulators[instrument.modulators[mod]].forSong && index < 2)) {
-                instrument.modulators[mod] = Config.modulators.dictionary["none"].index;
-            }
             let tgtIndex = 0;
+            let tgtChannel = -5;
+            let tgtInstrument = -5;
             for (let i = 0; i < doc.song.pitchChannelCount + doc.song.noiseChannelCount; i++) {
                 for (let j = 0; j < doc.song.channels[i].instruments.length; j++) {
                     if (index - 2 == tgtIndex) {
-                        instrument.modChannels[mod] = i;
-                        instrument.modInstruments[mod] = j;
-                        console.log(i + " " + j);
+                        tgtChannel = i;
+                        tgtInstrument = j;
                         tgtIndex = -5;
                         break;
                     }
@@ -29303,6 +29332,44 @@ li.select2-results__option[role=group] > strong:hover {
                 if (tgtIndex == -5)
                     break;
             }
+            let toggleFlag = true;
+            if (tgtChannel != -5 && tgtInstrument != -5) {
+                for (let i = 0; i < instrument.modChannels[mod].length; i++) {
+                    if (instrument.modChannels[mod][i] == tgtChannel && instrument.modInstruments[mod][i] == tgtInstrument) {
+                        instrument.modChannels[mod].splice(i, 1);
+                        instrument.modInstruments[mod].splice(i, 1);
+                        if (instrument.modChannels[mod].length == 0) {
+                            instrument.modChannels[mod] = [-2];
+                            instrument.modInstruments[mod] = [0];
+                        }
+                        toggleFlag = false;
+                    }
+                }
+                if (toggleFlag) {
+                    if (instrument.modChannels[mod][0] == -2 || instrument.modChannels[mod][0] == -1) {
+                        instrument.modChannels[mod] = [tgtChannel];
+                        instrument.modInstruments[mod] = [tgtInstrument];
+                    }
+                    else {
+                        instrument.modChannels[mod].push(tgtChannel);
+                        instrument.modInstruments[mod].push(tgtInstrument);
+                    }
+                }
+            }
+            if (index == 0 || (Config.modulators[instrument.modulators[mod]].forSong && index >= 2) || (!Config.modulators[instrument.modulators[mod]].forSong && index < 2)) {
+                instrument.modulators[mod] = Config.modulators.dictionary["none"].index;
+                if (index == 0) {
+                    instrument.modChannels[mod] = [-2];
+                    instrument.modInstruments[mod] = [0];
+                }
+                else if (index == 1) {
+                    instrument.modChannels[mod] = [-2];
+                    instrument.modInstruments[mod] = [0];
+                }
+            }
+            console.log("chnls:" + instrument.modChannels[mod]);
+            console.log("instr:" + instrument.modInstruments[mod]);
+            doc.recalcModChannels = true;
             doc.notifier.changed();
             this._didSomething();
         }
@@ -29311,8 +29378,8 @@ li.select2-results__option[role=group] > strong:hover {
         constructor(doc, mod, tgtInstrument) {
             super();
             let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-            if (instrument.modInstruments[mod] != tgtInstrument) {
-                instrument.modInstruments[mod] = tgtInstrument;
+            if (instrument.modInstruments[mod][0] != tgtInstrument) {
+                instrument.modInstruments[mod][0] = tgtInstrument;
                 doc.notifier.changed();
                 this._didSomething();
             }
@@ -29322,13 +29389,13 @@ li.select2-results__option[role=group] > strong:hover {
         constructor(doc, mod, text) {
             super();
             let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-            let tgtChannel = instrument.modChannels[mod];
+            let tgtChannel = instrument.modChannels[mod][0];
             let usedInstruments = [];
             if (tgtChannel >= 0) {
-                if (instrument.modInstruments[mod] == doc.song.channels[tgtChannel].instruments.length) {
+                if (instrument.modInstruments[mod][0] == doc.song.channels[tgtChannel].instruments.length) {
                     usedInstruments = usedInstruments.concat(doc.song.channels[tgtChannel].instruments);
                 }
-                else if (instrument.modInstruments[mod] > doc.song.channels[tgtChannel].instruments.length) {
+                else if (instrument.modInstruments[mod][0] > doc.song.channels[tgtChannel].instruments.length) {
                     let tgtPattern = doc.song.getPattern(tgtChannel, doc.bar);
                     if (tgtPattern != null) {
                         for (let i = 0; i < tgtPattern.instruments.length; i++) {
@@ -29337,7 +29404,8 @@ li.select2-results__option[role=group] > strong:hover {
                     }
                 }
                 else {
-                    usedInstruments.push(doc.song.channels[tgtChannel].instruments[instrument.modInstruments[mod]]);
+                    for (let i = 0; i < instrument.modChannels[mod].length; i++)
+                        usedInstruments.push(doc.song.channels[tgtChannel].instruments[instrument.modInstruments[mod][i]]);
                 }
             }
             if (text.startsWith("+ ")) {
@@ -31274,13 +31342,13 @@ li.select2-results__option[role=group] > strong:hover {
                     for (let j = 0; j < Config.modCount; j++) {
                         let usingSecondRow = true;
                         let usingMod = true;
-                        let instrumentVal = instrument.modInstruments[Config.modCount - j - 1] + 1;
-                        let channelVal = instrument.modChannels[Config.modCount - j - 1] + 1;
+                        let instrumentVal = instrument.modInstruments[Config.modCount - j - 1][0] + 1;
+                        let channelVal = instrument.modChannels[Config.modCount - j - 1][0] + 1;
                         let modulator = instrument.modulators[Config.modCount - j - 1];
                         let status = 1 + +(channelVal - 1 >= this._doc.song.pitchChannelCount);
-                        if (instrument.modChannels[Config.modCount - j - 1] == -2)
+                        if (instrument.modChannels[Config.modCount - j - 1][0] == -2)
                             status = 0;
-                        else if (instrument.modChannels[Config.modCount - j - 1] == -1)
+                        else if (instrument.modChannels[Config.modCount - j - 1][0] == -1)
                             status = 3;
                         let instrumentsLength = this._doc.song.channels[Math.max(0, channelVal - 1)].instruments.length;
                         switch (status) {
@@ -31342,7 +31410,7 @@ li.select2-results__option[role=group] > strong:hover {
                                 }
                                 break;
                             case 2:
-                                const absoluteChannelVal = instrument.modChannels[Config.modCount - j - 1];
+                                const absoluteChannelVal = instrument.modChannels[Config.modCount - j - 1][0];
                                 const relativeChannelVal = absoluteChannelVal - this._doc.song.pitchChannelCount;
                                 if (this._doc.song.channels[absoluteChannelVal].name == "") {
                                     if (instrumentsLength > 1) {
@@ -31426,7 +31494,7 @@ li.select2-results__option[role=group] > strong:hover {
                         secondLabel.textContent = usingSecondRow ? secondRow : "Not set";
                         modCountLabel.textContent = "" + (Config.modCount - j);
                         modCountRect.style.fill = usingMod ? ColorConfig.indicatorPrimary : ColorConfig.modLabelSecondaryText;
-                        if (this._doc.song.channels[Math.max(0, instrument.modChannels[Config.modCount - j - 1])].name != "") {
+                        if (this._doc.song.channels[Math.max(0, instrument.modChannels[Config.modCount - j - 1][0])].name != "") {
                             let scaleFactor = "1";
                             let height = firstLabel.parentElement.parentElement.getBoundingClientRect().height;
                             let length = firstLabel.getComputedTextLength();
@@ -32648,8 +32716,10 @@ li.select2-results__option[role=group] > strong:hover {
                 for (let channelIndex = 0; channelIndex < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; channelIndex++) {
                     soloPattern[channelIndex] = false;
                     for (let mod = 0; mod < Config.modCount; mod++) {
-                        if (modInstrument.modChannels[mod] == channelIndex) {
-                            soloPattern[channelIndex] = true;
+                        for (let channels = 0; channels < modInstrument.modChannels[mod].length; channels++) {
+                            if (modInstrument.modChannels[mod][channels] == channelIndex) {
+                                soloPattern[channelIndex] = true;
+                            }
                         }
                     }
                 }
@@ -37999,7 +38069,7 @@ You should be redirected to the song at:<br /><br />
                 let tempoModInstrument = new Instrument(false, true);
                 tempoModInstrument.setTypeAndReset(9, false, true);
                 tempoModInstrument.modulators[0] = Config.modulators.dictionary["tempo"].index;
-                tempoModInstrument.modChannels[0] = -1;
+                tempoModInstrument.modChannels[0][0] = -1;
                 tempoModChannel.instruments.push(tempoModInstrument);
                 const tempoModPitch = Config.modCount - 1;
                 let currentBar = -1;
@@ -41324,24 +41394,26 @@ You should be redirected to the song at:<br /><br />
                 for (let instrumentIndex = startIndex; instrumentIndex <= endIndex; instrumentIndex++) {
                     let instrument = modChannel.instruments[instrumentIndex];
                     for (let mod = 0; mod < Config.modCount; mod++) {
-                        if (instrument.modulators[mod] == applyToMod && !Config.modulators[instrument.modulators[mod]].forSong && (instrument.modChannels[mod] == thisRef._doc.channel)) {
-                            if (thisRef._doc.getCurrentInstrument() == instrument.modInstruments[mod]
-                                || instrument.modInstruments[mod] >= thisRef._doc.song.channels[thisRef._doc.channel].instruments.length) {
-                                if (modFilterIndex != undefined && (applyToMod == Config.modulators.dictionary["eq filter"].index || applyToMod == Config.modulators.dictionary["note filter"].index)) {
-                                    if (instrument.modFilterTypes[mod] == modFilterIndex)
+                        for (let channelIndex = 0; channelIndex < instrument.modChannels[mod].length; channelIndex++) {
+                            if (instrument.modulators[mod] == applyToMod && !Config.modulators[instrument.modulators[mod]].forSong && (instrument.modChannels[mod][channelIndex] == thisRef._doc.channel)) {
+                                if (thisRef._doc.getCurrentInstrument() == instrument.modInstruments[mod][channelIndex]
+                                    || instrument.modInstruments[mod][channelIndex] >= thisRef._doc.song.channels[thisRef._doc.channel].instruments.length) {
+                                    if (modFilterIndex != undefined && (applyToMod == Config.modulators.dictionary["eq filter"].index || applyToMod == Config.modulators.dictionary["note filter"].index)) {
+                                        if (instrument.modFilterTypes[mod] == modFilterIndex)
+                                            return [instrumentIndex, mod];
+                                    }
+                                    else if (modEnvIndex != undefined && applyToMod == Config.modulators.dictionary["individual envelope speed"].index ||
+                                        applyToMod == Config.modulators.dictionary["individual envelope lower bound"].index ||
+                                        applyToMod == Config.modulators.dictionary["individual envelope upper bound"].index) {
+                                        if (instrument.modEnvelopeNumbers[mod] == modEnvIndex)
+                                            return [instrumentIndex, mod];
+                                    }
+                                    else
                                         return [instrumentIndex, mod];
                                 }
-                                else if (modEnvIndex != undefined && applyToMod == Config.modulators.dictionary["individual envelope speed"].index ||
-                                    applyToMod == Config.modulators.dictionary["individual envelope lower bound"].index ||
-                                    applyToMod == Config.modulators.dictionary["individual envelope upper bound"].index) {
-                                    if (instrument.modEnvelopeNumbers[mod] == modEnvIndex)
-                                        return [instrumentIndex, mod];
-                                }
-                                else
-                                    return [instrumentIndex, mod];
                             }
                         }
-                        else if (instrument.modulators[mod] == applyToMod && Config.modulators[instrument.modulators[mod]].forSong && (instrument.modChannels[mod] == -1)) {
+                        if (instrument.modulators[mod] == applyToMod && Config.modulators[instrument.modulators[mod]].forSong && (instrument.modChannels[mod][0] == -1)) {
                             if (modFilterIndex != undefined && (applyToMod == Config.modulators.dictionary["song eq"].index)) {
                                 if (instrument.modFilterTypes[mod] == modFilterIndex)
                                     return [instrumentIndex, mod];
@@ -42009,18 +42081,18 @@ You should be redirected to the song at:<br /><br />
                                         if (applyToFilterTargets.length > applyIndex) {
                                             instrument.modFilterTypes[mod] = applyToFilterTargets[applyIndex];
                                         }
-                                        instrument.modChannels[mod] = -1;
+                                        instrument.modChannels[mod][0] = -1;
                                     }
                                     else {
-                                        instrument.modChannels[mod] = this._doc.channel;
+                                        instrument.modChannels[mod][instrument.modChannels[mod].length] = this._doc.channel;
                                         if (this._doc.song.channels[this._doc.channel].instruments.length > 1) {
                                             if (!this.controlMode || !this.shiftMode)
-                                                instrument.modInstruments[mod] = this._doc.song.channels[this._doc.channel].instruments.length + 1;
+                                                instrument.modInstruments[mod][instrument.modChannels[mod].length] = this._doc.song.channels[this._doc.channel].instruments.length + 1;
                                             else
-                                                instrument.modInstruments[mod] = this._doc.getCurrentInstrument();
+                                                instrument.modInstruments[mod][instrument.modChannels[mod].length] = this._doc.getCurrentInstrument();
                                         }
                                         else
-                                            instrument.modInstruments[mod] = 0;
+                                            instrument.modInstruments[mod][instrument.modChannels[mod].length] = 0;
                                         if (applyToFilterTargets.length > applyIndex) {
                                             instrument.modFilterTypes[mod] = applyToFilterTargets[applyIndex];
                                         }
@@ -42049,28 +42121,28 @@ You should be redirected to the song at:<br /><br />
                     let prevNote = null;
                     const modNoteIndex = Config.modCount - 1 - usedModIndices[i];
                     const usedInstrument = usedInstruments[i];
-                    if (usedInstrument.modChannels[usedModIndices[i]] >= -1) {
+                    if (usedInstrument.modChannels[usedModIndices[i]][instrument.modChannels[modNoteIndex].length] >= -1) {
                         let usedNewInstrumentIndices = [];
                         if (Config.modulators[applyToMods[applyIndex]].forSong) {
                             usedNewInstrumentIndices.push(0);
                         }
                         else {
-                            if (usedInstrument.modInstruments[usedModIndices[i]] == this._doc.synth.song.channels[usedInstrument.modChannels[usedModIndices[i]]].instruments.length) {
-                                for (let k = 0; k < this._doc.synth.song.channels[usedInstrument.modChannels[usedModIndices[i]]].instruments.length; k++) {
+                            if (usedInstrument.modInstruments[usedModIndices[i]][0] == this._doc.synth.song.channels[usedInstrument.modChannels[usedModIndices[i]][0]].instruments.length) {
+                                for (let k = 0; k < this._doc.synth.song.channels[usedInstrument.modChannels[usedModIndices[i]][0]].instruments.length; k++) {
                                     usedNewInstrumentIndices.push(k);
                                 }
                             }
-                            else if (usedInstrument.modInstruments[usedModIndices[i]] > this._doc.synth.song.channels[usedInstrument.modChannels[usedModIndices[i]]].instruments.length) {
-                                if (this._doc.synth.song.getPattern(usedInstrument.modChannels[usedModIndices[i]], currentBar) != null)
-                                    usedNewInstrumentIndices = this._doc.synth.song.getPattern(usedInstrument.modChannels[usedModIndices[i]], currentBar).instruments;
+                            else if (usedInstrument.modInstruments[usedModIndices[i]][0] > this._doc.synth.song.channels[usedInstrument.modChannels[usedModIndices[i]][0]].instruments.length) {
+                                if (this._doc.synth.song.getPattern(usedInstrument.modChannels[usedModIndices[i]][0], currentBar) != null)
+                                    usedNewInstrumentIndices = this._doc.synth.song.getPattern(usedInstrument.modChannels[usedModIndices[i]][0], currentBar).instruments;
                             }
                             else {
-                                usedNewInstrumentIndices.push(usedInstrument.modInstruments[usedModIndices[i]]);
+                                usedNewInstrumentIndices.push(usedInstrument.modInstruments[usedModIndices[i]][instrument.modChannels[modNoteIndex].length]);
                             }
                         }
                         for (let instrumentIndex = 0; instrumentIndex < usedNewInstrumentIndices.length; instrumentIndex++) {
-                            this._doc.synth.setModValue(applyValues[applyIndex], applyValues[applyIndex], usedInstruments[i].modChannels[usedModIndices[i]], usedNewInstrumentIndices[instrumentIndex], applyToMods[applyIndex]);
-                            this._doc.synth.forceHoldMods(applyValues[applyIndex], usedInstruments[i].modChannels[usedModIndices[i]], usedNewInstrumentIndices[instrumentIndex], applyToMods[applyIndex]);
+                            this._doc.synth.setModValue(applyValues[applyIndex], applyValues[applyIndex], usedInstruments[i].modChannels[usedModIndices[i]][instrument.modChannels[modNoteIndex].length], usedNewInstrumentIndices[instrumentIndex], applyToMods[applyIndex]);
+                            this._doc.synth.forceHoldMods(applyValues[applyIndex], usedInstruments[i].modChannels[usedModIndices[i]][instrument.modChannels[modNoteIndex].length], usedNewInstrumentIndices[instrumentIndex], applyToMods[applyIndex]);
                         }
                     }
                     for (let j = 0; j < usedPatterns[i].notes.length; j++) {
@@ -47988,57 +48060,104 @@ You should be redirected to the song at:<br /><br />
                     this._modulatorGroup.style.color = ColorConfig.getChannelColor(this._doc.song, this._doc.channel).primaryNote;
                     for (let mod = 0; mod < Config.modCount; mod++) {
                         let instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-                        let modChannel = Math.max(0, instrument.modChannels[mod]);
-                        let modInstrument = instrument.modInstruments[mod];
-                        if (modInstrument >= this._doc.song.channels[modChannel].instruments.length + 2 || (modInstrument > 0 && this._doc.song.channels[modChannel].instruments.length <= 1)) {
-                            modInstrument = 0;
-                            instrument.modInstruments[mod] = 0;
-                        }
-                        if (modChannel >= this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount) {
-                            instrument.modInstruments[mod] = 0;
-                            instrument.modulators[mod] = 0;
+                        let modChannels = instrument.modChannels[mod][0] >= 0 ? instrument.modChannels[mod] : [0];
+                        let modInstruments = instrument.modInstruments[mod];
+                        for (let i = 0; i < instrument.modChannels[mod].length; i++) {
+                            if (modInstruments[i] >= this._doc.song.channels[modChannels[i]].instruments.length + 2 || (modInstruments[i] > 0 && this._doc.song.channels[modChannels[i]].instruments.length <= 1)) {
+                                modInstruments[i] = 0;
+                                instrument.modInstruments[mod][i] = 0;
+                            }
+                            if (modChannels[i] >= this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount) {
+                                instrument.modInstruments[mod][i] = 0;
+                                instrument.modulators[mod] = 0;
+                            }
                         }
                         let totalInstruments = 0;
                         for (let i = 0; i < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; i++)
                             totalInstruments += this._doc.song.channels[i].instruments.length;
-                        if (this._doc.recalcChannelNames || (this._modChannelBoxes[mod].children.length != 2 + totalInstruments)) {
+                        if (this._doc.recalcChannelNames || this._doc.recalcModChannels || (this._modChannelBoxes[mod].children.length != 3 + totalInstruments)) {
                             while (this._modChannelBoxes[mod].firstChild)
                                 this._modChannelBoxes[mod].remove(0);
                             const channelList = [];
                             channelList.push("none");
                             channelList.push("song");
+                            let newString = "";
                             for (let i = 0; i < this._doc.song.pitchChannelCount; i++) {
                                 let tgtchannel = this._doc.song.channels[i];
                                 for (let j = 0; j < tgtchannel.instruments.length; j++) {
                                     if (this._doc.song.channels[i].name == "") {
-                                        channelList.push("pitch " + (i + 1) + " ins " + (j + 1));
+                                        newString = "pitch " + (i + 1) + " ins " + (j + 1);
                                     }
                                     else {
-                                        channelList.push(this._doc.song.channels[i].name);
+                                        newString = this._doc.song.channels[i].name;
                                     }
+                                    for (let k = 0; k < instrument.modChannels[mod].length; k++) {
+                                        if (instrument.modChannels[mod][k] == i && instrument.modInstruments[mod][k] == j) {
+                                            newString = "🢒" + newString;
+                                            break;
+                                        }
+                                    }
+                                    channelList.push(newString);
                                 }
                             }
                             for (let i = 0; i < this._doc.song.noiseChannelCount; i++) {
                                 let tgtchannel = this._doc.song.channels[i + this._doc.song.pitchChannelCount];
                                 for (let j = 0; j < tgtchannel.instruments.length; j++) {
-                                    if (this._doc.song.channels[i + this._doc.song.pitchChannelCount].name == "") {
-                                        channelList.push("noise " + (i + 1) + " ins " + (j + 1));
+                                    if (this._doc.song.channels[i].name == "") {
+                                        newString = "noise " + (i + 1) + " ins " + (j + 1);
                                     }
                                     else {
-                                        channelList.push(this._doc.song.channels[i].name);
+                                        newString = this._doc.song.channels[i].name;
                                     }
+                                    for (let k = 0; k < instrument.modChannels[mod].length; k++) {
+                                        if (instrument.modChannels[mod][k] == i + this._doc.song.pitchChannelCount && instrument.modInstruments[mod][k] == j) {
+                                            newString = "🢒 " + newString;
+                                            break;
+                                        }
+                                    }
+                                    channelList.push(newString);
                                 }
                             }
                             buildOptions(this._modChannelBoxes[mod], channelList);
+                            if (instrument.modChannels[mod][0] == -2) {
+                                this._modChannelBoxes[mod].selectedIndex = 0;
+                            }
+                            else if (instrument.modChannels[mod][0] == -1) {
+                                this._modChannelBoxes[mod].selectedIndex = 1;
+                            }
+                            else if (instrument.modChannels[mod].length == 1) {
+                                let tgtIndex = 0;
+                                for (let i = 0; i < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; i++) {
+                                    for (let j = 0; j < this._doc.song.channels[i].instruments.length; j++) {
+                                        if (i == instrument.modChannels[mod][0] && j == instrument.modInstruments[mod][0]) {
+                                            let stringValue = Array.from(this._modChannelBoxes[mod].children)[tgtIndex + 2].textContent;
+                                            if (stringValue != null)
+                                                stringValue = stringValue.substr(2);
+                                            this._modChannelBoxes[mod].appendChild(option({ selected: false, disabled: true, hidden: true, value: stringValue }, stringValue));
+                                            this._modChannelBoxes[mod].selectedIndex = this._modChannelBoxes[mod].length - 1;
+                                            tgtIndex = -5;
+                                            break;
+                                        }
+                                        else
+                                            tgtIndex++;
+                                    }
+                                    if (tgtIndex == -5)
+                                        break;
+                                }
+                            }
+                            else {
+                                this._modChannelBoxes[mod].appendChild(option({ selected: false, disabled: true, hidden: true, value: "many" }, "many"));
+                                this._modChannelBoxes[mod].selectedIndex = this._modChannelBoxes[mod].length - 1;
+                            }
+                            this._doc.recalcModChannels = false;
                         }
-                        let channel = this._doc.song.channels[modChannel];
-                        if (instrument.modChannels[mod] != -2) {
+                        if (instrument.modChannels[mod][0] != -2) {
                             while (this._modSetBoxes[mod].firstChild)
                                 this._modSetBoxes[mod].remove(0);
                             const settingList = [];
                             const unusedSettingList = [];
                             settingList.push("none");
-                            if (instrument.modChannels[mod] == -1) {
+                            if (instrument.modChannels[mod][0] == -1) {
                                 settingList.push("song volume");
                                 settingList.push("tempo");
                                 settingList.push("song reverb");
@@ -48053,103 +48172,106 @@ You should be redirected to the song at:<br /><br />
                                 let anyInstrumentAdvancedEQ = false, anyInstrumentSimpleEQ = false, anyInstrumentAdvancedNote = false, anyInstrumentSimpleNote = false, anyInstrumentArps = false, anyInstrumentPitchShifts = false, anyInstrumentDetunes = false, anyInstrumentVibratos = false, anyInstrumentNoteFilters = false, anyInstrumentDistorts = false, anyInstrumentBitcrushes = false, anyInstrumentPans = false, anyInstrumentChorus = false, anyInstrumentEchoes = false, anyInstrumentReverbs = false, anyInstrumentRingMods = false, anyInstrumentGranulars = false, anyInstrumentHasEnvelopes = false;
                                 let allInstrumentPitchShifts = true, allInstrumentNoteFilters = true, allInstrumentDetunes = true, allInstrumentVibratos = true, allInstrumentDistorts = true, allInstrumentBitcrushes = true, allInstrumentPans = true, allInstrumentChorus = true, allInstrumentEchoes = true, allInstrumentReverbs = true, allInstrumentRingMods = true, allInstrumentGranulars = true;
                                 let instrumentCandidates = [];
-                                if (modInstrument >= channel.instruments.length) {
-                                    for (let i = 0; i < channel.instruments.length; i++) {
-                                        instrumentCandidates.push(i);
-                                    }
-                                }
-                                else {
-                                    instrumentCandidates.push(modInstrument);
-                                }
-                                for (let i = 0; i < instrumentCandidates.length; i++) {
-                                    let instrumentIndex = instrumentCandidates[i];
-                                    if (!tgtInstrumentTypes.includes(channel.instruments[instrumentIndex].type))
-                                        tgtInstrumentTypes.push(channel.instruments[instrumentIndex].type);
-                                    if (channel.instruments[instrumentIndex].eqFilterType)
-                                        anyInstrumentSimpleEQ = true;
-                                    else
-                                        anyInstrumentAdvancedEQ = true;
-                                    if (effectsIncludeChord(channel.instruments[instrumentIndex].mdeffects) && channel.instruments[instrumentIndex].getChord().arpeggiates) {
-                                        anyInstrumentArps = true;
-                                    }
-                                    if (effectsIncludePitchShift(channel.instruments[instrumentIndex].mdeffects)) {
-                                        anyInstrumentPitchShifts = true;
+                                for (let i = 0; i < instrument.modChannels[mod].length; i++) {
+                                    let channel = this._doc.song.channels[modChannels[i]];
+                                    if (modInstruments[i] >= channel.instruments.length) {
+                                        for (let i = 0; i < channel.instruments.length; i++) {
+                                            instrumentCandidates.push(i);
+                                        }
                                     }
                                     else {
-                                        allInstrumentPitchShifts = false;
+                                        instrumentCandidates.push(modInstruments[i]);
                                     }
-                                    if (effectsIncludeDetune(channel.instruments[instrumentIndex].mdeffects)) {
-                                        anyInstrumentDetunes = true;
-                                    }
-                                    else {
-                                        allInstrumentDetunes = false;
-                                    }
-                                    if (effectsIncludeVibrato(channel.instruments[instrumentIndex].mdeffects)) {
-                                        anyInstrumentVibratos = true;
-                                    }
-                                    else {
-                                        allInstrumentVibratos = false;
-                                    }
-                                    if (effectsIncludeEQFilter(channel.instruments[instrumentIndex].effects)) {
-                                        anyInstrumentNoteFilters = true;
+                                    for (let i = 0; i < instrumentCandidates.length; i++) {
+                                        let instrumentIndex = instrumentCandidates[i];
+                                        if (!tgtInstrumentTypes.includes(channel.instruments[instrumentIndex].type))
+                                            tgtInstrumentTypes.push(channel.instruments[instrumentIndex].type);
                                         if (channel.instruments[instrumentIndex].eqFilterType)
-                                            anyInstrumentSimpleNote = true;
+                                            anyInstrumentSimpleEQ = true;
                                         else
-                                            anyInstrumentAdvancedNote = true;
-                                    }
-                                    else {
-                                        allInstrumentNoteFilters = false;
-                                    }
-                                    if (effectsIncludeDistortion(channel.instruments[instrumentIndex].effects)) {
-                                        anyInstrumentDistorts = true;
-                                    }
-                                    else {
-                                        allInstrumentDistorts = false;
-                                    }
-                                    if (effectsIncludeBitcrusher(channel.instruments[instrumentIndex].effects)) {
-                                        anyInstrumentBitcrushes = true;
-                                    }
-                                    else {
-                                        allInstrumentBitcrushes = false;
-                                    }
-                                    if (effectsIncludePanning(channel.instruments[instrumentIndex].effects)) {
-                                        anyInstrumentPans = true;
-                                    }
-                                    else {
-                                        allInstrumentPans = false;
-                                    }
-                                    if (effectsIncludeChorus(channel.instruments[instrumentIndex].effects)) {
-                                        anyInstrumentChorus = true;
-                                    }
-                                    else {
-                                        allInstrumentChorus = false;
-                                    }
-                                    if (effectsIncludeEcho(channel.instruments[instrumentIndex].effects)) {
-                                        anyInstrumentEchoes = true;
-                                    }
-                                    else {
-                                        allInstrumentEchoes = false;
-                                    }
-                                    if (effectsIncludeReverb(channel.instruments[instrumentIndex].effects)) {
-                                        anyInstrumentReverbs = true;
-                                    }
-                                    else {
-                                        allInstrumentReverbs = false;
-                                    }
-                                    if (effectsIncludeRingModulation(channel.instruments[instrumentIndex].effects)) {
-                                        anyInstrumentRingMods = true;
-                                    }
-                                    else {
-                                        allInstrumentRingMods = false;
-                                    }
-                                    if (effectsIncludeGranular(channel.instruments[instrumentIndex].effects)) {
-                                        anyInstrumentGranulars = true;
-                                    }
-                                    else {
-                                        allInstrumentGranulars = false;
-                                    }
-                                    if (channel.instruments[instrumentIndex].envelopes.length > 0) {
-                                        anyInstrumentHasEnvelopes = true;
+                                            anyInstrumentAdvancedEQ = true;
+                                        if (effectsIncludeChord(channel.instruments[instrumentIndex].mdeffects) && channel.instruments[instrumentIndex].getChord().arpeggiates) {
+                                            anyInstrumentArps = true;
+                                        }
+                                        if (effectsIncludePitchShift(channel.instruments[instrumentIndex].mdeffects)) {
+                                            anyInstrumentPitchShifts = true;
+                                        }
+                                        else {
+                                            allInstrumentPitchShifts = false;
+                                        }
+                                        if (effectsIncludeDetune(channel.instruments[instrumentIndex].mdeffects)) {
+                                            anyInstrumentDetunes = true;
+                                        }
+                                        else {
+                                            allInstrumentDetunes = false;
+                                        }
+                                        if (effectsIncludeVibrato(channel.instruments[instrumentIndex].mdeffects)) {
+                                            anyInstrumentVibratos = true;
+                                        }
+                                        else {
+                                            allInstrumentVibratos = false;
+                                        }
+                                        if (effectsIncludeEQFilter(channel.instruments[instrumentIndex].effects)) {
+                                            anyInstrumentNoteFilters = true;
+                                            if (channel.instruments[instrumentIndex].eqFilterType)
+                                                anyInstrumentSimpleNote = true;
+                                            else
+                                                anyInstrumentAdvancedNote = true;
+                                        }
+                                        else {
+                                            allInstrumentNoteFilters = false;
+                                        }
+                                        if (effectsIncludeDistortion(channel.instruments[instrumentIndex].effects)) {
+                                            anyInstrumentDistorts = true;
+                                        }
+                                        else {
+                                            allInstrumentDistorts = false;
+                                        }
+                                        if (effectsIncludeBitcrusher(channel.instruments[instrumentIndex].effects)) {
+                                            anyInstrumentBitcrushes = true;
+                                        }
+                                        else {
+                                            allInstrumentBitcrushes = false;
+                                        }
+                                        if (effectsIncludePanning(channel.instruments[instrumentIndex].effects)) {
+                                            anyInstrumentPans = true;
+                                        }
+                                        else {
+                                            allInstrumentPans = false;
+                                        }
+                                        if (effectsIncludeChorus(channel.instruments[instrumentIndex].effects)) {
+                                            anyInstrumentChorus = true;
+                                        }
+                                        else {
+                                            allInstrumentChorus = false;
+                                        }
+                                        if (effectsIncludeEcho(channel.instruments[instrumentIndex].effects)) {
+                                            anyInstrumentEchoes = true;
+                                        }
+                                        else {
+                                            allInstrumentEchoes = false;
+                                        }
+                                        if (effectsIncludeReverb(channel.instruments[instrumentIndex].effects)) {
+                                            anyInstrumentReverbs = true;
+                                        }
+                                        else {
+                                            allInstrumentReverbs = false;
+                                        }
+                                        if (effectsIncludeRingModulation(channel.instruments[instrumentIndex].effects)) {
+                                            anyInstrumentRingMods = true;
+                                        }
+                                        else {
+                                            allInstrumentRingMods = false;
+                                        }
+                                        if (effectsIncludeGranular(channel.instruments[instrumentIndex].effects)) {
+                                            anyInstrumentGranulars = true;
+                                        }
+                                        else {
+                                            allInstrumentGranulars = false;
+                                        }
+                                        if (channel.instruments[instrumentIndex].envelopes.length > 0) {
+                                            anyInstrumentHasEnvelopes = true;
+                                        }
                                     }
                                 }
                                 if (anyInstrumentAdvancedEQ) {
@@ -48318,9 +48440,9 @@ You should be redirected to the song at:<br /><br />
                             this._modSetBoxes[mod].selectedIndex = 0;
                             this._whenSetModSetting(mod);
                         }
-                        if (instrument.modChannels[mod] < 0) {
+                        if (instrument.modChannels[mod][0] < 0) {
                             $("#modChannelText" + mod).get(0).innerText = "Instr.:";
-                            if (instrument.modChannels[mod] == -2) {
+                            if (instrument.modChannels[mod][0] == -2) {
                                 $("#modSettingText" + mod).get(0).style.display = "none";
                                 (this._modSetBoxes[mod].parentElement).style.display = "none";
                             }
@@ -48345,21 +48467,23 @@ You should be redirected to the song at:<br /><br />
                             $("#modFilterText" + mod).get(0).style.display = "";
                             $("#modEnvelopeText" + mod).get(0).style.display = "none";
                             $("#modSettingText" + mod).get(0).style.setProperty("margin-bottom", "2px");
-                            let useInstrument = instrument.modInstruments[mod];
-                            let modChannel = this._doc.song.channels[Math.max(0, instrument.modChannels[mod])];
-                            let tmpCount = -1;
-                            if (useInstrument >= modChannel.instruments.length) {
-                                for (let i = 0; i < modChannel.instruments.length; i++) {
-                                    if (filterType == "post eq") {
-                                        if (modChannel.instruments[i].eqFilter.controlPointCount > tmpCount) {
-                                            tmpCount = modChannel.instruments[i].eqFilter.controlPointCount;
-                                            useInstrument = i;
+                            let useInstrument = instrument.modInstruments[mod][0];
+                            for (let i = 0; i < instrument.modChannels[mod].length; i++) {
+                                let modChannel = this._doc.song.channels[Math.max(0, instrument.modChannels[mod][i])];
+                                let tmpCount = -1;
+                                if (useInstrument >= modChannel.instruments.length) {
+                                    for (let i = 0; i < modChannel.instruments.length; i++) {
+                                        if (filterType == "post eq") {
+                                            if (modChannel.instruments[i].eqFilter.controlPointCount > tmpCount) {
+                                                tmpCount = modChannel.instruments[i].eqFilter.controlPointCount;
+                                                useInstrument = i;
+                                            }
                                         }
-                                    }
-                                    else {
-                                        if (modChannel.instruments[i].noteFilter.controlPointCount > tmpCount) {
-                                            tmpCount = modChannel.instruments[i].noteFilter.controlPointCount;
-                                            useInstrument = i;
+                                        else {
+                                            if (modChannel.instruments[i].noteFilter.controlPointCount > tmpCount) {
+                                                tmpCount = modChannel.instruments[i].noteFilter.controlPointCount;
+                                                useInstrument = i;
+                                            }
                                         }
                                     }
                                 }
@@ -48422,11 +48546,13 @@ You should be redirected to the song at:<br /><br />
                             $("#modEnvelopeText" + mod).get(0).style.display = "";
                             $("#modFilterText" + mod).get(0).style.display = "none";
                             $("#modSettingText" + mod).get(0).style.setProperty("margin-bottom", "2px");
-                            let modChannel = this._doc.song.channels[Math.max(0, instrument.modChannels[mod])];
                             let envCount = -1;
-                            for (let i = 0; i < modChannel.instruments.length; i++) {
-                                if (modChannel.instruments[i].envelopeCount > envCount) {
-                                    envCount = modChannel.instruments[i].envelopeCount;
+                            for (let i = 0; i < instrument.modChannels[mod].length; i++) {
+                                let modChannel = this._doc.song.channels[Math.max(0, instrument.modChannels[mod][i])];
+                                for (let i = 0; i < modChannel.instruments.length; i++) {
+                                    if (modChannel.instruments[i].envelopeCount > envCount) {
+                                        envCount = modChannel.instruments[i].envelopeCount;
+                                    }
                                 }
                             }
                             while (this._modEnvelopeBoxes[mod].firstChild)
@@ -49590,15 +49716,7 @@ You should be redirected to the song at:<br /><br />
                 this.refocusStage();
             };
             this._whenSetModChannel = (mod) => {
-                let instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-                let previouslyUnset = (instrument.modulators[mod] == 0 || Config.modulators[instrument.modulators[mod]].forSong);
                 this._doc.selection.setModChannel(mod, this._modChannelBoxes[mod].selectedIndex);
-                const modChannel = Math.max(0, instrument.modChannels[mod]);
-                if (this._doc.song.channels[modChannel].instruments.length > 1 && previouslyUnset && this._modChannelBoxes[mod].selectedIndex >= 2) {
-                    if (this._doc.song.channels[modChannel].bars[this._doc.bar] > 0) {
-                        this._doc.selection.setModInstrument(mod, this._doc.song.channels[modChannel].patterns[this._doc.song.channels[modChannel].bars[this._doc.bar] - 1].instruments[0]);
-                    }
-                }
                 this._piano.forceRender();
             };
             this._whenSetModSetting = (mod, invalidIndex = false) => {
@@ -49635,7 +49753,7 @@ You should be redirected to the song at:<br /><br />
                             const modInstrumentIdx = modChannel.patterns[patternIdx - 1].instruments[0];
                             const modInstrument = modChannel.instruments[modInstrumentIdx];
                             for (let mod = 0; mod < Config.modCount; mod++) {
-                                if (modInstrument.modChannels[mod] == channelIndex && (modInstrument.modInstruments[mod] == instrumentIndex || modInstrument.modInstruments[mod] >= this._doc.song.channels[channelIndex].instruments.length)) {
+                                if (modInstrument.modChannels[mod][0] == channelIndex && (modInstrument.modInstruments[mod][0] == instrumentIndex || modInstrument.modInstruments[mod][0] >= this._doc.song.channels[channelIndex].instruments.length)) {
                                     this._doc.selection.setChannelBar(modChannelIdx, this._doc.bar);
                                     return;
                                 }
@@ -50057,7 +50175,7 @@ You should be redirected to the song at:<br /><br />
             this._modTargetIndicators = [];
             for (let mod = 0; mod < Config.modCount; mod++) {
                 let modChannelBox = select({ style: "width: 100%; color: currentColor; text-overflow:ellipsis;" });
-                let modNameRow = div({ class: "operatorRow", style: "height: 1em; margin-bottom: 0.65em;" }, div({ class: "tip", style: "width: 10%; max-width: 5.4em;", id: "modChannelText" + mod, onclick: () => this._openPrompt("modChannel") }, "Ch:"), div({ class: "selectContainer", style: 'width: 35%;' }, modChannelBox));
+                let modNameRow = div({ class: "operatorRow", style: "height: 1em; margin-bottom: 0.65em;" }, div({ class: "tip", style: "width: 10%; max-width: 5.4em;", id: "modChannelText" + mod, onclick: () => this._openPrompt("modChannel") }, "Instr.:"), div({ class: "selectContainer", style: 'width: 35%;' }, modChannelBox));
                 let modSetBox = select();
                 let modFilterBox = select();
                 let modEnvelopeBox = select();
@@ -50755,8 +50873,10 @@ You should be redirected to the song at:<br /><br />
                         const modInstrumentIdx = modChannel.patterns[patternIdx - 1].instruments[0];
                         const modInstrument = modChannel.instruments[modInstrumentIdx];
                         for (let mod = 0; mod < Config.modCount; mod++) {
-                            if (modInstrument.modChannels[mod] == channelIndex && (modInstrument.modInstruments[mod] == instrumentIndex || modInstrument.modInstruments[mod] >= channel.instruments.length)) {
-                                modUsed = true;
+                            for (let i = 0; i < modInstrument.modChannels[mod].length; i++) {
+                                if (modInstrument.modChannels[mod][i] == channelIndex && (modInstrument.modInstruments[mod][i] == instrumentIndex || modInstrument.modInstruments[mod][i] >= channel.instruments.length)) {
+                                    modUsed = true;
+                                }
                             }
                         }
                     }

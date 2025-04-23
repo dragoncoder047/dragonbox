@@ -362,13 +362,13 @@ export class Piano {
 
                 let usingSecondRow: boolean = true;
                 let usingMod: boolean = true;
-                let instrumentVal: number = instrument.modInstruments[Config.modCount - j - 1] + 1;
-                let channelVal: number = instrument.modChannels[Config.modCount - j - 1] + 1;
+                let instrumentVal: number = instrument.modInstruments[Config.modCount - j - 1][0] + 1; //TODO: something special for when there are multiple channel targets?
+                let channelVal: number = instrument.modChannels[Config.modCount - j - 1][0] + 1;
                 let modulator: number = instrument.modulators[Config.modCount - j - 1];
                 let status: number = 1 + +(channelVal - 1 >= this._doc.song.pitchChannelCount);
-                if (instrument.modChannels[Config.modCount - j - 1] == -2)
+                if (instrument.modChannels[Config.modCount - j - 1][0] == -2)
                     status = 0;
-                else if (instrument.modChannels[Config.modCount - j - 1] == -1)
+                else if (instrument.modChannels[Config.modCount - j - 1][0] == -1)
                     status = 3;
                 let instrumentsLength: number = this._doc.song.channels[Math.max(0, channelVal - 1)].instruments.length;
                 // 0 - none
@@ -436,7 +436,7 @@ export class Piano {
                         }
                         break;
                     case 2:
-                        const absoluteChannelVal: number = instrument.modChannels[Config.modCount - j - 1];
+                        const absoluteChannelVal: number = instrument.modChannels[Config.modCount - j - 1][0];
                         const relativeChannelVal: number = absoluteChannelVal - this._doc.song.pitchChannelCount;
 
                         if (this._doc.song.channels[absoluteChannelVal].name == "") {
@@ -529,7 +529,7 @@ export class Piano {
                 modCountRect.style.fill = usingMod ? ColorConfig.indicatorPrimary : ColorConfig.modLabelSecondaryText;
 
                 // Check if text is too long, if name is set
-                if (this._doc.song.channels[Math.max(0, instrument.modChannels[Config.modCount - j - 1])].name != "") {
+                if (this._doc.song.channels[Math.max(0, instrument.modChannels[Config.modCount - j - 1][0])].name != "") {
                     let scaleFactor: string = "1";
                     let height: number = firstLabel.parentElement!.parentElement!.getBoundingClientRect().height;
                     let length: number = firstLabel.getComputedTextLength();

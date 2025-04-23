@@ -946,7 +946,7 @@ export class SongEditor {
     private readonly _clicklessTransitionRow: HTMLElement = div({ class: "selectRow dropFader" }, span({ class: "tip", style: "margin-left:4px;", onclick: () => this._openPrompt("clicklessTransition") }, "‣ Clickless:"), this._clicklessTransitionBox);
     private readonly _transitionDropdownGroup: HTMLElement = div({ class: "editor-controls", style: "display: none;" }, this._clicklessTransitionRow);
 
-    private readonly _effectsSelect: HTMLSelectElement = select(option({ selected: true, disabled: true, hidden: false })); // todo: "hidden" should be true but looks wrong on mac chrome, adds checkmark next to first visible option even though it's not selected. :(
+    private readonly _effectsSelect: HTMLSelectElement = select(option({ selected: true, disabled: true, hidden: false }));
     private readonly _mdeffectsSelect: HTMLSelectElement = select(option({ selected: true, disabled: true, hidden: false })); // todo: "hidden" should be true but looks wrong on mac chrome, adds checkmark next to first visible option even though it's not selected. :(
     private readonly _eqFilterSimpleButton: HTMLButtonElement = button({ style: "font-size: x-small; width: 50%; height: 40%", class: "no-underline", onclick: () => this._switchEQFilterType(true) }, "simple");
     private readonly _eqFilterAdvancedButton: HTMLButtonElement = button({ style: "font-size: x-small; width: 50%; height: 40%", class: "last-button no-underline", onclick: () => this._switchEQFilterType(false) }, "advanced");
@@ -1600,7 +1600,7 @@ export class SongEditor {
             let modChannelBox: HTMLSelectElement = select({ style: "width: 100%; color: currentColor; text-overflow:ellipsis;" });
 
             let modNameRow: HTMLDivElement = div({ class: "operatorRow", style: "height: 1em; margin-bottom: 0.65em;" },
-                div({ class: "tip", style: "width: 10%; max-width: 5.4em;", id: "modChannelText" + mod, onclick: () => this._openPrompt("modChannel") }, "Ch:"),
+                div({ class: "tip", style: "width: 10%; max-width: 5.4em;", id: "modChannelText" + mod, onclick: () => this._openPrompt("modChannel") }, "Instr.:"),
                 div({ class: "selectContainer", style: 'width: 35%;' }, modChannelBox),
             );
 
@@ -3059,54 +3059,98 @@ export class SongEditor {
             for (let mod: number = 0; mod < Config.modCount; mod++) {
 
                 let instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-                let modChannel: number = Math.max(0, instrument.modChannels[mod]);
-                let modInstrument: number = instrument.modInstruments[mod];
+                let modChannels: number[] = instrument.modChannels[mod][0] >= 0 ? instrument.modChannels[mod] : [0];
+                let modInstruments: number[] = instrument.modInstruments[mod];
 
                 // Boundary checking
-                if (modInstrument >= this._doc.song.channels[modChannel].instruments.length + 2 || (modInstrument > 0 && this._doc.song.channels[modChannel].instruments.length <= 1)) {
-                    modInstrument = 0;
-                    instrument.modInstruments[mod] = 0;
-                }
-                if (modChannel >= this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount) {
-                    instrument.modInstruments[mod] = 0;
-                    instrument.modulators[mod] = 0;
+                for (let i: number = 0; i < instrument.modChannels[mod].length; i++) {
+                    if (modInstruments[i] >= this._doc.song.channels[modChannels[i]].instruments.length + 2 || (modInstruments[i] > 0 && this._doc.song.channels[modChannels[i]].instruments.length <= 1)) {
+                        modInstruments[i] = 0;
+                        instrument.modInstruments[mod][i] = 0;
+                    }
+                    if (modChannels[i] >= this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount) {
+                        instrument.modInstruments[mod][i] = 0;
+                        instrument.modulators[mod] = 0;
+                    }
                 }
 
                 let totalInstruments: number = 0;
                 for (let i: number = 0; i < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; i++) totalInstruments += this._doc.song.channels[i].instruments.length;
 
                 // Build options for modulator channels (make sure it has the right number).
-                if (this._doc.recalcChannelNames || (this._modChannelBoxes[mod].children.length != 2 + totalInstruments)) {
+                if (this._doc.recalcChannelNames || this._doc.recalcModChannels || (this._modChannelBoxes[mod].children.length != 3 + totalInstruments)) {
                     while (this._modChannelBoxes[mod].firstChild) this._modChannelBoxes[mod].remove(0);
                     const channelList: string[] = [];
                     channelList.push("none");
                     channelList.push("song");
+                    let newString: string = "";
                     for (let i: number = 0; i < this._doc.song.pitchChannelCount; i++) {
                         let tgtchannel: Channel = this._doc.song.channels[i];
                         for (let j: number = 0; j < tgtchannel.instruments.length; j++) {
                             if (this._doc.song.channels[i].name == "") {
-                                channelList.push("pitch " + (i + 1) + " ins " + (j + 1));
+                                newString = "pitch " + (i + 1) + " ins " + (j + 1)
                             }
                             else {
-                                channelList.push(this._doc.song.channels[i].name);
+                                newString = this._doc.song.channels[i].name;
                             }
+                            for (let k: number = 0; k < instrument.modChannels[mod].length; k++) {
+                                if (instrument.modChannels[mod][k] == i && instrument.modInstruments[mod][k] == j) {
+                                    newString = "🢒" + newString
+                                    break;
+                                }
+                            }
+                            channelList.push(newString)
                         }
                     }
                     for (let i: number = 0; i < this._doc.song.noiseChannelCount; i++) {
                         let tgtchannel: Channel = this._doc.song.channels[i + this._doc.song.pitchChannelCount];
                         for (let j: number = 0; j < tgtchannel.instruments.length; j++) {
-                            if (this._doc.song.channels[i + this._doc.song.pitchChannelCount].name == "") {
-                                channelList.push("noise " + (i + 1) + " ins " + (j + 1));
+                            if (this._doc.song.channels[i].name == "") {
+                                newString = "noise " + (i + 1) + " ins " + (j + 1)
                             }
                             else {
-                                channelList.push(this._doc.song.channels[i].name);
+                                newString = this._doc.song.channels[i].name;
                             }
+                            for (let k: number = 0; k < instrument.modChannels[mod].length; k++) {
+                                if (instrument.modChannels[mod][k] == i + this._doc.song.pitchChannelCount && instrument.modInstruments[mod][k] == j) {
+                                    newString = "🢒 " + newString
+                                    break;
+                                }
+                            }
+                            channelList.push(newString)
                         }
                     }
                     buildOptions(this._modChannelBoxes[mod], channelList);
-                }
+                    if (instrument.modChannels[mod][0] == -2) {
+                        this._modChannelBoxes[mod].selectedIndex = 0
+                    }
+                    else if (instrument.modChannels[mod][0] == -1) {
+                        this._modChannelBoxes[mod].selectedIndex = 1
+                    }
+                    else if (instrument.modChannels[mod].length == 1) {
+                        let tgtIndex: number = 0;
 
-                let channel: Channel = this._doc.song.channels[modChannel];
+                        for (let i: number = 0; i < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; i++) {
+                            for (let j: number = 0; j < this._doc.song.channels[i].instruments.length; j++) {
+                                if(i == instrument.modChannels[mod][0] && j == instrument.modInstruments[mod][0]) {
+                                    let stringValue: string | null = Array.from(this._modChannelBoxes[mod].children)[tgtIndex + 2].textContent;
+                                    if (stringValue != null) stringValue = stringValue.substr(2);
+                                    this._modChannelBoxes[mod].appendChild(option({ selected: false, disabled: true, hidden: true, value: stringValue }, stringValue));
+                                    this._modChannelBoxes[mod].selectedIndex = this._modChannelBoxes[mod].length - 1
+                                    tgtIndex = -5;
+                                    break;
+                                }
+                                else tgtIndex++;
+                            }
+                            if(tgtIndex == -5) break;
+                        }
+                    }
+                    else {
+                        this._modChannelBoxes[mod].appendChild(option({ selected: false, disabled: true, hidden: true, value: "many" }, "many"));
+                        this._modChannelBoxes[mod].selectedIndex = this._modChannelBoxes[mod].length - 1
+                    }
+                    this._doc.recalcModChannels = false;
+                }
 
                 // Set selected index based on channel info.
 
@@ -3134,10 +3178,10 @@ export class SongEditor {
                     for (let i: number = 0; i < channel.instruments.length; i++) {
 
                         if (usedInstruments.includes(i)) {
-                            this._modInstrumentBoxes[mod].options[i].label = "🢒" + (i + 1);
+                            this._modChannelBoxes[mod].options[i].label = "🢒" + (i + 1);
                         }
                         else {
-                            this._modInstrumentBoxes[mod].options[i].label = "" + (i + 1);
+                            this._modChannelBoxes[mod].options[i].label = "" + (i + 1);
                         }
                     }
                 }
@@ -3145,16 +3189,13 @@ export class SongEditor {
                     for (let i: number = 0; i < channel.instruments.length; i++) {
                         this._modInstrumentBoxes[mod].options[i].label = "" + (i + 1);
                     }
-                }
+            }
 
-                // Set selected index based on instrument info.
-                this._modInstrumentBoxes[mod].selectedIndex = instrument.modInstruments[mod];
-
-                */
+            */
 
                 // Build options for modulator settings (based on channel settings)
 
-                if (instrument.modChannels[mod] != -2) {
+                if (instrument.modChannels[mod][0] != -2) {
                     while (this._modSetBoxes[mod].firstChild) this._modSetBoxes[mod].remove(0);
                     const settingList: string[] = [];
                     const unusedSettingList: string[] = [];
@@ -3164,7 +3205,7 @@ export class SongEditor {
                     settingList.push("none");
 
                     // Populate mod setting options for the song scope.
-                    if (instrument.modChannels[mod] == -1) {
+                    if (instrument.modChannels[mod][0] == -1) {
                         settingList.push("song volume");
                         settingList.push("tempo");
                         settingList.push("song reverb");
@@ -3212,102 +3253,107 @@ export class SongEditor {
                             allInstrumentRingMods: boolean = true,
                             allInstrumentGranulars: boolean = true;
                         let instrumentCandidates: number[] = [];
-                        if (modInstrument >= channel.instruments.length) {
-                            for (let i: number = 0; i < channel.instruments.length; i++) {
-                                instrumentCandidates.push(i);
-                            }
-                        } else {
-                            instrumentCandidates.push(modInstrument);
-                        }
-                        for (let i: number = 0; i < instrumentCandidates.length; i++) {
-                            let instrumentIndex = instrumentCandidates[i];
 
-                            if (!tgtInstrumentTypes.includes(channel.instruments[instrumentIndex].type))
-                                tgtInstrumentTypes.push(channel.instruments[instrumentIndex].type);
-                            if (channel.instruments[instrumentIndex].eqFilterType)
-                                anyInstrumentSimpleEQ = true;
-                            else
-                                anyInstrumentAdvancedEQ = true;
-                            if (effectsIncludeChord(channel.instruments[instrumentIndex].mdeffects) && channel.instruments[instrumentIndex].getChord().arpeggiates) {
-                                anyInstrumentArps = true;
-                            }
-                            if (effectsIncludePitchShift(channel.instruments[instrumentIndex].mdeffects)) {
-                                anyInstrumentPitchShifts = true;
+                        for (let i: number = 0; i < instrument.modChannels[mod].length; i++) {
+                            let channel: Channel = this._doc.song.channels[modChannels[i]];
+
+                            if (modInstruments[i] >= channel.instruments.length) {
+                                for (let i: number = 0; i < channel.instruments.length; i++) {
+                                    instrumentCandidates.push(i);
+                                }
                             } else {
-                                allInstrumentPitchShifts = false;
+                                instrumentCandidates.push(modInstruments[i]);
                             }
-                            if (effectsIncludeDetune(channel.instruments[instrumentIndex].mdeffects)) {
-                                anyInstrumentDetunes = true;
-                            }
-                            else {
-                                allInstrumentDetunes = false;
-                            }
-                            if (effectsIncludeVibrato(channel.instruments[instrumentIndex].mdeffects)) {
-                                anyInstrumentVibratos = true;
-                            }
-                            else {
-                                allInstrumentVibratos = false;
-                            }
-                            if (effectsIncludeEQFilter(channel.instruments[instrumentIndex].effects)) {
-                                anyInstrumentNoteFilters = true;
+                            for (let i: number = 0; i < instrumentCandidates.length; i++) {
+                                let instrumentIndex = instrumentCandidates[i];
+
+                                if (!tgtInstrumentTypes.includes(channel.instruments[instrumentIndex].type))
+                                    tgtInstrumentTypes.push(channel.instruments[instrumentIndex].type);
                                 if (channel.instruments[instrumentIndex].eqFilterType)
-                                    anyInstrumentSimpleNote = true;
+                                    anyInstrumentSimpleEQ = true;
                                 else
-                                    anyInstrumentAdvancedNote = true;
-                            }
-                            else {
-                                allInstrumentNoteFilters = false;
-                            }
-                            if (effectsIncludeDistortion(channel.instruments[instrumentIndex].effects)) {
-                                anyInstrumentDistorts = true;
-                            }
-                            else {
-                                allInstrumentDistorts = false;
-                            }
-                            if (effectsIncludeBitcrusher(channel.instruments[instrumentIndex].effects)) {
-                                anyInstrumentBitcrushes = true;
-                            }
-                            else {
-                                allInstrumentBitcrushes = false;
-                            }
-                            if (effectsIncludePanning(channel.instruments[instrumentIndex].effects)) {
-                                anyInstrumentPans = true;
-                            }
-                            else {
-                                allInstrumentPans = false;
-                            }
-                            if (effectsIncludeChorus(channel.instruments[instrumentIndex].effects)) {
-                                anyInstrumentChorus = true;
-                            }
-                            else {
-                                allInstrumentChorus = false;
-                            }
-                            if (effectsIncludeEcho(channel.instruments[instrumentIndex].effects)) {
-                                anyInstrumentEchoes = true;
-                            }
-                            else {
-                                allInstrumentEchoes = false;
-                            }
-                            if (effectsIncludeReverb(channel.instruments[instrumentIndex].effects)) {
-                                anyInstrumentReverbs = true;
-                            }
-                            else {
-                                allInstrumentReverbs = false;
-                            }
-                            if (effectsIncludeRingModulation(channel.instruments[instrumentIndex].effects)) {
-                                anyInstrumentRingMods = true;
-                            }
-                            else {
-                                allInstrumentRingMods = false;
-                            }
-                            if (effectsIncludeGranular(channel.instruments[instrumentIndex].effects)) {
-                                anyInstrumentGranulars = true;
-                            }
-                            else {
-                                allInstrumentGranulars = false;
-                            }
-                            if (channel.instruments[instrumentIndex].envelopes.length > 0) {
-                                anyInstrumentHasEnvelopes = true;
+                                    anyInstrumentAdvancedEQ = true;
+                                if (effectsIncludeChord(channel.instruments[instrumentIndex].mdeffects) && channel.instruments[instrumentIndex].getChord().arpeggiates) {
+                                    anyInstrumentArps = true;
+                                }
+                                if (effectsIncludePitchShift(channel.instruments[instrumentIndex].mdeffects)) {
+                                    anyInstrumentPitchShifts = true;
+                                } else {
+                                    allInstrumentPitchShifts = false;
+                                }
+                                if (effectsIncludeDetune(channel.instruments[instrumentIndex].mdeffects)) {
+                                    anyInstrumentDetunes = true;
+                                }
+                                else {
+                                    allInstrumentDetunes = false;
+                                }
+                                if (effectsIncludeVibrato(channel.instruments[instrumentIndex].mdeffects)) {
+                                    anyInstrumentVibratos = true;
+                                }
+                                else {
+                                    allInstrumentVibratos = false;
+                                }
+                                if (effectsIncludeEQFilter(channel.instruments[instrumentIndex].effects)) {
+                                    anyInstrumentNoteFilters = true;
+                                    if (channel.instruments[instrumentIndex].eqFilterType)
+                                        anyInstrumentSimpleNote = true;
+                                    else
+                                        anyInstrumentAdvancedNote = true;
+                                }
+                                else {
+                                    allInstrumentNoteFilters = false;
+                                }
+                                if (effectsIncludeDistortion(channel.instruments[instrumentIndex].effects)) {
+                                    anyInstrumentDistorts = true;
+                                }
+                                else {
+                                    allInstrumentDistorts = false;
+                                }
+                                if (effectsIncludeBitcrusher(channel.instruments[instrumentIndex].effects)) {
+                                    anyInstrumentBitcrushes = true;
+                                }
+                                else {
+                                    allInstrumentBitcrushes = false;
+                                }
+                                if (effectsIncludePanning(channel.instruments[instrumentIndex].effects)) {
+                                    anyInstrumentPans = true;
+                                }
+                                else {
+                                    allInstrumentPans = false;
+                                }
+                                if (effectsIncludeChorus(channel.instruments[instrumentIndex].effects)) {
+                                    anyInstrumentChorus = true;
+                                }
+                                else {
+                                    allInstrumentChorus = false;
+                                }
+                                if (effectsIncludeEcho(channel.instruments[instrumentIndex].effects)) {
+                                    anyInstrumentEchoes = true;
+                                }
+                                else {
+                                    allInstrumentEchoes = false;
+                                }
+                                if (effectsIncludeReverb(channel.instruments[instrumentIndex].effects)) {
+                                    anyInstrumentReverbs = true;
+                                }
+                                else {
+                                    allInstrumentReverbs = false;
+                                }
+                                if (effectsIncludeRingModulation(channel.instruments[instrumentIndex].effects)) {
+                                    anyInstrumentRingMods = true;
+                                }
+                                else {
+                                    allInstrumentRingMods = false;
+                                }
+                                if (effectsIncludeGranular(channel.instruments[instrumentIndex].effects)) {
+                                    anyInstrumentGranulars = true;
+                                }
+                                else {
+                                    allInstrumentGranulars = false;
+                                }
+                                if (channel.instruments[instrumentIndex].envelopes.length > 0) {
+                                    anyInstrumentHasEnvelopes = true;
+                                }
                             }
 
                         }
@@ -3487,11 +3533,11 @@ export class SongEditor {
 
                 //Hide instrument select if channel is "none" or "song"
                 //Hopefully the !. don't ruin something...
-                if (instrument.modChannels[mod] < 0) {
+                if (instrument.modChannels[mod][0] < 0) {
                     $("#modChannelText" + mod).get(0)!.innerText = "Instr.:";
 
                     //Hide setting select if channel is "none"
-                    if (instrument.modChannels[mod] == -2) {
+                    if (instrument.modChannels[mod][0] == -2) {
                         $("#modSettingText" + mod).get(0)!.style.display = "none";
                         ((this._modSetBoxes[mod].parentElement) as HTMLDivElement).style.display = "none";
                     } else {
@@ -3518,21 +3564,23 @@ export class SongEditor {
                     $("#modEnvelopeText" + mod).get(0)!.style.display = "none";
                     $("#modSettingText" + mod).get(0)!.style.setProperty("margin-bottom", "2px");
 
-                    let useInstrument: number = instrument.modInstruments[mod];
-                    let modChannel: Channel = this._doc.song.channels[Math.max(0, instrument.modChannels[mod])];
-                    let tmpCount: number = -1;
-                    if (useInstrument >= modChannel.instruments.length) {
-                        // Use greatest number of dots among all instruments if setting is 'all' or 'active'. If it won't have an effect on one, no worry.
-                        for (let i: number = 0; i < modChannel.instruments.length; i++) {
-                            if (filterType == "post eq") {
-                                if (modChannel.instruments[i].eqFilter.controlPointCount > tmpCount) {
-                                    tmpCount = modChannel.instruments[i].eqFilter.controlPointCount;
-                                    useInstrument = i;
-                                }
-                            } else {
-                                if (modChannel.instruments[i].noteFilter.controlPointCount > tmpCount) {
-                                    tmpCount = modChannel.instruments[i].noteFilter.controlPointCount;
-                                    useInstrument = i;
+                    let useInstrument: number = instrument.modInstruments[mod][0];
+                    for (let i: number = 0; i < instrument.modChannels[mod].length; i++) {
+                        let modChannel: Channel = this._doc.song.channels[Math.max(0, instrument.modChannels[mod][i])];
+                        let tmpCount: number = -1;
+                        if (useInstrument >= modChannel.instruments.length) {
+                            // Use greatest number of dots among all instruments if setting is 'all' or 'active'. If it won't have an effect on one, no worry.
+                            for (let i: number = 0; i < modChannel.instruments.length; i++) {
+                                if (filterType == "post eq") {
+                                    if (modChannel.instruments[i].eqFilter.controlPointCount > tmpCount) {
+                                        tmpCount = modChannel.instruments[i].eqFilter.controlPointCount;
+                                        useInstrument = i;
+                                    }
+                                } else {
+                                    if (modChannel.instruments[i].noteFilter.controlPointCount > tmpCount) {
+                                        tmpCount = modChannel.instruments[i].noteFilter.controlPointCount;
+                                        useInstrument = i;
+                                    }
                                 }
                             }
                         }
@@ -3603,12 +3651,14 @@ export class SongEditor {
                     $("#modFilterText" + mod).get(0)!.style.display = "none";
                     $("#modSettingText" + mod).get(0)!.style.setProperty("margin-bottom", "2px");
 
-                    let modChannel: Channel = this._doc.song.channels[Math.max(0, instrument.modChannels[mod])];
                     let envCount: number = -1;
-                    // Use greatest envelope count among all instruments if setting is 'all' or 'active'. If it won't have an effect on one, no worry.
-                    for (let i: number = 0; i < modChannel.instruments.length; i++) {
-                        if (modChannel.instruments[i].envelopeCount > envCount) {
-                            envCount = modChannel.instruments[i].envelopeCount;
+                    for (let i: number = 0; i < instrument.modChannels[mod].length; i++) {
+                        let modChannel: Channel = this._doc.song.channels[Math.max(0, instrument.modChannels[mod][i])];
+                        // Use greatest envelope count among all instruments if setting is 'all' or 'active'. If it won't have an effect on one, no worry.
+                        for (let i: number = 0; i < modChannel.instruments.length; i++) {
+                            if (modChannel.instruments[i].envelopeCount > envCount) {
+                                envCount = modChannel.instruments[i].envelopeCount;
+                            }
                         }
                     }
 
@@ -3921,8 +3971,10 @@ export class SongEditor {
                     const modInstrumentIdx: number = modChannel.patterns[patternIdx - 1].instruments[0];
                     const modInstrument: Instrument = modChannel.instruments[modInstrumentIdx];
                     for (let mod: number = 0; mod < Config.modCount; mod++) {
-                        if (modInstrument.modChannels[mod] == channelIndex && (modInstrument.modInstruments[mod] == instrumentIndex || modInstrument.modInstruments[mod] >= channel.instruments.length)) {
-                            modUsed = true;
+                        for (let i: number = 0; i < modInstrument.modChannels[mod].length; i++) {
+                            if (modInstrument.modChannels[mod][i] == channelIndex && (modInstrument.modInstruments[mod][i] == instrumentIndex || modInstrument.modInstruments[mod][i] >= channel.instruments.length)) {
+                                modUsed = true;
+                            }
                         }
                     }
                 }
@@ -5139,19 +5191,7 @@ export class SongEditor {
 
     private _whenSetModChannel = (mod: number): void => {
 
-        let instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-        let previouslyUnset: boolean = (instrument.modulators[mod] == 0 || Config.modulators[instrument.modulators[mod]].forSong);
-
         this._doc.selection.setModChannel(mod, this._modChannelBoxes[mod].selectedIndex);
-
-        const modChannel: number = Math.max(0, instrument.modChannels[mod]);
-
-        // Check if setting was 'song' or 'none' and is changing to a channel number, in which case suggested instrument to mod will auto-set to the current one.
-        if (this._doc.song.channels[modChannel].instruments.length > 1 && previouslyUnset && this._modChannelBoxes[mod].selectedIndex >= 2) {
-            if (this._doc.song.channels[modChannel].bars[this._doc.bar] > 0) {
-                this._doc.selection.setModInstrument(mod, this._doc.song.channels[modChannel].patterns[this._doc.song.channels[modChannel].bars[this._doc.bar] - 1].instruments[0]);
-            }
-        }
 
         // Force piano to re-show
         this._piano.forceRender();
@@ -5197,7 +5237,7 @@ export class SongEditor {
                     const modInstrumentIdx: number = modChannel.patterns[patternIdx - 1].instruments[0];
                     const modInstrument: Instrument = modChannel.instruments[modInstrumentIdx];
                     for (let mod: number = 0; mod < Config.modCount; mod++) {
-                        if (modInstrument.modChannels[mod] == channelIndex && (modInstrument.modInstruments[mod] == instrumentIndex || modInstrument.modInstruments[mod] >= this._doc.song.channels[channelIndex].instruments.length)) {
+                        if (modInstrument.modChannels[mod][0] == channelIndex && (modInstrument.modInstruments[mod][0] == instrumentIndex || modInstrument.modInstruments[mod][0] >= this._doc.song.channels[channelIndex].instruments.length)) {
                             this._doc.selection.setChannelBar(modChannelIdx, this._doc.bar);
                             return;
                         }

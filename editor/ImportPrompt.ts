@@ -833,7 +833,7 @@ export class ImportPrompt implements Prompt {
             let tempoModInstrument = new Instrument(false, true);
             tempoModInstrument.setTypeAndReset(9 /* InstrumentType.mod */, false, true);
             tempoModInstrument.modulators[0] = Config.modulators.dictionary["tempo"].index;
-            tempoModInstrument.modChannels[0] = -1;
+            tempoModInstrument.modChannels[0][0] = -1;
             tempoModChannel.instruments.push(tempoModInstrument);
             // We're using the first modulator in the channel, but the pitch values are
             // flipped relative to the UI, so we need to pick a pitch value accordingly.

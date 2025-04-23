@@ -707,8 +707,10 @@ export class Selection {
             for (let channelIndex: number = 0; channelIndex < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; channelIndex++) {
                 soloPattern[channelIndex] = false;
                 for (let mod: number = 0; mod < Config.modCount; mod++) {
-                    if (modInstrument.modChannels[mod] == channelIndex) {
-                        soloPattern[channelIndex] = true;
+                    for (let channels: number = 0; channels < modInstrument.modChannels[mod].length; channels++) {
+                        if (modInstrument.modChannels[mod][channels] == channelIndex) {
+                            soloPattern[channelIndex] = true;
+                        }
                     }
                 }
             }

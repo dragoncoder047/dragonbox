@@ -301,8 +301,8 @@ export class Instrument {
     public readonly harmonicsWave: HarmonicsWave = new HarmonicsWave();
     public readonly drumsetEnvelopes: number[] = [];
     public readonly drumsetSpectrumWaves: SpectrumWave[] = [];
-    public modChannels: number[] = [];
-    public modInstruments: number[] = [];
+    public modChannels: number[][] = [];
+    public modInstruments: number[][] = [];
     public modulators: number[] = [];
     public modFilterTypes: number[] = [];
     public modEnvelopeNumbers: number[] = [];
@@ -321,10 +321,10 @@ export class Instrument {
         //   -1 "song"
         //   0+ actual channel index
         //
-        // modInstruments[mod] gives the index of an instrument within the channel set for this mod. Again, two special values:
+        // modInstruments[mod] gives the index of an instrument within the channel set for this mod.
         //   [0 ~ channel.instruments.length-1]     channel's instrument index
-        //   channel.instruments.length             "all"
-        //   channel.instruments.length+1           "active"
+        //
+        // in theepbox, the channel and instrument is given as a list because many channel-instrument pairs can be enabled at once :3
         //
         // modFilterTypes[mod] gives some info about the filter type: 0 is morph, 1+ is index in the dot selection array (dot 1 x, dot 1 y, dot 2 x...)
         //   0  filter morph
@@ -332,8 +332,8 @@ export class Instrument {
 
         if (isModChannel) {
             for (let mod: number = 0; mod < Config.modCount; mod++) {
-                this.modChannels.push(-2);
-                this.modInstruments.push(0);
+                this.modChannels.push([-2]);
+                this.modInstruments.push([0]);
                 this.modulators.push(Config.modulators.dictionary["none"].index);
             }
         }
@@ -535,8 +535,8 @@ export class Instrument {
                 this.modInstruments = [];
                 this.modulators = [];
                 for (let mod: number = 0; mod < Config.modCount; mod++) {
-                    this.modChannels.push(-2);
-                    this.modInstruments.push(0);
+                    this.modChannels.push([-2]);
+                    this.modInstruments.push([0]);
                     this.modulators.push(Config.modulators.dictionary["none"].index);
                     this.invalidModulators[mod] = false;
                     this.modFilterTypes[mod] = 0;

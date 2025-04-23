@@ -750,28 +750,30 @@ export class PatternEditor {
                 let instrument: Instrument = modChannel.instruments[instrumentIndex];
                 for (let mod: number = 0; mod < Config.modCount; mod++) {
                     // Non-song application
-                    if (instrument.modulators[mod] == applyToMod && !Config.modulators[instrument.modulators[mod]].forSong && (instrument.modChannels[mod] == thisRef._doc.channel)) {
-                        // This is a check if the instrument targeted is relevant. Is it the exact one being edited? An "all" or "active" target?
-                        // For "active" target it doesn't check if the instrument is active, allowing write to other active instruments from an inactive one. Should be fine since audibly while writing you'll hear what you'd expect -
-                        // the current channel's active instruments being modulated, which is what most people would expect even if editing an inactive instrument.
-                        if (thisRef._doc.getCurrentInstrument() == instrument.modInstruments[mod]
-                            || instrument.modInstruments[mod] >= thisRef._doc.song.channels[thisRef._doc.channel].instruments.length) {
-                            // If it's an eq/note filter target, one additional step is performed to see if it matches the right modFilterType.
-                            if (modFilterIndex != undefined && (applyToMod == Config.modulators.dictionary["eq filter"].index || applyToMod == Config.modulators.dictionary["note filter"].index)) {
-                                if (instrument.modFilterTypes[mod] == modFilterIndex)
+                    for (let channelIndex: number = 0; channelIndex < instrument.modChannels[mod].length; channelIndex++) {
+                        if (instrument.modulators[mod] == applyToMod && !Config.modulators[instrument.modulators[mod]].forSong && (instrument.modChannels[mod][channelIndex] == thisRef._doc.channel)) {
+                            // This is a check if the instrument targeted is relevant. Is it the exact one being edited? An "all" or "active" target?
+                            // For "active" target it doesn't check if the instrument is active, allowing write to other active instruments from an inactive one. Should be fine since audibly while writing you'll hear what you'd expect -
+                            // the current channel's active instruments being modulated, which is what most people would expect even if editing an inactive instrument.
+                            if (thisRef._doc.getCurrentInstrument() == instrument.modInstruments[mod][channelIndex]
+                                || instrument.modInstruments[mod][channelIndex] >= thisRef._doc.song.channels[thisRef._doc.channel].instruments.length) {
+                                // If it's an eq/note filter target, one additional step is performed to see if it matches the right modFilterType.
+                                if (modFilterIndex != undefined && (applyToMod == Config.modulators.dictionary["eq filter"].index || applyToMod == Config.modulators.dictionary["note filter"].index)) {
+                                    if (instrument.modFilterTypes[mod] == modFilterIndex)
+                                        return [instrumentIndex, mod];
+                                } else if (modEnvIndex != undefined && applyToMod == Config.modulators.dictionary["individual envelope speed"].index ||
+                                    applyToMod == Config.modulators.dictionary["individual envelope lower bound"].index ||
+                                    applyToMod == Config.modulators.dictionary["individual envelope upper bound"].index
+                                ) {
+                                    if (instrument.modEnvelopeNumbers[mod] == modEnvIndex)
+                                        return [instrumentIndex, mod];
+                                } else
                                     return [instrumentIndex, mod];
-                            } else if (modEnvIndex != undefined && applyToMod == Config.modulators.dictionary["individual envelope speed"].index ||
-                                applyToMod == Config.modulators.dictionary["individual envelope lower bound"].index ||
-                                applyToMod == Config.modulators.dictionary["individual envelope upper bound"].index
-                             ) {
-                                if (instrument.modEnvelopeNumbers[mod] == modEnvIndex)
-                                    return [instrumentIndex, mod];
-                            } else
-                                return [instrumentIndex, mod];
+                            }
                         }
                     }
                     // Song wide application
-                    else if (instrument.modulators[mod] == applyToMod && Config.modulators[instrument.modulators[mod]].forSong && (instrument.modChannels[mod] == -1)) {
+                    if (instrument.modulators[mod] == applyToMod && Config.modulators[instrument.modulators[mod]].forSong && (instrument.modChannels[mod][0] == -1)) {
                         // check song eq? 
                         if (modFilterIndex != undefined && (applyToMod == Config.modulators.dictionary["song eq"].index)) {
                             if (instrument.modFilterTypes[mod] == modFilterIndex)
@@ -1525,20 +1527,20 @@ export class PatternEditor {
                                     if (applyToFilterTargets.length > applyIndex) {
                                         instrument.modFilterTypes[mod] = applyToFilterTargets[applyIndex];
                                     }
-                                    instrument.modChannels[mod] = -1; // Song
+                                    instrument.modChannels[mod][0] = -1; // Song
                                 } else {
-                                    instrument.modChannels[mod] = this._doc.channel;
+                                    instrument.modChannels[mod][instrument.modChannels[mod].length] = this._doc.channel;
 
                                     if (this._doc.song.channels[this._doc.channel].instruments.length > 1) {
                                         // Ctrl key or Shift key: set the new mod target to "active" modulation for the most flexibility, if there's more than one instrument in the channel.
                                         if (!this.controlMode || !this.shiftMode)
-                                            instrument.modInstruments[mod] = this._doc.song.channels[this._doc.channel].instruments.length + 1;
+                                            instrument.modInstruments[mod][instrument.modChannels[mod].length] = this._doc.song.channels[this._doc.channel].instruments.length + 1;
                                         // Control+Shift key: Set the new mod target to the currently viewed instrument only.
                                         else
-                                            instrument.modInstruments[mod] = this._doc.getCurrentInstrument();
+                                            instrument.modInstruments[mod][instrument.modChannels[mod].length] = this._doc.getCurrentInstrument();
                                     }
                                     else
-                                        instrument.modInstruments[mod] = 0;
+                                        instrument.modInstruments[mod][instrument.modChannels[mod].length] = 0;
 
                                     // Filter dot. Add appropriate filter target settings (dot# X and dot# Y mod).
                                     if (applyToFilterTargets.length > applyIndex) {
@@ -1584,7 +1586,7 @@ export class PatternEditor {
                 // Explicitly set the mod to the applied value, just in case the note we add isn't picked up in the next synth run.
                 const modNoteIndex: number = Config.modCount - 1 - usedModIndices[i];
                 const usedInstrument: Instrument = usedInstruments[i];
-                if (usedInstrument.modChannels[usedModIndices[i]] >= -1) {
+                if (usedInstrument.modChannels[usedModIndices[i]][instrument.modChannels[modNoteIndex].length] >= -1) {
                     // Generate list of used instruments
                     let usedNewInstrumentIndices: number[] = [];
                     if (Config.modulators[applyToMods[applyIndex]].forSong) {
@@ -1592,23 +1594,23 @@ export class PatternEditor {
                         usedNewInstrumentIndices.push(0);
                     } else {
                         // All
-                        if (usedInstrument.modInstruments[usedModIndices[i]] == this._doc.synth.song!.channels[usedInstrument.modChannels[usedModIndices[i]]].instruments.length) {
-                            for (let k: number = 0; k < this._doc.synth.song!.channels[usedInstrument.modChannels[usedModIndices[i]]].instruments.length; k++) {
+                        if (usedInstrument.modInstruments[usedModIndices[i]][0] == this._doc.synth.song!.channels[usedInstrument.modChannels[usedModIndices[i]][0]].instruments.length) {
+                            for (let k: number = 0; k < this._doc.synth.song!.channels[usedInstrument.modChannels[usedModIndices[i]][0]].instruments.length; k++) {
                                 usedNewInstrumentIndices.push(k);
                             }
                         }
                         // Active
-                        else if (usedInstrument.modInstruments[usedModIndices[i]] > this._doc.synth.song!.channels[usedInstrument.modChannels[usedModIndices[i]]].instruments.length) {
-                            if (this._doc.synth.song!.getPattern(usedInstrument.modChannels[usedModIndices[i]], currentBar) != null)
-                                usedNewInstrumentIndices = this._doc.synth.song!.getPattern(usedInstrument.modChannels[usedModIndices[i]], currentBar)!.instruments;
+                        else if (usedInstrument.modInstruments[usedModIndices[i]][0] > this._doc.synth.song!.channels[usedInstrument.modChannels[usedModIndices[i]][0]].instruments.length) {
+                            if (this._doc.synth.song!.getPattern(usedInstrument.modChannels[usedModIndices[i]][0], currentBar) != null)
+                                usedNewInstrumentIndices = this._doc.synth.song!.getPattern(usedInstrument.modChannels[usedModIndices[i]][0], currentBar)!.instruments;
                         } else {
-                            usedNewInstrumentIndices.push(usedInstrument.modInstruments[usedModIndices[i]]);
+                            usedNewInstrumentIndices.push(usedInstrument.modInstruments[usedModIndices[i]][instrument.modChannels[modNoteIndex].length]);
                         }
                     }
 
                     for (let instrumentIndex: number = 0; instrumentIndex < usedNewInstrumentIndices.length; instrumentIndex++) {
-                        this._doc.synth.setModValue(applyValues[applyIndex], applyValues[applyIndex], usedInstruments[i].modChannels[usedModIndices[i]], usedNewInstrumentIndices[instrumentIndex], applyToMods[applyIndex]);
-                        this._doc.synth.forceHoldMods(applyValues[applyIndex], usedInstruments[i].modChannels[usedModIndices[i]], usedNewInstrumentIndices[instrumentIndex], applyToMods[applyIndex]);
+                        this._doc.synth.setModValue(applyValues[applyIndex], applyValues[applyIndex], usedInstruments[i].modChannels[usedModIndices[i]][instrument.modChannels[modNoteIndex].length], usedNewInstrumentIndices[instrumentIndex], applyToMods[applyIndex]);
+                        this._doc.synth.forceHoldMods(applyValues[applyIndex], usedInstruments[i].modChannels[usedModIndices[i]][instrument.modChannels[modNoteIndex].length], usedNewInstrumentIndices[instrumentIndex], applyToMods[applyIndex]);
                     }
                 }
 

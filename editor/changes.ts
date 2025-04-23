@@ -2116,6 +2116,7 @@ export class ChangeChannelCount extends Change {
                             // Bump indices - new pitch channel added, bump all noise mods.
                             if (modChannel >= oldPitchCount && oldPitchCount < newPitchChannelCount) {
                                 instrument.modChannels[mod][i] += newPitchChannelCount - oldPitchCount;
+                                console.log("here?")
                             } //BUG: this is (probably?) broken right now, pls fix
                         }
                     }
@@ -2162,15 +2163,15 @@ export class ChangeRemoveChannel extends ChangeGroup {
             for (let instrumentIndex: number = 0; instrumentIndex < doc.song.channels[modChannel].instruments.length; instrumentIndex++) {
                 const modInstrument: Instrument = doc.song.channels[modChannel].instruments[instrumentIndex];
                 for (let mod: number = 0; mod < Config.modCount; mod++) {
-                    for (let i: number = 0; i < modInstrument.modChannels[mod].length; i++) {
-                        if (modInstrument.modChannels[mod][i] >= minIndex && modInstrument.modChannels[mod][i] <= oldMax) {
-                            this.append(new ChangeModChannel(doc, mod, 0, modInstrument));
+                    for (let channelIndex: number = 0; channelIndex < modInstrument.modChannels[mod].length; channelIndex++) {
+                        if (modInstrument.modChannels[mod][channelIndex] >= minIndex && modInstrument.modChannels[mod][channelIndex] <= oldMax) {
+                            this.append(new ChangeReplaceModChannel(doc, mod, channelIndex, modInstrument));
                         }
-                        else if (modInstrument.modChannels[mod][i] > oldMax) {
-                            this.append(new ChangeModChannel(doc, mod, modInstrument.modChannels[mod][i] - (oldMax - minIndex + 1) + 2, modInstrument));
+                        else if (modInstrument.modChannels[mod][channelIndex] > oldMax) {
+                            this.append(new ChangeReplaceModChannel(doc, mod, channelIndex, modInstrument, -(oldMax - minIndex + 1)));
                         }
                     }
-                } //BUG: this defo doesnt work
+                }
             }
         }
 
@@ -3665,6 +3666,28 @@ export class ChangeSetPatternInstruments extends Change {
     }
 }
 
+export class ChangeReplaceModChannel extends Change {
+    constructor(doc: SongDocument, mod: number, index: number, useInstrument?: Instrument, offset?: number) {
+        super();
+        let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        if (useInstrument != undefined)
+            instrument = useInstrument;
+
+        if (offset == undefined) {
+            instrument.modChannels[mod].splice(index, 1);
+            instrument.modInstruments[mod].splice(index, 1);
+        }
+        else instrument.modChannels[mod][index] += offset
+
+        console.log(instrument.modChannels[mod][index])
+
+        doc.recalcModChannels = true;
+
+        doc.notifier.changed();
+        this._didSomething();
+    }
+}
+
 export class ChangeModChannel extends Change {
     constructor(doc: SongDocument, mod: number, index: number, useInstrument?: Instrument) {
         super();
@@ -3778,7 +3801,7 @@ export class ChangeModSetting extends Change {
             }
             else {
                 // Single instrument used.
-                for (let i: number = 0; i < instrument.modChannels[mod].length; i++) usedInstruments.push(doc.song.channels[tgtChannel].instruments[instrument.modInstruments[mod][i]]);
+                for (let i: number = 0; i < instrument.modChannels[mod].length; i++) usedInstruments.push(doc.song.channels[i].instruments[instrument.modInstruments[mod][i]]);
             }
         }
 

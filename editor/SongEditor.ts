@@ -3157,7 +3157,6 @@ export class SongEditor {
                         this._modChannelBoxes[mod].appendChild(option({ selected: false, disabled: true, hidden: true, value: "many" }, "many"));
                         this._modChannelBoxes[mod].selectedIndex = this._modChannelBoxes[mod].length - 1
                     }
-                    this._doc.recalcModChannels = false;
                 }
 
                 // Set selected index based on channel info.
@@ -3704,6 +3703,7 @@ export class SongEditor {
             }
 
             this._doc.recalcChannelNames = false;
+            this._doc.recalcModChannels = false;
 
             for (let chordIndex: number = 0; chordIndex < Config.chords.length; chordIndex++) {
                 const option: Element = this._chordSelect.children[chordIndex];

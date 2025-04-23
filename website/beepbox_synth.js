@@ -1172,8 +1172,8 @@ var beepbox = (function (exports) {
         { name: "pitchShift", computeIndex: 19, displayName: "pitch shift", interleave: false, isFilter: false, maxCount: 1, effect: null, mdeffect: 0, compatibleInstruments: null },
         { name: "detune", computeIndex: 20, displayName: "detune", interleave: false, isFilter: false, maxCount: 1, effect: null, mdeffect: 1, compatibleInstruments: null },
         { name: "vibratoDepth", computeIndex: 21, displayName: "vibrato depth", interleave: false, isFilter: false, maxCount: 1, effect: null, mdeffect: 2, compatibleInstruments: null },
-        { name: "noteFilterAllFreqs", computeIndex: 2, displayName: "n. filter freqs", interleave: false, isFilter: true, maxCount: 1, effect: 5, mdeffect: null, compatibleInstruments: null },
-        { name: "noteFilterFreq", computeIndex: 22, displayName: "n. filter # freq", interleave: false, isFilter: true, maxCount: _a.filterMaxPoints, effect: 5, mdeffect: null, compatibleInstruments: null },
+        { name: "noteFilterAllFreqs", computeIndex: 2, displayName: "pre eq freqs", interleave: false, isFilter: true, maxCount: 1, effect: null, mdeffect: null, compatibleInstruments: null },
+        { name: "noteFilterFreq", computeIndex: 22, displayName: "pre eq # freq", interleave: false, isFilter: true, maxCount: _a.filterMaxPoints, effect: null, mdeffect: null, compatibleInstruments: null },
         { name: "decimalOffset", computeIndex: 38, displayName: "decimal offset", interleave: false, isFilter: false, maxCount: 1, effect: null, mdeffect: null, compatibleInstruments: [6, 8] },
         { name: "supersawDynamism", computeIndex: 39, displayName: "dynamism", interleave: false, isFilter: false, maxCount: 1, effect: null, mdeffect: null, compatibleInstruments: [8] },
         { name: "supersawSpread", computeIndex: 40, displayName: "spread", interleave: false, isFilter: false, maxCount: 1, effect: null, mdeffect: null, compatibleInstruments: [8] },
@@ -5385,8 +5385,8 @@ var beepbox = (function (exports) {
                         }
                     }
                     buffer.push(113, base64IntToCharCode[(instrument.effects >> 12) & 63], base64IntToCharCode[(instrument.effects >> 6) & 63], base64IntToCharCode[instrument.effects & 63]);
-                    for (let i = 0; i < Config.effectCount; i++) {
-                        buffer.push(base64IntToCharCode[instrument.effectOrder[i]]);
+                    for (let i = 0; i < 9; i++) {
+                        buffer.push(base64IntToCharCode[instrument.effectOrder[i] & 63]);
                     }
                     buffer.push(base64IntToCharCode[instrument.mdeffects & 63]);
                     if (effectsIncludeEQFilter(instrument.effects)) {
@@ -7087,8 +7087,6 @@ var beepbox = (function (exports) {
                                 instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
                             }
                             else {
-                                if (9 > Config.effectCount)
-                                    throw new Error();
                                 if (fromSlarmoosBox && !beforeFive) {
                                     instrument.effects = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 12) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 }
@@ -7096,7 +7094,7 @@ var beepbox = (function (exports) {
                                     instrument.effects = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 }
                                 if (fromTheepBox) {
-                                    for (let i = 0; i < Config.effectCount; i++) {
+                                    for (let i = 0; i < 9; i++) {
                                         instrument.effectOrder[i] = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                     }
                                     instrument.mdeffects = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
@@ -10927,9 +10925,8 @@ var beepbox = (function (exports) {
                 this.eqFilterCount = eqFilterSettings.controlPointCount;
                 eqFilterVolume = Math.min(3.0, eqFilterVolume);
             }
-            const mainInstrumentVolume = Synth.instrumentVolumeToVolumeMult(instrument.volume);
-            this.mixVolume = mainInstrumentVolume;
-            let mixVolumeEnd = mainInstrumentVolume;
+            this.mixVolume = envelopeStarts[1] * Synth.instrumentVolumeToVolumeMult(instrument.volume);
+            let mixVolumeEnd = envelopeEnds[1] * Synth.instrumentVolumeToVolumeMult(instrument.volume);
             if (synth.isModActive(Config.modulators.dictionary["post volume"].index, channelIndex, instrumentIndex)) {
                 const startVal = synth.getModValue(Config.modulators.dictionary["post volume"].index, channelIndex, instrumentIndex, false);
                 const endVal = synth.getModValue(Config.modulators.dictionary["post volume"].index, channelIndex, instrumentIndex, true);

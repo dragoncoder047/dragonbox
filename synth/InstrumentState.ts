@@ -1039,9 +1039,9 @@ export class InstrumentState {
             eqFilterVolume = Math.min(3.0, eqFilterVolume);
         }
 
-        const mainInstrumentVolume: number = Synth.instrumentVolumeToVolumeMult(instrument.volume);
-        this.mixVolume = envelopeStarts[EnvelopeComputeIndex.mixVolume];
-        let mixVolumeEnd: number = envelopeEnds[EnvelopeComputeIndex.mixVolume];
+        //const mainInstrumentVolume: number = Synth.instrumentVolumeToVolumeMult(instrument.volume);
+        this.mixVolume = envelopeStarts[EnvelopeComputeIndex.mixVolume] * Synth.instrumentVolumeToVolumeMult(instrument.volume);
+        let mixVolumeEnd: number = envelopeEnds[EnvelopeComputeIndex.mixVolume] * Synth.instrumentVolumeToVolumeMult(instrument.volume);
 
         // Check for mod-related volume delta
         if (synth.isModActive(Config.modulators.dictionary["post volume"].index, channelIndex, instrumentIndex)) {

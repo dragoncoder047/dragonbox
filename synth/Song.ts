@@ -893,8 +893,8 @@ export class Song {
                 // slarmoos box describes this as a "14 bit bitfield" but im pretty sure its actually 18 bits and 15 of them are used. weird! - theepie
                 buffer.push(SongTagCode.effects, base64IntToCharCode[(instrument.effects >> 12) & 63], base64IntToCharCode[(instrument.effects >> 6) & 63], base64IntToCharCode[instrument.effects & 63]);
                 // the effect order is not so simple. eventually i will merge these two!
-                for (let i = 0; i < Config.effectCount; i++) {
-                    buffer.push(base64IntToCharCode[instrument.effectOrder[i]]);
+                for (let i = 0; i < 9; i++) {
+                    buffer.push(base64IntToCharCode[instrument.effectOrder[i] & 63]);
                 }
                 // this is a six bit bitfield
                 buffer.push(base64IntToCharCode[instrument.mdeffects & 63]);
@@ -2690,14 +2690,14 @@ export class Song {
                     const legacySettings: LegacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
                     instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
                 } else {
-                    if (EffectType.length > Config.effectCount) throw new Error();
+                    if (EffectType.length > 9) throw new Error();
                     if (fromSlarmoosBox && !beforeFive) {
                         instrument.effects = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 12) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     } else {
                         instrument.effects = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     }
                     if (fromTheepBox) {
-                        for (let i = 0; i < Config.effectCount; i++) {
+                        for (let i = 0; i < 9; i++) {
                             instrument.effectOrder[i] = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         }
                         instrument.mdeffects = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];

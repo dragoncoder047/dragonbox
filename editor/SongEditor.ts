@@ -1241,7 +1241,7 @@ export class SongEditor {
         ),
         this._mdeffectsGroup,
         div({ style: `padding: 2px 0; margin-left: 2em; display: flex; align-items: center;` },
-            span({ style: `flex-grow: 1; text-align: center;` }, span({ class: "tip", onclick: () => this._openPrompt("effects") }, "Effects")),
+            span({ style: `flex-grow: 1; text-align: center;` }, span({ class: "tip", onclick: () => this._openPrompt("effects") }, "Audio Effects")),
             div({ class: "effects-menu" }, this._effectsSelect),
         ),
         this._effectsGroup,
@@ -2813,6 +2813,14 @@ export class SongEditor {
                 this._mdeffectsGroup.append(this._chordDropdownGroup)
                 this._chordDropdown.style.display = (instrument.chord == Config.chords.dictionary["arpeggio"].index) ? "" : "none";
                 this._chordDropdownGroup.style.display = (instrument.chord == Config.chords.dictionary["arpeggio"].index && this._openChordDropdown) ? "" : "none";
+                if (instrument.chord == Config.chords.dictionary["monophonic"].index) {
+                    this._monophonicNoteInputBox.value = instrument.monoChordTone + 1 + "";
+                    this._monophonicNoteInputBox.style.display = "";
+                    this._chordSelectContainer.style.width = "52.5%";
+                } else {
+                    this._monophonicNoteInputBox.style.display = "none";
+                    this._chordSelectContainer.style.width = "61.5%";
+                }
             }
             if(effectsIncludePitchShift(instrument.mdeffects)) {
                 this._mdeffectsGroup.append(this._pitchShiftRow)
@@ -3095,7 +3103,7 @@ export class SongEditor {
                             }
                             for (let k: number = 0; k < instrument.modChannels[mod].length; k++) {
                                 if (instrument.modChannels[mod][k] == i && instrument.modInstruments[mod][k] == j) {
-                                    newString = "🢒" + newString
+                                    newString = "🢒 " + newString
                                     break;
                                 }
                             }
@@ -3121,11 +3129,11 @@ export class SongEditor {
                         }
                     }
                     buildOptions(this._modChannelBoxes[mod], channelList);
-                    if (instrument.modChannels[mod][0] == -2) {
-                        this._modChannelBoxes[mod].selectedIndex = 0
-                    }
-                    else if (instrument.modChannels[mod][0] == -1) {
+                    if (instrument.modChannels[mod][0] == -1) {
                         this._modChannelBoxes[mod].selectedIndex = 1
+                    }
+                    else if (instrument.modChannels[mod][0] == -2) {
+                        this._modChannelBoxes[mod].selectedIndex = 0
                     }
                     else if (instrument.modChannels[mod].length == 1) {
                         let tgtIndex: number = 0;

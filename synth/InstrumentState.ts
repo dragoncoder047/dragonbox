@@ -1040,8 +1040,8 @@ export class InstrumentState {
         }
 
         const mainInstrumentVolume: number = Synth.instrumentVolumeToVolumeMult(instrument.volume);
-        this.mixVolume = mainInstrumentVolume /** envelopeStarts[InstrumentAutomationIndex.mixVolume]*/;
-        let mixVolumeEnd: number = mainInstrumentVolume /** envelopeEnds[  InstrumentAutomationIndex.mixVolume]*/;
+        this.mixVolume = envelopeStarts[EnvelopeComputeIndex.mixVolume];
+        let mixVolumeEnd: number = envelopeEnds[EnvelopeComputeIndex.mixVolume];
 
         // Check for mod-related volume delta
         if (synth.isModActive(Config.modulators.dictionary["post volume"].index, channelIndex, instrumentIndex)) {

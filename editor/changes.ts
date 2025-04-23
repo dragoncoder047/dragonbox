@@ -3717,14 +3717,14 @@ export class ChangeModChannel extends Change {
         }
 
         // None, or swapping from song to instrument/vice-versa
-        if (index == 0 || (Config.modulators[instrument.modulators[mod]].forSong && index >= 2) || (!Config.modulators[instrument.modulators[mod]].forSong && index < 2)) {
+        if (index == 0 || index == 1 || (Config.modulators[instrument.modulators[mod]].forSong && index >= 2) || (!Config.modulators[instrument.modulators[mod]].forSong && index < 2)) {
             instrument.modulators[mod] = Config.modulators.dictionary["none"].index;
             if (index == 0) {
                 instrument.modChannels[mod] = [-2]
                 instrument.modInstruments[mod] = [0]
             }
             else if (index == 1) {
-                instrument.modChannels[mod] = [-2]
+                instrument.modChannels[mod] = [-1]
                 instrument.modInstruments[mod] = [0]
             }
         }
@@ -4401,10 +4401,9 @@ export function setDefaultInstruments(song: Song): void {
         for (const instrument of song.channels[channelIndex].instruments) {
             const isNoise: boolean = song.getChannelIsNoise(channelIndex);
             const isMod: boolean = song.getChannelIsMod(channelIndex);
-            const presetValue: number = (channelIndex == song.pitchChannelCount) ? EditorConfig.nameToPresetValue(Math.random() > 0.5 ? "chip noise" : "standard drumset")! : pickDefaultPresetValue(isNoise);
-            const preset: Preset = EditorConfig.valueToPreset(presetValue)!;
+            const preset: Preset = EditorConfig.valueToPreset(0)!;
             instrument.fromJsonObject(preset.settings, isNoise, isMod, song.rhythm == 0 || song.rhythm == 2, song.rhythm >= 2, 1);
-            instrument.preset = presetValue;
+            instrument.preset = 0;
             instrument.effects |= 1 << EffectType.panning;
         }
     }

@@ -300,14 +300,14 @@ export class TipPrompt implements Prompt {
 			} break;
 			case "effects": {
 				message = div(
-					h2("Effects"),
-					p("theepbox has many different kinds of special effects you can add to instruments. You can turn on multiple effects at once, and they can be configured individually. Try them all out!"),
+					h2("Audio Effects"),
+					p("theepbox has many different kinds of special effects you can add to instruments. You can turn on multiple effects at once, and they can be re-ordered to produce interesting sounds. Try them all out!"),
 				);
 			} break;
 			case "mdeffects": {
 				message = div(
 					h2("Musical Effects"),
-					p("theepbox (and BeepBox) has two different types of effects. Musical effects only affect musical data, like notes and pitch, as opposed to other effects which manipulate the signal wave itself. In theepbox, Musical effects can't be re-ordered like other effects and so they get their own special category!"),
+					p("theepbox (and BeepBox) has two different types of effects. Musical effects only affect musical data, like notes and pitch, as opposed to audio effects which manipulate the signal wave itself. In theepbox, Musical effects can't be re-ordered like audio effects and so they get their own special category!"),
 				);
 			} break;
 			case "drumsetEnvelope": {

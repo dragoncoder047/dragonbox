@@ -2,6 +2,7 @@
 
 import { InstrumentType, Config, DropdownID, LFOEnvelopeTypes, RandomEnvelopeTypes } from "../synth/SynthConfig";
 import { Instrument } from "../synth/Instrument";
+import { Effect } from "../synth/Effect";
 import { SongDocument } from "./SongDocument";
 import { ChangeSetEnvelopeTarget, ChangeSetEnvelopeType, ChangeRemoveEnvelope, ChangeEnvelopePitchStart, ChangeEnvelopePitchEnd, ChangeEnvelopeInverse, ChangePerEnvelopeSpeed, ChangeEnvelopeLowerBound, ChangeEnvelopeUpperBound, ChangeRandomEnvelopeSteps, ChangeRandomEnvelopeSeed, PasteEnvelope, ChangeSetEnvelopeWaveform, ChangeDiscreteEnvelope, } from "./changes";
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
@@ -64,7 +65,7 @@ export class EnvelopeEditor {
 	private _renderedEqFilterCount: number = -1;
 	private _renderedNoteFilterCount: number = -1;
 	private _renderedInstrumentType: InstrumentType;
-	private _renderedEffects: number = 0;
+	private _renderedEffects: (Effect | null)[];
 
 	private _lastChange: Change | null = null;
 

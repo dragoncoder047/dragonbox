@@ -1,8 +1,9 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Dictionary, DictionaryArray, toNameMap, SustainType, EnvelopeType, InstrumentType, EffectType, MDEffectType, Transition, Unison, Chord, Vibrato, Envelope, AutomationTarget, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, effectsIncludeRingModulation, effectsIncludeGranular, LFOEnvelopeTypes } from "./SynthConfig";
+import { Dictionary, DictionaryArray, toNameMap, SustainType, EnvelopeType, InstrumentType, EffectType, MDEffectType, Transition, Unison, Chord, Vibrato, Envelope, AutomationTarget, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, LFOEnvelopeTypes } from "./SynthConfig";
 import { FilterSettings } from "./Filter";
 import { EnvelopeSettings } from "./Envelope";
+import { Effect } from "./Effect";
 import { clamp, fadeInSettingToSeconds, secondsToFadeInSetting, fadeOutSettingToTicks, ticksToFadeOutSetting, detuneToCents, centsToDetune, fittingPowerOfTwo } from "./utils";
 
 // Settings that were available to old versions of BeepBox but are no longer available in the
@@ -249,8 +250,9 @@ export class Instrument {
     public unisonOffset: number = 0.0;
     public unisonExpression: number = 1.4;
     public unisonSign: number = 1.0;
-    public effects: number = 0;
+    public effects: (Effect | null)[] = [];
     public effectOrder: Array<EffectType> = [EffectType.panning, EffectType.eqFilter, EffectType.granular, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb, EffectType.ringModulation];
+    public effectCount: number = 0;
     public mdeffects: number = 0;
     public chord: number = 1;
     public volume: number = 0;
@@ -380,7 +382,10 @@ export class Instrument {
         this.type = type;
         this.preset = type;
         this.volume = 0;
-        this.effects = (1 << EffectType.panning); // Panning enabled by default in JB.
+        for (let i: number = 0; i < Config.effectCount; i++) {
+            this.effects[i] = null;
+        }
+        this.effectCount = 0;
         this.mdeffects = 0;
         this.chorus = Config.chorusRange - 1;
         this.reverb = 0;
@@ -482,7 +487,6 @@ export class Instrument {
             case InstrumentType.fm6op:
                 this.transition = 1;
                 this.vibrato = 0;
-                this.effects = 1;
                 this.chord = 3;
                 this.algorithm = 0;
                 this.feedbackType = 0;
@@ -529,7 +533,6 @@ export class Instrument {
                 this.transition = 0;
                 this.vibrato = 0;
                 this.interval = 0;
-                this.effects = 0;
                 this.chord = 0;
                 this.modChannels = [];
                 this.modInstruments = [];
@@ -618,7 +621,7 @@ export class Instrument {
             this.noteFilter.reset();
             this.noteFilterType = false;
             this.eqFilter.convertLegacySettings(legacyCutoffSetting, legacyResonanceSetting, legacyFilterEnv);
-            this.effects &= ~(1 << EffectType.eqFilter);
+            this.addEffect(EffectType.eqFilter);
             if (forceSimpleFilter || this.eqFilterType) {
                 this.eqFilterType = true;
                 this.eqFilterSimpleCut = legacyCutoffSetting;
@@ -630,7 +633,7 @@ export class Instrument {
             this.eqFilterType = false;
             this.noteFilterType = false;
             this.noteFilter.convertLegacySettings(legacyCutoffSetting, legacyResonanceSetting, legacyFilterEnv);
-            this.effects |= 1 << EffectType.eqFilter;
+            this.removeEffect(EffectType.eqFilter);
             this.addEnvelope(Config.instrumentAutomationTargets.dictionary["noteFilterAllFreqs"].index, 0, legacyFilterEnv.index, false);
             if (forceSimpleFilter || this.noteFilterType) {
                 this.noteFilterType = true;
@@ -677,7 +680,7 @@ export class Instrument {
 
         const effects: string[] = [];
         for (const effect of this.effectOrder) {
-            if (this.effects & (1 << effect)) {
+            if (this.effects[effect] != null) {
                 effects.push(Config.effectNames[effect]);
             }
         }
@@ -715,7 +718,7 @@ export class Instrument {
             instrumentObject["vibratoSpeed"] = this.vibratoSpeed;
             instrumentObject["vibratoType"] = this.vibratoType;
         }
-        if (effectsIncludeEQFilter(this.effects)) {
+        if (this.effectsIncludeType(EffectType.eqFilter)) {
             instrumentObject["eqFilterType"] = this.eqFilterType;
             instrumentObject["eqSimpleCut"] = this.eqFilterSimpleCut;
             instrumentObject["eqSimplePeak"] = this.eqFilterSimplePeak;
@@ -726,40 +729,40 @@ export class Instrument {
                     instrumentObject["eqSubFilters" + i] = this.eqSubFilters[i]!.toJsonObject();
             }
         }
-        if (effectsIncludeGranular(this.effects)) {
+        if (this.effectsIncludeType(EffectType.granular)) {
             instrumentObject["granular"] = this.granular;
             instrumentObject["grainSize"] = this.grainSize;
             instrumentObject["grainAmounts"] = this.grainAmounts;
             instrumentObject["grainRange"] = this.grainRange;
         }
-        if (effectsIncludeRingModulation(this.effects)) {
+        if (this.effectsIncludeType(EffectType.ringModulation)) {
             instrumentObject["ringMod"] = Math.round(100 * this.ringModulation / (Config.ringModRange - 1));
             instrumentObject["ringModHz"] = Math.round(100 * this.ringModulationHz / (Config.ringModHzRange - 1));
             instrumentObject["ringModWaveformIndex"] = this.ringModWaveformIndex;
             instrumentObject["ringModPulseWidth"] = Math.round(100 * this.ringModPulseWidth / (Config.pulseWidthRange - 1));
             instrumentObject["ringModHzOffset"] = Math.round(100 * this.ringModHzOffset / (Config.rmHzOffsetMax));
         }
-        if (effectsIncludeDistortion(this.effects)) {
+        if (this.effectsIncludeType(EffectType.distortion)) {
             instrumentObject["distortion"] = Math.round(100 * this.distortion / (Config.distortionRange - 1));
             instrumentObject["aliases"] = this.aliases;
         }
-        if (effectsIncludeBitcrusher(this.effects)) {
+        if (this.effectsIncludeType(EffectType.bitcrusher)) {
             instrumentObject["bitcrusherOctave"] = (Config.bitcrusherFreqRange - 1 - this.bitcrusherFreq) * Config.bitcrusherOctaveStep;
             instrumentObject["bitcrusherQuantization"] = Math.round(100 * this.bitcrusherQuantization / (Config.bitcrusherQuantizationRange - 1));
         }
-        if (effectsIncludePanning(this.effects)) {
+        if (this.effectsIncludeType(EffectType.panning)) {
             instrumentObject["pan"] = Math.round(100 * (this.pan - Config.panCenter) / Config.panCenter);
             instrumentObject["panDelay"] = this.panDelay;
         }
-        if (effectsIncludeChorus(this.effects)) {
+        if (this.effectsIncludeType(EffectType.chorus)) {
             instrumentObject["chorus"] = Math.round(100 * this.chorus / (Config.chorusRange - 1));
         }
-        if (effectsIncludeEcho(this.effects)) {
+        if (this.effectsIncludeType(EffectType.echo)) {
             instrumentObject["echoSustain"] = Math.round(100 * this.echoSustain / (Config.echoSustainRange - 1));
             instrumentObject["echoDelayBeats"] = Math.round(1000 * (this.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat)) / 1000;
             instrumentObject["echoPingPong"] = Math.round(100 * (this.echoPingPong - Config.panCenter) / Config.panCenter);
         }
-        if (effectsIncludeReverb(this.effects)) {
+        if (this.effectsIncludeType(EffectType.reverb)) {
             instrumentObject["reverb"] = Math.round(100 * this.reverb / (Config.reverbRange - 1));
         }
 
@@ -967,7 +970,7 @@ export class Instrument {
         if (<any>type == -1) type = isModChannel ? InstrumentType.mod : (isNoiseChannel ? InstrumentType.noise : InstrumentType.chip);
         this.setTypeAndReset(type, isNoiseChannel, isModChannel);
 
-        this.effects &= ~(1 << EffectType.panning);
+        this.addEffect(EffectType.panning);
 
         if (instrumentObject["preset"] != undefined) {
             this.preset = instrumentObject["preset"] >>> 0;
@@ -991,12 +994,11 @@ export class Instrument {
             for (let i: number = 0; i < instrumentObject["effects"].length; i++) {
                 effects = effects | (1 << Config.effectNames.indexOf(instrumentObject["effects"][i]));
             }
-            this.effects = (effects & ((1 << EffectType.length) - 1));
         } else {
             // The index of these names is reinterpreted as a bitfield, which relies on reverb and chorus being the first effects!
-            const legacyEffectsNames: string[] = ["none", "reverb", "chorus", "chorus & reverb"];
-            this.effects = legacyEffectsNames.indexOf(instrumentObject["effects"]);
-            if (this.effects == -1) this.effects = (this.type == InstrumentType.noise) ? 0 : 1;
+            //const legacyEffectsNames: string[] = ["none", "reverb", "chorus", "chorus & reverb"];
+            //this.effects = legacyEffectsNames.indexOf(instrumentObject["effects"]);
+            //if (this.effects == -1) this.effects = (this.type == InstrumentType.noise) ? 0 : 1;
         }
         if (instrumentObject["effectOrder"] != undefined) {
             this.effectOrder = instrumentObject["effectOrder"];
@@ -1165,7 +1167,7 @@ export class Instrument {
 
         // Old songs may have a panning effect without explicitly enabling it.
         if (this.pan != Config.panCenter) {
-            this.effects = (this.effects | (1 << EffectType.panning));
+            this.addEffect(EffectType.panning);
         }
 
         if (instrumentObject["panDelay"] != undefined) {
@@ -1549,7 +1551,7 @@ export class Instrument {
             else {
                 // modbox had no anti-aliasing, so enable it for everything if that mode is selected
                 if (format == "modbox") {
-                    this.effects = (this.effects | (1 << EffectType.distortion));
+                    this.addEffect(EffectType.distortion);
                     this.aliases = true;
                     this.distortion = 0;
                 } else {
@@ -1731,6 +1733,27 @@ export class Instrument {
         return 440.0 * Math.pow(2.0, (pitch - 69.0) / 12.0);
     }
 
+    public addEffect(type: EffectType): void {
+        let newEffect: Effect = new Effect(type);
+        this.effects.push(newEffect);
+        this.effectCount++;
+    }
+
+    public removeEffect(type: EffectType): void {
+        for(let i: number = 0; i < this.effectCount; i++) {
+            if (this.effects[i] != null && this.effects[i]!.type == type) {
+                this.effects.splice(i, 1);
+                break;
+            }
+        }
+        this.effectCount--;
+    }
+
+    public effectsIncludeType(type: EffectType): boolean {
+        for (let i: number = 0; i < this.effects.length; i++) if (this.effects[i] != null && this.effects[i]!.type == type) return true;
+        return false;
+    }
+
     public addEnvelope(target: number, index: number, envelope: number, newEnvelopes: boolean, start: number = 0, end: number = -1, inverse: boolean = false, perEnvelopeSpeed: number = -1, perEnvelopeLowerBound: number = 0, perEnvelopeUpperBound: number = 1, steps: number = 2, seed: number = 2, waveform: number = LFOEnvelopeTypes.sine, discrete: boolean = false): void {
         end = end != -1 ? end : this.isNoiseInstrument ? Config.drumCount - 1 : Config.maxPitch; //find default if none is given
         perEnvelopeSpeed = perEnvelopeSpeed != -1 ? perEnvelopeSpeed : newEnvelopes ? 1 : Config.envelopes[envelope].speed; //find default if none is given
@@ -1770,7 +1793,7 @@ export class Instrument {
         if (automationTarget.compatibleInstruments != null && automationTarget.compatibleInstruments.indexOf(this.type) == -1) {
             return false;
         }
-        if (automationTarget.effect != null && (this.effects & (1 << automationTarget.effect)) == 0) {
+        if (automationTarget.effect != null && this.effectsIncludeType(automationTarget.effect)) {
             return false;
         }
         if (automationTarget.isFilter) {

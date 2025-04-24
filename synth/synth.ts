@@ -1,6 +1,6 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Dictionary, DictionaryArray, FilterType, EnvelopeType, InstrumentType, MDEffectType, EffectType, EnvelopeComputeIndex, Transition, Chord, Envelope, Config, getArpeggioPitchIndex, getPulseWidthRatio, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, effectsIncludeRingModulation, effectsIncludeGranular, OperatorWave, GranularEnvelopeType }from "./SynthConfig";
+import { Dictionary, DictionaryArray, FilterType, EnvelopeType, InstrumentType, MDEffectType, EffectType, EnvelopeComputeIndex, Transition, Chord, Envelope, Config, getArpeggioPitchIndex, getPulseWidthRatio, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, OperatorWave, GranularEnvelopeType } from "./SynthConfig";
 import { Deque } from "./Deque";
 import { Song, HeldMod } from "./Song";
 import { Channel } from "./Channel";
@@ -460,7 +460,7 @@ export class Synth {
                     if (tgtInstrument == null) continue;
                     const str: string = Config.modulators[instrument.modulators[mod]].name;
                     // Check effects
-                    if (!(Config.modulators[instrument.modulators[mod]].associatedEffect != EffectType.length && !(tgtInstrument.effects & (1 << Config.modulators[instrument.modulators[mod]].associatedEffect))) && !(Config.modulators[instrument.modulators[mod]].associatedMDEffect != MDEffectType.length && !(tgtInstrument.mdeffects & (1 << Config.modulators[instrument.modulators[mod]].associatedMDEffect)))
+                    if (!(Config.modulators[instrument.modulators[mod]].associatedEffect != EffectType.length && !(tgtInstrument.effectsIncludeType(Config.modulators[instrument.modulators[mod]].associatedEffect))) && !(Config.modulators[instrument.modulators[mod]].associatedMDEffect != MDEffectType.length && !(tgtInstrument.mdeffects & (1 << Config.modulators[instrument.modulators[mod]].associatedMDEffect)))
                         // Instrument type specific
                         || ((tgtInstrument.type != InstrumentType.fm && tgtInstrument.type != InstrumentType.fm6op) && (str == "fm slider 1" || str == "fm slider 2" || str == "fm slider 3" || str == "fm slider 4" || str == "fm feedback"))
                         || tgtInstrument.type != InstrumentType.fm6op && (str == "fm slider 5" || str == "fm slider 6")
@@ -3670,7 +3670,7 @@ export class Synth {
 		//   When determining this automatically is difficult (or the input
 		//   samples are expected to vary too much), this is left up to the
 		//   user.
-		const aliases: boolean = (effectsIncludeDistortion(instrumentState.effects) && instrumentState.aliases);
+		const aliases: boolean = (instrumentState.effectsIncludeType(EffectType.distortion) && instrumentState.aliases);
 		// const aliases = false;
 		const dataL: Float32Array = synth.tempInstrumentSampleBufferL!;
 		const dataR: Float32Array = synth.tempInstrumentSampleBufferR!;
@@ -4066,7 +4066,7 @@ export class Synth {
 		tone.initialNoteFilterInputR2 = initialFilterInputR2;
 	}
     private static chipSynth(synth: Synth, bufferIndex: number, roundedSamplesPerTick: number, tone: Tone, instrumentState: InstrumentState): void {
-        const aliases: boolean = (effectsIncludeDistortion(instrumentState.effects) && instrumentState.aliases);
+        const aliases: boolean = (instrumentState.effectsIncludeType(EffectType.eqFilter) && instrumentState.aliases);
         const dataL: Float32Array = synth.tempInstrumentSampleBufferL!;
         const dataR: Float32Array = synth.tempInstrumentSampleBufferR!;
         const waveL: Float32Array = instrumentState.waveL!;
@@ -4435,15 +4435,15 @@ export class Synth {
         // TODO: If automation is involved, don't assume sliders will stay at zero.
         // @jummbus - ^ Correct, removed the non-zero checks as modulation can change them.
 
-        const usesDistortion: boolean = effectsIncludeDistortion(instrumentState.effects);
-        const usesBitcrusher: boolean = effectsIncludeBitcrusher(instrumentState.effects);
-        const usesEqFilter: boolean = effectsIncludeEQFilter(instrumentState.effects);
-        const usesPanning: boolean = effectsIncludePanning(instrumentState.effects);
-        const usesChorus: boolean = effectsIncludeChorus(instrumentState.effects);
-        const usesEcho: boolean = effectsIncludeEcho(instrumentState.effects);
-		const usesReverb: boolean = effectsIncludeReverb(instrumentState.effects);
-		const usesGranular: boolean = effectsIncludeGranular(instrumentState.effects);
-		const usesRingModulation: boolean = effectsIncludeRingModulation(instrumentState.effects);
+        const usesDistortion: boolean = instrumentState.effectsIncludeType(EffectType.distortion);
+        const usesBitcrusher: boolean = instrumentState.effectsIncludeType(EffectType.bitcrusher);
+        const usesEqFilter: boolean = instrumentState.effectsIncludeType(EffectType.eqFilter);
+        const usesPanning: boolean = instrumentState.effectsIncludeType(EffectType.panning);
+        const usesChorus: boolean = instrumentState.effectsIncludeType(EffectType.chorus);
+        const usesEcho: boolean = instrumentState.effectsIncludeType(EffectType.echo);
+		const usesReverb: boolean = instrumentState.effectsIncludeType(EffectType.reverb);
+		const usesGranular: boolean = instrumentState.effectsIncludeType(EffectType.granular);
+		const usesRingModulation: boolean = instrumentState.effectsIncludeType(EffectType.ringModulation);
         const isStereo: boolean = instrumentState.chipWaveInStereo && (instrumentState.synthesizer == Synth.loopableChipSynth || instrumentState.synthesizer == Synth.chipSynth); //TODO: make an instrumentIsStereo function
         const panMode: number = instrumentState.panningMode;
         let signature: string = "";

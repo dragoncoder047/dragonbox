@@ -1,6 +1,6 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Algorithm, Dictionary, FilterType, SustainType, InstrumentType, MDEffectType, EffectType, AutomationTarget, Config, effectsIncludeDistortion, LFOEnvelopeTypes, RandomEnvelopeTypes } from "../synth/SynthConfig";
+import { Algorithm, Dictionary, FilterType, SustainType, InstrumentType, MDEffectType, EffectType, AutomationTarget, Config, LFOEnvelopeTypes, RandomEnvelopeTypes } from "../synth/SynthConfig";
 import { Synth } from "../synth/synth";
 import { clamp } from "../synth/utils";
 import { Song } from "../synth/Song";
@@ -706,7 +706,7 @@ export class ChangePreset extends Change {
                     instrument.panDelay = tempPanDelay;
                     //@jummbus - Disable this check, pan will be on by default.
                     //if (usesPanning && instrument.pan != Config.panCenter) {
-                    instrument.effects = (instrument.effects | (1 << EffectType.panning));
+                    instrument.addEffect(EffectType.panning);
                     //}
                 }
             }
@@ -774,7 +774,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
 
         const isNoise: boolean = doc.song.getChannelIsNoise(doc.channel);
         const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        instrument.effects = 1 << EffectType.panning; // disable all existing effects except panning, which should always be on.
+        instrument.effects = [];
         instrument.aliases = false;
         instrument.envelopeCount = 0;
 
@@ -846,8 +846,8 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 ])].index;
             }
             if (Math.random() < 0.8) {
-                instrument.effects |= 1 << EffectType.eqFilter;
-                applyFilterPoints(instrument.noteFilter, [
+                instrument.addEffect(EffectType.eqFilter);
+                applyFilterPoints(instrument.eqFilter, [
                     new PotentialFilterPoint(1.0, FilterType.lowPass, midFreq, maxFreq, 8000.0, -1),
                 ]);
                 instrument.addEnvelope(Config.instrumentAutomationTargets.dictionary["noteFilterAllFreqs"].index, 0, Config.newEnvelopes.dictionary[selectWeightedRandom([
@@ -865,28 +865,28 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 30, 30)]);
             }
             if (Math.random() < 0.1) {
-                instrument.effects |= 1 << EffectType.distortion;
+                instrument.addEffect(EffectType.distortion);
                 instrument.distortion = selectCurvedDistribution(1, Config.distortionRange - 1, Config.distortionRange - 1, 2);
             }
             if (Math.random() < 0.1) {
-                instrument.effects |= 1 << EffectType.bitcrusher;
+                instrument.addEffect(EffectType.bitcrusher);
                 instrument.bitcrusherFreq = selectCurvedDistribution(0, Config.bitcrusherFreqRange - 1, Config.bitcrusherFreqRange >> 1, 2);
                 instrument.bitcrusherQuantization = selectCurvedDistribution(0, Config.bitcrusherQuantizationRange - 1, Config.bitcrusherQuantizationRange >> 1, 2);
             }
             if (Math.random() < 0.1) {
-                instrument.effects |= 1 << EffectType.chorus;
+                instrument.addEffect(EffectType.chorus);
                 instrument.chorus = selectCurvedDistribution(1, Config.chorusRange - 1, Config.chorusRange - 1, 1);
             }
             if (Math.random() < 0.1) {
                 instrument.echoSustain = selectCurvedDistribution(0, Config.echoSustainRange - 1, Config.echoSustainRange >> 1, 2);
                 instrument.echoDelay = selectCurvedDistribution(0, Config.echoDelayRange - 1, Config.echoDelayRange >> 1, 2);
                 if (instrument.echoSustain != 0 || instrument.echoDelay != 0) {
-                    instrument.effects |= 1 << EffectType.echo;
+                    instrument.addEffect(EffectType.echo);
                 }
                 instrument.echoDelay = selectCurvedDistribution(0, Config.panMax - 1, Config.panMax >> 1, 2);
             }
             if (Math.random() < 0.5) {
-                instrument.effects |= 1 << EffectType.reverb;
+                instrument.addEffect(EffectType.reverb);
                 instrument.reverb = selectCurvedDistribution(1, Config.reverbRange - 1, 1, 1);
             }
 
@@ -1110,7 +1110,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 ])].index;
             }
             if (Math.random() < 0.1) {
-                instrument.effects |= 1 << EffectType.distortion;
+                instrument.addEffect(EffectType.distortion);
                 instrument.distortion = selectCurvedDistribution(1, Config.distortionRange - 1, Config.distortionRange - 1, 2);
                 if (Math.random() < 0.3) {
                     let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1137,15 +1137,15 @@ export class ChangeRandomGeneratedInstrument extends Change {
                         selectWeightedRandom([{ item: LFOEnvelopeTypes.sine, weight: 2 }, { item: LFOEnvelopeTypes.triangle, weight: 5 }]));
                 }
             }
-            if (effectsIncludeDistortion(instrument.effects) && Math.random() < 0.8) {
-                instrument.effects |= 1 << EffectType.eqFilter;
+            if (instrument.effectsIncludeType(EffectType.distortion) && Math.random() < 0.8) {
+                instrument.addEffect(EffectType.eqFilter);
                 applyFilterPoints(instrument.noteFilter, [
                     new PotentialFilterPoint(1.0, FilterType.lowPass, midFreq, maxFreq, 2000.0, -1),
                     new PotentialFilterPoint(0.9, FilterType.highPass, 0, midFreq - 1, 500.0, -1),
                     new PotentialFilterPoint(0.4, FilterType.peak, 0, maxFreq, 1400.0, 0),
                 ]);
             } else if (Math.random() < 0.5) {
-                instrument.effects |= 1 << EffectType.eqFilter;
+                instrument.addEffect(EffectType.eqFilter);
                 applyFilterPoints(instrument.noteFilter, [
                     new PotentialFilterPoint(1.0, FilterType.lowPass, midFreq, maxFreq, 8000.0, -1),
                 ]);
@@ -1172,7 +1172,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                     selectWeightedRandom([{ item: LFOEnvelopeTypes.sine, weight: 8 }, { item: LFOEnvelopeTypes.triangle, weight: 4 }, { item: LFOEnvelopeTypes.sawtooth, weight: 2 }, { item: LFOEnvelopeTypes.square, weight: 1}]));
             }
             if (Math.random() < 0.1) {
-                instrument.effects |= 1 << EffectType.bitcrusher;
+                instrument.addEffect(EffectType.bitcrusher);
                 instrument.bitcrusherFreq = selectCurvedDistribution(0, Config.bitcrusherFreqRange - 1, 0, 2);
                 instrument.bitcrusherQuantization = selectCurvedDistribution(0, Config.bitcrusherQuantizationRange - 1, Config.bitcrusherQuantizationRange >> 1, 2);
                 let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1222,7 +1222,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                  }
             }
             if (Math.random() < 0.1) {
-                instrument.effects |= 1 << EffectType.chorus;
+                instrument.addEffect(EffectType.chorus);
                 instrument.chorus = selectCurvedDistribution(1, Config.chorusRange - 1, Config.chorusRange - 1, 1);
                 if (Math.random() < 0.1) {
                     let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1253,7 +1253,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 instrument.echoSustain = selectCurvedDistribution(0, Config.echoSustainRange - 1, Config.echoSustainRange >> 1, 2);
                 instrument.echoDelay = selectCurvedDistribution(0, Config.echoDelayRange - 1, Config.echoDelayRange >> 1, 2);
                 if (instrument.echoSustain != 0 || instrument.echoDelay != 0) {
-                    instrument.effects |= 1 << EffectType.echo;
+                    instrument.addEffect(EffectType.echo);
                     if (Math.random() < 0.04) {
                         let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
                         let envelopeUpperBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1282,7 +1282,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 instrument.ringModulation = selectCurvedDistribution(1, Config.ringModRange - 1, Config.ringModRange / 2, Config.ringModRange / 2);
                 instrument.ringModulationHz = selectCurvedDistribution(1, Config.ringModHzRange - 1, Config.ringModHzRange / 2, Config.ringModHzRange / 2);
                 if (instrument.ringModulation != 0 || instrument.ringModulationHz != 0) {
-                    instrument.effects |= 1 << EffectType.ringModulation;
+                    instrument.addEffect(EffectType.ringModulation);
                     instrument.ringModWaveformIndex = 0;
 
                     if (Math.random() < 0.1) {
@@ -1337,7 +1337,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 }
             }
             if (Math.random() < 0.5) {
-                instrument.effects |= 1 << EffectType.reverb;
+                instrument.addEffect(EffectType.reverb);
                 instrument.reverb = selectCurvedDistribution(1, Config.reverbRange - 1, 1, 1);
                 if (Math.random() < 0.03) {
                     let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1365,7 +1365,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 }
             }
             if (Math.random() < 0.1) {
-                instrument.effects |= 1 << EffectType.granular;
+                instrument.addEffect(EffectType.granular);
                 instrument.granular = selectCurvedDistribution(1, Config.granularRange - 1, Config.granularRange / 2, Config.granularRange / 3);
                 instrument.grainAmounts = selectCurvedDistribution(1, Config.grainAmountsMax - 1, Config.grainAmountsMax-2, 3);
                 instrument.grainSize = selectCurvedDistribution(Config.grainSizeMin / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep / 2);
@@ -1824,10 +1824,10 @@ export class ChangeToggleEffects extends Change {
         let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         if (useInstrument != null)
             instrument = useInstrument;
-        const oldValue: number = instrument.effects;
-        const wasSelected: boolean = ((oldValue & (1 << toggleFlag)) != 0);
-        const newValue: number = wasSelected ? (oldValue & (~(1 << toggleFlag))) : (oldValue | (1 << toggleFlag));
-        instrument.effects = newValue;
+        const wasSelected = instrument.effectsIncludeType(toggleFlag);
+        if (wasSelected) instrument.removeEffect(toggleFlag);
+        else instrument.addEffect(toggleFlag);
+        console.log(instrument.effects)
         for (let i = 0; i < 15; i++) {
             if(instrument.effectOrder[i] == toggleFlag) instrument.effectOrder.splice(i, 1); //was gonna try to use filter() but it didnt work
         }
@@ -2067,7 +2067,6 @@ export class ChangeChannelCount extends Change {
                                 const preset: Preset = EditorConfig.valueToPreset(presetValue)!;
                                 instrument.fromJsonObject(preset.settings, isNoise, isMod, doc.song.rhythm == 0 || doc.song.rhythm == 2, doc.song.rhythm >= 2);
                                 instrument.preset = presetValue;
-                                instrument.effects |= 1 << EffectType.panning;
                             } else {
                                 instrument.setTypeAndReset(InstrumentType.mod, isNoise, isMod);
                             }
@@ -3377,7 +3376,6 @@ export class ChangeAddChannelInstrument extends Change {
         const instrument: Instrument = new Instrument(isNoise, isMod);
         instrument.fromJsonObject(preset.settings, isNoise, isMod, false, false, 1);
         instrument.preset = presetValue;
-        instrument.effects |= 1 << EffectType.panning;
         instrument.volume = 0;
         channel.instruments.push(instrument);
         if (!isMod) { // Mod channels lose information when changing set instrument
@@ -3810,7 +3808,7 @@ export class ChangeModSetting extends Change {
             text = text.substr(2);
             for (let i: number = 0; i < usedInstruments.length; i++) {
                 const tgtInstrument: Instrument = usedInstruments[i];
-                if (!(tgtInstrument.effects & (1 << Config.modulators.dictionary[text].associatedEffect))) {
+                if (!(tgtInstrument.effectsIncludeType(Config.modulators.dictionary[text].associatedEffect))) {
                     doc.record(new ChangeToggleEffects(doc, Config.modulators.dictionary[text].associatedEffect, tgtInstrument));
                 }
                 if (!(tgtInstrument.mdeffects & (1 << Config.modulators.dictionary[text].associatedMDEffect))) {
@@ -4427,7 +4425,6 @@ export function setDefaultInstruments(song: Song): void {
             const preset: Preset = EditorConfig.valueToPreset(0)!;
             instrument.fromJsonObject(preset.settings, isNoise, isMod, song.rhythm == 0 || song.rhythm == 2, song.rhythm >= 2, 1);
             instrument.preset = 0;
-            instrument.effects |= 1 << EffectType.panning;
         }
     }
 }

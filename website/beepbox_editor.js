@@ -1603,33 +1603,6 @@ var beepbox = (function (exports) {
     function effectsIncludeVibrato(effects) {
         return (effects & (1 << 2)) != 0;
     }
-    function effectsIncludeEQFilter(effects) {
-        return (effects & (1 << 5)) != 0;
-    }
-    function effectsIncludeDistortion(effects) {
-        return (effects & (1 << 3)) != 0;
-    }
-    function effectsIncludeBitcrusher(effects) {
-        return (effects & (1 << 4)) != 0;
-    }
-    function effectsIncludePanning(effects) {
-        return (effects & (1 << 2)) != 0;
-    }
-    function effectsIncludeChorus(effects) {
-        return (effects & (1 << 1)) != 0;
-    }
-    function effectsIncludeEcho(effects) {
-        return (effects & (1 << 6)) != 0;
-    }
-    function effectsIncludeReverb(effects) {
-        return (effects & (1 << 0)) != 0;
-    }
-    function effectsIncludeRingModulation(effects) {
-        return (effects & (1 << 7)) != 0;
-    }
-    function effectsIncludeGranular(effects) {
-        return (effects & (1 << 8)) != 0;
-    }
     function calculateRingModHertz(sliderHz, sliderHzOffset = 0) {
         if (sliderHz == 0)
             return 0;
@@ -11440,6 +11413,41 @@ li.select2-results__option[role=group] > strong:hover {
         }
     }
 
+    class Effect {
+        constructor(type) {
+            this.type = 0;
+            this.wetDryMix = 0.5;
+            this.send = 1;
+            this.eqFilter = new FilterSettings();
+            this.eqFilterType = false;
+            this.eqFilterSimpleCut = Config.filterSimpleCutRange - 1;
+            this.eqFilterSimplePeak = 0;
+            this.eqSubFilters = [];
+            this.pan = Config.panCenter;
+            this.panDelay = 0;
+            this.panMode = 0;
+            this.aliases = false;
+            this.distortion = 0;
+            this.bitcrusherFreq = 0;
+            this.bitcrusherQuantization = 0;
+            this.ringModulation = Math.floor(Config.ringModRange / 2);
+            this.ringModulationHz = Math.floor(Config.ringModHzRange / 2);
+            this.ringModWaveformIndex = 0;
+            this.ringModPulseWidth = 0;
+            this.ringModHzOffset = 200;
+            this.granular = 4;
+            this.grainSize = (Config.grainSizeMax - Config.grainSizeMin) / Config.grainSizeStep;
+            this.grainAmounts = Config.grainAmountsMax;
+            this.grainRange = 40;
+            this.chorus = 0;
+            this.reverb = 0;
+            this.echoSustain = 0;
+            this.echoDelay = 0;
+            this.echoPingPong = 0;
+            this.type = type;
+        }
+    }
+
     class Operator {
         constructor(index) {
             this.frequency = 4;
@@ -11648,8 +11656,9 @@ li.select2-results__option[role=group] > strong:hover {
             this.unisonOffset = 0.0;
             this.unisonExpression = 1.4;
             this.unisonSign = 1.0;
-            this.effects = 0;
+            this.effects = [];
             this.effectOrder = [2, 5, 8, 3, 4, 1, 6, 0, 7];
+            this.effectCount = 0;
             this.mdeffects = 0;
             this.chord = 1;
             this.volume = 0;
@@ -11745,7 +11754,10 @@ li.select2-results__option[role=group] > strong:hover {
             this.type = type;
             this.preset = type;
             this.volume = 0;
-            this.effects = (1 << 2);
+            for (let i = 0; i < Config.effectCount; i++) {
+                this.effects[i] = null;
+            }
+            this.effectCount = 0;
             this.mdeffects = 0;
             this.chorus = Config.chorusRange - 1;
             this.reverb = 0;
@@ -11840,7 +11852,6 @@ li.select2-results__option[role=group] > strong:hover {
                 case 11:
                     this.transition = 1;
                     this.vibrato = 0;
-                    this.effects = 1;
                     this.chord = 3;
                     this.algorithm = 0;
                     this.feedbackType = 0;
@@ -11887,7 +11898,6 @@ li.select2-results__option[role=group] > strong:hover {
                     this.transition = 0;
                     this.vibrato = 0;
                     this.interval = 0;
-                    this.effects = 0;
                     this.chord = 0;
                     this.modChannels = [];
                     this.modInstruments = [];
@@ -11972,7 +11982,7 @@ li.select2-results__option[role=group] > strong:hover {
                 this.noteFilter.reset();
                 this.noteFilterType = false;
                 this.eqFilter.convertLegacySettings(legacyCutoffSetting, legacyResonanceSetting, legacyFilterEnv);
-                this.effects &= ~(1 << 5);
+                this.addEffect(5);
                 if (forceSimpleFilter || this.eqFilterType) {
                     this.eqFilterType = true;
                     this.eqFilterSimpleCut = legacyCutoffSetting;
@@ -11984,7 +11994,7 @@ li.select2-results__option[role=group] > strong:hover {
                 this.eqFilterType = false;
                 this.noteFilterType = false;
                 this.noteFilter.convertLegacySettings(legacyCutoffSetting, legacyResonanceSetting, legacyFilterEnv);
-                this.effects |= 1 << 5;
+                this.removeEffect(5);
                 this.addEnvelope(Config.instrumentAutomationTargets.dictionary["noteFilterAllFreqs"].index, 0, legacyFilterEnv.index, false);
                 if (forceSimpleFilter || this.noteFilterType) {
                     this.noteFilterType = true;
@@ -12025,7 +12035,7 @@ li.select2-results__option[role=group] > strong:hover {
             }
             const effects = [];
             for (const effect of this.effectOrder) {
-                if (this.effects & (1 << effect)) {
+                if (this.effects[effect] != null) {
                     effects.push(Config.effectNames[effect]);
                 }
             }
@@ -12063,7 +12073,7 @@ li.select2-results__option[role=group] > strong:hover {
                 instrumentObject["vibratoSpeed"] = this.vibratoSpeed;
                 instrumentObject["vibratoType"] = this.vibratoType;
             }
-            if (effectsIncludeEQFilter(this.effects)) {
+            if (this.effectsIncludeType(5)) {
                 instrumentObject["eqFilterType"] = this.eqFilterType;
                 instrumentObject["eqSimpleCut"] = this.eqFilterSimpleCut;
                 instrumentObject["eqSimplePeak"] = this.eqFilterSimplePeak;
@@ -12073,40 +12083,40 @@ li.select2-results__option[role=group] > strong:hover {
                         instrumentObject["eqSubFilters" + i] = this.eqSubFilters[i].toJsonObject();
                 }
             }
-            if (effectsIncludeGranular(this.effects)) {
+            if (this.effectsIncludeType(8)) {
                 instrumentObject["granular"] = this.granular;
                 instrumentObject["grainSize"] = this.grainSize;
                 instrumentObject["grainAmounts"] = this.grainAmounts;
                 instrumentObject["grainRange"] = this.grainRange;
             }
-            if (effectsIncludeRingModulation(this.effects)) {
+            if (this.effectsIncludeType(7)) {
                 instrumentObject["ringMod"] = Math.round(100 * this.ringModulation / (Config.ringModRange - 1));
                 instrumentObject["ringModHz"] = Math.round(100 * this.ringModulationHz / (Config.ringModHzRange - 1));
                 instrumentObject["ringModWaveformIndex"] = this.ringModWaveformIndex;
                 instrumentObject["ringModPulseWidth"] = Math.round(100 * this.ringModPulseWidth / (Config.pulseWidthRange - 1));
                 instrumentObject["ringModHzOffset"] = Math.round(100 * this.ringModHzOffset / (Config.rmHzOffsetMax));
             }
-            if (effectsIncludeDistortion(this.effects)) {
+            if (this.effectsIncludeType(3)) {
                 instrumentObject["distortion"] = Math.round(100 * this.distortion / (Config.distortionRange - 1));
                 instrumentObject["aliases"] = this.aliases;
             }
-            if (effectsIncludeBitcrusher(this.effects)) {
+            if (this.effectsIncludeType(4)) {
                 instrumentObject["bitcrusherOctave"] = (Config.bitcrusherFreqRange - 1 - this.bitcrusherFreq) * Config.bitcrusherOctaveStep;
                 instrumentObject["bitcrusherQuantization"] = Math.round(100 * this.bitcrusherQuantization / (Config.bitcrusherQuantizationRange - 1));
             }
-            if (effectsIncludePanning(this.effects)) {
+            if (this.effectsIncludeType(2)) {
                 instrumentObject["pan"] = Math.round(100 * (this.pan - Config.panCenter) / Config.panCenter);
                 instrumentObject["panDelay"] = this.panDelay;
             }
-            if (effectsIncludeChorus(this.effects)) {
+            if (this.effectsIncludeType(1)) {
                 instrumentObject["chorus"] = Math.round(100 * this.chorus / (Config.chorusRange - 1));
             }
-            if (effectsIncludeEcho(this.effects)) {
+            if (this.effectsIncludeType(6)) {
                 instrumentObject["echoSustain"] = Math.round(100 * this.echoSustain / (Config.echoSustainRange - 1));
                 instrumentObject["echoDelayBeats"] = Math.round(1000 * (this.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat)) / 1000;
                 instrumentObject["echoPingPong"] = Math.round(100 * (this.echoPingPong - Config.panCenter) / Config.panCenter);
             }
-            if (effectsIncludeReverb(this.effects)) {
+            if (this.effectsIncludeType(0)) {
                 instrumentObject["reverb"] = Math.round(100 * this.reverb / (Config.reverbRange - 1));
             }
             if (this.type != 4) {
@@ -12310,7 +12320,7 @@ li.select2-results__option[role=group] > strong:hover {
             if (type == -1)
                 type = isModChannel ? 10 : (isNoiseChannel ? 2 : 0);
             this.setTypeAndReset(type, isNoiseChannel, isModChannel);
-            this.effects &= ~(1 << 2);
+            this.addEffect(2);
             if (instrumentObject["preset"] != undefined) {
                 this.preset = instrumentObject["preset"] >>> 0;
             }
@@ -12331,13 +12341,6 @@ li.select2-results__option[role=group] > strong:hover {
                 for (let i = 0; i < instrumentObject["effects"].length; i++) {
                     effects = effects | (1 << Config.effectNames.indexOf(instrumentObject["effects"][i]));
                 }
-                this.effects = (effects & ((1 << 9) - 1));
-            }
-            else {
-                const legacyEffectsNames = ["none", "reverb", "chorus", "chorus & reverb"];
-                this.effects = legacyEffectsNames.indexOf(instrumentObject["effects"]);
-                if (this.effects == -1)
-                    this.effects = (this.type == 2) ? 0 : 1;
             }
             if (instrumentObject["effectOrder"] != undefined) {
                 this.effectOrder = instrumentObject["effectOrder"];
@@ -12493,7 +12496,7 @@ li.select2-results__option[role=group] > strong:hover {
                 this.pan = Config.panCenter;
             }
             if (this.pan != Config.panCenter) {
-                this.effects = (this.effects | (1 << 2));
+                this.addEffect(2);
             }
             if (instrumentObject["panDelay"] != undefined) {
                 this.panDelay = (instrumentObject["panDelay"] | 0);
@@ -12863,7 +12866,7 @@ li.select2-results__option[role=group] > strong:hover {
                 }
                 else {
                     if (format == "modbox") {
-                        this.effects = (this.effects | (1 << 3));
+                        this.addEffect(3);
                         this.aliases = true;
                         this.distortion = 0;
                     }
@@ -13044,6 +13047,26 @@ li.select2-results__option[role=group] > strong:hover {
         static frequencyFromPitch(pitch) {
             return 440.0 * Math.pow(2.0, (pitch - 69.0) / 12.0);
         }
+        addEffect(type) {
+            let newEffect = new Effect(type);
+            this.effects.push(newEffect);
+            this.effectCount++;
+        }
+        removeEffect(type) {
+            for (let i = 0; i < this.effectCount; i++) {
+                if (this.effects[i] != null && this.effects[i].type == type) {
+                    this.effects.splice(i, 1);
+                    break;
+                }
+            }
+            this.effectCount--;
+        }
+        effectsIncludeType(type) {
+            for (let i = 0; i < this.effects.length; i++)
+                if (this.effects[i] != null && this.effects[i].type == type)
+                    return true;
+            return false;
+        }
         addEnvelope(target, index, envelope, newEnvelopes, start = 0, end = -1, inverse = false, perEnvelopeSpeed = -1, perEnvelopeLowerBound = 0, perEnvelopeUpperBound = 1, steps = 2, seed = 2, waveform = 0, discrete = false) {
             end = end != -1 ? end : this.isNoiseInstrument ? Config.drumCount - 1 : Config.maxPitch;
             perEnvelopeSpeed = perEnvelopeSpeed != -1 ? perEnvelopeSpeed : newEnvelopes ? 1 : Config.envelopes[envelope].speed;
@@ -13086,7 +13109,7 @@ li.select2-results__option[role=group] > strong:hover {
             if (automationTarget.compatibleInstruments != null && automationTarget.compatibleInstruments.indexOf(this.type) == -1) {
                 return false;
             }
-            if (automationTarget.effect != null && (this.effects & (1 << automationTarget.effect)) == 0) {
+            if (automationTarget.effect != null && this.effectsIncludeType(automationTarget.effect)) {
                 return false;
             }
             if (automationTarget.isFilter) {
@@ -13945,12 +13968,15 @@ li.select2-results__option[role=group] > strong:hover {
                             }
                         }
                     }
-                    buffer.push(113, base64IntToCharCode[(instrument.effects >> 12) & 63], base64IntToCharCode[(instrument.effects >> 6) & 63], base64IntToCharCode[instrument.effects & 63]);
-                    for (let i = 0; i < 9; i++) {
-                        buffer.push(base64IntToCharCode[instrument.effectOrder[i] & 63]);
+                    buffer.push(113, base64IntToCharCode[instrument.effectCount]);
+                    for (let i = 0; i < instrument.effectCount; i++) {
+                        if (instrument.effects[i] != null)
+                            buffer.push(base64IntToCharCode[instrument.effects[i].type & 63]);
+                        else
+                            buffer.push(base64IntToCharCode[0]);
                     }
                     buffer.push(base64IntToCharCode[instrument.mdeffects & 63]);
-                    if (effectsIncludeEQFilter(instrument.effects)) {
+                    if (instrument.effectsIncludeType(5)) {
                         buffer.push(base64IntToCharCode[+instrument.eqFilterType]);
                         if (instrument.eqFilterType) {
                             buffer.push(base64IntToCharCode[instrument.eqFilterSimpleCut]);
@@ -14012,34 +14038,34 @@ li.select2-results__option[role=group] > strong:hover {
                             buffer.push(base64IntToCharCode[instrument.vibratoType]);
                         }
                     }
-                    if (effectsIncludeDistortion(instrument.effects)) {
+                    if (instrument.effectsIncludeType(3)) {
                         buffer.push(base64IntToCharCode[instrument.distortion]);
                         buffer.push(base64IntToCharCode[+instrument.aliases]);
                     }
-                    if (effectsIncludeBitcrusher(instrument.effects)) {
+                    if (instrument.effectsIncludeType(4)) {
                         buffer.push(base64IntToCharCode[instrument.bitcrusherFreq], base64IntToCharCode[instrument.bitcrusherQuantization]);
                     }
-                    if (effectsIncludePanning(instrument.effects)) {
+                    if (instrument.effectsIncludeType(2)) {
                         buffer.push(base64IntToCharCode[instrument.pan >> 6], base64IntToCharCode[instrument.pan & 0x3f]);
                         buffer.push(base64IntToCharCode[instrument.panDelay]);
                         buffer.push(base64IntToCharCode[instrument.panMode]);
                     }
-                    if (effectsIncludeChorus(instrument.effects)) {
+                    if (instrument.effectsIncludeType(1)) {
                         buffer.push(base64IntToCharCode[instrument.chorus]);
                     }
-                    if (effectsIncludeEcho(instrument.effects)) {
+                    if (instrument.effectsIncludeType(6)) {
                         buffer.push(base64IntToCharCode[instrument.echoSustain], base64IntToCharCode[instrument.echoDelay], base64IntToCharCode[instrument.echoPingPong >> 6], base64IntToCharCode[instrument.echoPingPong & 0x3f]);
                     }
-                    if (effectsIncludeReverb(instrument.effects)) {
+                    if (instrument.effectsIncludeType(0)) {
                         buffer.push(base64IntToCharCode[instrument.reverb]);
                     }
-                    if (effectsIncludeGranular(instrument.effects)) {
+                    if (instrument.effectsIncludeType(8)) {
                         buffer.push(base64IntToCharCode[instrument.granular]);
                         buffer.push(base64IntToCharCode[instrument.grainSize]);
                         buffer.push(base64IntToCharCode[instrument.grainAmounts]);
                         buffer.push(base64IntToCharCode[instrument.grainRange]);
                     }
-                    if (effectsIncludeRingModulation(instrument.effects)) {
+                    if (instrument.effectsIncludeType(7)) {
                         buffer.push(base64IntToCharCode[instrument.ringModulation]);
                         buffer.push(base64IntToCharCode[instrument.ringModulationHz]);
                         buffer.push(base64IntToCharCode[instrument.ringModWaveformIndex]);
@@ -14935,7 +14961,7 @@ li.select2-results__option[role=group] > strong:hover {
                             if (((beforeSeven && fromBeepBox) || (beforeTwo && fromJummBox)) && (instrumentType == 0 || instrumentType == 9 || instrumentType == 6)) {
                                 instrument.aliases = true;
                                 instrument.distortion = 0;
-                                instrument.effects |= 1 << 3;
+                                instrument.addEffect(3);
                             }
                             if (useSlowerArpSpeed) {
                                 instrument.arpeggioSpeed = 9;
@@ -15428,7 +15454,7 @@ li.select2-results__option[role=group] > strong:hover {
                                                     instrument.mdeffects |= 1 << 2;
                                                 }
                                                 if ((legacyGlobalReverb != 0 || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) && !this.getChannelIsNoise(channelIndex)) {
-                                                    instrument.effects |= 1 << 0;
+                                                    instrument.addEffect(0);
                                                     instrument.reverb = legacyGlobalReverb;
                                                 }
                                             }
@@ -15446,10 +15472,10 @@ li.select2-results__option[role=group] > strong:hover {
                                             instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
                                         }
                                         if (instrument.vibrato != Config.vibratos.dictionary["none"].index) {
-                                            instrument.effects |= 1 << 2;
+                                            instrument.mdeffects |= 1 << 2;
                                         }
                                         if (legacyGlobalReverb != 0 || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
-                                            instrument.effects |= 1 << 0;
+                                            instrument.addEffect(0);
                                             instrument.reverb = legacyGlobalReverb;
                                         }
                                     }
@@ -15625,14 +15651,16 @@ li.select2-results__option[role=group] > strong:hover {
                         {
                             const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                             if ((beforeNine && fromBeepBox) || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
-                                instrument.effects = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] & ((1 << 9) - 1));
+                                instrument.addEffect(base64CharCodeToInt[compressed.charCodeAt(charIndex++)] & ((1 << 9) - 1));
                                 if (legacyGlobalReverb == 0 && !((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
-                                    instrument.effects &= ~(1 << 0);
+                                    instrument.removeEffect(3);
                                 }
-                                else if (effectsIncludeReverb(instrument.effects)) {
+                                else if (instrument.effectsIncludeType(0)) {
                                     instrument.reverb = legacyGlobalReverb;
                                 }
-                                instrument.effects |= 1 << 2;
+                                if (instrument.pan != Config.panCenter) {
+                                    instrument.addEffect(2);
+                                }
                                 if (instrument.vibrato != Config.vibratos.dictionary["none"].index) {
                                     instrument.mdeffects |= 1 << 2;
                                 }
@@ -15640,31 +15668,49 @@ li.select2-results__option[role=group] > strong:hover {
                                     instrument.mdeffects |= 1 << 1;
                                 }
                                 if (instrument.aliases)
-                                    instrument.effects |= 1 << 3;
+                                    instrument.addEffect(3);
                                 else
-                                    instrument.effects &= ~(1 << 3);
-                                instrument.effects |= 1 << 5;
+                                    instrument.removeEffect(3);
+                                instrument.addEffect(5);
                                 const legacySettings = legacySettingsCache[instrumentChannelIterator][instrumentIndexIterator];
                                 instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
                             }
                             else {
-                                if (fromSlarmoosBox && !beforeFive) {
-                                    instrument.effects = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 12) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                }
-                                else {
-                                    instrument.effects = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                }
+                                const effectCount = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                 if (fromTheepBox) {
-                                    for (let i = 0; i < 9; i++) {
-                                        instrument.effectOrder[i] = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                    instrument.effects = [];
+                                    for (let i = 0; i < effectCount; i++) {
+                                        instrument.addEffect(base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     }
+                                    console.log(instrument.effects);
+                                    console.log(instrument.effectCount);
                                     instrument.mdeffects = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                 }
                                 else {
-                                    instrument.effectOrder = [2, 5, 8, 3, 4, 1, 6, 0, 7];
-                                    instrument.mdeffects = 0;
+                                    const legacyEffectTypes = [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 7, 8];
+                                    let bit = 0;
+                                    if (fromSlarmoosBox && !beforeFive) {
+                                        const bits = new BitFieldReader(compressed, charIndex, charIndex + 18);
+                                        for (let i = 0; i < 18; i++) {
+                                            bit = bits.read(1);
+                                            if (i > 6 && i < 13)
+                                                instrument.mdeffects &= legacyEffectTypes[bit];
+                                            else if (bit == 1)
+                                                instrument.addEffect(legacyEffectTypes[i]);
+                                        }
+                                    }
+                                    else {
+                                        const bits = new BitFieldReader(compressed, charIndex, charIndex + 12);
+                                        for (let i = 0; i < 12; i++) {
+                                            bit = bits.read(1);
+                                            if (i > 6)
+                                                instrument.mdeffects &= legacyEffectTypes[bit];
+                                            else if (bit == 1)
+                                                instrument.addEffect(legacyEffectTypes[i]);
+                                        }
+                                    }
                                 }
-                                if (effectsIncludeEQFilter(instrument.effects)) {
+                                if (instrument.effectsIncludeType(5)) {
                                     let typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                     if (fromTheepBox) {
                                         if (typeCheck == 0) {
@@ -15714,7 +15760,7 @@ li.select2-results__option[role=group] > strong:hover {
                                         }
                                     }
                                     else {
-                                        instrument.effects |= 1 << 5;
+                                        instrument.addEffect(5);
                                         instrument.noteFilterType = false;
                                         if (fromJummBox || fromGoldBox || fromUltraBox || fromSlarmoosBox)
                                             typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
@@ -15803,16 +15849,16 @@ li.select2-results__option[role=group] > strong:hover {
                                         instrument.vibratoType = Config.vibratos[instrument.vibrato].type;
                                     }
                                 }
-                                if (effectsIncludeDistortion(instrument.effects)) {
+                                if (instrument.effectsIncludeType(3)) {
                                     instrument.distortion = clamp(0, Config.distortionRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     if ((fromJummBox && !beforeFive) || fromGoldBox || fromUltraBox || fromSlarmoosBox)
                                         instrument.aliases = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] ? true : false;
                                 }
-                                if (effectsIncludeBitcrusher(instrument.effects)) {
+                                if (instrument.effectsIncludeType(4)) {
                                     instrument.bitcrusherFreq = clamp(0, Config.bitcrusherFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     instrument.bitcrusherQuantization = clamp(0, Config.bitcrusherQuantizationRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 }
-                                if (effectsIncludePanning(instrument.effects)) {
+                                if (instrument.effectsIncludeType(2)) {
                                     if (fromBeepBox) {
                                         instrument.pan = clamp(0, Config.panMax + 1, Math.round(base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * ((Config.panMax) / 8.0)));
                                     }
@@ -15824,7 +15870,7 @@ li.select2-results__option[role=group] > strong:hover {
                                     if (fromTheepBox)
                                         instrument.panMode = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                 }
-                                if (effectsIncludeChorus(instrument.effects)) {
+                                if (instrument.effectsIncludeType(1)) {
                                     if (fromBeepBox) {
                                         instrument.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 2;
                                     }
@@ -15832,7 +15878,7 @@ li.select2-results__option[role=group] > strong:hover {
                                         instrument.chorus = clamp(0, Config.chorusRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     }
                                 }
-                                if (effectsIncludeEcho(instrument.effects)) {
+                                if (instrument.effectsIncludeType(6)) {
                                     if (!fromTheepBox)
                                         instrument.echoSustain = clamp(0, Config.echoSustainRange / 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 3;
                                     else
@@ -15840,7 +15886,7 @@ li.select2-results__option[role=group] > strong:hover {
                                     instrument.echoDelay = clamp(0, Config.echoDelayRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     instrument.echoPingPong = clamp(0, Config.panMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 }
-                                if (effectsIncludeReverb(instrument.effects)) {
+                                if (instrument.effectsIncludeType(0)) {
                                     if (fromBeepBox) {
                                         instrument.reverb = clamp(0, Config.reverbRange, Math.round(base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * Config.reverbRange / 3.0));
                                     }
@@ -15848,13 +15894,13 @@ li.select2-results__option[role=group] > strong:hover {
                                         instrument.reverb = clamp(0, Config.reverbRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     }
                                 }
-                                if (effectsIncludeGranular(instrument.effects)) {
+                                if (instrument.effectsIncludeType(8)) {
                                     instrument.granular = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                     instrument.grainSize = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                     instrument.grainAmounts = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                     instrument.grainRange = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                 }
-                                if (effectsIncludeRingModulation(instrument.effects)) {
+                                if (instrument.effectsIncludeType(7)) {
                                     instrument.ringModulation = clamp(0, Config.ringModRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     instrument.ringModulationHz = clamp(0, Config.ringModHzRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     instrument.ringModWaveformIndex = clamp(0, Config.operatorWaves.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
@@ -15862,7 +15908,6 @@ li.select2-results__option[role=group] > strong:hover {
                                     instrument.ringModHzOffset = clamp(Config.rmHzOffsetMin, Config.rmHzOffsetMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 }
                             }
-                            instrument.effects &= (1 << 9) - 1;
                         }
                         break;
                     case 118:
@@ -16350,7 +16395,7 @@ li.select2-results__option[role=group] > strong:hover {
                                 instrument.aliases = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) ? true : false;
                                 if (instrument.aliases) {
                                     instrument.distortion = 0;
-                                    instrument.effects |= 1 << 3;
+                                    instrument.addEffect(3);
                                 }
                             }
                             else {
@@ -16478,7 +16523,7 @@ li.select2-results__option[role=group] > strong:hover {
                                                 instrument.modEnvelopeNumbers[mod] = bits.read(6);
                                             }
                                             if (jumfive && instrument.modChannels[mod][0] >= 0) {
-                                                let forNoteFilter = effectsIncludeEQFilter(this.channels[instrument.modChannels[mod][0]].instruments[instrument.modInstruments[mod][0]].effects);
+                                                let forNoteFilter = this.channels[instrument.modChannels[mod][0]].instruments[instrument.modInstruments[mod][0]].effectsIncludeType(5);
                                                 if (instrument.modulators[mod] == 7) {
                                                     if (forNoteFilter) {
                                                         instrument.modulators[mod] = Config.modulators.dictionary["note filt cut"].index;
@@ -16506,7 +16551,7 @@ li.select2-results__option[role=group] > strong:hover {
                                                 }
                                             }
                                             if (jumfive && Config.modulators[instrument.modulators[mod]].associatedEffect != 9) {
-                                                this.channels[instrument.modChannels[mod][0]].instruments[instrument.modInstruments[mod][0]].effects |= 1 << Config.modulators[instrument.modulators[mod]].associatedEffect;
+                                                this.channels[instrument.modChannels[mod][0]].instruments[instrument.modInstruments[mod][0]].addEffect(Config.modulators[instrument.modulators[mod]].associatedEffect);
                                             }
                                         }
                                     }
@@ -16767,7 +16812,7 @@ li.select2-results__option[role=group] > strong:hover {
                                 for (let channelIndex = 0; channelIndex < this.channels.length; channelIndex++) {
                                     for (let instrumentIndex = 0; instrumentIndex < this.channels[channelIndex].instruments.length; instrumentIndex++) {
                                         const instrument = this.channels[channelIndex].instruments[instrumentIndex];
-                                        if (effectsIncludeReverb(instrument.effects)) {
+                                        if (instrument.effectsIncludeType(0)) {
                                             instrument.reverb = Config.reverbRange - 1;
                                         }
                                         if (songReverbChannel == channelIndex && songReverbInstrument == instrumentIndex) {
@@ -18973,7 +19018,7 @@ li.select2-results__option[role=group] > strong:hover {
             this.unisonExpression = 1.4;
             this.unisonSign = 1.0;
             this.chord = null;
-            this.effects = 0;
+            this.effects = [];
             this.effectOrder = [2, 5, 8, 3, 4, 1, 6, 0, 7];
             this.volumeScale = 0;
             this.aliases = false;
@@ -19109,13 +19154,13 @@ li.select2-results__option[role=group] > strong:hover {
             this.granularGrainsLength = 0;
         }
         allocateNecessaryBuffers(synth, instrument, samplesPerTick) {
-            if (effectsIncludePanning(instrument.effects)) {
+            if (instrument.effectsIncludeType(2)) {
                 if (this.panningDelayLineL == null || this.panningDelayLineR == null || this.panningDelayLineL.length < synth.panningDelayBufferSize || this.panningDelayLineR.length < synth.panningDelayBufferSize) {
                     this.panningDelayLineL = new Float32Array(synth.panningDelayBufferSize);
                     this.panningDelayLineR = new Float32Array(synth.panningDelayBufferSize);
                 }
             }
-            if (effectsIncludeChorus(instrument.effects)) {
+            if (instrument.effectsIncludeType(1)) {
                 if (this.chorusDelayLineL == null || this.chorusDelayLineL.length < synth.chorusDelayBufferSize) {
                     this.chorusDelayLineL = new Float32Array(synth.chorusDelayBufferSize);
                 }
@@ -19123,15 +19168,15 @@ li.select2-results__option[role=group] > strong:hover {
                     this.chorusDelayLineR = new Float32Array(synth.chorusDelayBufferSize);
                 }
             }
-            if (effectsIncludeEcho(instrument.effects)) {
+            if (instrument.effectsIncludeType(6)) {
                 this.allocateEchoBuffers(samplesPerTick, instrument.echoDelay);
             }
-            if (effectsIncludeReverb(instrument.effects)) {
+            if (instrument.effectsIncludeType(0)) {
                 if (this.reverbDelayLine == null) {
                     this.reverbDelayLine = new Float32Array(Config.reverbDelayBufferSize);
                 }
             }
-            if (effectsIncludeGranular(instrument.effects)) {
+            if (instrument.effectsIncludeType(8)) {
                 const granularDelayLineSizeInMilliseconds = 2500;
                 const granularDelayLineSizeInSeconds = granularDelayLineSizeInMilliseconds / 1000;
                 this.granularMaximumDelayTimeInSeconds = granularDelayLineSizeInSeconds;
@@ -19304,15 +19349,15 @@ li.select2-results__option[role=group] > strong:hover {
             this.envelopeComputer.computeEnvelopes(instrument, currentPart, this.envelopeTime, tickTimeStart, secondsPerTick, tone, envelopeSpeeds, this, synth, channelIndex, instrumentIndex);
             const envelopeStarts = this.envelopeComputer.envelopeStarts;
             const envelopeEnds = this.envelopeComputer.envelopeEnds;
-            const usesGranular = effectsIncludeGranular(this.effects);
-            const usesRingModulation = effectsIncludeRingModulation(this.effects);
-            const usesDistortion = effectsIncludeDistortion(this.effects);
-            const usesBitcrusher = effectsIncludeBitcrusher(this.effects);
-            const usesPanning = effectsIncludePanning(this.effects);
-            const usesChorus = effectsIncludeChorus(this.effects);
-            const usesEcho = effectsIncludeEcho(this.effects);
-            const usesReverb = effectsIncludeReverb(this.effects);
-            const usesEQFilter = effectsIncludeEQFilter(this.effects);
+            const usesGranular = instrument.effectsIncludeType(8);
+            const usesRingModulation = instrument.effectsIncludeType(7);
+            const usesDistortion = instrument.effectsIncludeType(3);
+            const usesBitcrusher = instrument.effectsIncludeType(4);
+            const usesPanning = instrument.effectsIncludeType(2);
+            const usesChorus = instrument.effectsIncludeType(1);
+            const usesEcho = instrument.effectsIncludeType(6);
+            const usesReverb = instrument.effectsIncludeType(0);
+            const usesEQFilter = instrument.effectsIncludeType(5);
             if (usesGranular) {
                 this.granularMaximumGrains = Math.pow(2, instrument.grainAmounts * envelopeStarts[53]);
                 if (synth.isModActive(Config.modulators.dictionary["grain freq"].index, channelIndex, instrumentIndex)) {
@@ -19836,6 +19881,12 @@ li.select2-results__option[role=group] > strong:hover {
         static _drumsetIndexToSpectrumOctave(index) {
             return 15 + Math.log2(InstrumentState.drumsetIndexReferenceDelta(index));
         }
+        effectsIncludeType(type) {
+            for (let i = 0; i < this.effects.length; i++)
+                if (this.effects[i] != null && this.effects[i].type == type)
+                    return true;
+            return false;
+        }
     }
 
     class EventManager {
@@ -20273,7 +20324,7 @@ li.select2-results__option[role=group] > strong:hover {
                         if (tgtInstrument == null)
                             continue;
                         const str = Config.modulators[instrument.modulators[mod]].name;
-                        if (!(Config.modulators[instrument.modulators[mod]].associatedEffect != 9 && !(tgtInstrument.effects & (1 << Config.modulators[instrument.modulators[mod]].associatedEffect))) && !(Config.modulators[instrument.modulators[mod]].associatedMDEffect != 6 && !(tgtInstrument.mdeffects & (1 << Config.modulators[instrument.modulators[mod]].associatedMDEffect)))
+                        if (!(Config.modulators[instrument.modulators[mod]].associatedEffect != 9 && !(tgtInstrument.effectsIncludeType(Config.modulators[instrument.modulators[mod]].associatedEffect))) && !(Config.modulators[instrument.modulators[mod]].associatedMDEffect != 6 && !(tgtInstrument.mdeffects & (1 << Config.modulators[instrument.modulators[mod]].associatedMDEffect)))
                             || ((tgtInstrument.type != 1 && tgtInstrument.type != 11) && (str == "fm slider 1" || str == "fm slider 2" || str == "fm slider 3" || str == "fm slider 4" || str == "fm feedback"))
                             || tgtInstrument.type != 11 && (str == "fm slider 5" || str == "fm slider 6")
                             || ((tgtInstrument.type != 6 && tgtInstrument.type != 8) && (str == "pulse width" || str == "decimal offset"))
@@ -22994,7 +23045,7 @@ li.select2-results__option[role=group] > strong:hover {
             return (x % b + b) % b;
         }
         static loopableChipSynth(synth, bufferIndex, roundedSamplesPerTick, tone, instrumentState) {
-            const aliases = (effectsIncludeDistortion(instrumentState.effects) && instrumentState.aliases);
+            const aliases = (instrumentState.effectsIncludeType(3) && instrumentState.aliases);
             const dataL = synth.tempInstrumentSampleBufferL;
             const dataR = synth.tempInstrumentSampleBufferR;
             const waveL = instrumentState.waveL;
@@ -23380,7 +23431,7 @@ li.select2-results__option[role=group] > strong:hover {
             tone.initialNoteFilterInputR2 = initialFilterInputR2;
         }
         static chipSynth(synth, bufferIndex, roundedSamplesPerTick, tone, instrumentState) {
-            const aliases = (effectsIncludeDistortion(instrumentState.effects) && instrumentState.aliases);
+            const aliases = (instrumentState.effectsIncludeType(5) && instrumentState.aliases);
             const dataL = synth.tempInstrumentSampleBufferL;
             const dataR = synth.tempInstrumentSampleBufferR;
             const waveL = instrumentState.waveL;
@@ -23702,15 +23753,15 @@ li.select2-results__option[role=group] > strong:hover {
             pickedStringFunction(synth, bufferIndex, roundedSamplesPerTick, tone, instrumentState);
         }
         static effectsSynth(synth, outputDataL, outputDataR, bufferIndex, runLength, instrumentState) {
-            const usesDistortion = effectsIncludeDistortion(instrumentState.effects);
-            const usesBitcrusher = effectsIncludeBitcrusher(instrumentState.effects);
-            const usesEqFilter = effectsIncludeEQFilter(instrumentState.effects);
-            const usesPanning = effectsIncludePanning(instrumentState.effects);
-            const usesChorus = effectsIncludeChorus(instrumentState.effects);
-            const usesEcho = effectsIncludeEcho(instrumentState.effects);
-            const usesReverb = effectsIncludeReverb(instrumentState.effects);
-            const usesGranular = effectsIncludeGranular(instrumentState.effects);
-            const usesRingModulation = effectsIncludeRingModulation(instrumentState.effects);
+            const usesDistortion = instrumentState.effectsIncludeType(3);
+            const usesBitcrusher = instrumentState.effectsIncludeType(4);
+            const usesEqFilter = instrumentState.effectsIncludeType(5);
+            const usesPanning = instrumentState.effectsIncludeType(2);
+            const usesChorus = instrumentState.effectsIncludeType(1);
+            const usesEcho = instrumentState.effectsIncludeType(6);
+            const usesReverb = instrumentState.effectsIncludeType(0);
+            const usesGranular = instrumentState.effectsIncludeType(8);
+            const usesRingModulation = instrumentState.effectsIncludeType(7);
             const isStereo = instrumentState.chipWaveInStereo && (instrumentState.synthesizer == Synth.loopableChipSynth || instrumentState.synthesizer == Synth.chipSynth);
             const panMode = instrumentState.panningMode;
             let signature = "";
@@ -26626,7 +26677,7 @@ li.select2-results__option[role=group] > strong:hover {
                         instrument.volume = tempVolume;
                         instrument.pan = tempPan;
                         instrument.panDelay = tempPanDelay;
-                        instrument.effects = (instrument.effects | (1 << 2));
+                        instrument.addEffect(2);
                     }
                 }
                 instrument.preset = newValue;
@@ -26690,7 +26741,7 @@ li.select2-results__option[role=group] > strong:hover {
             }
             const isNoise = doc.song.getChannelIsNoise(doc.channel);
             const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-            instrument.effects = 1 << 2;
+            instrument.effects = [];
             instrument.aliases = false;
             instrument.envelopeCount = 0;
             const midFreq = FilterControlPoint.getRoundedSettingValueFromHz(700.0);
@@ -26758,8 +26809,8 @@ li.select2-results__option[role=group] > strong:hover {
                     ])].index;
                 }
                 if (Math.random() < 0.8) {
-                    instrument.effects |= 1 << 5;
-                    applyFilterPoints(instrument.noteFilter, [
+                    instrument.addEffect(5);
+                    applyFilterPoints(instrument.eqFilter, [
                         new PotentialFilterPoint(1.0, 0, midFreq, maxFreq, 8000.0, -1),
                     ]);
                     instrument.addEnvelope(Config.instrumentAutomationTargets.dictionary["noteFilterAllFreqs"].index, 0, Config.newEnvelopes.dictionary[selectWeightedRandom([
@@ -26777,28 +26828,28 @@ li.select2-results__option[role=group] > strong:hover {
                     ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 30, 30)]);
                 }
                 if (Math.random() < 0.1) {
-                    instrument.effects |= 1 << 3;
+                    instrument.addEffect(3);
                     instrument.distortion = selectCurvedDistribution(1, Config.distortionRange - 1, Config.distortionRange - 1, 2);
                 }
                 if (Math.random() < 0.1) {
-                    instrument.effects |= 1 << 4;
+                    instrument.addEffect(4);
                     instrument.bitcrusherFreq = selectCurvedDistribution(0, Config.bitcrusherFreqRange - 1, Config.bitcrusherFreqRange >> 1, 2);
                     instrument.bitcrusherQuantization = selectCurvedDistribution(0, Config.bitcrusherQuantizationRange - 1, Config.bitcrusherQuantizationRange >> 1, 2);
                 }
                 if (Math.random() < 0.1) {
-                    instrument.effects |= 1 << 1;
+                    instrument.addEffect(1);
                     instrument.chorus = selectCurvedDistribution(1, Config.chorusRange - 1, Config.chorusRange - 1, 1);
                 }
                 if (Math.random() < 0.1) {
                     instrument.echoSustain = selectCurvedDistribution(0, Config.echoSustainRange - 1, Config.echoSustainRange >> 1, 2);
                     instrument.echoDelay = selectCurvedDistribution(0, Config.echoDelayRange - 1, Config.echoDelayRange >> 1, 2);
                     if (instrument.echoSustain != 0 || instrument.echoDelay != 0) {
-                        instrument.effects |= 1 << 6;
+                        instrument.addEffect(6);
                     }
                     instrument.echoDelay = selectCurvedDistribution(0, Config.panMax - 1, Config.panMax >> 1, 2);
                 }
                 if (Math.random() < 0.5) {
-                    instrument.effects |= 1 << 0;
+                    instrument.addEffect(0);
                     instrument.reverb = selectCurvedDistribution(1, Config.reverbRange - 1, 1, 1);
                 }
                 if (type == 2 || type == 3) {
@@ -27014,7 +27065,7 @@ li.select2-results__option[role=group] > strong:hover {
                     ])].index;
                 }
                 if (Math.random() < 0.1) {
-                    instrument.effects |= 1 << 3;
+                    instrument.addEffect(3);
                     instrument.distortion = selectCurvedDistribution(1, Config.distortionRange - 1, Config.distortionRange - 1, 2);
                     if (Math.random() < 0.3) {
                         let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -27040,8 +27091,8 @@ li.select2-results__option[role=group] > strong:hover {
                         ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 45, 20)], envelopeLowerBound, envelopeUpperBound, selectCurvedDistribution(2, 16, 2, 6), selectCurvedDistribution(1, 63, 32, 31), selectWeightedRandom([{ item: 0, weight: 2 }, { item: 2, weight: 5 }]));
                     }
                 }
-                if (effectsIncludeDistortion(instrument.effects) && Math.random() < 0.8) {
-                    instrument.effects |= 1 << 5;
+                if (instrument.effectsIncludeType(3) && Math.random() < 0.8) {
+                    instrument.addEffect(5);
                     applyFilterPoints(instrument.noteFilter, [
                         new PotentialFilterPoint(1.0, 0, midFreq, maxFreq, 2000.0, -1),
                         new PotentialFilterPoint(0.9, 1, 0, midFreq - 1, 500.0, -1),
@@ -27049,7 +27100,7 @@ li.select2-results__option[role=group] > strong:hover {
                     ]);
                 }
                 else if (Math.random() < 0.5) {
-                    instrument.effects |= 1 << 5;
+                    instrument.addEffect(5);
                     applyFilterPoints(instrument.noteFilter, [
                         new PotentialFilterPoint(1.0, 0, midFreq, maxFreq, 8000.0, -1),
                     ]);
@@ -27075,7 +27126,7 @@ li.select2-results__option[role=group] > strong:hover {
                     ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 30, 30)], envelopeLowerBound, envelopeUpperBound, 2, 2, selectWeightedRandom([{ item: 0, weight: 8 }, { item: 2, weight: 4 }, { item: 3, weight: 2 }, { item: 1, weight: 1 }]));
                 }
                 if (Math.random() < 0.1) {
-                    instrument.effects |= 1 << 4;
+                    instrument.addEffect(4);
                     instrument.bitcrusherFreq = selectCurvedDistribution(0, Config.bitcrusherFreqRange - 1, 0, 2);
                     instrument.bitcrusherQuantization = selectCurvedDistribution(0, Config.bitcrusherQuantizationRange - 1, Config.bitcrusherQuantizationRange >> 1, 2);
                     let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -27124,7 +27175,7 @@ li.select2-results__option[role=group] > strong:hover {
                     }
                 }
                 if (Math.random() < 0.1) {
-                    instrument.effects |= 1 << 1;
+                    instrument.addEffect(1);
                     instrument.chorus = selectCurvedDistribution(1, Config.chorusRange - 1, Config.chorusRange - 1, 1);
                     if (Math.random() < 0.1) {
                         let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -27154,7 +27205,7 @@ li.select2-results__option[role=group] > strong:hover {
                     instrument.echoSustain = selectCurvedDistribution(0, Config.echoSustainRange - 1, Config.echoSustainRange >> 1, 2);
                     instrument.echoDelay = selectCurvedDistribution(0, Config.echoDelayRange - 1, Config.echoDelayRange >> 1, 2);
                     if (instrument.echoSustain != 0 || instrument.echoDelay != 0) {
-                        instrument.effects |= 1 << 6;
+                        instrument.addEffect(6);
                         if (Math.random() < 0.04) {
                             let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
                             let envelopeUpperBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -27182,7 +27233,7 @@ li.select2-results__option[role=group] > strong:hover {
                     instrument.ringModulation = selectCurvedDistribution(1, Config.ringModRange - 1, Config.ringModRange / 2, Config.ringModRange / 2);
                     instrument.ringModulationHz = selectCurvedDistribution(1, Config.ringModHzRange - 1, Config.ringModHzRange / 2, Config.ringModHzRange / 2);
                     if (instrument.ringModulation != 0 || instrument.ringModulationHz != 0) {
-                        instrument.effects |= 1 << 7;
+                        instrument.addEffect(7);
                         instrument.ringModWaveformIndex = 0;
                         if (Math.random() < 0.1) {
                             let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -27233,7 +27284,7 @@ li.select2-results__option[role=group] > strong:hover {
                     }
                 }
                 if (Math.random() < 0.5) {
-                    instrument.effects |= 1 << 0;
+                    instrument.addEffect(0);
                     instrument.reverb = selectCurvedDistribution(1, Config.reverbRange - 1, 1, 1);
                     if (Math.random() < 0.03) {
                         let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -27260,7 +27311,7 @@ li.select2-results__option[role=group] > strong:hover {
                     }
                 }
                 if (Math.random() < 0.1) {
-                    instrument.effects |= 1 << 8;
+                    instrument.addEffect(8);
                     instrument.granular = selectCurvedDistribution(1, Config.granularRange - 1, Config.granularRange / 2, Config.granularRange / 3);
                     instrument.grainAmounts = selectCurvedDistribution(1, Config.grainAmountsMax - 1, Config.grainAmountsMax - 2, 3);
                     instrument.grainSize = selectCurvedDistribution(Config.grainSizeMin / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep / 2);
@@ -27695,10 +27746,12 @@ li.select2-results__option[role=group] > strong:hover {
             let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
             if (useInstrument != null)
                 instrument = useInstrument;
-            const oldValue = instrument.effects;
-            const wasSelected = ((oldValue & (1 << toggleFlag)) != 0);
-            const newValue = wasSelected ? (oldValue & (~(1 << toggleFlag))) : (oldValue | (1 << toggleFlag));
-            instrument.effects = newValue;
+            const wasSelected = instrument.effectsIncludeType(toggleFlag);
+            if (wasSelected)
+                instrument.removeEffect(toggleFlag);
+            else
+                instrument.addEffect(toggleFlag);
+            console.log(instrument.effects);
             for (let i = 0; i < 15; i++) {
                 if (instrument.effectOrder[i] == toggleFlag)
                     instrument.effectOrder.splice(i, 1);
@@ -27912,7 +27965,6 @@ li.select2-results__option[role=group] > strong:hover {
                                     const preset = EditorConfig.valueToPreset(presetValue);
                                     instrument.fromJsonObject(preset.settings, isNoise, isMod, doc.song.rhythm == 0 || doc.song.rhythm == 2, doc.song.rhythm >= 2);
                                     instrument.preset = presetValue;
-                                    instrument.effects |= 1 << 2;
                                 }
                                 else {
                                     instrument.setTypeAndReset(10, isNoise, isMod);
@@ -29053,7 +29105,6 @@ li.select2-results__option[role=group] > strong:hover {
             const instrument = new Instrument(isNoise, isMod);
             instrument.fromJsonObject(preset.settings, isNoise, isMod, false, false, 1);
             instrument.preset = presetValue;
-            instrument.effects |= 1 << 2;
             instrument.volume = 0;
             channel.instruments.push(instrument);
             if (!isMod) {
@@ -29428,7 +29479,7 @@ li.select2-results__option[role=group] > strong:hover {
                 text = text.substr(2);
                 for (let i = 0; i < usedInstruments.length; i++) {
                     const tgtInstrument = usedInstruments[i];
-                    if (!(tgtInstrument.effects & (1 << Config.modulators.dictionary[text].associatedEffect))) {
+                    if (!(tgtInstrument.effectsIncludeType(Config.modulators.dictionary[text].associatedEffect))) {
                         doc.record(new ChangeToggleEffects(doc, Config.modulators.dictionary[text].associatedEffect, tgtInstrument));
                     }
                     if (!(tgtInstrument.mdeffects & (1 << Config.modulators.dictionary[text].associatedMDEffect))) {
@@ -30008,7 +30059,6 @@ li.select2-results__option[role=group] > strong:hover {
                 const preset = EditorConfig.valueToPreset(0);
                 instrument.fromJsonObject(preset.settings, isNoise, isMod, song.rhythm == 0 || song.rhythm == 2, song.rhythm >= 2, 1);
                 instrument.preset = 0;
-                instrument.effects |= 1 << 2;
             }
         }
     }
@@ -38484,7 +38534,6 @@ You should be redirected to the song at:<br /><br />
             this._renderedEnvelopeCount = 0;
             this._renderedEqFilterCount = -1;
             this._renderedNoteFilterCount = -1;
-            this._renderedEffects = 0;
             this._lastChange = null;
             this._onChange = (event) => {
                 const targetSelectIndex = this._targetSelects.indexOf(event.target);
@@ -47537,7 +47586,7 @@ You should be redirected to the song at:<br /><br />
                 this._effectsSelect.selectedIndex = -1;
                 for (let i = 0; i < Config.effectOrder.length; i++) {
                     let effectFlag = Config.effectOrder[i];
-                    const selected = ((instrument.effects & (1 << effectFlag)) != 0);
+                    const selected = instrument.effectsIncludeType(effectFlag);
                     const label = (selected ? textOnIcon : textOffIcon) + Config.effectNames[effectFlag];
                     const option = this._effectsSelect.children[i + 1];
                     if (option.textContent != label)
@@ -47882,7 +47931,7 @@ You should be redirected to the song at:<br /><br />
                     }
                     this._effectsGroup.replaceChildren();
                     for (var i = 0; i < instrument.effectOrder.length; i++) {
-                        if (instrument.effectOrder[i] == 5 && effectsIncludeEQFilter(instrument.effects)) {
+                        if (instrument.effectOrder[i] == 5 && instrument.effectsIncludeType(5)) {
                             this._effectsGroup.append(this._eqFilterTypeRow);
                             this._eqFilterTypeRow.style.setProperty("--text-color-lit", colors.primaryNote);
                             this._eqFilterTypeRow.style.setProperty("--text-color-dim", colors.secondaryNote);
@@ -47906,7 +47955,7 @@ You should be redirected to the song at:<br /><br />
                                 this._effectsGroup.append(this._eqFilterRow);
                             }
                         }
-                        else if (instrument.effectOrder[i] == 3 && effectsIncludeDistortion(instrument.effects)) {
+                        else if (instrument.effectOrder[i] == 3 && instrument.effectsIncludeType(3)) {
                             this._effectsGroup.append(this._distortionRow);
                             this._effectsGroup.append(this._aliasingRow);
                             if (instrument.type == 0 || instrument.type == 9 || instrument.type == 6 || instrument.type == 8)
@@ -47915,24 +47964,24 @@ You should be redirected to the song at:<br /><br />
                                 this._aliasingRow.style.display = "none";
                             this._distortionSlider.updateValue(instrument.distortion);
                         }
-                        else if (instrument.effectOrder[i] == 4 && effectsIncludeBitcrusher(instrument.effects)) {
+                        else if (instrument.effectOrder[i] == 4 && instrument.effectsIncludeType(4)) {
                             this._effectsGroup.append(this._bitcrusherQuantizationRow);
                             this._effectsGroup.append(this._bitcrusherFreqRow);
                             this._bitcrusherQuantizationSlider.updateValue(instrument.bitcrusherQuantization);
                             this._bitcrusherFreqSlider.updateValue(instrument.bitcrusherFreq);
                         }
-                        else if (instrument.effectOrder[i] == 2 && effectsIncludePanning(instrument.effects)) {
+                        else if (instrument.effectOrder[i] == 2 && instrument.effectsIncludeType(2)) {
                             this._effectsGroup.append(this._panSliderRow);
                             this._effectsGroup.append(this._panDropdownGroup);
                             if (this._openPanDropdown)
                                 this._panDropdownGroup.style.display = "";
                             this._panSlider.updateValue(instrument.pan);
                         }
-                        else if (instrument.effectOrder[i] == 1 && effectsIncludeChorus(instrument.effects)) {
+                        else if (instrument.effectOrder[i] == 1 && instrument.effectsIncludeType(1)) {
                             this._effectsGroup.append(this._chorusRow);
                             this._chorusSlider.updateValue(instrument.chorus);
                         }
-                        else if (instrument.effectOrder[i] == 6 && effectsIncludeEcho(instrument.effects)) {
+                        else if (instrument.effectOrder[i] == 6 && instrument.effectsIncludeType(6)) {
                             this._effectsGroup.append(this._echoSustainRow);
                             this._effectsGroup.append(this._echoDelayRow);
                             this._effectsGroup.append(this._echoPingPongRow);
@@ -47941,16 +47990,16 @@ You should be redirected to the song at:<br /><br />
                             this._echoPingPongSlider.updateValue(instrument.echoPingPong);
                             this._echoDelaySlider.input.title = (Math.round((instrument.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat) * 1000) / 1000) + " beat(s)";
                         }
-                        else if (instrument.effectOrder[i] == 0 && effectsIncludeReverb(instrument.effects)) {
+                        else if (instrument.effectOrder[i] == 0 && instrument.effectsIncludeType(0)) {
                             this._effectsGroup.append(this._reverbRow);
                             this._reverbSlider.updateValue(instrument.reverb);
                         }
-                        else if (instrument.effectOrder[i] == 7 && effectsIncludeRingModulation(instrument.effects)) {
+                        else if (instrument.effectOrder[i] == 7 && instrument.effectsIncludeType(7)) {
                             this._effectsGroup.append(this._ringModContainerRow);
                             this._ringModSlider.updateValue(instrument.ringModulation);
                             this._ringModHzSlider.updateValue(instrument.ringModulationHz);
                         }
-                        else if (instrument.effectOrder[i] == 8 && effectsIncludeGranular(instrument.effects)) {
+                        else if (instrument.effectOrder[i] == 8 && instrument.effectsIncludeType(8)) {
                             this._effectsGroup.append(this._granularContainerRow);
                             this._granularSlider.updateValue(instrument.granular);
                             this._grainSizeSlider.updateValue(instrument.grainSize);
@@ -48234,7 +48283,7 @@ You should be redirected to the song at:<br /><br />
                                         else {
                                             allInstrumentVibratos = false;
                                         }
-                                        if (effectsIncludeEQFilter(channel.instruments[instrumentIndex].effects)) {
+                                        if (channel.instruments[instrumentIndex].effectsIncludeType(5)) {
                                             anyInstrumentNoteFilters = true;
                                             if (channel.instruments[instrumentIndex].eqFilterType)
                                                 anyInstrumentSimpleNote = true;
@@ -48244,49 +48293,49 @@ You should be redirected to the song at:<br /><br />
                                         else {
                                             allInstrumentNoteFilters = false;
                                         }
-                                        if (effectsIncludeDistortion(channel.instruments[instrumentIndex].effects)) {
+                                        if (channel.instruments[instrumentIndex].effectsIncludeType(3)) {
                                             anyInstrumentDistorts = true;
                                         }
                                         else {
                                             allInstrumentDistorts = false;
                                         }
-                                        if (effectsIncludeBitcrusher(channel.instruments[instrumentIndex].effects)) {
+                                        if (channel.instruments[instrumentIndex].effectsIncludeType(4)) {
                                             anyInstrumentBitcrushes = true;
                                         }
                                         else {
                                             allInstrumentBitcrushes = false;
                                         }
-                                        if (effectsIncludePanning(channel.instruments[instrumentIndex].effects)) {
+                                        if (channel.instruments[instrumentIndex].effectsIncludeType(2)) {
                                             anyInstrumentPans = true;
                                         }
                                         else {
                                             allInstrumentPans = false;
                                         }
-                                        if (effectsIncludeChorus(channel.instruments[instrumentIndex].effects)) {
+                                        if (channel.instruments[instrumentIndex].effectsIncludeType(1)) {
                                             anyInstrumentChorus = true;
                                         }
                                         else {
                                             allInstrumentChorus = false;
                                         }
-                                        if (effectsIncludeEcho(channel.instruments[instrumentIndex].effects)) {
+                                        if (channel.instruments[instrumentIndex].effectsIncludeType(6)) {
                                             anyInstrumentEchoes = true;
                                         }
                                         else {
                                             allInstrumentEchoes = false;
                                         }
-                                        if (effectsIncludeReverb(channel.instruments[instrumentIndex].effects)) {
+                                        if (channel.instruments[instrumentIndex].effectsIncludeType(0)) {
                                             anyInstrumentReverbs = true;
                                         }
                                         else {
                                             allInstrumentReverbs = false;
                                         }
-                                        if (effectsIncludeRingModulation(channel.instruments[instrumentIndex].effects)) {
+                                        if (channel.instruments[instrumentIndex].effectsIncludeType(7)) {
                                             anyInstrumentRingMods = true;
                                         }
                                         else {
                                             allInstrumentRingMods = false;
                                         }
-                                        if (effectsIncludeGranular(channel.instruments[instrumentIndex].effects)) {
+                                        if (channel.instruments[instrumentIndex].effectsIncludeType(8)) {
                                             anyInstrumentGranulars = true;
                                         }
                                         else {
@@ -49161,7 +49210,7 @@ You should be redirected to the song at:<br /><br />
                         const group = new ChangeGroup();
                         if (event.shiftKey) {
                             const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-                            if (effectsIncludeEQFilter(instrument.effects) && !instrument.noteFilterType && this._doc.channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
+                            if (instrument.effectsIncludeType(5) && !instrument.noteFilterType && this._doc.channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
                                 this._openPrompt("customEQFilterSettings");
                             break;
                         }
@@ -49849,7 +49898,7 @@ You should be redirected to the song at:<br /><br />
                 const toggleFlag = Config.effectOrder[this._effectsSelect.selectedIndex - 1];
                 this._doc.record(new ChangeToggleEffects(this._doc, toggleFlag, null));
                 this._effectsSelect.selectedIndex = 0;
-                if (instrument.effects > oldValue) {
+                if (instrument.effects.length > oldValue.length) {
                     this._doc.addedEffect = true;
                 }
                 this._doc.notifier.changed();

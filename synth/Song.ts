@@ -1,6 +1,6 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { startLoadingSample, sampleLoadingState, SampleLoadingState, sampleLoadEvents, SampleLoadedEvent, SampleLoadingStatus, loadBuiltInSamples, Dictionary, DictionaryArray, toNameMap, FilterType, SustainType, EnvelopeType, InstrumentType, EffectType, MDEffectType, Envelope, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, effectsIncludeRingModulation, effectsIncludeGranular, LFOEnvelopeTypes, RandomEnvelopeTypes } from "./SynthConfig";
+import { startLoadingSample, sampleLoadingState, SampleLoadingState, sampleLoadEvents, SampleLoadedEvent, SampleLoadingStatus, loadBuiltInSamples, Dictionary, DictionaryArray, toNameMap, FilterType, SustainType, EnvelopeType, InstrumentType, EffectType, MDEffectType, Envelope, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, LFOEnvelopeTypes, RandomEnvelopeTypes } from "./SynthConfig";
 import { Preset, EditorConfig } from "../editor/EditorConfig";
 import { Channel } from "./Channel";
 import { Instrument, LegacySettings } from "./Instrument";
@@ -890,17 +890,16 @@ export class Song {
                     }
                 }
 
-                // slarmoos box describes this as a "14 bit bitfield" but im pretty sure its actually 18 bits and 15 of them are used. weird! - theepie
-                buffer.push(SongTagCode.effects, base64IntToCharCode[(instrument.effects >> 12) & 63], base64IntToCharCode[(instrument.effects >> 6) & 63], base64IntToCharCode[instrument.effects & 63]);
-                // the effect order is not so simple. eventually i will merge these two!
-                for (let i = 0; i < 9; i++) {
-                    buffer.push(base64IntToCharCode[instrument.effectOrder[i] & 63]);
+                buffer.push(SongTagCode.effects, base64IntToCharCode[instrument.effectCount]);
+                for (let i = 0; i < instrument.effectCount; i++) {
+                    if (instrument.effects[i] != null) buffer.push(base64IntToCharCode[instrument.effects[i]!.type & 63]);
+                    else buffer.push(base64IntToCharCode[0]);
                 }
                 // this is a six bit bitfield
                 buffer.push(base64IntToCharCode[instrument.mdeffects & 63]);
 
                 // theepbox swaps note filter (pre eq) and eq filter (post eq) in order to allow post eq to be re-ordered.
-                if (effectsIncludeEQFilter(instrument.effects)) {
+                if (instrument.effectsIncludeType(EffectType.eqFilter)) {
                     buffer.push(base64IntToCharCode[+instrument.eqFilterType]);
                     if (instrument.eqFilterType) {
                         buffer.push(base64IntToCharCode[instrument.eqFilterSimpleCut]);
@@ -969,38 +968,38 @@ export class Song {
                         buffer.push(base64IntToCharCode[instrument.vibratoType]);
                     }
                 }
-                if (effectsIncludeDistortion(instrument.effects)) {
+                if (instrument.effectsIncludeType(EffectType.distortion)) {
                     buffer.push(base64IntToCharCode[instrument.distortion]);
                     // Aliasing is tied into distortion for now
                     buffer.push(base64IntToCharCode[+instrument.aliases]);
                 }
-                if (effectsIncludeBitcrusher(instrument.effects)) {
+                if (instrument.effectsIncludeType(EffectType.bitcrusher)) {
                     buffer.push(base64IntToCharCode[instrument.bitcrusherFreq], base64IntToCharCode[instrument.bitcrusherQuantization]);
                 }
-                if (effectsIncludePanning(instrument.effects)) {
+                if (instrument.effectsIncludeType(EffectType.panning)) {
                     buffer.push(base64IntToCharCode[instrument.pan >> 6], base64IntToCharCode[instrument.pan & 0x3f]);
                     buffer.push(base64IntToCharCode[instrument.panDelay]);
                     buffer.push(base64IntToCharCode[instrument.panMode]);
                 }
-                if (effectsIncludeChorus(instrument.effects)) {
+                if (instrument.effectsIncludeType(EffectType.chorus)) {
                     buffer.push(base64IntToCharCode[instrument.chorus]);
                 }
-                if (effectsIncludeEcho(instrument.effects)) { // echo ping pong probably didnt need to have such a massive range. oh well!
+                if (instrument.effectsIncludeType(EffectType.echo)) { // echo ping pong probably didnt need to have such a massive range. oh well!
                     buffer.push(base64IntToCharCode[instrument.echoSustain], base64IntToCharCode[instrument.echoDelay], base64IntToCharCode[instrument.echoPingPong >> 6], base64IntToCharCode[instrument.echoPingPong & 0x3f]);
                 }
-                if (effectsIncludeReverb(instrument.effects)) {
+                if (instrument.effectsIncludeType(EffectType.reverb)) {
                     buffer.push(base64IntToCharCode[instrument.reverb]);
                 }
                 // if (effectsIncludeNoteRange(instrument.effects)) {
                 //     buffer.push(base64IntToCharCode[instrument.noteRange]);
                 // }
-                if (effectsIncludeGranular(instrument.effects)) {
+                if (instrument.effectsIncludeType(EffectType.granular)) {
                     buffer.push(base64IntToCharCode[instrument.granular]);
                     buffer.push(base64IntToCharCode[instrument.grainSize]);
                     buffer.push(base64IntToCharCode[instrument.grainAmounts]);
                     buffer.push(base64IntToCharCode[instrument.grainRange]);
                 }
-                if (effectsIncludeRingModulation(instrument.effects)) {
+                if (instrument.effectsIncludeType(EffectType.ringModulation)) {
                     buffer.push(base64IntToCharCode[instrument.ringModulation]);
                     buffer.push(base64IntToCharCode[instrument.ringModulationHz]);
                     buffer.push(base64IntToCharCode[instrument.ringModWaveformIndex]);
@@ -1938,7 +1937,7 @@ export class Song {
                 if (((beforeSeven && fromBeepBox) || (beforeTwo && fromJummBox)) && (instrumentType == InstrumentType.chip || instrumentType == InstrumentType.customChipWave || instrumentType == InstrumentType.pwm)) {
                     instrument.aliases = true;
                     instrument.distortion = 0;
-                    instrument.effects |= 1 << EffectType.distortion;
+                    instrument.addEffect(EffectType.distortion);
                 }
                 if (useSlowerArpSpeed) {
                     instrument.arpeggioSpeed = 9; // x3/4 speed. This used to be tied to rhythm, but now it is decoupled to each instrument's arp speed slider. This flag gets set when importing older songs to keep things consistent.
@@ -2453,7 +2452,7 @@ export class Song {
                                     }
                                     if ((legacyGlobalReverb != 0 || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) && !this.getChannelIsNoise(channelIndex)) {
                                         // Enable reverb if it was used globaly before. (Global reverb was added before the effects option so I need to pick somewhere else to initialize instrument reverb, and I picked the vibrato command.)
-                                        instrument.effects |= 1 << EffectType.reverb;
+                                        instrument.addEffect(EffectType.reverb);
                                         instrument.reverb = legacyGlobalReverb;
                                     }
                                 }
@@ -2472,11 +2471,11 @@ export class Song {
                             }
                             if (instrument.vibrato != Config.vibratos.dictionary["none"].index) {
                                 // Enable vibrato if it was used.
-                                instrument.effects |= 1 << MDEffectType.vibrato;
+                                instrument.mdeffects |= 1 << MDEffectType.vibrato;
                             }
                             if (legacyGlobalReverb != 0 || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
                                 // Enable reverb if it was used globaly before. (Global reverb was added before the effects option so I need to pick somewhere else to initialize instrument reverb, and I picked the vibrato command.)
-                                instrument.effects |= 1 << EffectType.reverb;
+                                instrument.addEffect(EffectType.reverb);
                                 instrument.reverb = legacyGlobalReverb;
                             }
                         }
@@ -2661,16 +2660,16 @@ export class Song {
             case SongTagCode.effects: {
                 const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                 if ((beforeNine && fromBeepBox) || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
-                    instrument.effects = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] & ((1 << EffectType.length) - 1));
+                    instrument.addEffect(base64CharCodeToInt[compressed.charCodeAt(charIndex++)] & ((1 << EffectType.length) - 1));
                     if (legacyGlobalReverb == 0 && !((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
                         // Disable reverb if legacy song reverb was zero.
-                        instrument.effects &= ~(1 << EffectType.reverb);
-                    } else if (effectsIncludeReverb(instrument.effects)) {
+                        instrument.removeEffect(EffectType.distortion);
+                    } else if (instrument.effectsIncludeType(EffectType.reverb)) {
                         instrument.reverb = legacyGlobalReverb;
                     }
-                    //if (instrument.pan != Config.panCenter) {
-                        instrument.effects |= 1 << EffectType.panning;
-                    //}
+                    if (instrument.pan != Config.panCenter) {
+                        instrument.addEffect(EffectType.panning);
+                    }
                     if (instrument.vibrato != Config.vibratos.dictionary["none"].index) {
                         // Enable vibrato if it was used.
                         instrument.mdeffects |= 1 << MDEffectType.vibrato;
@@ -2680,34 +2679,50 @@ export class Song {
                         instrument.mdeffects |= 1 << MDEffectType.detune;
                     }
                     if (instrument.aliases)
-                        instrument.effects |= 1 << EffectType.distortion;
+                        instrument.addEffect(EffectType.distortion);
                     else
-                        instrument.effects &= ~(1 << EffectType.distortion);
-                    instrument.effects |= 1 << EffectType.eqFilter; // enable eq filter for theepbox :)
+                        instrument.removeEffect(EffectType.distortion);
+                    instrument.addEffect(EffectType.eqFilter);
 
                     // convertLegacySettings may need to force-enable note filter, call
                     // it again here to make sure that this override takes precedence.
                     const legacySettings: LegacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
                     instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
                 } else {
-                    if (EffectType.length > 9) throw new Error();
-                    if (fromSlarmoosBox && !beforeFive) {
-                        instrument.effects = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 12) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                    } else {
-                        instrument.effects = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                    }
+                    // if (EffectType.length > 9) throw new Error();
+                    const effectCount: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)]
                     if (fromTheepBox) {
-                        for (let i = 0; i < 9; i++) {
-                            instrument.effectOrder[i] = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                        instrument.effects = [];
+                        for (let i: number = 0; i < effectCount; i++) { // this for loop caused me a lot of grief... i dont wanna talk about it
+                            instrument.addEffect(base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         }
+                        console.log(instrument.effects)
+                        console.log(instrument.effectCount)
                         instrument.mdeffects = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     }
                     else {
-                        instrument.effectOrder = [EffectType.panning, EffectType.eqFilter, EffectType.granular, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb, EffectType.ringModulation];
-                        instrument.mdeffects = 0 // ?
+                        // i will admit it feels pretty good to describe a feature as "legacy"
+                        // hopefully this will inspire me to add more compatability code (although im not 100% sure i got it right here) ~ theepie
+                        const legacyEffectTypes: (EffectType | MDEffectType)[] = [EffectType.reverb, EffectType.chorus, EffectType.panning, EffectType.distortion, EffectType.bitcrusher, EffectType.eqFilter, EffectType.echo, MDEffectType.pitchShift, MDEffectType.detune, MDEffectType.vibrato, MDEffectType.transition, MDEffectType.chord, MDEffectType.noteRange, EffectType.ringModulation, EffectType.granular];
+                        let bit: number = 0;
+                        if (fromSlarmoosBox && !beforeFive) {
+                            const bits: BitFieldReader = new BitFieldReader(compressed, charIndex, charIndex + 18);
+                            for (let i = 0; i < 18; i++) {
+                                bit = bits.read(1)
+                                if (i > 6 && i < 13) instrument.mdeffects &= legacyEffectTypes[bit];
+                                else if (bit == 1) instrument.addEffect(legacyEffectTypes[i] as EffectType);
+                            }
+                        } else {
+                            const bits: BitFieldReader = new BitFieldReader(compressed, charIndex, charIndex + 12);
+                            for (let i = 0; i < 12; i++) {
+                                bit = bits.read(1)
+                                if (i > 6) instrument.mdeffects &= legacyEffectTypes[bit];
+                                else if (bit == 1) instrument.addEffect(legacyEffectTypes[i] as EffectType);
+                            }
+                        }
                     }
 
-                    if (effectsIncludeEQFilter(instrument.effects)) {
+                    if (instrument.effectsIncludeType(EffectType.eqFilter)) {
                         let typeCheck: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         if (fromTheepBox) {
                             if (typeCheck == 0) {
@@ -2758,7 +2773,7 @@ export class Song {
                                 instrument.eqFilterSimplePeak = clamp(0, Config.filterSimplePeakRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             }
                         } else {
-                            instrument.effects |= 1 << EffectType.eqFilter;
+                            instrument.addEffect(EffectType.eqFilter);
                                 instrument.noteFilterType = false;
                                 if (fromJummBox || fromGoldBox || fromUltraBox || fromSlarmoosBox)
                                     typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)]; // Skip to next index in jummbox to get actual count
@@ -2854,16 +2869,16 @@ export class Song {
                             instrument.vibratoType = Config.vibratos[instrument.vibrato].type;
                         }
                     }
-                    if (effectsIncludeDistortion(instrument.effects)) {
+                    if (instrument.effectsIncludeType(EffectType.distortion)) {
                         instrument.distortion = clamp(0, Config.distortionRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         if ((fromJummBox && !beforeFive) || fromGoldBox || fromUltraBox || fromSlarmoosBox)
                             instrument.aliases = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] ? true : false;
                     }
-                    if (effectsIncludeBitcrusher(instrument.effects)) {
+                    if (instrument.effectsIncludeType(EffectType.bitcrusher)) {
                         instrument.bitcrusherFreq = clamp(0, Config.bitcrusherFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         instrument.bitcrusherQuantization = clamp(0, Config.bitcrusherQuantizationRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     }
-                    if (effectsIncludePanning(instrument.effects)) {
+                    if (instrument.effectsIncludeType(EffectType.panning)) {
                         if (fromBeepBox) {
                             // Beepbox has a panMax of 8 (9 total positions), Jummbox has a panMax of 100 (101 total positions)
                             instrument.pan = clamp(0, Config.panMax + 1, Math.round(base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * ((Config.panMax) / 8.0)));
@@ -2876,7 +2891,7 @@ export class Song {
                         if ((fromJummBox && !beforeTwo) || fromGoldBox || fromUltraBox || fromSlarmoosBox) instrument.panDelay = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         if (fromTheepBox) instrument.panMode = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     }
-                    if (effectsIncludeChorus(instrument.effects)) {
+                    if (instrument.effectsIncludeType(EffectType.chorus)) {
                         if (fromBeepBox) {
                             // BeepBox has 4 chorus values vs. JB's 8
                             instrument.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 2;
@@ -2885,26 +2900,26 @@ export class Song {
                             instrument.chorus = clamp(0, Config.chorusRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         }
                     }
-                    if (effectsIncludeEcho(instrument.effects)) {
+                    if (instrument.effectsIncludeType(EffectType.echo)) {
                         if (!fromTheepBox) instrument.echoSustain = clamp(0, Config.echoSustainRange / 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 3;
                         else instrument.echoSustain = clamp(0, Config.echoSustainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         instrument.echoDelay = clamp(0, Config.echoDelayRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         instrument.echoPingPong = clamp(0, Config.panMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     }
-                    if (effectsIncludeReverb(instrument.effects)) {
+                    if (instrument.effectsIncludeType(EffectType.reverb)) {
                         if (fromBeepBox) {
                             instrument.reverb = clamp(0, Config.reverbRange, Math.round(base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * Config.reverbRange / 3.0));
                         } else {
                             instrument.reverb = clamp(0, Config.reverbRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         }
                     }
-                    if (effectsIncludeGranular(instrument.effects)) {
+                    if (instrument.effectsIncludeType(EffectType.granular)) {
                         instrument.granular = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         instrument.grainSize = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         instrument.grainAmounts = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         instrument.grainRange = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     }
-                    if (effectsIncludeRingModulation(instrument.effects)) {
+                    if (instrument.effectsIncludeType(EffectType.ringModulation)) {
                         instrument.ringModulation = clamp(0, Config.ringModRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         instrument.ringModulationHz = clamp(0, Config.ringModHzRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         instrument.ringModWaveformIndex = clamp(0, Config.operatorWaves.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
@@ -2912,8 +2927,8 @@ export class Song {
                         instrument.ringModHzOffset = clamp(Config.rmHzOffsetMin, Config.rmHzOffsetMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     }
                 }
-                // Clamp the range.
-                instrument.effects &= (1 << EffectType.length) - 1;
+                // Clamp the range...?
+                // if (instrument.effects.length != instrument.effectCount) //not sure what to do exactly
             } break;
             case SongTagCode.volume: {
                 if (beforeThree && fromBeepBox) {
@@ -3379,7 +3394,7 @@ export class Song {
                     instrument.aliases = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) ? true : false;
                     if (instrument.aliases) {
                         instrument.distortion = 0;
-                        instrument.effects |= 1 << EffectType.distortion;
+                        instrument.addEffect(EffectType.distortion);
                     }
                 } else {
                     if (fromUltraBox || fromSlarmoosBox) {
@@ -3526,7 +3541,7 @@ export class Song {
                                 }
 
                                 if (jumfive && instrument.modChannels[mod][0] >= 0) {
-                                    let forNoteFilter: boolean = effectsIncludeEQFilter(this.channels[instrument.modChannels[mod][0]].instruments[instrument.modInstruments[mod][0]].effects);
+                                    let forNoteFilter: boolean = this.channels[instrument.modChannels[mod][0]].instruments[instrument.modInstruments[mod][0]].effectsIncludeType(EffectType.eqFilter);
 
                                     // For legacy filter cut/peak, need to denote since scaling must be applied
                                     if (instrument.modulators[mod] == 7) {
@@ -3568,7 +3583,7 @@ export class Song {
                                 // Only used on import of old songs, because sometimes an invalid effect can be set in a mod in the new version that is actually unused. In that case,
                                 // keeping the mod invalid is better since it preserves the state.
                                 if (jumfive && Config.modulators[instrument.modulators[mod]].associatedEffect != EffectType.length) {
-                                    this.channels[instrument.modChannels[mod][0]].instruments[instrument.modInstruments[mod][0]].effects |= 1 << Config.modulators[instrument.modulators[mod]].associatedEffect;
+                                    this.channels[instrument.modChannels[mod][0]].instruments[instrument.modInstruments[mod][0]].addEffect(Config.modulators[instrument.modulators[mod]].associatedEffect);
                                 }
                             }
                         }
@@ -3830,7 +3845,7 @@ export class Song {
                     for (let channelIndex: number = 0; channelIndex < this.channels.length; channelIndex++) {
                         for (let instrumentIndex: number = 0; instrumentIndex < this.channels[channelIndex].instruments.length; instrumentIndex++) {
                             const instrument: Instrument = this.channels[channelIndex].instruments[instrumentIndex];
-                            if (effectsIncludeReverb(instrument.effects)) {
+                            if (instrument.effectsIncludeType(EffectType.reverb)) {
                                 instrument.reverb = Config.reverbRange - 1;
                             }
                             // Set song reverb via mod to the old setting at song start.

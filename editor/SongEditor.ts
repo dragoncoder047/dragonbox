@@ -1,7 +1,7 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
 //import {Layout} from "./Layout";
-import { sampleLoadEvents, SampleLoadedEvent, InstrumentType, EffectType, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, effectsIncludeRingModulation, effectsIncludeGranular, DropdownID, calculateRingModHertz } from "../synth/SynthConfig";
+import { sampleLoadEvents, SampleLoadedEvent, InstrumentType, EffectType, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, DropdownID, calculateRingModHertz } from "../synth/SynthConfig";
 import { BarScrollBar } from "./BarScrollBar";
 import { BeatsPerBarPrompt } from "./BeatsPerBarPrompt";
 import { Change, ChangeGroup } from "./Change";
@@ -16,6 +16,7 @@ import { EuclideanRhythmPrompt } from "./EuclidgenRhythmPrompt";
 import { ExportPrompt } from "./ExportPrompt";
 import "./Layout"; // Imported here for the sake of ensuring this code is transpiled early.
 import { Instrument } from "../synth/Instrument";
+import { Effect } from "../synth/Effect";
 import { Channel } from "../synth/Channel";
 import { detuneToCents } from "../synth/utils";
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
@@ -2462,7 +2463,7 @@ export class SongEditor {
         this._effectsSelect.selectedIndex = -1;
         for (let i: number = 0; i < Config.effectOrder.length; i++) {
             let effectFlag: number = Config.effectOrder[i];
-            const selected: boolean = ((instrument.effects & (1 << effectFlag)) != 0);
+            const selected: boolean = instrument.effectsIncludeType(effectFlag);
             const label: string = (selected ? textOnIcon : textOffIcon) + Config.effectNames[effectFlag];
             const option: HTMLOptionElement = <HTMLOptionElement>this._effectsSelect.children[i + 1];
             if (option.textContent != label) option.textContent = label;
@@ -2843,7 +2844,7 @@ export class SongEditor {
 
             this._effectsGroup.replaceChildren();
             for (var i=0; i < instrument.effectOrder.length; i++) {
-                if (instrument.effectOrder[i] == EffectType.eqFilter && effectsIncludeEQFilter(instrument.effects)) {
+                if (instrument.effectOrder[i] == EffectType.eqFilter && instrument.effectsIncludeType(EffectType.eqFilter)) {
                     this._effectsGroup.append(this._eqFilterTypeRow)
                     this._eqFilterTypeRow.style.setProperty("--text-color-lit", colors.primaryNote);
                     this._eqFilterTypeRow.style.setProperty("--text-color-dim", colors.secondaryNote);
@@ -2866,30 +2867,30 @@ export class SongEditor {
                         this._effectsGroup.append(this._eqFilterRow)
                     }
                 }
-                else if (instrument.effectOrder[i] == EffectType.distortion && effectsIncludeDistortion(instrument.effects)) {
+                else if (instrument.effectOrder[i] == EffectType.distortion && instrument.effectsIncludeType(EffectType.distortion)) {
                     this._effectsGroup.append(this._distortionRow)
                     this._effectsGroup.append(this._aliasingRow)
                     if (instrument.type == InstrumentType.chip || instrument.type == InstrumentType.customChipWave || instrument.type == InstrumentType.pwm || instrument.type == InstrumentType.supersaw) this._aliasingRow.style.display = "";
                     else this._aliasingRow.style.display = "none";
                     this._distortionSlider.updateValue(instrument.distortion);
                 }
-                else if (instrument.effectOrder[i] == EffectType.bitcrusher && effectsIncludeBitcrusher(instrument.effects)) {
+                else if (instrument.effectOrder[i] == EffectType.bitcrusher && instrument.effectsIncludeType(EffectType.bitcrusher)) {
                     this._effectsGroup.append(this._bitcrusherQuantizationRow)
                     this._effectsGroup.append(this._bitcrusherFreqRow)
                     this._bitcrusherQuantizationSlider.updateValue(instrument.bitcrusherQuantization);
                     this._bitcrusherFreqSlider.updateValue(instrument.bitcrusherFreq);
                 }
-                else if (instrument.effectOrder[i] == EffectType.panning && effectsIncludePanning(instrument.effects)) {
+                else if (instrument.effectOrder[i] == EffectType.panning && instrument.effectsIncludeType(EffectType.panning)) {
                     this._effectsGroup.append(this._panSliderRow)
                     this._effectsGroup.append(this._panDropdownGroup)
                     if (this._openPanDropdown) this._panDropdownGroup.style.display = "";
                     this._panSlider.updateValue(instrument.pan);
                 }
-                else if (instrument.effectOrder[i] == EffectType.chorus && effectsIncludeChorus(instrument.effects)) {
+                else if (instrument.effectOrder[i] == EffectType.chorus && instrument.effectsIncludeType(EffectType.chorus)) {
                     this._effectsGroup.append(this._chorusRow)
                     this._chorusSlider.updateValue(instrument.chorus);
                 }
-                else if (instrument.effectOrder[i] == EffectType.echo && effectsIncludeEcho(instrument.effects)) {
+                else if (instrument.effectOrder[i] == EffectType.echo && instrument.effectsIncludeType(EffectType.echo)) {
                     this._effectsGroup.append(this._echoSustainRow)
                     this._effectsGroup.append(this._echoDelayRow)
                     this._effectsGroup.append(this._echoPingPongRow)
@@ -2898,16 +2899,16 @@ export class SongEditor {
                     this._echoPingPongSlider.updateValue(instrument.echoPingPong);
                     this._echoDelaySlider.input.title = (Math.round((instrument.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat) * 1000) / 1000) + " beat(s)";
                 }
-                else if (instrument.effectOrder[i] == EffectType.reverb && effectsIncludeReverb(instrument.effects)) {
+                else if (instrument.effectOrder[i] == EffectType.reverb && instrument.effectsIncludeType(EffectType.reverb)) {
                     this._effectsGroup.append(this._reverbRow)
                     this._reverbSlider.updateValue(instrument.reverb);
                 }
-                else if (instrument.effectOrder[i] == EffectType.ringModulation && effectsIncludeRingModulation(instrument.effects)) {
+                else if (instrument.effectOrder[i] == EffectType.ringModulation && instrument.effectsIncludeType(EffectType.ringModulation)) {
                     this._effectsGroup.append(this._ringModContainerRow)
                     this._ringModSlider.updateValue(instrument.ringModulation);
                     this._ringModHzSlider.updateValue(instrument.ringModulationHz);
                 }
-                else if (instrument.effectOrder[i] == EffectType.granular && effectsIncludeGranular(instrument.effects)) {
+                else if (instrument.effectOrder[i] == EffectType.granular && instrument.effectsIncludeType(EffectType.granular)) {
                     this._effectsGroup.append(this._granularContainerRow)
                     this._granularSlider.updateValue(instrument.granular);
                     this._grainSizeSlider.updateValue(instrument.grainSize);
@@ -3300,7 +3301,7 @@ export class SongEditor {
                                 else {
                                     allInstrumentVibratos = false;
                                 }
-                                if (effectsIncludeEQFilter(channel.instruments[instrumentIndex].effects)) {
+                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.eqFilter)) {
                                     anyInstrumentNoteFilters = true;
                                     if (channel.instruments[instrumentIndex].eqFilterType)
                                         anyInstrumentSimpleNote = true;
@@ -3310,49 +3311,49 @@ export class SongEditor {
                                 else {
                                     allInstrumentNoteFilters = false;
                                 }
-                                if (effectsIncludeDistortion(channel.instruments[instrumentIndex].effects)) {
+                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.distortion)) {
                                     anyInstrumentDistorts = true;
                                 }
                                 else {
                                     allInstrumentDistorts = false;
                                 }
-                                if (effectsIncludeBitcrusher(channel.instruments[instrumentIndex].effects)) {
+                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.bitcrusher)) {
                                     anyInstrumentBitcrushes = true;
                                 }
                                 else {
                                     allInstrumentBitcrushes = false;
                                 }
-                                if (effectsIncludePanning(channel.instruments[instrumentIndex].effects)) {
+                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.panning)) {
                                     anyInstrumentPans = true;
                                 }
                                 else {
                                     allInstrumentPans = false;
                                 }
-                                if (effectsIncludeChorus(channel.instruments[instrumentIndex].effects)) {
+                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.chorus)) {
                                     anyInstrumentChorus = true;
                                 }
                                 else {
                                     allInstrumentChorus = false;
                                 }
-                                if (effectsIncludeEcho(channel.instruments[instrumentIndex].effects)) {
+                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.echo)) {
                                     anyInstrumentEchoes = true;
                                 }
                                 else {
                                     allInstrumentEchoes = false;
                                 }
-                                if (effectsIncludeReverb(channel.instruments[instrumentIndex].effects)) {
+                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.reverb)) {
                                     anyInstrumentReverbs = true;
                                 }
                                 else {
                                     allInstrumentReverbs = false;
                                 }
-                                if (effectsIncludeRingModulation(channel.instruments[instrumentIndex].effects)) {
+                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.ringModulation)) {
                                     anyInstrumentRingMods = true;
                                 }
                                 else {
                                     allInstrumentRingMods = false;
                                 }
-                                if (effectsIncludeGranular(channel.instruments[instrumentIndex].effects)) {
+                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.granular)) {
                                     anyInstrumentGranulars = true;
                                 }
                                 else {
@@ -4484,7 +4485,7 @@ export class SongEditor {
 
                 if (event.shiftKey) {
                     const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-                    if (effectsIncludeEQFilter(instrument.effects) && !instrument.noteFilterType && this._doc.channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
+                    if (instrument.effectsIncludeType(EffectType.eqFilter) && !instrument.noteFilterType && this._doc.channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
                         this._openPrompt("customEQFilterSettings");
                     break;
                 }
@@ -5327,11 +5328,11 @@ export class SongEditor {
 
     private _whenSetEffects = (): void => {
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-        const oldValue: number = instrument.effects;
+        const oldValue: (Effect | null)[] = instrument.effects;
         const toggleFlag: number = Config.effectOrder[this._effectsSelect.selectedIndex - 1];
         this._doc.record(new ChangeToggleEffects(this._doc, toggleFlag, null));
         this._effectsSelect.selectedIndex = 0;
-        if (instrument.effects > oldValue) {
+        if (instrument.effects.length > oldValue.length) {
             this._doc.addedEffect = true;
         }
         this._doc.notifier.changed();

@@ -2219,33 +2219,7 @@ export function effectsIncludeVibrato(effects: number): boolean {
 export function effectsIncludeNoteRange(effects: number): boolean {
     return (effects & (1 << MDEffectType.noteRange)) != 0;
 }
-export function effectsIncludeEQFilter(effects: number): boolean {
-    return (effects & (1 << EffectType.eqFilter)) != 0;
-}
-export function effectsIncludeDistortion(effects: number): boolean {
-    return (effects & (1 << EffectType.distortion)) != 0;
-}
-export function effectsIncludeBitcrusher(effects: number): boolean {
-    return (effects & (1 << EffectType.bitcrusher)) != 0;
-}
-export function effectsIncludePanning(effects: number): boolean {
-    return (effects & (1 << EffectType.panning)) != 0;
-}
-export function effectsIncludeChorus(effects: number): boolean {
-    return (effects & (1 << EffectType.chorus)) != 0;
-}
-export function effectsIncludeEcho(effects: number): boolean {
-    return (effects & (1 << EffectType.echo)) != 0;
-}
-export function effectsIncludeReverb(effects: number): boolean {
-    return (effects & (1 << EffectType.reverb)) != 0;
-}
-export function effectsIncludeRingModulation(effects: number): boolean {
-    return (effects & (1 << EffectType.ringModulation)) != 0;
-}
-export function effectsIncludeGranular(effects: number): boolean {
-    return (effects & (1 << EffectType.granular)) != 0;
-}
+
 export function calculateRingModHertz(sliderHz: number, sliderHzOffset: number = 0): number {
     //replaces the value 21 with 0
     if (sliderHz == 0) return 0;

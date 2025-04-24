@@ -1,10 +1,11 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { FilterType, SustainType,  InstrumentType, EffectType, EnvelopeComputeIndex, Unison, Chord, Config, getDrumWave, drawNoiseSpectrum, performIntegralOld,  effectsIncludeEQFilter, effectsIncludeDistortion, effectsIncludeBitcrusher, effectsIncludePanning, effectsIncludeChorus, effectsIncludeEcho, effectsIncludeReverb, effectsIncludeRingModulation, effectsIncludeGranular, GranularEnvelopeType, calculateRingModHertz } from "./SynthConfig";
+import { FilterType, SustainType,  InstrumentType, EffectType, EnvelopeComputeIndex, Unison, Chord, Config, getDrumWave, drawNoiseSpectrum, performIntegralOld, GranularEnvelopeType, calculateRingModHertz } from "./SynthConfig";
 import { scaleElementsByFactor, inverseRealFourierTransform} from "./FFT";
 import { Deque } from "./Deque";
 import { DynamicBiquadFilter, warpInfinityToNyquist } from "./filtering";
 import { SpectrumWave, HarmonicsWave, Instrument } from "./Instrument";
+import { Effect } from "./Effect";
 import { Synth, Tone } from "./synth";
 import { EnvelopeComputer } from "./EnvelopeComputer";
 import { FilterSettings, FilterControlPoint } from "./Filter";
@@ -450,7 +451,7 @@ export class InstrumentState {
     public unisonExpression: number = 1.4;
     public unisonSign: number = 1.0;
     public chord: Chord | null = null;
-    public effects: number = 0;
+    public effects: (Effect | null)[] = [];
     public effectOrder: Array<EffectType> = [EffectType.panning, EffectType.eqFilter, EffectType.granular, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb, EffectType.ringModulation];
 
     public volumeScale: number = 0;
@@ -607,13 +608,13 @@ export class InstrumentState {
     public readonly envelopeComputer: EnvelopeComputer = new EnvelopeComputer();
 
     public allocateNecessaryBuffers(synth: Synth, instrument: Instrument, samplesPerTick: number): void {
-        if (effectsIncludePanning(instrument.effects)) {
+        if (instrument.effectsIncludeType(EffectType.panning)) {
             if (this.panningDelayLineL == null || this.panningDelayLineR == null || this.panningDelayLineL.length < synth.panningDelayBufferSize || this.panningDelayLineR.length < synth.panningDelayBufferSize) {
                 this.panningDelayLineL = new Float32Array(synth.panningDelayBufferSize);
                 this.panningDelayLineR = new Float32Array(synth.panningDelayBufferSize);
             }
         }
-        if (effectsIncludeChorus(instrument.effects)) {
+        if (instrument.effectsIncludeType(EffectType.chorus)) {
             if (this.chorusDelayLineL == null || this.chorusDelayLineL.length < synth.chorusDelayBufferSize) {
                 this.chorusDelayLineL = new Float32Array(synth.chorusDelayBufferSize);
             }
@@ -621,16 +622,16 @@ export class InstrumentState {
                 this.chorusDelayLineR = new Float32Array(synth.chorusDelayBufferSize);
             }
         }
-        if (effectsIncludeEcho(instrument.effects)) {
+        if (instrument.effectsIncludeType(EffectType.echo)) {
             this.allocateEchoBuffers(samplesPerTick, instrument.echoDelay);
         }
-        if (effectsIncludeReverb(instrument.effects)) {
+        if (instrument.effectsIncludeType(EffectType.reverb)) {
             // TODO: Make reverb delay line sample rate agnostic. Maybe just double buffer size for 96KHz? Adjust attenuation and shelf cutoff appropriately?
             if (this.reverbDelayLine == null) {
                 this.reverbDelayLine = new Float32Array(Config.reverbDelayBufferSize);
             }
         }
-        if (effectsIncludeGranular(instrument.effects)) {
+        if (instrument.effectsIncludeType(EffectType.granular)) {
             const granularDelayLineSizeInMilliseconds: number = 2500;
             const granularDelayLineSizeInSeconds: number = granularDelayLineSizeInMilliseconds / 1000; // Maximum possible delay time
             this.granularMaximumDelayTimeInSeconds = granularDelayLineSizeInSeconds;
@@ -812,15 +813,15 @@ export class InstrumentState {
         const envelopeStarts: number[] = this.envelopeComputer.envelopeStarts;
         const envelopeEnds: number[] = this.envelopeComputer.envelopeEnds;
 
-        const usesGranular: boolean = effectsIncludeGranular(this.effects);
-        const usesRingModulation: boolean = effectsIncludeRingModulation(this.effects);
-        const usesDistortion: boolean = effectsIncludeDistortion(this.effects);
-        const usesBitcrusher: boolean = effectsIncludeBitcrusher(this.effects);
-        const usesPanning: boolean = effectsIncludePanning(this.effects);
-        const usesChorus: boolean = effectsIncludeChorus(this.effects);
-        const usesEcho: boolean = effectsIncludeEcho(this.effects);
-        const usesReverb: boolean = effectsIncludeReverb(this.effects);
-        const usesEQFilter: boolean = effectsIncludeEQFilter(this.effects);
+        const usesGranular: boolean = instrument.effectsIncludeType(EffectType.granular);
+        const usesRingModulation: boolean = instrument.effectsIncludeType(EffectType.ringModulation);
+        const usesDistortion: boolean = instrument.effectsIncludeType(EffectType.distortion);
+        const usesBitcrusher: boolean = instrument.effectsIncludeType(EffectType.bitcrusher);
+        const usesPanning: boolean = instrument.effectsIncludeType(EffectType.panning);
+        const usesChorus: boolean = instrument.effectsIncludeType(EffectType.chorus);
+        const usesEcho: boolean = instrument.effectsIncludeType(EffectType.echo);
+        const usesReverb: boolean = instrument.effectsIncludeType(EffectType.reverb);
+        const usesEQFilter: boolean = instrument.effectsIncludeType(EffectType.eqFilter);
 
         if (usesGranular) { //has to happen before buffer allocation
             this.granularMaximumGrains = Math.pow(2, instrument.grainAmounts * envelopeStarts[EnvelopeComputeIndex.grainAmount]);
@@ -1449,5 +1450,10 @@ export class InstrumentState {
 
     private static _drumsetIndexToSpectrumOctave(index: number): number {
         return 15 + Math.log2(InstrumentState.drumsetIndexReferenceDelta(index));
+    }
+
+    public effectsIncludeType(type: EffectType): boolean {
+        for (let i: number = 0; i < this.effects.length; i++) if (this.effects[i] != null && this.effects[i]!.type == type) return true;
+        return false;
     }
 }

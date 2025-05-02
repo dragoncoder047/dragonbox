@@ -5,6 +5,7 @@ import { Synth } from "../synth/synth";
 import { clamp } from "../synth/utils";
 import { Song } from "../synth/Song";
 import { Channel } from "../synth/Channel";
+import { Effect } from "../synth/Effect";
 import { SpectrumWave, HarmonicsWave, Instrument } from "../synth/Instrument";
 import { NotePin, Note, makeNotePin, Pattern } from "../synth/Pattern";
 import { FilterSettings, FilterControlPoint } from "../synth/Filter";
@@ -697,16 +698,9 @@ export class ChangePreset extends Change {
                     instrument.clearInvalidEnvelopeTargets();
                 } else if (preset.settings != undefined) {
                     const tempVolume: number = instrument.volume;
-                    const tempPan: number = instrument.pan;
-                    const tempPanDelay = instrument.panDelay;
                     //const usesPanning: boolean = effectsIncludePanning(instrument.effects);
                     instrument.fromJsonObject(preset.settings, doc.song.getChannelIsNoise(doc.channel), doc.song.getChannelIsMod(doc.channel), doc.song.rhythm == 0 || doc.song.rhythm == 2, doc.song.rhythm >= 2);
                     instrument.volume = tempVolume;
-                    instrument.pan = tempPan;
-                    instrument.panDelay = tempPanDelay;
-                    //@jummbus - Disable this check, pan will be on by default.
-                    //if (usesPanning && instrument.pan != Config.panCenter) {
-                    instrument.addEffect(EffectType.panning);
                     //}
                 }
             }
@@ -780,7 +774,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
 
         const midFreq: number = FilterControlPoint.getRoundedSettingValueFromHz(700.0);
         const maxFreq: number = Config.filterFreqRange - 1;
-        applyFilterPoints(instrument.eqFilter, [
+        applyFilterPoints(instrument.noteFilter, [
             new PotentialFilterPoint(0.8, FilterType.lowPass, midFreq, maxFreq, 4000.0, -1),
             new PotentialFilterPoint(0.4, FilterType.highPass, 0, midFreq - 1, 250.0, -1),
             new PotentialFilterPoint(0.5, FilterType.peak, 0, maxFreq, 2000.0, 0),
@@ -846,8 +840,8 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 ])].index;
             }
             if (Math.random() < 0.8) {
-                instrument.addEffect(EffectType.eqFilter);
-                applyFilterPoints(instrument.eqFilter, [
+                let newEffect: Effect = instrument.addEffect(EffectType.eqFilter);
+                applyFilterPoints(newEffect.eqFilter, [
                     new PotentialFilterPoint(1.0, FilterType.lowPass, midFreq, maxFreq, 8000.0, -1),
                 ]);
                 instrument.addEnvelope(Config.instrumentAutomationTargets.dictionary["noteFilterAllFreqs"].index, 0, Config.newEnvelopes.dictionary[selectWeightedRandom([
@@ -865,29 +859,27 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 30, 30)]);
             }
             if (Math.random() < 0.1) {
-                instrument.addEffect(EffectType.distortion);
-                instrument.distortion = selectCurvedDistribution(1, Config.distortionRange - 1, Config.distortionRange - 1, 2);
+                let newEffect: Effect = instrument.addEffect(EffectType.distortion);
+                newEffect.distortion = selectCurvedDistribution(1, Config.distortionRange - 1, Config.distortionRange - 1, 2);
             }
             if (Math.random() < 0.1) {
-                instrument.addEffect(EffectType.bitcrusher);
-                instrument.bitcrusherFreq = selectCurvedDistribution(0, Config.bitcrusherFreqRange - 1, Config.bitcrusherFreqRange >> 1, 2);
-                instrument.bitcrusherQuantization = selectCurvedDistribution(0, Config.bitcrusherQuantizationRange - 1, Config.bitcrusherQuantizationRange >> 1, 2);
+                let newEffect: Effect = instrument.addEffect(EffectType.bitcrusher);
+                newEffect.bitcrusherFreq = selectCurvedDistribution(0, Config.bitcrusherFreqRange - 1, Config.bitcrusherFreqRange >> 1, 2);
+                newEffect.bitcrusherQuantization = selectCurvedDistribution(0, Config.bitcrusherQuantizationRange - 1, Config.bitcrusherQuantizationRange >> 1, 2);
             }
             if (Math.random() < 0.1) {
-                instrument.addEffect(EffectType.chorus);
-                instrument.chorus = selectCurvedDistribution(1, Config.chorusRange - 1, Config.chorusRange - 1, 1);
+                let newEffect: Effect = instrument.addEffect(EffectType.chorus);
+                newEffect.chorus = selectCurvedDistribution(1, Config.chorusRange - 1, Config.chorusRange - 1, 1);
             }
             if (Math.random() < 0.1) {
-                instrument.echoSustain = selectCurvedDistribution(0, Config.echoSustainRange - 1, Config.echoSustainRange >> 1, 2);
-                instrument.echoDelay = selectCurvedDistribution(0, Config.echoDelayRange - 1, Config.echoDelayRange >> 1, 2);
-                if (instrument.echoSustain != 0 || instrument.echoDelay != 0) {
-                    instrument.addEffect(EffectType.echo);
-                }
-                instrument.echoDelay = selectCurvedDistribution(0, Config.panMax - 1, Config.panMax >> 1, 2);
+                let newEffect: Effect = instrument.addEffect(EffectType.echo);
+                newEffect.echoSustain = selectCurvedDistribution(0, Config.echoSustainRange - 1, Config.echoSustainRange >> 1, 2);
+                newEffect.echoDelay = selectCurvedDistribution(0, Config.echoDelayRange - 1, Config.echoDelayRange >> 1, 2);
+                newEffect.echoDelay = selectCurvedDistribution(0, Config.panMax - 1, Config.panMax >> 1, 2);
             }
             if (Math.random() < 0.5) {
-                instrument.addEffect(EffectType.reverb);
-                instrument.reverb = selectCurvedDistribution(1, Config.reverbRange - 1, 1, 1);
+                let newEffect: Effect = instrument.addEffect(EffectType.reverb);
+                newEffect.reverb = selectCurvedDistribution(1, Config.reverbRange - 1, 1, 1);
             }
 
             // Configure this to whatever you'd like.
@@ -1110,8 +1102,8 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 ])].index;
             }
             if (Math.random() < 0.1) {
-                instrument.addEffect(EffectType.distortion);
-                instrument.distortion = selectCurvedDistribution(1, Config.distortionRange - 1, Config.distortionRange - 1, 2);
+                let newEffect: Effect = instrument.addEffect(EffectType.distortion);
+                newEffect.distortion = selectCurvedDistribution(1, Config.distortionRange - 1, Config.distortionRange - 1, 2);
                 if (Math.random() < 0.3) {
                     let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
                     let envelopeUpperBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1138,15 +1130,15 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 }
             }
             if (instrument.effectsIncludeType(EffectType.distortion) && Math.random() < 0.8) {
-                instrument.addEffect(EffectType.eqFilter);
-                applyFilterPoints(instrument.noteFilter, [
+                let newEffect: Effect = instrument.addEffect(EffectType.eqFilter);
+                applyFilterPoints(newEffect.eqFilter, [
                     new PotentialFilterPoint(1.0, FilterType.lowPass, midFreq, maxFreq, 2000.0, -1),
                     new PotentialFilterPoint(0.9, FilterType.highPass, 0, midFreq - 1, 500.0, -1),
                     new PotentialFilterPoint(0.4, FilterType.peak, 0, maxFreq, 1400.0, 0),
                 ]);
             } else if (Math.random() < 0.5) {
-                instrument.addEffect(EffectType.eqFilter);
-                applyFilterPoints(instrument.noteFilter, [
+                let newEffect: Effect = instrument.addEffect(EffectType.eqFilter);
+                applyFilterPoints(newEffect.eqFilter, [
                     new PotentialFilterPoint(1.0, FilterType.lowPass, midFreq, maxFreq, 8000.0, -1),
                 ]);
                 let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1155,7 +1147,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                     envelopeLowerBound = 0;
                     envelopeUpperBound = 1;
                 }
-                instrument.addEnvelope(Config.instrumentAutomationTargets.dictionary["noteFilterAllFreqs"].index, 0, Config.newEnvelopes.dictionary[selectWeightedRandom([
+                instrument.addEnvelope(Config.instrumentAutomationTargets.dictionary["eqFilterAllFreqs"].index, 0, Config.newEnvelopes.dictionary[selectWeightedRandom([
                     { item: "note size", weight: 2 },
                     { item: "pitch", weight: 2 },
                     { item: "punch", weight: 6 },
@@ -1172,9 +1164,9 @@ export class ChangeRandomGeneratedInstrument extends Change {
                     selectWeightedRandom([{ item: LFOEnvelopeTypes.sine, weight: 8 }, { item: LFOEnvelopeTypes.triangle, weight: 4 }, { item: LFOEnvelopeTypes.sawtooth, weight: 2 }, { item: LFOEnvelopeTypes.square, weight: 1}]));
             }
             if (Math.random() < 0.1) {
-                instrument.addEffect(EffectType.bitcrusher);
-                instrument.bitcrusherFreq = selectCurvedDistribution(0, Config.bitcrusherFreqRange - 1, 0, 2);
-                instrument.bitcrusherQuantization = selectCurvedDistribution(0, Config.bitcrusherQuantizationRange - 1, Config.bitcrusherQuantizationRange >> 1, 2);
+                let newEffect: Effect = instrument.addEffect(EffectType.bitcrusher);
+                newEffect.bitcrusherFreq = selectCurvedDistribution(0, Config.bitcrusherFreqRange - 1, 0, 2);
+                newEffect.bitcrusherQuantization = selectCurvedDistribution(0, Config.bitcrusherQuantizationRange - 1, Config.bitcrusherQuantizationRange >> 1, 2);
                 let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
                 let envelopeUpperBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
                 if (envelopeLowerBound >= envelopeUpperBound) {
@@ -1222,8 +1214,8 @@ export class ChangeRandomGeneratedInstrument extends Change {
                  }
             }
             if (Math.random() < 0.1) {
-                instrument.addEffect(EffectType.chorus);
-                instrument.chorus = selectCurvedDistribution(1, Config.chorusRange - 1, Config.chorusRange - 1, 1);
+                let newEffect: Effect = instrument.addEffect(EffectType.chorus);
+                newEffect.chorus = selectCurvedDistribution(1, Config.chorusRange - 1, Config.chorusRange - 1, 1);
                 if (Math.random() < 0.1) {
                     let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
                     let envelopeUpperBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1250,10 +1242,10 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 }
             }
             if (Math.random() < 0.1) {
-                instrument.echoSustain = selectCurvedDistribution(0, Config.echoSustainRange - 1, Config.echoSustainRange >> 1, 2);
-                instrument.echoDelay = selectCurvedDistribution(0, Config.echoDelayRange - 1, Config.echoDelayRange >> 1, 2);
-                if (instrument.echoSustain != 0 || instrument.echoDelay != 0) {
-                    instrument.addEffect(EffectType.echo);
+                let newEffect: Effect = instrument.addEffect(EffectType.echo);
+                newEffect.echoSustain = selectCurvedDistribution(0, Config.echoSustainRange - 1, Config.echoSustainRange >> 1, 2);
+                newEffect.echoDelay = selectCurvedDistribution(0, Config.echoDelayRange - 1, Config.echoDelayRange >> 1, 2);
+                if (newEffect.echoSustain != 0 || newEffect.echoDelay != 0) {
                     if (Math.random() < 0.04) {
                         let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
                         let envelopeUpperBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1279,11 +1271,11 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 }
             }
             if (Math.random() < 0.07) {
-                instrument.ringModulation = selectCurvedDistribution(1, Config.ringModRange - 1, Config.ringModRange / 2, Config.ringModRange / 2);
-                instrument.ringModulationHz = selectCurvedDistribution(1, Config.ringModHzRange - 1, Config.ringModHzRange / 2, Config.ringModHzRange / 2);
-                if (instrument.ringModulation != 0 || instrument.ringModulationHz != 0) {
-                    instrument.addEffect(EffectType.ringModulation);
-                    instrument.ringModWaveformIndex = 0;
+                let newEffect: Effect = instrument.addEffect(EffectType.ringModulation);
+                newEffect.ringModulation = selectCurvedDistribution(1, Config.ringModRange - 1, Config.ringModRange / 2, Config.ringModRange / 2);
+                newEffect.ringModulationHz = selectCurvedDistribution(1, Config.ringModHzRange - 1, Config.ringModHzRange / 2, Config.ringModHzRange / 2);
+                if (newEffect.ringModulation != 0 || newEffect.ringModulationHz != 0) {
+                    newEffect.ringModWaveformIndex = 0;
 
                     if (Math.random() < 0.1) {
                         let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1337,8 +1329,8 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 }
             }
             if (Math.random() < 0.5) {
-                instrument.addEffect(EffectType.reverb);
-                instrument.reverb = selectCurvedDistribution(1, Config.reverbRange - 1, 1, 1);
+                let newEffect: Effect = instrument.addEffect(EffectType.reverb);
+                newEffect.reverb = selectCurvedDistribution(1, Config.reverbRange - 1, 1, 1);
                 if (Math.random() < 0.03) {
                     let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
                     let envelopeUpperBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1365,11 +1357,11 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 }
             }
             if (Math.random() < 0.1) {
-                instrument.addEffect(EffectType.granular);
-                instrument.granular = selectCurvedDistribution(1, Config.granularRange - 1, Config.granularRange / 2, Config.granularRange / 3);
-                instrument.grainAmounts = selectCurvedDistribution(1, Config.grainAmountsMax - 1, Config.grainAmountsMax-2, 3);
-                instrument.grainSize = selectCurvedDistribution(Config.grainSizeMin / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep / 2);
-                instrument.grainRange = selectCurvedDistribution(0, Config.grainRangeMax / Config.grainSizeStep, Config.grainRangeMax / Config.grainSizeStep / 2, Config.grainSizeMax / Config.grainSizeStep / 2);
+                let newEffect: Effect = instrument.addEffect(EffectType.granular);
+                newEffect.granular = selectCurvedDistribution(1, Config.granularRange - 1, Config.granularRange / 2, Config.granularRange / 3);
+                newEffect.grainAmounts = selectCurvedDistribution(1, Config.grainAmountsMax - 1, Config.grainAmountsMax-2, 3);
+                newEffect.grainSize = selectCurvedDistribution(Config.grainSizeMin / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep / 2);
+                newEffect.grainRange = selectCurvedDistribution(0, Config.grainRangeMax / Config.grainSizeStep, Config.grainRangeMax / Config.grainSizeStep / 2, Config.grainSizeMax / Config.grainSizeStep / 2);
                 
                 if (Math.random() < 0.2) {
                     let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1827,14 +1819,6 @@ export class ChangeToggleEffects extends Change {
         const wasSelected = instrument.effectsIncludeType(toggleFlag);
         if (wasSelected) instrument.removeEffect(toggleFlag);
         else instrument.addEffect(toggleFlag);
-        console.log(instrument.effects)
-        for (let i = 0; i < 15; i++) {
-            if(instrument.effectOrder[i] == toggleFlag) instrument.effectOrder.splice(i, 1); //was gonna try to use filter() but it didnt work
-        }
-        if (wasSelected) instrument.effectOrder.splice(0, 0, toggleFlag);
-        else instrument.effectOrder.push(toggleFlag);
-        // As a special case, toggling the panning effect doesn't remove the preset.
-        if (toggleFlag != EffectType.panning) instrument.preset = instrument.type;
         // Remove AA when distortion is turned off.
         if (toggleFlag == EffectType.distortion && wasSelected)
             instrument.aliases = false;
@@ -2501,7 +2485,7 @@ export class ChangeClicklessTransition extends Change {
 }
 
 export class ChangeAliasing extends Change {
-    constructor(doc: SongDocument, newValue: boolean) {
+    constructor(doc: SongDocument, effect: Effect, newValue: boolean) {
         super();
         const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         const oldValue = instrument.aliases;
@@ -2647,31 +2631,30 @@ export class ChangeDetune extends ChangeInstrumentSlider {
 }
 
 export class ChangeRingMod extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
-        this._instrument.ringModulation = newValue;
+        effect.ringModulation = newValue;
         doc.notifier.changed();
         doc.synth.unsetMod(Config.modulators.dictionary["ring modulation"].index, doc.channel, doc.getCurrentInstrument());
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
 export class ChangeRingModHz extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
-        this._instrument.ringModulationHz = newValue;
+        effect.ringModulationHz = newValue;
         doc.notifier.changed();
         doc.synth.unsetMod(Config.modulators.dictionary["ring mod hertz"].index, doc.channel, doc.getCurrentInstrument());
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
 export class ChangeRingModChipWave extends Change {
-    constructor(doc: SongDocument, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        if (instrument.ringModWaveformIndex != newValue) {
-            instrument.ringModWaveformIndex = newValue;
+        if (effect.ringModWaveformIndex != newValue) {
+            effect.ringModWaveformIndex = newValue;
             doc.notifier.changed();
             this._didSomething();
         }
@@ -2679,72 +2662,72 @@ export class ChangeRingModChipWave extends Change {
 }
 
 export class ChangeGranular extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
-        this._instrument.granular = newValue;
+        effect.granular = newValue;
         doc.notifier.changed();
         doc.synth.unsetMod(Config.modulators.dictionary["granular"].index, doc.channel, doc.getCurrentInstrument());
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
 export class ChangeGrainSize extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
-        this._instrument.grainSize = newValue;
+        effect.grainSize = newValue;
         doc.notifier.changed();
         doc.synth.unsetMod(Config.modulators.dictionary["grain size"].index, doc.channel, doc.getCurrentInstrument());
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
 export class ChangeGrainAmounts extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
-        this._instrument.grainAmounts = newValue;
+        effect.grainAmounts = newValue;
         doc.notifier.changed();
         // doc.synth.unsetMod(Config.modulators.dictionary["granular"].index, doc.channel, doc.getCurrentInstrument());
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
 export class ChangeGrainRange extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
-        this._instrument.grainRange = newValue;
+        effect.grainRange = newValue;
         doc.notifier.changed();
         // doc.synth.unsetMod(Config.modulators.dictionary["grain size"].index, doc.channel, doc.getCurrentInstrument());
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
 export class ChangeDistortion extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
-        this._instrument.distortion = newValue;
+        effect.distortion = newValue;
         doc.notifier.changed();
         doc.synth.unsetMod(Config.modulators.dictionary["distortion"].index, doc.channel, doc.getCurrentInstrument());
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
 export class ChangeBitcrusherFreq extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
-        this._instrument.bitcrusherFreq = newValue;
+        effect.bitcrusherFreq = newValue;
         doc.synth.unsetMod(Config.modulators.dictionary["bit crush"].index, doc.channel, doc.getCurrentInstrument());
         doc.notifier.changed();
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
 export class ChangeBitcrusherQuantization extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
         doc.synth.unsetMod(Config.modulators.dictionary["freq crush"].index, doc.channel, doc.getCurrentInstrument());
-        this._instrument.bitcrusherQuantization = newValue;
+        effect.bitcrusherQuantization = newValue;
         doc.notifier.changed();
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
@@ -2773,19 +2756,19 @@ export class ChangeStringSustainType extends Change {
 }
 
 export class ChangeEQFilterType extends Change {
-    constructor(doc: SongDocument, instrument: Instrument, newValue: boolean) {
+    constructor(doc: SongDocument, effect: Effect, instrument: Instrument, newValue: boolean) {
         super();
-        instrument.eqFilterType = newValue;
+        effect.eqFilterType = newValue;
         if (newValue == true) { // To Simple - clear eq filter
-            instrument.eqFilter.reset();
-            instrument.tmpEqFilterStart = instrument.eqFilter;
-            instrument.tmpEqFilterEnd = null;
+            effect.eqFilter.reset();
+            effect.tmpEqFilterStart = effect.eqFilter;
+            effect.tmpEqFilterEnd = null;
         }
         else {
             // To Advanced - convert filter
-            instrument.eqFilter.convertLegacySettings(instrument.eqFilterSimpleCut, instrument.eqFilterSimplePeak, Config.envelopes.dictionary["none"]);
-            instrument.tmpEqFilterStart = instrument.eqFilter;
-            instrument.tmpEqFilterEnd = null;
+            effect.eqFilter.convertLegacySettings(effect.eqFilterSimpleCut, effect.eqFilterSimplePeak, Config.envelopes.dictionary["none"]);
+            effect.tmpEqFilterStart = effect.eqFilter;
+            effect.tmpEqFilterEnd = null;
         }
         instrument.clearInvalidEnvelopeTargets();
         instrument.preset = instrument.type;
@@ -2817,22 +2800,22 @@ export class ChangeNoteFilterType extends Change {
 }
 
 export class ChangeEQFilterSimpleCut extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
-        this._instrument.eqFilterSimpleCut = newValue;
+        effect.eqFilterSimpleCut = newValue;
         doc.synth.unsetMod(Config.modulators.dictionary["eq filt cut"].index, doc.channel, doc.getCurrentInstrument());
         doc.notifier.changed();
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
 export class ChangeEQFilterSimplePeak extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
-        this._instrument.eqFilterSimplePeak = newValue;
+        effect.eqFilterSimplePeak = newValue;
         doc.synth.unsetMod(Config.modulators.dictionary["eq filt peak"].index, doc.channel, doc.getCurrentInstrument());
         doc.notifier.changed();
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
@@ -2894,6 +2877,7 @@ this._filterSettings.controlPoints.splice(this._index, 1);
 export class ChangeFilterAddPoint extends UndoableChange {
     private _doc: SongDocument;
     private _instrument: Instrument;
+    private _effect: Effect;
     private _instrumentPrevPreset: number;
     private _instrumentNextPreset: number;
     private _filterSettings: FilterSettings;
@@ -2903,10 +2887,11 @@ export class ChangeFilterAddPoint extends UndoableChange {
     private _envelopeIndicesAdd: number[] = [];
     private _envelopeTargetsRemove: number[] = [];
     private _envelopeIndicesRemove: number[] = [];
-    constructor(doc: SongDocument, filterSettings: FilterSettings, point: FilterControlPoint, index: number, isNoteFilter: boolean, deletion: boolean = false) {
+    constructor(doc: SongDocument, filterSettings: FilterSettings, point: FilterControlPoint, index: number, isNoteFilter: boolean, effectIndex: number, deletion: boolean = false) {
         super(deletion);
         this._doc = doc;
         this._instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+        this._effect = <Effect>this._instrument.effects[effectIndex];
         this._instrumentNextPreset = deletion ? this._instrument.preset : this._instrument.type;
         this._instrumentPrevPreset = deletion ? this._instrument.type : this._instrument.preset;
         this._filterSettings = filterSettings;
@@ -2956,8 +2941,8 @@ export class ChangeFilterAddPoint extends UndoableChange {
             this._instrument.envelopes[envelopeIndex].target = this._envelopeTargetsAdd[envelopeIndex];
             this._instrument.envelopes[envelopeIndex].index = this._envelopeIndicesAdd[envelopeIndex];
         }
-        this._instrument.tmpEqFilterStart = this._instrument.eqFilter;
-        this._instrument.tmpEqFilterEnd = null;
+        this._effect.tmpEqFilterStart = this._effect.eqFilter;
+        this._effect.tmpEqFilterEnd = null;
         this._instrument.tmpNoteFilterStart = this._instrument.noteFilter;
         this._instrument.tmpNoteFilterEnd = null;
         this._doc.notifier.changed();
@@ -2972,8 +2957,8 @@ export class ChangeFilterAddPoint extends UndoableChange {
             this._instrument.envelopes[envelopeIndex].target = this._envelopeTargetsRemove[envelopeIndex];
             this._instrument.envelopes[envelopeIndex].index = this._envelopeIndicesRemove[envelopeIndex];
         }
-        this._instrument.tmpEqFilterStart = this._instrument.eqFilter;
-        this._instrument.tmpEqFilterEnd = null;
+        this._effect.tmpEqFilterStart = this._effect.eqFilter;
+        this._effect.tmpEqFilterEnd = null;
         this._instrument.tmpNoteFilterStart = this._instrument.noteFilter;
         this._instrument.tmpNoteFilterEnd = null;
         this._doc.notifier.changed();
@@ -3048,7 +3033,7 @@ export class ChangeFilterMovePoint extends UndoableChange {
     public useNoteFilter: boolean;
     public pointIndex: number;
     public pointType: FilterType;
-    constructor(doc: SongDocument, point: FilterControlPoint, oldFreq: number, newFreq: number, oldGain: number, newGain: number, useNoteFilter: boolean, pointIndex: number) {
+    constructor(doc: SongDocument, point: FilterControlPoint, oldFreq: number, newFreq: number, oldGain: number, newGain: number, useNoteFilter: boolean, effectIndex: number, pointIndex: number) {
         super(false);
         this._doc = doc;
         this._instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
@@ -3131,6 +3116,7 @@ export class ChangeSongFilterSettings extends UndoableChange {
 export class ChangeFilterSettings extends UndoableChange {
     private _doc: SongDocument;
     private _instrument: Instrument;
+    private _effect: Effect;
     private _instrumentPrevPreset: number;
     private _instrumentNextPreset: number;
     private _filterSettings: FilterSettings;
@@ -3138,10 +3124,11 @@ export class ChangeFilterSettings extends UndoableChange {
     private _oldSubFilters: (FilterSettings | null)[];
     private _oldSettings: FilterSettings;
     private _useNoteFilter: boolean;
-    constructor(doc: SongDocument, settings: FilterSettings, oldSettings: FilterSettings, useNoteFilter: boolean, subFilters: (FilterSettings | null)[] | null = null, oldSubFilters: (FilterSettings | null)[] | null = null) {
+    constructor(doc: SongDocument, settings: FilterSettings, oldSettings: FilterSettings, useNoteFilter: boolean, effectIndex: number, subFilters: (FilterSettings | null)[] | null = null, oldSubFilters: (FilterSettings | null)[] | null = null) {
         super(false);
         this._doc = doc;
         this._instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+        this._effect = <Effect>this._instrument.effects[effectIndex];
         this._instrumentNextPreset = this._instrument.type;
         this._instrumentPrevPreset = this._instrument.preset;
         this._oldSettings = oldSettings;
@@ -3165,11 +3152,11 @@ export class ChangeFilterSettings extends UndoableChange {
             this._instrument.tmpNoteFilterStart = this._instrument.noteFilter;
             this._instrument.tmpNoteFilterEnd = null;
         } else {
-            this._instrument.eqFilter = this._filterSettings;
+            this._effect.eqFilter = this._filterSettings;
             if (this._subFilters != null)
-                this._instrument.eqSubFilters = this._subFilters;
-            this._instrument.tmpEqFilterStart = this._instrument.eqFilter;
-            this._instrument.tmpEqFilterEnd = null;
+                this._effect.eqSubFilters = this._subFilters;
+            this._effect.tmpEqFilterStart = this._effect.eqFilter;
+            this._effect.tmpEqFilterEnd = null;
         }
 
         this._instrument.preset = this._instrumentNextPreset;
@@ -3185,11 +3172,11 @@ export class ChangeFilterSettings extends UndoableChange {
             this._instrument.tmpNoteFilterStart = this._instrument.noteFilter;
             this._instrument.tmpNoteFilterEnd = null;
         } else {
-            this._instrument.eqFilter = this._oldSettings;
+            this._effect.eqFilter = this._oldSettings;
             if (this._oldSubFilters != null)
-                this._instrument.eqSubFilters = this._oldSubFilters;
-            this._instrument.tmpEqFilterStart = this._instrument.eqFilter;
-            this._instrument.tmpEqFilterEnd = null;
+                this._effect.eqSubFilters = this._oldSubFilters;
+            this._effect.tmpEqFilterStart = this._effect.eqFilter;
+            this._effect.tmpEqFilterEnd = null;
         }
         this._instrument.preset = this._instrumentPrevPreset;
         this._instrument.clearInvalidEnvelopeTargets();
@@ -4643,52 +4630,52 @@ export class ChangeTempo extends Change {
 }
 
 export class ChangeEchoDelay extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
-        this._instrument.echoDelay = newValue;
+        effect.echoDelay = newValue;
         doc.synth.unsetMod(Config.modulators.dictionary["echo delay"].index, doc.channel, doc.getCurrentInstrument());
         doc.notifier.changed();
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
 export class ChangeEchoSustain extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
-        this._instrument.echoSustain = newValue;
+        effect.echoSustain = newValue;
         doc.synth.unsetMod(Config.modulators.dictionary["echo"].index, doc.channel, doc.getCurrentInstrument());
         doc.notifier.changed();
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
 export class ChangeEchoPingPong extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
-        this._instrument.echoPingPong = newValue;
+        effect.echoPingPong = newValue;
         doc.synth.unsetMod(Config.modulators.dictionary["echo ping pong"].index, doc.channel, doc.getCurrentInstrument());
         doc.notifier.changed();
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
 export class ChangeChorus extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
-        this._instrument.chorus = newValue;
+        effect.chorus = newValue;
         doc.synth.unsetMod(Config.modulators.dictionary["chorus"].index, doc.channel, doc.getCurrentInstrument());
         doc.notifier.changed();
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
 export class ChangeReverb extends ChangeInstrumentSlider {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
-        this._instrument.reverb = newValue;
+        effect.reverb = newValue;
         doc.synth.unsetMod(Config.modulators.dictionary["reverb"].index, doc.channel, doc.getCurrentInstrument());
         doc.notifier.changed();
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
@@ -5284,28 +5271,28 @@ export class ChangeChannelName extends Change {
 }
 
 export class ChangePan extends Change {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super();
-        doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()].pan = newValue;
+        effect.pan = newValue;
         doc.synth.unsetMod(Config.modulators.dictionary["pan"].index, doc.channel, doc.getCurrentInstrument());
         doc.notifier.changed();
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
 export class ChangePanDelay extends Change {
-    constructor(doc: SongDocument, oldValue: number, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super();
-        doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()].panDelay = newValue;
+        effect.panDelay = newValue;
         doc.notifier.changed();
-        if (oldValue != newValue) this._didSomething();
+        this._didSomething();
     }
 }
 
 export class ChangePanMode extends Change {
-    constructor(doc: SongDocument, newValue: number) {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super();
-        doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()].panMode = newValue;
+        effect.panMode = newValue;
         doc.notifier.changed();
         this._didSomething();
     }

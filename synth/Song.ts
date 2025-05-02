@@ -4,6 +4,7 @@ import { startLoadingSample, sampleLoadingState, SampleLoadingState, sampleLoadE
 import { Preset, EditorConfig } from "../editor/EditorConfig";
 import { Channel } from "./Channel";
 import { Instrument, LegacySettings } from "./Instrument";
+import { Effect } from "./Effect";
 import { Note, NotePin, makeNotePin, Pattern } from "./Pattern";
 import { FilterSettings, FilterControlPoint } from "./Filter";
 import { clamp, validateRange, parseFloatWithDefault, parseIntWithDefault, secondsToFadeInSetting, ticksToFadeOutSetting } from "./utils";
@@ -484,22 +485,23 @@ export class Song {
                 let perEnvLowerIndex: number = Config.modulators.dictionary["individual envelope lower bound"].index;
                 let perEnvUpperIndex: number = Config.modulators.dictionary["individual envelope upper bound"].index;
                 let instrumentIndex: number = instrument.modInstruments[modCount][0];
+                let effectIndex: number = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effectCount; //in a moment i should be working to make this work with mods
 
                 switch (currentIndex) {
                     case chorusIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].chorus - Config.modulators[chorusIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.chorus - Config.modulators[chorusIndex].convertRealFactor;
                         break;
                     case reverbIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].reverb - Config.modulators[reverbIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.reverb - Config.modulators[reverbIndex].convertRealFactor;
                         break;
                     case panningIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].pan - Config.modulators[panningIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.pan - Config.modulators[panningIndex].convertRealFactor;
                         break;
                     case panDelayIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].panDelay - Config.modulators[panDelayIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.panDelay - Config.modulators[panDelayIndex].convertRealFactor;
                         break;
                     case distortionIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].distortion - Config.modulators[distortionIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.distortion - Config.modulators[distortionIndex].convertRealFactor;
                         break;
                     case detuneIndex:
                         vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].detune;
@@ -517,40 +519,40 @@ export class Song {
                         vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].arpeggioSpeed - Config.modulators[arpSpeedIndex].convertRealFactor;
                         break;
                     case bitCrushIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].bitcrusherQuantization - Config.modulators[bitCrushIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.bitcrusherQuantization - Config.modulators[bitCrushIndex].convertRealFactor;
                         break;
                     case freqCrushIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].bitcrusherFreq - Config.modulators[freqCrushIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.bitcrusherFreq - Config.modulators[freqCrushIndex].convertRealFactor;
                         break;
                     case echoIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].echoSustain - Config.modulators[echoIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.echoSustain - Config.modulators[echoIndex].convertRealFactor;
                         break;
                     case echoDelayIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].echoDelay - Config.modulators[echoDelayIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.echoDelay - Config.modulators[echoDelayIndex].convertRealFactor;
                         break;
                     case echoPingPongIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].echoPingPong - Config.modulators[echoPingPongIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.echoPingPong - Config.modulators[echoPingPongIndex].convertRealFactor;
                         break;
                     case pitchShiftIndex:
                         vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].pitchShift;
                         break;
                     case ringModIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].ringModulation - Config.modulators[ringModIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.ringModulation - Config.modulators[ringModIndex].convertRealFactor;
                         break;
                     case ringModHertzIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].ringModulationHz - Config.modulators[ringModHertzIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.ringModulationHz - Config.modulators[ringModHertzIndex].convertRealFactor;
                         break;
                     case granularIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].granular - Config.modulators[granularIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.granular - Config.modulators[granularIndex].convertRealFactor;
                         break;
                     case grainAmountIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].grainAmounts - Config.modulators[grainAmountIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.grainAmounts - Config.modulators[grainAmountIndex].convertRealFactor;
                         break;
                     case grainSizeIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].grainSize - Config.modulators[grainSizeIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.grainSize - Config.modulators[grainSizeIndex].convertRealFactor;
                         break;
                     case grainRangeIndex:
-                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].grainRange - Config.modulators[grainRangeIndex].convertRealFactor;
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.grainRange - Config.modulators[grainRangeIndex].convertRealFactor;
                         break;
                     case envSpeedIndex:
                         vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].envelopeSpeed - Config.modulators[envSpeedIndex].convertRealFactor;
@@ -890,54 +892,95 @@ export class Song {
                     }
                 }
 
-                buffer.push(SongTagCode.effects, base64IntToCharCode[instrument.effectCount]);
-                for (let i = 0; i < instrument.effectCount; i++) {
-                    if (instrument.effects[i] != null) buffer.push(base64IntToCharCode[instrument.effects[i]!.type & 63]);
-                    else buffer.push(base64IntToCharCode[0]);
-                }
-                // this is a six bit bitfield
-                buffer.push(base64IntToCharCode[instrument.mdeffects & 63]);
+                //in theepbox, effects are stored in arbitary order. this allows it to have multiple of the same effect!
 
-                // theepbox swaps note filter (pre eq) and eq filter (post eq) in order to allow post eq to be re-ordered.
-                if (instrument.effectsIncludeType(EffectType.eqFilter)) {
-                    buffer.push(base64IntToCharCode[+instrument.eqFilterType]);
-                    if (instrument.eqFilterType) {
-                        buffer.push(base64IntToCharCode[instrument.eqFilterSimpleCut]);
-                        buffer.push(base64IntToCharCode[instrument.eqFilterSimplePeak]);
-                    }
+                buffer.push(SongTagCode.effects, base64IntToCharCode[instrument.effectCount]);
+                for (let effectIndex = 0; effectIndex < instrument.effectCount; effectIndex++) {
+                    if (instrument.effects[effectIndex] != null) buffer.push(base64IntToCharCode[instrument.effects[effectIndex]!.type & 63]);
                     else {
-                        if (instrument.eqFilter == null) {
-                            // Push null filter settings
-                            buffer.push(base64IntToCharCode[0]);
-                            console.log("Null eq filter settings detected in toBase64String for channelIndex " + channelIndex + ", instrumentIndex " + i);
+                        buffer.push(base64IntToCharCode[0]);
+                        continue;
+                    }
+
+                    let effect: Effect = instrument.effects[effectIndex] as Effect;
+
+                    if (effect.type == EffectType.eqFilter) {
+                        buffer.push(base64IntToCharCode[+effect.eqFilterType]);
+                        if (effect.eqFilterType) {
+                            buffer.push(base64IntToCharCode[effect.eqFilterSimpleCut]);
+                            buffer.push(base64IntToCharCode[effect.eqFilterSimplePeak]);
                         }
                         else {
-                            buffer.push(base64IntToCharCode[instrument.eqFilter.controlPointCount]);
-                            for (let j: number = 0; j < instrument.eqFilter.controlPointCount; j++) {
-                                const point: FilterControlPoint = instrument.eqFilter.controlPoints[j];
-                                buffer.push(base64IntToCharCode[point.type], base64IntToCharCode[Math.round(point.freq)], base64IntToCharCode[Math.round(point.gain)]);
+                            if (effect.eqFilter == null) {
+                                // Push null filter settings
+                                buffer.push(base64IntToCharCode[0]);
+                                console.log("Null eq filter settings detected in toBase64String for channelIndex " + channelIndex + ", instrumentIndex " + i);
                             }
-                        }
-
-                        // Push subfilters as well. Skip Index 0, is a copy of the base filter.
-                        let usingSubFilterBitfield: number = 0;
-                        for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
-                            usingSubFilterBitfield |= (+(instrument.eqSubFilters[j + 1] != null) << j);
-                        }
-                        // Put subfilter usage into 2 chars (12 bits)
-                        buffer.push(base64IntToCharCode[usingSubFilterBitfield >> 6], base64IntToCharCode[usingSubFilterBitfield & 63]);
-                        // Put subfilter info in for all used subfilters
-                        for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
-                            if (usingSubFilterBitfield & (1 << j)) {
-                                buffer.push(base64IntToCharCode[instrument.eqSubFilters[j + 1]!.controlPointCount]);
-                                for (let k: number = 0; k < instrument.eqSubFilters[j + 1]!.controlPointCount; k++) {
-                                    const point: FilterControlPoint = instrument.eqSubFilters[j + 1]!.controlPoints[k];
+                            else {
+                                buffer.push(base64IntToCharCode[effect.eqFilter.controlPointCount]);
+                                for (let j: number = 0; j < effect.eqFilter.controlPointCount; j++) {
+                                    const point: FilterControlPoint = effect.eqFilter.controlPoints[j];
                                     buffer.push(base64IntToCharCode[point.type], base64IntToCharCode[Math.round(point.freq)], base64IntToCharCode[Math.round(point.gain)]);
+                                }
+                            }
+
+                            // Push subfilters as well. Skip Index 0, is a copy of the base filter.
+                            let usingSubFilterBitfield: number = 0;
+                            for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
+                                usingSubFilterBitfield |= (+(effect.eqSubFilters[j + 1] != null) << j);
+                            }
+                            // Put subfilter usage into 2 chars (12 bits)
+                            buffer.push(base64IntToCharCode[usingSubFilterBitfield >> 6], base64IntToCharCode[usingSubFilterBitfield & 63]);
+                            // Put subfilter info in for all used subfilters
+                            for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
+                                if (usingSubFilterBitfield & (1 << j)) {
+                                    buffer.push(base64IntToCharCode[effect.eqSubFilters[j + 1]!.controlPointCount]);
+                                    for (let k: number = 0; k < effect.eqSubFilters[j + 1]!.controlPointCount; k++) {
+                                        const point: FilterControlPoint = effect.eqSubFilters[j + 1]!.controlPoints[k];
+                                        buffer.push(base64IntToCharCode[point.type], base64IntToCharCode[Math.round(point.freq)], base64IntToCharCode[Math.round(point.gain)]);
+                                    }
                                 }
                             }
                         }
                     }
+                    else if (effect.type == EffectType.distortion) {
+                        buffer.push(base64IntToCharCode[effect.distortion]);
+                        // Aliasing is tied into distortion for now
+                        buffer.push(base64IntToCharCode[+instrument.aliases]);
+                    }
+                    else if (effect.type == EffectType.bitcrusher) {
+                        buffer.push(base64IntToCharCode[effect.bitcrusherFreq], base64IntToCharCode[effect.bitcrusherQuantization]);
+                    }
+                    else if (effect.type == EffectType.panning) {
+                        buffer.push(base64IntToCharCode[effect.pan >> 6], base64IntToCharCode[effect.pan & 0x3f]);
+                        buffer.push(base64IntToCharCode[effect.panDelay]);
+                        buffer.push(base64IntToCharCode[effect.panMode]);
+                    }
+                    else if (effect.type == EffectType.chorus) {
+                        buffer.push(base64IntToCharCode[effect.chorus]);
+                    }
+                    else if (effect.type == EffectType.echo) { // echo ping pong probably didnt need to have such a massive range. oh well!
+                        buffer.push(base64IntToCharCode[effect.echoSustain], base64IntToCharCode[effect.echoDelay], base64IntToCharCode[effect.echoPingPong >> 6], base64IntToCharCode[effect.echoPingPong & 0x3f]);
+                    }
+                    else if (effect.type == EffectType.reverb) {
+                        buffer.push(base64IntToCharCode[effect.reverb]);
+                    }
+                    else if (effect.type == EffectType.granular) {
+                        buffer.push(base64IntToCharCode[effect.granular]);
+                        buffer.push(base64IntToCharCode[effect.grainSize]);
+                        buffer.push(base64IntToCharCode[effect.grainAmounts]);
+                        buffer.push(base64IntToCharCode[effect.grainRange]);
+                    }
+                    else if (effect.type == EffectType.ringModulation) {
+                        buffer.push(base64IntToCharCode[effect.ringModulation]);
+                        buffer.push(base64IntToCharCode[effect.ringModulationHz]);
+                        buffer.push(base64IntToCharCode[effect.ringModWaveformIndex]);
+                        buffer.push(base64IntToCharCode[effect.ringModPulseWidth]);
+                        buffer.push(base64IntToCharCode[(effect.ringModHzOffset - Config.rmHzOffsetMin) >> 6], base64IntToCharCode[(effect.ringModHzOffset - Config.rmHzOffsetMin) & 0x3F]);
+                    }
                 }
+                // this is a six bit bitfield
+                buffer.push(base64IntToCharCode[instrument.mdeffects & 63]);
                 if (effectsIncludeTransition(instrument.mdeffects)) {
                     buffer.push(base64IntToCharCode[instrument.transition]);
                 }
@@ -968,44 +1011,9 @@ export class Song {
                         buffer.push(base64IntToCharCode[instrument.vibratoType]);
                     }
                 }
-                if (instrument.effectsIncludeType(EffectType.distortion)) {
-                    buffer.push(base64IntToCharCode[instrument.distortion]);
-                    // Aliasing is tied into distortion for now
-                    buffer.push(base64IntToCharCode[+instrument.aliases]);
-                }
-                if (instrument.effectsIncludeType(EffectType.bitcrusher)) {
-                    buffer.push(base64IntToCharCode[instrument.bitcrusherFreq], base64IntToCharCode[instrument.bitcrusherQuantization]);
-                }
-                if (instrument.effectsIncludeType(EffectType.panning)) {
-                    buffer.push(base64IntToCharCode[instrument.pan >> 6], base64IntToCharCode[instrument.pan & 0x3f]);
-                    buffer.push(base64IntToCharCode[instrument.panDelay]);
-                    buffer.push(base64IntToCharCode[instrument.panMode]);
-                }
-                if (instrument.effectsIncludeType(EffectType.chorus)) {
-                    buffer.push(base64IntToCharCode[instrument.chorus]);
-                }
-                if (instrument.effectsIncludeType(EffectType.echo)) { // echo ping pong probably didnt need to have such a massive range. oh well!
-                    buffer.push(base64IntToCharCode[instrument.echoSustain], base64IntToCharCode[instrument.echoDelay], base64IntToCharCode[instrument.echoPingPong >> 6], base64IntToCharCode[instrument.echoPingPong & 0x3f]);
-                }
-                if (instrument.effectsIncludeType(EffectType.reverb)) {
-                    buffer.push(base64IntToCharCode[instrument.reverb]);
-                }
                 // if (effectsIncludeNoteRange(instrument.effects)) {
                 //     buffer.push(base64IntToCharCode[instrument.noteRange]);
                 // }
-                if (instrument.effectsIncludeType(EffectType.granular)) {
-                    buffer.push(base64IntToCharCode[instrument.granular]);
-                    buffer.push(base64IntToCharCode[instrument.grainSize]);
-                    buffer.push(base64IntToCharCode[instrument.grainAmounts]);
-                    buffer.push(base64IntToCharCode[instrument.grainRange]);
-                }
-                if (instrument.effectsIncludeType(EffectType.ringModulation)) {
-                    buffer.push(base64IntToCharCode[instrument.ringModulation]);
-                    buffer.push(base64IntToCharCode[instrument.ringModulationHz]);
-                    buffer.push(base64IntToCharCode[instrument.ringModWaveformIndex]);
-                    buffer.push(base64IntToCharCode[(instrument.ringModPulseWidth)]);
-                    buffer.push(base64IntToCharCode[(instrument.ringModHzOffset - Config.rmHzOffsetMin) >> 6], base64IntToCharCode[(instrument.ringModHzOffset - Config.rmHzOffsetMin) & 0x3F]);
-                }
 
                 if (instrument.type != InstrumentType.drumset) {
                     buffer.push(SongTagCode.fadeInOut, base64IntToCharCode[instrument.fadeIn], base64IntToCharCode[instrument.fadeOut]);
@@ -1936,8 +1944,8 @@ export class Song {
                 // Anti-aliasing was added in BeepBox 3.0 (v6->v7) and JummBox 1.3 (v1->v2 roughly but some leakage possible)
                 if (((beforeSeven && fromBeepBox) || (beforeTwo && fromJummBox)) && (instrumentType == InstrumentType.chip || instrumentType == InstrumentType.customChipWave || instrumentType == InstrumentType.pwm)) {
                     instrument.aliases = true;
-                    instrument.distortion = 0;
-                    instrument.addEffect(EffectType.distortion);
+                    let newEffect: Effect = instrument.addEffect(EffectType.distortion);
+                    newEffect.distortion = 0;
                 }
                 if (useSlowerArpSpeed) {
                     instrument.arpeggioSpeed = 9; // x3/4 speed. This used to be tied to rhythm, but now it is decoupled to each instrument's arp speed slider. This flag gets set when importing older songs to keep things consistent.
@@ -2139,46 +2147,47 @@ export class Song {
                             instrument.noteFilterSimplePeak = clamp(0, Config.filterSimplePeakRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         }
                     } else {
+                        let newEffect: Effect = instrument.addEffect(EffectType.eqFilter);
                         if (fromBeepBox || typeCheck == 0) {
-                            instrument.eqFilterType = false;
+                            newEffect.eqFilterType = false;
                             if (fromJummBox || fromGoldBox || fromUltraBox || fromSlarmoosBox)
                                 typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)]; // Skip to next to get control point count
                                 const originalControlPointCount: number = typeCheck;
-                            instrument.eqFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalControlPointCount);
-                            for (let i: number = instrument.eqFilter.controlPoints.length; i < instrument.eqFilter.controlPointCount; i++) {
-                                instrument.eqFilter.controlPoints[i] = new FilterControlPoint();
+                            newEffect.eqFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalControlPointCount);
+                            for (let i: number = newEffect.eqFilter.controlPoints.length; i < newEffect.eqFilter.controlPointCount; i++) {
+                                newEffect.eqFilter.controlPoints[i] = new FilterControlPoint();
                             }
-                            for (let i: number = 0; i < instrument.eqFilter.controlPointCount; i++) {
-                                const point: FilterControlPoint = instrument.eqFilter.controlPoints[i];
+                            for (let i: number = 0; i < newEffect.eqFilter.controlPointCount; i++) {
+                                const point: FilterControlPoint = newEffect.eqFilter.controlPoints[i];
                                 point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             }
-                            for (let i: number = instrument.eqFilter.controlPointCount; i < originalControlPointCount; i++) {
+                            for (let i: number = newEffect.eqFilter.controlPointCount; i < originalControlPointCount; i++) {
                                 charIndex += 3;
                             }
 
                             // Get subfilters as well. Skip Index 0, is a copy of the base filter.
-                            instrument.eqSubFilters[0] = instrument.eqFilter;
+                            newEffect.eqSubFilters[0] = newEffect.eqFilter;
                             if ((fromJummBox && !beforeFive) || (fromGoldBox && !beforeFour) || fromUltraBox || fromSlarmoosBox) {
                                 let usingSubFilterBitfield: number = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
                                     if (usingSubFilterBitfield & (1 << j)) {
                                         // Number of control points
                                         const originalSubfilterControlPointCount: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                                        if (instrument.eqSubFilters[j + 1] == null)
-                                            instrument.eqSubFilters[j + 1] = new FilterSettings();
-                                        instrument.eqSubFilters[j + 1]!.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalSubfilterControlPointCount);
-                                        for (let i: number = instrument.eqSubFilters[j + 1]!.controlPoints.length; i < instrument.eqSubFilters[j + 1]!.controlPointCount; i++) {
-                                            instrument.eqSubFilters[j + 1]!.controlPoints[i] = new FilterControlPoint();
+                                        if (newEffect.eqSubFilters[j + 1] == null)
+                                            newEffect.eqSubFilters[j + 1] = new FilterSettings();
+                                        newEffect.eqSubFilters[j + 1]!.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalSubfilterControlPointCount);
+                                        for (let i: number = newEffect.eqSubFilters[j + 1]!.controlPoints.length; i < newEffect.eqSubFilters[j + 1]!.controlPointCount; i++) {
+                                            newEffect.eqSubFilters[j + 1]!.controlPoints[i] = new FilterControlPoint();
                                         }
-                                        for (let i: number = 0; i < instrument.eqSubFilters[j + 1]!.controlPointCount; i++) {
-                                            const point: FilterControlPoint = instrument.eqSubFilters[j + 1]!.controlPoints[i];
+                                        for (let i: number = 0; i < newEffect.eqSubFilters[j + 1]!.controlPointCount; i++) {
+                                            const point: FilterControlPoint = newEffect.eqSubFilters[j + 1]!.controlPoints[i];
                                             point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                             point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                             point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                         }
-                                        for (let i: number = instrument.eqSubFilters[j + 1]!.controlPointCount; i < originalSubfilterControlPointCount; i++) {
+                                        for (let i: number = newEffect.eqSubFilters[j + 1]!.controlPointCount; i < originalSubfilterControlPointCount; i++) {
                                             charIndex += 3;
                                         }
                                     }
@@ -2186,9 +2195,9 @@ export class Song {
                             }
                         }
                         else {
-                            instrument.eqFilterType = true;
-                            instrument.eqFilterSimpleCut = clamp(0, Config.filterSimpleCutRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                            instrument.eqFilterSimplePeak = clamp(0, Config.filterSimplePeakRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                            newEffect.eqFilterType = true;
+                            newEffect.eqFilterSimpleCut = clamp(0, Config.filterSimpleCutRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                            newEffect.eqFilterSimplePeak = clamp(0, Config.filterSimplePeakRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         }
                     }
                 }
@@ -2452,8 +2461,8 @@ export class Song {
                                     }
                                     if ((legacyGlobalReverb != 0 || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) && !this.getChannelIsNoise(channelIndex)) {
                                         // Enable reverb if it was used globaly before. (Global reverb was added before the effects option so I need to pick somewhere else to initialize instrument reverb, and I picked the vibrato command.)
-                                        instrument.addEffect(EffectType.reverb);
-                                        instrument.reverb = legacyGlobalReverb;
+                                        let newEffect: Effect = instrument.addEffect(EffectType.reverb);
+                                        newEffect.reverb = legacyGlobalReverb;
                                     }
                                 }
                             }
@@ -2475,8 +2484,8 @@ export class Song {
                             }
                             if (legacyGlobalReverb != 0 || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
                                 // Enable reverb if it was used globaly before. (Global reverb was added before the effects option so I need to pick somewhere else to initialize instrument reverb, and I picked the vibrato command.)
-                                instrument.addEffect(EffectType.reverb);
-                                instrument.reverb = legacyGlobalReverb;
+                                let newEffect: Effect = instrument.addEffect(EffectType.reverb);
+                                newEffect.reverb = legacyGlobalReverb;
                             }
                         }
                     } else {
@@ -2661,9 +2670,10 @@ export class Song {
                 const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                 if ((beforeNine && fromBeepBox) || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
                     instrument.addEffect(base64CharCodeToInt[compressed.charCodeAt(charIndex++)] & ((1 << EffectType.length) - 1));
+                    /*
                     if (legacyGlobalReverb == 0 && !((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
                         // Disable reverb if legacy song reverb was zero.
-                        instrument.removeEffect(EffectType.distortion);
+                        instrument.removeEffect(EffectType.reverb);
                     } else if (instrument.effectsIncludeType(EffectType.reverb)) {
                         instrument.reverb = legacyGlobalReverb;
                     }
@@ -2683,6 +2693,8 @@ export class Song {
                     else
                         instrument.removeEffect(EffectType.distortion);
                     instrument.addEffect(EffectType.eqFilter);
+                    */
+                    //TODO: all this compat stuff, or honestly just remove it idc that much
 
                     // convertLegacySettings may need to force-enable note filter, call
                     // it again here to make sure that this override takes precedence.
@@ -2694,7 +2706,114 @@ export class Song {
                     if (fromTheepBox) {
                         instrument.effects = [];
                         for (let i: number = 0; i < effectCount; i++) { // this for loop caused me a lot of grief... i dont wanna talk about it
-                            instrument.addEffect(base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                            let newEffect: Effect = instrument.addEffect(base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                            if (newEffect.type == EffectType.eqFilter) {
+                                let typeCheck: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                if (typeCheck == 0) {
+                                    newEffect.eqFilterType = false;
+                                    typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                    newEffect.eqFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, typeCheck);
+                                    for (let i: number = newEffect.eqFilter.controlPoints.length; i < newEffect.eqFilter.controlPointCount; i++) {
+                                        newEffect.eqFilter.controlPoints[i] = new FilterControlPoint();
+                                    }
+                                    for (let i: number = 0; i < newEffect.eqFilter.controlPointCount; i++) {
+                                        const point: FilterControlPoint = newEffect.eqFilter.controlPoints[i];
+                                        point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                        point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                        point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                    }
+                                    for (let i: number = newEffect.eqFilter.controlPointCount; i < typeCheck; i++) {
+                                        charIndex += 3;
+                                    }
+
+                                    // Get subfilters as well. Skip Index 0, is a copy of the base filter.
+                                    newEffect.eqSubFilters[0] = newEffect.eqFilter;
+                                    let usingSubFilterBitfield: number = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                    for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
+                                        if (usingSubFilterBitfield & (1 << j)) {
+                                            // Number of control points
+                                            const originalSubfilterControlPointCount: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                            if (newEffect.eqSubFilters[j + 1] == null)
+                                                newEffect.eqSubFilters[j + 1] = new FilterSettings();
+                                            newEffect.eqSubFilters[j + 1]!.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalSubfilterControlPointCount);
+                                            for (let i: number = newEffect.eqSubFilters[j + 1]!.controlPoints.length; i < newEffect.eqSubFilters[j + 1]!.controlPointCount; i++) {
+                                                newEffect.eqSubFilters[j + 1]!.controlPoints[i] = new FilterControlPoint();
+                                            }
+                                            for (let i: number = 0; i < newEffect.eqSubFilters[j + 1]!.controlPointCount; i++) {
+                                                const point: FilterControlPoint = newEffect.eqSubFilters[j + 1]!.controlPoints[i];
+                                                point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                                point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                                point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            }
+                                            for (let i: number = newEffect.eqSubFilters[j + 1]!.controlPointCount; i < originalSubfilterControlPointCount; i++) {
+                                                charIndex += 3;
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    newEffect.eqFilterType = true;
+                                    newEffect.eqFilter.reset();
+                                    newEffect.eqFilterSimpleCut = clamp(0, Config.filterSimpleCutRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                    newEffect.eqFilterSimplePeak = clamp(0, Config.filterSimplePeakRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                }
+                            }
+                            if (newEffect.type == EffectType.distortion) {
+                                newEffect.distortion = clamp(0, Config.distortionRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                if ((fromJummBox && !beforeFive) || fromGoldBox || fromUltraBox || fromSlarmoosBox)
+                                    instrument.aliases = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] ? true : false;
+                            }
+                            if (newEffect.type == EffectType.bitcrusher) {
+                                newEffect.bitcrusherFreq = clamp(0, Config.bitcrusherFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                newEffect.bitcrusherQuantization = clamp(0, Config.bitcrusherQuantizationRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                            }
+                            if (newEffect.type == EffectType.panning) {
+                                if (fromBeepBox) {
+                                    // Beepbox has a panMax of 8 (9 total positions), Jummbox has a panMax of 100 (101 total positions)
+                                    newEffect.pan = clamp(0, Config.panMax + 1, Math.round(base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * ((Config.panMax) / 8.0)));
+                                }
+                                else {
+                                    newEffect.pan = clamp(0, Config.panMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                }
+
+                                // Now, pan delay follows on new versions of jummbox.
+                                if ((fromJummBox && !beforeTwo) || fromGoldBox || fromUltraBox || fromSlarmoosBox) newEffect.panDelay = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                if (fromTheepBox) newEffect.panMode = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                            }
+                            if (newEffect.type == EffectType.chorus) {
+                                if (fromBeepBox) {
+                                    // BeepBox has 4 chorus values vs. JB's 8
+                                    newEffect.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 2;
+                                }
+                                else {
+                                    newEffect.chorus = clamp(0, Config.chorusRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                }
+                            }
+                            if (newEffect.type == EffectType.echo) {
+                                if (!fromTheepBox) newEffect.echoSustain = clamp(0, Config.echoSustainRange / 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 3;
+                                else newEffect.echoSustain = clamp(0, Config.echoSustainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                newEffect.echoDelay = clamp(0, Config.echoDelayRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                newEffect.echoPingPong = clamp(0, Config.panMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                            }
+                            if (newEffect.type == EffectType.reverb) {
+                                if (fromBeepBox) {
+                                    newEffect.reverb = clamp(0, Config.reverbRange, Math.round(base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * Config.reverbRange / 3.0));
+                                } else {
+                                    newEffect.reverb = clamp(0, Config.reverbRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                }
+                            }
+                            if (newEffect.type == EffectType.granular) {
+                                newEffect.granular = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                newEffect.grainSize = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                newEffect.grainAmounts = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                newEffect.grainRange = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                            }
+                            if (newEffect.type == EffectType.ringModulation) {
+                                newEffect.ringModulation = clamp(0, Config.ringModRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                newEffect.ringModulationHz = clamp(0, Config.ringModHzRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                newEffect.ringModWaveformIndex = clamp(0, Config.operatorWaves.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                newEffect.ringModPulseWidth = clamp(0, Config.pulseWidthRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                newEffect.ringModHzOffset = clamp(Config.rmHzOffsetMin, Config.rmHzOffsetMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                            }
                         }
                         console.log(instrument.effects)
                         console.log(instrument.effectCount)
@@ -2720,111 +2839,9 @@ export class Song {
                                 else if (bit == 1) instrument.addEffect(legacyEffectTypes[i] as EffectType);
                             }
                         }
+                        //TODO: add the rest of the compatability code lol
                     }
 
-                    if (instrument.effectsIncludeType(EffectType.eqFilter)) {
-                        let typeCheck: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                        if (fromTheepBox) {
-                            if (typeCheck == 0) {
-                                instrument.eqFilterType = false;
-                                typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                                instrument.eqFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, typeCheck);
-                                for (let i: number = instrument.eqFilter.controlPoints.length; i < instrument.eqFilter.controlPointCount; i++) {
-                                    instrument.eqFilter.controlPoints[i] = new FilterControlPoint();
-                                }
-                                for (let i: number = 0; i < instrument.eqFilter.controlPointCount; i++) {
-                                    const point: FilterControlPoint = instrument.eqFilter.controlPoints[i];
-                                    point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                    point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                    point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                }
-                                for (let i: number = instrument.eqFilter.controlPointCount; i < typeCheck; i++) {
-                                    charIndex += 3;
-                                }
-
-                                // Get subfilters as well. Skip Index 0, is a copy of the base filter.
-                                instrument.eqSubFilters[0] = instrument.eqFilter;
-                                let usingSubFilterBitfield: number = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
-                                    if (usingSubFilterBitfield & (1 << j)) {
-                                        // Number of control points
-                                        const originalSubfilterControlPointCount: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                                        if (instrument.eqSubFilters[j + 1] == null)
-                                            instrument.eqSubFilters[j + 1] = new FilterSettings();
-                                        instrument.eqSubFilters[j + 1]!.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalSubfilterControlPointCount);
-                                        for (let i: number = instrument.eqSubFilters[j + 1]!.controlPoints.length; i < instrument.eqSubFilters[j + 1]!.controlPointCount; i++) {
-                                            instrument.eqSubFilters[j + 1]!.controlPoints[i] = new FilterControlPoint();
-                                        }
-                                        for (let i: number = 0; i < instrument.eqSubFilters[j + 1]!.controlPointCount; i++) {
-                                            const point: FilterControlPoint = instrument.eqSubFilters[j + 1]!.controlPoints[i];
-                                            point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                            point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                            point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                        }
-                                        for (let i: number = instrument.eqSubFilters[j + 1]!.controlPointCount; i < originalSubfilterControlPointCount; i++) {
-                                            charIndex += 3;
-                                        }
-                                    }
-                                }
-                            } else {
-                                instrument.eqFilterType = true;
-                                instrument.eqFilter.reset();
-                                instrument.eqFilterSimpleCut = clamp(0, Config.filterSimpleCutRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                instrument.eqFilterSimplePeak = clamp(0, Config.filterSimplePeakRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                            }
-                        } else {
-                            instrument.addEffect(EffectType.eqFilter);
-                                instrument.noteFilterType = false;
-                                if (fromJummBox || fromGoldBox || fromUltraBox || fromSlarmoosBox)
-                                    typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)]; // Skip to next index in jummbox to get actual count
-                                    instrument.noteFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, typeCheck);
-                                for (let i: number = instrument.noteFilter.controlPoints.length; i < instrument.noteFilter.controlPointCount; i++) {
-                                    instrument.noteFilter.controlPoints[i] = new FilterControlPoint();
-                                }
-                                for (let i: number = 0; i < instrument.noteFilter.controlPointCount; i++) {
-                                    const point: FilterControlPoint = instrument.noteFilter.controlPoints[i];
-                                    point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                    point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                    point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                }
-                                for (let i: number = instrument.noteFilter.controlPointCount; i < typeCheck; i++) {
-                                    charIndex += 3;
-                                }
-
-                                // Get subfilters as well. Skip Index 0, is a copy of the base filter.
-                                instrument.noteSubFilters[0] = instrument.noteFilter;
-                                if ((fromJummBox && !beforeFive) || (fromGoldBox) || (fromUltraBox) || (fromSlarmoosBox)) {
-                                    let usingSubFilterBitfield: number = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                    for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
-                                        if (usingSubFilterBitfield & (1 << j)) {
-                                            // Number of control points
-                                            const originalSubfilterControlPointCount: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                                            if (instrument.noteSubFilters[j + 1] == null)
-                                                instrument.noteSubFilters[j + 1] = new FilterSettings();
-                                            instrument.noteSubFilters[j + 1]!.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalSubfilterControlPointCount);
-                                            for (let i: number = instrument.noteSubFilters[j + 1]!.controlPoints.length; i < instrument.noteSubFilters[j + 1]!.controlPointCount; i++) {
-                                                instrument.noteSubFilters[j + 1]!.controlPoints[i] = new FilterControlPoint();
-                                            }
-                                            for (let i: number = 0; i < instrument.noteSubFilters[j + 1]!.controlPointCount; i++) {
-                                                const point: FilterControlPoint = instrument.noteSubFilters[j + 1]!.controlPoints[i];
-                                                point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                                point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                                point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                            }
-                                            for (let i: number = instrument.noteSubFilters[j + 1]!.controlPointCount; i < originalSubfilterControlPointCount; i++) {
-                                                charIndex += 3;
-                                            }
-                                        }
-                                    }
-                                } else {
-                                instrument.noteFilterType = true;
-                                instrument.noteFilter.reset();
-                                instrument.noteFilterSimpleCut = clamp(0, Config.filterSimpleCutRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                instrument.noteFilterSimplePeak = clamp(0, Config.filterSimplePeakRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-
-                            }
-                        }
-                    }
                     if (effectsIncludeTransition(instrument.mdeffects)) {
                         instrument.transition = clamp(0, Config.transitions.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     }
@@ -2869,63 +2886,6 @@ export class Song {
                             instrument.vibratoType = Config.vibratos[instrument.vibrato].type;
                         }
                     }
-                    if (instrument.effectsIncludeType(EffectType.distortion)) {
-                        instrument.distortion = clamp(0, Config.distortionRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                        if ((fromJummBox && !beforeFive) || fromGoldBox || fromUltraBox || fromSlarmoosBox)
-                            instrument.aliases = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] ? true : false;
-                    }
-                    if (instrument.effectsIncludeType(EffectType.bitcrusher)) {
-                        instrument.bitcrusherFreq = clamp(0, Config.bitcrusherFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                        instrument.bitcrusherQuantization = clamp(0, Config.bitcrusherQuantizationRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                    }
-                    if (instrument.effectsIncludeType(EffectType.panning)) {
-                        if (fromBeepBox) {
-                            // Beepbox has a panMax of 8 (9 total positions), Jummbox has a panMax of 100 (101 total positions)
-                            instrument.pan = clamp(0, Config.panMax + 1, Math.round(base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * ((Config.panMax) / 8.0)));
-                        }
-                        else {
-                            instrument.pan = clamp(0, Config.panMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                        }
-
-                        // Now, pan delay follows on new versions of jummbox.
-                        if ((fromJummBox && !beforeTwo) || fromGoldBox || fromUltraBox || fromSlarmoosBox) instrument.panDelay = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                        if (fromTheepBox) instrument.panMode = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                    }
-                    if (instrument.effectsIncludeType(EffectType.chorus)) {
-                        if (fromBeepBox) {
-                            // BeepBox has 4 chorus values vs. JB's 8
-                            instrument.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 2;
-                        }
-                        else {
-                            instrument.chorus = clamp(0, Config.chorusRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                        }
-                    }
-                    if (instrument.effectsIncludeType(EffectType.echo)) {
-                        if (!fromTheepBox) instrument.echoSustain = clamp(0, Config.echoSustainRange / 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 3;
-                        else instrument.echoSustain = clamp(0, Config.echoSustainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                        instrument.echoDelay = clamp(0, Config.echoDelayRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                        instrument.echoPingPong = clamp(0, Config.panMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                    }
-                    if (instrument.effectsIncludeType(EffectType.reverb)) {
-                        if (fromBeepBox) {
-                            instrument.reverb = clamp(0, Config.reverbRange, Math.round(base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * Config.reverbRange / 3.0));
-                        } else {
-                            instrument.reverb = clamp(0, Config.reverbRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                        }
-                    }
-                    if (instrument.effectsIncludeType(EffectType.granular)) {
-                        instrument.granular = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                        instrument.grainSize = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                        instrument.grainAmounts = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                        instrument.grainRange = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                    }
-                    if (instrument.effectsIncludeType(EffectType.ringModulation)) {
-                        instrument.ringModulation = clamp(0, Config.ringModRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                        instrument.ringModulationHz = clamp(0, Config.ringModHzRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                        instrument.ringModWaveformIndex = clamp(0, Config.operatorWaves.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                        instrument.ringModPulseWidth = clamp(0, Config.pulseWidthRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                        instrument.ringModHzOffset = clamp(Config.rmHzOffsetMin, Config.rmHzOffsetMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                    }
                 }
                 // Clamp the range...?
                 // if (instrument.effects.length != instrument.effectCount) //not sure what to do exactly
@@ -2954,7 +2914,8 @@ export class Song {
                     instrument.volume = Math.round(clamp(-Config.volumeRange / 2, Config.volumeRange / 2 + 1, ((base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)])) - Config.volumeRange / 2));
                 }
             } break;
-            case SongTagCode.pan: {
+            case SongTagCode.pan: { // ideally this tagcode would add a new panning effect. however, there are many other parts of the code that add this aswell! TODO: make this work again?
+                /*
                 if (beforeNine && fromBeepBox) {
                     // Beepbox has a panMax of 8 (9 total positions), Jummbox has a panMax of 100 (101 total positions)
                     const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
@@ -2968,7 +2929,7 @@ export class Song {
                     }
                 } else {
                     // Do nothing? This song tag code is deprecated for now.
-                }
+                } */
             } break;
             case SongTagCode.detune: {
                 const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
@@ -3393,8 +3354,8 @@ export class Song {
                     const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     instrument.aliases = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) ? true : false;
                     if (instrument.aliases) {
-                        instrument.distortion = 0;
-                        instrument.addEffect(EffectType.distortion);
+                        let newEffect: Effect = instrument.addEffect(EffectType.distortion);
+                        newEffect.distortion = 0;
                     }
                 } else {
                     if (fromUltraBox || fromSlarmoosBox) {
@@ -3846,7 +3807,7 @@ export class Song {
                         for (let instrumentIndex: number = 0; instrumentIndex < this.channels[channelIndex].instruments.length; instrumentIndex++) {
                             const instrument: Instrument = this.channels[channelIndex].instruments[instrumentIndex];
                             if (instrument.effectsIncludeType(EffectType.reverb)) {
-                                instrument.reverb = Config.reverbRange - 1;
+                                //instrument.reverb = Config.reverbRange - 1;
                             }
                             // Set song reverb via mod to the old setting at song start.
                             if (songReverbChannel == channelIndex && songReverbInstrument == instrumentIndex) {

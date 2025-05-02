@@ -62,7 +62,7 @@ export class EnvelopeEditor {
 	private readonly _LFOStepsWrappers: HTMLDivElement[] = [];
 
 	private _renderedEnvelopeCount: number = 0;
-	private _renderedEqFilterCount: number = -1;
+	//private _renderedEqFilterCount: number[] = [-1];
 	private _renderedNoteFilterCount: number = -1;
 	private _renderedInstrumentType: InstrumentType;
 	private _renderedEffects: (Effect | null)[];
@@ -593,7 +593,7 @@ export class EnvelopeEditor {
 		if (instrument.noteFilterType)
 			useControlPointCount = 1;
 
-		if (this._renderedEqFilterCount != instrument.eqFilter.controlPointCount ||
+		if (/*this._renderedEqFilterCount != instrument.eqFilter.controlPointCount ||*/
 			this._renderedNoteFilterCount != useControlPointCount ||
 			this._renderedInstrumentType != instrument.type ||
 			this._renderedEffects != instrument.effects) {
@@ -628,7 +628,7 @@ export class EnvelopeEditor {
 		}
 
 		this._renderedEnvelopeCount = instrument.envelopeCount;
-		this._renderedEqFilterCount = instrument.eqFilter.controlPointCount;
+		//this._renderedEqFilterCount = instrument.eqFilter.controlPointCount;
 		this._renderedNoteFilterCount = useControlPointCount;
 		this._renderedInstrumentType = instrument.type;
 		this._renderedEffects = instrument.effects;

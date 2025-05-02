@@ -216,18 +216,11 @@ export class Instrument {
     // advloop addition
     public chipWaveInStereo: boolean = false;
     public chipNoise: number = 1;
-    public eqFilter: FilterSettings = new FilterSettings();
-    public eqFilterType: boolean = false;
-    public eqFilterSimpleCut: number = Config.filterSimpleCutRange - 1;
-    public eqFilterSimplePeak: number = 0;
     public noteFilter: FilterSettings = new FilterSettings();
     public noteFilterType: boolean = false;
     public noteFilterSimpleCut: number = Config.filterSimpleCutRange - 1;
     public noteFilterSimplePeak: number = 0;
-    public eqSubFilters: (FilterSettings | null)[] = [];
     public noteSubFilters: (FilterSettings | null)[] = [];
-    public tmpEqFilterStart: FilterSettings | null;
-    public tmpEqFilterEnd: FilterSettings | null;
     public tmpNoteFilterStart: FilterSettings | null;
     public tmpNoteFilterEnd: FilterSettings | null;
     public envelopes: EnvelopeSettings[] = [];
@@ -250,21 +243,17 @@ export class Instrument {
     public unisonOffset: number = 0.0;
     public unisonExpression: number = 1.4;
     public unisonSign: number = 1.0;
-    public effects: (Effect | null)[] = [];
-    public effectOrder: Array<EffectType> = [EffectType.panning, EffectType.eqFilter, EffectType.granular, EffectType.distortion, EffectType.bitcrusher, EffectType.chorus, EffectType.echo, EffectType.reverb, EffectType.ringModulation];
+    public effects: (Effect | null)[] = []; // having this array potentially include null is honestly a huge nuisance, and probably needs to be changed. coming soon! ~ theepie
     public effectCount: number = 0;
     public mdeffects: number = 0;
     public chord: number = 1;
     public volume: number = 0;
-    public pan: number = Config.panCenter;
-    public panDelay: number = 0;
-    public panMode: number = 0;
     public arpeggioSpeed: number = 12;
     public monoChordTone: number = 0;
     public fastTwoNoteArp: boolean = false;
     public legacyTieOver: boolean = false;
     public clicklessTransition: boolean = false;
-    public aliases: boolean = false;
+    public aliases: boolean = false; // ...?
     public pulseWidth: number = Config.pulseWidthRange;
     public decimalOffset: number = 0;
     public supersawDynamism: number = Config.supersawDynamismMax;
@@ -272,23 +261,6 @@ export class Instrument {
     public supersawShape: number = 0;
     public stringSustain: number = 10;
     public stringSustainType: SustainType = SustainType.acoustic;
-    public distortion: number = 0;
-    public bitcrusherFreq: number = 0;
-    public bitcrusherQuantization: number = 0;
-    public ringModulation: number = Math.floor(Config.ringModRange/2);
-    public ringModulationHz: number = Math.floor(Config.ringModHzRange / 2);;
-    public ringModWaveformIndex: number = 0;
-    public ringModPulseWidth: number = 0;
-    public ringModHzOffset: number = 200;
-    public granular: number = 4;
-    public grainSize: number = (Config.grainSizeMax-Config.grainSizeMin)/Config.grainSizeStep;
-    public grainAmounts: number = Config.grainAmountsMax;
-    public grainRange: number = 40;
-    public chorus: number = 0;
-    public reverb: number = 0;
-    public echoSustain: number = 0;
-    public echoDelay: number = 0;
-    public echoPingPong: number = 0;
     public algorithm: number = 0;
     public feedbackType: number = 0;
     public algorithm6Op: number = 1;
@@ -387,37 +359,13 @@ export class Instrument {
         }
         this.effectCount = 0;
         this.mdeffects = 0;
-        this.chorus = Config.chorusRange - 1;
-        this.reverb = 0;
-        this.echoSustain = Math.floor((Config.echoSustainRange - 1) * 0.5);
-        this.echoDelay = Math.floor((Config.echoDelayRange - 1) * 0.5);
-        this.echoPingPong = Config.panCenter;
-        this.eqFilter.reset();
-        this.eqFilterType = false;
-        this.eqFilterSimpleCut = Config.filterSimpleCutRange - 1;
-        this.eqFilterSimplePeak = 0;
         for (let i: number = 0; i < Config.filterMorphCount; i++) {
-            this.eqSubFilters[i] = null;
             this.noteSubFilters[i] = null;
         }
         this.noteFilter.reset();
         this.noteFilterType = false;
         this.noteFilterSimpleCut = Config.filterSimpleCutRange - 1;
         this.noteFilterSimplePeak = 0;
-        this.distortion = Math.floor((Config.distortionRange - 1) * 0.75);
-        this.bitcrusherFreq = Math.floor((Config.bitcrusherFreqRange - 1) * 0.5)
-        this.bitcrusherQuantization = Math.floor((Config.bitcrusherQuantizationRange - 1) * 0.5);
-        this.ringModulation = 0;
-        this.ringModulationHz = 0;
-        this.ringModWaveformIndex = 0;
-        this.ringModPulseWidth = 0;
-        this.ringModHzOffset = 200;
-        this.granular = 4;
-        this.grainSize = (Config.grainSizeMax - Config.grainSizeMin) / Config.grainSizeStep;
-        this.grainAmounts = Config.grainAmountsMax;
-        this.grainRange = 40;
-        this.pan = Config.panCenter;
-        this.panDelay = 0;
         this.pitchShift = Config.pitchShiftCenter;
         this.detune = Config.detuneCenter;
         this.vibrato = 0;
@@ -617,6 +565,7 @@ export class Instrument {
             }
         }
 
+        /*
         if (legacyFilterEnv.type == EnvelopeType.none) {
             this.noteFilter.reset();
             this.noteFilterType = false;
@@ -641,6 +590,7 @@ export class Instrument {
                 this.noteFilterSimplePeak = legacyResonanceSetting;
             }
         }
+        */
 
         if (legacyPulseEnv.type != EnvelopeType.none) {
             this.addEnvelope(Config.instrumentAutomationTargets.dictionary["pulseWidth"].index, 0, legacyPulseEnv.index, false);
@@ -678,14 +628,7 @@ export class Instrument {
                 instrumentObject["noteSubFilters" + i] = this.noteSubFilters[i]!.toJsonObject();
         }
 
-        const effects: string[] = [];
-        for (const effect of this.effectOrder) {
-            if (this.effects[effect] != null) {
-                effects.push(Config.effectNames[effect]);
-            }
-        }
-        instrumentObject["effects"] = effects;
-        instrumentObject["effectOrder"] = this.effectOrder;
+        instrumentObject["effects"] = this.effects;
         instrumentObject["mdeffects"] = this.mdeffects;
 
         if (effectsIncludeTransition(this.mdeffects)) {
@@ -718,53 +661,60 @@ export class Instrument {
             instrumentObject["vibratoSpeed"] = this.vibratoSpeed;
             instrumentObject["vibratoType"] = this.vibratoType;
         }
-        if (this.effectsIncludeType(EffectType.eqFilter)) {
-            instrumentObject["eqFilterType"] = this.eqFilterType;
-            instrumentObject["eqSimpleCut"] = this.eqFilterSimpleCut;
-            instrumentObject["eqSimplePeak"] = this.eqFilterSimplePeak;
-            instrumentObject["eqFilter"] = this.eqFilter.toJsonObject();
+        instrumentObject["effects"] = this.effects;
+        /*
+        for (let i: number = 0; i < this.effectCount; i++) {
+            let effect: Effect | null = this.effects[i]
+            if (effect == null) continue;
+            if (effect.type == EffectType.eqFilter) {
+                instrumentObject["eqFilterType"] = effect.eqFilterType;
+                instrumentObject["eqSimpleCut"] = effect.eqFilterSimpleCut;
+                instrumentObject["eqSimplePeak"] = effect.eqFilterSimplePeak;
+                instrumentObject["eqFilter"] = effect.eqFilter.toJsonObject();
 
-            for (let i: number = 0; i < Config.filterMorphCount; i++) {
-                if (this.eqSubFilters[i] != null)
-                    instrumentObject["eqSubFilters" + i] = this.eqSubFilters[i]!.toJsonObject();
+                for (let j: number = 0; j < Config.filterMorphCount; j++) {
+                    if (effect.eqSubFilters[j] != null)
+                        instrumentObject["eqSubFilters" + j] = effect.eqSubFilters[j]!.toJsonObject();
+                }
+            }
+            else if (effect.type == EffectType.granular) {
+                instrumentObject["granular"] = effect.granular;
+                instrumentObject["grainSize"] = effect.grainSize;
+                instrumentObject["grainAmounts"] = effect.grainAmounts;
+                instrumentObject["grainRange"] = effect.grainRange;
+            }
+            else if (effect.type == EffectType.ringModulation) {
+                instrumentObject["ringMod"] = Math.round(100 * effect.ringModulation / (Config.ringModRange - 1));
+                instrumentObject["ringModHz"] = Math.round(100 * effect.ringModulationHz / (Config.ringModHzRange - 1));
+                instrumentObject["ringModWaveformIndex"] = effect.ringModWaveformIndex;
+                instrumentObject["ringModPulseWidth"] = Math.round(100 * effect.ringModPulseWidth / (Config.pulseWidthRange - 1));
+                instrumentObject["ringModHzOffset"] = Math.round(100 * effect.ringModHzOffset / (Config.rmHzOffsetMax));
+            }
+            else if (effect.type == EffectType.distortion) {
+                instrumentObject["distortion"] = Math.round(100 * effect.distortion / (Config.distortionRange - 1));
+                instrumentObject["aliases"] = this.aliases;
+            }
+            else if (effect.type == EffectType.bitcrusher) {
+                instrumentObject["bitcrusherOctave"] = (Config.bitcrusherFreqRange - 1 - effect.bitcrusherFreq) * Config.bitcrusherOctaveStep;
+                instrumentObject["bitcrusherQuantization"] = Math.round(100 * effect.bitcrusherQuantization / (Config.bitcrusherQuantizationRange - 1));
+            }
+            else if (effect.type == EffectType.panning) {
+                instrumentObject["pan"] = Math.round(100 * (effect.pan - Config.panCenter) / Config.panCenter);
+                instrumentObject["panDelay"] = effect.panDelay;
+            }
+            else if (effect.type == EffectType.chorus) {
+                instrumentObject["chorus"] = Math.round(100 * effect.chorus / (Config.chorusRange - 1));
+            }
+            else if (effect.type == EffectType.echo) {
+                instrumentObject["echoSustain"] = Math.round(100 * effect.echoSustain / (Config.echoSustainRange - 1));
+                instrumentObject["echoDelayBeats"] = Math.round(1000 * (effect.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat)) / 1000;
+                instrumentObject["echoPingPong"] = Math.round(100 * (effect.echoPingPong - Config.panCenter) / Config.panCenter);
+            }
+            else if (effect.type == EffectType.reverb) {
+                instrumentObject["reverb"] = Math.round(100 * effect.reverb / (Config.reverbRange - 1));
             }
         }
-        if (this.effectsIncludeType(EffectType.granular)) {
-            instrumentObject["granular"] = this.granular;
-            instrumentObject["grainSize"] = this.grainSize;
-            instrumentObject["grainAmounts"] = this.grainAmounts;
-            instrumentObject["grainRange"] = this.grainRange;
-        }
-        if (this.effectsIncludeType(EffectType.ringModulation)) {
-            instrumentObject["ringMod"] = Math.round(100 * this.ringModulation / (Config.ringModRange - 1));
-            instrumentObject["ringModHz"] = Math.round(100 * this.ringModulationHz / (Config.ringModHzRange - 1));
-            instrumentObject["ringModWaveformIndex"] = this.ringModWaveformIndex;
-            instrumentObject["ringModPulseWidth"] = Math.round(100 * this.ringModPulseWidth / (Config.pulseWidthRange - 1));
-            instrumentObject["ringModHzOffset"] = Math.round(100 * this.ringModHzOffset / (Config.rmHzOffsetMax));
-        }
-        if (this.effectsIncludeType(EffectType.distortion)) {
-            instrumentObject["distortion"] = Math.round(100 * this.distortion / (Config.distortionRange - 1));
-            instrumentObject["aliases"] = this.aliases;
-        }
-        if (this.effectsIncludeType(EffectType.bitcrusher)) {
-            instrumentObject["bitcrusherOctave"] = (Config.bitcrusherFreqRange - 1 - this.bitcrusherFreq) * Config.bitcrusherOctaveStep;
-            instrumentObject["bitcrusherQuantization"] = Math.round(100 * this.bitcrusherQuantization / (Config.bitcrusherQuantizationRange - 1));
-        }
-        if (this.effectsIncludeType(EffectType.panning)) {
-            instrumentObject["pan"] = Math.round(100 * (this.pan - Config.panCenter) / Config.panCenter);
-            instrumentObject["panDelay"] = this.panDelay;
-        }
-        if (this.effectsIncludeType(EffectType.chorus)) {
-            instrumentObject["chorus"] = Math.round(100 * this.chorus / (Config.chorusRange - 1));
-        }
-        if (this.effectsIncludeType(EffectType.echo)) {
-            instrumentObject["echoSustain"] = Math.round(100 * this.echoSustain / (Config.echoSustainRange - 1));
-            instrumentObject["echoDelayBeats"] = Math.round(1000 * (this.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat)) / 1000;
-            instrumentObject["echoPingPong"] = Math.round(100 * (this.echoPingPong - Config.panCenter) / Config.panCenter);
-        }
-        if (this.effectsIncludeType(EffectType.reverb)) {
-            instrumentObject["reverb"] = Math.round(100 * this.reverb / (Config.reverbRange - 1));
-        }
+        */
 
         if (this.type != InstrumentType.drumset) {
             instrumentObject["fadeInSeconds"] = Math.round(10000 * fadeInSettingToSeconds(this.fadeIn)) / 10000;
@@ -990,20 +940,14 @@ export class Instrument {
         this.envelopeSpeed = instrumentObject["envelopeSpeed"] != undefined ? clamp(0, Config.modulators.dictionary["envelope speed"].maxRawVol + 1, instrumentObject["envelopeSpeed"] | 0) : 12;
 
         if (Array.isArray(instrumentObject["effects"])) {
-            let effects: number = 0;
             for (let i: number = 0; i < instrumentObject["effects"].length; i++) {
-                effects = effects | (1 << Config.effectNames.indexOf(instrumentObject["effects"][i]));
+                this.addEffect(instrumentObject["effects"][i]);
             }
         } else {
             // The index of these names is reinterpreted as a bitfield, which relies on reverb and chorus being the first effects!
             //const legacyEffectsNames: string[] = ["none", "reverb", "chorus", "chorus & reverb"];
             //this.effects = legacyEffectsNames.indexOf(instrumentObject["effects"]);
             //if (this.effects == -1) this.effects = (this.type == InstrumentType.noise) ? 0 : 1;
-        }
-        if (instrumentObject["effectOrder"] != undefined) {
-            this.effectOrder = instrumentObject["effectOrder"];
-        } else {
-            this.effectOrder = [...Config.effectOrder];
         }
         if (instrumentObject["mdeffects"] != undefined) {
             this.mdeffects = instrumentObject["mdeffects"];
@@ -1156,91 +1100,11 @@ export class Instrument {
             }
         }
 
-        if (instrumentObject["pan"] != undefined) {
-            this.pan = clamp(0, Config.panMax + 1, Math.round(Config.panCenter + (instrumentObject["pan"] | 0) * Config.panCenter / 100));
-        } else if (instrumentObject["ipan"] != undefined) {
-            // support for modbox fixed
-            this.pan = clamp(0, Config.panMax + 1, Config.panCenter + (instrumentObject["ipan"] * -50));
-        } else {
-            this.pan = Config.panCenter;
-        }
-
-        // Old songs may have a panning effect without explicitly enabling it.
-        if (this.pan != Config.panCenter) {
-            this.addEffect(EffectType.panning);
-        }
-
-        if (instrumentObject["panDelay"] != undefined) {
-            this.panDelay = (instrumentObject["panDelay"] | 0);
-        } else {
-            this.panDelay = 0;
-        }
-
         if (instrumentObject["detune"] != undefined) {
             this.detune = clamp(Config.detuneMin, Config.detuneMax + 1, (instrumentObject["detune"] | 0));
         }
         else if (instrumentObject["detuneCents"] == undefined) {
             this.detune = Config.detuneCenter;
-        }
-
-        if (instrumentObject["ringMod"] != undefined) {
-            this.ringModulation = clamp(0, Config.ringModRange, Math.round((Config.ringModRange - 1) * (instrumentObject["ringMod"] | 0) / 100));
-        }
-        if (instrumentObject["ringModHz"] != undefined) {
-            this.ringModulationHz = clamp(0, Config.ringModHzRange, Math.round((Config.ringModHzRange - 1) * (instrumentObject["ringModHz"] | 0) / 100));
-        }
-        if (instrumentObject["ringModWaveformIndex"] != undefined) {
-            this.ringModWaveformIndex = clamp(0, Config.operatorWaves.length, instrumentObject["ringModWaveformIndex"]);
-        }
-        if (instrumentObject["ringModPulseWidth"] != undefined) {
-            this.ringModPulseWidth = clamp(0, Config.pulseWidthRange, Math.round((Config.pulseWidthRange - 1) * (instrumentObject["ringModPulseWidth"] | 0) / 100));
-        }
-        if (instrumentObject["ringModHzOffset"] != undefined) {
-            this.ringModHzOffset = clamp(0, Config.rmHzOffsetMax, Math.round((Config.rmHzOffsetMax - 1) * (instrumentObject["ringModHzOffset"] | 0) / 100));
-        }
-
-        if (instrumentObject["granular"] != undefined) {
-            this.granular = instrumentObject["granular"];
-        }
-        if (instrumentObject["grainSize"] != undefined) {
-            this.grainSize = instrumentObject["grainSize"];
-        }
-        if (instrumentObject["grainAmounts"] != undefined) {
-            this.grainAmounts = instrumentObject["grainAmounts"];
-        }
-        if (instrumentObject["grainRange"] != undefined) {
-            this.grainRange = clamp(0, Config.grainRangeMax / Config.grainSizeStep + 1, instrumentObject["grainRange"]);
-        }
-
-        if (instrumentObject["distortion"] != undefined) {
-            this.distortion = clamp(0, Config.distortionRange, Math.round((Config.distortionRange - 1) * (instrumentObject["distortion"] | 0) / 100));
-        }
-
-        if (instrumentObject["bitcrusherOctave"] != undefined) {
-            this.bitcrusherFreq = Config.bitcrusherFreqRange - 1 - (+instrumentObject["bitcrusherOctave"]) / Config.bitcrusherOctaveStep;
-        }
-        if (instrumentObject["bitcrusherQuantization"] != undefined) {
-            this.bitcrusherQuantization = clamp(0, Config.bitcrusherQuantizationRange, Math.round((Config.bitcrusherQuantizationRange - 1) * (instrumentObject["bitcrusherQuantization"] | 0) / 100));
-        }
-
-        if (instrumentObject["echoSustain"] != undefined) {
-            this.echoSustain = clamp(0, Config.echoSustainRange, Math.round((Config.echoSustainRange - 1) * (instrumentObject["echoSustain"] | 0) / 100));
-        }
-        if (instrumentObject["echoDelayBeats"] != undefined) {
-            this.echoDelay = clamp(0, Config.echoDelayRange, Math.round((+instrumentObject["echoDelayBeats"]) * (Config.ticksPerPart * Config.partsPerBeat) / Config.echoDelayStepTicks - 1.0));
-        }
-        if (instrumentObject["echoPingPong"] != undefined) {
-            this.echoPingPong = clamp(0, Config.panMax + 1, Math.round(Config.panCenter + (instrumentObject["echoPingPong"] | 0) * Config.panCenter / 100));
-        }
-
-        if (!isNaN(instrumentObject["chorus"])) {
-            this.chorus = clamp(0, Config.chorusRange, Math.round((Config.chorusRange - 1) * (instrumentObject["chorus"] | 0) / 100));
-        }
-
-        if (instrumentObject["reverb"] != undefined) {
-            this.reverb = clamp(0, Config.reverbRange, Math.round((Config.reverbRange - 1) * (instrumentObject["reverb"] | 0) / 100));
-        } else {
-            this.reverb = legacyGlobalReverb;
         }
 
         if (instrumentObject["pulseWidth"] != undefined) {
@@ -1551,9 +1415,9 @@ export class Instrument {
             else {
                 // modbox had no anti-aliasing, so enable it for everything if that mode is selected
                 if (format == "modbox") {
-                    this.addEffect(EffectType.distortion);
+                    let newEffect: Effect = this.addEffect(EffectType.distortion);
                     this.aliases = true;
-                    this.distortion = 0;
+                    newEffect.distortion = 0;
                 } else {
                     this.aliases = false;
                 }
@@ -1579,20 +1443,7 @@ export class Instrument {
                     this.noteSubFilters[i]!.fromJsonObject(instrumentObject["noteSubFilters" + i]);
                 }
             }
-            if (instrumentObject["eqFilterType"] != undefined) {
-                this.eqFilterType = instrumentObject["eqFilterType"];
-            }
-            if (instrumentObject["eqSimpleCut"] != undefined) {
-                this.eqFilterSimpleCut = instrumentObject["eqSimpleCut"];
-            }
-            if (instrumentObject["eqSimplePeak"] != undefined) {
-                this.eqFilterSimplePeak = instrumentObject["eqSimplePeak"];
-            }
-            if (Array.isArray(instrumentObject["eqFilter"])) {
-                this.eqFilter.fromJsonObject(instrumentObject["eqFilter"]);
-            } else {
-                this.eqFilter.reset();
-
+            if (!Array.isArray(instrumentObject["eqFilter"])) {
                 const legacySettings: LegacySettings = {};
 
                 // Try converting from legacy filter settings.
@@ -1638,13 +1489,6 @@ export class Instrument {
                 }
 
                 this.convertLegacySettings(legacySettings, true);
-            }
-
-            for (let i: number = 0; i < Config.filterMorphCount; i++) {
-                if (Array.isArray(instrumentObject["eqSubFilters" + i])) {
-                    this.eqSubFilters[i] = new FilterSettings();
-                    this.eqSubFilters[i]!.fromJsonObject(instrumentObject["eqSubFilters" + i]);
-                }
             }
 
             if (Array.isArray(instrumentObject["envelopes"])) {
@@ -1720,10 +1564,14 @@ export class Instrument {
             }
         }
         else {
-            largest = this.eqFilter.controlPointCount;
-            for (let i: number = 0; i < Config.filterMorphCount; i++) {
-                if (this.eqSubFilters[i] != null && this.eqSubFilters[i]!.controlPointCount > largest)
-                    largest = this.eqSubFilters[i]!.controlPointCount;
+            largest = this.effects[0]!.eqFilter.controlPointCount;
+            for (let effectIndex: number = 0; effectIndex < this.effectCount; effectIndex++) {
+                if (this.effects[effectIndex] != null) {
+                    for (let i: number = 0; i < Config.filterMorphCount; i++) {
+                        if (this.effects[effectIndex]!.eqSubFilters[i] != null && this.effects[effectIndex]!.eqSubFilters[i]!.controlPointCount > largest)
+                            largest = this.effects[effectIndex]!.eqSubFilters[i]!.controlPointCount;
+                    }
+                }
             }
         }
         return largest;
@@ -1733,10 +1581,11 @@ export class Instrument {
         return 440.0 * Math.pow(2.0, (pitch - 69.0) / 12.0);
     }
 
-    public addEffect(type: EffectType): void {
+    public addEffect(type: EffectType): Effect {
         let newEffect: Effect = new Effect(type);
         this.effects.push(newEffect);
         this.effectCount++;
+        return newEffect;
     }
 
     public removeEffect(type: EffectType): void {

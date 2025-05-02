@@ -454,7 +454,6 @@ export class ImportPrompt implements Prompt {
             let currentVelocity: number = 1.0;
             let currentProgram: number = 0;
             let currentInstrumentVolume: number = 0;
-            let currentInstrumentPan: number = Config.panCenter;
 
             if (isDrumsetChannel) {
                 const heldPitches: number[] = [];
@@ -498,8 +497,6 @@ export class ImportPrompt implements Prompt {
                         // zero volume.
                         if (!setInstrumentVolume || instrument.volume > currentInstrumentVolume) {
                             instrument.volume = currentInstrumentVolume;
-                            instrument.pan = currentInstrumentPan;
-                            instrument.panDelay = 0;
                             setInstrumentVolume = true;
                         }
 
@@ -540,7 +537,7 @@ export class ImportPrompt implements Prompt {
                         prevEventPart = nextEventPart;
                         currentVelocity = noteEvent.velocity;
                         currentInstrumentVolume = noteEvent.instrumentVolume;
-                        currentInstrumentPan = noteEvent.instrumentPan;
+                        //currentInstrumentPan = noteEvent.instrumentPan;
                     }
                 }
             } else {
@@ -626,8 +623,6 @@ export class ImportPrompt implements Prompt {
                                         }
 
                                         instrument.volume = currentInstrumentVolume;
-                                        instrument.pan = currentInstrumentPan;
-                                        instrument.panDelay = 0;
 
                                         channel.instruments.push(instrument);
                                     }
@@ -642,7 +637,6 @@ export class ImportPrompt implements Prompt {
                                 // zero volume.
                                 if (instrumentByProgram[currentProgram] != undefined) {
                                     instrumentByProgram[currentProgram].volume = Math.min(instrumentByProgram[currentProgram].volume, currentInstrumentVolume);
-                                    instrumentByProgram[currentProgram].pan = Math.min(instrumentByProgram[currentProgram].pan, currentInstrumentPan);
                                 }
 
                                 // Create a new note, and interpret the pitch bend and note size events
@@ -811,7 +805,7 @@ export class ImportPrompt implements Prompt {
                         currentVelocity = noteEvent.velocity;
                         currentProgram = noteEvent.program;
                         currentInstrumentVolume = noteEvent.instrumentVolume;
-                        currentInstrumentPan = noteEvent.instrumentPan;
+                        //currentInstrumentPan = noteEvent.instrumentPan;
                     }
 
                     prevEventMidiTick = nextEventMidiTick;

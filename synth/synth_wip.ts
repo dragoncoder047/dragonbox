@@ -4491,8 +4491,6 @@ export class Synth {
                 const delayInputMultDelta = +instrumentState.delayInputMultDelta;`
             }
 
-            console.log(instrumentState.effects)
-
             for (let i: number = 0; i < instrumentState.effects.length; i++) {
                 let effectState: EffectState = instrumentState.effects[i] as EffectState
                 effectsSource += `
@@ -4746,7 +4744,8 @@ export class Synth {
                     let sampleL = tempInstrumentSampleBufferL[sampleIndex];
                     let sampleR = tempInstrumentSampleBufferL[sampleIndex];
                     tempInstrumentSampleBufferL[sampleIndex] = 0.0;
-                    tempInstrumentSampleBufferR[sampleIndex] = 0.0;`
+                    tempInstrumentSampleBufferR[sampleIndex] = 0.0;
+                    console.log(sampleL)`
 			}
 
 			for (let i: number = 0; i < instrumentState.effects.length; i++) {
@@ -5083,6 +5082,9 @@ export class Synth {
                                     }
                                     effectsSource +=`
                                     grain.ageInSamples = grainAgeInSamples;
+                                    // if(usesRandomGrainLocation) {
+                                    //     grain.delayLine -= grainPitchShift;
+                                    // }
                                 }
                             }
                         }
@@ -5291,7 +5293,7 @@ export class Synth {
 
             effectsSource += "}";
 
-            //console.log(effectsSource);
+            console.log(effectsSource);
             effectsFunction = new Function("Config", "Synth", effectsSource)(Config, Synth);
             Synth.effectsFunctionCache[signature] = effectsFunction;
         }

@@ -40,7 +40,7 @@ export class Effect {
 	public reverb: number = 0;
 	public echoSustain: number = 0;
 	public echoDelay: number = 0;
-	public echoPingPong: number = 0;
+	public echoPingPong: number = Config.panCenter;
 
 	constructor(type: EffectType) {
 		this.type = type;

@@ -658,9 +658,9 @@ export class ExportPrompt implements Prompt {
                         writeControlEvent(MidiControlEventMessage.volumeMSB, Math.min(0x7f, Math.round(instrumentVolume)));
 
                         // Instrument pan:
-                        writeEventTime(barStartTime);
-                        let instrumentPan: number = (instrument.pan / Config.panCenter - 1) * 0x3f + 0x40;
-                        writeControlEvent(MidiControlEventMessage.panMSB, Math.min(0x7f, Math.round(instrumentPan)));
+                        //writeEventTime(barStartTime);
+                        //let instrumentPan: number = (instrument.pan / Config.panCenter - 1) * 0x3f + 0x40;
+                        //writeControlEvent(MidiControlEventMessage.panMSB, Math.min(0x7f, Math.round(instrumentPan)));
                     }
                 }
                 if (song.getPattern(channel, 0) == null) {

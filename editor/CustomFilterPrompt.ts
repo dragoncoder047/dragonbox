@@ -4,6 +4,7 @@ import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
 import { Prompt } from "./Prompt";
 import { SongDocument } from "./SongDocument";
 import { Config } from "../synth/SynthConfig";
+import { Effect } from "../synth/Effect";
 import { FilterEditor } from "./FilterEditor";
 import { SongEditor } from "./SongEditor";
 import { FilterSettings } from "../synth/Filter";
@@ -67,8 +68,9 @@ export class CustomFilterPrompt implements Prompt {
         this._cancelButton,
     );
 
-    constructor(private _doc: SongDocument, private _songEditor: SongEditor, private _useNoteFilter: boolean, private forSong: boolean=false) {
-
+    // for some reason that is beyond me, the compiler claims that "'_effectIndex' is declared but its value is never read," which makes no sense because it is used on line 82. some1 with better knowledge than me can tell me why this happens... ~ theepie
+    // @ts-ignore
+    constructor(private _doc: SongDocument, private _songEditor: SongEditor, private _useNoteFilter: boolean, private forSong: boolean = false, private _effectIndex: number = 0) {
         this._okayButton.addEventListener("click", this._saveChanges);
         this._cancelButton.addEventListener("click", this._close);
         this._playButton.addEventListener("click", this._togglePlay);
@@ -77,14 +79,14 @@ export class CustomFilterPrompt implements Prompt {
         this.updatePlayButton();
         let colors = ColorConfig.getChannelColor(this._doc.song, this._doc.channel);
 
-        this.filterEditor = new FilterEditor(_doc, _useNoteFilter, true, this.forSong);
+        this.filterEditor = new FilterEditor(_doc, _useNoteFilter, true, this.forSong, _effectIndex);
         this._filterContainer.appendChild(this.filterEditor.container);
 
         // Add coordinates to editor
         this.filterEditor.container.insertBefore(this._filterCoordinateText, this.filterEditor.container.firstChild);
         this.filterEditor.coordText = this._filterCoordinateText;
 
-        this._editorTitle.children[0].innerHTML = forSong ? "Edit Song EQ Filter" : (_useNoteFilter) ? "Edit Post EQ" : "Edit Pre EQ";
+        this._editorTitle.children[0].innerHTML = forSong ? "Edit Song EQ Filter" : (_useNoteFilter) ? "Edit Pre EQ" : "Edit Post EQ";
 
         let newButton: HTMLButtonElement = button({ class: "no-underline", style: "max-width: 5em;" }, "Main");
         this._filterButtonContainer.appendChild(newButton);
@@ -125,7 +127,7 @@ export class CustomFilterPrompt implements Prompt {
             ? this._doc.song.eqFilter.toJsonObject()
             : this._useNoteFilter
             ? this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()].noteFilter.toJsonObject()
-            : this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()].eqFilter.toJsonObject();
+            : (<Effect>this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()].effects[0]).eqFilter.toJsonObject();
         window.localStorage.setItem("filterCopy", JSON.stringify(filterCopy));
     }
 

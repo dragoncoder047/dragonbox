@@ -590,7 +590,7 @@ export class Song {
 
             if (cap != undefined) {
                 // For filters, cap is dependent on which filter setting is targeted
-                if (modulator.name == "eq filter" || modulator.name == "note filter" || modulator.name == "song eq") {
+                if (modulator.name == "post eq" || modulator.name == "pre eq" || modulator.name == "song eq") {
                     // type 0: number of filter morphs
                     // type 1/odd: number of filter x positions
                     // type 2/even: number of filter y positions
@@ -616,7 +616,7 @@ export class Song {
             if (cap != undefined) {
 
                 // For filters, cap is dependent on which filter setting is targeted
-                if (filterType != undefined && (Config.modulators[modSetting].name == "eq filter" || Config.modulators[modSetting].name == "note filter" || Config.modulators[modSetting].name == "song eq")) {
+                if (filterType != undefined && (Config.modulators[modSetting].name == "post eq" || Config.modulators[modSetting].name == "pre eq" || Config.modulators[modSetting].name == "song eq")) {
                     // type 0: number of filter morphs
                     // type 1/odd: number of filter x positions
                     // type 2/even: number of filter y positions
@@ -795,7 +795,7 @@ export class Song {
         if (this.eqFilter == null) {
             // Push null filter settings
             buffer.push(base64IntToCharCode[0]);
-            console.log("Null EQ filter settings detected in toBase64String for song");
+            console.log("Null post eq settings detected in toBase64String for song");
         } else {
             buffer.push(base64IntToCharCode[this.eqFilter.controlPointCount]);
             for (let j: number = 0; j < this.eqFilter.controlPointCount; j++) {
@@ -864,7 +864,7 @@ export class Song {
                     if (instrument.noteFilter == null) {
                         // Push null filter settings
                         buffer.push(base64IntToCharCode[0]);
-                        console.log("Null Note filter settings detected in toBase64String for channelIndex " + channelIndex + ", instrumentIndex " + i);
+                        console.log("Null pre eq settings detected in toBase64String for channelIndex " + channelIndex + ", instrumentIndex " + i);
                     } else {
                         buffer.push(base64IntToCharCode[instrument.noteFilter.controlPointCount]);
                         for (let j: number = 0; j < instrument.noteFilter.controlPointCount; j++) {
@@ -914,7 +914,7 @@ export class Song {
                             if (effect.eqFilter == null) {
                                 // Push null filter settings
                                 buffer.push(base64IntToCharCode[0]);
-                                console.log("Null eq filter settings detected in toBase64String for channelIndex " + channelIndex + ", instrumentIndex " + i);
+                                console.log("Null post eq settings detected in toBase64String for channelIndex " + channelIndex + ", instrumentIndex " + i);
                             }
                             else {
                                 buffer.push(base64IntToCharCode[effect.eqFilter.controlPointCount]);
@@ -1307,7 +1307,7 @@ export class Song {
                         }
 
                         // Write mod filter info, only if this is a filter mod
-                        if (Config.modulators[instrument.modulators[mod]].name == "eq filter" || Config.modulators[instrument.modulators[mod]].name == "note filter" || Config.modulators[instrument.modulators[mod]].name == "song eq") {
+                        if (Config.modulators[instrument.modulators[mod]].name == "post eq" || Config.modulators[instrument.modulators[mod]].name == "pre eq" || Config.modulators[instrument.modulators[mod]].name == "song eq") {
                             bits.write(6, modFilter);
                         }
 
@@ -2097,7 +2097,7 @@ export class Song {
                 } else {
                     const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     let typeCheck: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                    if (fromTheepBox) { //in mods that arent theepbox, note filter is switched with eq filter
+                    if (fromTheepBox) { //in mods that arent theepbox, pre eq is switched with post eq
                         if (typeCheck == 0) {
                             instrument.noteFilterType = false;
                             typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
@@ -2696,7 +2696,7 @@ export class Song {
                     */
                     //TODO: all this compat stuff, or honestly just remove it idc that much
 
-                    // convertLegacySettings may need to force-enable note filter, call
+                    // convertLegacySettings may need to force-enable pre eq, call
                     // it again here to make sure that this override takes precedence.
                     const legacySettings: LegacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
                     instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
@@ -3489,7 +3489,7 @@ export class Song {
                                     instrument.modulators[mod] = bits.read(6);
                                 }
 
-                                if (!jumfive && (Config.modulators[instrument.modulators[mod]].name == "eq filter" || Config.modulators[instrument.modulators[mod]].name == "note filter" || Config.modulators[instrument.modulators[mod]].name == "song eq")) {
+                                if (!jumfive && (Config.modulators[instrument.modulators[mod]].name == "post eq" || Config.modulators[instrument.modulators[mod]].name == "pre eq" || Config.modulators[instrument.modulators[mod]].name == "song eq")) {
                                     instrument.modFilterTypes[mod] = bits.read(6);
                                 }
 

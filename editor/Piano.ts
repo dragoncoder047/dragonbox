@@ -503,7 +503,7 @@ export class Piano {
                         useSecondColor = ColorConfig.modLabelSecondaryText;
                         usingMod = false;
                     }
-                    else if (modulator == Config.modulators.dictionary["eq filter"].index || modulator == Config.modulators.dictionary["note filter"].index || modulator == Config.modulators.dictionary["song eq"].index) {
+                    else if (modulator == Config.modulators.dictionary["post eq"].index || modulator == Config.modulators.dictionary["pre eq"].index || modulator == Config.modulators.dictionary["song eq"].index) {
                         var text = " Morph";
                         var filterVal = instrument.modFilterTypes[Config.modCount - j - 1];
                         if (filterVal > 0 && (filterVal % 2)) {

@@ -368,8 +368,8 @@ export class Synth {
                                         for (let instrumentIndex: number = 0; instrumentIndex < usedInstruments.length; instrumentIndex++) {
                                             // Iterate through all used instruments by this modulator
                                             // Special indices for mod filter targets, since they control multiple things.
-                                            const eqFilterParam: boolean = instrument.modulators[mod] == Config.modulators.dictionary["eq filter"].index;
-                                            const noteFilterParam: boolean = instrument.modulators[mod] == Config.modulators.dictionary["note filter"].index;
+                                            const eqFilterParam: boolean = instrument.modulators[mod] == Config.modulators.dictionary["post eq"].index;
+                                            const noteFilterParam: boolean = instrument.modulators[mod] == Config.modulators.dictionary["pre eq"].index;
                                             let modulatorAdjust: number = instrument.modulators[mod];
                                             if (eqFilterParam) {
                                                 modulatorAdjust = Config.modulators.length + (instrument.modFilterTypes[mod] | 0);
@@ -478,13 +478,13 @@ export class Synth {
                         // Arp check
                         || (!tgtInstrument.getChord().arpeggiates && (str == "arp speed" || str == "reset arp"))
                         // EQ Filter check
-                        || (tgtEffect.eqFilterType && str == "eq filter")
-                        || (!tgtEffect.eqFilterType && (str == "eq filt cut" || str == "eq filt peak"))
-                        || (str == "eq filter" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(false))
+                        || (tgtEffect.eqFilterType && str == "post eq")
+                        || (!tgtEffect.eqFilterType && (str == "post eq cut" || str == "post eq peak"))
+                        || (str == "post eq" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(false))
                         // Note Filter check
-                        || (tgtInstrument!.noteFilterType && str == "note filter")
-                        || (!tgtInstrument!.noteFilterType && (str == "note filt cut" || str == "note filt peak"))
-                        || (str == "note filter" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(true))) {
+                        || (tgtInstrument!.noteFilterType && str == "pre eq")
+                        || (!tgtInstrument!.noteFilterType && (str == "pre eq cut" || str == "pre eq peak"))
+                        || (str == "pre eq" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(true))) {
 
                         instrument.invalidModulators[mod] = false;
                         i = tgtInstrumentList.length;
@@ -1398,8 +1398,8 @@ export class Synth {
                             const instrument: Instrument = channel.instruments[tone.instrumentIndex];
                             let mod: number = Config.modCount - 1 - tone.pitches[0];
 
-                            if ((instrument.modulators[mod] == Config.modulators.dictionary["note filter"].index
-                                || instrument.modulators[mod] == Config.modulators.dictionary["eq filter"].index
+                            if ((instrument.modulators[mod] == Config.modulators.dictionary["pre eq"].index
+                                || instrument.modulators[mod] == Config.modulators.dictionary["post eq"].index
                                 || instrument.modulators[mod] == Config.modulators.dictionary["song eq"].index)
                                 && instrument.modFilterTypes[mod] != null && instrument.modFilterTypes[mod] > 0) {
                                 continue;
@@ -1423,8 +1423,8 @@ export class Synth {
                             const instrument: Instrument = channel.instruments[tone.instrumentIndex];
                             let mod: number = Config.modCount - 1 - tone.pitches[0];
 
-                            if ((instrument.modulators[mod] == Config.modulators.dictionary["note filter"].index
-                                || instrument.modulators[mod] == Config.modulators.dictionary["eq filter"].index
+                            if ((instrument.modulators[mod] == Config.modulators.dictionary["pre eq"].index
+                                || instrument.modulators[mod] == Config.modulators.dictionary["post eq"].index
                                 || instrument.modulators[mod] == Config.modulators.dictionary["song eq"].index)
                                 && instrument.modFilterTypes[mod] != null && instrument.modFilterTypes[mod] > 0) {
 
@@ -5898,7 +5898,7 @@ export class Synth {
                 }
             }
             // Extra info for eq filter target needs to be set as well
-            else if (setting == Config.modulators.dictionary["eq filter"].index) {
+            else if (setting == Config.modulators.dictionary["post eq"].index) {
                 const tgtInstrument = synth.song.channels[instrument.modChannels[mod][instrumentIndex]].instruments[usedInstruments[instrumentIndex]];
                 for (let effectIndex: number = 0; effectIndex < tgtInstrument.effects.length; effectIndex++) {
                     const tgtEffect = tgtInstrument.effects[effectIndex] as Effect;
@@ -5950,7 +5950,7 @@ export class Synth {
                 }
             }
             // Extra info for note filter target needs to be set as well
-            else if (setting == Config.modulators.dictionary["note filter"].index) {
+            else if (setting == Config.modulators.dictionary["pre eq"].index) {
                 const tgtInstrument = synth.song.channels[instrument.modChannels[mod][instrumentIndex]].instruments[usedInstruments[instrumentIndex]];
 
                 if (!tgtInstrument.noteFilterType) {

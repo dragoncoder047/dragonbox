@@ -1279,9 +1279,9 @@ var beepbox = (function (exports) {
             promptName: "Panning Delay", promptDesc: ["This setting controls the delay applied to panning for your instrument, just like the pan delay slider.", "With more delay, the panning effect will generally be more pronounced. $MID is the default value, whereas $LO will remove any delay at all. No delay can be desirable for chiptune songs.", "[OVERWRITING] [$LO - $HI]"] },
         { name: "reset arp", pianoName: "Reset Arp", maxRawVol: 1, newNoteVol: 1, forSong: false, convertRealFactor: 0, associatedEffect: 9, associatedMDEffect: 4, maxIndex: 0,
             promptName: "Reset Arpeggio", promptDesc: ["This setting functions a little different from most. Wherever a note is placed, the arpeggio of this instrument will reset at the very start of that note. This is most noticeable with lower arpeggio speeds. The lengths and values of notes for this setting don't matter, just the note start times.", "This mod can be used to sync up your apreggios so that they always sound the same, even if you are using an odd-ratio arpeggio speed or modulating arpeggio speed.", "[$LO - $HI]"] },
-        { name: "eq filter", pianoName: "EQFlt", maxRawVol: 10, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 9, associatedMDEffect: 6, maxIndex: 0,
+        { name: "post eq", pianoName: "PostEQ", maxRawVol: 10, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 9, associatedMDEffect: 6, maxIndex: 0,
             promptName: "EQ Filter", promptDesc: ["This setting controls a few separate things for your instrument's EQ filter.", "When the option 'morph' is selected, your modulator values will indicate a sub-filter index of your EQ filter to 'morph' to over time. For example, a change from 0 to 1 means your main filter (default) will morph to sub-filter 1 over the specified duration. You can shape the main filter and sub-filters in the large filter editor ('+' button). If your two filters' number, type, and order of filter dots all match up, the morph will happen smoothly and you'll be able to hear them changing. If they do not match up, the filters will simply jump between each other.", "Note that filters will morph based on endpoints in the pattern editor. So, if you specify a morph from sub-filter 1 to 4 but do not specifically drag in new endpoints for 2 and 3, it will morph directly between 1 and 4 without going through the others.", "If you target Dot X or Dot Y, you can finely tune the coordinates of a single dot for your filter. The number of available dots to choose is dependent on your main filter's dot count.", "[OVERWRITING] [$LO - $HI]"] },
-        { name: "note filter", pianoName: "N.Flt", maxRawVol: 10, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 5, associatedMDEffect: 6, maxIndex: 0,
+        { name: "pre eq", pianoName: "PreEQ", maxRawVol: 10, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 5, associatedMDEffect: 6, maxIndex: 0,
             promptName: "Note Filter", promptDesc: ["This setting controls a few separate things for your instrument's note filter.", "When the option 'morph' is selected, your modulator values will indicate a sub-filter index of your note filter to 'morph' to over time. For example, a change from 0 to 1 means your main filter (default) will morph to sub-filter 1 over the specified duration. You can shape the main filter and sub-filters in the large filter editor ('+' button). If your two filters' number, type, and order of filter dots all match up, the morph will happen smoothly and you'll be able to hear them changing. If they do not match up, the filters will simply jump between each other.", "Note that filters will morph based on endpoints in the pattern editor. So, if you specify a morph from sub-filter 1 to 4 but do not specifically drag in new endpoints for 2 and 3, it will morph directly between 1 and 4 without going through the others.", "If you target Dot X or Dot Y, you can finely tune the coordinates of a single dot for your filter. The number of available dots to choose is dependent on your main filter's dot count.", "[OVERWRITING] [$LO - $HI]"] },
         { name: "bit crush", pianoName: "Bitcrush", maxRawVol: _a$1.bitcrusherQuantizationRange - 1, newNoteVol: Math.round(_a$1.bitcrusherQuantizationRange / 2), forSong: false, convertRealFactor: 0, associatedEffect: 4, associatedMDEffect: 6, maxIndex: 0,
             promptName: "Instrument Bit Crush", promptDesc: ["This setting controls the bit crush of your instrument, just like the bit crush slider.", "At a value of $LO, no bit crush will be applied. This increases and the bit crush effect gets more noticeable up to the max value, $HI.", "[OVERWRITING] [$LO - $HI]"] },
@@ -1297,13 +1297,13 @@ var beepbox = (function (exports) {
         },
         { name: "chorus", pianoName: "Chorus", maxRawVol: _a$1.chorusRange - 1, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 1, associatedMDEffect: 6, maxIndex: 0,
             promptName: "Instrument Chorus", promptDesc: ["This setting controls the chorus strength of your instrument, just like the chorus slider.", "At $LO, the chorus effect will be disabled. The strength of the chorus effect increases up to the max value, $HI.", "[OVERWRITING] [$LO - $HI]"] },
-        { name: "eq filt cut", pianoName: "EQFlt Cut", maxRawVol: _a$1.filterSimpleCutRange - 1, newNoteVol: _a$1.filterSimpleCutRange - 1, forSong: false, convertRealFactor: 0, associatedEffect: 9, associatedMDEffect: 6, maxIndex: 0,
+        { name: "post eq cut", pianoName: "PostEQ Cut", maxRawVol: _a$1.filterSimpleCutRange - 1, newNoteVol: _a$1.filterSimpleCutRange - 1, forSong: false, convertRealFactor: 0, associatedEffect: 9, associatedMDEffect: 6, maxIndex: 0,
             promptName: "EQ Filter Cutoff Frequency", promptDesc: ["This setting controls the filter cut position of your instrument, just like the filter cut slider.", "This setting is roughly analagous to the horizontal position of a single low-pass dot on the advanced filter editor. At lower values, a wider range of frequencies is cut off.", "[OVERWRITING] [$LO - $HI]"] },
-        { name: "eq filt peak", pianoName: "EQFlt Peak", maxRawVol: _a$1.filterSimplePeakRange - 1, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 9, associatedMDEffect: 6, maxIndex: 0,
+        { name: "post eq peak", pianoName: "PostEQ Peak", maxRawVol: _a$1.filterSimplePeakRange - 1, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 9, associatedMDEffect: 6, maxIndex: 0,
             promptName: "EQ Filter Peak Gain", promptDesc: ["This setting controls the filter peak position of your instrument, just like the filter peak slider.", "This setting is roughly analagous to the vertical position of a single low-pass dot on the advanced filter editor. At lower values, the cutoff frequency will not be emphasized, and at higher values you will hear emphasis on the cutoff frequency.", "[OVERWRITING] [$LO - $HI]"] },
-        { name: "note filt cut", pianoName: "N.Flt Cut", maxRawVol: _a$1.filterSimpleCutRange - 1, newNoteVol: _a$1.filterSimpleCutRange - 1, forSong: false, convertRealFactor: 0, associatedEffect: 5, associatedMDEffect: 6, maxIndex: 0,
+        { name: "pre eq cut", pianoName: "PreEQ Cut", maxRawVol: _a$1.filterSimpleCutRange - 1, newNoteVol: _a$1.filterSimpleCutRange - 1, forSong: false, convertRealFactor: 0, associatedEffect: 5, associatedMDEffect: 6, maxIndex: 0,
             promptName: "Note Filter Cutoff Frequency", promptDesc: ["This setting controls the filter cut position of your instrument, just like the filter cut slider.", "This setting is roughly analagous to the horizontal position of a single low-pass dot on the advanced filter editor. At lower values, a wider range of frequencies is cut off.", "[OVERWRITING] [$LO - $HI]"] },
-        { name: "note filt peak", pianoName: "N.Flt Peak", maxRawVol: _a$1.filterSimplePeakRange - 1, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 5, associatedMDEffect: 6, maxIndex: 0,
+        { name: "pre eq peak", pianoName: "PreEQ Peak", maxRawVol: _a$1.filterSimplePeakRange - 1, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 5, associatedMDEffect: 6, maxIndex: 0,
             promptName: "Note Filter Peak Gain", promptDesc: ["This setting controls the filter peak position of your instrument, just like the filter peak slider.", "This setting is roughly analagous to the vertical position of a single low-pass dot on the advanced filter editor. At lower values, the cutoff frequency will not be emphasized, and at higher values you will hear emphasis on the cutoff frequency.", "[OVERWRITING] [$LO - $HI]"] },
         { name: "pitch shift", pianoName: "Pitch Shift", maxRawVol: _a$1.pitchShiftRange - 1, newNoteVol: _a$1.pitchShiftCenter, forSong: false, convertRealFactor: -_a$1.pitchShiftCenter, associatedEffect: 9, associatedMDEffect: 0, maxIndex: 0,
             promptName: "Pitch Shift", promptDesc: ["This setting controls the pitch offset of your instrument, just like the pitch shift slider.", "At $MID your instrument will have no pitch shift. This increases as you decrease toward $LO pitches (half-steps) at the low end, or increases towards +$HI pitches at the high end.", "[OVERWRITING] [$LO - $HI] [pitch]"] },
@@ -12811,7 +12811,7 @@ li.select2-results__option[role=group] > strong:hover {
             else {
                 largest = this.effects[0].eqFilter.controlPointCount;
                 for (let effectIndex = 0; effectIndex < this.effectCount; effectIndex++) {
-                    if (this.effects[effectIndex] != null) {
+                    if (this.effects[effectIndex] != null && this.effects[effectIndex].type == 5) {
                         for (let i = 0; i < Config.filterMorphCount; i++) {
                             if (this.effects[effectIndex].eqSubFilters[i] != null && this.effects[effectIndex].eqSubFilters[i].controlPointCount > largest)
                                 largest = this.effects[effectIndex].eqSubFilters[i].controlPointCount;
@@ -12887,7 +12887,7 @@ li.select2-results__option[role=group] > strong:hover {
             if (automationTarget.compatibleInstruments != null && automationTarget.compatibleInstruments.indexOf(this.type) == -1) {
                 return false;
             }
-            if (automationTarget.effect != null && this.effectsIncludeType(automationTarget.effect)) {
+            if (automationTarget.effect != null && !this.effectsIncludeType(automationTarget.effect)) {
                 return false;
             }
             if (automationTarget.isFilter) {
@@ -13490,7 +13490,7 @@ li.select2-results__option[role=group] > strong:hover {
                     let modulator = Config.modulators[instrument.modulators[modCount]];
                     let cap = modulator.maxRawVol;
                     if (cap != undefined) {
-                        if (modulator.name == "eq filter" || modulator.name == "note filter" || modulator.name == "song eq") {
+                        if (modulator.name == "post eq" || modulator.name == "pre eq" || modulator.name == "song eq") {
                             cap = Config.filterMorphCount - 1;
                             if (instrument.modFilterTypes[modCount] > 0 && instrument.modFilterTypes[modCount] % 2) {
                                 cap = Config.filterFreqRange;
@@ -13511,7 +13511,7 @@ li.select2-results__option[role=group] > strong:hover {
                 else {
                     let cap = Config.modulators[modSetting].maxRawVol;
                     if (cap != undefined) {
-                        if (filterType != undefined && (Config.modulators[modSetting].name == "eq filter" || Config.modulators[modSetting].name == "note filter" || Config.modulators[modSetting].name == "song eq")) {
+                        if (filterType != undefined && (Config.modulators[modSetting].name == "post eq" || Config.modulators[modSetting].name == "pre eq" || Config.modulators[modSetting].name == "song eq")) {
                             cap = Config.filterMorphCount - 1;
                             if (filterType > 0 && filterType % 2) {
                                 cap = Config.filterFreqRange;
@@ -13667,7 +13667,7 @@ li.select2-results__option[role=group] > strong:hover {
             buffer.push(99);
             if (this.eqFilter == null) {
                 buffer.push(base64IntToCharCode[0]);
-                console.log("Null EQ filter settings detected in toBase64String for song");
+                console.log("Null post eq settings detected in toBase64String for song");
             }
             else {
                 buffer.push(base64IntToCharCode[this.eqFilter.controlPointCount]);
@@ -13723,7 +13723,7 @@ li.select2-results__option[role=group] > strong:hover {
                     else {
                         if (instrument.noteFilter == null) {
                             buffer.push(base64IntToCharCode[0]);
-                            console.log("Null Note filter settings detected in toBase64String for channelIndex " + channelIndex + ", instrumentIndex " + i);
+                            console.log("Null pre eq settings detected in toBase64String for channelIndex " + channelIndex + ", instrumentIndex " + i);
                         }
                         else {
                             buffer.push(base64IntToCharCode[instrument.noteFilter.controlPointCount]);
@@ -13765,7 +13765,7 @@ li.select2-results__option[role=group] > strong:hover {
                             else {
                                 if (effect.eqFilter == null) {
                                     buffer.push(base64IntToCharCode[0]);
-                                    console.log("Null eq filter settings detected in toBase64String for channelIndex " + channelIndex + ", instrumentIndex " + i);
+                                    console.log("Null post eq settings detected in toBase64String for channelIndex " + channelIndex + ", instrumentIndex " + i);
                                 }
                                 else {
                                     buffer.push(base64IntToCharCode[effect.eqFilter.controlPointCount]);
@@ -14121,7 +14121,7 @@ li.select2-results__option[role=group] > strong:hover {
                             if (status != 3) {
                                 bits.write(6, modSetting);
                             }
-                            if (Config.modulators[instrument.modulators[mod]].name == "eq filter" || Config.modulators[instrument.modulators[mod]].name == "note filter" || Config.modulators[instrument.modulators[mod]].name == "song eq") {
+                            if (Config.modulators[instrument.modulators[mod]].name == "post eq" || Config.modulators[instrument.modulators[mod]].name == "pre eq" || Config.modulators[instrument.modulators[mod]].name == "song eq") {
                                 bits.write(6, modFilter);
                             }
                             if (Config.modulators[instrument.modulators[mod]].name == "individual envelope speed" ||
@@ -16211,7 +16211,7 @@ li.select2-results__option[role=group] > strong:hover {
                                             if (status != 3) {
                                                 instrument.modulators[mod] = bits.read(6);
                                             }
-                                            if (!jumfive && (Config.modulators[instrument.modulators[mod]].name == "eq filter" || Config.modulators[instrument.modulators[mod]].name == "note filter" || Config.modulators[instrument.modulators[mod]].name == "song eq")) {
+                                            if (!jumfive && (Config.modulators[instrument.modulators[mod]].name == "post eq" || Config.modulators[instrument.modulators[mod]].name == "pre eq" || Config.modulators[instrument.modulators[mod]].name == "song eq")) {
                                                 instrument.modFilterTypes[mod] = bits.read(6);
                                             }
                                             if (Config.modulators[instrument.modulators[mod]].name == "individual envelope speed" ||
@@ -18078,6 +18078,7 @@ li.select2-results__option[role=group] > strong:hover {
                 }
                 else {
                     const eqFilterSettings = (effect.tmpEqFilterStart != null) ? effect.tmpEqFilterStart : effect.eqFilter;
+                    console.log(effect.eqFilter.controlPointCount);
                     for (let i = 0; i < eqFilterSettings.controlPointCount; i++) {
                         let startPoint = eqFilterSettings.controlPoints[i];
                         let endPoint = (effect.tmpEqFilterEnd != null && effect.tmpEqFilterEnd.controlPoints[i] != null) ? effect.tmpEqFilterEnd.controlPoints[i] : eqFilterSettings.controlPoints[i];
@@ -19966,8 +19967,8 @@ li.select2-results__option[role=group] > strong:hover {
                                                 }
                                             }
                                             for (let instrumentIndex = 0; instrumentIndex < usedInstruments.length; instrumentIndex++) {
-                                                const eqFilterParam = instrument.modulators[mod] == Config.modulators.dictionary["eq filter"].index;
-                                                const noteFilterParam = instrument.modulators[mod] == Config.modulators.dictionary["note filter"].index;
+                                                const eqFilterParam = instrument.modulators[mod] == Config.modulators.dictionary["post eq"].index;
+                                                const noteFilterParam = instrument.modulators[mod] == Config.modulators.dictionary["pre eq"].index;
                                                 let modulatorAdjust = instrument.modulators[mod];
                                                 if (eqFilterParam) {
                                                     modulatorAdjust = Config.modulators.length + (instrument.modFilterTypes[mod] | 0);
@@ -20071,12 +20072,12 @@ li.select2-results__option[role=group] > strong:hover {
                             || ((tgtInstrument.type != 6 && tgtInstrument.type != 8) && (str == "pulse width" || str == "decimal offset"))
                             || ((tgtInstrument.type != 8) && (str == "dynamism" || str == "spread" || str == "saw shape"))
                             || (!tgtInstrument.getChord().arpeggiates && (str == "arp speed" || str == "reset arp"))
-                            || (tgtEffect.eqFilterType && str == "eq filter")
-                            || (!tgtEffect.eqFilterType && (str == "eq filt cut" || str == "eq filt peak"))
-                            || (str == "eq filter" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(false))
-                            || (tgtInstrument.noteFilterType && str == "note filter")
-                            || (!tgtInstrument.noteFilterType && (str == "note filt cut" || str == "note filt peak"))
-                            || (str == "note filter" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(true))) {
+                            || (tgtEffect.eqFilterType && str == "post eq")
+                            || (!tgtEffect.eqFilterType && (str == "post eq cut" || str == "post eq peak"))
+                            || (str == "post eq" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(false))
+                            || (tgtInstrument.noteFilterType && str == "pre eq")
+                            || (!tgtInstrument.noteFilterType && (str == "pre eq cut" || str == "pre eq peak"))
+                            || (str == "pre eq" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(true))) {
                             instrument.invalidModulators[mod] = false;
                             i = tgtInstrumentList.length;
                         }
@@ -20811,8 +20812,8 @@ li.select2-results__option[role=group] > strong:hover {
                                 const channel = song.channels[channelIndex];
                                 const instrument = channel.instruments[tone.instrumentIndex];
                                 let mod = Config.modCount - 1 - tone.pitches[0];
-                                if ((instrument.modulators[mod] == Config.modulators.dictionary["note filter"].index
-                                    || instrument.modulators[mod] == Config.modulators.dictionary["eq filter"].index
+                                if ((instrument.modulators[mod] == Config.modulators.dictionary["pre eq"].index
+                                    || instrument.modulators[mod] == Config.modulators.dictionary["post eq"].index
                                     || instrument.modulators[mod] == Config.modulators.dictionary["song eq"].index)
                                     && instrument.modFilterTypes[mod] != null && instrument.modFilterTypes[mod] > 0) {
                                     continue;
@@ -20831,8 +20832,8 @@ li.select2-results__option[role=group] > strong:hover {
                                 const channel = song.channels[channelIndex];
                                 const instrument = channel.instruments[tone.instrumentIndex];
                                 let mod = Config.modCount - 1 - tone.pitches[0];
-                                if ((instrument.modulators[mod] == Config.modulators.dictionary["note filter"].index
-                                    || instrument.modulators[mod] == Config.modulators.dictionary["eq filter"].index
+                                if ((instrument.modulators[mod] == Config.modulators.dictionary["pre eq"].index
+                                    || instrument.modulators[mod] == Config.modulators.dictionary["post eq"].index
                                     || instrument.modulators[mod] == Config.modulators.dictionary["song eq"].index)
                                     && instrument.modFilterTypes[mod] != null && instrument.modFilterTypes[mod] > 0) {
                                     this.playModTone(song, channelIndex, samplesPerTick, bufferIndex, runLength, tone, false, false);
@@ -24751,7 +24752,7 @@ li.select2-results__option[role=group] > strong:hover {
                         }
                     }
                 }
-                else if (setting == Config.modulators.dictionary["eq filter"].index) {
+                else if (setting == Config.modulators.dictionary["post eq"].index) {
                     const tgtInstrument = synth.song.channels[instrument.modChannels[mod][instrumentIndex]].instruments[usedInstruments[instrumentIndex]];
                     for (let effectIndex = 0; effectIndex < tgtInstrument.effects.length; effectIndex++) {
                         const tgtEffect = tgtInstrument.effects[effectIndex];
@@ -24793,7 +24794,7 @@ li.select2-results__option[role=group] > strong:hover {
                         }
                     }
                 }
-                else if (setting == Config.modulators.dictionary["note filter"].index) {
+                else if (setting == Config.modulators.dictionary["pre eq"].index) {
                     const tgtInstrument = synth.song.channels[instrument.modChannels[mod][instrumentIndex]].instruments[usedInstruments[instrumentIndex]];
                     if (!tgtInstrument.noteFilterType) {
                         let dotTarget = instrument.modFilterTypes[mod] | 0;
@@ -31259,7 +31260,7 @@ li.select2-results__option[role=group] > strong:hover {
                                 useSecondColor = ColorConfig.modLabelSecondaryText;
                                 usingMod = false;
                             }
-                            else if (modulator == Config.modulators.dictionary["eq filter"].index || modulator == Config.modulators.dictionary["note filter"].index || modulator == Config.modulators.dictionary["song eq"].index) {
+                            else if (modulator == Config.modulators.dictionary["post eq"].index || modulator == Config.modulators.dictionary["pre eq"].index || modulator == Config.modulators.dictionary["song eq"].index) {
                                 var text = " Morph";
                                 var filterVal = instrument.modFilterTypes[Config.modCount - j - 1];
                                 if (filterVal > 0 && (filterVal % 2)) {
@@ -32835,6 +32836,7 @@ li.select2-results__option[role=group] > strong:hover {
             this.barScrollPos = 0;
             this.channelScrollPos = 0;
             this.prompt = null;
+            this.promptEffectIndex = null;
             this.addedEffect = false;
             this.addedEnvelope = false;
             this.currentPatternIsDirty = false;
@@ -32852,7 +32854,7 @@ li.select2-results__option[role=group] > strong:hover {
                 if (window.history.state == null && window.location.hash != "") {
                     this._sequenceNumber++;
                     this._resetSongRecoveryUid();
-                    const state = { canUndo: true, sequenceNumber: this._sequenceNumber, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this._recoveryUid, prompt: null, selection: this.selection.toJSON() };
+                    const state = { canUndo: true, sequenceNumber: this._sequenceNumber, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this._recoveryUid, prompt: null, selection: this.selection.toJSON(), promptEffectIndex: this.promptEffectIndex };
                     try {
                         new ChangeSong(this, this._getHash());
                     }
@@ -32973,7 +32975,7 @@ li.select2-results__option[role=group] > strong:hover {
                 else {
                     this._recovery.saveVersion(this._recoveryUid, this.song.title, hash);
                 }
-                let state = { canUndo: true, sequenceNumber: this._sequenceNumber, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this._recoveryUid, prompt: this.prompt, selection: this.selection.toJSON() };
+                let state = { canUndo: true, sequenceNumber: this._sequenceNumber, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this._recoveryUid, prompt: this.prompt, selection: this.selection.toJSON(), promptEffectIndex: this.promptEffectIndex };
                 if (this._stateShouldBePushed) {
                     this._pushState(state, hash);
                 }
@@ -33011,7 +33013,7 @@ li.select2-results__option[role=group] > strong:hover {
             this.synth.anticipatePoorPerformance = isMobile;
             let state = this._getHistoryState();
             if (state == null) {
-                state = { canUndo: false, sequenceNumber: 0, bar: 0, channel: 0, instrument: 0, recoveryUid: generateUid(), prompt: null, selection: this.selection.toJSON() };
+                state = { canUndo: false, sequenceNumber: 0, bar: 0, channel: 0, instrument: 0, recoveryUid: generateUid(), prompt: null, selection: this.selection.toJSON(), promptEffectIndex: null };
             }
             if (state.recoveryUid == undefined)
                 state.recoveryUid = generateUid();
@@ -33140,11 +33142,13 @@ li.select2-results__option[role=group] > strong:hover {
         _resetSongRecoveryUid() {
             this._recoveryUid = generateUid();
         }
-        openPrompt(prompt) {
+        openPrompt(prompt, effectIndex) {
             this.prompt = prompt;
+            if (effectIndex != undefined)
+                this.promptEffectIndex = effectIndex;
             const hash = this.song.toBase64String();
             this._sequenceNumber++;
-            const state = { canUndo: true, sequenceNumber: this._sequenceNumber, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this._recoveryUid, prompt: this.prompt, selection: this.selection.toJSON() };
+            const state = { canUndo: true, sequenceNumber: this._sequenceNumber, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this._recoveryUid, prompt: this.prompt, selection: this.selection.toJSON(), promptEffectIndex: this.promptEffectIndex };
             this._pushState(state, hash);
         }
         undo() {
@@ -38255,7 +38259,6 @@ You should be redirected to the song at:<br /><br />
             this._LFOStepsSliders = [];
             this._LFOStepsWrappers = [];
             this._renderedEnvelopeCount = 0;
-            this._renderedNoteFilterCount = -1;
             this._lastChange = null;
             this._onChange = (event) => {
                 const targetSelectIndex = this._targetSelects.indexOf(event.target);
@@ -38694,22 +38697,12 @@ You should be redirected to the song at:<br /><br />
                 this._envelopeCopyButtons[envelopeIndex] = envelopeCopyButton;
                 this._envelopePasteButtons[envelopeIndex] = envelopePasteButton;
             }
-            for (let envelopeIndex = this._renderedEnvelopeCount; envelopeIndex < instrument.envelopeCount; envelopeIndex++) {
+            for (let envelopeIndex = 0; envelopeIndex < instrument.envelopeCount; envelopeIndex++) {
                 this._rows[envelopeIndex].style.display = "";
                 this._updateTargetOptionVisibility(this._targetSelects[envelopeIndex], instrument);
             }
             for (let envelopeIndex = instrument.envelopeCount; envelopeIndex < this._renderedEnvelopeCount; envelopeIndex++) {
                 this._rows[envelopeIndex].style.display = "none";
-            }
-            let useControlPointCount = instrument.noteFilter.controlPointCount;
-            if (instrument.noteFilterType)
-                useControlPointCount = 1;
-            if (this._renderedNoteFilterCount != useControlPointCount ||
-                this._renderedInstrumentType != instrument.type ||
-                this._renderedEffects != instrument.effects) {
-                for (let envelopeIndex = 0; envelopeIndex < this._renderedEnvelopeCount; envelopeIndex++) {
-                    this._updateTargetOptionVisibility(this._targetSelects[envelopeIndex], instrument);
-                }
             }
             for (let envelopeIndex = 0; envelopeIndex < instrument.envelopeCount; envelopeIndex++) {
                 this._targetSelects[envelopeIndex].value = String(instrument.envelopes[envelopeIndex].target + instrument.envelopes[envelopeIndex].index * Config.instrumentAutomationTargets.length);
@@ -38735,9 +38728,6 @@ You should be redirected to the song at:<br /><br />
                 this.openExtraSettingsDropdowns[envelopeIndex] = this.openExtraSettingsDropdowns[envelopeIndex] ? true : false;
             }
             this._renderedEnvelopeCount = instrument.envelopeCount;
-            this._renderedNoteFilterCount = useControlPointCount;
-            this._renderedInstrumentType = instrument.type;
-            this._renderedEffects = instrument.effects;
         }
     }
 
@@ -47323,7 +47313,7 @@ You should be redirected to the song at:<br /><br />
             this._envelopeSpeedRow = div({ class: "selectRow dropFader" }, span({ class: "tip", style: "margin-left:4px;", onclick: () => this._openPrompt("envelopeSpeed") }, "‣ Spd:"), this._envelopeSpeedDisplay, this._envelopeSpeedSlider.container);
             this._envelopeDropdownGroup = div({ class: "editor-controls", style: "display: none;" }, this._envelopeSpeedRow);
             this._envelopeDropdown = button({ style: "margin-left:0em; margin-right: 1em; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this._toggleDropdownMenu(7) }, "▼");
-            this._effectEditor = new EffectEditor(this._doc, (name) => this._openPrompt(name));
+            this._effectEditor = new EffectEditor(this._doc, (name, effectIndex) => this._openPrompt(name, effectIndex));
             this._drumsetGroup = div({ class: "editor-controls" });
             this._drumsetZoom = button({ style: "margin-left:0em; padding-left:0.3em; margin-right:0.5em; height:1.5em; max-width: 16px;", onclick: () => this._openPrompt("drumsetSettings") }, "+");
             this._modulatorGroup = div({ class: "editor-controls" });
@@ -48166,8 +48156,8 @@ You should be redirected to the song at:<br /><br />
                                 settingList.push("pre volume");
                                 settingList.push("post volume");
                                 let tgtInstrumentTypes = [];
-                                let anyInstrumentAdvancedEQ = false, anyInstrumentSimpleEQ = false, anyInstrumentAdvancedNote = false, anyInstrumentSimpleNote = false, anyInstrumentArps = false, anyInstrumentPitchShifts = false, anyInstrumentDetunes = false, anyInstrumentVibratos = false, anyInstrumentNoteFilters = false, anyInstrumentDistorts = false, anyInstrumentBitcrushes = false, anyInstrumentPans = false, anyInstrumentChorus = false, anyInstrumentEchoes = false, anyInstrumentReverbs = false, anyInstrumentRingMods = false, anyInstrumentGranulars = false, anyInstrumentHasEnvelopes = false;
-                                let allInstrumentPitchShifts = true, allInstrumentNoteFilters = true, allInstrumentDetunes = true, allInstrumentVibratos = true, allInstrumentDistorts = true, allInstrumentBitcrushes = true, allInstrumentPans = true, allInstrumentChorus = true, allInstrumentEchoes = true, allInstrumentReverbs = true, allInstrumentRingMods = true, allInstrumentGranulars = true;
+                                let anyInstrumentAdvancedEQ = false, anyInstrumentSimpleEQ = false, anyInstrumentAdvancedNote = false, anyInstrumentSimpleNote = false, anyInstrumentArps = false, anyInstrumentPitchShifts = false, anyInstrumentDetunes = false, anyInstrumentVibratos = false, anyInstrumentEQFilters = false, anyInstrumentDistorts = false, anyInstrumentBitcrushes = false, anyInstrumentPans = false, anyInstrumentChorus = false, anyInstrumentEchoes = false, anyInstrumentReverbs = false, anyInstrumentRingMods = false, anyInstrumentGranulars = false, anyInstrumentHasEnvelopes = false;
+                                let allInstrumentPitchShifts = true, allInstrumentEQFilters = true, allInstrumentDetunes = true, allInstrumentVibratos = true, allInstrumentDistorts = true, allInstrumentBitcrushes = true, allInstrumentPans = true, allInstrumentChorus = true, allInstrumentEchoes = true, allInstrumentReverbs = true, allInstrumentRingMods = true, allInstrumentGranulars = true;
                                 let instrumentCandidates = [];
                                 for (let i = 0; i < instrument.modChannels[mod].length; i++) {
                                     let channel = this._doc.song.channels[modChannels[i]];
@@ -48183,13 +48173,10 @@ You should be redirected to the song at:<br /><br />
                                         let instrumentIndex = instrumentCandidates[i];
                                         if (!tgtInstrumentTypes.includes(channel.instruments[instrumentIndex].type))
                                             tgtInstrumentTypes.push(channel.instruments[instrumentIndex].type);
-                                        for (let j = 0; j < channel.instruments[instrumentIndex].effects.length; j++) {
-                                            let effect = channel.instruments[instrumentIndex].effects[j];
-                                            if (effect.eqFilterType)
-                                                anyInstrumentSimpleEQ = true;
-                                            else
-                                                anyInstrumentAdvancedEQ = true;
-                                        }
+                                        if (instrument.noteFilterType)
+                                            anyInstrumentSimpleNote = true;
+                                        else
+                                            anyInstrumentAdvancedNote = true;
                                         if (effectsIncludeChord(channel.instruments[instrumentIndex].mdeffects) && channel.instruments[instrumentIndex].getChord().arpeggiates) {
                                             anyInstrumentArps = true;
                                         }
@@ -48212,14 +48199,17 @@ You should be redirected to the song at:<br /><br />
                                             allInstrumentVibratos = false;
                                         }
                                         if (channel.instruments[instrumentIndex].effectsIncludeType(5)) {
-                                            anyInstrumentNoteFilters = true;
-                                            if (channel.instruments[instrumentIndex].noteFilterType)
-                                                anyInstrumentSimpleNote = true;
-                                            else
-                                                anyInstrumentAdvancedNote = true;
+                                            anyInstrumentEQFilters = true;
+                                            for (let j = 0; j < channel.instruments[instrumentIndex].effects.length; j++) {
+                                                let effect = channel.instruments[instrumentIndex].effects[j];
+                                                if (effect.eqFilterType)
+                                                    anyInstrumentSimpleEQ = true;
+                                                else
+                                                    anyInstrumentAdvancedEQ = true;
+                                            }
                                         }
                                         else {
-                                            allInstrumentNoteFilters = false;
+                                            allInstrumentEQFilters = false;
                                         }
                                         if (channel.instruments[instrumentIndex].effectsIncludeType(3)) {
                                             anyInstrumentDistorts = true;
@@ -48274,13 +48264,17 @@ You should be redirected to the song at:<br /><br />
                                         }
                                     }
                                 }
-                                if (anyInstrumentAdvancedEQ) {
-                                    settingList.push("post eq");
+                                if (anyInstrumentEQFilters) {
+                                    if (anyInstrumentAdvancedEQ) {
+                                        settingList.push("post eq");
+                                    }
+                                    if (anyInstrumentSimpleEQ) {
+                                        settingList.push("post eq cut");
+                                        settingList.push("post eq peak");
+                                    }
                                 }
-                                if (anyInstrumentSimpleEQ) {
-                                    settingList.push("post eq cut");
-                                    settingList.push("post eq peak");
-                                }
+                                if (!allInstrumentEQFilters)
+                                    unusedSettingList.push("+ post eq");
                                 if (tgtInstrumentTypes.includes(1)) {
                                     settingList.push("fm slider 1");
                                     settingList.push("fm slider 2");
@@ -48335,17 +48329,12 @@ You should be redirected to the song at:<br /><br />
                                     unusedSettingList.push("+ vibrato speed");
                                     unusedSettingList.push("+ vibrato delay");
                                 }
-                                if (anyInstrumentNoteFilters) {
-                                    if (anyInstrumentAdvancedNote) {
-                                        settingList.push("pre eq");
-                                    }
-                                    if (anyInstrumentSimpleNote) {
-                                        settingList.push("pre eq cut");
-                                        settingList.push("pre eq peak");
-                                    }
+                                if (anyInstrumentAdvancedNote) {
+                                    settingList.push("pre eq");
                                 }
-                                if (!allInstrumentNoteFilters) {
-                                    unusedSettingList.push("+ pre eq");
+                                if (anyInstrumentSimpleNote) {
+                                    settingList.push("pre eq cut");
+                                    settingList.push("pre eq peak");
                                 }
                                 if (anyInstrumentDistorts) {
                                     settingList.push("distortion");
@@ -48476,8 +48465,10 @@ You should be redirected to the song at:<br /><br />
                                     for (let i = 0; i < modChannel.instruments.length; i++) {
                                         if (filterType == "post eq") {
                                             for (let j = 0; j < modChannel.instruments[i].effects.length; j++) {
+                                                if (modChannel.instruments[i].effects[j] == null)
+                                                    continue;
                                                 let effect = modChannel.instruments[i].effects[j];
-                                                if (effect.eqFilter.controlPointCount > tmpCount) {
+                                                if (effect.type == 5 && effect.eqFilter.controlPointCount > tmpCount) {
                                                     tmpCount = effect.eqFilter.controlPointCount;
                                                     useInstrument = i;
                                                     useEffect = j;
@@ -48497,6 +48488,7 @@ You should be redirected to the song at:<br /><br />
                                 ? channel.instruments[useInstrument].getLargestControlPointCount(false)
                                 : channel.instruments[useInstrument].getLargestControlPointCount(true);
                             let effect = channel.instruments[useInstrument].effects[useEffect];
+                            console.log(useInstrument);
                             const isSimple = useSongEq ? false : (filterType == "post eq" ? effect.eqFilterType : channel.instruments[useInstrument].noteFilterType);
                             if (isSimple)
                                 dotCount = 0;
@@ -49148,8 +49140,8 @@ You should be redirected to the song at:<br /><br />
                         const group = new ChangeGroup();
                         if (event.shiftKey) {
                             const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-                            if (instrument.effectsIncludeType(5) && !instrument.noteFilterType && this._doc.channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
-                                this._openPrompt("customEQFilterSettings");
+                            if (!instrument.noteFilterType && this._doc.channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
+                                this._openPrompt("customNoteFilterSettings");
                             break;
                         }
                         else if (event.ctrlKey) {
@@ -50559,9 +50551,9 @@ You should be redirected to the song at:<br /><br />
                     return this._tempoSlider;
                 case Config.modulators.dictionary["song volume"].index:
                     return this._volumeSlider;
-                case Config.modulators.dictionary["note filt cut"].index:
+                case Config.modulators.dictionary["pre eq cut"].index:
                     return this._noteFilterSimpleCutSlider;
-                case Config.modulators.dictionary["note filt peak"].index:
+                case Config.modulators.dictionary["pre eq peak"].index:
                     return this._noteFilterSimplePeakSlider;
                 case Config.modulators.dictionary["pitch shift"].index:
                     return this._pitchShiftSlider;
@@ -50589,9 +50581,15 @@ You should be redirected to the song at:<br /><br />
                     return null;
             }
         }
-        _openPrompt(promptName) {
-            this._doc.openPrompt(promptName);
-            this._setPrompt(promptName);
+        _openPrompt(promptName, effectIndex) {
+            if (effectIndex == undefined) {
+                this._doc.openPrompt(promptName);
+                this._setPrompt(promptName);
+            }
+            else {
+                this._doc.openPrompt(promptName, effectIndex);
+                this._setPrompt(promptName, effectIndex);
+            }
         }
         _setPrompt(promptName, effectIndex) {
             if (this._currentPromptName == promptName)
@@ -50642,6 +50640,7 @@ You should be redirected to the song at:<br /><br />
                         this.prompt = new CustomChipPrompt(this._doc, this);
                         break;
                     case "customEQFilterSettings":
+                        console.log(effectIndex);
                         this.prompt = new CustomFilterPrompt(this._doc, this, false, false, effectIndex);
                         break;
                     case "customNoteFilterSettings":

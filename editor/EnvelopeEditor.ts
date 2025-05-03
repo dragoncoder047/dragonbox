@@ -1,8 +1,7 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { InstrumentType, Config, DropdownID, LFOEnvelopeTypes, RandomEnvelopeTypes } from "../synth/SynthConfig";
+import { Config, DropdownID, LFOEnvelopeTypes, RandomEnvelopeTypes } from "../synth/SynthConfig";
 import { Instrument } from "../synth/Instrument";
-import { Effect } from "../synth/Effect";
 import { SongDocument } from "./SongDocument";
 import { ChangeSetEnvelopeTarget, ChangeSetEnvelopeType, ChangeRemoveEnvelope, ChangeEnvelopePitchStart, ChangeEnvelopePitchEnd, ChangeEnvelopeInverse, ChangePerEnvelopeSpeed, ChangeEnvelopeLowerBound, ChangeEnvelopeUpperBound, ChangeRandomEnvelopeSteps, ChangeRandomEnvelopeSeed, PasteEnvelope, ChangeSetEnvelopeWaveform, ChangeDiscreteEnvelope, } from "./changes";
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
@@ -62,10 +61,6 @@ export class EnvelopeEditor {
 	private readonly _LFOStepsWrappers: HTMLDivElement[] = [];
 
 	private _renderedEnvelopeCount: number = 0;
-	//private _renderedEqFilterCount: number[] = [-1];
-	private _renderedNoteFilterCount: number = -1;
-	private _renderedInstrumentType: InstrumentType;
-	private _renderedEffects: (Effect | null)[];
 
 	private _lastChange: Change | null = null;
 
@@ -579,28 +574,14 @@ export class EnvelopeEditor {
 			this._envelopePasteButtons[envelopeIndex] = envelopePasteButton;
 		}
 
-		for (let envelopeIndex: number = this._renderedEnvelopeCount; envelopeIndex < instrument.envelopeCount; envelopeIndex++) {
+		for (let envelopeIndex: number = 0; envelopeIndex < instrument.envelopeCount; envelopeIndex++) {
+			// For ~~newly visible~~ all rows, update target option visibility.
 			this._rows[envelopeIndex].style.display = "";
-			// For newly visible rows, update target option visibiliy.
 			this._updateTargetOptionVisibility(this._targetSelects[envelopeIndex], instrument);
 		}
 
 		for (let envelopeIndex: number = instrument.envelopeCount; envelopeIndex < this._renderedEnvelopeCount; envelopeIndex++) {
 			this._rows[envelopeIndex].style.display = "none";
-		}
-
-		let useControlPointCount: number = instrument.noteFilter.controlPointCount;
-		if (instrument.noteFilterType)
-			useControlPointCount = 1;
-
-		if (/*this._renderedEqFilterCount != instrument.eqFilter.controlPointCount ||*/
-			this._renderedNoteFilterCount != useControlPointCount ||
-			this._renderedInstrumentType != instrument.type ||
-			this._renderedEffects != instrument.effects) {
-			// Update target option visibility for previously visible rows.
-			for (let envelopeIndex: number = 0; envelopeIndex < this._renderedEnvelopeCount; envelopeIndex++) {
-				this._updateTargetOptionVisibility(this._targetSelects[envelopeIndex], instrument);
-			}
 		}
 
 		for (let envelopeIndex: number = 0; envelopeIndex < instrument.envelopeCount; envelopeIndex++) {
@@ -628,9 +609,5 @@ export class EnvelopeEditor {
 		}
 
 		this._renderedEnvelopeCount = instrument.envelopeCount;
-		//this._renderedEqFilterCount = instrument.eqFilter.controlPointCount;
-		this._renderedNoteFilterCount = useControlPointCount;
-		this._renderedInstrumentType = instrument.type;
-		this._renderedEffects = instrument.effects;
 	}
 }

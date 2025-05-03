@@ -1015,7 +1015,7 @@ export class SongEditor {
     private readonly _envelopeDropdownGroup: HTMLElement = div({ class: "editor-controls", style: "display: none;" }, this._envelopeSpeedRow);
     private readonly _envelopeDropdown: HTMLButtonElement = button({ style: "margin-left:0em; margin-right: 1em; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this._toggleDropdownMenu(DropdownID.Envelope) }, "▼");
 
-    readonly _effectEditor: EffectEditor = new EffectEditor(this._doc, (name: string) => this._openPrompt(name));
+    readonly _effectEditor: EffectEditor = new EffectEditor(this._doc, (name: string, effectIndex?: number) => this._openPrompt(name, effectIndex));
 
     private readonly _drumsetGroup: HTMLElement = div({ class: "editor-controls" });
     private readonly _drumsetZoom: HTMLButtonElement = button({ style: "margin-left:0em; padding-left:0.3em; margin-right:0.5em; height:1.5em; max-width: 16px;", onclick: () => this._openPrompt("drumsetSettings") }, "+");
@@ -1988,9 +1988,9 @@ export class SongEditor {
             //    return this._eqFilterSimpleCutSlider;
             //case Config.modulators.dictionary["eq filt peak"].index:
             //    return this._eqFilterSimplePeakSlider;
-            case Config.modulators.dictionary["note filt cut"].index:
+            case Config.modulators.dictionary["pre eq cut"].index:
                 return this._noteFilterSimpleCutSlider;
-            case Config.modulators.dictionary["note filt peak"].index:
+            case Config.modulators.dictionary["pre eq peak"].index:
                 return this._noteFilterSimplePeakSlider;
             //case Config.modulators.dictionary["bit crush"].index:
             //    return this._effectEditor.bitcrusherQuantizationSliders[index] as Slider;
@@ -2044,9 +2044,14 @@ export class SongEditor {
 
     }
 
-    private _openPrompt(promptName: string): void {
-        this._doc.openPrompt(promptName);
-        this._setPrompt(promptName);
+    private _openPrompt(promptName: string, effectIndex?: number): void {
+        if (effectIndex == undefined) {
+            this._doc.openPrompt(promptName);
+            this._setPrompt(promptName);
+        } else {
+            this._doc.openPrompt(promptName, effectIndex);
+            this._setPrompt(promptName, effectIndex);
+        }
     }
 
     private _setPrompt(promptName: string | null, effectIndex?: number): void {
@@ -2099,6 +2104,7 @@ export class SongEditor {
                     this.prompt = new CustomChipPrompt(this._doc, this);
                     break;
                 case "customEQFilterSettings":
+                    console.log(effectIndex)
                     this.prompt = new CustomFilterPrompt(this._doc, this, false, false, effectIndex);
                     break;
                 case "customNoteFilterSettings":
@@ -3047,7 +3053,7 @@ export class SongEditor {
                             anyInstrumentPitchShifts: boolean = false,
                             anyInstrumentDetunes: boolean = false,
                             anyInstrumentVibratos: boolean = false,
-                            anyInstrumentNoteFilters: boolean = false,
+                            anyInstrumentEQFilters: boolean = false,
                             anyInstrumentDistorts: boolean = false,
                             anyInstrumentBitcrushes: boolean = false,
                             anyInstrumentPans: boolean = false,
@@ -3058,7 +3064,7 @@ export class SongEditor {
                             anyInstrumentGranulars: boolean = false,
                             anyInstrumentHasEnvelopes: boolean = false;
                         let allInstrumentPitchShifts: boolean = true,
-                            allInstrumentNoteFilters: boolean = true,
+                            allInstrumentEQFilters: boolean = true,
                             allInstrumentDetunes: boolean = true,
                             allInstrumentVibratos: boolean = true,
                             allInstrumentDistorts: boolean = true,
@@ -3086,13 +3092,10 @@ export class SongEditor {
 
                                 if (!tgtInstrumentTypes.includes(channel.instruments[instrumentIndex].type))
                                     tgtInstrumentTypes.push(channel.instruments[instrumentIndex].type);
-                                for (let j: number = 0; j < channel.instruments[instrumentIndex].effects.length; j++) {
-                                    let effect: Effect = channel.instruments[instrumentIndex].effects[j] as Effect;
-                                    if (effect.eqFilterType)
-                                        anyInstrumentSimpleEQ = true;
-                                    else
-                                        anyInstrumentAdvancedEQ = true;
-                                }
+                                if (instrument.noteFilterType)
+                                    anyInstrumentSimpleNote = true;
+                                else
+                                    anyInstrumentAdvancedNote = true;
                                 if (effectsIncludeChord(channel.instruments[instrumentIndex].mdeffects) && channel.instruments[instrumentIndex].getChord().arpeggiates) {
                                     anyInstrumentArps = true;
                                 }
@@ -3114,14 +3117,17 @@ export class SongEditor {
                                     allInstrumentVibratos = false;
                                 }
                                 if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.eqFilter)) {
-                                    anyInstrumentNoteFilters = true;
-                                    if (channel.instruments[instrumentIndex].noteFilterType)
-                                        anyInstrumentSimpleNote = true;
-                                    else
-                                        anyInstrumentAdvancedNote = true;
+                                    anyInstrumentEQFilters = true;
+                                    for (let j: number = 0; j < channel.instruments[instrumentIndex].effects.length; j++) {
+                                        let effect: Effect = channel.instruments[instrumentIndex].effects[j] as Effect;
+                                        if (effect.eqFilterType)
+                                            anyInstrumentSimpleEQ = true;
+                                        else
+                                            anyInstrumentAdvancedEQ = true;
+                                    }
                                 }
                                 else {
-                                    allInstrumentNoteFilters = false;
+                                    allInstrumentEQFilters = false;
                                 }
                                 if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.distortion)) {
                                     anyInstrumentDistorts = true;
@@ -3177,13 +3183,16 @@ export class SongEditor {
                             }
 
                         }
-                        if (anyInstrumentAdvancedEQ) {
-                            settingList.push("post eq");
+                        if (anyInstrumentEQFilters) {
+                            if (anyInstrumentAdvancedEQ) {
+                                settingList.push("post eq");
+                            }
+                            if (anyInstrumentSimpleEQ) {
+                                settingList.push("post eq cut");
+                                settingList.push("post eq peak");
+                            }
                         }
-                        if (anyInstrumentSimpleEQ) {
-                            settingList.push("post eq cut");
-                            settingList.push("post eq peak");
-                        }
+                        if (!allInstrumentEQFilters) unusedSettingList.push("+ post eq");
                         if (tgtInstrumentTypes.includes(InstrumentType.fm)) {
                             settingList.push("fm slider 1");
                             settingList.push("fm slider 2");
@@ -3238,17 +3247,12 @@ export class SongEditor {
                             unusedSettingList.push("+ vibrato speed");
                             unusedSettingList.push("+ vibrato delay");
                         }
-                        if (anyInstrumentNoteFilters) {
-                            if (anyInstrumentAdvancedNote) {
-                                settingList.push("pre eq");
-                            }
-                            if (anyInstrumentSimpleNote) {
-                                settingList.push("pre eq cut");
-                                settingList.push("pre eq peak");
-                            }
+                        if (anyInstrumentAdvancedNote) {
+                            settingList.push("pre eq");
                         }
-                        if (!allInstrumentNoteFilters) {
-                            unusedSettingList.push("+ pre eq");
+                        if (anyInstrumentSimpleNote) {
+                            settingList.push("pre eq cut");
+                            settingList.push("pre eq peak");
                         }
                         if (anyInstrumentDistorts) {
                             settingList.push("distortion");
@@ -3280,7 +3284,6 @@ export class SongEditor {
                         }
                         if (anyInstrumentEchoes) {
                             settingList.push("echo");
-                            // Still need to look into this...
                             settingList.push("echo delay");
                             settingList.push("echo ping pong");
                         }
@@ -3394,8 +3397,9 @@ export class SongEditor {
                             for (let i: number = 0; i < modChannel.instruments.length; i++) {
                                 if (filterType == "post eq") {
                                     for (let j: number = 0; j < modChannel.instruments[i].effects.length; j++) {
+                                        if (modChannel.instruments[i].effects[j] == null) continue;
                                         let effect: Effect = modChannel.instruments[i].effects[j] as Effect;
-                                        if (effect.eqFilter.controlPointCount > tmpCount) {
+                                        if (effect.type == EffectType.eqFilter && effect.eqFilter.controlPointCount > tmpCount) {
                                             tmpCount = effect.eqFilter.controlPointCount;
                                             useInstrument = i;
                                             useEffect = j;
@@ -3417,6 +3421,8 @@ export class SongEditor {
                         : channel.instruments[useInstrument].getLargestControlPointCount(true);
 
                     let effect: Effect = channel.instruments[useInstrument].effects[useEffect] as Effect;
+
+                    console.log(useInstrument)
 
                     const isSimple: boolean = useSongEq ? false : (filterType == "post eq" ? effect.eqFilterType : channel.instruments[useInstrument].noteFilterType);
                     if (isSimple)
@@ -4307,8 +4313,8 @@ export class SongEditor {
 
                 if (event.shiftKey) {
                     const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-                    if (instrument.effectsIncludeType(EffectType.eqFilter) && !instrument.noteFilterType && this._doc.channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
-                        this._openPrompt("customEQFilterSettings");
+                    if (!instrument.noteFilterType && this._doc.channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
+                        this._openPrompt("customNoteFilterSettings");
                     break;
                 }
                 else if (event.ctrlKey) {

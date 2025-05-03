@@ -1566,7 +1566,7 @@ export class Instrument {
         else {
             largest = this.effects[0]!.eqFilter.controlPointCount;
             for (let effectIndex: number = 0; effectIndex < this.effectCount; effectIndex++) {
-                if (this.effects[effectIndex] != null) {
+                if (this.effects[effectIndex] != null && this.effects[effectIndex]!.type == EffectType.eqFilter) {
                     for (let i: number = 0; i < Config.filterMorphCount; i++) {
                         if (this.effects[effectIndex]!.eqSubFilters[i] != null && this.effects[effectIndex]!.eqSubFilters[i]!.controlPointCount > largest)
                             largest = this.effects[effectIndex]!.eqSubFilters[i]!.controlPointCount;
@@ -1642,7 +1642,7 @@ export class Instrument {
         if (automationTarget.compatibleInstruments != null && automationTarget.compatibleInstruments.indexOf(this.type) == -1) {
             return false;
         }
-        if (automationTarget.effect != null && this.effectsIncludeType(automationTarget.effect)) {
+        if (automationTarget.effect != null && !this.effectsIncludeType(automationTarget.effect)) {
             return false;
         }
         if (automationTarget.isFilter) {

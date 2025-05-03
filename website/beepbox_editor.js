@@ -46603,51 +46603,6 @@ You should be redirected to the song at:<br /><br />
             menu.appendChild(option({ value: 3 }, EditorConfig.valueToPreset(3).name));
             menu.appendChild(option({ value: 2 }, EditorConfig.valueToPreset(2).name));
         }
-        const randomGroup = optgroup({ label: "Randomize ▾" });
-        randomGroup.appendChild(option({ value: "randomPreset" }, "Random Preset"));
-        randomGroup.appendChild(option({ value: "randomGenerated" }, "Random Generated"));
-        menu.appendChild(randomGroup);
-        let firstCategoryGroup = null;
-        let customSampleCategoryGroup = null;
-        for (let categoryIndex = 1; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
-            const category = EditorConfig.presetCategories[categoryIndex];
-            const group = optgroup({ label: category.name + " ▾" });
-            let foundAny = false;
-            for (let presetIndex = 0; presetIndex < category.presets.length; presetIndex++) {
-                const preset = category.presets[presetIndex];
-                if ((preset.isNoise == true) == isNoise) {
-                    group.appendChild(option({ value: (categoryIndex << 6) + presetIndex }, preset.name));
-                    foundAny = true;
-                }
-            }
-            if (categoryIndex === 1 && foundAny) {
-                firstCategoryGroup = group;
-            }
-            else if (category.name === "Custom Sample Presets" && foundAny) {
-                customSampleCategoryGroup = group;
-            }
-            if (category.name == "String Presets" && foundAny) {
-                let moveViolin2 = group.removeChild(group.children[11]);
-                group.insertBefore(moveViolin2, group.children[1]);
-            }
-            if (category.name == "Flute Presets" && foundAny) {
-                let moveFlute2 = group.removeChild(group.children[11]);
-                group.insertBefore(moveFlute2, group.children[1]);
-            }
-            if (category.name == "Keyboard Presets" && foundAny) {
-                let moveGrandPiano2 = group.removeChild(group.children[9]);
-                let moveGrandPiano3 = group.removeChild(group.children[9]);
-                group.insertBefore(moveGrandPiano3, group.children[1]);
-                group.insertBefore(moveGrandPiano2, group.children[1]);
-            }
-            if (foundAny)
-                menu.appendChild(group);
-        }
-        if (firstCategoryGroup != null && customSampleCategoryGroup != null) {
-            const parent = customSampleCategoryGroup.parentNode;
-            parent.removeChild(customSampleCategoryGroup);
-            parent.insertBefore(customSampleCategoryGroup, firstCategoryGroup);
-        }
         return menu;
     }
     function setSelectedValue(menu, value, isSelect2 = false) {

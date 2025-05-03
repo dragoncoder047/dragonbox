@@ -11,7 +11,7 @@ import { CustomChipPrompt } from "./CustomChipPrompt";
 import { CustomFilterPrompt } from "./CustomFilterPrompt";
 import { InstrumentExportPrompt } from "./InstrumentExportPrompt";
 import { InstrumentImportPrompt } from "./InstrumentImportPrompt";
-import { EditorConfig, isMobile, prettyNumber, Preset, PresetCategory } from "./EditorConfig";
+import { EditorConfig, isMobile, prettyNumber } from "./EditorConfig";
 import { EuclideanRhythmPrompt } from "./EuclidgenRhythmPrompt";
 import { ExportPrompt } from "./ExportPrompt";
 import "./Layout"; // Imported here for the sake of ensuring this code is transpiled early.
@@ -102,6 +102,8 @@ function buildPresetOptions(isNoise: boolean, idSet: string): HTMLSelectElement 
         menu.appendChild(option({ value: InstrumentType.noise }, EditorConfig.valueToPreset(InstrumentType.noise)!.name));
     }
 
+    // all presets are disabled for now until i update them to play nice with theepbox :) ~ theepie
+    /*
     const randomGroup: HTMLElement = optgroup({ label: "Randomize ▾" });
     randomGroup.appendChild(option({ value: "randomPreset" }, "Random Preset"));
     randomGroup.appendChild(option({ value: "randomGenerated" }, "Random Generated"));
@@ -161,6 +163,7 @@ function buildPresetOptions(isNoise: boolean, idSet: string): HTMLSelectElement 
         parent.removeChild(customSampleCategoryGroup);
         parent.insertBefore(customSampleCategoryGroup, firstCategoryGroup);
     }
+    */
 
     return menu;
 }

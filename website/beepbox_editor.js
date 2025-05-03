@@ -27701,10 +27701,7 @@ li.select2-results__option[role=group] > strong:hover {
                             for (let j = 0; j < Config.instrumentCountMin; j++) {
                                 const instrument = new Instrument(isNoise, isMod);
                                 if (!isMod) {
-                                    const presetValue = pickDefaultPresetValue(isNoise);
-                                    const preset = EditorConfig.valueToPreset(presetValue);
-                                    instrument.fromJsonObject(preset.settings, isNoise, isMod, doc.song.rhythm == 0 || doc.song.rhythm == 2, doc.song.rhythm >= 2);
-                                    instrument.preset = presetValue;
+                                    instrument.setTypeAndReset(0, isNoise, isMod);
                                 }
                                 else {
                                     instrument.setTypeAndReset(10, isNoise, isMod);
@@ -28830,12 +28827,8 @@ li.select2-results__option[role=group] > strong:hover {
             const maxInstruments = doc.song.getMaxInstrumentsPerChannel();
             if (channel.instruments.length >= maxInstruments)
                 return;
-            const presetValue = pickDefaultPresetValue(isNoise);
-            const preset = EditorConfig.valueToPreset(presetValue);
             const instrument = new Instrument(isNoise, isMod);
-            instrument.fromJsonObject(preset.settings, isNoise, isMod, false, false, 1);
-            instrument.preset = presetValue;
-            instrument.volume = 0;
+            instrument.setTypeAndReset(0, isNoise, isMod);
             channel.instruments.push(instrument);
             if (!isMod) {
                 doc.viewedInstrument[doc.channel] = channel.instruments.length - 1;
@@ -29751,21 +29744,6 @@ li.select2-results__option[role=group] > strong:hover {
             }
         }
     }
-    function pickDefaultPresetValue(isNoise) {
-        const eligiblePresetValues = [];
-        for (let categoryIndex = 0; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
-            const category = EditorConfig.presetCategories[categoryIndex];
-            if (category.name == "Novelty Presets")
-                continue;
-            for (let presetIndex = 0; presetIndex < category.presets.length; presetIndex++) {
-                const preset = category.presets[presetIndex];
-                if (preset.settings != undefined && (preset.isNoise == true) == isNoise) {
-                    eligiblePresetValues.push((categoryIndex << 6) + presetIndex);
-                }
-            }
-        }
-        return eligiblePresetValues[0];
-    }
     function pickRandomPresetValue(isNoise) {
         const eligiblePresetValues = [];
         for (let categoryIndex = 0; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
@@ -29786,9 +29764,7 @@ li.select2-results__option[role=group] > strong:hover {
             for (const instrument of song.channels[channelIndex].instruments) {
                 const isNoise = song.getChannelIsNoise(channelIndex);
                 const isMod = song.getChannelIsMod(channelIndex);
-                const preset = EditorConfig.valueToPreset(0);
-                instrument.fromJsonObject(preset.settings, isNoise, isMod, song.rhythm == 0 || song.rhythm == 2, song.rhythm >= 2, 1);
-                instrument.preset = 0;
+                instrument.setTypeAndReset(0, isNoise, isMod);
             }
         }
     }
@@ -48484,55 +48460,57 @@ You should be redirected to the song at:<br /><br />
                                     }
                                 }
                             }
-                            let dotCount = (filterType == "post eq")
-                                ? channel.instruments[useInstrument].getLargestControlPointCount(false)
-                                : channel.instruments[useInstrument].getLargestControlPointCount(true);
-                            let effect = channel.instruments[useInstrument].effects[useEffect];
-                            console.log(useInstrument);
-                            const isSimple = useSongEq ? false : (filterType == "post eq" ? effect.eqFilterType : channel.instruments[useInstrument].noteFilterType);
-                            if (isSimple)
-                                dotCount = 0;
-                            if (useSongEq) {
-                                dotCount = this._doc.song.eqFilter.controlPointCount;
-                                if (this._modFilterBoxes[mod].children.length != 1 + dotCount * 2) {
+                            for (let i = 0; i < instrument.modChannels[mod].length; i++) {
+                                let modChannel = this._doc.song.channels[Math.max(0, instrument.modChannels[mod][i])];
+                                let dotCount = (filterType == "post eq")
+                                    ? modChannel.instruments[useInstrument].getLargestControlPointCount(false)
+                                    : modChannel.instruments[useInstrument].getLargestControlPointCount(true);
+                                let effect = modChannel.instruments[useInstrument].effects[useEffect];
+                                const isSimple = useSongEq ? false : (filterType == "post eq" ? effect.eqFilterType : channel.instruments[useInstrument].noteFilterType);
+                                if (isSimple)
+                                    dotCount = 0;
+                                if (useSongEq) {
+                                    dotCount = this._doc.song.eqFilter.controlPointCount;
+                                    if (this._modFilterBoxes[mod].children.length != 1 + dotCount * 2) {
+                                        while (this._modFilterBoxes[mod].firstChild)
+                                            this._modFilterBoxes[mod].remove(0);
+                                        const dotList = [];
+                                        dotList.push("morph");
+                                        for (let i = 0; i < dotCount; i++) {
+                                            dotList.push("dot " + (i + 1) + " x");
+                                            dotList.push("dot " + (i + 1) + " y");
+                                        }
+                                        buildOptions(this._modFilterBoxes[mod], dotList);
+                                    }
+                                }
+                                else if (isSimple || this._modFilterBoxes[mod].children.length != 1 + dotCount * 2) {
                                     while (this._modFilterBoxes[mod].firstChild)
                                         this._modFilterBoxes[mod].remove(0);
                                     const dotList = [];
-                                    dotList.push("morph");
+                                    if (!isSimple)
+                                        dotList.push("morph");
                                     for (let i = 0; i < dotCount; i++) {
                                         dotList.push("dot " + (i + 1) + " x");
                                         dotList.push("dot " + (i + 1) + " y");
                                     }
                                     buildOptions(this._modFilterBoxes[mod], dotList);
                                 }
-                            }
-                            else if (isSimple || this._modFilterBoxes[mod].children.length != 1 + dotCount * 2) {
-                                while (this._modFilterBoxes[mod].firstChild)
-                                    this._modFilterBoxes[mod].remove(0);
-                                const dotList = [];
-                                if (!isSimple)
-                                    dotList.push("morph");
-                                for (let i = 0; i < dotCount; i++) {
-                                    dotList.push("dot " + (i + 1) + " x");
-                                    dotList.push("dot " + (i + 1) + " y");
+                                if (isSimple || instrument.modFilterTypes[mod] >= this._modFilterBoxes[mod].length) {
+                                    this._modFilterBoxes[mod].classList.add("invalidSetting");
+                                    instrument.invalidModulators[mod] = true;
+                                    let useName = ((instrument.modFilterTypes[mod] - 1) % 2 == 1) ?
+                                        "dot " + (Math.floor((instrument.modFilterTypes[mod] - 1) / 2) + 1) + " y"
+                                        : "dot " + (Math.floor((instrument.modFilterTypes[mod] - 1) / 2) + 1) + " x";
+                                    if (instrument.modFilterTypes[mod] == 0)
+                                        useName = "morph";
+                                    this._modFilterBoxes[mod].insertBefore(option({ value: useName, style: "color: red;" }, useName), this._modFilterBoxes[mod].children[0]);
+                                    this._modFilterBoxes[mod].selectedIndex = 0;
                                 }
-                                buildOptions(this._modFilterBoxes[mod], dotList);
-                            }
-                            if (isSimple || instrument.modFilterTypes[mod] >= this._modFilterBoxes[mod].length) {
-                                this._modFilterBoxes[mod].classList.add("invalidSetting");
-                                instrument.invalidModulators[mod] = true;
-                                let useName = ((instrument.modFilterTypes[mod] - 1) % 2 == 1) ?
-                                    "dot " + (Math.floor((instrument.modFilterTypes[mod] - 1) / 2) + 1) + " y"
-                                    : "dot " + (Math.floor((instrument.modFilterTypes[mod] - 1) / 2) + 1) + " x";
-                                if (instrument.modFilterTypes[mod] == 0)
-                                    useName = "morph";
-                                this._modFilterBoxes[mod].insertBefore(option({ value: useName, style: "color: red;" }, useName), this._modFilterBoxes[mod].children[0]);
-                                this._modFilterBoxes[mod].selectedIndex = 0;
-                            }
-                            else {
-                                this._modFilterBoxes[mod].classList.remove("invalidSetting");
-                                instrument.invalidModulators[mod] = false;
-                                this._modFilterBoxes[mod].selectedIndex = instrument.modFilterTypes[mod];
+                                else {
+                                    this._modFilterBoxes[mod].classList.remove("invalidSetting");
+                                    instrument.invalidModulators[mod] = false;
+                                    this._modFilterBoxes[mod].selectedIndex = instrument.modFilterTypes[mod];
+                                }
                             }
                         }
                         else {

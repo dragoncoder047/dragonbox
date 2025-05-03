@@ -2047,10 +2047,7 @@ export class ChangeChannelCount extends Change {
                         for (let j: number = 0; j < Config.instrumentCountMin; j++) {
                             const instrument: Instrument = new Instrument(isNoise, isMod);
                             if (!isMod) {
-                                const presetValue: number = pickDefaultPresetValue(isNoise);
-                                const preset: Preset = EditorConfig.valueToPreset(presetValue)!;
-                                instrument.fromJsonObject(preset.settings, isNoise, isMod, doc.song.rhythm == 0 || doc.song.rhythm == 2, doc.song.rhythm >= 2);
-                                instrument.preset = presetValue;
+                                instrument.setTypeAndReset(InstrumentType.chip, isNoise, isMod);
                             } else {
                                 instrument.setTypeAndReset(InstrumentType.mod, isNoise, isMod);
                             }
@@ -3358,12 +3355,8 @@ export class ChangeAddChannelInstrument extends Change {
         const isMod: boolean = doc.song.getChannelIsMod(doc.channel);
         const maxInstruments: number = doc.song.getMaxInstrumentsPerChannel();
         if (channel.instruments.length >= maxInstruments) return;
-        const presetValue: number = pickDefaultPresetValue(isNoise);
-        const preset: Preset = EditorConfig.valueToPreset(presetValue)!;
         const instrument: Instrument = new Instrument(isNoise, isMod);
-        instrument.fromJsonObject(preset.settings, isNoise, isMod, false, false, 1);
-        instrument.preset = presetValue;
-        instrument.volume = 0;
+        instrument.setTypeAndReset(InstrumentType.chip, isNoise, isMod);
         channel.instruments.push(instrument);
         if (!isMod) { // Mod channels lose information when changing set instrument
             doc.viewedInstrument[doc.channel] = channel.instruments.length - 1;
@@ -4374,21 +4367,6 @@ export class ChangeDetectKey extends ChangeGroup {
     }
 }
 
-export function pickDefaultPresetValue(isNoise: boolean): number {
-    const eligiblePresetValues: number[] = [];
-    for (let categoryIndex: number = 0; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
-        const category: PresetCategory = EditorConfig.presetCategories[categoryIndex];
-        if (category.name == "Novelty Presets") continue;
-        for (let presetIndex: number = 0; presetIndex < category.presets.length; presetIndex++) {
-            const preset: Preset = category.presets[presetIndex];
-            if (preset.settings != undefined && (preset.isNoise == true) == isNoise) {
-                eligiblePresetValues.push((categoryIndex << 6) + presetIndex);
-            }
-        }
-    }
-    return eligiblePresetValues[0];
-}
-
 export function pickRandomPresetValue(isNoise: boolean): number {
     const eligiblePresetValues: number[] = [];
     for (let categoryIndex: number = 0; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
@@ -4409,9 +4387,7 @@ export function setDefaultInstruments(song: Song): void {
         for (const instrument of song.channels[channelIndex].instruments) {
             const isNoise: boolean = song.getChannelIsNoise(channelIndex);
             const isMod: boolean = song.getChannelIsMod(channelIndex);
-            const preset: Preset = EditorConfig.valueToPreset(0)!;
-            instrument.fromJsonObject(preset.settings, isNoise, isMod, song.rhythm == 0 || song.rhythm == 2, song.rhythm >= 2, 1);
-            instrument.preset = 0;
+            instrument.setTypeAndReset(InstrumentType.chip, isNoise, isMod);
         }
     }
 }

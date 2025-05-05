@@ -5,7 +5,38 @@ import { ColorConfig } from "./ColorConfig";
 
 export class Layout {
     private static readonly _layoutMap: { [K: string]: string } = {
-        "small": "",
+		"small": `
+		`,
+		"small+": `
+		@media (min-width: 906px) {
+			#beepboxEditorContainer {
+			max-width: 906px;
+			padding-top: 7px;
+			}
+			.beepboxEditor .instrument-settings-area {
+				overflow-y: auto;
+				position: relative;
+			}
+			.beepboxEditor .instrument-settings-area > .editor-controls {
+				position: absolute;
+				width: 100%;
+			}
+			.beepboxEditor .song-settings-area {
+				overflow-y: auto;
+			}
+
+			.beepboxEditor .settings-area {
+				width: 390px;
+				grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+				grid-template-rows: auto auto auto minmax(0, 1fr);
+				grid-template-areas:
+				"version-area instrument-settings-area"
+				"play-pause-area instrument-settings-area"
+				"menu-area instrument-settings-area"
+				"song-settings-area instrument-settings-area";
+			}
+		}
+		`,
         "long": `\
 
 			/* long layout */

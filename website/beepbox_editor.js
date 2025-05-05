@@ -25215,7 +25215,38 @@ li.select2-results__option[role=group] > strong:hover {
         }
     }
     Layout._layoutMap = {
-        "small": "",
+        "small": `
+		`,
+        "small+": `
+		@media (min-width: 906px) {
+			#beepboxEditorContainer {
+			max-width: 906px;
+			padding-top: 7px;
+			}
+			.beepboxEditor .instrument-settings-area {
+				overflow-y: auto;
+				position: relative;
+			}
+			.beepboxEditor .instrument-settings-area > .editor-controls {
+				position: absolute;
+				width: 100%;
+			}
+			.beepboxEditor .song-settings-area {
+				overflow-y: auto;
+			}
+
+			.beepboxEditor .settings-area {
+				width: 390px;
+				grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+				grid-template-rows: auto auto auto minmax(0, 1fr);
+				grid-template-areas:
+				"version-area instrument-settings-area"
+				"play-pause-area instrument-settings-area"
+				"menu-area instrument-settings-area"
+				"song-settings-area instrument-settings-area";
+			}
+		}
+		`,
         "long": `\
 
 			/* long layout */
@@ -33223,7 +33254,7 @@ li.select2-results__option[role=group] > strong:hover {
             return megaSquashed ? 23 : (squashed ? 27 : 32);
         }
         getFullScreen() {
-            return !this.getMobileLayout() && (this.prefs.layout != "small");
+            return !this.getMobileLayout() && (this.prefs.layout != "small") && (this.prefs.layout != "small+");
         }
         getVisibleOctaveCount() {
             return this.getFullScreen() ? this.prefs.visibleOctaves : Preferences.defaultVisibleOctaves;
@@ -38154,7 +38185,14 @@ You should be redirected to the song at:<br /><br />
 						<rect x="14" y="2" width="4" height="16" fill="currentColor"/>
 						<rect x="2" y="13" width="11" height="5" fill="currentColor"/>
 					</svg>
-				`), div$f("Small")), label$1({ class: "layout-option" }, input$a({ type: "radio", name: "layout", value: "long" }), SVG(`\
+				`), div$f("Small")), label$1({ class: "layout-option" }, input$a({ type: "radio", name: "layout", value: "small+" }), SVG(`\
+              <svg viewBox="-4 -1 28 22">
+              <rect x="0" y="0" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1"/>
+              <rect x="2" y="2" width="11" height="10" fill="currentColor"/>
+              <rect x="14" y="2" width="4" height="16" fill="currentColor"/>
+              <rect x="2" y="13" width="11" height="5" fill="currentColor"/>
+              </svg>
+              `), div$f("Small+ (MB)")), label$1({ class: "layout-option" }, input$a({ type: "radio", name: "layout", value: "long" }), SVG(`\
 					<svg viewBox="-1 -1 28 22">
 						<rect x="0" y="0" width="26" height="20" fill="none" stroke="currentColor" stroke-width="1"/>
 						<rect x="2" y="2" width="12" height="10" fill="currentColor"/>

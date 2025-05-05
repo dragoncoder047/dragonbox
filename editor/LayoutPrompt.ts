@@ -25,6 +25,18 @@ export class LayoutPrompt implements Prompt {
             div("Small"),
         ),
         label({ class: "layout-option" },
+              input({ type: "radio", name: "layout", value: "small+" }),
+              SVG(`\
+              <svg viewBox="-4 -1 28 22">
+              <rect x="0" y="0" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1"/>
+              <rect x="2" y="2" width="11" height="10" fill="currentColor"/>
+              <rect x="14" y="2" width="4" height="16" fill="currentColor"/>
+              <rect x="2" y="13" width="11" height="5" fill="currentColor"/>
+              </svg>
+              `),
+              div("Small+ (MB)"),
+        ),
+        label({ class: "layout-option" },
             input({ type: "radio", name: "layout", value: "long" }),
             SVG(`\
 					<svg viewBox="-1 -1 28 22">

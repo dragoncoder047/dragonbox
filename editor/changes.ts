@@ -1814,15 +1814,48 @@ export class ChangeToggleEffects extends Change {
     constructor(doc: SongDocument, toggleFlag: number, useInstrument: Instrument | null) {
         super();
         let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        if (useInstrument != null)
-            instrument = useInstrument;
+        if (useInstrument != null) instrument = useInstrument;
         const wasSelected = instrument.effectsIncludeType(toggleFlag);
         if (wasSelected) instrument.removeEffect(toggleFlag);
         else instrument.addEffect(toggleFlag);
         // Remove AA when distortion is turned off.
-        if (toggleFlag == EffectType.distortion && wasSelected)
-            instrument.aliases = false;
+        if (toggleFlag == EffectType.distortion && wasSelected) instrument.aliases = false;
         if (wasSelected) instrument.clearInvalidEnvelopeTargets();
+        this._didSomething();
+        doc.notifier.changed();
+    }
+}
+
+export class ChangeRemoveEffects extends Change {
+    constructor(doc: SongDocument, effectIndex: number, useInstrument: Instrument | null) {
+        super();
+        let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        if (useInstrument != null) instrument = useInstrument;
+        // Remove AA when distortion is turned off.
+        if (instrument.effects[effectIndex]!.type == EffectType.distortion) instrument.aliases = false;
+        instrument.effects.splice(effectIndex, 1);
+        instrument.effectCount--;
+        instrument.clearInvalidEnvelopeTargets();
+        this._didSomething();
+        doc.notifier.changed();
+    }
+}
+
+export class ChangeReorderEffects extends Change {
+    constructor(doc: SongDocument, effectIndex: number, moveUp: boolean, useInstrument: Instrument | null) {
+        super();
+        let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        if (useInstrument != null) instrument = useInstrument;
+        var temp = instrument.effects[effectIndex];
+        if (moveUp && effectIndex - 1 >= 0) {
+            instrument.effects[effectIndex] = instrument.effects[effectIndex - 1];
+            instrument.effects[effectIndex - 1] = temp
+        }
+        else if (!moveUp && effectIndex + 1 < instrument.effects.length) {
+            instrument.effects[effectIndex] = instrument.effects[effectIndex + 1];
+            instrument.effects[effectIndex + 1] = temp
+        }
+        instrument.clearInvalidEnvelopeTargets(); // TODO: change envelope effect index ? or does this need to be done
         this._didSomething();
         doc.notifier.changed();
     }
@@ -2800,7 +2833,7 @@ export class ChangeEQFilterSimpleCut extends ChangeInstrumentSlider {
     constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
         effect.eqFilterSimpleCut = newValue;
-        doc.synth.unsetMod(Config.modulators.dictionary["eq filt cut"].index, doc.channel, doc.getCurrentInstrument());
+        doc.synth.unsetMod(Config.modulators.dictionary["post eq cut"].index, doc.channel, doc.getCurrentInstrument());
         doc.notifier.changed();
         this._didSomething();
     }
@@ -2810,7 +2843,7 @@ export class ChangeEQFilterSimplePeak extends ChangeInstrumentSlider {
     constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);
         effect.eqFilterSimplePeak = newValue;
-        doc.synth.unsetMod(Config.modulators.dictionary["eq filt peak"].index, doc.channel, doc.getCurrentInstrument());
+        doc.synth.unsetMod(Config.modulators.dictionary["post eq peak"].index, doc.channel, doc.getCurrentInstrument());
         doc.notifier.changed();
         this._didSomething();
     }
@@ -2820,7 +2853,7 @@ export class ChangeNoteFilterSimpleCut extends ChangeInstrumentSlider {
     constructor(doc: SongDocument, oldValue: number, newValue: number) {
         super(doc);
         this._instrument.noteFilterSimpleCut = newValue;
-        doc.synth.unsetMod(Config.modulators.dictionary["note filt cut"].index, doc.channel, doc.getCurrentInstrument());
+        doc.synth.unsetMod(Config.modulators.dictionary["pre eq cut"].index, doc.channel, doc.getCurrentInstrument());
         doc.notifier.changed();
         if (oldValue != newValue) this._didSomething();
     }
@@ -2830,7 +2863,7 @@ export class ChangeNoteFilterSimplePeak extends ChangeInstrumentSlider {
     constructor(doc: SongDocument, oldValue: number, newValue: number) {
         super(doc);
         this._instrument.noteFilterSimplePeak = newValue;
-        doc.synth.unsetMod(Config.modulators.dictionary["note filt peak"].index, doc.channel, doc.getCurrentInstrument());
+        doc.synth.unsetMod(Config.modulators.dictionary["pre eq peak"].index, doc.channel, doc.getCurrentInstrument());
         doc.notifier.changed();
         if (oldValue != newValue) this._didSomething();
     }

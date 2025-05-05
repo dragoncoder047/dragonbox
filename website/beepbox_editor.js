@@ -759,7 +759,8 @@ var beepbox = (function (exports) {
         { name: "extraterrestrial", voices: 6, spread: 15.2, offset: -6, expression: 0.35, sign: 0.7 },
         { name: "bow", voices: 9, spread: 0.006, offset: 0, expression: 0.15, sign: 0.5 }
     ]);
-    Config.effectNames = ["reverb", "chorus", "panning", "distortion", "bitcrusher", "eq filter", "echo", "ring mod", "granular"];
+    Config.effectNames = ["reverb", "chorus", "panning", "distortion", "bitcrusher", "post eq", "echo", "ring mod", "granular"];
+    Config.effectDisplayNames = ["Reverb", "Chorus", "Panning", "Distortion", "Bitcrusher", "Post EQ", "Echo", "Ring Mod", "Granular"];
     Config.effectOrder = [2, 5, 8, 3, 4, 1, 6, 0, 7];
     Config.mdeffectNames = ["pitch shift", "detune", "vibrato", "transition type", "chord type", "note range"];
     Config.mdeffectOrder = [3, 4, 0, 1, 2, 5];
@@ -27510,6 +27511,41 @@ li.select2-results__option[role=group] > strong:hover {
             doc.notifier.changed();
         }
     }
+    class ChangeRemoveEffects extends Change {
+        constructor(doc, effectIndex, useInstrument) {
+            super();
+            let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+            if (useInstrument != null)
+                instrument = useInstrument;
+            if (instrument.effects[effectIndex].type == 3)
+                instrument.aliases = false;
+            instrument.effects.splice(effectIndex, 1);
+            instrument.effectCount--;
+            instrument.clearInvalidEnvelopeTargets();
+            this._didSomething();
+            doc.notifier.changed();
+        }
+    }
+    class ChangeReorderEffects extends Change {
+        constructor(doc, effectIndex, moveUp, useInstrument) {
+            super();
+            let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+            if (useInstrument != null)
+                instrument = useInstrument;
+            var temp = instrument.effects[effectIndex];
+            if (moveUp && effectIndex - 1 >= 0) {
+                instrument.effects[effectIndex] = instrument.effects[effectIndex - 1];
+                instrument.effects[effectIndex - 1] = temp;
+            }
+            else if (!moveUp && effectIndex + 1 < instrument.effects.length) {
+                instrument.effects[effectIndex] = instrument.effects[effectIndex + 1];
+                instrument.effects[effectIndex + 1] = temp;
+            }
+            instrument.clearInvalidEnvelopeTargets();
+            this._didSomething();
+            doc.notifier.changed();
+        }
+    }
     class ChangeToggleMDEffects extends Change {
         constructor(doc, toggleFlag, useInstrument) {
             super();
@@ -28374,7 +28410,7 @@ li.select2-results__option[role=group] > strong:hover {
         constructor(doc, effect, newValue) {
             super(doc);
             effect.eqFilterSimpleCut = newValue;
-            doc.synth.unsetMod(Config.modulators.dictionary["eq filt cut"].index, doc.channel, doc.getCurrentInstrument());
+            doc.synth.unsetMod(Config.modulators.dictionary["post eq cut"].index, doc.channel, doc.getCurrentInstrument());
             doc.notifier.changed();
             this._didSomething();
         }
@@ -28383,7 +28419,7 @@ li.select2-results__option[role=group] > strong:hover {
         constructor(doc, effect, newValue) {
             super(doc);
             effect.eqFilterSimplePeak = newValue;
-            doc.synth.unsetMod(Config.modulators.dictionary["eq filt peak"].index, doc.channel, doc.getCurrentInstrument());
+            doc.synth.unsetMod(Config.modulators.dictionary["post eq peak"].index, doc.channel, doc.getCurrentInstrument());
             doc.notifier.changed();
             this._didSomething();
         }
@@ -28392,7 +28428,7 @@ li.select2-results__option[role=group] > strong:hover {
         constructor(doc, oldValue, newValue) {
             super(doc);
             this._instrument.noteFilterSimpleCut = newValue;
-            doc.synth.unsetMod(Config.modulators.dictionary["note filt cut"].index, doc.channel, doc.getCurrentInstrument());
+            doc.synth.unsetMod(Config.modulators.dictionary["pre eq cut"].index, doc.channel, doc.getCurrentInstrument());
             doc.notifier.changed();
             if (oldValue != newValue)
                 this._didSomething();
@@ -28402,7 +28438,7 @@ li.select2-results__option[role=group] > strong:hover {
         constructor(doc, oldValue, newValue) {
             super(doc);
             this._instrument.noteFilterSimplePeak = newValue;
-            doc.synth.unsetMod(Config.modulators.dictionary["note filt peak"].index, doc.channel, doc.getCurrentInstrument());
+            doc.synth.unsetMod(Config.modulators.dictionary["pre eq peak"].index, doc.channel, doc.getCurrentInstrument());
             doc.notifier.changed();
             if (oldValue != newValue)
                 this._didSomething();
@@ -37099,6 +37135,9 @@ You should be redirected to the song at:<br /><br />
         getValueBeforeProspectiveChange() {
             return this._oldValue;
         }
+        getValue() {
+            return this._value;
+        }
     }
 
     class ArrayBufferReader {
@@ -38713,12 +38752,26 @@ You should be redirected to the song at:<br /><br />
         }
         return menu;
     }
+    function setSelectedValue$1(menu, value, isSelect2 = false) {
+        const stringValue = value.toString();
+        if (menu.value != stringValue) {
+            menu.value = stringValue;
+            if (isSelect2) {
+                $(menu).val(value).trigger('change.select2');
+            }
+        }
+    }
     class EffectEditor {
         constructor(_doc, _openPrompt) {
             this._doc = _doc;
             this._openPrompt = _openPrompt;
             this.container = HTML.div({ class: "effectEditor" });
             this._rows = [];
+            this.moveupButtons = [];
+            this.movedownButtons = [];
+            this.minimizeButtons = [];
+            this.deleteButtons = [];
+            this.renderEffectRows = [];
             this.chorusSliders = [];
             this.reverbSliders = [];
             this.ringModWaveSelects = [];
@@ -38732,6 +38785,7 @@ You should be redirected to the song at:<br /><br />
             this.echoDelaySliders = [];
             this.echoPingPongSliders = [];
             this.panSliders = [];
+            this.panSliderInputBoxes = [];
             this.panDelaySliders = [];
             this.panModeSelects = [];
             this.distortionSliders = [];
@@ -38748,7 +38802,6 @@ You should be redirected to the song at:<br /><br />
                 const ringModWaveSelectIndex = this.ringModWaveSelects.indexOf(event.target);
                 const panModeSelectIndex = this.panModeSelects.indexOf(event.target);
                 const aliasingBoxIndex = this.aliasingBoxes.indexOf(event.target);
-                const eqFilterEditorIndex = this.eqFilterEditors.indexOf(event.target);
                 const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
                 if (ringModWaveSelectIndex != -1) {
                     let effect = instrument.effects[ringModWaveSelectIndex];
@@ -38757,111 +38810,54 @@ You should be redirected to the song at:<br /><br />
                 else if (panModeSelectIndex != -1) {
                     let effect = instrument.effects[panModeSelectIndex];
                     this._doc.record(new ChangePanMode(this._doc, effect, parseInt(this.panModeSelects[panModeSelectIndex].value)));
+                    console.log(this.panModeSelects[panModeSelectIndex].value);
                 }
                 else if (aliasingBoxIndex != -1) {
                     let effect = instrument.effects[aliasingBoxIndex];
-                    this._doc.record(new ChangeAliasing(this._doc, effect, JSON.parse(this.aliasingBoxes[aliasingBoxIndex].value)));
+                    console.log(this.aliasingBoxes[aliasingBoxIndex].value);
+                    this._doc.record(new ChangeAliasing(this._doc, effect, this.aliasingBoxes[aliasingBoxIndex].checked));
                 }
-                else if (eqFilterEditorIndex != -1) ;
                 else if (this._lastChange != null) {
                     this._doc.record(this._lastChange);
                     this._lastChange = null;
                 }
-                this.render();
+            };
+            this._onClick = (event) => {
+                const moveupButtonIndex = this.moveupButtons.indexOf(event.target);
+                const movedownButtonIndex = this.movedownButtons.indexOf(event.target);
+                const minimizeButtonIndex = this.minimizeButtons.indexOf(event.target);
+                const deleteButtonIndex = this.deleteButtons.indexOf(event.target);
+                if (deleteButtonIndex != -1) {
+                    this._doc.record(new ChangeRemoveEffects(this._doc, deleteButtonIndex, null));
+                    this.render(true);
+                }
+                else if (moveupButtonIndex != -1) {
+                    this._doc.record(new ChangeReorderEffects(this._doc, moveupButtonIndex, true, null));
+                    this.render(true);
+                }
+                else if (movedownButtonIndex != -1) {
+                    this._doc.record(new ChangeReorderEffects(this._doc, movedownButtonIndex, false, null));
+                    this.render(true);
+                }
+                else if (minimizeButtonIndex != -1) {
+                    this.renderEffectRows[minimizeButtonIndex] = !this.renderEffectRows[minimizeButtonIndex];
+                    this.render(true);
+                }
             };
             this._onInput = (event) => {
-                const chorusSliderIndex = this.chorusSliders.indexOf(event.target);
-                const reverbSliderIndex = this.reverbSliders.indexOf(event.target);
-                const ringModSliderIndex = this.ringModSliders.indexOf(event.target);
-                const ringModHzSliderIndex = this.ringModHzSliders.indexOf(event.target);
-                const granularSliderIndex = this.granularSliders.indexOf(event.target);
-                const grainSizeSliderIndex = this.grainSizeSliders.indexOf(event.target);
-                const grainAmountsSliderIndex = this.grainAmountsSliders.indexOf(event.target);
-                const grainRangeSliderIndex = this.grainRangeSliders.indexOf(event.target);
-                const echoSustainSliderIndex = this.echoSustainSliders.indexOf(event.target);
-                const echoDelaySliderIndex = this.echoDelaySliders.indexOf(event.target);
-                const echoPingPongSliderIndex = this.echoPingPongSliders.indexOf(event.target);
-                const panSliderIndex = this.panSliders.indexOf(event.target);
-                const panDelaySliderIndex = this.panDelaySliders.indexOf(event.target);
-                const distortionSliderIndex = this.distortionSliders.indexOf(event.target);
-                const bitcrusherQuantizationSliderIndex = this.bitcrusherQuantizationSliders.indexOf(event.target);
-                const bitcrusherFreqSliderIndex = this.bitcrusherFreqSliders.indexOf(event.target);
-                const eqFilterSimpleCutSliderIndex = this.eqFilterSimpleCutSliders.indexOf(event.target);
-                const eqFilterSimplePeakSliderIndex = this.eqFilterSimplePeakSliders.indexOf(event.target);
+                const panSliderInputBoxIndex = this.panSliderInputBoxes.indexOf(event.target);
                 const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-                if (chorusSliderIndex != -1) {
-                    let effect = instrument.effects[chorusSliderIndex];
-                    this._lastChange = new ChangeChorus(this._doc, effect, parseInt(this.chorusSliders[chorusSliderIndex].value));
+                if (panSliderInputBoxIndex != -1) {
+                    let effect = instrument.effects[panSliderInputBoxIndex];
+                    this._doc.record(new ChangePan(this._doc, effect, Math.min(100.0, Math.max(0.0, Math.round(+this.panSliderInputBoxes[panSliderInputBoxIndex].value)))));
+                    this.panSliders[panSliderInputBoxIndex].updateValue(effect.pan);
                 }
-                else if (reverbSliderIndex != -1) {
-                    let effect = instrument.effects[reverbSliderIndex];
-                    this._lastChange = new ChangeReverb(this._doc, effect, parseInt(this.reverbSliders[reverbSliderIndex].value));
+                for (let effectIndex = 0; effectIndex < instrument.effectCount; effectIndex++) {
+                    if (instrument.effects[effectIndex] == null)
+                        continue;
+                    const effect = instrument.effects[effectIndex];
+                    this.panSliderInputBoxes[effectIndex].value = effect.pan + "";
                 }
-                else if (ringModSliderIndex != -1) {
-                    let effect = instrument.effects[ringModSliderIndex];
-                    this._lastChange = new ChangeRingMod(this._doc, effect, parseInt(this.ringModSliders[ringModSliderIndex].value));
-                }
-                else if (ringModHzSliderIndex != -1) {
-                    let effect = instrument.effects[ringModHzSliderIndex];
-                    this._lastChange = new ChangeRingModHz(this._doc, effect, parseInt(this.ringModHzSliders[ringModHzSliderIndex].value));
-                }
-                else if (granularSliderIndex != -1) {
-                    let effect = instrument.effects[granularSliderIndex];
-                    this._lastChange = new ChangeGranular(this._doc, effect, parseInt(this.granularSliders[granularSliderIndex].value));
-                }
-                else if (grainSizeSliderIndex != -1) {
-                    let effect = instrument.effects[grainSizeSliderIndex];
-                    this._lastChange = new ChangeGrainSize(this._doc, effect, parseInt(this.grainSizeSliders[grainSizeSliderIndex].value));
-                }
-                else if (grainAmountsSliderIndex != -1) {
-                    let effect = instrument.effects[grainAmountsSliderIndex];
-                    this._lastChange = new ChangeGrainAmounts(this._doc, effect, parseInt(this.grainAmountsSliders[grainAmountsSliderIndex].value));
-                }
-                else if (grainRangeSliderIndex != -1) {
-                    let effect = instrument.effects[grainRangeSliderIndex];
-                    this._lastChange = new ChangeGrainRange(this._doc, effect, parseInt(this.grainRangeSliders[grainRangeSliderIndex].value));
-                }
-                else if (echoSustainSliderIndex != -1) {
-                    let effect = instrument.effects[echoSustainSliderIndex];
-                    this._lastChange = new ChangeEchoSustain(this._doc, effect, parseInt(this.echoSustainSliders[echoSustainSliderIndex].value));
-                }
-                else if (echoDelaySliderIndex != -1) {
-                    let effect = instrument.effects[echoDelaySliderIndex];
-                    this._lastChange = new ChangeEchoDelay(this._doc, effect, parseInt(this.echoDelaySliders[echoDelaySliderIndex].value));
-                }
-                else if (echoPingPongSliderIndex != -1) {
-                    let effect = instrument.effects[echoPingPongSliderIndex];
-                    this._lastChange = new ChangeEchoPingPong(this._doc, effect, parseInt(this.echoPingPongSliders[echoPingPongSliderIndex].value));
-                }
-                else if (panSliderIndex != -1) {
-                    let effect = instrument.effects[panSliderIndex];
-                    this._lastChange = new ChangePan(this._doc, effect, parseInt(this.panSliders[panSliderIndex].value));
-                }
-                else if (panDelaySliderIndex != -1) {
-                    let effect = instrument.effects[panDelaySliderIndex];
-                    this._lastChange = new ChangePanDelay(this._doc, effect, parseInt(this.panDelaySliders[panDelaySliderIndex].value));
-                }
-                else if (distortionSliderIndex != -1) {
-                    let effect = instrument.effects[distortionSliderIndex];
-                    this._lastChange = new ChangeDistortion(this._doc, effect, parseInt(this.distortionSliders[distortionSliderIndex].value));
-                }
-                else if (bitcrusherQuantizationSliderIndex != -1) {
-                    let effect = instrument.effects[bitcrusherQuantizationSliderIndex];
-                    this._lastChange = new ChangeBitcrusherQuantization(this._doc, effect, parseInt(this.bitcrusherQuantizationSliders[bitcrusherQuantizationSliderIndex].value));
-                }
-                else if (bitcrusherFreqSliderIndex != -1) {
-                    let effect = instrument.effects[bitcrusherFreqSliderIndex];
-                    this._lastChange = new ChangeBitcrusherFreq(this._doc, effect, parseInt(this.bitcrusherFreqSliders[bitcrusherFreqSliderIndex].value));
-                }
-                else if (eqFilterSimpleCutSliderIndex != -1) {
-                    let effect = instrument.effects[eqFilterSimpleCutSliderIndex];
-                    this._lastChange = new ChangeEQFilterSimpleCut(this._doc, effect, parseInt(this.eqFilterSimpleCutSliders[eqFilterSimpleCutSliderIndex].value));
-                }
-                else if (eqFilterSimplePeakSliderIndex != -1) {
-                    let effect = instrument.effects[eqFilterSimplePeakSliderIndex];
-                    this._lastChange = new ChangeEQFilterSimplePeak(this._doc, effect, parseInt(this.eqFilterSimplePeakSliders[eqFilterSimplePeakSliderIndex].value));
-                }
-                this.render();
             };
             this._switchEQFilterType = (simpleFilter, effect) => {
                 const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
@@ -38869,6 +38865,7 @@ You should be redirected to the song at:<br /><br />
                 this.render(true);
             };
             this.container.addEventListener("change", this._onChange);
+            this.container.addEventListener("click", this._onClick);
             this.container.addEventListener("input", this._onInput);
         }
         render(forceRender = false) {
@@ -38879,110 +38876,129 @@ You should be redirected to the song at:<br /><br />
                     if (instrument.effects[effectIndex] == null)
                         continue;
                     const effect = instrument.effects[effectIndex];
-                    const chorusSlider = HTML.input({ value: effect.chorus, type: "range", min: 0, max: Config.chorusRange - 1, step: 1, style: "margin: 0;" });
-                    const reverbSlider = HTML.input({ value: effect.reverb, type: "range", min: 0, max: Config.reverbRange - 1, step: 1, style: "margin: 0;" });
-                    const ringModWaveSelect = buildOptions$1(HTML.select({}), Config.operatorWaves.map(wave => wave.name));
-                    const ringModSlider = HTML.input({ value: effect.ringModulation, type: "range", min: 0, max: Config.ringModRange - 1, step: 1, style: "margin: 0;" });
-                    const ringModHzSlider = HTML.input({ value: effect.ringModulationHz, type: "range", min: 0, max: Config.ringModHzRange - 1, step: 1, style: "margin: 0;" });
-                    const granularSlider = HTML.input({ value: effect.granular, type: "range", min: 0, max: Config.granularRange, step: 1, style: "margin: 0;" });
-                    const grainSizeSlider = HTML.input({ value: effect.grainSize, type: "range", min: Config.grainSizeMin / Config.grainSizeStep, max: Config.grainSizeMax / Config.grainSizeStep, step: 1, style: "margin: 0;" });
-                    const grainAmountsSlider = HTML.input({ value: effect.grainAmounts, type: "range", min: "0", max: Config.grainAmountsMax, step: 1, style: "margin: 0;" });
-                    const grainRangeSlider = HTML.input({ value: effect.grainRange, type: "range", min: "0", max: Config.grainRangeMax, step: 1, style: "margin: 0;" });
-                    const echoSustainSlider = HTML.input({ value: effect.echoSustain, type: "range", min: 0, max: Config.echoSustainRange - 1, step: 1, style: "margin: 0;" });
-                    const echoDelaySlider = HTML.input({ value: effect.echoDelay, type: "range", min: 0, max: Config.echoDelayRange - 1, step: 1, style: "margin: 0;" });
-                    const echoPingPongSlider = HTML.input({ value: effect.echoPingPong, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" });
-                    const panSlider = HTML.input({ value: effect.pan, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" });
-                    const panDelaySlider = HTML.input({ value: effect.panDelay, type: "range", min: 0, max: Config.modulators.dictionary["pan delay"].maxRawVol, step: 1, style: "margin: 0;" });
-                    const panModeSelect = buildOptions$1(HTML.select({}), ["stereo", "split stereo", "mono"]);
-                    const distortionSlider = HTML.input({ value: effect.distortion, type: "range", min: 0, max: Config.distortionRange - 1, step: 1, style: "margin: 0;" });
+                    const moveupButton = HTML.button({ type: "button", class: "moveup-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "🞁");
+                    const movedownButton = HTML.button({ type: "button", class: "movedown-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "🞃");
+                    const minimizeButton = HTML.button({ type: "button", class: "minimize-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "-");
+                    const deleteButton = HTML.button({ type: "button", class: "delete-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "x");
+                    const effectButtonsText = HTML.div({ style: `width: 50%; color: ${ColorConfig.secondaryText};` }, Config.effectDisplayNames[effect.type]);
+                    const chorusSlider = new Slider(HTML.input({ value: effect.chorus, type: "range", min: 0, max: Config.chorusRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeChorus(this._doc, effect, newValue), false);
+                    const reverbSlider = new Slider(HTML.input({ value: effect.reverb, type: "range", min: 0, max: Config.reverbRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeReverb(this._doc, effect, newValue), false);
+                    const ringModWaveSelect = buildOptions$1(HTML.select(), Config.operatorWaves.map(wave => wave.name));
+                    const ringModSlider = new Slider(HTML.input({ value: effect.ringModulation, type: "range", min: 0, max: Config.ringModRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeRingMod(this._doc, effect, newValue), false);
+                    const ringModHzSlider = new Slider(HTML.input({ value: effect.ringModulationHz, type: "range", min: 0, max: Config.ringModHzRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeRingModHz(this._doc, effect, newValue), false);
+                    const granularSlider = new Slider(HTML.input({ value: effect.granular, type: "range", min: 0, max: Config.granularRange, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeGranular(this._doc, effect, newValue), false);
+                    const grainSizeSlider = new Slider(HTML.input({ value: effect.grainSize, type: "range", min: Config.grainSizeMin / Config.grainSizeStep, max: Config.grainSizeMax / Config.grainSizeStep, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeGrainSize(this._doc, effect, newValue), false);
+                    const grainAmountsSlider = new Slider(HTML.input({ value: effect.grainAmounts, type: "range", min: "0", max: Config.grainAmountsMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeGrainAmounts(this._doc, effect, newValue), false);
+                    const grainRangeSlider = new Slider(HTML.input({ value: effect.grainRange, type: "range", min: "0", max: Config.grainRangeMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeGrainRange(this._doc, effect, newValue), false);
+                    const echoSustainSlider = new Slider(HTML.input({ value: effect.echoSustain, type: "range", min: 0, max: Config.echoSustainRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeEchoSustain(this._doc, effect, newValue), false);
+                    const echoDelaySlider = new Slider(HTML.input({ value: effect.echoDelay, type: "range", min: 0, max: Config.echoDelayRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeEchoDelay(this._doc, effect, newValue), false);
+                    const echoPingPongSlider = new Slider(HTML.input({ value: effect.echoPingPong, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeEchoPingPong(this._doc, effect, newValue), false);
+                    const panSlider = new Slider(HTML.input({ value: effect.pan, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangePan(this._doc, effect, newValue), true);
+                    const panSliderInputBox = HTML.input({ style: "width: 4em; font-size: 80%; ", id: "panSliderInputBox", type: "number", step: "1", min: "0", max: "100", value: effect.pan.toString() });
+                    const panDelaySlider = new Slider(HTML.input({ value: effect.panDelay, type: "range", min: 0, max: Config.modulators.dictionary["pan delay"].maxRawVol, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangePanDelay(this._doc, effect, newValue), false);
+                    const panModeSelect = buildOptions$1(HTML.select(), ["stereo", "split stereo", "mono"]);
+                    const distortionSlider = new Slider(HTML.input({ value: effect.distortion, type: "range", min: 0, max: Config.distortionRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeDistortion(this._doc, effect, newValue), false);
                     const aliasingBox = HTML.input({ type: "checkbox", style: "width: 1em; padding: 0; margin-right: 4em;" });
-                    const bitcrusherQuantizationSlider = HTML.input({ value: effect.bitcrusherQuantization, type: "range", min: 0, max: Config.bitcrusherQuantizationRange - 1, step: 1, style: "margin: 0;" });
-                    const bitcrusherFreqSlider = HTML.input({ value: effect.bitcrusherFreq, type: "range", min: 0, max: Config.bitcrusherFreqRange - 1, step: 1, style: "margin: 0;" });
+                    const bitcrusherQuantizationSlider = new Slider(HTML.input({ value: effect.bitcrusherQuantization, type: "range", min: 0, max: Config.bitcrusherQuantizationRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeBitcrusherQuantization(this._doc, effect, newValue), false);
+                    const bitcrusherFreqSlider = new Slider(HTML.input({ value: effect.bitcrusherFreq, type: "range", min: 0, max: Config.bitcrusherFreqRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeBitcrusherFreq(this._doc, effect, newValue), false);
                     const eqFilterSimpleButton = HTML.button({ style: "font-size: x-small; width: 50%; height: 40%", class: "no-underline", onclick: () => this._switchEQFilterType(true, effect) }, "simple");
                     const eqFilterAdvancedButton = HTML.button({ style: "font-size: x-small; width: 50%; height: 40%", class: "last-button no-underline", onclick: () => this._switchEQFilterType(false, effect) }, "advanced");
                     const eqFilterEditor = new FilterEditor(this._doc, false, false, false, effectIndex);
-                    const eqFilterSimpleCutSlider = HTML.input({ value: effect.eqFilterSimpleCut, type: "range", min: 0, max: Config.filterSimpleCutRange - 1, step: 1, style: "margin: 0;" });
-                    const eqFilterSimplePeakSlider = HTML.input({ value: effect.eqFilterSimplePeak, type: "range", min: 0, max: Config.filterSimplePeakRange - 1, step: 1, style: "margin: 0;" });
+                    const eqFilterSimpleCutSlider = new Slider(HTML.input({ value: effect.eqFilterSimpleCut, type: "range", min: 0, max: Config.filterSimpleCutRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeEQFilterSimpleCut(this._doc, effect, newValue), false);
+                    const eqFilterSimplePeakSlider = new Slider(HTML.input({ value: effect.eqFilterSimplePeak, type: "range", min: 0, max: Config.filterSimplePeakRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeEQFilterSimplePeak(this._doc, effect, newValue), false);
                     const eqFilterZoom = HTML.button({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px;", onclick: () => this._openPrompt("customEQFilterSettings", effectIndex) }, "+");
-                    const chorusRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("chorus") }, "Chorus:"), chorusSlider);
-                    const reverbRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("reverb") }, "Reverb:"), reverbSlider);
-                    const ringModWaveRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Wave:"), ringModWaveSelect);
-                    const ringModRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringMod") }, "Ring Mod:"), ringModSlider);
-                    const ringModHzRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Hertz:"), ringModHzSlider);
-                    const granularRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("granular") }, "Granular:"), granularSlider);
-                    const grainSizeRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainSize") }, "Grain Size:"), grainSizeSlider);
-                    const grainAmountsRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainAmounts") }, "Grain Amount:"), grainAmountsSlider);
-                    const grainRangeRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainRange") }, "Grain Range:"), grainRangeSlider);
-                    const echoSustainRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echo") }, "Echo:"), echoSustainSlider);
-                    const echoDelayRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Echo Delay:"), echoDelaySlider);
-                    const echoPingPongRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Ping Pong:"), echoPingPongSlider);
-                    const panRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("pan") }, "Panning:"), panSlider);
-                    const panDelayRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("panDelay") }, "Pan Delay:"), panDelaySlider);
-                    const panModeRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("panMode") }, "Pan Mode:"), panModeSelect);
-                    const distortionRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("distortion") }, "Distortion:"), distortionSlider);
+                    setSelectedValue$1(ringModWaveSelect, effect.ringModWaveformIndex);
+                    setSelectedValue$1(panModeSelect, effect.panMode);
+                    panSliderInputBox.value = effect.pan + "";
+                    aliasingBox.checked = instrument.aliases ? true : false;
+                    const effectButtonsRow = HTML.div({ class: "selectRow", style: `padding-left:2em; max-width: 70%; height: 20%;` }, effectButtonsText, moveupButton, movedownButton, minimizeButton, deleteButton);
+                    const chorusRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("chorus") }, "Chorus:"), chorusSlider.container);
+                    const reverbRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("reverb") }, "Reverb:"), reverbSlider.container);
+                    const ringModWaveRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Wave:"), HTML.div({ class: "selectContainer" }, ringModWaveSelect));
+                    const ringModRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringMod") }, "Ring Mod:"), ringModSlider.container);
+                    const ringModHzRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Hertz:"), ringModHzSlider.container);
+                    const granularRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("granular") }, "Granular:"), granularSlider.container);
+                    const grainSizeRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainSize") }, "Grain Size:"), grainSizeSlider.container);
+                    const grainAmountsRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainAmounts") }, "Grain Amount:"), grainAmountsSlider.container);
+                    const grainRangeRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainRange") }, "Grain Range:"), grainRangeSlider.container);
+                    const echoSustainRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echo") }, "Echo:"), echoSustainSlider.container);
+                    const echoDelayRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Echo Delay:"), echoDelaySlider.container);
+                    const echoPingPongRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Ping Pong:"), echoPingPongSlider.container);
+                    const panRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.div({}, HTML.span({ class: "tip", tabindex: "0", style: "height:1em; font-size: smaller;", onclick: () => this._openPrompt("pan") }, "Pan: "), HTML.div({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, panSliderInputBox)), panSlider.container);
+                    const panDelayRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("panDelay") }, "Pan Delay:"), panDelaySlider.container);
+                    const panModeRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("panMode") }, "Pan Mode:"), HTML.div({ class: "selectContainer" }, panModeSelect));
+                    const distortionRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("distortion") }, "Distortion:"), distortionSlider.container);
                     const aliasingRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("aliasing") }, "Aliasing:"), aliasingBox);
-                    const bitcrusherQuantizationRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("bitcrusherQuantization") }, "Bit Crush:"), bitcrusherQuantizationSlider);
-                    const bitcrusherFreqRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("bitcrusherFreq") }, "Freq Crush:"), bitcrusherFreqSlider);
-                    const eqFilterButtonsRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("filterType") }, "Filter Type:"), eqFilterSimpleButton, eqFilterAdvancedButton);
+                    const bitcrusherQuantizationRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("bitcrusherQuantization") }, "Bit Crush:"), bitcrusherQuantizationSlider.container);
+                    const bitcrusherFreqRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("bitcrusherFreq") }, "Freq Crush:"), bitcrusherFreqSlider.container);
+                    const eqFilterButtonsRow = HTML.div({ class: "selectRow", style: "display: none; padding-top: 4px; margin-bottom: 0px;" }, HTML.span({ style: "font-size: x-small;", class: "tip", onclick: () => this._openPrompt("filterType") }, "Post EQ Type:"), HTML.div({ class: "instrument-bar" }, eqFilterSimpleButton, eqFilterAdvancedButton));
                     const eqFilterEditorRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("eqFilter") }, "Post EQ:"), eqFilterZoom, eqFilterEditor.container);
-                    const eqFilterSimpleCutRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("filterCutoff") }, "Filter Cut:"), eqFilterSimpleCutSlider);
-                    const eqFilterSimplePeakRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("filterPeak") }, "Filter Peak:"), eqFilterSimplePeakSlider);
-                    if (effect.type == 0) {
-                        reverbRow.style.display = "";
-                    }
-                    else if (effect.type == 1) {
-                        chorusRow.style.display = "";
-                    }
-                    else if (effect.type == 7) {
-                        ringModRow.style.display = "";
-                        ringModHzRow.style.display = "";
-                        ringModWaveRow.style.display = "";
-                    }
-                    else if (effect.type == 8) {
-                        granularRow.style.display = "";
-                        grainSizeRow.style.display = "";
-                        grainAmountsRow.style.display = "";
-                        grainRangeRow.style.display = "";
-                    }
-                    else if (effect.type == 6) {
-                        echoSustainRow.style.display = "";
-                        echoDelayRow.style.display = "";
-                        echoPingPongRow.style.display = "";
-                    }
-                    else if (effect.type == 2) {
-                        panRow.style.display = "";
-                        panDelayRow.style.display = "";
-                        panModeRow.style.display = "";
-                    }
-                    else if (effect.type == 3) {
-                        distortionRow.style.display = "";
-                        aliasingRow.style.display = "";
-                    }
-                    else if (effect.type == 4) {
-                        bitcrusherQuantizationRow.style.display = "";
-                        bitcrusherFreqRow.style.display = "";
-                    }
-                    else if (effect.type == 5) {
-                        eqFilterButtonsRow.style.display = "";
-                        if (effect.eqFilterType) {
-                            eqFilterSimpleButton.classList.remove("deactivated");
-                            eqFilterAdvancedButton.classList.add("deactivated");
-                            eqFilterEditorRow.style.display = "none";
-                            eqFilterSimpleCutRow.style.display = "";
-                            eqFilterSimplePeakRow.style.display = "";
+                    const eqFilterSimpleCutRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("filterCutoff") }, "Filter Cut:"), eqFilterSimpleCutSlider.container);
+                    const eqFilterSimplePeakRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("filterPeak") }, "Filter Peak:"), eqFilterSimplePeakSlider.container);
+                    if (this.renderEffectRows[effectIndex] == null)
+                        this.renderEffectRows[effectIndex] = true;
+                    if (this.renderEffectRows[effectIndex]) {
+                        if (effect.type == 0) {
+                            reverbRow.style.display = "";
                         }
-                        else {
-                            eqFilterSimpleButton.classList.add("deactivated");
-                            eqFilterAdvancedButton.classList.remove("deactivated");
-                            eqFilterEditorRow.style.display = "";
-                            eqFilterEditor.render();
-                            eqFilterSimpleCutRow.style.display = "none";
-                            eqFilterSimplePeakRow.style.display = "none";
+                        else if (effect.type == 1) {
+                            chorusRow.style.display = "";
+                        }
+                        else if (effect.type == 7) {
+                            ringModRow.style.display = "";
+                            ringModHzRow.style.display = "";
+                            ringModWaveRow.style.display = "";
+                        }
+                        else if (effect.type == 8) {
+                            granularRow.style.display = "";
+                            grainSizeRow.style.display = "";
+                            grainAmountsRow.style.display = "";
+                            grainRangeRow.style.display = "";
+                        }
+                        else if (effect.type == 6) {
+                            echoSustainRow.style.display = "";
+                            echoDelayRow.style.display = "";
+                            echoPingPongRow.style.display = "";
+                        }
+                        else if (effect.type == 2) {
+                            panRow.style.display = "";
+                            panDelayRow.style.display = "";
+                            panModeRow.style.display = "";
+                        }
+                        else if (effect.type == 3) {
+                            distortionRow.style.display = "";
+                            aliasingRow.style.display = "";
+                        }
+                        else if (effect.type == 4) {
+                            bitcrusherQuantizationRow.style.display = "";
+                            bitcrusherFreqRow.style.display = "";
+                        }
+                        else if (effect.type == 5) {
+                            eqFilterButtonsRow.style.display = "";
+                            if (effect.eqFilterType) {
+                                eqFilterSimpleButton.classList.remove("deactivated");
+                                eqFilterAdvancedButton.classList.add("deactivated");
+                                eqFilterEditorRow.style.display = "none";
+                                eqFilterSimpleCutRow.style.display = "";
+                                eqFilterSimplePeakRow.style.display = "";
+                            }
+                            else {
+                                eqFilterSimpleButton.classList.add("deactivated");
+                                eqFilterAdvancedButton.classList.remove("deactivated");
+                                eqFilterEditorRow.style.display = "";
+                                eqFilterEditor.render();
+                                eqFilterSimpleCutRow.style.display = "none";
+                                eqFilterSimplePeakRow.style.display = "none";
+                            }
                         }
                     }
-                    const row = HTML.div({ class: "effect-row" }, chorusRow, reverbRow, ringModRow, ringModHzRow, ringModWaveRow, granularRow, grainSizeRow, grainAmountsRow, grainRangeRow, echoSustainRow, echoDelayRow, echoPingPongRow, panRow, panDelayRow, panModeRow, distortionRow, aliasingRow, bitcrusherQuantizationRow, bitcrusherFreqRow, eqFilterButtonsRow, eqFilterEditorRow, eqFilterSimpleCutRow, eqFilterSimplePeakRow);
+                    const row = HTML.div({ class: "effect-row" }, effectButtonsRow, chorusRow, reverbRow, ringModRow, ringModHzRow, ringModWaveRow, granularRow, grainSizeRow, grainAmountsRow, grainRangeRow, echoSustainRow, echoDelayRow, echoPingPongRow, panRow, panDelayRow, panModeRow, distortionRow, aliasingRow, bitcrusherQuantizationRow, bitcrusherFreqRow, eqFilterButtonsRow, eqFilterEditorRow, eqFilterSimpleCutRow, eqFilterSimplePeakRow);
                     this.container.appendChild(row);
                     this._rows[effectIndex] = row;
+                    this.moveupButtons[effectIndex] = moveupButton;
+                    this.movedownButtons[effectIndex] = movedownButton;
+                    this.minimizeButtons[effectIndex] = minimizeButton;
+                    this.deleteButtons[effectIndex] = deleteButton;
                     this.chorusSliders[effectIndex] = chorusSlider;
                     this.reverbSliders[effectIndex] = reverbSlider;
                     this.ringModWaveSelects[effectIndex] = ringModWaveSelect;
@@ -38996,6 +39012,7 @@ You should be redirected to the song at:<br /><br />
                     this.echoDelaySliders[effectIndex] = echoDelaySlider;
                     this.echoPingPongSliders[effectIndex] = echoPingPongSlider;
                     this.panSliders[effectIndex] = panSlider;
+                    this.panSliderInputBoxes[effectIndex] = panSliderInputBox;
                     this.panDelaySliders[effectIndex] = panDelaySlider;
                     this.panModeSelects[effectIndex] = panModeSelect;
                     this.distortionSliders[effectIndex] = distortionSlider;
@@ -48195,17 +48212,6 @@ You should be redirected to the song at:<br /><br />
                                         }
                                     }
                                 }
-                                if (anyInstrumentEQFilters) {
-                                    if (anyInstrumentAdvancedEQ) {
-                                        settingList.push("post eq");
-                                    }
-                                    if (anyInstrumentSimpleEQ) {
-                                        settingList.push("post eq cut");
-                                        settingList.push("post eq peak");
-                                    }
-                                }
-                                if (!allInstrumentEQFilters)
-                                    unusedSettingList.push("+ post eq");
                                 if (tgtInstrumentTypes.includes(1)) {
                                     settingList.push("fm slider 1");
                                     settingList.push("fm slider 2");
@@ -48267,6 +48273,17 @@ You should be redirected to the song at:<br /><br />
                                     settingList.push("pre eq cut");
                                     settingList.push("pre eq peak");
                                 }
+                                if (anyInstrumentEQFilters) {
+                                    if (anyInstrumentAdvancedEQ) {
+                                        settingList.push("post eq");
+                                    }
+                                    if (anyInstrumentSimpleEQ) {
+                                        settingList.push("post eq cut");
+                                        settingList.push("post eq peak");
+                                    }
+                                }
+                                if (!allInstrumentEQFilters)
+                                    unusedSettingList.push("+ post eq");
                                 if (anyInstrumentDistorts) {
                                     settingList.push("distortion");
                                 }
@@ -48706,6 +48723,7 @@ You should be redirected to the song at:<br /><br />
                     || document.activeElement == this._unisonExpressionInputBox
                     || document.activeElement == this._unisonSignInputBox
                     || document.activeElement == this._monophonicNoteInputBox
+                    || this._effectEditor.panSliderInputBoxes.find((element) => element == document.activeElement)
                     || this.envelopeEditor.pitchStartBoxes.find((element) => element == document.activeElement)
                     || this.envelopeEditor.pitchEndBoxes.find((element) => element == document.activeElement)
                     || this.envelopeEditor.perEnvelopeLowerBoundBoxes.find((element) => element == document.activeElement)
@@ -50448,8 +50466,14 @@ You should be redirected to the song at:<br /><br />
             }
         }
         getSliderForModSetting(setting, index) {
-            index = index == undefined ? 0 : index;
+            index = index == undefined ? 1 : index;
+            const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
             switch (setting) {
+                case Config.modulators.dictionary["pan"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 2)
+                            index = i;
+                    return this._effectEditor.panSliders[index];
                 case Config.modulators.dictionary["detune"].index:
                     return this._detuneSlider;
                 case Config.modulators.dictionary["fm slider 1"].index:
@@ -50466,6 +50490,16 @@ You should be redirected to the song at:<br /><br />
                     return this._pulseWidthSlider;
                 case Config.modulators.dictionary["decimal offset"].index:
                     return this._decimalOffsetSlider;
+                case Config.modulators.dictionary["reverb"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 0)
+                            index = i;
+                    return this._effectEditor.reverbSliders[index];
+                case Config.modulators.dictionary["distortion"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 3)
+                            index = i;
+                    return this._effectEditor.distortionSliders[index];
                 case Config.modulators.dictionary["pre volume"].index:
                     if (!this._showModSliders[Config.modulators.dictionary["post volume"].index])
                         return this._instrumentVolumeSlider;
@@ -50480,16 +50514,61 @@ You should be redirected to the song at:<br /><br />
                     return this._vibratoDelaySlider;
                 case Config.modulators.dictionary["arp speed"].index:
                     return this._arpeggioSpeedSlider;
+                case Config.modulators.dictionary["pan delay"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 2)
+                            index = i;
+                    return this._effectEditor.panDelaySliders[index];
                 case Config.modulators.dictionary["tempo"].index:
                     return this._tempoSlider;
                 case Config.modulators.dictionary["song volume"].index:
                     return this._volumeSlider;
+                case Config.modulators.dictionary["post eq cut"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 5)
+                            index = i;
+                    return this._effectEditor.eqFilterSimpleCutSliders[index];
+                case Config.modulators.dictionary["post eq peak"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 5)
+                            index = i;
+                    return this._effectEditor.eqFilterSimplePeakSliders[index];
                 case Config.modulators.dictionary["pre eq cut"].index:
                     return this._noteFilterSimpleCutSlider;
                 case Config.modulators.dictionary["pre eq peak"].index:
                     return this._noteFilterSimplePeakSlider;
+                case Config.modulators.dictionary["bit crush"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 4)
+                            index = i;
+                    return this._effectEditor.bitcrusherQuantizationSliders[index];
+                case Config.modulators.dictionary["freq crush"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 4)
+                            index = i;
+                    return this._effectEditor.bitcrusherFreqSliders[index];
                 case Config.modulators.dictionary["pitch shift"].index:
                     return this._pitchShiftSlider;
+                case Config.modulators.dictionary["chorus"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 1)
+                            index = i;
+                    return this._effectEditor.chorusSliders[index];
+                case Config.modulators.dictionary["echo"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 6)
+                            index = i;
+                    return this._effectEditor.echoSustainSliders[index];
+                case Config.modulators.dictionary["echo delay"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 6)
+                            index = i;
+                    return this._effectEditor.echoDelaySliders[index];
+                case Config.modulators.dictionary["echo ping pong"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 6)
+                            index = i;
+                    return this._effectEditor.echoPingPongSliders[index];
                 case Config.modulators.dictionary["sustain"].index:
                     return this._stringSustainSlider;
                 case Config.modulators.dictionary["fm slider 5"].index:
@@ -50510,6 +50589,36 @@ You should be redirected to the song at:<br /><br />
                     return this.envelopeEditor.perEnvelopeLowerBoundSliders[index];
                 case Config.modulators.dictionary["individual envelope upper bound"].index:
                     return this.envelopeEditor.perEnvelopeUpperBoundSliders[index];
+                case Config.modulators.dictionary["ring modulation"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 7)
+                            index = i;
+                    return this._effectEditor.ringModSliders[index];
+                case Config.modulators.dictionary["ring mod hertz"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 7)
+                            index = i;
+                    return this._effectEditor.ringModHzSliders[index];
+                case Config.modulators.dictionary["granular"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 8)
+                            index = i;
+                    return this._effectEditor.granularSliders[index];
+                case Config.modulators.dictionary["grain freq"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 8)
+                            index = i;
+                    return this._effectEditor.grainAmountsSliders[index];
+                case Config.modulators.dictionary["grain size"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 8)
+                            index = i;
+                    return this._effectEditor.grainSizeSliders[index];
+                case Config.modulators.dictionary["grain range"].index:
+                    for (let i = 0; i < instrument.effects.length; i++)
+                        if (instrument.effects[i] != null && instrument.effects[i].type == 8)
+                            index = i;
+                    return this._effectEditor.grainRangeSliders[index];
                 default:
                     return null;
             }

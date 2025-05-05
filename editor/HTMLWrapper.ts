@@ -66,6 +66,10 @@ export class Slider {
         return this._oldValue;
     }
 
+    public getValue(): number {
+        return this._value;
+    }
+
     private _whenChange = (): void => {
         if (this._getChange != null) {
             this._doc.record(this._change!);

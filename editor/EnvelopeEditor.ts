@@ -546,7 +546,6 @@ export class EnvelopeEditor {
 			this._perEnvelopeSpeedDisplays[envelopeIndex] = perEnvelopeSpeedDisplay;
 			this.perEnvelopeSpeedSliders[envelopeIndex] = perEnvelopeSpeedSlider;
 			this.perEnvelopeSpeedGroups[envelopeIndex] = perEnvelopeSpeedGroup;
-			
 
 			this.extraPitchSettingsGroups[envelopeIndex] = extraPitchSettingsGroup;
 			this._pitchStartSliders[envelopeIndex] = pitchStartNoteSlider;

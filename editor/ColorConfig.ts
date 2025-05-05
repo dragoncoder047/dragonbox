@@ -3104,8 +3104,12 @@ export class ColorConfig {
 				--mod4-primary-channel:   #ff9752;
 				--mod4-secondary-note:    #c75000;
 				--mod4-primary-note:      #ff9752;
-					--text-disabled-icon: ✗ ;
-				}
+				--text-disabled-icon: ✗ ;
+			}
+
+			html {
+				font-family: sans-serif;
+			}
 			`,
         "zefbox": `
 			:root {

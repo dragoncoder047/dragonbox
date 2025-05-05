@@ -5826,8 +5826,12 @@ var beepbox = (function (exports) {
 				--mod4-primary-channel:   #ff9752;
 				--mod4-secondary-note:    #c75000;
 				--mod4-primary-note:      #ff9752;
-					--text-disabled-icon: ✗ ;
-				}
+				--text-disabled-icon: ✗ ;
+			}
+
+			html {
+				font-family: sans-serif;
+			}
 			`,
         "zefbox": `
 			:root {
@@ -13570,13 +13574,13 @@ li.select2-results__option[role=group] > strong:hover {
             return Config.fadeOutTicks.length - 1;
         }
         initToDefault(andResetChannels = true) {
-            this.scale = 0;
+            this.scale = 1;
             this.scaleCustom = [true, false, true, true, false, false, false, true, true, false, true, true];
             this.key = 0;
             this.octave = 0;
             this.loopStart = 0;
             this.loopLength = 4;
-            this.tempo = 150;
+            this.tempo = 151;
             this.reverb = 0;
             this.beatsPerBar = 8;
             this.barCount = 16;
@@ -13591,9 +13595,9 @@ li.select2-results__option[role=group] > strong:hover {
             this.title = "Untitled";
             document.title = this.title + " - " + EditorConfig.versionDisplayName;
             if (andResetChannels) {
-                this.pitchChannelCount = 3;
+                this.pitchChannelCount = 4;
                 this.noiseChannelCount = 1;
-                this.modChannelCount = 1;
+                this.modChannelCount = 0;
                 for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
                     const isNoiseChannel = channelIndex >= this.pitchChannelCount && channelIndex < this.pitchChannelCount + this.noiseChannelCount;
                     const isModChannel = channelIndex >= this.pitchChannelCount + this.noiseChannelCount;
@@ -13619,7 +13623,7 @@ li.select2-results__option[role=group] > strong:hover {
                     }
                     channel.instruments.length = Config.instrumentCountMin;
                     for (let bar = 0; bar < this.barCount; bar++) {
-                        channel.bars[bar] = bar < 4 ? 1 : 0;
+                        channel.bars[bar] = bar < 16 ? 1 : 0;
                     }
                     channel.bars.length = this.barCount;
                 }
@@ -32744,18 +32748,18 @@ li.select2-results__option[role=group] > strong:hover {
         }
         reload() {
             this.autoPlay = window.localStorage.getItem("autoPlay") == "true";
-            this.autoFollow = window.localStorage.getItem("autoFollow") != "false";
+            this.autoFollow = window.localStorage.getItem("autoFollow") == "true";
             this.enableNotePreview = window.localStorage.getItem("enableNotePreview") != "false";
             this.showFifth = window.localStorage.getItem("showFifth") != "false";
             this.notesOutsideScale = window.localStorage.getItem("notesOutsideScale") == "true";
             this.showLetters = window.localStorage.getItem("showLetters") != "false";
-            this.showChannels = window.localStorage.getItem("showChannels") == "true";
+            this.showChannels = window.localStorage.getItem("showChannels") != "false";
             this.showScrollBar = window.localStorage.getItem("showScrollBar") != "false";
             this.alwaysFineNoteVol = window.localStorage.getItem("alwaysFineNoteVol") == "true";
             this.displayVolumeBar = window.localStorage.getItem("displayVolumeBar") != "false";
             this.instrumentCopyPaste = window.localStorage.getItem("instrumentCopyPaste") != "false";
             this.instrumentImportExport = window.localStorage.getItem("instrumentImportExport") == "true";
-            this.instrumentButtonsAtTop = window.localStorage.getItem("instrumentButtonsAtTop") == "true";
+            this.instrumentButtonsAtTop = window.localStorage.getItem("instrumentButtonsAtTop") != "false";
             this.enableChannelMuting = window.localStorage.getItem("enableChannelMuting") != "false";
             this.displayBrowserUrl = window.localStorage.getItem("displayBrowserUrl") != "false";
             this.pressControlForShortcuts = window.localStorage.getItem("pressControlForShortcuts") == "true";
@@ -32766,21 +32770,21 @@ li.select2-results__option[role=group] > strong:hover {
             this.metronomeCountIn = window.localStorage.getItem("metronomeCountIn") != "false";
             this.metronomeWhileRecording = window.localStorage.getItem("metronomeWhileRecording") != "false";
             this.notesFlashWhenPlayed = window.localStorage.getItem("notesFlashWhenPlayed") == "true";
-            this.showOscilloscope = window.localStorage.getItem("showOscilloscope") == "true";
+            this.showOscilloscope = window.localStorage.getItem("showOscilloscope") != "false";
             this.showSampleLoadingStatus = window.localStorage.getItem("showSampleLoadingStatus") != "false";
             this.showDescription = window.localStorage.getItem("showDescription") != "false";
             this.showInstrumentScrollbars = window.localStorage.getItem("showInstrumentScrollbars") == "true";
             this.closePromptByClickoff = window.localStorage.getItem("closePromptByClickoff") == "true";
             this.frostedGlassBackground = window.localStorage.getItem("frostedGlassBackground") == "true";
-            this.keyboardLayout = window.localStorage.getItem("keyboardLayout") || "wickiHayden";
+            this.keyboardLayout = window.localStorage.getItem("keyboardLayout") || "pianoAtC";
             this.bassOffset = (+window.localStorage.getItem("bassOffset")) || 0;
-            this.layout = window.localStorage.getItem("layout") || "small";
+            this.layout = window.localStorage.getItem("layout") || "small+";
             this.colorTheme = window.localStorage.getItem("colorTheme") || ColorConfig.defaultTheme;
             this.customTheme = window.localStorage.getItem("customTheme");
             this.customTheme2 = window.localStorage.getItem("customTheme2");
             this.visibleOctaves = (window.localStorage.getItem("visibleOctaves") >>> 0) || Preferences.defaultVisibleOctaves;
             const defaultScale = Config.scales.dictionary[window.localStorage.getItem("defaultScale")];
-            this.defaultScale = (defaultScale != undefined) ? defaultScale.index : 0;
+            this.defaultScale = (defaultScale != undefined) ? defaultScale.index : 1;
             if (window.localStorage.getItem("volume") != null) {
                 this.volume = Math.min(window.localStorage.getItem("volume") >>> 0, 75);
             }
@@ -38944,12 +38948,12 @@ You should be redirected to the song at:<br /><br />
                     const eqFilterEditor = new FilterEditor(this._doc, false, false, false, effectIndex);
                     const eqFilterSimpleCutSlider = new Slider(HTML.input({ value: effect.eqFilterSimpleCut, type: "range", min: 0, max: Config.filterSimpleCutRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeEQFilterSimpleCut(this._doc, effect, newValue), false);
                     const eqFilterSimplePeakSlider = new Slider(HTML.input({ value: effect.eqFilterSimplePeak, type: "range", min: 0, max: Config.filterSimplePeakRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeEQFilterSimplePeak(this._doc, effect, newValue), false);
-                    const eqFilterZoom = HTML.button({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px;", onclick: () => this._openPrompt("customEQFilterSettings", effectIndex) }, "+");
+                    const eqFilterZoom = HTML.button({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px; text-align: center; font-size: smaller;", onclick: () => this._openPrompt("customEQFilterSettings", effectIndex) }, "+");
                     setSelectedValue$1(ringModWaveSelect, effect.ringModWaveformIndex);
                     setSelectedValue$1(panModeSelect, effect.panMode);
                     panSliderInputBox.value = effect.pan + "";
                     aliasingBox.checked = instrument.aliases ? true : false;
-                    const effectButtonsRow = HTML.div({ class: "selectRow", style: `padding-left:2em; max-width: 70%; height: 20%;` }, effectButtonsText, moveupButton, movedownButton, minimizeButton, deleteButton);
+                    const effectButtonsRow = HTML.div({ class: "selectRow", style: `padding-left: 12.5%; max-width: 75%; height: 80%; padding-top: 0.2em;` }, effectButtonsText, moveupButton, movedownButton, minimizeButton, deleteButton);
                     const chorusRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("chorus") }, "Chorus:"), chorusSlider.container);
                     const reverbRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("reverb") }, "Reverb:"), reverbSlider.container);
                     const ringModWaveRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Wave:"), HTML.div({ class: "selectContainer" }, ringModWaveSelect));
@@ -47167,7 +47171,7 @@ You should be redirected to the song at:<br /><br />
             this._tempoSlider = new Slider(input({ style: "margin: 0; vertical-align: middle;", type: "range", min: "1", max: "500", value: "160", step: "1" }), this._doc, (oldValue, newValue) => new ChangeTempo(this._doc, oldValue, newValue), false);
             this._tempoStepper = input({ style: "width: 4em; font-size: 80%; margin-left: 0.4em; vertical-align: middle;", type: "number", step: "1" });
             this._songEqFilterEditor = new FilterEditor(this._doc, false, false, true);
-            this._songEqFilterZoom = button({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px;", onclick: () => this._openPrompt("customSongEQFilterSettings") }, "+");
+            this._songEqFilterZoom = button({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px; text-align: center; font-size: smaller;", onclick: () => this._openPrompt("customSongEQFilterSettings") }, "+");
             this._rhythmSelect = buildOptions(select(), Config.rhythms.map(rhythm => rhythm.name));
             this._pitchedPresetSelect = buildPresetOptions(false, "pitchPresetSelect");
             this._drumPresetSelect = buildPresetOptions(true, "drumPresetSelect");
@@ -47216,7 +47220,7 @@ You should be redirected to the song at:<br /><br />
             this._noteFilterAdvancedButton = button({ style: "font-size: x-small; width: 50%; height: 40%", class: "last-button no-underline", onclick: () => this._switchNoteFilterType(false) }, "advanced");
             this._noteFilterTypeRow = div({ class: "selectRow", style: "padding-top: 4px; margin-bottom: 0px;" }, span({ style: "font-size: x-small;", class: "tip", onclick: () => this._openPrompt("filterType") }, "Pre EQ Type:"), div({ class: "instrument-bar" }, this._noteFilterSimpleButton, this._noteFilterAdvancedButton));
             this._noteFilterEditor = new FilterEditor(this._doc, true);
-            this._noteFilterZoom = button({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px;", onclick: () => this._openPrompt("customNoteFilterSettings") }, "+");
+            this._noteFilterZoom = button({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px; text-align: center; font-size: smaller;", onclick: () => this._openPrompt("customNoteFilterSettings") }, "+");
             this._noteFilterRow = div({ class: "selectRow" }, span({ class: "tip", onclick: () => this._openPrompt("noteFilter") }, "Pre EQ:"), this._noteFilterZoom, this._noteFilterEditor.container);
             this._noteFilterSimpleCutSlider = new Slider(input({ style: "margin: 0;", type: "range", min: "0", max: Config.filterSimpleCutRange - 1, value: "6", step: "1" }), this._doc, (oldValue, newValue) => new ChangeNoteFilterSimpleCut(this._doc, oldValue, newValue), false);
             this._noteFilterSimpleCutRow = div({ class: "selectRow", title: "Low-pass Filter Cutoff Frequency" }, span({ class: "tip", onclick: () => this._openPrompt("filterCutoff") }, "Filter Cut:"), this._noteFilterSimpleCutSlider.container);

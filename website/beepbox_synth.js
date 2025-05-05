@@ -5009,13 +5009,13 @@ var beepbox = (function (exports) {
             return Config.fadeOutTicks.length - 1;
         }
         initToDefault(andResetChannels = true) {
-            this.scale = 0;
+            this.scale = 1;
             this.scaleCustom = [true, false, true, true, false, false, false, true, true, false, true, true];
             this.key = 0;
             this.octave = 0;
             this.loopStart = 0;
             this.loopLength = 4;
-            this.tempo = 150;
+            this.tempo = 151;
             this.reverb = 0;
             this.beatsPerBar = 8;
             this.barCount = 16;
@@ -5030,9 +5030,9 @@ var beepbox = (function (exports) {
             this.title = "Untitled";
             document.title = this.title + " - " + EditorConfig.versionDisplayName;
             if (andResetChannels) {
-                this.pitchChannelCount = 3;
+                this.pitchChannelCount = 4;
                 this.noiseChannelCount = 1;
-                this.modChannelCount = 1;
+                this.modChannelCount = 0;
                 for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
                     const isNoiseChannel = channelIndex >= this.pitchChannelCount && channelIndex < this.pitchChannelCount + this.noiseChannelCount;
                     const isModChannel = channelIndex >= this.pitchChannelCount + this.noiseChannelCount;
@@ -5058,7 +5058,7 @@ var beepbox = (function (exports) {
                     }
                     channel.instruments.length = Config.instrumentCountMin;
                     for (let bar = 0; bar < this.barCount; bar++) {
-                        channel.bars[bar] = bar < 4 ? 1 : 0;
+                        channel.bars[bar] = bar < 16 ? 1 : 0;
                     }
                     channel.bars.length = this.barCount;
                 }

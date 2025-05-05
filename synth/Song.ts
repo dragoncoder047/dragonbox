@@ -678,14 +678,14 @@ export class Song {
     }
 
     public initToDefault(andResetChannels: boolean = true): void {
-        this.scale = 0;
+        this.scale = 1;
         this.scaleCustom = [true, false, true, true, false, false, false, true, true, false, true, true];
         //this.scaleCustom = [true, false, false, false, false, false, false, false, false, false, false, false];
         this.key = 0;
         this.octave = 0;
         this.loopStart = 0;
         this.loopLength = 4;
-        this.tempo = 150; //Default tempo returned to 150 for consistency with BeepBox and JummBox
+        this.tempo = 151;
         this.reverb = 0;
         this.beatsPerBar = 8;
         this.barCount = 16;
@@ -703,9 +703,9 @@ export class Song {
         document.title = this.title + " - " + EditorConfig.versionDisplayName;
 
         if (andResetChannels) {
-            this.pitchChannelCount = 3;
+            this.pitchChannelCount = 4;
             this.noiseChannelCount = 1;
-            this.modChannelCount = 1;
+            this.modChannelCount = 0;
             for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
                 const isNoiseChannel: boolean = channelIndex >= this.pitchChannelCount && channelIndex < this.pitchChannelCount + this.noiseChannelCount;
                 const isModChannel: boolean = channelIndex >= this.pitchChannelCount + this.noiseChannelCount;
@@ -733,7 +733,7 @@ export class Song {
                 channel.instruments.length = Config.instrumentCountMin;
 
                 for (let bar: number = 0; bar < this.barCount; bar++) {
-                    channel.bars[bar] = bar < 4 ? 1 : 0;
+                    channel.bars[bar] = bar < 16 ? 1 : 0;
                 }
                 channel.bars.length = this.barCount;
             }

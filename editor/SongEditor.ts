@@ -2381,11 +2381,11 @@ export class SongEditor {
         }
 
         this._effectsSelect.selectedIndex = -1;
-        for (let i: number = this._effectsSelect.childElementCount - 1; i < Config.effectOrder.length - 1; i++) { // the - 1 is to prevent granular from being selected (because it doesnt work that well right now)
+        for (let i: number = this._effectsSelect.childElementCount - 1; i < Config.effectOrder.length; i++) {
             this._effectsSelect.appendChild(option({ value: i }));
         }
         this._effectsSelect.selectedIndex = -1;
-        for (let i: number = 0; i < Config.effectOrder.length - 1; i++) {
+        for (let i: number = 0; i < Config.effectOrder.length; i++) {
             let effectFlag: number = Config.effectOrder[i];
             const label: string = Config.effectNames[effectFlag];
             const option: HTMLOptionElement = <HTMLOptionElement>this._effectsSelect.children[i + 1];

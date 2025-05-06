@@ -47842,11 +47842,11 @@ You should be redirected to the song at:<br /><br />
                         option.textContent = label;
                 }
                 this._effectsSelect.selectedIndex = -1;
-                for (let i = this._effectsSelect.childElementCount - 1; i < Config.effectOrder.length - 1; i++) {
+                for (let i = this._effectsSelect.childElementCount - 1; i < Config.effectOrder.length; i++) {
                     this._effectsSelect.appendChild(option({ value: i }));
                 }
                 this._effectsSelect.selectedIndex = -1;
-                for (let i = 0; i < Config.effectOrder.length - 1; i++) {
+                for (let i = 0; i < Config.effectOrder.length; i++) {
                     let effectFlag = Config.effectOrder[i];
                     const label = Config.effectNames[effectFlag];
                     const option = this._effectsSelect.children[i + 1];

@@ -2,6 +2,7 @@
 
 import { Config, EffectType } from "../synth/SynthConfig";
 import { Instrument } from "../synth/Instrument";
+import { Channel } from "../synth/Channel";
 import { Effect } from "../synth/Effect";
 import { SongDocument } from "./SongDocument";
 import { ChangeChorus, ChangeReverb, ChangeRingModChipWave, ChangeRingMod, ChangeRingModHz, ChangeGranular, ChangeGrainSize, ChangeGrainAmounts, ChangeGrainRange, ChangeEchoDelay, ChangeEchoSustain, ChangeEchoPingPong, ChangePan, ChangePanMode, ChangePanDelay, ChangeDistortion, ChangeAliasing, ChangeBitcrusherQuantization, ChangeBitcrusherFreq, ChangeEQFilterType, ChangeEQFilterSimpleCut, ChangeEQFilterSimplePeak, ChangeRemoveEffects, ChangeReorderEffects } from "./changes";
@@ -69,6 +70,7 @@ export class EffectEditor {
 	public readonly eqFilterSimplePeakSliders: Slider[] = [];
 
 	private _lastChange: Change | null = null;
+	private _viewedChannel: Channel | null = null;
 
 	constructor(private _doc: SongDocument, private _openPrompt: Function) {
 		this.container.addEventListener("change", this._onChange);
@@ -151,7 +153,7 @@ export class EffectEditor {
 	public render(forceRender: boolean = false): void {
 		const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
 
-		if (instrument.effects.length != this.container.children.length || forceRender) {
+		if (instrument.effects.length != this.container.children.length || this._doc.song.channels[this._doc.channel] != this._viewedChannel || forceRender) {
 			this.container.replaceChildren();
 			for (let effectIndex: number = 0; effectIndex < instrument.effectCount; effectIndex++) {
 				if (instrument.effects[effectIndex] == null) continue;
@@ -331,6 +333,8 @@ export class EffectEditor {
 				this.eqFilterEditors[effectIndex] = eqFilterEditor;
 				this.eqFilterSimpleCutSliders[effectIndex] = eqFilterSimpleCutSlider;
 				this.eqFilterSimplePeakSliders[effectIndex] = eqFilterSimplePeakSlider;
+
+				this._viewedChannel = this._doc.song.channels[this._doc.channel];
 			}
 		}
 	}

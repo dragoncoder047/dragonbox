@@ -39107,6 +39107,7 @@ You should be redirected to the song at:<br /><br />
             this.eqFilterSimpleCutSliders = [];
             this.eqFilterSimplePeakSliders = [];
             this._lastChange = null;
+            this._viewedChannel = null;
             this._onChange = (event) => {
                 const ringModWaveSelectIndex = this.ringModWaveSelects.indexOf(event.target);
                 const panModeSelectIndex = this.panModeSelects.indexOf(event.target);
@@ -39179,7 +39180,7 @@ You should be redirected to the song at:<br /><br />
         }
         render(forceRender = false) {
             const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-            if (instrument.effects.length != this.container.children.length || forceRender) {
+            if (instrument.effects.length != this.container.children.length || this._doc.song.channels[this._doc.channel] != this._viewedChannel || forceRender) {
                 this.container.replaceChildren();
                 for (let effectIndex = 0; effectIndex < instrument.effectCount; effectIndex++) {
                     if (instrument.effects[effectIndex] == null)
@@ -39333,6 +39334,7 @@ You should be redirected to the song at:<br /><br />
                     this.eqFilterEditors[effectIndex] = eqFilterEditor;
                     this.eqFilterSimpleCutSliders[effectIndex] = eqFilterSimpleCutSlider;
                     this.eqFilterSimplePeakSliders[effectIndex] = eqFilterSimplePeakSlider;
+                    this._viewedChannel = this._doc.song.channels[this._doc.channel];
                 }
             }
         }

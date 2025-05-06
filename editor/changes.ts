@@ -1811,16 +1811,12 @@ export class ChangeTransition extends Change {
 }
 
 export class ChangeToggleEffects extends Change {
-    constructor(doc: SongDocument, toggleFlag: number, useInstrument: Instrument | null) {
+    constructor(doc: SongDocument, effectType: number, useInstrument: Instrument | null) {
         super();
         let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         if (useInstrument != null) instrument = useInstrument;
-        const wasSelected = instrument.effectsIncludeType(toggleFlag);
-        if (wasSelected) instrument.removeEffect(toggleFlag);
-        else instrument.addEffect(toggleFlag);
+        instrument.addEffect(effectType);
         // Remove AA when distortion is turned off.
-        if (toggleFlag == EffectType.distortion && wasSelected) instrument.aliases = false;
-        if (wasSelected) instrument.clearInvalidEnvelopeTargets();
         this._didSomething();
         doc.notifier.changed();
     }

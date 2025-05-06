@@ -558,7 +558,6 @@ export class EffectState {
 				const eqFilterSettings: FilterSettings = (effect.tmpEqFilterStart != null) ? effect.tmpEqFilterStart : effect.eqFilter;
 				//const eqAllFreqsEnvelopeStart: number = envelopeStarts[InstrumentAutomationIndex.eqFilterAllFreqs];
 				//const eqAllFreqsEnvelopeEnd:   number = envelopeEnds[  InstrumentAutomationIndex.eqFilterAllFreqs];
-				console.log(effect.eqFilter.controlPointCount)
 				for (let i: number = 0; i < eqFilterSettings.controlPointCount; i++) {
 					//const eqFreqEnvelopeStart: number = envelopeStarts[InstrumentAutomationIndex.eqFilterFreq0 + i];
 					//const eqFreqEnvelopeEnd:   number = envelopeEnds[  InstrumentAutomationIndex.eqFilterFreq0 + i];

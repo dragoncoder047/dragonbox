@@ -1018,7 +1018,7 @@ export class SongEditor {
     private readonly _envelopeDropdownGroup: HTMLElement = div({ class: "editor-controls", style: "display: none;" }, this._envelopeSpeedRow);
     private readonly _envelopeDropdown: HTMLButtonElement = button({ style: "margin-left:0em; margin-right: 1em; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this._toggleDropdownMenu(DropdownID.Envelope) }, "▼");
 
-    readonly _effectEditor: EffectEditor = new EffectEditor(this._doc, (name: string, effectIndex?: number) => this._openPrompt(name, effectIndex));
+    readonly effectEditor: EffectEditor = new EffectEditor(this._doc, (name: string, effectIndex?: number) => this._openPrompt(name, effectIndex));
 
     private readonly _drumsetGroup: HTMLElement = div({ class: "editor-controls" });
     private readonly _drumsetZoom: HTMLButtonElement = button({ style: "margin-left:0em; padding-left:0.3em; margin-right:0.5em; height:1.5em; max-width: 16px;", onclick: () => this._openPrompt("drumsetSettings") }, "+");
@@ -1155,7 +1155,7 @@ export class SongEditor {
             span({ style: `flex-grow: 1; text-align: center;` }, span({ class: "tip", onclick: () => this._openPrompt("effects") }, "Audio Effects")),
             div({ class: "effects-menu" }, this._effectsSelect),
         ),
-        this._effectEditor.container,
+        this.effectEditor.container,
         div({ style: `padding: 2px 0; margin-left: 2em; display: flex; align-items: center;` },
             span({ style: `flex-grow: 1; text-align: center;` }, span({ class: "tip", onclick: () => this._openPrompt("envelopes") }, "Envelopes")),
             this._envelopeDropdown,
@@ -1946,7 +1946,7 @@ export class SongEditor {
         switch (setting) {
             case Config.modulators.dictionary["pan"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.panning) index = i;
-                return this._effectEditor.panSliders[index];
+                return this.effectEditor.panSliders[index];
             case Config.modulators.dictionary["detune"].index:
                 return this._detuneSlider;
             case Config.modulators.dictionary["fm slider 1"].index:
@@ -1965,10 +1965,10 @@ export class SongEditor {
                 return this._decimalOffsetSlider;
             case Config.modulators.dictionary["reverb"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.reverb) index = i;
-                return this._effectEditor.reverbSliders[index];
+                return this.effectEditor.reverbSliders[index];
             case Config.modulators.dictionary["distortion"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.distortion) index = i;
-                return this._effectEditor.distortionSliders[index];
+                return this.effectEditor.distortionSliders[index];
             case Config.modulators.dictionary["pre volume"].index:
                 // So, this should technically not affect this slider, but it will look better as legacy songs used this mod as 'volume'.
                 // In the case that mix volume is used as well, they'd fight for the display, so just don't use this.
@@ -1987,41 +1987,41 @@ export class SongEditor {
                 return this._arpeggioSpeedSlider;
             case Config.modulators.dictionary["pan delay"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.panning) index = i;
-                return this._effectEditor.panDelaySliders[index];
+                return this.effectEditor.panDelaySliders[index];
             case Config.modulators.dictionary["tempo"].index:
                 return this._tempoSlider;
             case Config.modulators.dictionary["song volume"].index:
                 return this._volumeSlider;
             case Config.modulators.dictionary["post eq cut"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.eqFilter) index = i;
-                return this._effectEditor.eqFilterSimpleCutSliders[index];
+                return this.effectEditor.eqFilterSimpleCutSliders[index];
             case Config.modulators.dictionary["post eq peak"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.eqFilter) index = i;
-                return this._effectEditor.eqFilterSimplePeakSliders[index];
+                return this.effectEditor.eqFilterSimplePeakSliders[index];
             case Config.modulators.dictionary["pre eq cut"].index:
                 return this._noteFilterSimpleCutSlider;
             case Config.modulators.dictionary["pre eq peak"].index:
                 return this._noteFilterSimplePeakSlider;
             case Config.modulators.dictionary["bit crush"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.bitcrusher) index = i;
-                return this._effectEditor.bitcrusherQuantizationSliders[index];
+                return this.effectEditor.bitcrusherQuantizationSliders[index];
             case Config.modulators.dictionary["freq crush"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.bitcrusher) index = i;
-                return this._effectEditor.bitcrusherFreqSliders[index];
+                return this.effectEditor.bitcrusherFreqSliders[index];
             case Config.modulators.dictionary["pitch shift"].index:
                 return this._pitchShiftSlider;
             case Config.modulators.dictionary["chorus"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.chorus) index = i;
-                return this._effectEditor.chorusSliders[index];
+                return this.effectEditor.chorusSliders[index];
             case Config.modulators.dictionary["echo"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.echo) index = i;
-                return this._effectEditor.echoSustainSliders[index];
+                return this.effectEditor.echoSustainSliders[index];
             case Config.modulators.dictionary["echo delay"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.echo) index = i;
-                return this._effectEditor.echoDelaySliders[index];
+                return this.effectEditor.echoDelaySliders[index];
             case Config.modulators.dictionary["echo ping pong"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.echo) index = i;
-                return this._effectEditor.echoPingPongSliders[index];
+                return this.effectEditor.echoPingPongSliders[index];
             case Config.modulators.dictionary["sustain"].index:
                 return this._stringSustainSlider;
             case Config.modulators.dictionary["fm slider 5"].index:
@@ -2044,22 +2044,22 @@ export class SongEditor {
                 return this.envelopeEditor.perEnvelopeUpperBoundSliders[index];
             case Config.modulators.dictionary["ring modulation"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.ringModulation) index = i;
-                return this._effectEditor.ringModSliders[index]
+                return this.effectEditor.ringModSliders[index]
             case Config.modulators.dictionary["ring mod hertz"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.ringModulation) index = i;
-                return this._effectEditor.ringModHzSliders[index]
+                return this.effectEditor.ringModHzSliders[index]
             case Config.modulators.dictionary["granular"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.granular) index = i;
-                return this._effectEditor.granularSliders[index];
+                return this.effectEditor.granularSliders[index];
             case Config.modulators.dictionary["grain freq"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.granular) index = i;
-                return this._effectEditor.grainAmountsSliders[index];
+                return this.effectEditor.grainAmountsSliders[index];
             case Config.modulators.dictionary["grain size"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.granular) index = i;
-                return this._effectEditor.grainSizeSliders[index];
+                return this.effectEditor.grainSizeSliders[index];
             case Config.modulators.dictionary["grain range"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.granular) index = i;
-                return this._effectEditor.grainRangeSliders[index];
+                return this.effectEditor.grainRangeSliders[index];
             default:
                 return null;
         }
@@ -2381,14 +2381,13 @@ export class SongEditor {
         }
 
         this._effectsSelect.selectedIndex = -1;
-        for (let i: number = this._effectsSelect.childElementCount - 1; i < Config.effectOrder.length; i++) {
+        for (let i: number = this._effectsSelect.childElementCount - 1; i < Config.effectOrder.length - 1; i++) { // the - 1 is to prevent granular from being selected (because it doesnt work that well right now)
             this._effectsSelect.appendChild(option({ value: i }));
         }
         this._effectsSelect.selectedIndex = -1;
-        for (let i: number = 0; i < Config.effectOrder.length; i++) {
+        for (let i: number = 0; i < Config.effectOrder.length - 1; i++) {
             let effectFlag: number = Config.effectOrder[i];
-            const selected: boolean = instrument.effectsIncludeType(effectFlag);
-            const label: string = (selected ? textOnIcon : textOffIcon) + Config.effectNames[effectFlag];
+            const label: string = Config.effectNames[effectFlag];
             const option: HTMLOptionElement = <HTMLOptionElement>this._effectsSelect.children[i + 1];
             if (option.textContent != label) option.textContent = label;
         }
@@ -2783,7 +2782,7 @@ export class SongEditor {
             else
                 this._envelopeDropdownGroup.style.display = "none";
 
-            this._effectEditor.render();
+            this.effectEditor.render();
             this.envelopeEditor.render();
             this.envelopeEditor.rerenderExtraSettings();
 
@@ -3586,11 +3585,11 @@ export class SongEditor {
         } else {
             this._songEqFilterEditor.render();
         }
-        for (let i: number = 0; i < this._effectEditor.eqFilterEditors.length; i++) {
+        for (let i: number = 0; i < this.effectEditor.eqFilterEditors.length; i++) {
             if (this._doc.synth.isFilterModActive(false, 0, 0, true)) {
-                this._effectEditor.eqFilterEditors[i].render(true, this._ctrlHeld || this._shiftHeld);
+                this.effectEditor.eqFilterEditors[i].render(true, this._ctrlHeld || this._shiftHeld);
             } else {
-                this._effectEditor.eqFilterEditors[i].render();
+                this.effectEditor.eqFilterEditors[i].render();
             }
         }
         this._instrumentVolumeSlider.updateValue(instrument.volume);
@@ -3962,7 +3961,7 @@ export class SongEditor {
             || document.activeElement == this._unisonExpressionInputBox
             || document.activeElement == this._unisonSignInputBox
             || document.activeElement == this._monophonicNoteInputBox
-            || this._effectEditor.panSliderInputBoxes.find((element) => element == document.activeElement)
+            || this.effectEditor.panSliderInputBoxes.find((element) => element == document.activeElement)
             || this.envelopeEditor.pitchStartBoxes.find((element) => element == document.activeElement)
             || this.envelopeEditor.pitchEndBoxes.find((element) => element == document.activeElement)
             || this.envelopeEditor.perEnvelopeLowerBoundBoxes.find((element) => element == document.activeElement)
@@ -4779,9 +4778,9 @@ export class SongEditor {
         // ...and barscrollbar playhead
         this._barScrollBar.animatePlayhead();
         // ...and filters
-        for (let i: number = 0; i < this._effectEditor.eqFilterEditors.length; i++) {
+        for (let i: number = 0; i < this.effectEditor.eqFilterEditors.length; i++) {
             if (this._doc.synth.isFilterModActive(false, this._doc.channel, this._doc.getCurrentInstrument())) {
-                this._effectEditor.eqFilterEditors[i].render(true, this._ctrlHeld || this._shiftHeld);
+                this.effectEditor.eqFilterEditors[i].render(true, this._ctrlHeld || this._shiftHeld);
             }
         }
         if (this._doc.synth.isFilterModActive(true, this._doc.channel, this._doc.getCurrentInstrument())) {

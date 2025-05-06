@@ -920,14 +920,12 @@ export class Instrument {
         if (<any>type == -1) type = isModChannel ? InstrumentType.mod : (isNoiseChannel ? InstrumentType.noise : InstrumentType.chip);
         this.setTypeAndReset(type, isNoiseChannel, isModChannel);
 
-        this.addEffect(EffectType.panning);
-
         if (instrumentObject["preset"] != undefined) {
             this.preset = instrumentObject["preset"] >>> 0;
         }
 
         if (instrumentObject["volume"] != undefined) {
-            if (format == "jummbox" || format == "midbox" || format == "synthbox" || format == "goldbox" || format == "paandorasbox" || format == "ultrabox" || format == "slarmoosbox") {
+            if (format == "jummbox" || format == "midbox" || format == "synthbox" || format == "goldbox" || format == "paandorasbox" || format == "ultrabox" || format == "slarmoosbox" || format == "theepbox") {
                 this.volume = clamp(-Config.volumeRange / 2, (Config.volumeRange / 2) + 1, instrumentObject["volume"] | 0);
             } else {
                 this.volume = Math.round(-clamp(0, 8, Math.round(5 - (instrumentObject["volume"] | 0) / 20)) * 25.0 / 7.0);

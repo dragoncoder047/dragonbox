@@ -10023,12 +10023,11 @@ var beepbox = (function (exports) {
             if (type == -1)
                 type = isModChannel ? 10 : (isNoiseChannel ? 2 : 0);
             this.setTypeAndReset(type, isNoiseChannel, isModChannel);
-            this.addEffect(2);
             if (instrumentObject["preset"] != undefined) {
                 this.preset = instrumentObject["preset"] >>> 0;
             }
             if (instrumentObject["volume"] != undefined) {
-                if (format == "jummbox" || format == "midbox" || format == "synthbox" || format == "goldbox" || format == "paandorasbox" || format == "ultrabox" || format == "slarmoosbox") {
+                if (format == "jummbox" || format == "midbox" || format == "synthbox" || format == "goldbox" || format == "paandorasbox" || format == "ultrabox" || format == "slarmoosbox" || format == "theepbox") {
                     this.volume = clamp(-Config.volumeRange / 2, (Config.volumeRange / 2) + 1, instrumentObject["volume"] | 0);
                 }
                 else {

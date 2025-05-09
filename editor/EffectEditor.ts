@@ -1,6 +1,6 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Config, EffectType } from "../synth/SynthConfig";
+import { Config, EffectType, calculateRingModHertz } from "../synth/SynthConfig";
 import { Instrument } from "../synth/Instrument";
 import { Channel } from "../synth/Channel";
 import { Effect } from "../synth/Effect";
@@ -69,6 +69,11 @@ export class EffectEditor {
 	public readonly eqFilterSimpleCutSliders: Slider[] = [];
 	public readonly eqFilterSimplePeakSliders: Slider[] = [];
 
+	public readonly ringModHzNums: HTMLParagraphElement[] = [];
+	//public readonly grainRangeNums: HTMLParagraphElement[] = [];
+	//public readonly grainSizeNums: HTMLParagraphElement[] = [];
+	public readonly echoDelayNums: HTMLParagraphElement[] = [];
+
 	private _lastChange: Change | null = null;
 	private _viewedChannel: Channel | null = null;
 
@@ -90,10 +95,8 @@ export class EffectEditor {
 		} else if (panModeSelectIndex != -1) {
 			let effect: Effect = <Effect>instrument.effects[panModeSelectIndex];
 			this._doc.record(new ChangePanMode(this._doc, effect, parseInt(this.panModeSelects[panModeSelectIndex].value)));
-			console.log(this.panModeSelects[panModeSelectIndex].value)
 		} else if (aliasingBoxIndex != -1) {
 			let effect: Effect = <Effect>instrument.effects[aliasingBoxIndex];
-			console.log(this.aliasingBoxes[aliasingBoxIndex].value)
 			this._doc.record(new ChangeAliasing(this._doc, effect, this.aliasingBoxes[aliasingBoxIndex].checked));
 		} else if (this._lastChange != null) {
 			this._doc.record(this._lastChange);
@@ -135,11 +138,16 @@ export class EffectEditor {
 			this.panSliders[panSliderInputBoxIndex].updateValue(effect.pan);
 		}
 
+		// re-render non-input values
 		for (let effectIndex: number = 0; effectIndex < instrument.effectCount; effectIndex++) {
 			if (instrument.effects[effectIndex] == null) continue;
 			const effect: Effect = instrument.effects[effectIndex] as Effect;
 
 			this.panSliderInputBoxes[effectIndex].value = effect.pan + "";
+			this.ringModHzNums[effectIndex].innerHTML = calculateRingModHertz(effect.ringModulationHz / (Config.ringModHzRange - 1)) + " Hz";
+			//this.grainSizeNums[effectIndex].innerHTML = effect.grainSize * Config.grainSizeStep;
+			//this.grainRangeNums[effectIndex].innerHTML = effect.grainRange * Config.grainSizeStep;
+			this.echoDelayNums[effectIndex].innerHTML = (Math.round((effect.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat) * 1000) / 1000) + " beat(s)";
 		}
 		//this.render();
 	}
@@ -177,7 +185,7 @@ export class EffectEditor {
 				const grainRangeSlider: Slider = new Slider(HTML.input({ value: effect.grainRange, type: "range", min: "0", max: Config.grainRangeMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeGrainRange(this._doc, effect, newValue), false);
 				const echoSustainSlider: Slider = new Slider(HTML.input({ value: effect.echoSustain, type: "range", min: 0, max: Config.echoSustainRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEchoSustain(this._doc, effect, newValue), false);
 				const echoDelaySlider: Slider = new Slider(HTML.input({ value: effect.echoDelay, type: "range", min: 0, max: Config.echoDelayRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEchoDelay(this._doc, effect, newValue), false);
-				const echoPingPongSlider: Slider = new Slider(HTML.input({ value: effect.echoPingPong, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEchoPingPong(this._doc, effect, newValue), false);
+				const echoPingPongSlider: Slider = new Slider(HTML.input({ value: effect.echoPingPong, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEchoPingPong(this._doc, effect, newValue), true);
 				const panSlider: Slider = new Slider(HTML.input({ value: effect.pan, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangePan(this._doc, effect, newValue), true);
 				const panSliderInputBox: HTMLInputElement = HTML.input({ style: "width: 4em; font-size: 80%; ", id: "panSliderInputBox", type: "number", step: "1", min: "0", max: "100", value: effect.pan.toString() });
 				const panDelaySlider: Slider = new Slider(HTML.input({ value: effect.panDelay, type: "range", min: 0, max: Config.modulators.dictionary["pan delay"].maxRawVol, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangePanDelay(this._doc, effect, newValue), false);
@@ -198,18 +206,30 @@ export class EffectEditor {
 				panSliderInputBox.value = effect.pan + "";
 				aliasingBox.checked = instrument.aliases ? true : false;
 
+				// i've left the grain range and size display commented out for now because i don't really get what the numbers mean ~ theepie
+
+				//const grainSizeNum: HTMLParagraphElement = HTML.div({ style: "font-size: 80%; ", id: "grainSizeNum" });
+				//const grainRangeNum: HTMLParagraphElement = HTML.div({ style: "font-size: 80%; ", id: "grainRangeNum" });
+				const ringModHzNum: HTMLParagraphElement = HTML.div({ style: "font-size: 80%; ", id: "ringModHzNum" });
+				const echoDelayNum: HTMLParagraphElement = HTML.div({ style: "font-size: 80%; ", id: "echoDelayNum" });
+
+				ringModHzNum.innerHTML = calculateRingModHertz(effect.ringModulationHz / (Config.ringModHzRange - 1)) + " Hz";;
+				//grainSizeNum.innerHTML = effect.grainSize * Config.grainSizeStep;
+				//grainRangeNum.innerHTML = effect.grainRange * Config.grainSizeStep;
+				echoDelayNum.innerHTML = (Math.round((effect.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat) * 1000) / 1000) + " beat(s)";
+
 				const effectButtonsRow: HTMLDivElement = HTML.div({ class: "selectRow", style: `padding-left: 12.5%; max-width: 75%; height: 80%; padding-top: 0.2em;` }, effectButtonsText, moveupButton, movedownButton, minimizeButton, deleteButton);
 				const chorusRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("chorus") }, "Chorus:"), chorusSlider.container);
 				const reverbRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("reverb") }, "Reverb:"), reverbSlider.container);
 				const ringModWaveRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Wave:"), HTML.div({ class: "selectContainer" }, ringModWaveSelect));
 				const ringModRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringMod") }, "Ring Mod:"), ringModSlider.container);
-				const ringModHzRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Hertz:"), ringModHzSlider.container);
+				const ringModHzRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Hertz:"), HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, ringModHzNum), ringModHzSlider.container);
 				const granularRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("granular") }, "Granular:"), granularSlider.container);
-				const grainSizeRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainSize") }, "Grain Size:"), grainSizeSlider.container);
+				const grainSizeRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainSize") }, "Grain Size:"), /*HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, grainSizeNum),*/ grainSizeSlider.container);
 				const grainAmountsRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainAmounts") }, "Grain Amount:"), grainAmountsSlider.container);
-				const grainRangeRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainRange") }, "Grain Range:"), grainRangeSlider.container);
+				const grainRangeRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainRange") }, "Grain Range:"), /*HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, grainRangeNum),*/ grainRangeSlider.container);
 				const echoSustainRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echo") }, "Echo:"), echoSustainSlider.container);
-				const echoDelayRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Echo Delay:"), echoDelaySlider.container);
+				const echoDelayRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Echo Delay:"), HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, echoDelayNum), echoDelaySlider.container);
 				const echoPingPongRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Ping Pong:"), echoPingPongSlider.container);
 				const panRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.div({}, HTML.span({ class: "tip", tabindex: "0", style: "height:1em; font-size: smaller;", onclick: () => this._openPrompt("pan") }, "Pan: "), HTML.div({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, panSliderInputBox)), panSlider.container);
 				const panDelayRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("panDelay") }, "Pan Delay:"), panDelaySlider.container);
@@ -333,6 +353,11 @@ export class EffectEditor {
 				this.eqFilterEditors[effectIndex] = eqFilterEditor;
 				this.eqFilterSimpleCutSliders[effectIndex] = eqFilterSimpleCutSlider;
 				this.eqFilterSimplePeakSliders[effectIndex] = eqFilterSimplePeakSlider;
+
+				this.ringModHzNums[effectIndex] = ringModHzNum;
+				//this.grainRangeNums[effectIndex] = grainRangeNum;
+				//this.grainSizeNums[effectIndex] = grainSizeNum;
+				this.echoDelayNums[effectIndex] = echoDelayNum;
 
 				this._viewedChannel = this._doc.song.channels[this._doc.channel];
 			}

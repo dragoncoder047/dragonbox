@@ -765,8 +765,8 @@ var beepbox = (function (exports) {
     Config.mdeffectNames = ["pitch shift", "detune", "vibrato", "transition type", "chord type", "note range"];
     Config.mdeffectOrder = [3, 4, 0, 1, 2, 5];
     Config.noteSizeMax = 6;
-    Config.volumeRange = 50;
-    Config.volumeLogScale = 0.1428;
+    Config.volumeRange = 100;
+    Config.volumeLogScale = 0.0714;
     Config.panCenter = 50;
     Config.panMax = _a$1.panCenter * 2;
     Config.panDelaySecondsMax = 0.001;
@@ -1164,7 +1164,7 @@ var beepbox = (function (exports) {
     Config.pickedStringDispersionFreqScale = 0.3;
     Config.pickedStringDispersionFreqMult = 4.0;
     Config.pickedStringShelfHz = 4000.0;
-    Config.distortionRange = 8;
+    Config.distortionRange = 16;
     Config.stringSustainRange = 15;
     Config.stringDecayRate = 0.12;
     Config.enableAcousticSustain = false;
@@ -5827,10 +5827,6 @@ var beepbox = (function (exports) {
 				--mod4-secondary-note:    #c75000;
 				--mod4-primary-note:      #ff9752;
 				--text-disabled-icon: ✗ ;
-			}
-
-			html {
-				font-family: sans-serif;
 			}
 			`,
         "zefbox": `
@@ -11732,9 +11728,7 @@ li.select2-results__option[role=group] > strong:hover {
             this.type = type;
             this.preset = type;
             this.volume = 0;
-            for (let i = 0; i < Config.effectCount; i++) {
-                this.effects[i] = null;
-            }
+            this.effects = [];
             this.effectCount = 0;
             this.mdeffects = 0;
             for (let i = 0; i < Config.filterMorphCount; i++) {
@@ -11994,7 +11988,6 @@ li.select2-results__option[role=group] > strong:hover {
                 instrumentObject["vibratoSpeed"] = this.vibratoSpeed;
                 instrumentObject["vibratoType"] = this.vibratoType;
             }
-            instrumentObject["effects"] = this.effects;
             if (this.type != 4) {
                 instrumentObject["fadeInSeconds"] = Math.round(10000 * fadeInSettingToSeconds(this.fadeIn)) / 10000;
                 instrumentObject["fadeOutTicks"] = fadeOutSettingToTicks(this.fadeOut);
@@ -12212,9 +12205,7 @@ li.select2-results__option[role=group] > strong:hover {
             }
             this.envelopeSpeed = instrumentObject["envelopeSpeed"] != undefined ? clamp(0, Config.modulators.dictionary["envelope speed"].maxRawVol + 1, instrumentObject["envelopeSpeed"] | 0) : 12;
             if (Array.isArray(instrumentObject["effects"])) {
-                for (let i = 0; i < instrumentObject["effects"].length; i++) {
-                    this.addEffect(instrumentObject["effects"][i]);
-                }
+                this.effects = instrumentObject["effects"];
             }
             if (instrumentObject["mdeffects"] != undefined) {
                 this.mdeffects = instrumentObject["mdeffects"];
@@ -15497,7 +15488,10 @@ li.select2-results__option[role=group] > strong:hover {
                                             }
                                         }
                                         if (newEffect.type == 3) {
-                                            newEffect.distortion = clamp(0, Config.distortionRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            if (fromTheepBox)
+                                                newEffect.distortion = clamp(0, Config.distortionRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            else
+                                                newEffect.distortion = clamp(0, Config.distortionRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 2;
                                             if ((fromJummBox && !beforeFive) || fromGoldBox || fromUltraBox || fromSlarmoosBox)
                                                 instrument.aliases = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] ? true : false;
                                         }
@@ -15518,12 +15512,12 @@ li.select2-results__option[role=group] > strong:hover {
                                                 newEffect.panMode = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                         }
                                         if (newEffect.type == 1) {
-                                            if (fromBeepBox) {
-                                                newEffect.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 2;
-                                            }
-                                            else {
-                                                newEffect.chorus = clamp(0, Config.chorusRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                            }
+                                            if (fromTheepBox)
+                                                newEffect.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            else if (fromBeepBox)
+                                                newEffect.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 4;
+                                            else
+                                                newEffect.chorus = clamp(0, Config.chorusRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 2;
                                         }
                                         if (newEffect.type == 6) {
                                             if (!fromTheepBox)
@@ -15647,6 +15641,10 @@ li.select2-results__option[role=group] > strong:hover {
                             else if (fromBeepBox) {
                                 const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                                 instrument.volume = Math.round(clamp(-Config.volumeRange / 2, 1, -base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * 25.0 / 7.0));
+                            }
+                            else if (!fromTheepBox) {
+                                const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                                instrument.volume = Math.round(clamp(-Config.volumeRange / 2, Config.volumeRange / 2 + 1, ((base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)])) - Config.volumeRange / 2) * 2.0);
                             }
                             else {
                                 const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
@@ -30832,8 +30830,8 @@ li.select2-results__option[role=group] > strong:hover {
     class ChangeSongTitle extends Change {
         constructor(doc, oldValue, newValue) {
             super();
-            if (newValue.length > 30) {
-                newValue = newValue.substring(0, 30);
+            if (newValue.length > 63) {
+                newValue = newValue.substring(0, 63);
             }
             doc.song.title = newValue;
             document.title = newValue + " - " + EditorConfig.versionDisplayName;
@@ -39106,6 +39104,8 @@ You should be redirected to the song at:<br /><br />
             this.eqFilterEditors = [];
             this.eqFilterSimpleCutSliders = [];
             this.eqFilterSimplePeakSliders = [];
+            this.ringModHzNums = [];
+            this.echoDelayNums = [];
             this._lastChange = null;
             this._viewedChannel = null;
             this._onChange = (event) => {
@@ -39120,11 +39120,9 @@ You should be redirected to the song at:<br /><br />
                 else if (panModeSelectIndex != -1) {
                     let effect = instrument.effects[panModeSelectIndex];
                     this._doc.record(new ChangePanMode(this._doc, effect, parseInt(this.panModeSelects[panModeSelectIndex].value)));
-                    console.log(this.panModeSelects[panModeSelectIndex].value);
                 }
                 else if (aliasingBoxIndex != -1) {
                     let effect = instrument.effects[aliasingBoxIndex];
-                    console.log(this.aliasingBoxes[aliasingBoxIndex].value);
                     this._doc.record(new ChangeAliasing(this._doc, effect, this.aliasingBoxes[aliasingBoxIndex].checked));
                 }
                 else if (this._lastChange != null) {
@@ -39167,6 +39165,8 @@ You should be redirected to the song at:<br /><br />
                         continue;
                     const effect = instrument.effects[effectIndex];
                     this.panSliderInputBoxes[effectIndex].value = effect.pan + "";
+                    this.ringModHzNums[effectIndex].innerHTML = calculateRingModHertz(effect.ringModulationHz / (Config.ringModHzRange - 1)) + " Hz";
+                    this.echoDelayNums[effectIndex].innerHTML = (Math.round((effect.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat) * 1000) / 1000) + " beat(s)";
                 }
             };
             this._switchEQFilterType = (simpleFilter, effect) => {
@@ -39202,7 +39202,7 @@ You should be redirected to the song at:<br /><br />
                     const grainRangeSlider = new Slider(HTML.input({ value: effect.grainRange, type: "range", min: "0", max: Config.grainRangeMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeGrainRange(this._doc, effect, newValue), false);
                     const echoSustainSlider = new Slider(HTML.input({ value: effect.echoSustain, type: "range", min: 0, max: Config.echoSustainRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeEchoSustain(this._doc, effect, newValue), false);
                     const echoDelaySlider = new Slider(HTML.input({ value: effect.echoDelay, type: "range", min: 0, max: Config.echoDelayRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeEchoDelay(this._doc, effect, newValue), false);
-                    const echoPingPongSlider = new Slider(HTML.input({ value: effect.echoPingPong, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeEchoPingPong(this._doc, effect, newValue), false);
+                    const echoPingPongSlider = new Slider(HTML.input({ value: effect.echoPingPong, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangeEchoPingPong(this._doc, effect, newValue), true);
                     const panSlider = new Slider(HTML.input({ value: effect.pan, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangePan(this._doc, effect, newValue), true);
                     const panSliderInputBox = HTML.input({ style: "width: 4em; font-size: 80%; ", id: "panSliderInputBox", type: "number", step: "1", min: "0", max: "100", value: effect.pan.toString() });
                     const panDelaySlider = new Slider(HTML.input({ value: effect.panDelay, type: "range", min: 0, max: Config.modulators.dictionary["pan delay"].maxRawVol, step: 1, style: "margin: 0;" }), this._doc, (oldValue, newValue) => new ChangePanDelay(this._doc, effect, newValue), false);
@@ -39221,18 +39221,22 @@ You should be redirected to the song at:<br /><br />
                     setSelectedValue$1(panModeSelect, effect.panMode);
                     panSliderInputBox.value = effect.pan + "";
                     aliasingBox.checked = instrument.aliases ? true : false;
+                    const ringModHzNum = HTML.div({ style: "font-size: 80%; ", id: "ringModHzNum" });
+                    const echoDelayNum = HTML.div({ style: "font-size: 80%; ", id: "echoDelayNum" });
+                    ringModHzNum.innerHTML = calculateRingModHertz(effect.ringModulationHz / (Config.ringModHzRange - 1)) + " Hz";
+                    echoDelayNum.innerHTML = (Math.round((effect.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat) * 1000) / 1000) + " beat(s)";
                     const effectButtonsRow = HTML.div({ class: "selectRow", style: `padding-left: 12.5%; max-width: 75%; height: 80%; padding-top: 0.2em;` }, effectButtonsText, moveupButton, movedownButton, minimizeButton, deleteButton);
                     const chorusRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("chorus") }, "Chorus:"), chorusSlider.container);
                     const reverbRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("reverb") }, "Reverb:"), reverbSlider.container);
                     const ringModWaveRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Wave:"), HTML.div({ class: "selectContainer" }, ringModWaveSelect));
                     const ringModRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringMod") }, "Ring Mod:"), ringModSlider.container);
-                    const ringModHzRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Hertz:"), ringModHzSlider.container);
+                    const ringModHzRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Hertz:"), HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, ringModHzNum), ringModHzSlider.container);
                     const granularRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("granular") }, "Granular:"), granularSlider.container);
                     const grainSizeRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainSize") }, "Grain Size:"), grainSizeSlider.container);
                     const grainAmountsRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainAmounts") }, "Grain Amount:"), grainAmountsSlider.container);
                     const grainRangeRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainRange") }, "Grain Range:"), grainRangeSlider.container);
                     const echoSustainRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echo") }, "Echo:"), echoSustainSlider.container);
-                    const echoDelayRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Echo Delay:"), echoDelaySlider.container);
+                    const echoDelayRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Echo Delay:"), HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, echoDelayNum), echoDelaySlider.container);
                     const echoPingPongRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Ping Pong:"), echoPingPongSlider.container);
                     const panRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.div({}, HTML.span({ class: "tip", tabindex: "0", style: "height:1em; font-size: smaller;", onclick: () => this._openPrompt("pan") }, "Pan: "), HTML.div({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, panSliderInputBox)), panSlider.container);
                     const panDelayRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("panDelay") }, "Pan Delay:"), panDelaySlider.container);
@@ -39334,6 +39338,8 @@ You should be redirected to the song at:<br /><br />
                     this.eqFilterEditors[effectIndex] = eqFilterEditor;
                     this.eqFilterSimpleCutSliders[effectIndex] = eqFilterSimpleCutSlider;
                     this.eqFilterSimplePeakSliders[effectIndex] = eqFilterSimplePeakSlider;
+                    this.ringModHzNums[effectIndex] = ringModHzNum;
+                    this.echoDelayNums[effectIndex] = echoDelayNum;
                     this._viewedChannel = this._doc.song.channels[this._doc.channel];
                 }
             }
@@ -47616,7 +47622,7 @@ You should be redirected to the song at:<br /><br />
                 div({ style: "height:54px; display:flex; justify-content:center;" }, [this._customWaveDrawCanvas.canvas]),
                 div({ style: "margin-top:5px; display:flex; justify-content:center;" }, [this._customWavePresetDrop, this._customWaveZoom]),
             ]);
-            this._songTitleInputBox = new InputBox(input({ style: "font-weight:bold; border:none; width: 98%; background-color:${ColorConfig.editorBackground}; color:${ColorConfig.primaryText}; text-align:center", maxlength: "30", type: "text", value: EditorConfig.versionDisplayName }), this._doc, (oldValue, newValue) => new ChangeSongTitle(this._doc, oldValue, newValue));
+            this._songTitleInputBox = new InputBox(input({ style: "font-weight:bold; border:none; width: 98%; background-color:${ColorConfig.editorBackground}; color:${ColorConfig.primaryText}; text-align:center", maxlength: "63", type: "text", value: EditorConfig.versionDisplayName }), this._doc, (oldValue, newValue) => new ChangeSongTitle(this._doc, oldValue, newValue));
             this._feedbackAmplitudeSlider = new Slider(input({ type: "range", min: "0", max: Config.operatorAmplitudeMax, value: "0", step: "1", title: "Feedback Amplitude" }), this._doc, (oldValue, newValue) => new ChangeFeedbackAmplitude(this._doc, oldValue, newValue), false);
             this._feedbackRow2 = div({ class: "selectRow" }, span({ class: "tip", onclick: () => this._openPrompt("feedbackVolume") }, "Fdback Vol:"), this._feedbackAmplitudeSlider.container);
             this._addEnvelopeButton = button({ type: "button", class: "add-envelope" });

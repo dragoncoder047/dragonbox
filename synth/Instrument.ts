@@ -243,7 +243,7 @@ export class Instrument {
     public unisonOffset: number = 0.0;
     public unisonExpression: number = 1.4;
     public unisonSign: number = 1.0;
-    public effects: (Effect | null)[] = []; // having this array potentially include null is honestly a huge nuisance, and probably needs to be changed. coming soon! ~ theepie
+    public effects: Effect[] = [];
     public effectCount: number = 0;
     public mdeffects: number = 0;
     public chord: number = 1;
@@ -354,9 +354,7 @@ export class Instrument {
         this.type = type;
         this.preset = type;
         this.volume = 0;
-        for (let i: number = 0; i < Config.effectCount; i++) {
-            this.effects[i] = null;
-        }
+        this.effects = [];
         this.effectCount = 0;
         this.mdeffects = 0;
         for (let i: number = 0; i < Config.filterMorphCount; i++) {
@@ -661,7 +659,6 @@ export class Instrument {
             instrumentObject["vibratoSpeed"] = this.vibratoSpeed;
             instrumentObject["vibratoType"] = this.vibratoType;
         }
-        instrumentObject["effects"] = this.effects;
         /*
         for (let i: number = 0; i < this.effectCount; i++) {
             let effect: Effect | null = this.effects[i]
@@ -938,9 +935,12 @@ export class Instrument {
         this.envelopeSpeed = instrumentObject["envelopeSpeed"] != undefined ? clamp(0, Config.modulators.dictionary["envelope speed"].maxRawVol + 1, instrumentObject["envelopeSpeed"] | 0) : 12;
 
         if (Array.isArray(instrumentObject["effects"])) {
+            this.effects = instrumentObject["effects"];
+            /*
             for (let i: number = 0; i < instrumentObject["effects"].length; i++) {
                 this.addEffect(instrumentObject["effects"][i]);
             }
+            */
         } else {
             // The index of these names is reinterpreted as a bitfield, which relies on reverb and chorus being the first effects!
             //const legacyEffectsNames: string[] = ["none", "reverb", "chorus", "chorus & reverb"];

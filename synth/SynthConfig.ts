@@ -1221,10 +1221,10 @@ export class Config {
     public static readonly mdeffectOrder: ReadonlyArray<MDEffectType> = [MDEffectType.transition, MDEffectType.chord, MDEffectType.pitchShift, MDEffectType.detune, MDEffectType.vibrato, MDEffectType.noteRange];
     public static readonly mdeffectCount: 6
     public static readonly noteSizeMax: number = 6;
-    public static readonly volumeRange: number = 50;
+    public static readonly volumeRange: number = 100;
     // Beepbox's old volume scale used factor -0.5 and was [0~7] had roughly value 6 = 0.125 power. This new value is chosen to have -21 be the same,
     // given that the new scale is [-25~25]. This is such that conversion between the scales is roughly equivalent by satisfying (0.5*6 = 0.1428*21)
-    public static readonly volumeLogScale: number = 0.1428;
+    public static readonly volumeLogScale: number = 0.0714;
     public static readonly panCenter: number = 50;
     public static readonly panMax: number = Config.panCenter * 2;
     public static readonly panDelaySecondsMax: number = 0.001;
@@ -1714,7 +1714,7 @@ export class Config {
     public static readonly pickedStringDispersionFreqMult: number = 4.0; // The all-pass corner freq is based on this times the adjusted tone fundamental freq.
     public static readonly pickedStringShelfHz: number = 4000.0; // The cutoff freq of the shelf filter that is used to decay the high frequency energy in the picked string.
 
-    public static readonly distortionRange: number = 8;
+    public static readonly distortionRange: number = 16;
     public static readonly stringSustainRange: number = 15;
     public static readonly stringDecayRate: number = 0.12;
     public static readonly enableAcousticSustain: boolean = false;

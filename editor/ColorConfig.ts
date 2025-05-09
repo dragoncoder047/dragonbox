@@ -3106,10 +3106,6 @@ export class ColorConfig {
 				--mod4-primary-note:      #ff9752;
 				--text-disabled-icon: ✗ ;
 			}
-
-			html {
-				font-family: sans-serif;
-			}
 			`,
         "zefbox": `
 			:root {

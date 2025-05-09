@@ -2758,7 +2758,8 @@ export class Song {
                                 }
                             }
                             if (newEffect.type == EffectType.distortion) {
-                                newEffect.distortion = clamp(0, Config.distortionRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                if (fromTheepBox) newEffect.distortion = clamp(0, Config.distortionRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                else newEffect.distortion = clamp(0, Config.distortionRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 2;
                                 if ((fromJummBox && !beforeFive) || fromGoldBox || fromUltraBox || fromSlarmoosBox)
                                     instrument.aliases = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] ? true : false;
                             }
@@ -2780,13 +2781,9 @@ export class Song {
                                 if (fromTheepBox) newEffect.panMode = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                             }
                             if (newEffect.type == EffectType.chorus) {
-                                if (fromBeepBox) {
-                                    // BeepBox has 4 chorus values vs. JB's 8
-                                    newEffect.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 2;
-                                }
-                                else {
-                                    newEffect.chorus = clamp(0, Config.chorusRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                }
+                                if (fromTheepBox) newEffect.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                else if (fromBeepBox) newEffect.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 4;
+                                else newEffect.chorus = clamp(0, Config.chorusRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 2;
                             }
                             if (newEffect.type == EffectType.echo) {
                                 if (!fromTheepBox) newEffect.echoSustain = clamp(0, Config.echoSustainRange / 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 3;
@@ -2908,13 +2905,16 @@ export class Song {
                     // Beepbox v9's volume range is 0-7 (0 is max, 7 is mute)
                     const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     instrument.volume = Math.round(clamp(-Config.volumeRange / 2, 1, -base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * 25.0 / 7.0));
+                } else if (!fromTheepBox) {
+                    const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                    instrument.volume = Math.round(clamp(-Config.volumeRange / 2, Config.volumeRange / 2 + 1, ((base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)])) - Config.volumeRange / 2) * 2.0);
                 } else {
                     const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                    // Volume is stored in two bytes in jummbox just in case range ever exceeds one byte, e.g. through later waffling on the subject.
+                    // shoutouts to later waffling
                     instrument.volume = Math.round(clamp(-Config.volumeRange / 2, Config.volumeRange / 2 + 1, ((base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)])) - Config.volumeRange / 2));
                 }
             } break;
-            case SongTagCode.pan: { // ideally this tagcode would add a new panning effect. however, there are many other parts of the code that add this aswell! TODO: make this work again?
+            case SongTagCode.pan: { // ideally this tagcode would add a new panning effect. however, there are many other parts of the code that add this aswell! TODO: make this work again? ~ theepie
                 /*
                 if (beforeNine && fromBeepBox) {
                     // Beepbox has a panMax of 8 (9 total positions), Jummbox has a panMax of 100 (101 total positions)

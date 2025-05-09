@@ -751,8 +751,8 @@ var beepbox = (function (exports) {
     Config.mdeffectNames = ["pitch shift", "detune", "vibrato", "transition type", "chord type", "note range"];
     Config.mdeffectOrder = [3, 4, 0, 1, 2, 5];
     Config.noteSizeMax = 6;
-    Config.volumeRange = 50;
-    Config.volumeLogScale = 0.1428;
+    Config.volumeRange = 100;
+    Config.volumeLogScale = 0.0714;
     Config.panCenter = 50;
     Config.panMax = _a.panCenter * 2;
     Config.panDelaySecondsMax = 0.001;
@@ -1150,7 +1150,7 @@ var beepbox = (function (exports) {
     Config.pickedStringDispersionFreqScale = 0.3;
     Config.pickedStringDispersionFreqMult = 4.0;
     Config.pickedStringShelfHz = 4000.0;
-    Config.distortionRange = 8;
+    Config.distortionRange = 16;
     Config.stringSustainRange = 15;
     Config.stringDecayRate = 0.12;
     Config.enableAcousticSustain = false;
@@ -3167,9 +3167,7 @@ var beepbox = (function (exports) {
             this.type = type;
             this.preset = type;
             this.volume = 0;
-            for (let i = 0; i < Config.effectCount; i++) {
-                this.effects[i] = null;
-            }
+            this.effects = [];
             this.effectCount = 0;
             this.mdeffects = 0;
             for (let i = 0; i < Config.filterMorphCount; i++) {
@@ -3429,7 +3427,6 @@ var beepbox = (function (exports) {
                 instrumentObject["vibratoSpeed"] = this.vibratoSpeed;
                 instrumentObject["vibratoType"] = this.vibratoType;
             }
-            instrumentObject["effects"] = this.effects;
             if (this.type != 4) {
                 instrumentObject["fadeInSeconds"] = Math.round(10000 * fadeInSettingToSeconds(this.fadeIn)) / 10000;
                 instrumentObject["fadeOutTicks"] = fadeOutSettingToTicks(this.fadeOut);
@@ -3647,9 +3644,7 @@ var beepbox = (function (exports) {
             }
             this.envelopeSpeed = instrumentObject["envelopeSpeed"] != undefined ? clamp(0, Config.modulators.dictionary["envelope speed"].maxRawVol + 1, instrumentObject["envelopeSpeed"] | 0) : 12;
             if (Array.isArray(instrumentObject["effects"])) {
-                for (let i = 0; i < instrumentObject["effects"].length; i++) {
-                    this.addEffect(instrumentObject["effects"][i]);
-                }
+                this.effects = instrumentObject["effects"];
             }
             if (instrumentObject["mdeffects"] != undefined) {
                 this.mdeffects = instrumentObject["mdeffects"];
@@ -6932,7 +6927,10 @@ var beepbox = (function (exports) {
                                             }
                                         }
                                         if (newEffect.type == 3) {
-                                            newEffect.distortion = clamp(0, Config.distortionRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            if (fromTheepBox)
+                                                newEffect.distortion = clamp(0, Config.distortionRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            else
+                                                newEffect.distortion = clamp(0, Config.distortionRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 2;
                                             if ((fromJummBox && !beforeFive) || fromGoldBox || fromUltraBox || fromSlarmoosBox)
                                                 instrument.aliases = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] ? true : false;
                                         }
@@ -6953,12 +6951,12 @@ var beepbox = (function (exports) {
                                                 newEffect.panMode = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                         }
                                         if (newEffect.type == 1) {
-                                            if (fromBeepBox) {
-                                                newEffect.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 2;
-                                            }
-                                            else {
-                                                newEffect.chorus = clamp(0, Config.chorusRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                            }
+                                            if (fromTheepBox)
+                                                newEffect.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                            else if (fromBeepBox)
+                                                newEffect.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 4;
+                                            else
+                                                newEffect.chorus = clamp(0, Config.chorusRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 2;
                                         }
                                         if (newEffect.type == 6) {
                                             if (!fromTheepBox)
@@ -7082,6 +7080,10 @@ var beepbox = (function (exports) {
                             else if (fromBeepBox) {
                                 const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                                 instrument.volume = Math.round(clamp(-Config.volumeRange / 2, 1, -base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * 25.0 / 7.0));
+                            }
+                            else if (!fromTheepBox) {
+                                const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                                instrument.volume = Math.round(clamp(-Config.volumeRange / 2, Config.volumeRange / 2 + 1, ((base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)])) - Config.volumeRange / 2) * 2.0);
                             }
                             else {
                                 const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];

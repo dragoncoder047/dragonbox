@@ -11955,7 +11955,6 @@ li.select2-results__option[role=group] > strong:hover {
                 if (this.noteSubFilters[i] != null)
                     instrumentObject["noteSubFilters" + i] = this.noteSubFilters[i].toJsonObject();
             }
-            instrumentObject["effects"] = this.effects;
             instrumentObject["mdeffects"] = this.mdeffects;
             if (effectsIncludeTransition(this.mdeffects)) {
                 instrumentObject["transition"] = Config.transitions[this.transition].name;
@@ -12204,9 +12203,7 @@ li.select2-results__option[role=group] > strong:hover {
                 this.volume = 0;
             }
             this.envelopeSpeed = instrumentObject["envelopeSpeed"] != undefined ? clamp(0, Config.modulators.dictionary["envelope speed"].maxRawVol + 1, instrumentObject["envelopeSpeed"] | 0) : 12;
-            if (Array.isArray(instrumentObject["effects"])) {
-                this.effects = instrumentObject["effects"];
-            }
+            if (Array.isArray(instrumentObject["effects"])) ;
             if (instrumentObject["mdeffects"] != undefined) {
                 this.mdeffects = instrumentObject["mdeffects"];
             }

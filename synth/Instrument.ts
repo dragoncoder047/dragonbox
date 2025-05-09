@@ -626,7 +626,7 @@ export class Instrument {
                 instrumentObject["noteSubFilters" + i] = this.noteSubFilters[i]!.toJsonObject();
         }
 
-        instrumentObject["effects"] = this.effects;
+        //instrumentObject["effects"] = this.effects;
         instrumentObject["mdeffects"] = this.mdeffects;
 
         if (effectsIncludeTransition(this.mdeffects)) {
@@ -935,7 +935,7 @@ export class Instrument {
         this.envelopeSpeed = instrumentObject["envelopeSpeed"] != undefined ? clamp(0, Config.modulators.dictionary["envelope speed"].maxRawVol + 1, instrumentObject["envelopeSpeed"] | 0) : 12;
 
         if (Array.isArray(instrumentObject["effects"])) {
-            this.effects = instrumentObject["effects"];
+            //this.effects = instrumentObject["effects"];
             /*
             for (let i: number = 0; i < instrumentObject["effects"].length; i++) {
                 this.addEffect(instrumentObject["effects"][i]);

@@ -45,6 +45,7 @@ export class EnvelopeComputer {
     public nextSlideRatioEnd: number = 0.0;
 
     public startPinTickAbsolute: number | null = null;
+    private startPinTickDefaultPitch: number | null = null;
     private startPinTickPitch: number | null = null;
 
     public readonly envelopeStarts: number[] = [];
@@ -79,6 +80,7 @@ export class EnvelopeComputer {
         this.drumsetFilterEnvelopeStart = 0.0;
         this.drumsetFilterEnvelopeEnd = 0.0;
         this.startPinTickAbsolute = null;
+        this.startPinTickDefaultPitch = null;
         this.startPinTickPitch = null;
     }
 
@@ -136,7 +138,7 @@ export class EnvelopeComputer {
         let nextSlideRatioEnd: number = 0.0;
         if (tone == null) {
             this.startPinTickAbsolute = null;
-            this.startPinTickPitch = null;
+            this.startPinTickDefaultPitch = null;
         }
         if (tone != null && tone.note != null && !tone.passedEndOfNote) {
             const endPinIndex: number = tone.note.getEndPinIndex(currentPart);
@@ -144,7 +146,8 @@ export class EnvelopeComputer {
             const endPin: NotePin = tone.note.pins[endPinIndex];
             const startPinTick = (tone.note.start + startPin.time) * Config.ticksPerPart;
             if (this.startPinTickAbsolute == null || (!(transition.continues || transition.slides)) && tone.passedEndOfNote) this.startPinTickAbsolute = startPinTick + synth.computeTicksSinceStart(true); //for random per note
-            if (this.startPinTickPitch == null ||/* (!(transition.continues || transition.slides)) &&*/ tone.passedEndOfNote) this.startPinTickPitch = this.getPitchValue(instrument, tone, instrumentState, false);
+            if (this.startPinTickDefaultPitch == null ||/* (!(transition.continues || transition.slides)) &&*/ tone.passedEndOfNote) this.startPinTickDefaultPitch = this.getPitchValue(instrument, tone, instrumentState, false);
+            if (!tone.passedEndOfNote) this.startPinTickPitch = this.getPitchValue(instrument, tone, instrumentState, true);
             const endPinTick: number = (tone.note.start + endPin.time) * Config.ticksPerPart;
             const ratioStart: number = (tickTimeStartReal - startPinTick) / (endPinTick - startPinTick);
             const ratioEnd: number = (tickTimeEndReal - startPinTick) / (endPinTick - startPinTick);
@@ -200,7 +203,7 @@ export class EnvelopeComputer {
             let seed: number = 2;
             let waveform: number = LFOEnvelopeTypes.sine;
             let startPinTickAbsolute: number = this.startPinTickAbsolute || 0.0;
-            let defaultPitch: number = this.startPinTickPitch || 0.0;
+            let defaultPitch: number = this.startPinTickDefaultPitch || 0.0;
             if (envelopeIndex == instrument.envelopeCount) {
                 if (usedNoteSize /*|| !this._perNote*/) break;
                 // Special case: if no other envelopes used note size, default to applying it to note volume.
@@ -255,7 +258,7 @@ export class EnvelopeComputer {
                 if (envelope.type == EnvelopeType.noteSize) usedNoteSize = true;
             }
             //only calculate pitch if needed
-            const pitch: number = (envelope.type == EnvelopeType.pitch) ? this.computePitchEnvelope(instrument, envelopeIndex, this.getPitchValue(instrument, tone, instrumentState, true)) : 0;
+            const pitch: number = (envelope.type == EnvelopeType.pitch) ? this.computePitchEnvelope(instrument, envelopeIndex, (this.startPinTickPitch || this.getPitchValue(instrument, tone, instrumentState, true))) : 0;
 
             //calculate envelope values if target isn't null
             if (automationTarget.computeIndex != null) {

@@ -3116,113 +3116,101 @@ export class SongEditor {
                             allInstrumentReverbs: boolean = true,
                             allInstrumentRingMods: boolean = true,
                             allInstrumentGranulars: boolean = true;
-                        let instrumentCandidates: number[] = [];
 
                         for (let i: number = 0; i < instrument.modChannels[mod].length; i++) {
-                            let channel: Channel = this._doc.song.channels[modChannels[i]];
+                            let channel: Channel = this._doc.song.channels[instrument.modChannels[mod][i]];
+                            let instrumentIndex: number = instrument.modInstruments[mod][i];
 
-                            if (modInstruments[i] >= channel.instruments.length) {
-                                for (let i: number = 0; i < channel.instruments.length; i++) {
-                                    instrumentCandidates.push(i);
-                                }
+                            if (!tgtInstrumentTypes.includes(channel.instruments[instrumentIndex].type))
+                                tgtInstrumentTypes.push(channel.instruments[instrumentIndex].type);
+                            if (instrument.noteFilterType)
+                                anyInstrumentSimpleNote = true;
+                            else
+                                anyInstrumentAdvancedNote = true;
+                            if (effectsIncludeChord(channel.instruments[instrumentIndex].mdeffects) && channel.instruments[instrumentIndex].getChord().arpeggiates) {
+                                anyInstrumentArps = true;
+                            }
+                            if (effectsIncludePitchShift(channel.instruments[instrumentIndex].mdeffects)) {
+                                anyInstrumentPitchShifts = true;
                             } else {
-                                instrumentCandidates.push(modInstruments[i]);
+                                allInstrumentPitchShifts = false;
                             }
-                            for (let i: number = 0; i < instrumentCandidates.length; i++) {
-                                let instrumentIndex = instrumentCandidates[i];
-
-                                if (!tgtInstrumentTypes.includes(channel.instruments[instrumentIndex].type))
-                                    tgtInstrumentTypes.push(channel.instruments[instrumentIndex].type);
-                                if (instrument.noteFilterType)
-                                    anyInstrumentSimpleNote = true;
-                                else
-                                    anyInstrumentAdvancedNote = true;
-                                if (effectsIncludeChord(channel.instruments[instrumentIndex].mdeffects) && channel.instruments[instrumentIndex].getChord().arpeggiates) {
-                                    anyInstrumentArps = true;
-                                }
-                                if (effectsIncludePitchShift(channel.instruments[instrumentIndex].mdeffects)) {
-                                    anyInstrumentPitchShifts = true;
-                                } else {
-                                    allInstrumentPitchShifts = false;
-                                }
-                                if (effectsIncludeDetune(channel.instruments[instrumentIndex].mdeffects)) {
-                                    anyInstrumentDetunes = true;
-                                }
-                                else {
-                                    allInstrumentDetunes = false;
-                                }
-                                if (effectsIncludeVibrato(channel.instruments[instrumentIndex].mdeffects)) {
-                                    anyInstrumentVibratos = true;
-                                }
-                                else {
-                                    allInstrumentVibratos = false;
-                                }
-                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.eqFilter)) {
-                                    anyInstrumentEQFilters = true;
-                                    for (let j: number = 0; j < channel.instruments[instrumentIndex].effects.length; j++) {
-                                        let effect: Effect = channel.instruments[instrumentIndex].effects[j] as Effect;
-                                        if (effect.eqFilterType)
-                                            anyInstrumentSimpleEQ = true;
-                                        else
-                                            anyInstrumentAdvancedEQ = true;
-                                    }
-                                }
-                                else {
-                                    allInstrumentEQFilters = false;
-                                }
-                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.distortion)) {
-                                    anyInstrumentDistorts = true;
-                                }
-                                else {
-                                    allInstrumentDistorts = false;
-                                }
-                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.bitcrusher)) {
-                                    anyInstrumentBitcrushes = true;
-                                }
-                                else {
-                                    allInstrumentBitcrushes = false;
-                                }
-                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.panning)) {
-                                    anyInstrumentPans = true;
-                                }
-                                else {
-                                    allInstrumentPans = false;
-                                }
-                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.chorus)) {
-                                    anyInstrumentChorus = true;
-                                }
-                                else {
-                                    allInstrumentChorus = false;
-                                }
-                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.echo)) {
-                                    anyInstrumentEchoes = true;
-                                }
-                                else {
-                                    allInstrumentEchoes = false;
-                                }
-                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.reverb)) {
-                                    anyInstrumentReverbs = true;
-                                }
-                                else {
-                                    allInstrumentReverbs = false;
-                                }
-                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.ringModulation)) {
-                                    anyInstrumentRingMods = true;
-                                }
-                                else {
-                                    allInstrumentRingMods = false;
-                                }
-                                if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.granular)) {
-                                    anyInstrumentGranulars = true;
-                                }
-                                else {
-                                    allInstrumentGranulars = false;
-                                }
-                                if (channel.instruments[instrumentIndex].envelopes.length > 0) {
-                                    anyInstrumentHasEnvelopes = true;
+                            if (effectsIncludeDetune(channel.instruments[instrumentIndex].mdeffects)) {
+                                anyInstrumentDetunes = true;
+                            }
+                            else {
+                                allInstrumentDetunes = false;
+                            }
+                            if (effectsIncludeVibrato(channel.instruments[instrumentIndex].mdeffects)) {
+                                anyInstrumentVibratos = true;
+                            }
+                            else {
+                                allInstrumentVibratos = false;
+                            }
+                            if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.eqFilter)) {
+                                anyInstrumentEQFilters = true;
+                                for (let j: number = 0; j < channel.instruments[instrumentIndex].effects.length; j++) {
+                                    let effect: Effect = channel.instruments[instrumentIndex].effects[j] as Effect;
+                                    if (effect.eqFilterType)
+                                        anyInstrumentSimpleEQ = true;
+                                    else
+                                        anyInstrumentAdvancedEQ = true;
                                 }
                             }
-
+                            else {
+                                allInstrumentEQFilters = false;
+                            }
+                            if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.distortion)) {
+                                anyInstrumentDistorts = true;
+                            }
+                            else {
+                                allInstrumentDistorts = false;
+                            }
+                            if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.bitcrusher)) {
+                                anyInstrumentBitcrushes = true;
+                            }
+                            else {
+                                allInstrumentBitcrushes = false;
+                            }
+                            if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.panning)) {
+                                anyInstrumentPans = true;
+                            }
+                            else {
+                                allInstrumentPans = false;
+                            }
+                            if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.chorus)) {
+                                anyInstrumentChorus = true;
+                            }
+                            else {
+                                allInstrumentChorus = false;
+                            }
+                            if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.echo)) {
+                                anyInstrumentEchoes = true;
+                            }
+                            else {
+                                allInstrumentEchoes = false;
+                            }
+                            if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.reverb)) {
+                                anyInstrumentReverbs = true;
+                            }
+                            else {
+                                allInstrumentReverbs = false;
+                            }
+                            if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.ringModulation)) {
+                                anyInstrumentRingMods = true;
+                            }
+                            else {
+                                allInstrumentRingMods = false;
+                            }
+                            if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.granular)) {
+                                anyInstrumentGranulars = true;
+                            }
+                            else {
+                                allInstrumentGranulars = false;
+                            }
+                            if (channel.instruments[instrumentIndex].envelopes.length > 0) {
+                                anyInstrumentHasEnvelopes = true;
+                            }
                         }
                         if (tgtInstrumentTypes.includes(InstrumentType.fm)) {
                             settingList.push("fm slider 1");

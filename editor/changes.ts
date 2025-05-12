@@ -2125,7 +2125,6 @@ export class ChangeChannelCount extends Change {
                             // Bump indices - new pitch channel added, bump all noise mods.
                             if (modChannel >= oldPitchCount && oldPitchCount < newPitchChannelCount) {
                                 instrument.modChannels[mod][i] += newPitchChannelCount - oldPitchCount;
-                                console.log("here?")
                             } //BUG: this is (probably?) broken right now, pls fix
                         }
                     }
@@ -3686,8 +3685,6 @@ export class ChangeReplaceModChannel extends Change {
         }
         else instrument.modChannels[mod][index] += offset
 
-        console.log(instrument.modChannels[mod][index])
-
         doc.recalcModChannels = true;
 
         doc.notifier.changed();
@@ -3758,9 +3755,6 @@ export class ChangeModChannel extends Change {
                 instrument.modInstruments[mod] = [0]
             }
         }
-
-        console.log("chnls:"+instrument.modChannels[mod])
-        console.log("instr:"+instrument.modInstruments[mod])
 
         doc.recalcModChannels = true;
 

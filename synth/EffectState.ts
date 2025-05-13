@@ -160,6 +160,20 @@ export class EffectState {
 	public panningOffsetDeltaR: number = 0.0;
 	public panningMode: number = 0;
 
+	public flangerDelayLineL: Float32Array | null = null;
+	public flangerDelayLineR: Float32Array | null = null;
+	public flangerDelayLineDirty: boolean = false;
+	public flangerDelayPos: number = 0;
+	public flanger: number = 0;
+	public flangerDelta: number = 0;
+	public flangerSpeed: number = 0;
+	public flangerSpeedDelta: number = 0;
+	public flangerDepth: number = 0;
+	public flangerDepthDelta: number = 0;
+	public flangerFeedback: number = 0;
+	public flangerFeedbackDelta: number = 0;
+	public flangerPhase: number = 0;
+
 	public chorusDelayLineL: Float32Array | null = null;
 	public chorusDelayLineR: Float32Array | null = null;
 	public chorusDelayLineDirty: boolean = false;
@@ -224,6 +238,10 @@ export class EffectState {
 			for (let i: number = 0; i < this.chorusDelayLineL!.length; i++) this.chorusDelayLineL![i] = 0.0;
 			for (let i: number = 0; i < this.chorusDelayLineR!.length; i++) this.chorusDelayLineR![i] = 0.0;
 		}
+		if (this.flangerDelayLineDirty) {
+			for (let i: number = 0; i < this.flangerDelayLineL!.length; i++) this.flangerDelayLineL![i] = 0.0;
+			for (let i: number = 0; i < this.flangerDelayLineR!.length; i++) this.flangerDelayLineR![i] = 0.0;
+		}
 		if (this.echoDelayLineDirty) {
 			for (let i: number = 0; i < this.echoDelayLineL!.length; i++) this.echoDelayLineL![i] = 0.0;
 			for (let i: number = 0; i < this.echoDelayLineR!.length; i++) this.echoDelayLineR![i] = 0.0;
@@ -236,6 +254,7 @@ export class EffectState {
 			for (let i: number = 0; i < this.granularDelayLineR!.length; i++) this.granularDelayLineR![i] = 0.0;
 		}
 
+		this.flangerPhase = 0.0;
 		this.chorusPhase = 0.0;
 		this.ringModPhase = 0.0;
 		this.ringModMixFade = 1.0;
@@ -254,6 +273,14 @@ export class EffectState {
 			}
 			if (this.chorusDelayLineR == null || this.chorusDelayLineR.length < synth.chorusDelayBufferSize) {
 				this.chorusDelayLineR = new Float32Array(synth.chorusDelayBufferSize);
+			}
+		}
+		if (effect.type == EffectType.flanger) {
+			if (this.flangerDelayLineL == null || this.flangerDelayLineL.length < synth.flangerDelayBufferSize) {
+				this.flangerDelayLineL = new Float32Array(synth.flangerDelayBufferSize);
+			}
+			if (this.flangerDelayLineR == null || this.flangerDelayLineR.length < synth.flangerDelayBufferSize) {
+				this.flangerDelayLineR = new Float32Array(synth.flangerDelayBufferSize);
 			}
 		}
 		if (effect.type == EffectType.echo) {
@@ -341,6 +368,7 @@ export class EffectState {
 		this.distortionPrevInputR = 0.0;
 		this.distortionNextOutputL = 0.0;
 		this.distortionNextOutputR = 0.0;
+		this.flangerDelayPos = 0;
 		this.panningDelayPos = 0;
 		if (this.panningDelayLineL != null) for (let i: number = 0; i < this.panningDelayLineL.length; i++) this.panningDelayLineL[i] = 0.0;
 		if (this.panningDelayLineR != null) for (let i: number = 0; i < this.panningDelayLineR.length; i++) this.panningDelayLineR[i] = 0.0;
@@ -370,6 +398,7 @@ export class EffectState {
 		const usesBitcrusher: boolean = effect.type == EffectType.bitcrusher;
 		const usesGain: boolean = effect.type == EffectType.gain;
 		const usesPanning: boolean = effect.type == EffectType.panning;
+		const usesFlanger: boolean = effect.type == EffectType.flanger;
 		const usesChorus: boolean = effect.type == EffectType.chorus;
 		const usesEcho: boolean = effect.type == EffectType.echo;
 		const usesReverb: boolean = effect.type == EffectType.reverb;
@@ -685,6 +714,26 @@ export class EffectState {
 			this.chorusCombinedMultDelta = (chorusCombinedMultEnd - chorusCombinedMultStart) / roundedSamplesPerTick;
 		}
 
+		if (usesFlanger) {
+			const flangerEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.flanger];
+			const flangerEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.flanger];
+			let useFlangerStart: number = effect.flanger;
+			let useFlangerEnd: number = effect.flanger;
+			if (synth.isModActive(Config.modulators.dictionary["flanger"].index, channelIndex, instrumentIndex)) {
+				useFlangerStart = synth.getModValue(Config.modulators.dictionary["flanger"].index, channelIndex, instrumentIndex, false);
+				useFlangerEnd = synth.getModValue(Config.modulators.dictionary["flanger"].index, channelIndex, instrumentIndex, true);
+			}
+
+			let flangerStart: number = Math.min(1.0, flangerEnvelopeStart * useFlangerStart / (Config.flangerRange - 1));
+			let flangerEnd: number = Math.min(1.0, flangerEnvelopeEnd * useFlangerEnd / (Config.flangerRange - 1));
+
+			this.flanger = flangerStart;
+			this.flangerDelta = (flangerEnd - flangerStart) / roundedSamplesPerTick;
+			this.flangerSpeed = effect.flangerSpeed;
+			this.flangerDepth = effect.flangerDepth;
+			this.flangerFeedback = effect.flangerFeedback / Config.flangerFeedbackRange / 2.0;
+		}
+
 		if (usesRingModulation) {
 			let useRingModStart: number = effect.ringModulation;
 			let useRingModEnd: number = effect.ringModulation;
@@ -835,6 +884,10 @@ export class EffectState {
 				instrumentState.delayDuration += Config.chorusMaxDelay;
 			}
 
+			if (usesFlanger) {
+				instrumentState.delayDuration += Config.flangerMaxDelay;
+			}
+
 			if (usesEcho) {
 				const attenuationPerSecond: number = Math.pow(maxEchoMult, 1.0 / averageEchoDelaySeconds);
 				const halfLife: number = -1.0 / Math.log2(attenuationPerSecond);
@@ -860,6 +913,7 @@ export class EffectState {
 			//eqFilterVolumeEnd = 0.0;
 
 			if (usesChorus) instrumentState.totalDelaySamples += synth.chorusDelayBufferSize;
+			if (usesFlanger) instrumentState.totalDelaySamples += synth.flangerDelayBufferSize;
 			if (usesEcho) instrumentState.totalDelaySamples += this.echoDelayLineL!.length;
 			if (usesReverb) instrumentState.totalDelaySamples += Config.reverbDelayBufferSize;
 			if (usesGranular) instrumentState.totalDelaySamples += this.granularMaximumDelayTimeInSeconds;

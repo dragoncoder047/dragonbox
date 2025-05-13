@@ -329,10 +329,34 @@ export class TipPrompt implements Prompt {
 					p("The left side of the spectrum editor controls the noise energy at lower frequencies, and the right side controls higher frequencies."),
 				);
 			} break;
+			case "flanger": {
+				message = div(
+					h2("Flanger"),
+					p("The flanger effect adds a second copy of the sound and slowly shifts around it's phase in order to mimic voice doubling."),
+				);
+			} break;
+			case "flangerSpeed": {
+				message = div(
+					h2("Flanger Speed"),
+					p("The flanger effect adds a second copy of the sound and slowly shifts around it's phase. This setting controls how quickly the phase shifts."),
+				);
+			} break;
+			case "flangerDepth": {
+				message = div(
+					h2("Flanger Depth"),
+					p("The flanger effect adds a second copy of the sound and slowly shifts around it's phase. This setting controls how much the phase should shift by."),
+				);
+			} break;
+			case "flangerFeedback": {
+				message = div(
+					h2("Flanger Feedback"),
+					p("The flanger effect adds a second copy of the sound and slowly shifts around it's phase. This setting adds feedback, adding a distortion sound."),
+				);
+			} break;
 			case "chorus": {
 				message = div(
 					h2("Chorus"),
-					p("The chorus effect combines multiple copies of the instrument's sound and adds a bit of vibrato to simulate an ensemble of instruments or voices. Drag the slider to control how much chorus is added."),
+					p("The chorus effect combines multiple copies of the instrument's sound and adds a bit of vibrato to simulate an ensemble of instruments or voices."),
 				);
 			} break;
 			case "echoSustain": {

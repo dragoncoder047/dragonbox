@@ -4658,6 +4658,46 @@ export class ChangeEchoPingPong extends ChangeInstrumentSlider {
     }
 }
 
+export class ChangeFlanger extends ChangeInstrumentSlider {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
+        super(doc);
+        effect.flanger = newValue;
+        doc.synth.unsetMod(Config.modulators.dictionary["flanger"].index, doc.channel, doc.getCurrentInstrument());
+        doc.notifier.changed();
+        this._didSomething();
+    }
+}
+
+export class ChangeFlangerSpeed extends ChangeInstrumentSlider {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
+        super(doc);
+        effect.flangerSpeed = newValue;
+        //doc.synth.unsetMod(Config.modulators.dictionary["flanger speed"].index, doc.channel, doc.getCurrentInstrument());
+        doc.notifier.changed();
+        this._didSomething();
+    }
+}
+
+export class ChangeFlangerDepth extends ChangeInstrumentSlider {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
+        super(doc);
+        effect.flangerDepth = newValue;
+        //doc.synth.unsetMod(Config.modulators.dictionary["flanger depth"].index, doc.channel, doc.getCurrentInstrument());
+        doc.notifier.changed();
+        this._didSomething();
+    }
+}
+
+export class ChangeFlangerFeedback extends ChangeInstrumentSlider {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
+        super(doc);
+        effect.flangerFeedback = newValue;
+        //doc.synth.unsetMod(Config.modulators.dictionary["flanger feedback"].index, doc.channel, doc.getCurrentInstrument());
+        doc.notifier.changed();
+        this._didSomething();
+    }
+}
+
 export class ChangeChorus extends ChangeInstrumentSlider {
     constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super(doc);

@@ -3102,6 +3102,7 @@ export class SongEditor {
                             anyInstrumentBitcrushes: boolean = false,
                             anyInstrumentGain: boolean = false,
                             anyInstrumentPans: boolean = false,
+                            anyInstrumentFlanger: boolean = false,
                             anyInstrumentChorus: boolean = false,
                             anyInstrumentEchoes: boolean = false,
                             anyInstrumentReverbs: boolean = false,
@@ -3116,6 +3117,7 @@ export class SongEditor {
                             allInstrumentBitcrushes: boolean = true,
                             allInstrumentGain: boolean = true,
                             allInstrumentPans: boolean = true,
+                            allInstrumentFlanger: boolean = false,
                             allInstrumentChorus: boolean = true,
                             allInstrumentEchoes: boolean = true,
                             allInstrumentReverbs: boolean = true,
@@ -3189,7 +3191,13 @@ export class SongEditor {
                             else {
                                 allInstrumentGain = false;
                             }
-                            if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.chorus)) {
+                            if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.flanger)) {
+                                anyInstrumentFlanger = true;
+                            }
+                            else {
+                                allInstrumentFlanger = false;
+                            }
+                            if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.flanger)) {
                                 anyInstrumentChorus = true;
                             }
                             else {
@@ -3321,6 +3329,12 @@ export class SongEditor {
                         if (!allInstrumentPans) {
                             unusedSettingList.push("+ pan");
                             unusedSettingList.push("+ pan delay");
+                        }
+                        if (anyInstrumentFlanger) {
+                            settingList.push("flanger");
+                        }
+                        if (!allInstrumentFlanger) {
+                            unusedSettingList.push("+ flanger");
                         }
                         if (anyInstrumentChorus) {
                             settingList.push("chorus");

@@ -5,7 +5,7 @@ import { Instrument } from "../synth/Instrument";
 import { Channel } from "../synth/Channel";
 import { Effect } from "../synth/Effect";
 import { SongDocument } from "./SongDocument";
-import { ChangeChorus, ChangeReverb, ChangeRingModChipWave, ChangeRingMod, ChangeRingModHz, ChangeGranular, ChangeGrainSize, ChangeGrainAmounts, ChangeGrainRange, ChangeEchoDelay, ChangeEchoSustain, ChangeEchoPingPong, ChangeGain, ChangePan, ChangePanMode, ChangePanDelay, ChangeDistortion, ChangeAliasing, ChangeBitcrusherQuantization, ChangeBitcrusherFreq, ChangeEQFilterType, ChangeEQFilterSimpleCut, ChangeEQFilterSimplePeak, ChangeRemoveEffects, ChangeReorderEffects } from "./changes";
+import { ChangeChorus, ChangeReverb, ChangeFlanger, ChangeFlangerSpeed, ChangeFlangerDepth, ChangeFlangerFeedback, ChangeRingModChipWave, ChangeRingMod, ChangeRingModHz, ChangeGranular, ChangeGrainSize, ChangeGrainAmounts, ChangeGrainRange, ChangeEchoDelay, ChangeEchoSustain, ChangeEchoPingPong, ChangeGain, ChangePan, ChangePanMode, ChangePanDelay, ChangeDistortion, ChangeAliasing, ChangeBitcrusherQuantization, ChangeBitcrusherFreq, ChangeEQFilterType, ChangeEQFilterSimpleCut, ChangeEQFilterSimplePeak, ChangeRemoveEffects, ChangeReorderEffects } from "./changes";
 import { HTML } from "imperative-html/dist/esm/elements-strict";
 import { Change } from "./Change";
 import { FilterEditor } from "./FilterEditor";
@@ -45,6 +45,10 @@ export class EffectEditor {
 
 	public readonly chorusSliders: Slider[] = [];
 	public readonly reverbSliders: Slider[] = [];
+	public readonly flangerSliders: Slider[] = [];
+	public readonly flangerSpeedSliders: Slider[] = [];
+	public readonly flangerDepthSliders: Slider[] = [];
+	public readonly flangerFeedbackSliders: Slider[] = [];
 	public readonly ringModWaveSelects: HTMLSelectElement[] = [];
 	public readonly ringModSliders: Slider[] = [];
 	public readonly ringModHzSliders: Slider[] = [];
@@ -185,6 +189,10 @@ export class EffectEditor {
 
 				const chorusSlider: Slider = new Slider(HTML.input({ value: effect.chorus, type: "range", min: 0, max: Config.chorusRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeChorus(this._doc, effect, newValue), false);
 				const reverbSlider: Slider = new Slider(HTML.input({ value: effect.reverb, type: "range", min: 0, max: Config.reverbRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeReverb(this._doc, effect, newValue), false);
+				const flangerSlider: Slider = new Slider(HTML.input({ value: effect.flanger, type: "range", min: 0, max: Config.flangerRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeFlanger(this._doc, effect, newValue), false);
+				const flangerSpeedSlider: Slider = new Slider(HTML.input({ value: effect.flangerSpeed, type: "range", min: 1, max: Config.flangerSpeedRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeFlangerSpeed(this._doc, effect, newValue), false);
+				const flangerDepthSlider: Slider = new Slider(HTML.input({ value: effect.flangerDepth, type: "range", min: 1, max: Config.flangerDepthRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeFlangerDepth(this._doc, effect, newValue), false);
+				const flangerFeedbackSlider: Slider = new Slider(HTML.input({ value: effect.flangerFeedback, type: "range", min: 0, max: Config.flangerFeedbackRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeFlangerFeedback(this._doc, effect, newValue), false);
 				const ringModWaveSelect: HTMLSelectElement = buildOptions(HTML.select(), Config.operatorWaves.map(wave => wave.name));
 				const ringModSlider: Slider = new Slider(HTML.input({ value: effect.ringModulation, type: "range", min: 0, max: Config.ringModRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeRingMod(this._doc, effect, newValue), false);
 				const ringModHzSlider: Slider = new Slider(HTML.input({ value: effect.ringModulationHz, type: "range", min: 0, max: Config.ringModHzRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeRingModHz(this._doc, effect, newValue), false);
@@ -233,6 +241,10 @@ export class EffectEditor {
 				const effectButtonsRow: HTMLDivElement = HTML.div({ class: "selectRow", style: `padding-left: 12.5%; max-width: 75%; height: 80%; padding-top: 0.2em;` }, effectButtonsText, moveupButton, movedownButton, minimizeButton, deleteButton);
 				const chorusRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("chorus") }, "Chorus:"), chorusSlider.container);
 				const reverbRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("reverb") }, "Reverb:"), reverbSlider.container);
+				const flangerRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("flanger") }, "Flanger:"), flangerSlider.container);
+				const flangerSpeedRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("flangerSpeed") }, "Speed:"), flangerSpeedSlider.container);
+				const flangerDepthRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("flangerDepth") }, "Depth:"), flangerDepthSlider.container);
+				const flangerFeedbackRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("flangerFeedback") }, "Feedback:"), flangerFeedbackSlider.container);
 				const ringModWaveRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Wave:"), HTML.div({ class: "selectContainer" }, ringModWaveSelect));
 				const ringModRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringMod") }, "Ring Mod:"), ringModSlider.container);
 				const ringModHzRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Hertz:"), HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, ringModHzNum), ringModHzSlider.container);
@@ -263,6 +275,11 @@ export class EffectEditor {
 						reverbRow.style.display = "";
 					} else if (effect.type == EffectType.chorus) {
 						chorusRow.style.display = "";
+					} else if (effect.type == EffectType.flanger) {
+						flangerRow.style.display = "";
+						flangerSpeedRow.style.display = "";
+						flangerDepthRow.style.display = "";
+						flangerFeedbackRow.style.display = "";
 					} else if (effect.type == EffectType.ringModulation) {
 						ringModRow.style.display = "";
 						ringModHzRow.style.display = "";
@@ -311,6 +328,10 @@ export class EffectEditor {
 					effectButtonsRow,
 					chorusRow,
 					reverbRow,
+					flangerRow,
+					flangerSpeedRow,
+					flangerDepthRow,
+					flangerFeedbackRow,
 					ringModRow,
 					ringModHzRow,
 					ringModWaveRow,
@@ -346,6 +367,10 @@ export class EffectEditor {
 
 				this.chorusSliders[effectIndex] = chorusSlider;
 				this.reverbSliders[effectIndex] = reverbSlider;
+				this.flangerSliders[effectIndex] = flangerSlider;
+				this.flangerSpeedSliders[effectIndex] = flangerSpeedSlider;
+				this.flangerDepthSliders[effectIndex] = flangerDepthSlider;
+				this.flangerFeedbackSliders[effectIndex] = flangerFeedbackSlider;
 				this.ringModWaveSelects[effectIndex] = ringModWaveSelect;
 				this.ringModSliders[effectIndex] = ringModSlider;
 				this.ringModHzSliders[effectIndex] = ringModHzSlider;

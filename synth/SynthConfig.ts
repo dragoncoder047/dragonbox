@@ -121,6 +121,7 @@ export const enum EffectType {
     ringModulation,
     granular,
     gain,
+    flanger,
     length,
 }
 
@@ -160,6 +161,7 @@ export const enum EnvelopeComputeIndex {
     grainRange,
     echoDelay,
     gain,
+    flanger,
     //Add more here
 
     length,
@@ -1215,10 +1217,10 @@ export class Config {
 		
         //for modbox; voices = riffapp, spread = intervals, offset = offsets, expression = volume, and sign = signs
     ]);
-    public static readonly effectNames: ReadonlyArray<string> = ["reverb", "chorus", "panning", "distortion", "bitcrusher", "post eq", "echo", "ring mod", "granular", "gain"];
-    public static readonly effectDisplayNames: ReadonlyArray<string> = ["Reverb", "Chorus", "Panning", "Distortion", "Bitcrusher", "Post EQ", "Echo", "Ring Mod", "Granular", "Gain"];
-    public static readonly effectOrder: ReadonlyArray<EffectType> = [EffectType.reverb, EffectType.chorus, EffectType.panning, EffectType.distortion, EffectType.bitcrusher, EffectType.eqFilter,EffectType.echo,  EffectType.ringModulation, EffectType.granular, EffectType.gain];
-    public static readonly effectCount: 10
+    public static readonly effectNames: ReadonlyArray<string> = ["reverb", "chorus", "panning", "distortion", "bitcrusher", "post eq", "echo", "ring mod", "granular", "gain", "flanger"];
+    public static readonly effectDisplayNames: ReadonlyArray<string> = ["Reverb", "Chorus", "Panning", "Distortion", "Bitcrusher", "Post EQ", "Echo", "Ring Mod", "Granular", "Gain", "Flanger"];
+    public static readonly effectOrder: ReadonlyArray<EffectType> = [EffectType.reverb, EffectType.chorus, EffectType.panning, EffectType.distortion, EffectType.bitcrusher, EffectType.eqFilter,EffectType.echo,  EffectType.ringModulation, EffectType.granular, EffectType.gain, EffectType.flanger];
+    public static readonly effectCount: 11
     public static readonly mdeffectNames: ReadonlyArray<string> = ["pitch shift", "detune", "vibrato", "transition type", "chord type", "note range"];
     public static readonly mdeffectOrder: ReadonlyArray<MDEffectType> = [MDEffectType.transition, MDEffectType.chord, MDEffectType.pitchShift, MDEffectType.detune, MDEffectType.vibrato, MDEffectType.noteRange];
     public static readonly mdeffectCount: 6
@@ -1245,6 +1247,12 @@ export class Config {
     public static readonly grainRangeMax: number = 1600;
     public static readonly grainAmountsMax: number = 10; //2^grainAmountsMax is what is actually used
     public static readonly granularEnvelopeType: number = GranularEnvelopeType.parabolic; //here you can change which envelope implementation is used for grains (RaisedCosineBell still needs work)
+    public static readonly flangerRange: number = 24;
+    public static readonly flangerSpeedRange: number = 24;
+    public static readonly flangerDepthRange: number = 24;
+    public static readonly flangerFeedbackRange: number = 24;
+    public static readonly flangerMaxDelay: number = 0.0034 * 4.35;
+    public static readonly flangerPeriodMult: number = 0.000002;
     public static readonly chorusRange: number = 24;
     public static readonly chorusPeriodSeconds: number = 2.0;
     public static readonly chorusDelayRange: number = 0.0034;
@@ -1754,6 +1762,7 @@ export class Config {
         { name: "distortion", computeIndex: EnvelopeComputeIndex.distortion, displayName: "distortion", /*perNote:  true,*/ interleave: false, isFilter: false, /*range: Config.defaultAutomationRange,  */    maxCount: 1, effect: EffectType.distortion, mdeffect: null, compatibleInstruments: null },
         { name: "bitcrusherQuantization", computeIndex: EnvelopeComputeIndex.bitcrusherQuantization, displayName: "bitcrush", /*perNote:  true,*/ interleave: false, isFilter: false, /*range: Config.defaultAutomationRange,  */    maxCount: 1, effect: EffectType.bitcrusher, mdeffect: null, compatibleInstruments: null },
         { name: "bitcrusherFrequency", computeIndex: EnvelopeComputeIndex.bitcrusherFrequency, displayName: "freq crush", /*perNote:  true,*/ interleave: false, isFilter: false, /*range: Config.defaultAutomationRange,  */    maxCount: 1, effect: EffectType.bitcrusher, mdeffect: null, compatibleInstruments: null },
+        { name: "flanger", computeIndex: EnvelopeComputeIndex.flanger, displayName: "flanger", /*perNote:  false,*/                      interleave: false, isFilter: false, /*range: Config.chorusRange,    */  maxCount: 1, effect: EffectType.flanger, mdeffect: null, compatibleInstruments: null },
         { name: "chorus", computeIndex: EnvelopeComputeIndex.chorus, displayName: "chorus", /*perNote:  false,*/                      interleave: false, isFilter: false, /*range: Config.chorusRange,    */  maxCount: 1, effect: EffectType.chorus, mdeffect: null, compatibleInstruments: null },
         { name: "echoSustain", computeIndex: EnvelopeComputeIndex.echoSustain, displayName: "echo", /*perNote:  false,*/              interleave: false, isFilter: false,  /*range: Config.chorusRange,    */  maxCount: 1, effect: EffectType.echo, mdeffect: null, compatibleInstruments: null },
         { name: "reverb", computeIndex: EnvelopeComputeIndex.reverb, displayName: "reverb", /*perNote:  false,*/              interleave: false, isFilter: false,  /*range: Config.chorusRange,    */  maxCount: 1, effect: EffectType.reverb, mdeffect: null, compatibleInstruments: null },
@@ -1870,6 +1879,8 @@ export class Config {
         { name: "echo ping pong", pianoName: "Ping-Pong", maxRawVol: Config.panMax, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: EffectType.echo, associatedMDEffect: MDEffectType.length, maxIndex: 0,
             promptName: "Instrument Ping Pong", promptDesc: ["This setting controls the echo ping-pong of your instrument, just like the echo delay slider.", "At $LO, the echo will start fully from the left-ear side. At $MID there will be no echo ping pong, and at $HI, it will start coming fully from the right.", "[OVERWRITING] [$LO - $HI] [L-R]" ]
         },
+        { name: "flanger", pianoName: "Flanger", maxRawVol: Config.flangerRange - 1, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: EffectType.flanger, associatedMDEffect: MDEffectType.length, maxIndex: 0,
+            promptName: "Instrument Flanger", promptDesc: ["This setting controls the flanger strength of your instrument, just like the flanger slider.", "At $LO, the flanger effect will be disabled. The strength of the flanger effect increases up to the max value, $HI.", "[OVERWRITING] [$LO - $HI]"] },
         { name: "chorus", pianoName: "Chorus", maxRawVol: Config.chorusRange - 1, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: EffectType.chorus, associatedMDEffect: MDEffectType.length, maxIndex: 0,
             promptName: "Instrument Chorus", promptDesc: ["This setting controls the chorus strength of your instrument, just like the chorus slider.", "At $LO, the chorus effect will be disabled. The strength of the chorus effect increases up to the max value, $HI.", "[OVERWRITING] [$LO - $HI]"] },
         { name: "post eq cut", pianoName: "PostEQ Cut", maxRawVol: Config.filterSimpleCutRange - 1, newNoteVol: Config.filterSimpleCutRange - 1, forSong: false, convertRealFactor: 0, associatedEffect: EffectType.length, associatedMDEffect: MDEffectType.length, maxIndex: 0,

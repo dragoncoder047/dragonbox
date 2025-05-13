@@ -36,6 +36,10 @@ export class Effect {
 	public grainSize: number = (Config.grainSizeMax-Config.grainSizeMin)/Config.grainSizeStep;
 	public grainAmounts: number = Config.grainAmountsMax;
 	public grainRange: number = 40;
+	public flanger: number = 0;
+	public flangerSpeed: number = 1;
+	public flangerDepth: number = 1;
+	public flangerFeedback: number = 0;
 	public chorus: number = 0;
 	public reverb: number = 0;
 	public echoSustain: number = 0;

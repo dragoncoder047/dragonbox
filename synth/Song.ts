@@ -963,6 +963,12 @@ export class Song {
                         buffer.push(base64IntToCharCode[effect.panDelay]);
                         buffer.push(base64IntToCharCode[effect.panMode]);
                     }
+                    else if (effect.type == EffectType.flanger) {
+                        buffer.push(base64IntToCharCode[effect.flanger]);
+                        buffer.push(base64IntToCharCode[effect.flangerSpeed]);
+                        buffer.push(base64IntToCharCode[effect.flangerDepth]);
+                        buffer.push(base64IntToCharCode[effect.flangerFeedback]);
+                    }
                     else if (effect.type == EffectType.chorus) {
                         buffer.push(base64IntToCharCode[effect.chorus]);
                     }
@@ -2786,6 +2792,12 @@ export class Song {
                                 // Now, pan delay follows on new versions of jummbox.
                                 if ((fromJummBox && !beforeTwo) || fromGoldBox || fromUltraBox || fromSlarmoosBox) newEffect.panDelay = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                 if (fromTheepBox) newEffect.panMode = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                            }
+                            if (newEffect.type == EffectType.flanger) {
+                                newEffect.flanger = clamp(0, Config.flangerRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                newEffect.flangerSpeed = clamp(0, Config.flangerSpeedRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                newEffect.flangerDepth = clamp(0, Config.flangerDepthRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                newEffect.flangerFeedback = clamp(0, Config.flangerFeedbackRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             }
                             if (newEffect.type == EffectType.chorus) {
                                 if (fromTheepBox) newEffect.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);

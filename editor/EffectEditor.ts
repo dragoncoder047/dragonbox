@@ -5,7 +5,7 @@ import { Instrument } from "../synth/Instrument";
 import { Channel } from "../synth/Channel";
 import { Effect } from "../synth/Effect";
 import { SongDocument } from "./SongDocument";
-import { ChangeChorus, ChangeReverb, ChangeRingModChipWave, ChangeRingMod, ChangeRingModHz, ChangeGranular, ChangeGrainSize, ChangeGrainAmounts, ChangeGrainRange, ChangeEchoDelay, ChangeEchoSustain, ChangeEchoPingPong, ChangePan, ChangePanMode, ChangePanDelay, ChangeDistortion, ChangeAliasing, ChangeBitcrusherQuantization, ChangeBitcrusherFreq, ChangeEQFilterType, ChangeEQFilterSimpleCut, ChangeEQFilterSimplePeak, ChangeRemoveEffects, ChangeReorderEffects } from "./changes";
+import { ChangeChorus, ChangeReverb, ChangeRingModChipWave, ChangeRingMod, ChangeRingModHz, ChangeGranular, ChangeGrainSize, ChangeGrainAmounts, ChangeGrainRange, ChangeEchoDelay, ChangeEchoSustain, ChangeEchoPingPong, ChangeGain, ChangePan, ChangePanMode, ChangePanDelay, ChangeDistortion, ChangeAliasing, ChangeBitcrusherQuantization, ChangeBitcrusherFreq, ChangeEQFilterType, ChangeEQFilterSimpleCut, ChangeEQFilterSimplePeak, ChangeRemoveEffects, ChangeReorderEffects } from "./changes";
 import { HTML } from "imperative-html/dist/esm/elements-strict";
 import { Change } from "./Change";
 import { FilterEditor } from "./FilterEditor";
@@ -55,6 +55,8 @@ export class EffectEditor {
 	public readonly echoSustainSliders: Slider[] = [];
 	public readonly echoDelaySliders: Slider[] = [];
 	public readonly echoPingPongSliders: Slider[] = [];
+	public readonly gainSliders: Slider[] = [];
+	public readonly gainSliderInputBoxes: HTMLInputElement[] = [];
 	public readonly panSliders: Slider[] = [];
 	public readonly panSliderInputBoxes: HTMLInputElement[] = [];
 	public readonly panDelaySliders: Slider[] = [];
@@ -129,6 +131,7 @@ export class EffectEditor {
 
 	private _onInput = (event: Event): void => {
 		const panSliderInputBoxIndex: number = this.panSliderInputBoxes.indexOf(<any>event.target);
+		const gainSliderInputBoxIndex: number = this.gainSliderInputBoxes.indexOf(<any>event.target);
 
 		const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
 
@@ -137,6 +140,11 @@ export class EffectEditor {
 			this._doc.record(new ChangePan(this._doc, effect, Math.min(100.0, Math.max(0.0, Math.round(+this.panSliderInputBoxes[panSliderInputBoxIndex].value)))));
 			this.panSliders[panSliderInputBoxIndex].updateValue(effect.pan);
 		}
+		if (gainSliderInputBoxIndex != -1) {
+			let effect: Effect = <Effect>instrument.effects[gainSliderInputBoxIndex];
+			this._doc.record(new ChangeGain(this._doc, effect, Math.min(100.0, Math.max(0.0, Math.round(+this.gainSliderInputBoxes[gainSliderInputBoxIndex].value)))));
+			this.gainSliders[gainSliderInputBoxIndex].updateValue(effect.gain);
+		}
 
 		// re-render non-input values
 		for (let effectIndex: number = 0; effectIndex < instrument.effectCount; effectIndex++) {
@@ -144,6 +152,7 @@ export class EffectEditor {
 			const effect: Effect = instrument.effects[effectIndex] as Effect;
 
 			this.panSliderInputBoxes[effectIndex].value = effect.pan + "";
+			this.gainSliderInputBoxes[effectIndex].value = effect.gain + "";
 			this.ringModHzNums[effectIndex].innerHTML = calculateRingModHertz(effect.ringModulationHz / (Config.ringModHzRange - 1)) + " Hz";
 			//this.grainSizeNums[effectIndex].innerHTML = effect.grainSize * Config.grainSizeStep;
 			//this.grainRangeNums[effectIndex].innerHTML = effect.grainRange * Config.grainSizeStep;
@@ -186,6 +195,8 @@ export class EffectEditor {
 				const echoSustainSlider: Slider = new Slider(HTML.input({ value: effect.echoSustain, type: "range", min: 0, max: Config.echoSustainRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEchoSustain(this._doc, effect, newValue), false);
 				const echoDelaySlider: Slider = new Slider(HTML.input({ value: effect.echoDelay, type: "range", min: 0, max: Config.echoDelayRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEchoDelay(this._doc, effect, newValue), false);
 				const echoPingPongSlider: Slider = new Slider(HTML.input({ value: effect.echoPingPong, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEchoPingPong(this._doc, effect, newValue), true);
+				const gainSlider: Slider = new Slider(HTML.input({ value: effect.gain, type: "range", min: 0, max: Config.volumeRange / 2 * Config.gainRangeMult, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeGain(this._doc, effect, newValue), true);
+				const gainSliderInputBox: HTMLInputElement = HTML.input({ style: "width: 4em; font-size: 80%; ", id: "gainSliderInputBox", type: "number", step: "1", min: "0", max:  Config.volumeRange * Config.gainRangeMult + "", value: effect.gain.toString() });
 				const panSlider: Slider = new Slider(HTML.input({ value: effect.pan, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangePan(this._doc, effect, newValue), true);
 				const panSliderInputBox: HTMLInputElement = HTML.input({ style: "width: 4em; font-size: 80%; ", id: "panSliderInputBox", type: "number", step: "1", min: "0", max: "100", value: effect.pan.toString() });
 				const panDelaySlider: Slider = new Slider(HTML.input({ value: effect.panDelay, type: "range", min: 0, max: Config.modulators.dictionary["pan delay"].maxRawVol, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangePanDelay(this._doc, effect, newValue), false);
@@ -204,6 +215,7 @@ export class EffectEditor {
 				setSelectedValue(ringModWaveSelect, effect.ringModWaveformIndex);
 				setSelectedValue(panModeSelect, effect.panMode);
 				panSliderInputBox.value = effect.pan + "";
+				gainSliderInputBox.value = effect.gain + "";
 				aliasingBox.checked = instrument.aliases ? true : false;
 
 				// i've left the grain range and size display commented out for now because i don't really get what the numbers mean ~ theepie
@@ -231,6 +243,7 @@ export class EffectEditor {
 				const echoSustainRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echo") }, "Echo:"), echoSustainSlider.container);
 				const echoDelayRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Echo Delay:"), HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, echoDelayNum), echoDelaySlider.container);
 				const echoPingPongRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Ping Pong:"), echoPingPongSlider.container);
+				const gainRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.div({}, HTML.span({ class: "tip", tabindex: "0", style: "height:1em; font-size: smaller;", onclick: () => this._openPrompt("gain") }, "Gain: "), HTML.div({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, gainSliderInputBox)), gainSlider.container);
 				const panRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.div({}, HTML.span({ class: "tip", tabindex: "0", style: "height:1em; font-size: smaller;", onclick: () => this._openPrompt("pan") }, "Pan: "), HTML.div({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, panSliderInputBox)), panSlider.container);
 				const panDelayRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("panDelay") }, "Pan Delay:"), panDelaySlider.container);
 				const panModeRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("panMode") }, "Pan Mode:"), HTML.div({ class: "selectContainer" }, panModeSelect));
@@ -263,6 +276,8 @@ export class EffectEditor {
 						echoSustainRow.style.display = "";
 						echoDelayRow.style.display = "";
 						echoPingPongRow.style.display = "";
+					} else if (effect.type == EffectType.gain) {
+						gainRow.style.display = "";
 					} else if (effect.type == EffectType.panning) {
 						panRow.style.display = "";
 						panDelayRow.style.display = "";
@@ -306,6 +321,7 @@ export class EffectEditor {
 					echoSustainRow,
 					echoDelayRow,
 					echoPingPongRow,
+					gainRow,
 					panRow,
 					panDelayRow,
 					panModeRow,
@@ -340,6 +356,8 @@ export class EffectEditor {
 				this.echoSustainSliders[effectIndex] = echoSustainSlider;
 				this.echoDelaySliders[effectIndex] = echoDelaySlider;
 				this.echoPingPongSliders[effectIndex] = echoPingPongSlider;
+				this.gainSliders[effectIndex] = gainSlider;
+				this.gainSliderInputBoxes[effectIndex] = gainSliderInputBox;
 				this.panSliders[effectIndex] = panSlider;
 				this.panSliderInputBoxes[effectIndex] = panSliderInputBox;
 				this.panDelaySliders[effectIndex] = panDelaySlider;

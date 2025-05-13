@@ -5,7 +5,6 @@ import { FilterSettings } from "./Filter";
 
 export class Effect {
 	public type: EffectType = EffectType.reverb;
-	// at the moment, the effect class does absolutely nothing technical. will change soon!
 	public wetDryMix: number = 0.5;
 	public send: number = 1;
 
@@ -20,6 +19,7 @@ export class Effect {
 	//public envelopeCount: number = 0;
 	//public envelopeSpeed: number = 12;
 
+	public gain: number = Config.volumeRange / 2;
 	public pan: number = Config.panCenter;
 	public panDelay: number = 0;
 	public panMode: number = 0;

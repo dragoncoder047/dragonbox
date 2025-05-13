@@ -5269,6 +5269,16 @@ export class ChangeChannelName extends Change {
     }
 }
 
+export class ChangeGain extends Change {
+    constructor(doc: SongDocument, effect: Effect, newValue: number) {
+        super();
+        effect.gain = newValue;
+        doc.synth.unsetMod(Config.modulators.dictionary["gain"].index, doc.channel, doc.getCurrentInstrument());
+        doc.notifier.changed();
+        this._didSomething();
+    }
+}
+
 export class ChangePan extends Change {
     constructor(doc: SongDocument, effect: Effect, newValue: number) {
         super();

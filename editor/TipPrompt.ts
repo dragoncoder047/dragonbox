@@ -73,6 +73,12 @@ export class TipPrompt implements Prompt {
 					p("Please be careful when using volume settings above 0. This indicates amplification and too much of that can trip the audio limiter built into this tool. This can lead to your song sounding muffled if overused. But when used carefully, amplification can be a powerful tool!"),
 				);
 			} break;
+			case "gain": {
+				message = div(
+					h2("Gain"),
+					p("The gain effect changes the volume of the instrument. Unlike regular volume, this value is multiplied on a linear scale, meaning that at a value of 50 the volume will not change, and at 100 it will be exactly twice as loud."),
+				);
+			} break;
 			case "pan": {
 				message = div(
 					h2("Instrument Panning"),

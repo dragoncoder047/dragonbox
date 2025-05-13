@@ -460,6 +460,7 @@ export class Song {
             if (!Config.modulators[currentIndex].forSong && instrument.modInstruments[modCount][0] < this.channels[instrument.modChannels[modCount][0]].instruments.length) {
                 let chorusIndex: number = Config.modulators.dictionary["chorus"].index;
                 let reverbIndex: number = Config.modulators.dictionary["reverb"].index;
+                let gainIndex: number = Config.modulators.dictionary["gain"].index;
                 let panningIndex: number = Config.modulators.dictionary["pan"].index;
                 let panDelayIndex: number = Config.modulators.dictionary["pan delay"].index;
                 let distortionIndex: number = Config.modulators.dictionary["distortion"].index;
@@ -493,6 +494,9 @@ export class Song {
                         break;
                     case reverbIndex:
                         vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.reverb - Config.modulators[reverbIndex].convertRealFactor;
+                        break;
+                    case gainIndex:
+                        vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.gain - Config.modulators[gainIndex].convertRealFactor;
                         break;
                     case panningIndex:
                         vol = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effects[effectIndex]!.pan - Config.modulators[panningIndex].convertRealFactor;
@@ -950,6 +954,9 @@ export class Song {
                     }
                     else if (effect.type == EffectType.bitcrusher) {
                         buffer.push(base64IntToCharCode[effect.bitcrusherFreq], base64IntToCharCode[effect.bitcrusherQuantization]);
+                    }
+                    else if (effect.type == EffectType.gain) {
+                        buffer.push(base64IntToCharCode[effect.gain >> 6], base64IntToCharCode[effect.gain & 0x3f]);
                     }
                     else if (effect.type == EffectType.panning) {
                         buffer.push(base64IntToCharCode[effect.pan >> 6], base64IntToCharCode[effect.pan & 0x3f]);
@@ -2784,6 +2791,9 @@ export class Song {
                                 if (fromTheepBox) newEffect.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 else if (fromBeepBox) newEffect.chorus = clamp(0, (Config.chorusRange / 2) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 4;
                                 else newEffect.chorus = clamp(0, Config.chorusRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 2;
+                            }
+                            if (newEffect.type == EffectType.gain) {
+                                newEffect.gain = clamp(0, Config.volumeRange, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             }
                             if (newEffect.type == EffectType.echo) {
                                 if (!fromTheepBox) newEffect.echoSustain = clamp(0, Config.echoSustainRange / 3, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) * 3;

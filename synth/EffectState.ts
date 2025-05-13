@@ -144,6 +144,9 @@ export class EffectState {
 	public initialEqFilterInputL2: number = 0.0;
 	public initialEqFilterInputR2: number = 0.0;
 
+	public gain: number = 1.0;
+	public gainDelta: number = 0.0;
+
 	public panningDelayLineL: Float32Array | null = null;
 	public panningDelayLineR: Float32Array | null = null;
 	public panningDelayPos: number = 0;
@@ -365,6 +368,7 @@ export class EffectState {
 		const usesRingModulation: boolean = effect.type == EffectType.ringModulation;
 		const usesDistortion: boolean = effect.type == EffectType.distortion;
 		const usesBitcrusher: boolean = effect.type == EffectType.bitcrusher;
+		const usesGain: boolean = effect.type == EffectType.gain;
 		const usesPanning: boolean = effect.type == EffectType.panning;
 		const usesChorus: boolean = effect.type == EffectType.chorus;
 		const usesEcho: boolean = effect.type == EffectType.echo;
@@ -637,6 +641,25 @@ export class EffectState {
 			this.panningOffsetR = this.panningDelayPos - delayStartR + synth.panningDelayBufferSize;
 			this.panningOffsetDeltaL = (delayEndL - delayStartL) / roundedSamplesPerTick;
 			this.panningOffsetDeltaR = (delayEndR - delayStartR) / roundedSamplesPerTick;
+		}
+
+		if (usesGain) {
+			const gainEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.gain];
+			const gainEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.gain];
+
+			let useGainStart: number = effect.gain;
+			let useGainEnd: number = effect.gain;
+			// Check for pan mods
+			if (synth.isModActive(Config.modulators.dictionary["gain"].index, channelIndex, instrumentIndex)) {
+				useGainStart = synth.getModValue(Config.modulators.dictionary["gain"].index, channelIndex, instrumentIndex, false);
+				useGainEnd = synth.getModValue(Config.modulators.dictionary["gain"].index, channelIndex, instrumentIndex, true);
+			}
+
+			let gainStart: number = Math.min(Config.gainRangeMult, gainEnvelopeStart * useGainStart / (Config.volumeRange / 2 * Config.gainRangeMult)) * Config.gainRangeMult;
+			let gainEnd: number = Math.min(Config.gainRangeMult, gainEnvelopeEnd * useGainEnd / (Config.volumeRange / 2 * Config.gainRangeMult)) * Config.gainRangeMult;
+
+			this.gain = gainStart;
+			this.gainDelta = (gainEnd - gainStart) / roundedSamplesPerTick;
 		}
 
 		if (usesChorus) {

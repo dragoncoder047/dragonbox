@@ -1964,6 +1964,9 @@ export class SongEditor {
         index = index == undefined ? 1 : index;
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         switch (setting) {
+            case Config.modulators.dictionary["gain"].index:
+                for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.gain) index = i;
+                return this.effectEditor.gainSliders[index];
             case Config.modulators.dictionary["pan"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.panning) index = i;
                 return this.effectEditor.panSliders[index];
@@ -3097,6 +3100,7 @@ export class SongEditor {
                             anyInstrumentEQFilters: boolean = false,
                             anyInstrumentDistorts: boolean = false,
                             anyInstrumentBitcrushes: boolean = false,
+                            anyInstrumentGain: boolean = false,
                             anyInstrumentPans: boolean = false,
                             anyInstrumentChorus: boolean = false,
                             anyInstrumentEchoes: boolean = false,
@@ -3110,6 +3114,7 @@ export class SongEditor {
                             allInstrumentVibratos: boolean = true,
                             allInstrumentDistorts: boolean = true,
                             allInstrumentBitcrushes: boolean = true,
+                            allInstrumentGain: boolean = true,
                             allInstrumentPans: boolean = true,
                             allInstrumentChorus: boolean = true,
                             allInstrumentEchoes: boolean = true,
@@ -3177,6 +3182,12 @@ export class SongEditor {
                             }
                             else {
                                 allInstrumentPans = false;
+                            }
+                            if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.gain)) {
+                                anyInstrumentGain = true;
+                            }
+                            else {
+                                allInstrumentGain = false;
                             }
                             if (channel.instruments[instrumentIndex].effectsIncludeType(EffectType.chorus)) {
                                 anyInstrumentChorus = true;
@@ -3296,6 +3307,12 @@ export class SongEditor {
                         if (!allInstrumentBitcrushes) {
                             unusedSettingList.push("+ bit crush");
                             unusedSettingList.push("+ freq crush");
+                        }
+                        if (anyInstrumentGain) {
+                            settingList.push("gain");
+                        }
+                        if (!allInstrumentGain) {
+                            unusedSettingList.push("+ gain");
                         }
                         if (anyInstrumentPans) {
                             settingList.push("pan");

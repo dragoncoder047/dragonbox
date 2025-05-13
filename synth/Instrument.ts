@@ -253,7 +253,7 @@ export class Instrument {
     public fastTwoNoteArp: boolean = false;
     public legacyTieOver: boolean = false;
     public clicklessTransition: boolean = false;
-    public aliases: boolean = false; // ...?
+    public aliases: boolean = false;
     public pulseWidth: number = Config.pulseWidthRange;
     public decimalOffset: number = 0;
     public supersawDynamism: number = Config.supersawDynamismMax;

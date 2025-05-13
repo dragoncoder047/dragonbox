@@ -4454,6 +4454,7 @@ export class Synth {
         const usesDistortion: boolean = instrumentState.effectsIncludeType(EffectType.distortion);
         const usesBitcrusher: boolean = instrumentState.effectsIncludeType(EffectType.bitcrusher);
         const usesEqFilter: boolean = instrumentState.effectsIncludeType(EffectType.eqFilter);
+        const usesGain: boolean = instrumentState.effectsIncludeType(EffectType.gain);
         const usesPanning: boolean = instrumentState.effectsIncludeType(EffectType.panning);
         const usesChorus: boolean = instrumentState.effectsIncludeType(EffectType.chorus);
         const usesEcho: boolean = instrumentState.effectsIncludeType(EffectType.echo);
@@ -4778,6 +4779,12 @@ export class Synth {
                 let panningTapL    = [];
                 let panningTapR    = [];`
             }
+            if (usesGain) {
+                effectsSource += `
+
+                let gain = [];
+                let gainDelta = [];`
+            }
             if (usesGranular) {
                 effectsSource += `
 
@@ -5006,6 +5013,12 @@ export class Synth {
                     reverbShelfPrevInput2[effectIndex] = +effectState.reverbShelfPrevInput2;
                     reverbShelfPrevInput3[effectIndex] = +effectState.reverbShelfPrevInput3;`
                 }
+                else if (usesGain && effectState.type == EffectType.gain) {
+                    effectsSource += `
+
+                    gain[effectIndex] = +effectState.gain;
+                    gainDelta[effectIndex] = +effectState.gainDelta;`
+                }
             }
 
 			if (isStereo) {
@@ -5106,6 +5119,13 @@ export class Synth {
                     distortionPrevInputR[effectIndex] = distortionNextInputR[effectIndex];
                     distortion[effectIndex] += distortionDelta[effectIndex];
                     distortionDrive[effectIndex] += distortionDriveDelta[effectIndex];`
+                }
+                else if (usesGain && effectState.type == EffectType.gain) {
+                    effectsSource += `
+
+                    sampleL *= gain[effectIndex];
+                    sampleR *= gain[effectIndex];
+                    `
                 }
                 else if (usesPanning && effectState.type == EffectType.panning) {
                     effectsSource += `
@@ -5500,6 +5520,12 @@ export class Synth {
                     effectState.initialEqFilterInputR2 = initialFilterInputR2[effectIndex];
 
                     instrumentState.eqFilterVolume = eqFilterVolume[effectIndex];`
+                }
+                else if (usesGain && effectState.type == EffectType.gain) {
+                    effectsSource += `
+                    effectState.gain = gain[effectIndex];
+                    effectState.gainDelta = gainDelta[effectIndex];
+                    `
                 }
                 else if (usesPanning && effectState.type == EffectType.panning) {
                     effectsSource += `

@@ -5259,8 +5259,8 @@ export class Synth {
 
                     flangerDelayLineL[effectIndex][flangerDelayPos[effectIndex]] = sampleL * delayInputMult;
                     flangerDelayLineR[effectIndex][flangerDelayPos[effectIndex]] = sampleR * delayInputMult;
-                    sampleL = sampleL + flanger[effectIndex] * flangerTapL[effectIndex];
-                    sampleR = sampleR + flanger[effectIndex] * flangerTapR[effectIndex];
+                    sampleL = (sampleL + flanger[effectIndex] * flangerTapL[effectIndex]) * (1 - flanger[effectIndex] * Config.flangerVolumeMult);
+                    sampleR = (sampleR + flanger[effectIndex] * flangerTapR[effectIndex]) * (1 - flanger[effectIndex] * Config.flangerVolumeMult);
                     flangerDelayLineL[effectIndex][flangerDelayPos[effectIndex]] = flangerDelayLineL[effectIndex][flangerDelayPos[effectIndex]] * (1 - flangerFeedback[effectIndex]) - sampleL * flangerFeedback[effectIndex];
                     flangerDelayLineR[effectIndex][flangerDelayPos[effectIndex]] = flangerDelayLineR[effectIndex][flangerDelayPos[effectIndex]] * (1 - flangerFeedback[effectIndex]) - sampleR * flangerFeedback[effectIndex];
                     flangerDelayPos[effectIndex] = (flangerDelayPos[effectIndex] + 1) & flangerMask;

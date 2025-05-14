@@ -734,8 +734,8 @@ export class EffectState {
 				useFlangerSpeedStart = synth.getModValue(Config.modulators.dictionary["flanger speed"].index, channelIndex, instrumentIndex, false);
 				useFlangerSpeedEnd = synth.getModValue(Config.modulators.dictionary["flanger speed"].index, channelIndex, instrumentIndex, true);
 			}
-			let flangerSpeedStart: number = flangerSpeedEnvelopeStart * useFlangerSpeedStart + 1;
-			let flangerSpeedEnd: number = flangerSpeedEnvelopeEnd * useFlangerSpeedEnd + 1;
+			let flangerSpeedStart: number = flangerSpeedEnvelopeStart * useFlangerSpeedStart + 2;
+			let flangerSpeedEnd: number = flangerSpeedEnvelopeEnd * useFlangerSpeedEnd + 2;
 
 			const flangerDepthEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.flangerDepth];
 			const flangerDepthEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.flangerDepth];
@@ -745,8 +745,8 @@ export class EffectState {
 				useFlangerDepthStart = synth.getModValue(Config.modulators.dictionary["flanger depth"].index, channelIndex, instrumentIndex, false);
 				useFlangerDepthEnd = synth.getModValue(Config.modulators.dictionary["flanger depth"].index, channelIndex, instrumentIndex, true);
 			}
-			let flangerDepthStart: number = flangerDepthEnvelopeStart * useFlangerDepthStart + 1;
-			let flangerDepthEnd: number = flangerDepthEnvelopeEnd * useFlangerDepthEnd + 1;
+			let flangerDepthStart: number = flangerDepthEnvelopeStart * useFlangerDepthStart * 2 + 2;
+			let flangerDepthEnd: number = flangerDepthEnvelopeEnd * useFlangerDepthEnd * 2 + 2;
 
 			const flangerFeedbackEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.flangerFeedback];
 			const flangerFeedbackEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.flangerFeedback];
@@ -756,8 +756,8 @@ export class EffectState {
 				useFlangerFeedbackStart = synth.getModValue(Config.modulators.dictionary["flanger feedback"].index, channelIndex, instrumentIndex, false);
 				useFlangerFeedbackEnd = synth.getModValue(Config.modulators.dictionary["flanger feedback"].index, channelIndex, instrumentIndex, true);
 			}
-			let flangerFeedbackStart: number = flangerFeedbackEnvelopeStart * useFlangerFeedbackStart;
-			let flangerFeedbackEnd: number = flangerFeedbackEnvelopeEnd * useFlangerFeedbackEnd;
+			let flangerFeedbackStart: number = flangerFeedbackEnvelopeStart * useFlangerFeedbackStart * 1.5;
+			let flangerFeedbackEnd: number = flangerFeedbackEnvelopeEnd * useFlangerFeedbackEnd * 1.5;
 
 			this.flanger = flangerStart;
 			this.flangerDelta = (flangerEnd - flangerStart) / roundedSamplesPerTick;

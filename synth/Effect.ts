@@ -37,8 +37,8 @@ export class Effect {
 	public grainAmounts: number = Config.grainAmountsMax;
 	public grainRange: number = 40;
 	public flanger: number = 0;
-	public flangerSpeed: number = 1;
-	public flangerDepth: number = 1;
+	public flangerSpeed: number = 0;
+	public flangerDepth: number = 0;
 	public flangerFeedback: number = 0;
 	public chorus: number = 0;
 	public reverb: number = 0;

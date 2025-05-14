@@ -1192,6 +1192,9 @@ var beepbox = (function (exports) {
         { name: "bitcrusherQuantization", computeIndex: 44, displayName: "bitcrush", interleave: false, isFilter: false, maxCount: 1, effect: 4, mdeffect: null, compatibleInstruments: null },
         { name: "bitcrusherFrequency", computeIndex: 45, displayName: "freq crush", interleave: false, isFilter: false, maxCount: 1, effect: 4, mdeffect: null, compatibleInstruments: null },
         { name: "flanger", computeIndex: 58, displayName: "flanger", interleave: false, isFilter: false, maxCount: 1, effect: 10, mdeffect: null, compatibleInstruments: null },
+        { name: "flangerSpeed", computeIndex: 58, displayName: "flanger speed", interleave: false, isFilter: false, maxCount: 1, effect: 10, mdeffect: null, compatibleInstruments: null },
+        { name: "flangerDepth", computeIndex: 58, displayName: "flanger depth", interleave: false, isFilter: false, maxCount: 1, effect: 10, mdeffect: null, compatibleInstruments: null },
+        { name: "flangerFeedback", computeIndex: 58, displayName: "flanger feedback", interleave: false, isFilter: false, maxCount: 1, effect: 10, mdeffect: null, compatibleInstruments: null },
         { name: "chorus", computeIndex: 46, displayName: "chorus", interleave: false, isFilter: false, maxCount: 1, effect: 1, mdeffect: null, compatibleInstruments: null },
         { name: "echoSustain", computeIndex: 47, displayName: "echo", interleave: false, isFilter: false, maxCount: 1, effect: 6, mdeffect: null, compatibleInstruments: null },
         { name: "reverb", computeIndex: 48, displayName: "reverb", interleave: false, isFilter: false, maxCount: 1, effect: 0, mdeffect: null, compatibleInstruments: null },
@@ -1295,6 +1298,12 @@ var beepbox = (function (exports) {
         },
         { name: "flanger", pianoName: "Flanger", maxRawVol: _a.flangerRange - 1, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 10, associatedMDEffect: 6, maxIndex: 0,
             promptName: "Instrument Flanger", promptDesc: ["This setting controls the flanger strength of your instrument, just like the flanger slider.", "At $LO, the flanger effect will be disabled. The strength of the flanger effect increases up to the max value, $HI.", "[OVERWRITING] [$LO - $HI]"] },
+        { name: "flanger speed", pianoName: "Flanger Spd", maxRawVol: _a.flangerSpeedRange - 1, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 10, associatedMDEffect: 6, maxIndex: 0,
+            promptName: "Instrument Flanger Speed", promptDesc: ["This setting controls the flanger speed of your instrument, just like the flanger speed slider."] },
+        { name: "flanger depth", pianoName: "Flanger Dpth", maxRawVol: _a.flangerDepthRange - 1, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 10, associatedMDEffect: 6, maxIndex: 0,
+            promptName: "Instrument Flanger Depth", promptDesc: ["This setting controls the flanger depth of your instrument, just like the flanger depth slider."] },
+        { name: "flanger feedback", pianoName: "Flanger Fbck", maxRawVol: _a.flangerFeedbackRange - 1, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 10, associatedMDEffect: 6, maxIndex: 0,
+            promptName: "Instrument Flanger Feedback", promptDesc: ["This setting controls the flanger feedback of your instrument, just like the flanger feedback slider."] },
         { name: "chorus", pianoName: "Chorus", maxRawVol: _a.chorusRange - 1, newNoteVol: 0, forSong: false, convertRealFactor: 0, associatedEffect: 1, associatedMDEffect: 6, maxIndex: 0,
             promptName: "Instrument Chorus", promptDesc: ["This setting controls the chorus strength of your instrument, just like the chorus slider.", "At $LO, the chorus effect will be disabled. The strength of the chorus effect increases up to the max value, $HI.", "[OVERWRITING] [$LO - $HI]"] },
         { name: "post eq cut", pianoName: "PostEQ Cut", maxRawVol: _a.filterSimpleCutRange - 1, newNoteVol: _a.filterSimpleCutRange - 1, forSong: false, convertRealFactor: 0, associatedEffect: 11, associatedMDEffect: 6, maxIndex: 0,
@@ -2894,8 +2903,8 @@ var beepbox = (function (exports) {
             this.grainAmounts = Config.grainAmountsMax;
             this.grainRange = 40;
             this.flanger = 0;
-            this.flangerSpeed = 1;
-            this.flangerDepth = 1;
+            this.flangerSpeed = 0;
+            this.flangerDepth = 0;
             this.flangerFeedback = 0;
             this.chorus = 0;
             this.reverb = 0;
@@ -9696,11 +9705,44 @@ var beepbox = (function (exports) {
                 }
                 let flangerStart = Math.min(1.0, flangerEnvelopeStart * useFlangerStart / (Config.flangerRange - 1));
                 let flangerEnd = Math.min(1.0, flangerEnvelopeEnd * useFlangerEnd / (Config.flangerRange - 1));
+                const flangerSpeedEnvelopeStart = envelopeStarts[59];
+                const flangerSpeedEnvelopeEnd = envelopeEnds[59];
+                let useFlangerSpeedStart = effect.flangerSpeed;
+                let useFlangerSpeedEnd = effect.flangerSpeed;
+                if (synth.isModActive(Config.modulators.dictionary["flanger speed"].index, channelIndex, instrumentIndex)) {
+                    useFlangerSpeedStart = synth.getModValue(Config.modulators.dictionary["flanger speed"].index, channelIndex, instrumentIndex, false);
+                    useFlangerSpeedEnd = synth.getModValue(Config.modulators.dictionary["flanger speed"].index, channelIndex, instrumentIndex, true);
+                }
+                let flangerSpeedStart = flangerSpeedEnvelopeStart * useFlangerSpeedStart + 1;
+                let flangerSpeedEnd = flangerSpeedEnvelopeEnd * useFlangerSpeedEnd + 1;
+                const flangerDepthEnvelopeStart = envelopeStarts[60];
+                const flangerDepthEnvelopeEnd = envelopeEnds[60];
+                let useFlangerDepthStart = effect.flangerDepth;
+                let useFlangerDepthEnd = effect.flangerDepth;
+                if (synth.isModActive(Config.modulators.dictionary["flanger depth"].index, channelIndex, instrumentIndex)) {
+                    useFlangerDepthStart = synth.getModValue(Config.modulators.dictionary["flanger depth"].index, channelIndex, instrumentIndex, false);
+                    useFlangerDepthEnd = synth.getModValue(Config.modulators.dictionary["flanger depth"].index, channelIndex, instrumentIndex, true);
+                }
+                let flangerDepthStart = flangerDepthEnvelopeStart * useFlangerDepthStart + 1;
+                let flangerDepthEnd = flangerDepthEnvelopeEnd * useFlangerDepthEnd + 1;
+                const flangerFeedbackEnvelopeStart = envelopeStarts[61];
+                const flangerFeedbackEnvelopeEnd = envelopeEnds[61];
+                let useFlangerFeedbackStart = effect.flangerFeedback;
+                let useFlangerFeedbackEnd = effect.flangerFeedback;
+                if (synth.isModActive(Config.modulators.dictionary["flanger feedback"].index, channelIndex, instrumentIndex)) {
+                    useFlangerFeedbackStart = synth.getModValue(Config.modulators.dictionary["flanger feedback"].index, channelIndex, instrumentIndex, false);
+                    useFlangerFeedbackEnd = synth.getModValue(Config.modulators.dictionary["flanger feedback"].index, channelIndex, instrumentIndex, true);
+                }
+                let flangerFeedbackStart = flangerFeedbackEnvelopeStart * useFlangerFeedbackStart;
+                let flangerFeedbackEnd = flangerFeedbackEnvelopeEnd * useFlangerFeedbackEnd;
                 this.flanger = flangerStart;
                 this.flangerDelta = (flangerEnd - flangerStart) / roundedSamplesPerTick;
-                this.flangerSpeed = effect.flangerSpeed;
-                this.flangerDepth = effect.flangerDepth;
-                this.flangerFeedback = effect.flangerFeedback / Config.flangerFeedbackRange / 2.0;
+                this.flangerSpeed = flangerSpeedStart;
+                this.flangerSpeedDelta = (flangerSpeedEnd - flangerSpeedStart) / roundedSamplesPerTick;
+                this.flangerDepth = flangerDepthStart;
+                this.flangerDepthDelta = (flangerDepthEnd - flangerDepthStart) / roundedSamplesPerTick;
+                this.flangerFeedback = (Math.sqrt(flangerFeedbackStart) / Math.sqrt(Config.flangerFeedbackRange));
+                this.flangerFeedbackDelta = ((Math.sqrt(flangerFeedbackEnd) / Math.sqrt(Config.flangerFeedbackRange)) - (Math.sqrt(flangerFeedbackStart) / Math.sqrt(Config.flangerFeedbackRange))) / roundedSamplesPerTick;
             }
             if (usesRingModulation) {
                 let useRingModStart = effect.ringModulation;
@@ -10057,7 +10099,7 @@ var beepbox = (function (exports) {
             this._modifiedEnvelopeIndices = [];
             this._modifiedEnvelopeCount = 0;
             this.lowpassCutoffDecayVolumeCompensation = 1.0;
-            const length = 59;
+            const length = 62;
             for (let i = 0; i < length; i++) {
                 this.envelopeStarts[i] = 1.0;
                 this.envelopeEnds[i] = 1.0;
@@ -15196,8 +15238,11 @@ var beepbox = (function (exports) {
                 let flanger = [];
                 let flangerDelta = [];
                 let flangerSpeed = [];
+                let flangerSpeedDelta = [];
                 let flangerDepth = [];
+                let flangerDepthDelta = [];
                 let flangerFeedback = [];
+                let flangerFeedbackDelta = [];
 
                 let flangerPhase = [];
                 let flangerRange = [];
@@ -15553,8 +15598,11 @@ var beepbox = (function (exports) {
                     flanger[effectIndex] = effectState.flanger;
                     flangerDelta[effectIndex] = effectState.flangerDelta;
                     flangerSpeed[effectIndex] = effectState.flangerSpeed;
+                    flangerSpeedDelta[effectIndex] = effectState.flangerSpeedDelta;
                     flangerDepth[effectIndex] = effectState.flangerDepth;
+                    flangerDepthDelta[effectIndex] = effectState.flangerDepthDelta;
                     flangerFeedback[effectIndex] = effectState.flangerFeedback;
+                    flangerFeedbackDelta[effectIndex] = effectState.flangerFeedbackDelta;
 
                     flangerPhase[effectIndex] = effectState.flangerPhase % (Math.PI * 2.0);
                     flangerRange[effectIndex] = flangerDepth[effectIndex];
@@ -15822,13 +15870,20 @@ var beepbox = (function (exports) {
                     flangerTapL[effectIndex] = flangerTapLA[effectIndex] + (flangerTapLB[effectIndex] - flangerTapLA[effectIndex]) * flangerTapRatioL[effectIndex];
                     flangerTapR[effectIndex] = flangerTapRA[effectIndex] + (flangerTapRB[effectIndex] - flangerTapRA[effectIndex]) * flangerTapRatioR[effectIndex];
 
-                    flangerDelayLineL[effectIndex][flangerDelayPos[effectIndex]] = (sampleL * (1 - flangerFeedback[effectIndex]) + flangerTapL[effectIndex] * flangerFeedback[effectIndex]) * delayInputMult;
-                    flangerDelayLineR[effectIndex][flangerDelayPos[effectIndex]] = (sampleR * (1 - flangerFeedback[effectIndex]) + flangerTapR[effectIndex] * flangerFeedback[effectIndex]) * delayInputMult;
+                    flangerDelayLineL[effectIndex][flangerDelayPos[effectIndex]] = sampleL * delayInputMult;
+                    flangerDelayLineR[effectIndex][flangerDelayPos[effectIndex]] = sampleR * delayInputMult;
                     sampleL = sampleL + flanger[effectIndex] * flangerTapL[effectIndex];
                     sampleR = sampleR + flanger[effectIndex] * flangerTapR[effectIndex];
+                    flangerDelayLineL[effectIndex][flangerDelayPos[effectIndex]] = flangerDelayLineL[effectIndex][flangerDelayPos[effectIndex]] * (1 - flangerFeedback[effectIndex]) - sampleL * flangerFeedback[effectIndex];
+                    flangerDelayLineR[effectIndex][flangerDelayPos[effectIndex]] = flangerDelayLineR[effectIndex][flangerDelayPos[effectIndex]] * (1 - flangerFeedback[effectIndex]) - sampleR * flangerFeedback[effectIndex];
                     flangerDelayPos[effectIndex] = (flangerDelayPos[effectIndex] + 1) & flangerMask;
                     flangerTapIndexL[effectIndex] += flangerTapDeltaL[effectIndex];
-                    flangerTapIndexR[effectIndex] += flangerTapDeltaR[effectIndex];`;
+                    flangerTapIndexR[effectIndex] += flangerTapDeltaR[effectIndex];
+
+                    flanger[effectIndex] += flangerDelta[effectIndex];
+                    flangerSpeed[effectIndex] += flangerSpeedDelta[effectIndex];
+                    flangerDepth[effectIndex] += flangerDepthDelta[effectIndex];
+                    flangerFeedback[effectIndex] += flangerFeedbackDelta[effectIndex];`;
                     }
                     else if (usesChorus && effectState.type == 1) {
                         effectsSource += `
@@ -16169,7 +16224,6 @@ var beepbox = (function (exports) {
                     else if (usesGain && effectState.type == 9) {
                         effectsSource += `
                     effectState.gain = gain[effectIndex];
-                    effectState.gainDelta = gainDelta[effectIndex];
                     `;
                     }
                     else if (usesPanning && effectState.type == 2) {
@@ -16189,7 +16243,11 @@ var beepbox = (function (exports) {
                     Synth.sanitizeDelayLine(flangerDelayLineL[effectIndex], flangerDelayPos[effectIndex], flangerMask);
                     Synth.sanitizeDelayLine(flangerDelayLineR[effectIndex], flangerDelayPos[effectIndex], flangerMask);
                     effectState.flangerPhase = flangerPhase[effectIndex];
-                    effectState.flangerDelayPos = flangerDelayPos[effectIndex];`;
+                    effectState.flangerDelayPos = flangerDelayPos[effectIndex];
+                    effectState.flanger = flanger[effectIndex];
+                    effectState.flangerSpeed = flangerSpeed[effectIndex];
+                    effectState.flangerDepth = flangerDepth[effectIndex];
+                    effectState.flangerFeedback = flangerFeedback[effectIndex];`;
                     }
                     else if (usesChorus && effectState.type == 1) {
                         effectsSource += `

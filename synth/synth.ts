@@ -4606,8 +4606,11 @@ export class Synth {
                 let flanger = [];
                 let flangerDelta = [];
                 let flangerSpeed = [];
+                let flangerSpeedDelta = [];
                 let flangerDepth = [];
+                let flangerDepthDelta = [];
                 let flangerFeedback = [];
+                let flangerFeedbackDelta = [];
 
                 let flangerPhase = [];
                 let flangerRange = [];
@@ -4979,8 +4982,11 @@ export class Synth {
                     flanger[effectIndex] = effectState.flanger;
                     flangerDelta[effectIndex] = effectState.flangerDelta;
                     flangerSpeed[effectIndex] = effectState.flangerSpeed;
+                    flangerSpeedDelta[effectIndex] = effectState.flangerSpeedDelta;
                     flangerDepth[effectIndex] = effectState.flangerDepth;
+                    flangerDepthDelta[effectIndex] = effectState.flangerDepthDelta;
                     flangerFeedback[effectIndex] = effectState.flangerFeedback;
+                    flangerFeedbackDelta[effectIndex] = effectState.flangerFeedbackDelta;
 
                     flangerPhase[effectIndex] = effectState.flangerPhase % (Math.PI * 2.0);
                     flangerRange[effectIndex] = flangerDepth[effectIndex];
@@ -5251,13 +5257,20 @@ export class Synth {
                     flangerTapL[effectIndex] = flangerTapLA[effectIndex] + (flangerTapLB[effectIndex] - flangerTapLA[effectIndex]) * flangerTapRatioL[effectIndex];
                     flangerTapR[effectIndex] = flangerTapRA[effectIndex] + (flangerTapRB[effectIndex] - flangerTapRA[effectIndex]) * flangerTapRatioR[effectIndex];
 
-                    flangerDelayLineL[effectIndex][flangerDelayPos[effectIndex]] = (sampleL * (1 - flangerFeedback[effectIndex]) + flangerTapL[effectIndex] * flangerFeedback[effectIndex]) * delayInputMult;
-                    flangerDelayLineR[effectIndex][flangerDelayPos[effectIndex]] = (sampleR * (1 - flangerFeedback[effectIndex]) + flangerTapR[effectIndex] * flangerFeedback[effectIndex]) * delayInputMult;
+                    flangerDelayLineL[effectIndex][flangerDelayPos[effectIndex]] = sampleL * delayInputMult;
+                    flangerDelayLineR[effectIndex][flangerDelayPos[effectIndex]] = sampleR * delayInputMult;
                     sampleL = sampleL + flanger[effectIndex] * flangerTapL[effectIndex];
                     sampleR = sampleR + flanger[effectIndex] * flangerTapR[effectIndex];
+                    flangerDelayLineL[effectIndex][flangerDelayPos[effectIndex]] = flangerDelayLineL[effectIndex][flangerDelayPos[effectIndex]] * (1 - flangerFeedback[effectIndex]) - sampleL * flangerFeedback[effectIndex];
+                    flangerDelayLineR[effectIndex][flangerDelayPos[effectIndex]] = flangerDelayLineR[effectIndex][flangerDelayPos[effectIndex]] * (1 - flangerFeedback[effectIndex]) - sampleR * flangerFeedback[effectIndex];
                     flangerDelayPos[effectIndex] = (flangerDelayPos[effectIndex] + 1) & flangerMask;
                     flangerTapIndexL[effectIndex] += flangerTapDeltaL[effectIndex];
-                    flangerTapIndexR[effectIndex] += flangerTapDeltaR[effectIndex];`
+                    flangerTapIndexR[effectIndex] += flangerTapDeltaR[effectIndex];
+
+                    flanger[effectIndex] += flangerDelta[effectIndex];
+                    flangerSpeed[effectIndex] += flangerSpeedDelta[effectIndex];
+                    flangerDepth[effectIndex] += flangerDepthDelta[effectIndex];
+                    flangerFeedback[effectIndex] += flangerFeedbackDelta[effectIndex];`
                 }
                 else if (usesChorus && effectState.type == EffectType.chorus) {
                     effectsSource += `
@@ -5606,7 +5619,6 @@ export class Synth {
                 else if (usesGain && effectState.type == EffectType.gain) {
                     effectsSource += `
                     effectState.gain = gain[effectIndex];
-                    effectState.gainDelta = gainDelta[effectIndex];
                     `
                 }
                 else if (usesPanning && effectState.type == EffectType.panning) {
@@ -5626,7 +5638,11 @@ export class Synth {
                     Synth.sanitizeDelayLine(flangerDelayLineL[effectIndex], flangerDelayPos[effectIndex], flangerMask);
                     Synth.sanitizeDelayLine(flangerDelayLineR[effectIndex], flangerDelayPos[effectIndex], flangerMask);
                     effectState.flangerPhase = flangerPhase[effectIndex];
-                    effectState.flangerDelayPos = flangerDelayPos[effectIndex];`
+                    effectState.flangerDelayPos = flangerDelayPos[effectIndex];
+                    effectState.flanger = flanger[effectIndex];
+                    effectState.flangerSpeed = flangerSpeed[effectIndex];
+                    effectState.flangerDepth = flangerDepth[effectIndex];
+                    effectState.flangerFeedback = flangerFeedback[effectIndex];`
                 }
                 else if (usesChorus && effectState.type == EffectType.chorus) {
                     effectsSource += `

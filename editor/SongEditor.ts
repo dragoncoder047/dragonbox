@@ -2033,6 +2033,18 @@ export class SongEditor {
                 return this.effectEditor.bitcrusherFreqSliders[index];
             case Config.modulators.dictionary["pitch shift"].index:
                 return this._pitchShiftSlider;
+            case Config.modulators.dictionary["flanger"].index:
+                for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.flanger) index = i;
+                return this.effectEditor.flangerSliders[index];
+            case Config.modulators.dictionary["flanger speed"].index:
+                for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.flanger) index = i;
+                return this.effectEditor.flangerSpeedSliders[index];
+            case Config.modulators.dictionary["flanger depth"].index:
+                for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.flanger) index = i;
+                return this.effectEditor.flangerDepthSliders[index];
+            case Config.modulators.dictionary["flanger feedback"].index:
+                for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.flanger) index = i;
+                return this.effectEditor.flangerFeedbackSliders[index];
             case Config.modulators.dictionary["chorus"].index:
                 for (let i: number = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i]!.type == EffectType.chorus) index = i;
                 return this.effectEditor.chorusSliders[index];
@@ -3332,9 +3344,15 @@ export class SongEditor {
                         }
                         if (anyInstrumentFlanger) {
                             settingList.push("flanger");
+                            settingList.push("flanger speed");
+                            settingList.push("flanger depth");
+                            settingList.push("flanger feedback");
                         }
                         if (!allInstrumentFlanger) {
                             unusedSettingList.push("+ flanger");
+                            unusedSettingList.push("+ flanger speed");
+                            unusedSettingList.push("+ flanger depth");
+                            unusedSettingList.push("+ flanger feedback");
                         }
                         if (anyInstrumentChorus) {
                             settingList.push("chorus");

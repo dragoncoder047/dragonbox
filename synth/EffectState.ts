@@ -723,15 +723,50 @@ export class EffectState {
 				useFlangerStart = synth.getModValue(Config.modulators.dictionary["flanger"].index, channelIndex, instrumentIndex, false);
 				useFlangerEnd = synth.getModValue(Config.modulators.dictionary["flanger"].index, channelIndex, instrumentIndex, true);
 			}
-
 			let flangerStart: number = Math.min(1.0, flangerEnvelopeStart * useFlangerStart / (Config.flangerRange - 1));
 			let flangerEnd: number = Math.min(1.0, flangerEnvelopeEnd * useFlangerEnd / (Config.flangerRange - 1));
 
+			const flangerSpeedEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.flangerSpeed];
+			const flangerSpeedEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.flangerSpeed];
+			let useFlangerSpeedStart: number = effect.flangerSpeed;
+			let useFlangerSpeedEnd: number = effect.flangerSpeed;
+			if (synth.isModActive(Config.modulators.dictionary["flanger speed"].index, channelIndex, instrumentIndex)) {
+				useFlangerSpeedStart = synth.getModValue(Config.modulators.dictionary["flanger speed"].index, channelIndex, instrumentIndex, false);
+				useFlangerSpeedEnd = synth.getModValue(Config.modulators.dictionary["flanger speed"].index, channelIndex, instrumentIndex, true);
+			}
+			let flangerSpeedStart: number = flangerSpeedEnvelopeStart * useFlangerSpeedStart + 1;
+			let flangerSpeedEnd: number = flangerSpeedEnvelopeEnd * useFlangerSpeedEnd + 1;
+
+			const flangerDepthEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.flangerDepth];
+			const flangerDepthEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.flangerDepth];
+			let useFlangerDepthStart: number = effect.flangerDepth;
+			let useFlangerDepthEnd: number = effect.flangerDepth;
+			if (synth.isModActive(Config.modulators.dictionary["flanger depth"].index, channelIndex, instrumentIndex)) {
+				useFlangerDepthStart = synth.getModValue(Config.modulators.dictionary["flanger depth"].index, channelIndex, instrumentIndex, false);
+				useFlangerDepthEnd = synth.getModValue(Config.modulators.dictionary["flanger depth"].index, channelIndex, instrumentIndex, true);
+			}
+			let flangerDepthStart: number = flangerDepthEnvelopeStart * useFlangerDepthStart + 1;
+			let flangerDepthEnd: number = flangerDepthEnvelopeEnd * useFlangerDepthEnd + 1;
+
+			const flangerFeedbackEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.flangerFeedback];
+			const flangerFeedbackEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.flangerFeedback];
+			let useFlangerFeedbackStart: number = effect.flangerFeedback;
+			let useFlangerFeedbackEnd: number = effect.flangerFeedback;
+			if (synth.isModActive(Config.modulators.dictionary["flanger feedback"].index, channelIndex, instrumentIndex)) {
+				useFlangerFeedbackStart = synth.getModValue(Config.modulators.dictionary["flanger feedback"].index, channelIndex, instrumentIndex, false);
+				useFlangerFeedbackEnd = synth.getModValue(Config.modulators.dictionary["flanger feedback"].index, channelIndex, instrumentIndex, true);
+			}
+			let flangerFeedbackStart: number = flangerFeedbackEnvelopeStart * useFlangerFeedbackStart;
+			let flangerFeedbackEnd: number = flangerFeedbackEnvelopeEnd * useFlangerFeedbackEnd;
+
 			this.flanger = flangerStart;
 			this.flangerDelta = (flangerEnd - flangerStart) / roundedSamplesPerTick;
-			this.flangerSpeed = effect.flangerSpeed;
-			this.flangerDepth = effect.flangerDepth;
-			this.flangerFeedback = effect.flangerFeedback / Config.flangerFeedbackRange / 2.0;
+			this.flangerSpeed = flangerSpeedStart;
+			this.flangerSpeedDelta = (flangerSpeedEnd - flangerSpeedStart) / roundedSamplesPerTick;
+			this.flangerDepth = flangerDepthStart;
+			this.flangerDepthDelta = (flangerDepthEnd - flangerDepthStart) / roundedSamplesPerTick;
+			this.flangerFeedback = (Math.sqrt(flangerFeedbackStart) / Math.sqrt(Config.flangerFeedbackRange));
+			this.flangerFeedbackDelta = ((Math.sqrt(flangerFeedbackEnd) / Math.sqrt(Config.flangerFeedbackRange)) - (Math.sqrt(flangerFeedbackStart) / Math.sqrt(Config.flangerFeedbackRange))) / roundedSamplesPerTick;
 		}
 
 		if (usesRingModulation) {

@@ -350,7 +350,7 @@ export class TipPrompt implements Prompt {
 			case "flangerFeedback": {
 				message = div(
 					h2("Flanger Feedback"),
-					p("The flanger effect adds a second copy of the sound and slowly shifts around it's phase. This setting adds feedback, adding a distortion sound."),
+					p("The flanger effect adds a second copy of the sound and slowly shifts around it's phase. This setting adds feedback, which highlights extra freqencies and makes them more resonant."),
 				);
 			} break;
 			case "chorus": {

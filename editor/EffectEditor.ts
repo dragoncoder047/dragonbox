@@ -177,8 +177,7 @@ export class EffectEditor {
 		if (instrument.effects.length != this.container.children.length || this._doc.song.channels[this._doc.channel] != this._viewedChannel || forceRender) {
 			this.container.replaceChildren();
 			for (let effectIndex: number = 0; effectIndex < instrument.effectCount; effectIndex++) {
-				if (instrument.effects[effectIndex] == null) continue;
-				const effect: Effect = instrument.effects[effectIndex] as Effect;
+				const effect: Effect = instrument.effects[effectIndex];
 
 				const moveupButton: HTMLButtonElement = HTML.button({ type: "button", class: "moveup-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "🞁");
 				const movedownButton: HTMLButtonElement = HTML.button({ type: "button", class: "movedown-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "🞃");
@@ -228,15 +227,15 @@ export class EffectEditor {
 
 				// i've left the grain range and size display commented out for now because i don't really get what the numbers mean ~ theepie
 
-				//const grainSizeNum: HTMLParagraphElement = HTML.div({ style: "font-size: 80%; ", id: "grainSizeNum" });
-				//const grainRangeNum: HTMLParagraphElement = HTML.div({ style: "font-size: 80%; ", id: "grainRangeNum" });
 				const ringModHzNum: HTMLParagraphElement = HTML.div({ style: "font-size: 80%; ", id: "ringModHzNum" });
 				const echoDelayNum: HTMLParagraphElement = HTML.div({ style: "font-size: 80%; ", id: "echoDelayNum" });
+				//const grainSizeNum: HTMLParagraphElement = HTML.div({ style: "font-size: 80%; ", id: "grainSizeNum" });
+				//const grainRangeNum: HTMLParagraphElement = HTML.div({ style: "font-size: 80%; ", id: "grainRangeNum" });
 
-				ringModHzNum.innerHTML = calculateRingModHertz(effect.ringModulationHz / (Config.ringModHzRange - 1)) + " Hz";;
+				ringModHzNum.innerHTML = calculateRingModHertz(effect.ringModulationHz / (Config.ringModHzRange - 1)) + " Hz";
+				echoDelayNum.innerHTML = (Math.round((effect.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat) * 1000) / 1000) + " beat(s)";
 				//grainSizeNum.innerHTML = effect.grainSize * Config.grainSizeStep;
 				//grainRangeNum.innerHTML = effect.grainRange * Config.grainSizeStep;
-				echoDelayNum.innerHTML = (Math.round((effect.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat) * 1000) / 1000) + " beat(s)";
 
 				const effectButtonsRow: HTMLDivElement = HTML.div({ class: "selectRow", style: `padding-left: 12.5%; max-width: 75%; height: 80%; padding-top: 0.2em;` }, effectButtonsText, moveupButton, movedownButton, minimizeButton, deleteButton);
 				const chorusRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("chorus") }, "Chorus:"), chorusSlider.container);
@@ -398,12 +397,55 @@ export class EffectEditor {
 				this.eqFilterSimplePeakSliders[effectIndex] = eqFilterSimplePeakSlider;
 
 				this.ringModHzNums[effectIndex] = ringModHzNum;
+				this.echoDelayNums[effectIndex] = echoDelayNum;
 				//this.grainRangeNums[effectIndex] = grainRangeNum;
 				//this.grainSizeNums[effectIndex] = grainSizeNum;
-				this.echoDelayNums[effectIndex] = echoDelayNum;
 
 				this._viewedChannel = this._doc.song.channels[this._doc.channel];
 			}
+		}
+
+		for (let effectIndex: number = 0; effectIndex < instrument.effects.length; effectIndex++) {
+			const effect: Effect = instrument.effects[effectIndex];
+
+			this.chorusSliders[effectIndex].updateValue(effect.chorus);
+			this.reverbSliders[effectIndex].updateValue(effect.reverb);
+			this.flangerSliders[effectIndex].updateValue(effect.flanger);
+			this.flangerSpeedSliders[effectIndex].updateValue(effect.flangerSpeed);
+			this.flangerDepthSliders[effectIndex].updateValue(effect.flangerDepth);
+			this.flangerFeedbackSliders[effectIndex].updateValue(effect.flangerFeedback);
+			this.ringModSliders[effectIndex].updateValue(effect.ringModulation);
+			this.ringModHzSliders[effectIndex].updateValue(effect.ringModulationHz);
+			this.granularSliders[effectIndex].updateValue(effect.granular);
+			this.grainSizeSliders[effectIndex].updateValue(effect.grainSize);
+			this.grainAmountsSliders[effectIndex].updateValue(effect.grainAmounts);
+			this.grainRangeSliders[effectIndex].updateValue(effect.grainRange);
+			this.echoSustainSliders[effectIndex].updateValue(effect.echoSustain);
+			this.echoDelaySliders[effectIndex].updateValue(effect.echoDelay);
+			this.echoPingPongSliders[effectIndex].updateValue(effect.echoPingPong);
+			this.gainSliders[effectIndex].updateValue(effect.gain);
+			this.panSliders[effectIndex].updateValue(effect.pan);
+			this.panDelaySliders[effectIndex].updateValue(effect.panDelay);
+			this.distortionSliders[effectIndex].updateValue(effect.distortion);
+			this.bitcrusherQuantizationSliders[effectIndex].updateValue(effect.bitcrusherQuantization);
+			this.bitcrusherFreqSliders[effectIndex].updateValue(effect.bitcrusherFreq);
+			this.eqFilterSimpleCutSliders[effectIndex].updateValue(effect.eqFilterSimpleCut);
+			this.eqFilterSimplePeakSliders[effectIndex].updateValue(effect.eqFilterSimplePeak);
+
+			if (effect.eqFilterType) {
+				this.eqFilterSimpleButtons[effectIndex].classList.remove("deactivated");
+				this.eqFilterAdvancedButtons[effectIndex].classList.add("deactivated");
+			} else {
+				this.eqFilterSimpleButtons[effectIndex].classList.add("deactivated");
+				this.eqFilterAdvancedButtons[effectIndex].classList.remove("deactivated");
+			}
+			setSelectedValue(this.ringModWaveSelects[effectIndex], effect.ringModWaveformIndex);
+			setSelectedValue(this.panModeSelects[effectIndex], effect.panMode);
+			this.panSliderInputBoxes[effectIndex].value = effect.pan + "";
+			this.gainSliderInputBoxes[effectIndex].value = effect.gain + "";
+			this.aliasingBoxes[effectIndex].checked = instrument.aliases ? true : false;
+			this.ringModHzNums[effectIndex].innerHTML = calculateRingModHertz(effect.ringModulationHz / (Config.ringModHzRange - 1)) + " Hz";
+			this.echoDelayNums[effectIndex].innerHTML = (Math.round((effect.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat) * 1000) / 1000) + " beat(s)";
 		}
 	}
 }

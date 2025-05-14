@@ -30612,6 +30612,7 @@ li.select2-results__option[role=group] > strong:hover {
         constructor(doc, effect, newValue) {
             super(doc);
             effect.flangerSpeed = newValue;
+            doc.synth.unsetMod(Config.modulators.dictionary["flanger speed"].index, doc.channel, doc.getCurrentInstrument());
             doc.notifier.changed();
             this._didSomething();
         }
@@ -30620,6 +30621,7 @@ li.select2-results__option[role=group] > strong:hover {
         constructor(doc, effect, newValue) {
             super(doc);
             effect.flangerDepth = newValue;
+            doc.synth.unsetMod(Config.modulators.dictionary["flanger depth"].index, doc.channel, doc.getCurrentInstrument());
             doc.notifier.changed();
             this._didSomething();
         }
@@ -30628,6 +30630,7 @@ li.select2-results__option[role=group] > strong:hover {
         constructor(doc, effect, newValue) {
             super(doc);
             effect.flangerFeedback = newValue;
+            doc.synth.unsetMod(Config.modulators.dictionary["flanger feedback"].index, doc.channel, doc.getCurrentInstrument());
             doc.notifier.changed();
             this._didSomething();
         }
@@ -39516,8 +39519,6 @@ You should be redirected to the song at:<br /><br />
             if (instrument.effects.length != this.container.children.length || this._doc.song.channels[this._doc.channel] != this._viewedChannel || forceRender) {
                 this.container.replaceChildren();
                 for (let effectIndex = 0; effectIndex < instrument.effectCount; effectIndex++) {
-                    if (instrument.effects[effectIndex] == null)
-                        continue;
                     const effect = instrument.effects[effectIndex];
                     const moveupButton = HTML.button({ type: "button", class: "moveup-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "🞁");
                     const movedownButton = HTML.button({ type: "button", class: "movedown-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "🞃");
@@ -39702,6 +39703,47 @@ You should be redirected to the song at:<br /><br />
                     this.echoDelayNums[effectIndex] = echoDelayNum;
                     this._viewedChannel = this._doc.song.channels[this._doc.channel];
                 }
+            }
+            for (let effectIndex = 0; effectIndex < instrument.effects.length; effectIndex++) {
+                const effect = instrument.effects[effectIndex];
+                this.chorusSliders[effectIndex].updateValue(effect.chorus);
+                this.reverbSliders[effectIndex].updateValue(effect.reverb);
+                this.flangerSliders[effectIndex].updateValue(effect.flanger);
+                this.flangerSpeedSliders[effectIndex].updateValue(effect.flangerSpeed);
+                this.flangerDepthSliders[effectIndex].updateValue(effect.flangerDepth);
+                this.flangerFeedbackSliders[effectIndex].updateValue(effect.flangerFeedback);
+                this.ringModSliders[effectIndex].updateValue(effect.ringModulation);
+                this.ringModHzSliders[effectIndex].updateValue(effect.ringModulationHz);
+                this.granularSliders[effectIndex].updateValue(effect.granular);
+                this.grainSizeSliders[effectIndex].updateValue(effect.grainSize);
+                this.grainAmountsSliders[effectIndex].updateValue(effect.grainAmounts);
+                this.grainRangeSliders[effectIndex].updateValue(effect.grainRange);
+                this.echoSustainSliders[effectIndex].updateValue(effect.echoSustain);
+                this.echoDelaySliders[effectIndex].updateValue(effect.echoDelay);
+                this.echoPingPongSliders[effectIndex].updateValue(effect.echoPingPong);
+                this.gainSliders[effectIndex].updateValue(effect.gain);
+                this.panSliders[effectIndex].updateValue(effect.pan);
+                this.panDelaySliders[effectIndex].updateValue(effect.panDelay);
+                this.distortionSliders[effectIndex].updateValue(effect.distortion);
+                this.bitcrusherQuantizationSliders[effectIndex].updateValue(effect.bitcrusherQuantization);
+                this.bitcrusherFreqSliders[effectIndex].updateValue(effect.bitcrusherFreq);
+                this.eqFilterSimpleCutSliders[effectIndex].updateValue(effect.eqFilterSimpleCut);
+                this.eqFilterSimplePeakSliders[effectIndex].updateValue(effect.eqFilterSimplePeak);
+                if (effect.eqFilterType) {
+                    this.eqFilterSimpleButtons[effectIndex].classList.remove("deactivated");
+                    this.eqFilterAdvancedButtons[effectIndex].classList.add("deactivated");
+                }
+                else {
+                    this.eqFilterSimpleButtons[effectIndex].classList.add("deactivated");
+                    this.eqFilterAdvancedButtons[effectIndex].classList.remove("deactivated");
+                }
+                setSelectedValue$1(this.ringModWaveSelects[effectIndex], effect.ringModWaveformIndex);
+                setSelectedValue$1(this.panModeSelects[effectIndex], effect.panMode);
+                this.panSliderInputBoxes[effectIndex].value = effect.pan + "";
+                this.gainSliderInputBoxes[effectIndex].value = effect.gain + "";
+                this.aliasingBoxes[effectIndex].checked = instrument.aliases ? true : false;
+                this.ringModHzNums[effectIndex].innerHTML = calculateRingModHertz(effect.ringModulationHz / (Config.ringModHzRange - 1)) + " Hz";
+                this.echoDelayNums[effectIndex].innerHTML = (Math.round((effect.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat) * 1000) / 1000) + " beat(s)";
             }
         }
     }

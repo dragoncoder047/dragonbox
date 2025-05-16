@@ -930,6 +930,8 @@ export class Synth {
         if (this.song != null) {
             this.song.inVolumeCap = 0.0;
             this.song.outVolumeCap = 0.0;
+            this.song.outVolumeCapL = 0.0;
+            this.song.outVolumeCapR = 0.0;
             this.song.tmpEqFilterStart = null;
             this.song.tmpEqFilterEnd = null;
             for (let channelIndex: number = 0; channelIndex < this.song.pitchChannelCount + this.song.noiseChannelCount; channelIndex++) {
@@ -1325,6 +1327,8 @@ export class Synth {
         const song: Song = this.song;
         this.song.inVolumeCap = 0.0 // Reset volume cap for this run
         this.song.outVolumeCap = 0.0;
+        this.song.outVolumeCapL = 0.0;
+        this.song.outVolumeCapR = 0.0;
 
         let samplesPerTick: number = this.getSamplesPerTick();
         let ended: boolean = false;
@@ -1651,6 +1655,8 @@ export class Synth {
                 outputDataR[i] = sampleR * limitedVolume;
 
                 this.song.outVolumeCap = (this.song.outVolumeCap > abs * limitedVolume ? this.song.outVolumeCap : abs * limitedVolume); // Analytics, spit out limited output volume
+                this.song.outVolumeCapL = (this.song.outVolumeCapL > absL * limitedVolume ? this.song.outVolumeCapL : absL * limitedVolume);
+                this.song.outVolumeCapR = (this.song.outVolumeCapR > absR * limitedVolume ? this.song.outVolumeCapR : absR * limitedVolume);
             }
 
             bufferIndex += runLength;

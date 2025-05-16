@@ -791,7 +791,7 @@ var beepbox = (function (exports) {
     Config.flangerFeedbackRange = 16;
     Config.flangerMaxDelay = 0.0034 * 4.35;
     Config.flangerPeriodMult = 0.000004;
-    Config.flangerVolumeMult = 0.5;
+    Config.flangerVolumeMult = 0.45;
     Config.chorusRange = 24;
     Config.chorusPeriodSeconds = 2.0;
     Config.chorusDelayRange = 0.0034;
@@ -13369,6 +13369,8 @@ li.select2-results__option[role=group] > strong:hover {
             this.masterGain = 1.0;
             this.inVolumeCap = 0.0;
             this.outVolumeCap = 0.0;
+            this.outVolumeCapL = 0.0;
+            this.outVolumeCapR = 0.0;
             this.eqFilter = new FilterSettings();
             this.eqFilterType = false;
             this.eqFilterSimpleCut = Config.filterSimpleCutRange - 1;
@@ -20615,6 +20617,8 @@ li.select2-results__option[role=group] > strong:hover {
             if (this.song != null) {
                 this.song.inVolumeCap = 0.0;
                 this.song.outVolumeCap = 0.0;
+                this.song.outVolumeCapL = 0.0;
+                this.song.outVolumeCapR = 0.0;
                 this.song.tmpEqFilterStart = null;
                 this.song.tmpEqFilterEnd = null;
                 for (let channelIndex = 0; channelIndex < this.song.pitchChannelCount + this.song.noiseChannelCount; channelIndex++) {
@@ -20910,6 +20914,8 @@ li.select2-results__option[role=group] > strong:hover {
             const song = this.song;
             this.song.inVolumeCap = 0.0;
             this.song.outVolumeCap = 0.0;
+            this.song.outVolumeCapL = 0.0;
+            this.song.outVolumeCapR = 0.0;
             let samplesPerTick = this.getSamplesPerTick();
             let ended = false;
             if (this.tickSampleCountdown <= 0 || this.tickSampleCountdown > samplesPerTick) {
@@ -21178,6 +21184,8 @@ li.select2-results__option[role=group] > strong:hover {
                     outputDataL[i] = sampleL * limitedVolume;
                     outputDataR[i] = sampleR * limitedVolume;
                     this.song.outVolumeCap = (this.song.outVolumeCap > abs * limitedVolume ? this.song.outVolumeCap : abs * limitedVolume);
+                    this.song.outVolumeCapL = (this.song.outVolumeCapL > absL * limitedVolume ? this.song.outVolumeCapL : absL * limitedVolume);
+                    this.song.outVolumeCapR = (this.song.outVolumeCapR > absR * limitedVolume ? this.song.outVolumeCapR : absR * limitedVolume);
                 }
                 bufferIndex += runLength;
                 this.isAtStartOfTick = false;
@@ -47854,16 +47862,21 @@ You should be redirected to the song at:<br /><br />
             this._prevBarButton = button({ class: "prevBarButton", type: "button", title: "Previous Bar (left bracket)" });
             this._nextBarButton = button({ class: "nextBarButton", type: "button", title: "Next Bar (right bracket)" });
             this._volumeSlider = new Slider(input({ title: "main volume", style: "width: 5em; flex-grow: 1; margin: 0;", type: "range", min: "0", max: "75", value: "50", step: "1" }), this._doc, null, false);
-            this._outVolumeBarBg = SVG.rect({ "pointer-events": "none", width: "90%", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetBackground });
-            this._outVolumeBar = SVG.rect({ "pointer-events": "none", height: "50%", width: "0%", x: "5%", y: "25%", fill: "url('#volumeGrad2')" });
-            this._outVolumeCap = SVG.rect({ "pointer-events": "none", width: "2px", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetFocus });
+            this._outVolumeBarBgL = SVG.rect({ "pointer-events": "none", width: "90%", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetBackground });
+            this._outVolumeBarBgR = SVG.rect({ "pointer-events": "none", width: "90%", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetBackground });
+            this._outVolumeBarL = SVG.rect({ "pointer-events": "none", height: "50%", width: "0%", x: "5%", y: "25%", fill: "url('#volumeGrad2')" });
+            this._outVolumeBarR = SVG.rect({ "pointer-events": "none", height: "50%", width: "0%", x: "5%", y: "25%", fill: "url('#volumeGrad2')" });
+            this._outVolumeCapL = SVG.rect({ "pointer-events": "none", width: "2px", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetFocus });
+            this._outVolumeCapR = SVG.rect({ "pointer-events": "none", width: "2px", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetFocus });
             this._stop1 = SVG.stop({ "stop-color": "lime", offset: "60%" });
             this._stop2 = SVG.stop({ "stop-color": "orange", offset: "90%" });
             this._stop3 = SVG.stop({ "stop-color": "red", offset: "100%" });
             this._gradient = SVG.linearGradient({ id: "volumeGrad2", gradientUnits: "userSpaceOnUse" }, this._stop1, this._stop2, this._stop3);
             this._defs = SVG.defs({}, this._gradient);
-            this._volumeBarContainer = SVG.svg({ style: `touch-action: none; overflow: visible; margin: auto; max-width: 20vw;`, width: "160px", height: "100%", preserveAspectRatio: "none", viewBox: "0 0 160 12" }, this._defs, this._outVolumeBarBg, this._outVolumeBar, this._outVolumeCap);
-            this._volumeBarBox = div({ class: "playback-volume-bar", style: "height: 12px; align-self: center;" }, this._volumeBarContainer);
+            this._volumeBarContainerL = SVG.svg({ style: `touch-action: none; overflow: visible; margin: auto; max-width: 20vw;`, width: "160px", height: "100%", preserveAspectRatio: "none", viewBox: "0 0 160 12" }, this._defs, this._outVolumeBarBgL, this._outVolumeBarL, this._outVolumeCapL);
+            this._volumeBarContainerR = SVG.svg({ style: `touch-action: none; overflow: visible; margin: auto; max-width: 20vw;`, width: "160px", height: "100%", preserveAspectRatio: "none", viewBox: "0 0 160 12" }, this._defs, this._outVolumeBarBgR, this._outVolumeBarR, this._outVolumeCapR);
+            this._volumeBarBoxL = div({ class: "playback-volume-bar", style: "height: 12px; align-self: center;" }, this._volumeBarContainerL);
+            this._volumeBarBoxR = div({ class: "playback-volume-bar", style: "height: 12px; margin-top: -5px; align-self: center;" }, this._volumeBarContainerR);
             this._fileMenu = select({ style: "width: 100%;" }, option({ selected: true, disabled: true, hidden: false }, "File"), option({ value: "new" }, "+ New Blank Song (⇧`)"), option({ value: "import" }, "↑ Import Song... (" + EditorConfig.ctrlSymbol + "O)"), option({ value: "export" }, "↓ Export Song... (" + EditorConfig.ctrlSymbol + "S)"), option({ value: "copyUrl" }, "⎘ Copy Song URL"), option({ value: "shareUrl" }, "⤳ Share Song URL"), option({ value: "configureShortener" }, "🛠 Customize Url Shortener..."), option({ value: "shortenUrl" }, "… Shorten Song URL"), option({ value: "viewPlayer" }, "▶ View in Song Player (⇧P)"), option({ value: "copyEmbed" }, "⎘ Copy HTML Embed Code"), option({ value: "songRecovery" }, "⚠ Recover Recent Song... (`)"));
             this._editMenu = select({ style: "width: 100%;" }, option({ selected: true, disabled: true, hidden: false }, "Edit"), option({ value: "undo" }, "Undo (Z)"), option({ value: "redo" }, "Redo (Y)"), option({ value: "copy" }, "Copy Pattern (C)"), option({ value: "pasteNotes" }, "Paste Pattern Notes (V)"), option({ value: "pasteNumbers" }, "Paste Pattern Numbers (" + EditorConfig.ctrlSymbol + "⇧V)"), option({ value: "insertBars" }, "Insert Bar (⏎)"), option({ value: "deleteBars" }, "Delete Selected Bars (⌫)"), option({ value: "insertChannel" }, "Insert Channel (" + EditorConfig.ctrlSymbol + "⏎)"), option({ value: "deleteChannel" }, "Delete Selected Channels (" + EditorConfig.ctrlSymbol + "⌫)"), option({ value: "selectChannel" }, "Select Channel (⇧A)"), option({ value: "selectAll" }, "Select All (A)"), option({ value: "duplicatePatterns" }, "Duplicate Reused Patterns (D)"), option({ value: "transposeUp" }, "Move Notes Up (+ or ⇧+)"), option({ value: "transposeDown" }, "Move Notes Down (- or ⇧-)"), option({ value: "moveNotesSideways" }, "Move All Notes Sideways... (W)"), option({ value: "generateEuclideanRhythm" }, "Generate Euclidean Rhythm... (" + EditorConfig.ctrlSymbol + "E)"), option({ value: "beatsPerBar" }, "Change Beats Per Bar... (⇧B)"), option({ value: "barCount" }, "Change Song Length... (L)"), option({ value: "channelSettings" }, "Channel Settings... (Q)"), option({ value: "limiterSettings" }, "Limiter Settings... (⇧L)"), option({ value: "addExternal" }, "Add Custom Samples... (⇧Q)"));
             this._optionsMenu = select({ style: "width: 100%;" }, option({ selected: true, disabled: true, hidden: false }, "Preferences"), optgroup({ label: "Technical" }, option({ value: "autoPlay" }, "Auto Play on Load"), option({ value: "autoFollow" }, "Auto Follow Playhead"), option({ value: "enableNotePreview" }, "Hear Added Notes"), option({ value: "notesOutsideScale" }, "Place Notes Out of Scale"), option({ value: "setDefaultScale" }, "Set Current Scale as Default"), option({ value: "alwaysFineNoteVol" }, "Always Fine Note Volume"), option({ value: "enableChannelMuting" }, "Enable Channel Muting"), option({ value: "instrumentCopyPaste" }, "Enable Copy/Paste Buttons"), option({ value: "instrumentImportExport" }, "Enable Import/Export Buttons"), option({ value: "displayBrowserUrl" }, "Enable Song Data in URL"), option({ value: "closePromptByClickoff" }, "Close Prompts on Click Off"), option({ value: "recordingSetup" }, "Note Recording...")), optgroup({ label: "Appearance" }, option({ value: "showFifth" }, 'Highlight "Fifth" Note'), option({ value: "notesFlashWhenPlayed" }, "Notes Flash When Played"), option({ value: "instrumentButtonsAtTop" }, "Instrument Buttons at Top"), option({ value: "frostedGlassBackground" }, "Frosted Glass Prompt Backdrop"), option({ value: "showChannels" }, "Show All Channels"), option({ value: "showScrollBar" }, "Show Octave Scroll Bar"), option({ value: "showInstrumentScrollbars" }, "Show Intsrument Scrollbars"), option({ value: "showLetters" }, "Show Piano Keys"), option({ value: "displayVolumeBar" }, "Show Playback Volume"), option({ value: "showOscilloscope" }, "Show Oscilloscope"), option({ value: "showSampleLoadingStatus" }, "Show Sample Loading Status"), option({ value: "showDescription" }, "Show Description"), option({ value: "layout" }, "Set Layout..."), option({ value: "colorTheme" }, "Set Theme..."), option({ value: "customTheme" }, "Custom Theme...")));
@@ -48086,7 +48099,7 @@ You should be redirected to the song at:<br /><br />
             this._sampleLoadingStatusContainer = div({ style: "cursor: pointer;" }, div({ style: `margin-top: 0.5em; text-align: center; color: ${ColorConfig.secondaryText};` }, "Sample Loading Status"), div({ class: "selectRow", style: "height: 6px; margin-bottom: 0.5em;" }, this._sampleLoadingBarContainer));
             this._songSettingsArea = div({ class: "song-settings-area" }, div({ class: "editor-controls" }, div({ class: "editor-song-settings" }, div({ style: "margin: 3px 0; position: relative; text-align: center; color: ${ColorConfig.secondaryText};" }, div({ class: "tip", style: "flex-shrink: 0; position:absolute; left: 0; top: 0; width: 12px; height: 12px", onclick: () => this._openPrompt("usedPattern") }, SVG.svg({ style: "flex-shrink: 0; position: absolute; left: 0; top: 0; pointer-events: none;", width: "12px", height: "12px", "margin-right": "0.5em", viewBox: "-6 -6 12 12" }, this._usedPatternIndicator)), div({ class: "tip", style: "flex-shrink: 0; position: absolute; left: 14px; top: 0; width: 12px; height: 12px", onclick: () => this._openPrompt("usedInstrument") }, SVG.svg({ style: "flex-shrink: 0; position: absolute; left: 0; top: 0; pointer-events: none;", width: "12px", height: "12px", "margin-right": "1em", viewBox: "-6 -6 12 12" }, this._usedInstrumentIndicator)), "Song Settings", div({ style: "width: 100%; left: 0; top: -1px; position:absolute; overflow-x:clip;" }, this._jumpToModIndicator))), div({ class: "selectRow" }, span({ class: "tip", onclick: () => this._openPrompt("scale") }, "Scale: "), div({ class: "selectContainer" }, this._scaleSelect)), div({ class: "selectRow" }, span({ class: "tip", onclick: () => this._openPrompt("key") }, "Key: "), div({ class: "selectContainer" }, this._keySelect)), div({ class: "selectRow" }, span({ class: "tip", onclick: () => this._openPrompt("key_octave") }, "Octave: "), this._octaveStepper), div({ class: "selectRow" }, span({ class: "tip", onclick: () => this._openPrompt("tempo") }, "Tempo: "), span({ style: "display: flex;" }, this._tempoSlider.container, this._tempoStepper)), div({ class: "selectRow" }, span({ class: "tip", onclick: () => this._openPrompt("rhythm") }, "Rhythm: "), div({ class: "selectContainer" }, this._rhythmSelect)), div({ class: "selectRow" }, span({ class: "tip", onclick: () => this._openPrompt("songeq") }, span("Song EQ:")), this._songEqFilterZoom, this._songEqFilterEditor.container), this._sampleLoadingStatusContainer));
             this._instrumentSettingsArea = div({ class: "instrument-settings-area" }, this._instrumentSettingsGroup, this._modulatorGroup);
-            this._settingsArea = div({ class: "settings-area noSelection" }, div({ class: "version-area" }, div({ style: `text-align: center; margin: 3px 0; color: ${ColorConfig.secondaryText};` }, this._songTitleInputBox.input)), div({ class: "play-pause-area" }, this._volumeBarBox, div({ class: "playback-bar-controls" }, this._playButton, this._pauseButton, this._recordButton, this._stopButton, this._prevBarButton, this._nextBarButton), div({ class: "playback-volume-controls" }, span({ class: "volume-speaker" }), this._volumeSlider.container), this._globalOscscopeContainer), this._menuArea, this._songSettingsArea, this._instrumentSettingsArea);
+            this._settingsArea = div({ class: "settings-area noSelection" }, div({ class: "version-area" }, div({ style: `text-align: center; margin: 3px 0; color: ${ColorConfig.secondaryText};` }, this._songTitleInputBox.input)), div({ class: "play-pause-area" }, div({ class: "playback-bar-controls" }, this._playButton, this._pauseButton, this._recordButton, this._stopButton, this._prevBarButton, this._nextBarButton), this._volumeBarBoxL, this._volumeBarBoxR, div({ class: "playback-volume-controls" }, span({ class: "volume-speaker" }), this._volumeSlider.container), this._globalOscscopeContainer), this._menuArea, this._songSettingsArea, this._instrumentSettingsArea);
             this.mainLayer = div({ class: "beepboxEditor", tabIndex: "0" }, this._patternArea, this._trackArea, this._settingsArea, this._promptContainer);
             this._wasPlaying = false;
             this._currentPromptName = null;
@@ -48121,9 +48134,12 @@ You should be redirected to the song at:<br /><br />
             this._openOperatorDropdowns = [];
             this._openPulseWidthDropdown = false;
             this._openUnisonDropdown = false;
-            this.outVolumeHistoricTimer = 0;
-            this.outVolumeHistoricCap = 0;
-            this.lastOutVolumeCap = 0;
+            this.outVolumeHistoricTimerL = 0;
+            this.outVolumeHistoricTimerR = 0;
+            this.outVolumeHistoricCapL = 0;
+            this.outVolumeHistoricCapR = 0;
+            this.lastOutVolumeCapL = 0;
+            this.lastOutVolumeCapR = 0;
             this.patternUsed = false;
             this._modRecTimeout = -1;
             this._whenSampleLoadingStatusClicked = () => {
@@ -48164,7 +48180,8 @@ You should be redirected to the song at:<br /><br />
                 this._piano.container.style.display = prefs.showLetters ? "" : "none";
                 this._octaveScrollBar.container.style.display = prefs.showScrollBar ? "" : "none";
                 this._barScrollBar.container.style.display = this._doc.song.barCount > this._doc.trackVisibleBars ? "" : "none";
-                this._volumeBarBox.style.display = this._doc.prefs.displayVolumeBar ? "" : "none";
+                this._volumeBarBoxL.style.display = this._doc.prefs.displayVolumeBar ? "" : "none";
+                this._volumeBarBoxR.style.display = this._doc.prefs.displayVolumeBar ? "" : "none";
                 this._globalOscscopeContainer.style.display = this._doc.prefs.showOscilloscope ? "" : "none";
                 this._doc.synth.oscEnabled = this._doc.prefs.showOscilloscope;
                 this._sampleLoadingStatusContainer.style.display = this._doc.prefs.showSampleLoadingStatus ? "" : "none";
@@ -50247,7 +50264,8 @@ You should be redirected to the song at:<br /><br />
             this.togglePlay = () => {
                 if (this._doc.synth.playing) {
                     this._doc.performance.pause();
-                    this.outVolumeHistoricCap = 0;
+                    this.outVolumeHistoricCapL = 0;
+                    this.outVolumeHistoricCapR = 0;
                 }
                 else {
                     this._doc.synth.snapToBar();
@@ -50282,17 +50300,26 @@ You should be redirected to the song at:<br /><br />
                 window.requestAnimationFrame(this._animate);
             };
             this._volumeUpdate = () => {
-                this.outVolumeHistoricTimer--;
-                if (this.outVolumeHistoricTimer <= 0) {
-                    this.outVolumeHistoricCap -= 0.03;
+                this.outVolumeHistoricTimerL--;
+                this.outVolumeHistoricTimerR--;
+                if (this.outVolumeHistoricTimerL <= 0) {
+                    this.outVolumeHistoricCapL -= 0.03;
                 }
-                if (this._doc.song.outVolumeCap > this.outVolumeHistoricCap) {
-                    this.outVolumeHistoricCap = this._doc.song.outVolumeCap;
-                    this.outVolumeHistoricTimer = 50;
+                if (this.outVolumeHistoricTimerR <= 0) {
+                    this.outVolumeHistoricCapR -= 0.03;
                 }
-                if (this._doc.song.outVolumeCap != this.lastOutVolumeCap) {
-                    this.lastOutVolumeCap = this._doc.song.outVolumeCap;
-                    this._animateVolume(this._doc.song.outVolumeCap, this.outVolumeHistoricCap);
+                if (this._doc.song.outVolumeCapL > this.outVolumeHistoricCapL) {
+                    this.outVolumeHistoricCapL = this._doc.song.outVolumeCapL;
+                    this.outVolumeHistoricTimerL = 50;
+                }
+                if (this._doc.song.outVolumeCapR > this.outVolumeHistoricCapR) {
+                    this.outVolumeHistoricCapR = this._doc.song.outVolumeCapR;
+                    this.outVolumeHistoricTimerR = 50;
+                }
+                if (this._doc.song.outVolumeCapL != this.lastOutVolumeCapL || this._doc.song.outVolumeCapR != this.lastOutVolumeCapR) {
+                    this.lastOutVolumeCapL = this._doc.song.outVolumeCapL;
+                    this.lastOutVolumeCapR = this._doc.song.outVolumeCapR;
+                    this._animateVolume(this._doc.song.outVolumeCapL, this.outVolumeHistoricCapL, this._doc.song.outVolumeCapR, this.outVolumeHistoricCapR);
                 }
             };
             this._setVolumeSlider = () => {
@@ -50978,8 +51005,10 @@ You should be redirected to the song at:<br /><br />
             this._trackArea.addEventListener("mousedown", this.refocusStage);
             this._volumeSlider.container.style.setProperty("flex-grow", "1");
             this._volumeSlider.container.style.setProperty("display", "flex");
-            this._volumeBarContainer.style.setProperty("flex-grow", "1");
-            this._volumeBarContainer.style.setProperty("display", "flex");
+            this._volumeBarContainerL.style.setProperty("flex-grow", "1");
+            this._volumeBarContainerL.style.setProperty("display", "flex");
+            this._volumeBarContainerR.style.setProperty("flex-grow", "1");
+            this._volumeBarContainerR.style.setProperty("display", "flex");
             this._volumeSlider.container.style.setProperty("--mod-color", ColorConfig.multiplicativeModSlider);
             this._volumeSlider.container.style.setProperty("--mod-border-radius", "50%");
             this._instrumentVolumeSlider.container.style.setProperty("--mod-color", ColorConfig.multiplicativeModSlider);
@@ -51760,9 +51789,11 @@ You should be redirected to the song at:<br /><br />
             if (!succeeded)
                 window.prompt("Copy this:", text);
         }
-        _animateVolume(outVolumeCap, historicOutCap) {
-            this._outVolumeBar.setAttribute("width", "" + Math.min(144, outVolumeCap * 144));
-            this._outVolumeCap.setAttribute("x", "" + (8 + Math.min(144, historicOutCap * 144)));
+        _animateVolume(outVolumeCapL, historicOutCapL, outVolumeCapR, historicOutCapR) {
+            this._outVolumeBarL.setAttribute("width", "" + Math.min(144, outVolumeCapL * 144));
+            this._outVolumeBarR.setAttribute("width", "" + Math.min(144, outVolumeCapR * 144));
+            this._outVolumeCapL.setAttribute("x", "" + (8 + Math.min(144, historicOutCapL * 144)));
+            this._outVolumeCapR.setAttribute("x", "" + (8 + Math.min(144, historicOutCapR * 144)));
         }
         _recordVolumeSlider(useVol) {
             if ((this._ctrlHeld || this._shiftHeld) && this._doc.synth.playing) {

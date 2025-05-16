@@ -747,22 +747,34 @@ export class SongEditor {
     private readonly _prevBarButton: HTMLButtonElement = button({ class: "prevBarButton", type: "button", title: "Previous Bar (left bracket)" });
     private readonly _nextBarButton: HTMLButtonElement = button({ class: "nextBarButton", type: "button", title: "Next Bar (right bracket)" });
     private readonly _volumeSlider: Slider = new Slider(input({ title: "main volume", style: "width: 5em; flex-grow: 1; margin: 0;", type: "range", min: "0", max: "75", value: "50", step: "1" }), this._doc, null, false);
-    private readonly _outVolumeBarBg: SVGRectElement = SVG.rect({ "pointer-events": "none", width: "90%", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetBackground });
-    private readonly _outVolumeBar: SVGRectElement = SVG.rect({ "pointer-events": "none", height: "50%", width: "0%", x: "5%", y: "25%", fill: "url('#volumeGrad2')" });
-    private readonly _outVolumeCap: SVGRectElement = SVG.rect({ "pointer-events": "none", width: "2px", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetFocus });
+    private readonly _outVolumeBarBgL: SVGRectElement = SVG.rect({ "pointer-events": "none", width: "90%", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetBackground });
+    private readonly _outVolumeBarBgR: SVGRectElement = SVG.rect({ "pointer-events": "none", width: "90%", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetBackground });
+    private readonly _outVolumeBarL: SVGRectElement = SVG.rect({ "pointer-events": "none", height: "50%", width: "0%", x: "5%", y: "25%", fill: "url('#volumeGrad2')" });
+    private readonly _outVolumeBarR: SVGRectElement = SVG.rect({ "pointer-events": "none", height: "50%", width: "0%", x: "5%", y: "25%", fill: "url('#volumeGrad2')" });
+    private readonly _outVolumeCapL: SVGRectElement = SVG.rect({ "pointer-events": "none", width: "2px", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetFocus });
+    private readonly _outVolumeCapR: SVGRectElement = SVG.rect({ "pointer-events": "none", width: "2px", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetFocus });
     private readonly _stop1: SVGStopElement = SVG.stop({ "stop-color": "lime", offset: "60%" });
     private readonly _stop2: SVGStopElement = SVG.stop({ "stop-color": "orange", offset: "90%" });
     private readonly _stop3: SVGStopElement = SVG.stop({ "stop-color": "red", offset: "100%" });
     private readonly _gradient: SVGGradientElement = SVG.linearGradient({ id: "volumeGrad2", gradientUnits: "userSpaceOnUse" }, this._stop1, this._stop2, this._stop3);
     private readonly _defs: SVGDefsElement = SVG.defs({}, this._gradient);
-    private readonly _volumeBarContainer: SVGSVGElement = SVG.svg({ style: `touch-action: none; overflow: visible; margin: auto; max-width: 20vw;`, width: "160px", height: "100%", preserveAspectRatio: "none", viewBox: "0 0 160 12" },
+    private readonly _volumeBarContainerL: SVGSVGElement = SVG.svg({ style: `touch-action: none; overflow: visible; margin: auto; max-width: 20vw;`, width: "160px", height: "100%", preserveAspectRatio: "none", viewBox: "0 0 160 12" },
         this._defs,
-        this._outVolumeBarBg,
-        this._outVolumeBar,
-        this._outVolumeCap,
+        this._outVolumeBarBgL,
+        this._outVolumeBarL,
+        this._outVolumeCapL,
     );
-    private readonly _volumeBarBox: HTMLDivElement = div({ class: "playback-volume-bar", style: "height: 12px; align-self: center;" },
-        this._volumeBarContainer,
+    private readonly _volumeBarContainerR: SVGSVGElement = SVG.svg({ style: `touch-action: none; overflow: visible; margin: auto; max-width: 20vw;`, width: "160px", height: "100%", preserveAspectRatio: "none", viewBox: "0 0 160 12" },
+        this._defs,
+        this._outVolumeBarBgR,
+        this._outVolumeBarR,
+        this._outVolumeCapR,
+    );
+    private readonly _volumeBarBoxL: HTMLDivElement = div({ class: "playback-volume-bar", style: "height: 12px; align-self: center;" },
+        this._volumeBarContainerL,
+    );
+    private readonly _volumeBarBoxR: HTMLDivElement = div({ class: "playback-volume-bar", style: "height: 12px; margin-top: -5px; align-self: center;" },
+        this._volumeBarContainerR,
     );
     private readonly _fileMenu: HTMLSelectElement = select({ style: "width: 100%;" },
         option({ selected: true, disabled: true, hidden: false }, "File"), // todo: "hidden" should be true but looks wrong on mac chrome, adds checkmark next to first visible option even though it's not selected. :(
@@ -1318,7 +1330,6 @@ export class SongEditor {
             ),
         ),
         div({ class: "play-pause-area" },
-            this._volumeBarBox,
             div({ class: "playback-bar-controls" },
                 this._playButton,
                 this._pauseButton,
@@ -1327,6 +1338,8 @@ export class SongEditor {
                 this._prevBarButton,
                 this._nextBarButton,
             ),
+            this._volumeBarBoxL,
+            this._volumeBarBoxR,
             div({ class: "playback-volume-controls" },
                 span({ class: "volume-speaker" }),
                 this._volumeSlider.container,
@@ -1380,9 +1393,12 @@ export class SongEditor {
     private _openPulseWidthDropdown: boolean = false;
     private _openUnisonDropdown: boolean = false;
 
-    private outVolumeHistoricTimer: number = 0;
-    private outVolumeHistoricCap: number = 0;
-    private lastOutVolumeCap: number = 0;
+    private outVolumeHistoricTimerL: number = 0;
+    private outVolumeHistoricTimerR: number = 0;
+    private outVolumeHistoricCapL: number = 0;
+    private outVolumeHistoricCapR: number = 0;
+    private lastOutVolumeCapL: number = 0;
+    private lastOutVolumeCapR: number = 0;
     public patternUsed: boolean = false;
     private _modRecTimeout: number = -1;
 
@@ -1619,8 +1635,10 @@ export class SongEditor {
         this._volumeSlider.container.style.setProperty("flex-grow", "1");
         this._volumeSlider.container.style.setProperty("display", "flex");
 
-        this._volumeBarContainer.style.setProperty("flex-grow", "1");
-        this._volumeBarContainer.style.setProperty("display", "flex");
+        this._volumeBarContainerL.style.setProperty("flex-grow", "1");
+        this._volumeBarContainerL.style.setProperty("display", "flex");
+        this._volumeBarContainerR.style.setProperty("flex-grow", "1");
+        this._volumeBarContainerR.style.setProperty("display", "flex");
 
         // Also, any slider with a multiplicative effect instead of a replacement effect gets a different mod color, and a round slider.
         this._volumeSlider.container.style.setProperty("--mod-color", ColorConfig.multiplicativeModSlider);
@@ -2292,7 +2310,8 @@ export class SongEditor {
         this._piano.container.style.display = prefs.showLetters ? "" : "none";
         this._octaveScrollBar.container.style.display = prefs.showScrollBar ? "" : "none";
         this._barScrollBar.container.style.display = this._doc.song.barCount > this._doc.trackVisibleBars ? "" : "none";
-        this._volumeBarBox.style.display = this._doc.prefs.displayVolumeBar ? "" : "none";
+        this._volumeBarBoxL.style.display = this._doc.prefs.displayVolumeBar ? "" : "none";
+        this._volumeBarBoxR.style.display = this._doc.prefs.displayVolumeBar ? "" : "none";
         this._globalOscscopeContainer.style.display = this._doc.prefs.showOscilloscope ? "" : "none";
         this._doc.synth.oscEnabled = this._doc.prefs.showOscilloscope;
         this._sampleLoadingStatusContainer.style.display = this._doc.prefs.showSampleLoadingStatus ? "" : "none";
@@ -4810,7 +4829,8 @@ export class SongEditor {
     public togglePlay = (): void => {
         if (this._doc.synth.playing) {
             this._doc.performance.pause();
-            this.outVolumeHistoricCap = 0;
+            this.outVolumeHistoricCapL = 0;
+            this.outVolumeHistoricCapR = 0;
         } else {
             this._doc.synth.snapToBar();
             this._doc.performance.play();
@@ -4852,24 +4872,35 @@ export class SongEditor {
     }
 
     public _volumeUpdate = (): void => {
-        this.outVolumeHistoricTimer--;
-        if (this.outVolumeHistoricTimer <= 0) {
-            this.outVolumeHistoricCap -= 0.03;
+        this.outVolumeHistoricTimerL--;
+        this.outVolumeHistoricTimerR--;
+        if (this.outVolumeHistoricTimerL <= 0) {
+            this.outVolumeHistoricCapL -= 0.03;
         }
-        if (this._doc.song.outVolumeCap > this.outVolumeHistoricCap) {
-            this.outVolumeHistoricCap = this._doc.song.outVolumeCap;
-            this.outVolumeHistoricTimer = 50;
+        if (this.outVolumeHistoricTimerR <= 0) {
+            this.outVolumeHistoricCapR -= 0.03;
+        }
+        if (this._doc.song.outVolumeCapL > this.outVolumeHistoricCapL) {
+            this.outVolumeHistoricCapL = this._doc.song.outVolumeCapL;
+            this.outVolumeHistoricTimerL = 50;
+        }
+        if (this._doc.song.outVolumeCapR > this.outVolumeHistoricCapR) {
+            this.outVolumeHistoricCapR = this._doc.song.outVolumeCapR;
+            this.outVolumeHistoricTimerR = 50;
         }
 
-        if (this._doc.song.outVolumeCap != this.lastOutVolumeCap) {
-            this.lastOutVolumeCap = this._doc.song.outVolumeCap;
-            this._animateVolume(this._doc.song.outVolumeCap, this.outVolumeHistoricCap);
+        if (this._doc.song.outVolumeCapL != this.lastOutVolumeCapL || this._doc.song.outVolumeCapR != this.lastOutVolumeCapR) {
+            this.lastOutVolumeCapL = this._doc.song.outVolumeCapL;
+            this.lastOutVolumeCapR = this._doc.song.outVolumeCapR;
+            this._animateVolume(this._doc.song.outVolumeCapL, this.outVolumeHistoricCapL, this._doc.song.outVolumeCapR, this.outVolumeHistoricCapR);
         }
     }
 
-    private _animateVolume(outVolumeCap: number, historicOutCap: number): void {
-        this._outVolumeBar.setAttribute("width", "" + Math.min(144, outVolumeCap * 144));
-        this._outVolumeCap.setAttribute("x", "" + (8 + Math.min(144, historicOutCap * 144)));
+    private _animateVolume(outVolumeCapL: number, historicOutCapL: number, outVolumeCapR: number, historicOutCapR: number): void {
+        this._outVolumeBarL.setAttribute("width", "" + Math.min(144, outVolumeCapL * 144));
+        this._outVolumeBarR.setAttribute("width", "" + Math.min(144, outVolumeCapR * 144));
+        this._outVolumeCapL.setAttribute("x", "" + (8 + Math.min(144, historicOutCapL * 144)));
+        this._outVolumeCapR.setAttribute("x", "" + (8 + Math.min(144, historicOutCapR * 144)));
     }
 
     private _setVolumeSlider = (): void => {

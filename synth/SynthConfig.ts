@@ -1256,7 +1256,7 @@ export class Config {
     public static readonly flangerFeedbackRange: number = 16;
     public static readonly flangerMaxDelay: number = 0.0034 * 4.35;
     public static readonly flangerPeriodMult: number = 0.000004;
-    public static readonly flangerVolumeMult: number = 0.5;
+    public static readonly flangerVolumeMult: number = 0.45;
     public static readonly chorusRange: number = 24;
     public static readonly chorusPeriodSeconds: number = 2.0;
     public static readonly chorusDelayRange: number = 0.0034;

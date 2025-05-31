@@ -92,7 +92,7 @@ export class ChannelRow {
 
     public readonly container: HTMLElement = HTML.div({ class: "channelRow" });
 
-    constructor(private readonly _doc: SongDocument, public readonly index: number) { }
+    constructor(private readonly _doc: SongDocument, public readonly index: number, public readonly color: number) { }
 
     public render(): void {
         ChannelRow.patternHeight = this._doc.getChannelHeight();
@@ -100,7 +100,7 @@ export class ChannelRow {
         const barWidth: number = this._doc.getBarWidth();
         if (this._boxes.length != this._doc.song.barCount) {
             for (let x: number = this._boxes.length; x < this._doc.song.barCount; x++) {
-                const box: Box = new Box(this.index, ColorConfig.getChannelColor(this._doc.song, this.index).secondaryChannel);
+                const box: Box = new Box(this.index, ColorConfig.getChannelColor(this._doc.song, this.color, this.index).secondaryChannel);
                 box.setWidth(barWidth);
                 this.container.appendChild(box.container);
                 this._boxes[x] = box;
@@ -132,7 +132,7 @@ export class ChannelRow {
 
             const box: Box = this._boxes[i];
             if (i < this._doc.song.barCount) {
-                const colors: ChannelColors = ColorConfig.getChannelColor(this._doc.song, this.index);
+                const colors: ChannelColors = ColorConfig.getChannelColor(this._doc.song, this.color, this.index);
                 box.setIndex(this._doc.song.channels[this.index].bars[i], selected, dim, dim && !selected ? colors.secondaryChannel : colors.primaryChannel,
                     this.index >= this._doc.song.pitchChannelCount && this.index < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount, this.index >= this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount);
                 box.setVisibility("visible");

@@ -2353,9 +2353,9 @@ var beepbox = (function (exports) {
                 }
             }
         }
-        static getComputedChannelColor(song, channel) {
+        static getComputedChannelColor(song, color, channel) {
             if (!this.usesColorFormula) {
-                let base = ColorConfig.getChannelColor(song, channel);
+                let base = ColorConfig.getChannelColor(song, color, channel);
                 var regex = /\(([^\,)]+)/;
                 let newChannelSecondary = ColorConfig.getComputed(regex.exec(base.secondaryChannel)[1]);
                 let newChannelPrimary = ColorConfig.getComputed(regex.exec(base.primaryChannel)[1]);
@@ -2364,79 +2364,80 @@ var beepbox = (function (exports) {
                 return { secondaryChannel: newChannelSecondary, primaryChannel: newChannelPrimary, secondaryNote: newNoteSecondary, primaryNote: newNotePrimary };
             }
             else {
-                return ColorConfig.getChannelColor(song, channel);
+                return ColorConfig.getChannelColor(song, color, channel);
             }
         }
         ;
-        static getChannelColor(song, channel) {
+        static getChannelColor(song, color, channel) {
+            console.log(channel);
             if (!this.usesColorFormula) {
                 if (channel < song.pitchChannelCount) {
-                    return ColorConfig.pitchChannels[(channel % this.c_pitchLimit) % ColorConfig.pitchChannels.length];
+                    return ColorConfig.pitchChannels[(color % this.c_pitchLimit) % ColorConfig.pitchChannels.length];
                 }
                 else if (channel < song.pitchChannelCount + song.noiseChannelCount) {
-                    return ColorConfig.noiseChannels[((channel - song.pitchChannelCount) % this.c_noiseLimit) % ColorConfig.noiseChannels.length];
+                    return ColorConfig.noiseChannels[(color % this.c_noiseLimit) % ColorConfig.noiseChannels.length];
                 }
                 else {
-                    return ColorConfig.modChannels[((channel - song.pitchChannelCount - song.noiseChannelCount) % this.c_modLimit) % ColorConfig.modChannels.length];
+                    return ColorConfig.modChannels[(color % this.c_modLimit) % ColorConfig.modChannels.length];
                 }
             }
             else {
-                if (ColorConfig.colorLookup.has(channel)) {
-                    return ColorConfig.colorLookup.get(channel);
+                if (ColorConfig.colorLookup.has(color)) {
+                    return ColorConfig.colorLookup.get(color);
                 }
                 else {
                     let colorFormulaPitchLimit = this.c_colorFormulaPitchLimit;
                     let colorFormulaNoiseLimit = this.c_colorFormulaNoiseLimit;
                     let colorFormulaModLimit = this.c_colorFormulaModLimit;
                     if (channel < song.pitchChannelCount) {
-                        let newChannelSecondary = "hsl(" + ((this.c_pitchSecondaryChannelHue + (channel * this.c_pitchSecondaryChannelHueScale / this.c_pitchChannelCountOverride) * 256) % colorFormulaPitchLimit) + ","
-                            + (this.c_pitchSecondaryChannelSat * (1 - (this.c_pitchSecondaryChannelSatScale * Math.floor(channel / 9)))) + "%,"
-                            + (this.c_pitchSecondaryChannelLum * (1 - (this.c_pitchSecondaryChannelLumScale * Math.floor(channel / 9)))) + "%)";
-                        let newChannelPrimary = "hsl(" + ((this.c_pitchPrimaryChannelHue + (channel * this.c_pitchPrimaryChannelHueScale / this.c_pitchChannelCountOverride) * 256) % colorFormulaPitchLimit) + ","
-                            + (this.c_pitchPrimaryChannelSat * (1 - (this.c_pitchPrimaryChannelSatScale * Math.floor(channel / 9)))) + "%,"
-                            + (this.c_pitchPrimaryChannelLum * (1 - (this.c_pitchPrimaryChannelLumScale * Math.floor(channel / 9)))) + "%)";
-                        let newNoteSecondary = "hsl(" + ((this.c_pitchSecondaryNoteHue + (channel * this.c_pitchSecondaryNoteHueScale / this.c_pitchChannelCountOverride) * 256) % colorFormulaPitchLimit) + ","
-                            + (this.c_pitchSecondaryNoteSat * (1 - (this.c_pitchSecondaryNoteSatScale * Math.floor(channel / 9)))) + "%,"
-                            + (this.c_pitchSecondaryNoteLum * (1 - (this.c_pitchSecondaryNoteLumScale * Math.floor(channel / 9)))) + "%)";
-                        let newNotePrimary = "hsl(" + ((this.c_pitchPrimaryNoteHue + (channel * this.c_pitchPrimaryNoteHueScale / this.c_pitchChannelCountOverride) * 256) % colorFormulaPitchLimit) + ","
-                            + (this.c_pitchPrimaryNoteSat * (1 - (this.c_pitchPrimaryNoteSatScale * Math.floor(channel / 9)))) + "%,"
-                            + (this.c_pitchPrimaryNoteLum * (1 - (this.c_pitchPrimaryNoteLumScale * Math.floor(channel / 9)))) + "%)";
+                        let newChannelSecondary = "hsl(" + ((this.c_pitchSecondaryChannelHue + (color * this.c_pitchSecondaryChannelHueScale / this.c_pitchChannelCountOverride) * 256) % colorFormulaPitchLimit) + ","
+                            + (this.c_pitchSecondaryChannelSat * (1 - (this.c_pitchSecondaryChannelSatScale * Math.floor(color / 9)))) + "%,"
+                            + (this.c_pitchSecondaryChannelLum * (1 - (this.c_pitchSecondaryChannelLumScale * Math.floor(color / 9)))) + "%)";
+                        let newChannelPrimary = "hsl(" + ((this.c_pitchPrimaryChannelHue + (color * this.c_pitchPrimaryChannelHueScale / this.c_pitchChannelCountOverride) * 256) % colorFormulaPitchLimit) + ","
+                            + (this.c_pitchPrimaryChannelSat * (1 - (this.c_pitchPrimaryChannelSatScale * Math.floor(color / 9)))) + "%,"
+                            + (this.c_pitchPrimaryChannelLum * (1 - (this.c_pitchPrimaryChannelLumScale * Math.floor(color / 9)))) + "%)";
+                        let newNoteSecondary = "hsl(" + ((this.c_pitchSecondaryNoteHue + (color * this.c_pitchSecondaryNoteHueScale / this.c_pitchChannelCountOverride) * 256) % colorFormulaPitchLimit) + ","
+                            + (this.c_pitchSecondaryNoteSat * (1 - (this.c_pitchSecondaryNoteSatScale * Math.floor(color / 9)))) + "%,"
+                            + (this.c_pitchSecondaryNoteLum * (1 - (this.c_pitchSecondaryNoteLumScale * Math.floor(color / 9)))) + "%)";
+                        let newNotePrimary = "hsl(" + ((this.c_pitchPrimaryNoteHue + (color * this.c_pitchPrimaryNoteHueScale / this.c_pitchChannelCountOverride) * 256) % colorFormulaPitchLimit) + ","
+                            + (this.c_pitchPrimaryNoteSat * (1 - (this.c_pitchPrimaryNoteSatScale * Math.floor(color / 9)))) + "%,"
+                            + (this.c_pitchPrimaryNoteLum * (1 - (this.c_pitchPrimaryNoteLumScale * Math.floor(color / 9)))) + "%)";
                         let newChannelColors = { secondaryChannel: newChannelSecondary, primaryChannel: newChannelPrimary, secondaryNote: newNoteSecondary, primaryNote: newNotePrimary };
-                        ColorConfig.colorLookup.set(channel, newChannelColors);
+                        ColorConfig.colorLookup.set(color, newChannelColors);
                         return newChannelColors;
                     }
                     else if (channel < song.pitchChannelCount + song.noiseChannelCount) {
-                        let newChannelSecondary = "hsl(" + ((this.c_noiseSecondaryChannelHue + (((channel - song.pitchChannelCount) * this.c_noiseSecondaryChannelHueScale) / this.c_noiseChannelCountOverride) * 256) % colorFormulaNoiseLimit) + ","
-                            + (this.c_noiseSecondaryChannelSat + channel * this.c_noiseSecondaryChannelSatScale) + "%,"
-                            + (this.c_noiseSecondaryChannelLum + channel * this.c_noiseSecondaryChannelLumScale) + "%)";
-                        let newChannelPrimary = "hsl(" + ((this.c_noisePrimaryChannelHue + (((channel - song.pitchChannelCount) * this.c_noisePrimaryChannelHueScale) / this.c_noiseChannelCountOverride) * 256) % colorFormulaNoiseLimit) + ","
-                            + (this.c_noisePrimaryChannelSat + channel * this.c_noisePrimaryChannelSatScale) + "%,"
-                            + (this.c_noisePrimaryChannelLum + channel * this.c_noisePrimaryChannelLumScale) + "%)";
-                        let newNoteSecondary = "hsl(" + ((this.c_noiseSecondaryNoteHue + (((channel - song.pitchChannelCount) * this.c_noiseSecondaryNoteHueScale) / this.c_noiseChannelCountOverride) * 256) % colorFormulaNoiseLimit) + ","
-                            + (this.c_noiseSecondaryNoteSat + channel * this.c_noiseSecondaryNoteSatScale) + "%,"
-                            + (this.c_noiseSecondaryNoteLum + channel * this.c_noiseSecondaryNoteLumScale) + "%)";
-                        let newNotePrimary = "hsl(" + ((this.c_noisePrimaryNoteHue + (((channel - song.pitchChannelCount) * this.c_noisePrimaryNoteHueScale) / this.c_noiseChannelCountOverride) * 256) % colorFormulaNoiseLimit) + ","
-                            + (this.c_noisePrimaryNoteSat + channel * this.c_noisePrimaryNoteSatScale) + "%,"
-                            + (this.c_noisePrimaryNoteLum + channel * this.c_noisePrimaryNoteLumScale) + "%)";
+                        let newChannelSecondary = "hsl(" + ((this.c_noiseSecondaryChannelHue + (((color - song.pitchChannelCount) * this.c_noiseSecondaryChannelHueScale) / this.c_noiseChannelCountOverride) * 256) % colorFormulaNoiseLimit) + ","
+                            + (this.c_noiseSecondaryChannelSat + color * this.c_noiseSecondaryChannelSatScale) + "%,"
+                            + (this.c_noiseSecondaryChannelLum + color * this.c_noiseSecondaryChannelLumScale) + "%)";
+                        let newChannelPrimary = "hsl(" + ((this.c_noisePrimaryChannelHue + (((color - song.pitchChannelCount) * this.c_noisePrimaryChannelHueScale) / this.c_noiseChannelCountOverride) * 256) % colorFormulaNoiseLimit) + ","
+                            + (this.c_noisePrimaryChannelSat + color * this.c_noisePrimaryChannelSatScale) + "%,"
+                            + (this.c_noisePrimaryChannelLum + color * this.c_noisePrimaryChannelLumScale) + "%)";
+                        let newNoteSecondary = "hsl(" + ((this.c_noiseSecondaryNoteHue + (((color - song.pitchChannelCount) * this.c_noiseSecondaryNoteHueScale) / this.c_noiseChannelCountOverride) * 256) % colorFormulaNoiseLimit) + ","
+                            + (this.c_noiseSecondaryNoteSat + color * this.c_noiseSecondaryNoteSatScale) + "%,"
+                            + (this.c_noiseSecondaryNoteLum + color * this.c_noiseSecondaryNoteLumScale) + "%)";
+                        let newNotePrimary = "hsl(" + ((this.c_noisePrimaryNoteHue + (((color - song.pitchChannelCount) * this.c_noisePrimaryNoteHueScale) / this.c_noiseChannelCountOverride) * 256) % colorFormulaNoiseLimit) + ","
+                            + (this.c_noisePrimaryNoteSat + color * this.c_noisePrimaryNoteSatScale) + "%,"
+                            + (this.c_noisePrimaryNoteLum + color * this.c_noisePrimaryNoteLumScale) + "%)";
                         let newChannelColors = { secondaryChannel: newChannelSecondary, primaryChannel: newChannelPrimary, secondaryNote: newNoteSecondary, primaryNote: newNotePrimary };
-                        ColorConfig.colorLookup.set(channel, newChannelColors);
+                        ColorConfig.colorLookup.set(color, newChannelColors);
                         return newChannelColors;
                     }
                     else {
-                        let newChannelSecondary = "hsl(" + ((this.c_modSecondaryChannelHue + (((channel - song.pitchChannelCount - song.noiseChannelCount) * this.c_modSecondaryChannelHueScale) / this.c_modChannelCountOverride) * 256) % colorFormulaModLimit) + ","
-                            + (this.c_modSecondaryChannelSat + channel * this.c_modSecondaryChannelSatScale) + "%,"
-                            + (this.c_modSecondaryChannelLum + channel * this.c_modSecondaryChannelLumScale) + "%)";
-                        let newChannelPrimary = "hsl(" + ((this.c_modPrimaryChannelHue + (((channel - song.pitchChannelCount - song.noiseChannelCount) * this.c_modPrimaryChannelHueScale) / this.c_modChannelCountOverride) * 256) % colorFormulaModLimit) + ","
-                            + (this.c_modPrimaryChannelSat + channel * this.c_modPrimaryChannelSatScale) + "%,"
-                            + (this.c_modPrimaryChannelLum + channel * this.c_modPrimaryChannelLumScale) + "%)";
-                        let newNoteSecondary = "hsl(" + ((this.c_modSecondaryNoteHue + (((channel - song.pitchChannelCount - song.noiseChannelCount) * this.c_modSecondaryNoteHueScale) / this.c_modChannelCountOverride) * 256) % colorFormulaModLimit) + ","
-                            + (this.c_modSecondaryNoteSat + channel * this.c_modSecondaryNoteSatScale) + "%,"
-                            + (this.c_modSecondaryNoteLum + channel * this.c_modSecondaryNoteLumScale) + "%)";
-                        let newNotePrimary = "hsl(" + ((this.c_modPrimaryNoteHue + (((channel - song.pitchChannelCount - song.noiseChannelCount) * this.c_modPrimaryNoteHueScale) / this.c_modChannelCountOverride) * 256) % colorFormulaModLimit) + ","
-                            + (this.c_modPrimaryNoteSat + channel * this.c_modPrimaryNoteSatScale) + "%,"
-                            + (this.c_modPrimaryNoteLum + channel * this.c_modPrimaryNoteLumScale) + "%)";
+                        let newChannelSecondary = "hsl(" + ((this.c_modSecondaryChannelHue + (((color - song.pitchChannelCount - song.noiseChannelCount) * this.c_modSecondaryChannelHueScale) / this.c_modChannelCountOverride) * 256) % colorFormulaModLimit) + ","
+                            + (this.c_modSecondaryChannelSat + color * this.c_modSecondaryChannelSatScale) + "%,"
+                            + (this.c_modSecondaryChannelLum + color * this.c_modSecondaryChannelLumScale) + "%)";
+                        let newChannelPrimary = "hsl(" + ((this.c_modPrimaryChannelHue + (((color - song.pitchChannelCount - song.noiseChannelCount) * this.c_modPrimaryChannelHueScale) / this.c_modChannelCountOverride) * 256) % colorFormulaModLimit) + ","
+                            + (this.c_modPrimaryChannelSat + color * this.c_modPrimaryChannelSatScale) + "%,"
+                            + (this.c_modPrimaryChannelLum + color * this.c_modPrimaryChannelLumScale) + "%)";
+                        let newNoteSecondary = "hsl(" + ((this.c_modSecondaryNoteHue + (((color - song.pitchChannelCount - song.noiseChannelCount) * this.c_modSecondaryNoteHueScale) / this.c_modChannelCountOverride) * 256) % colorFormulaModLimit) + ","
+                            + (this.c_modSecondaryNoteSat + color * this.c_modSecondaryNoteSatScale) + "%,"
+                            + (this.c_modSecondaryNoteLum + color * this.c_modSecondaryNoteLumScale) + "%)";
+                        let newNotePrimary = "hsl(" + ((this.c_modPrimaryNoteHue + (((color - song.pitchChannelCount - song.noiseChannelCount) * this.c_modPrimaryNoteHueScale) / this.c_modChannelCountOverride) * 256) % colorFormulaModLimit) + ","
+                            + (this.c_modPrimaryNoteSat + color * this.c_modPrimaryNoteSatScale) + "%,"
+                            + (this.c_modPrimaryNoteLum + color * this.c_modPrimaryNoteLumScale) + "%)";
                         let newChannelColors = { secondaryChannel: newChannelSecondary, primaryChannel: newChannelPrimary, secondaryNote: newNoteSecondary, primaryNote: newNotePrimary };
-                        ColorConfig.colorLookup.set(channel, newChannelColors);
+                        ColorConfig.colorLookup.set(color, newChannelColors);
                         return newChannelColors;
                     }
                 }
@@ -10703,6 +10704,7 @@ li.select2-results__option[role=group] > strong:hover {
             this.bars = [];
             this.muted = false;
             this.name = "";
+            this.color = 0;
         }
     }
 
@@ -13624,6 +13626,7 @@ li.select2-results__option[role=group] > strong:hover {
                     const isModChannel = channelIndex >= this.pitchChannelCount + this.noiseChannelCount;
                     if (this.channels.length <= channelIndex) {
                         this.channels[channelIndex] = new Channel();
+                        this.channels[channelIndex].color = channelIndex;
                     }
                     const channel = this.channels[channelIndex];
                     channel.octave = Math.max(3 - channelIndex, 0);
@@ -13723,6 +13726,7 @@ li.select2-results__option[role=group] > strong:hover {
                 for (let i = 0; i < encodedChannelName.length; i++) {
                     buffer.push(encodedChannelName.charCodeAt(i));
                 }
+                buffer.push(base64IntToCharCode[clamp(0, 63, this.channels[channel].color)]);
             }
             buffer.push(105, base64IntToCharCode[(this.layeredInstruments << 1) | this.patternInstruments]);
             if (this.layeredInstruments || this.patternInstruments) {
@@ -15762,6 +15766,8 @@ li.select2-results__option[role=group] > strong:hover {
                                     channelNameLength = ((base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 this.channels[channel].name = decodeURIComponent(compressed.substring(charIndex, charIndex + channelNameLength));
                                 charIndex += channelNameLength;
+                                if (fromTheepBox)
+                                    this.channels[channel].color = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                             }
                         }
                         break;
@@ -28295,6 +28301,7 @@ li.select2-results__option[role=group] > strong:hover {
                     }
                 }
             }
+            doc.recalcChannelColors = true;
             doc.notifier.changed();
             this._didSomething();
         }
@@ -28324,6 +28331,7 @@ li.select2-results__option[role=group] > strong:hover {
                         else {
                             newChannels[channelIndex] = new Channel();
                             newChannels[channelIndex].octave = octave;
+                            newChannels[channelIndex].color = channelIndex % 64;
                             for (let j = 0; j < Config.instrumentCountMin; j++) {
                                 const instrument = new Instrument(isNoise, isMod);
                                 if (!isMod) {
@@ -28373,6 +28381,7 @@ li.select2-results__option[role=group] > strong:hover {
                 }
                 doc.notifier.changed();
                 ColorConfig.resetColors();
+                doc.recalcChannelColors = true;
                 this._didSomething();
             }
         }
@@ -28432,6 +28441,7 @@ li.select2-results__option[role=group] > strong:hover {
                 this.append(new ChangeChannelCount(doc, Config.pitchChannelCountMin, doc.song.noiseChannelCount, doc.song.modChannelCount));
             }
             ColorConfig.resetColors();
+            doc.recalcChannelColors = true;
             doc.recalcChannelNames = true;
             this.append(new ChangeChannelBar(doc, Math.max(0, minIndex - 1), doc.bar));
             doc.synth.computeLatestModValues();
@@ -30399,6 +30409,7 @@ li.select2-results__option[role=group] > strong:hover {
             doc.song.fromBase64String(newHash, jsonFormat);
             if (pitchChannelCount != doc.song.pitchChannelCount || noiseChannelCount != doc.song.noiseChannelCount || modChannelCount != doc.song.modChannelCount) {
                 ColorConfig.resetColors();
+                doc.recalcChannelColors = true;
             }
             if (newHash == "") {
                 this.append(new ChangePatternSelection(doc, 0, 0));
@@ -30507,6 +30518,7 @@ li.select2-results__option[role=group] > strong:hover {
             doc.notifier.changed();
             this._didSomething();
             ColorConfig.resetColors();
+            doc.recalcChannelColors = true;
         }
     }
     function comparePatternNotes(a, b) {
@@ -35093,7 +35105,7 @@ You should be redirected to the song at:<br /><br />
                 this._subticks.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: 0, y: i * 8 * (this._editorHeight / 49), width: this._editorWidth, height: 1 }));
                 this._subticks.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: 0, y: this._editorHeight - 1 - i * 8 * (this._editorHeight / 49), width: this._editorWidth, height: 1 }));
             }
-            let col = ColorConfig.getChannelColor(this._doc.song, this._doc.channel).primaryNote;
+            let col = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
             for (let i = 0; i <= 64; i++) {
                 let val = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()].customChipWave[i];
                 this.chipData[i] = val;
@@ -35432,10 +35444,10 @@ You should be redirected to the song at:<br /><br />
                 this._label.style.setProperty("min-height", "1em");
                 this._dottedLinePath.style.setProperty("stroke-width", "3");
                 this._dottedLinePath.style.setProperty("stroke-dasharray", "6, 4");
-                this._dottedLinePath.setAttribute("color", ColorConfig.getChannelColor(this._doc.song, this._doc.channel).primaryNote);
+                this._dottedLinePath.setAttribute("color", ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote);
                 this.container.style.setProperty("width", "85%");
                 this._highlight.setAttribute("r", "20");
-                this._controlPointPath.setAttribute("fill", ColorConfig.getChannelColor(this._doc.song, this._doc.channel).primaryNote);
+                this._controlPointPath.setAttribute("fill", ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote);
                 for (let i = 0; i < Config.filterMaxPoints; i++) {
                     this._indicators[i] = SVG.text();
                     this._indicators[i].setAttribute("fill", ColorConfig.invertedText);
@@ -36074,7 +36086,7 @@ You should be redirected to the song at:<br /><br />
             this._filterCopyButton.addEventListener("click", this._copyFilterSettings);
             this._filterPasteButton.addEventListener("click", this._pasteFilterSettings);
             this.updatePlayButton();
-            let colors = ColorConfig.getChannelColor(this._doc.song, this._doc.channel);
+            let colors = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel);
             this.filterEditor = new FilterEditor(_doc, _useNoteFilter, true, this.forSong, _effectIndex);
             this._filterContainer.appendChild(this.filterEditor.container);
             this.filterEditor.container.insertBefore(this._filterCoordinateText, this.filterEditor.container.firstChild);
@@ -37101,7 +37113,7 @@ You should be redirected to the song at:<br /><br />
                         sequenceButton.style.color = ColorConfig.primaryText;
                     }
                 }
-                const colors = ColorConfig.getChannelColor(this._doc.song, this._sequences[this._sequenceIndex].channel);
+                const colors = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._sequences[this._sequenceIndex].channel].color, this._sequences[this._sequenceIndex].channel);
                 this._sequenceButtonContainer.style.setProperty("--text-color-lit", colors.primaryNote);
                 this._sequenceButtonContainer.style.setProperty("--text-color-dim", colors.secondaryNote);
                 this._sequenceButtonContainer.style.setProperty("--background-color-lit", colors.primaryChannel);
@@ -37136,7 +37148,7 @@ You should be redirected to the song at:<br /><br />
                 const hasGeneratedSequence = generatedSequence.length > 0;
                 const invert = sequence.invert;
                 const on = invert ? 0 : 1;
-                const color = ColorConfig.getChannelColor(this._doc.song, channelIndex).primaryNote;
+                const color = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[channelIndex].color, channelIndex).primaryNote;
                 const backgroundColor = ColorConfig.editorBackground;
                 this._clockWire.setAttribute("stroke", color);
                 const container = this._clockPoints;
@@ -37176,7 +37188,7 @@ You should be redirected to the song at:<br /><br />
                 const invert = sequence.invert;
                 const on = invert ? 0 : 1;
                 const generateFadingNotes = sequence.generateFadingNotes;
-                const channelColors = ColorConfig.getChannelColor(this._doc.song, channelIndex);
+                const channelColors = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[channelIndex].color, channelIndex);
                 const color = channelColors.primaryNote;
                 const secondaryColor = channelColors.secondaryNote;
                 const bar = this._barPreviewBarIndex - this._startBar;
@@ -38706,9 +38718,10 @@ You should be redirected to the song at:<br /><br />
         }
     }
     class ChannelRow {
-        constructor(_doc, index) {
+        constructor(_doc, index, color) {
             this._doc = _doc;
             this.index = index;
+            this.color = color;
             this._renderedBarWidth = -1;
             this._renderedBarHeight = -1;
             this._boxes = [];
@@ -38719,7 +38732,7 @@ You should be redirected to the song at:<br /><br />
             const barWidth = this._doc.getBarWidth();
             if (this._boxes.length != this._doc.song.barCount) {
                 for (let x = this._boxes.length; x < this._doc.song.barCount; x++) {
-                    const box = new Box(this.index, ColorConfig.getChannelColor(this._doc.song, this.index).secondaryChannel);
+                    const box = new Box(this.index, ColorConfig.getChannelColor(this._doc.song, this.color, this.index).secondaryChannel);
                     box.setWidth(barWidth);
                     this.container.appendChild(box.container);
                     this._boxes[x] = box;
@@ -38747,7 +38760,7 @@ You should be redirected to the song at:<br /><br />
                 const dim = (pattern == null || pattern.notes.length == 0);
                 const box = this._boxes[i];
                 if (i < this._doc.song.barCount) {
-                    const colors = ColorConfig.getChannelColor(this._doc.song, this.index);
+                    const colors = ColorConfig.getChannelColor(this._doc.song, this.color, this.index);
                     box.setIndex(this._doc.song.channels[this.index].bars[i], selected, dim, dim && !selected ? colors.secondaryChannel : colors.primaryChannel, this.index >= this._doc.song.pitchChannelCount && this.index < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount, this.index >= this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount);
                     box.setVisibility("visible");
                 }
@@ -43823,7 +43836,7 @@ You should be redirected to the song at:<br /><br />
                         for (const note of pattern2.notes) {
                             for (const pitch of note.pitches) {
                                 let notePath = SVG.path();
-                                notePath.setAttribute("fill", ColorConfig.getChannelColor(this._doc.song, channel).secondaryNote);
+                                notePath.setAttribute("fill", ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[channel].color, channel).secondaryNote);
                                 notePath.setAttribute("pointer-events", "none");
                                 this._drawNote(notePath, pitch, note.start, note.pins, this._pitchHeight * 0.19, false, octaveOffset);
                                 this._svgNoteContainer.appendChild(notePath);
@@ -43862,8 +43875,8 @@ You should be redirected to the song at:<br /><br />
                     for (let i = 0; i < note.pitches.length; i++) {
                         const pitch = note.pitches[i];
                         let notePath = SVG.path();
-                        let colorPrimary = (disabled ? ColorConfig.disabledNotePrimary : ColorConfig.getChannelColor(this._doc.song, this._doc.channel).primaryNote);
-                        let colorSecondary = (disabled ? ColorConfig.disabledNoteSecondary : ColorConfig.getChannelColor(this._doc.song, this._doc.channel).secondaryNote);
+                        let colorPrimary = (disabled ? ColorConfig.disabledNotePrimary : ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote);
+                        let colorSecondary = (disabled ? ColorConfig.disabledNoteSecondary : ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).secondaryNote);
                         notePath.setAttribute("fill", colorSecondary);
                         notePath.setAttribute("pointer-events", "none");
                         this._drawNote(notePath, pitch, note.start, note.pins, (this._pitchHeight - this._pitchBorder) / 2 + 1, false, this._octaveOffset);
@@ -44620,7 +44633,7 @@ You should be redirected to the song at:<br /><br />
                     this.spectrumEditors[i] = new SpectrumEditor(this._doc, Config.drumCount - 1 - i, true);
                     this.spectrumEditors[i].setSpectrumWave(this._songEditor._drumsetSpectrumEditors[Config.drumCount - 1 - i].getSpectrumWave().spectrum);
                 }
-                let colors = ColorConfig.getChannelColor(this._doc.song, this._doc.channel);
+                let colors = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel);
                 for (let i = 0; i < Config.drumCount; i++) {
                     let newSpectrumButton = HTML.button({ class: "no-underline", style: "max-width: 2em;" }, "" + (i + 1));
                     this._drumsetButtons.push(newSpectrumButton);
@@ -45749,11 +45762,27 @@ You should be redirected to the song at:<br /><br />
             if (this._select.selectedIndex != selectedPattern)
                 this._select.selectedIndex = selectedPattern;
         }
+        rerenderChannelColors() {
+            for (let y = 0; y < this._doc.song.getChannelCount(); y++) {
+                this._channelRowContainer.removeChild(this._channels[y].container);
+            }
+            for (let y = 0; y < this._doc.song.getChannelCount(); y++) {
+                const channelRow = new ChannelRow(this._doc, y, this._doc.song.channels[y].color);
+                console.log(this._doc.song.channels[y].color);
+                this._channels[y] = channelRow;
+                this._channelRowContainer.appendChild(channelRow.container);
+            }
+            this._channels.length = this._doc.song.getChannelCount();
+            this._mousePressed = false;
+            for (let j = 0; j < this._doc.song.getChannelCount(); j++) {
+                this._channels[j].render();
+            }
+        }
         render() {
             this._barWidth = this._doc.getBarWidth();
             if (this._channels.length != this._doc.song.getChannelCount()) {
                 for (let y = this._channels.length; y < this._doc.song.getChannelCount(); y++) {
-                    const channelRow = new ChannelRow(this._doc, y);
+                    const channelRow = new ChannelRow(this._doc, y, this._doc.song.channels[y].color);
                     this._channels[y] = channelRow;
                     this._channelRowContainer.appendChild(channelRow.container);
                 }
@@ -47413,7 +47442,7 @@ You should be redirected to the song at:<br /><br />
                             ctx.fillStyle = ColorConfig.getComputed("--track-editor-bg-pitch-dim");
                             ctx.fillRect(Math.floor(i / 2) * 2, 13, 2, 1);
                             ctx.fillRect(Math.floor(i / 2) * 2, 39, 2, 1);
-                            ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.channel).primaryNote;
+                            ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
                             ctx.fillRect(Math.floor(i / 2) * 2, j - 2, 2, 4);
                             this.newArray[Math.floor(i / 2)] = (j - 26);
                         }
@@ -47426,7 +47455,7 @@ You should be redirected to the song at:<br /><br />
                         ctx.fillStyle = ColorConfig.getComputed("--track-editor-bg-pitch-dim");
                         ctx.fillRect(Math.floor(x / 2) * 2, 13, 2, 1);
                         ctx.fillRect(Math.floor(x / 2) * 2, 39, 2, 1);
-                        ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.channel).primaryNote;
+                        ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
                         ctx.fillRect(Math.floor(x / 2) * 2, y - 2, 2, 4);
                         this.newArray[Math.floor(x / 2)] = (y - 26);
                     }
@@ -47478,7 +47507,7 @@ You should be redirected to the song at:<br /><br />
         }
         redrawCanvas() {
             const chipData = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()].customChipWave;
-            const renderColor = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.channel).primaryNote;
+            const renderColor = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
             let needsRedraw = false;
             if (renderColor != this.renderedColor) {
                 needsRedraw = true;
@@ -47522,7 +47551,7 @@ You should be redirected to the song at:<br /><br />
                     var x = (event.clientX || event.pageX) - this.canvas.getBoundingClientRect().left;
                     var y = Math.floor((event.clientY || event.pageY) - this.canvas.getBoundingClientRect().top);
                     var ctx = this.canvas.getContext("2d");
-                    ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.channel).primaryNote;
+                    ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
                     var yindex = Math.ceil(y / 12);
                     var xindex = Math.ceil(x / 12);
                     yindex = (yindex / 2) - Math.floor(yindex / 2) >= 0.5 ? Math.floor(yindex / 2) : -1;
@@ -47825,11 +47854,11 @@ You should be redirected to the song at:<br /><br />
                             ctx.fillRect(x * 24 + 12, ((y) * 24), 12, 12);
                             ctx.fillStyle = ColorConfig.getComputed("--editor-background");
                             ctx.fillRect(x * 24 + 13, ((y) * 24) + 1, 10, 10);
-                            ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.channel).primaryNote;
+                            ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
                             ctx.fillText(this.drawArray[y][x] + "", x * 24 + 14, y * 24 + 10);
                         }
                         else {
-                            ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.channel).primaryNote;
+                            ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
                             ctx.fillRect(x * 24 + 12, (y * 24), 12, 12);
                             ctx.fillStyle = ColorConfig.getComputed("--editor-background");
                             ctx.fillRect(x * 24 + 13, ((y) * 24) + 1, 10, 10);
@@ -48171,6 +48200,10 @@ You should be redirected to the song at:<br /><br />
                 }
                 this._barScrollBar.render();
                 this._trackEditor.render();
+                if (this._doc.recalcChannelColors == true) {
+                    this._trackEditor.rerenderChannelColors();
+                    this._doc.recalcChannelColors = false;
+                }
                 this._muteEditor.render();
                 this._trackAndMuteContainer.scrollLeft = this._doc.barScrollPos * this._doc.getBarWidth();
                 this._trackAndMuteContainer.scrollTop = this._doc.channelScrollPos * ChannelRow.patternHeight;
@@ -48281,7 +48314,7 @@ You should be redirected to the song at:<br /><br />
                 const instrument = channel.instruments[instrumentIndex];
                 const wasActive = this.mainLayer.contains(document.activeElement);
                 const activeElement = document.activeElement;
-                const colors = ColorConfig.getChannelColor(this._doc.song, this._doc.channel);
+                const colors = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel);
                 for (let i = this._mdeffectsSelect.childElementCount - 1; i < Config.mdeffectOrder.length; i++) {
                     this._mdeffectsSelect.appendChild(option({ value: i }));
                 }
@@ -48673,7 +48706,7 @@ You should be redirected to the song at:<br /><br />
                             option.removeAttribute("hidden");
                         }
                     }
-                    this._instrumentSettingsGroup.style.color = ColorConfig.getChannelColor(this._doc.song, this._doc.channel).primaryNote;
+                    this._instrumentSettingsGroup.style.color = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
                     setSelectedValue(this._transitionSelect, instrument.transition);
                     setSelectedValue(this._vibratoSelect, instrument.vibrato);
                     setSelectedValue(this._vibratoTypeSelect, instrument.vibratoType);
@@ -48753,7 +48786,7 @@ You should be redirected to the song at:<br /><br />
                     this._pulseWidthDropdownGroup.style.display = "none";
                     this._unisonDropdownGroup.style.display = "none";
                     this._modulatorGroup.style.display = "";
-                    this._modulatorGroup.style.color = ColorConfig.getChannelColor(this._doc.song, this._doc.channel).primaryNote;
+                    this._modulatorGroup.style.color = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
                     for (let mod = 0; mod < Config.modCount; mod++) {
                         let instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
                         let modChannels = instrument.modChannels[mod][0] >= 0 ? instrument.modChannels[mod] : [0];
@@ -49320,7 +49353,7 @@ You should be redirected to the song at:<br /><br />
                     this._customInstrumentSettingsGroup.style.display = "none";
                     this._instrumentVolumeSliderRow.style.display = "none";
                     this._instrumentTypeSelectRow.style.setProperty("display", "none");
-                    this._instrumentSettingsGroup.style.color = ColorConfig.getChannelColor(this._doc.song, this._doc.channel).primaryNote;
+                    this._instrumentSettingsGroup.style.color = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
                     if (this._doc.channel >= this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount) {
                         this._piano.forceRender();
                     }
@@ -50155,70 +50188,70 @@ You should be redirected to the song at:<br /><br />
                         if (canPlayNotes)
                             break;
                         this._doc.selection.nextDigit("0", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                         event.preventDefault();
                         break;
                     case 49:
                         if (canPlayNotes)
                             break;
                         this._doc.selection.nextDigit("1", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                         event.preventDefault();
                         break;
                     case 50:
                         if (canPlayNotes)
                             break;
                         this._doc.selection.nextDigit("2", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                         event.preventDefault();
                         break;
                     case 51:
                         if (canPlayNotes)
                             break;
                         this._doc.selection.nextDigit("3", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                         event.preventDefault();
                         break;
                     case 52:
                         if (canPlayNotes)
                             break;
                         this._doc.selection.nextDigit("4", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                         event.preventDefault();
                         break;
                     case 53:
                         if (canPlayNotes)
                             break;
                         this._doc.selection.nextDigit("5", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                         event.preventDefault();
                         break;
                     case 54:
                         if (canPlayNotes)
                             break;
                         this._doc.selection.nextDigit("6", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                         event.preventDefault();
                         break;
                     case 55:
                         if (canPlayNotes)
                             break;
                         this._doc.selection.nextDigit("7", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                         event.preventDefault();
                         break;
                     case 56:
                         if (canPlayNotes)
                             break;
                         this._doc.selection.nextDigit("8", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                         event.preventDefault();
                         break;
                     case 57:
                         if (canPlayNotes)
                             break;
                         this._doc.selection.nextDigit("9", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                        this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                         event.preventDefault();
                         break;
                     default:
@@ -50456,7 +50489,7 @@ You should be redirected to the song at:<br /><br />
                     if (this._doc.channel >= this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount) {
                         this._piano.forceRender();
                     }
-                    this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], index, ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                    this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], index, ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                 }
                 this.refocusStage();
             };
@@ -50609,9 +50642,11 @@ You should be redirected to the song at:<br /><br />
                     case "new":
                         this._doc.goBackToStart();
                         this._doc.song.restoreLimiterDefaults();
-                        for (const channel of this._doc.song.channels) {
+                        for (let channelIndex = 0; channelIndex < this._doc.song.channels.length; channelIndex++) {
+                            let channel = this._doc.song.channels[channelIndex];
                             channel.muted = false;
                             channel.name = "";
+                            channel.color = channelIndex;
                         }
                         this._doc.record(new ChangeSong(this._doc, ""), false, true);
                         break;
@@ -51877,10 +51912,10 @@ You should be redirected to the song at:<br /><br />
             let options = $('.select2-container--open .select2-results__option');
             $.each(groups, (index, v) => {
                 $(v).siblings().hide();
-                $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.channel).primaryNote + ";");
+                $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.song.channels[editor._doc.channel].color, editor._doc.channel).primaryNote + ";");
             });
             $.each(options, (index, v) => {
-                $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.channel).primaryNote + ";");
+                $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.song.channels[editor._doc.channel].color, editor._doc.channel).primaryNote + ";");
             });
             $('.select2-dropdown--below').css('opacity', 1);
         }, 0);
@@ -51894,10 +51929,10 @@ You should be redirected to the song at:<br /><br />
             let options = $('.select2-container--open .select2-results__option');
             $.each(groups, (index, v) => {
                 $(v).siblings().hide();
-                $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.channel).primaryNote + ";");
+                $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.song.channels[editor._doc.channel].color, editor._doc.channel).primaryNote + ";");
             });
             $.each(options, (index, v) => {
-                $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.channel).primaryNote + ";");
+                $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.song.channels[editor._doc.channel].color, editor._doc.channel).primaryNote + ";");
             });
             $('.select2-dropdown--below').css('opacity', 1);
         }, 0);

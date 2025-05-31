@@ -2142,6 +2142,7 @@ var beepbox = (function (exports) {
             this.bars = [];
             this.muted = false;
             this.name = "";
+            this.color = 0;
         }
     }
 
@@ -5063,6 +5064,7 @@ var beepbox = (function (exports) {
                     const isModChannel = channelIndex >= this.pitchChannelCount + this.noiseChannelCount;
                     if (this.channels.length <= channelIndex) {
                         this.channels[channelIndex] = new Channel();
+                        this.channels[channelIndex].color = channelIndex;
                     }
                     const channel = this.channels[channelIndex];
                     channel.octave = Math.max(3 - channelIndex, 0);
@@ -5162,6 +5164,7 @@ var beepbox = (function (exports) {
                 for (let i = 0; i < encodedChannelName.length; i++) {
                     buffer.push(encodedChannelName.charCodeAt(i));
                 }
+                buffer.push(base64IntToCharCode[clamp(0, 63, this.channels[channel].color)]);
             }
             buffer.push(105, base64IntToCharCode[(this.layeredInstruments << 1) | this.patternInstruments]);
             if (this.layeredInstruments || this.patternInstruments) {
@@ -7201,6 +7204,8 @@ var beepbox = (function (exports) {
                                     channelNameLength = ((base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 this.channels[channel].name = decodeURIComponent(compressed.substring(charIndex, charIndex + channelNameLength));
                                 charIndex += channelNameLength;
+                                if (fromTheepBox)
+                                    this.channels[channel].color = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                             }
                         }
                         break;

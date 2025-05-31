@@ -213,7 +213,7 @@ class CustomChipCanvas {
 
     public redrawCanvas(): void {
         const chipData: Float32Array = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()].customChipWave;
-        const renderColor: string = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.channel).primaryNote;
+        const renderColor: string = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
 
         // Check if the data has changed from the last render.
         let needsRedraw: boolean = false;
@@ -287,7 +287,7 @@ class CustomChipCanvas {
                     ctx.fillStyle = ColorConfig.getComputed("--track-editor-bg-pitch-dim");
                     ctx.fillRect(Math.floor(i / 2) * 2, 13, 2, 1);
                     ctx.fillRect(Math.floor(i / 2) * 2, 39, 2, 1);
-                    ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.channel).primaryNote;
+                    ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
                     ctx.fillRect(Math.floor(i / 2) * 2, j - 2, 2, 4);
 
                     // Actually update current instrument's custom waveform
@@ -304,7 +304,7 @@ class CustomChipCanvas {
                 ctx.fillStyle = ColorConfig.getComputed("--track-editor-bg-pitch-dim");
                 ctx.fillRect(Math.floor(x / 2) * 2, 13, 2, 1);
                 ctx.fillRect(Math.floor(x / 2) * 2, 39, 2, 1);
-                ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.channel).primaryNote;
+                ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
                 ctx.fillRect(Math.floor(x / 2) * 2, y - 2, 2, 4);
 
                 // Actually update current instrument's custom waveform
@@ -606,11 +606,11 @@ class CustomAlgorythmCanvas {
                         ctx.fillRect(x * 24 + 12, ((y) * 24), 12, 12);
                         ctx.fillStyle = ColorConfig.getComputed("--editor-background");
                         ctx.fillRect(x * 24 + 13, ((y) * 24) + 1, 10, 10);
-                        ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.channel).primaryNote;
+                        ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
                         ctx.fillText(this.drawArray[y][x] + "", x * 24 + 14, y * 24 + 10);
                     }
                     else {
-                        ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.channel).primaryNote;
+                        ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
                         ctx.fillRect(x * 24 + 12, (y * 24), 12, 12);
                         ctx.fillStyle = ColorConfig.getComputed("--editor-background");
                         ctx.fillRect(x * 24 + 13, ((y) * 24) + 1, 10, 10);
@@ -633,7 +633,7 @@ class CustomAlgorythmCanvas {
 
             var ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
 
-            ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.channel).primaryNote;
+            ctx.fillStyle = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
 
             var yindex = Math.ceil(y / 12)
             var xindex = Math.ceil(x / 12)
@@ -2295,6 +2295,10 @@ export class SongEditor {
         }
         this._barScrollBar.render();
         this._trackEditor.render();
+        if(this._doc.recalcChannelColors == true) {
+            this._trackEditor.rerenderChannelColors();
+            this._doc.recalcChannelColors = false;
+        }
         this._muteEditor.render();
 
         this._trackAndMuteContainer.scrollLeft = this._doc.barScrollPos * this._doc.getBarWidth();
@@ -2418,7 +2422,7 @@ export class SongEditor {
         const instrument: Instrument = channel.instruments[instrumentIndex];
         const wasActive: boolean = this.mainLayer.contains(document.activeElement);
         const activeElement: Element | null = document.activeElement;
-        const colors: ChannelColors = ColorConfig.getChannelColor(this._doc.song, this._doc.channel);
+        const colors: ChannelColors = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel);
 
         for (let i: number = this._mdeffectsSelect.childElementCount - 1; i < Config.mdeffectOrder.length; i++) {
             this._mdeffectsSelect.appendChild(option({ value: i }));
@@ -2849,7 +2853,7 @@ export class SongEditor {
                 }
             }
 
-            this._instrumentSettingsGroup.style.color = ColorConfig.getChannelColor(this._doc.song, this._doc.channel).primaryNote;
+            this._instrumentSettingsGroup.style.color = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
 
             setSelectedValue(this._transitionSelect, instrument.transition);
             setSelectedValue(this._vibratoSelect, instrument.vibrato);
@@ -2950,7 +2954,7 @@ export class SongEditor {
             this._unisonDropdownGroup.style.display = "none";
 
             this._modulatorGroup.style.display = "";
-            this._modulatorGroup.style.color = ColorConfig.getChannelColor(this._doc.song, this._doc.channel).primaryNote;
+            this._modulatorGroup.style.color = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
 
             for (let mod: number = 0; mod < Config.modCount; mod++) {
 
@@ -3635,7 +3639,7 @@ export class SongEditor {
             this._instrumentVolumeSliderRow.style.display = "none";
             this._instrumentTypeSelectRow.style.setProperty("display", "none");
 
-            this._instrumentSettingsGroup.style.color = ColorConfig.getChannelColor(this._doc.song, this._doc.channel).primaryNote;
+            this._instrumentSettingsGroup.style.color = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote;
 
             // Force piano to re-show, if channel is modulator
             if (this._doc.channel >= this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount) {
@@ -4697,61 +4701,61 @@ export class SongEditor {
             case 48: // 0
                 if (canPlayNotes) break;
                 this._doc.selection.nextDigit("0", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                 event.preventDefault();
                 break;
             case 49: // 1
                 if (canPlayNotes) break;
                 this._doc.selection.nextDigit("1", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                 event.preventDefault();
                 break;
             case 50: // 2
                 if (canPlayNotes) break;
                 this._doc.selection.nextDigit("2", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                 event.preventDefault();
                 break;
             case 51: // 3
                 if (canPlayNotes) break;
                 this._doc.selection.nextDigit("3", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                 event.preventDefault();
                 break;
             case 52: // 4
                 if (canPlayNotes) break;
                 this._doc.selection.nextDigit("4", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                 event.preventDefault();
                 break;
             case 53: // 5
                 if (canPlayNotes) break;
                 this._doc.selection.nextDigit("5", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                 event.preventDefault();
                 break;
             case 54: // 6
                 if (canPlayNotes) break;
                 this._doc.selection.nextDigit("6", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                 event.preventDefault();
                 break;
             case 55: // 7
                 if (canPlayNotes) break;
                 this._doc.selection.nextDigit("7", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                 event.preventDefault();
                 break;
             case 56: // 8
                 if (canPlayNotes) break;
                 this._doc.selection.nextDigit("8", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                 event.preventDefault();
                 break;
             case 57: // 9
                 if (canPlayNotes) break;
                 this._doc.selection.nextDigit("9", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+                this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], this._doc.getCurrentInstrument(), ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
                 event.preventDefault();
                 break;
             default:
@@ -5117,7 +5121,7 @@ export class SongEditor {
             if (this._doc.channel >= this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount) {
                 this._piano.forceRender();
             }
-            this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], index, ColorConfig.getChannelColor(this._doc.song, this._doc.channel));
+            this._renderInstrumentBar(this._doc.song.channels[this._doc.channel], index, ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel));
         }
 
         this.refocusStage();
@@ -5304,9 +5308,11 @@ export class SongEditor {
             case "new":
                 this._doc.goBackToStart();
                 this._doc.song.restoreLimiterDefaults();
-                for (const channel of this._doc.song.channels) {
+                for (let channelIndex: number = 0; channelIndex < this._doc.song.channels.length; channelIndex++) {
+                    let channel: Channel = this._doc.song.channels[channelIndex];
                     channel.muted = false;
                     channel.name = "";
+                    channel.color = channelIndex;
                 }
                 this._doc.record(new ChangeSong(this._doc, ""), false, true);
                 break;

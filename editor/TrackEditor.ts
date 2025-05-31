@@ -371,6 +371,26 @@ export class TrackEditor {
         if (this._select.selectedIndex != selectedPattern) this._select.selectedIndex = selectedPattern;
     }
 
+    public rerenderChannelColors(): void {
+        for (let y: number = 0; y < this._doc.song.getChannelCount(); y++) {
+            this._channelRowContainer.removeChild(this._channels[y].container);
+        }
+
+        for (let y: number = 0; y < this._doc.song.getChannelCount(); y++) {
+            const channelRow: ChannelRow = new ChannelRow(this._doc, y, this._doc.song.channels[y].color);
+            console.log(this._doc.song.channels[y].color)
+            this._channels[y] = channelRow;
+            this._channelRowContainer.appendChild(channelRow.container);
+        }
+
+        this._channels.length = this._doc.song.getChannelCount();
+        this._mousePressed = false;
+
+        for (let j: number = 0; j < this._doc.song.getChannelCount(); j++) {
+            this._channels[j].render();
+        }
+    }
+
     public render(): void {
 
         this._barWidth = this._doc.getBarWidth();
@@ -379,7 +399,7 @@ export class TrackEditor {
 
             // Add new channel boxes if needed
             for (let y: number = this._channels.length; y < this._doc.song.getChannelCount(); y++) {
-                const channelRow: ChannelRow = new ChannelRow(this._doc, y);
+                const channelRow: ChannelRow = new ChannelRow(this._doc, y, this._doc.song.channels[y].color);
                 this._channels[y] = channelRow;
                 this._channelRowContainer.appendChild(channelRow.container);
             }

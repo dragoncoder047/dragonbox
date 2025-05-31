@@ -90,10 +90,10 @@ export class FilterEditor {
             this._label.style.setProperty("min-height", "1em");
             this._dottedLinePath.style.setProperty("stroke-width", "3");
             this._dottedLinePath.style.setProperty("stroke-dasharray", "6, 4");
-            this._dottedLinePath.setAttribute("color", ColorConfig.getChannelColor(this._doc.song, this._doc.channel).primaryNote);
+            this._dottedLinePath.setAttribute("color", ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote);
             this.container.style.setProperty("width", "85%");
             this._highlight.setAttribute("r", "20");
-            this._controlPointPath.setAttribute("fill", ColorConfig.getChannelColor(this._doc.song, this._doc.channel).primaryNote);
+            this._controlPointPath.setAttribute("fill", ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel).primaryNote);
 
             for (let i: number = 0; i < Config.filterMaxPoints; i++) {
                 this._indicators[i] = SVG.text();

@@ -10,4 +10,5 @@ export class Channel {
     public readonly bars: number[] = [];
     public muted: boolean = false;
     public name: string = "";
+    public color: number = 0;
 }

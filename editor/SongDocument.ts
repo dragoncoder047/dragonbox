@@ -40,6 +40,7 @@ export class SongDocument {
     public muteEditorChannel: number = 0;
     public bar: number = 0;
     public recalcChannelNames: boolean;
+    public recalcChannelColors: boolean;
     public recalcModChannels: boolean;
     public recentPatternInstruments: number[][] = [];
     public viewedInstrument: number[] = [];

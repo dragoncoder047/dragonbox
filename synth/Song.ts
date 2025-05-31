@@ -717,6 +717,7 @@ export class Song {
                 const isModChannel: boolean = channelIndex >= this.pitchChannelCount + this.noiseChannelCount;
                 if (this.channels.length <= channelIndex) {
                     this.channels[channelIndex] = new Channel();
+                    this.channels[channelIndex].color = channelIndex;
                 }
                 const channel: Channel = this.channels[channelIndex];
                 channel.octave = Math.max(3 - channelIndex, 0); // [3, 2, 1, 0]; Descending octaves with drums at zero in last channel.
@@ -838,6 +839,7 @@ export class Song {
             for (let i: number = 0; i < encodedChannelName.length; i++) {
                 buffer.push(encodedChannelName.charCodeAt(i));
             }
+            buffer.push(base64IntToCharCode[clamp(0, 63, this.channels[channel].color)]);
         }
 
         buffer.push(SongTagCode.instrumentCount, base64IntToCharCode[(<any>this.layeredInstruments << 1) | <any>this.patternInstruments]);
@@ -3023,6 +3025,8 @@ export class Song {
                     this.channels[channel].name = decodeURIComponent(compressed.substring(charIndex, charIndex + channelNameLength));
 
                     charIndex += channelNameLength;
+
+                    if (fromTheepBox) this.channels[channel].color = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                 }
             } break;
             case SongTagCode.algorithm: {

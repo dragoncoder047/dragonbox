@@ -376,7 +376,7 @@ export class SpectrumEditorPrompt implements Prompt {
                 this.spectrumEditors[i] = new SpectrumEditor(this._doc, Config.drumCount - 1 - i, true);
                 this.spectrumEditors[i].setSpectrumWave(this._songEditor._drumsetSpectrumEditors[Config.drumCount - 1 - i].getSpectrumWave().spectrum);
             }
-            let colors = ColorConfig.getChannelColor(this._doc.song, this._doc.channel);
+            let colors = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel);
             for (let i: number = 0; i < Config.drumCount; i++) {
                 let newSpectrumButton: HTMLButtonElement = HTML.button({ class: "no-underline", style: "max-width: 2em;" }, "" + (i + 1));
                 this._drumsetButtons.push(newSpectrumButton);

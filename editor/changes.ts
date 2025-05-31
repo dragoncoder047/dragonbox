@@ -428,6 +428,7 @@ export class ChangeMoveAndOverflowNotes extends ChangeGroup {
             newChannel.muted = oldChannel.muted;
             newChannel.octave = oldChannel.octave;
             newChannel.name = oldChannel.name;
+            //newChannel.color = oldChannel.color;
 
             for (const instrument of oldChannel.instruments) {
                 newChannel.instruments.push(instrument);
@@ -2038,10 +2039,10 @@ export class ChangeChannelOrder extends Change {
                 }
             }
         }
+        doc.recalcChannelColors = true;
 
         doc.notifier.changed();
         this._didSomething();
-
     }
 }
 
@@ -2073,6 +2074,7 @@ export class ChangeChannelCount extends Change {
                     } else {
                         newChannels[channelIndex] = new Channel();
                         newChannels[channelIndex].octave = octave;
+                        newChannels[channelIndex].color = channelIndex % 64;
                         for (let j: number = 0; j < Config.instrumentCountMin; j++) {
                             const instrument: Instrument = new Instrument(isNoise, isMod);
                             if (!isMod) {
@@ -2134,6 +2136,7 @@ export class ChangeChannelCount extends Change {
             doc.notifier.changed();
 
             ColorConfig.resetColors();
+            doc.recalcChannelColors = true;
 
             this._didSomething();
         }
@@ -2202,6 +2205,7 @@ export class ChangeRemoveChannel extends ChangeGroup {
         }
 
         ColorConfig.resetColors();
+        doc.recalcChannelColors = true;
         doc.recalcChannelNames = true;
 
         this.append(new ChangeChannelBar(doc, Math.max(0, minIndex - 1), doc.bar));
@@ -4424,6 +4428,7 @@ export class ChangeSong extends ChangeGroup {
         doc.song.fromBase64String(newHash, jsonFormat);
         if (pitchChannelCount != doc.song.pitchChannelCount || noiseChannelCount != doc.song.noiseChannelCount || modChannelCount != doc.song.modChannelCount) {
             ColorConfig.resetColors();
+            doc.recalcChannelColors = true;
         }
         if (newHash == "") {
             this.append(new ChangePatternSelection(doc, 0, 0));
@@ -4544,6 +4549,7 @@ export class ChangeReplacePatterns extends ChangeGroup {
         this._didSomething();
 
         ColorConfig.resetColors();
+        doc.recalcChannelColors = true;
     }
 }
 

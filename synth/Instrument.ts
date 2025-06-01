@@ -1640,7 +1640,7 @@ export class Instrument {
         if (automationTarget.compatibleInstruments != null && automationTarget.compatibleInstruments.indexOf(this.type) == -1) {
             return false;
         }
-        if (automationTarget.effect != null && !this.effectsIncludeType(automationTarget.effect)) {
+        if ((automationTarget.effect != null && !this.effectsIncludeType(automationTarget.effect)) || (automationTarget.mdeffect != null && (this.mdeffects & (1 << automationTarget.mdeffect)) == 0)) {
             return false;
         }
         if (automationTarget.isFilter) {

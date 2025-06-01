@@ -720,7 +720,7 @@ export class Song {
                     this.channels[channelIndex].color = channelIndex;
                 }
                 const channel: Channel = this.channels[channelIndex];
-                channel.octave = Math.max(3 - channelIndex, 0); // [3, 2, 1, 0]; Descending octaves with drums at zero in last channel.
+                channel.octave = Math.max(4 - channelIndex, 0); // [4, 3, 2, 1, 0]; Descending octaves with drums at zero in last channel.
 
                 for (let pattern: number = 0; pattern < this.patternsPerChannel; pattern++) {
                     if (channel.patterns.length <= pattern) {
@@ -2838,8 +2838,6 @@ export class Song {
                                 newEffect.ringModHzOffset = clamp(Config.rmHzOffsetMin, Config.rmHzOffsetMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             }
                         }
-                        console.log(instrument.effects)
-                        console.log(instrument.effectCount)
                         instrument.mdeffects = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     }
                     else {

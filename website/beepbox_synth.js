@@ -4348,7 +4348,7 @@ var beepbox = (function (exports) {
             if (automationTarget.compatibleInstruments != null && automationTarget.compatibleInstruments.indexOf(this.type) == -1) {
                 return false;
             }
-            if (automationTarget.effect != null && !this.effectsIncludeType(automationTarget.effect)) {
+            if ((automationTarget.effect != null && !this.effectsIncludeType(automationTarget.effect)) || (automationTarget.mdeffect != null && (this.mdeffects & (1 << automationTarget.mdeffect)) == 0)) {
                 return false;
             }
             if (automationTarget.isFilter) {
@@ -5068,7 +5068,7 @@ var beepbox = (function (exports) {
                         this.channels[channelIndex].color = channelIndex;
                     }
                     const channel = this.channels[channelIndex];
-                    channel.octave = Math.max(3 - channelIndex, 0);
+                    channel.octave = Math.max(4 - channelIndex, 0);
                     for (let pattern = 0; pattern < this.patternsPerChannel; pattern++) {
                         if (channel.patterns.length <= pattern) {
                             channel.patterns[pattern] = new Pattern();
@@ -7041,8 +7041,6 @@ var beepbox = (function (exports) {
                                             newEffect.ringModHzOffset = clamp(Config.rmHzOffsetMin, Config.rmHzOffsetMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                         }
                                     }
-                                    console.log(instrument.effects);
-                                    console.log(instrument.effectCount);
                                     instrument.mdeffects = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                 }
                                 else {

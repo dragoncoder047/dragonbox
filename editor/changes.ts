@@ -428,7 +428,7 @@ export class ChangeMoveAndOverflowNotes extends ChangeGroup {
             newChannel.muted = oldChannel.muted;
             newChannel.octave = oldChannel.octave;
             newChannel.name = oldChannel.name;
-            //newChannel.color = oldChannel.color;
+            newChannel.color = oldChannel.color;
 
             for (const instrument of oldChannel.instruments) {
                 newChannel.instruments.push(instrument);
@@ -4414,7 +4414,7 @@ export function setDefaultInstruments(song: Song): void {
         for (const instrument of song.channels[channelIndex].instruments) {
             const isNoise: boolean = song.getChannelIsNoise(channelIndex);
             const isMod: boolean = song.getChannelIsMod(channelIndex);
-            instrument.setTypeAndReset(InstrumentType.chip, isNoise, isMod);
+            instrument.setTypeAndReset(isMod ? InstrumentType.mod : (isNoise ? InstrumentType.noise : InstrumentType.chip), isNoise, isMod);
         }
     }
 }

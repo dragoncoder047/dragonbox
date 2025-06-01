@@ -839,7 +839,7 @@ export class Song {
             for (let i: number = 0; i < encodedChannelName.length; i++) {
                 buffer.push(encodedChannelName.charCodeAt(i));
             }
-            buffer.push(base64IntToCharCode[clamp(0, 63, this.channels[channel].color)]);
+            buffer.push(base64IntToCharCode[this.channels[channel].color % 60]);
         }
 
         buffer.push(SongTagCode.instrumentCount, base64IntToCharCode[(<any>this.layeredInstruments << 1) | <any>this.patternInstruments]);

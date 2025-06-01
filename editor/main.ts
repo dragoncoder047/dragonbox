@@ -53,10 +53,10 @@ $("#pitchPresetSelect").on('select2:open', function () {
 
         $.each(groups, (index, v) => {
             $(v).siblings().hide();
-            $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.song.channels[editor._doc.channel].color, editor._doc.channel).primaryNote + ";");
+            $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.song.channels[editor._doc.channel].color, editor._doc.channel, editor._doc.prefs.fixChannelColorOrder).primaryNote + ";");
         })
         $.each(options, (index, v) => {
-            $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.song.channels[editor._doc.channel].color, editor._doc.channel).primaryNote + ";");
+            $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.song.channels[editor._doc.channel].color, editor._doc.channel, editor._doc.prefs.fixChannelColorOrder).primaryNote + ";");
         })
 
         $('.select2-dropdown--below').css('opacity', 1);
@@ -74,10 +74,10 @@ $("#drumPresetSelect").on('select2:open', function () {
 
         $.each(groups, (index, v) => {
             $(v).siblings().hide();
-            $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.song.channels[editor._doc.channel].color, editor._doc.channel).primaryNote + ";");
+            $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.song.channels[editor._doc.channel].color, editor._doc.channel, editor._doc.prefs.fixChannelColorOrder).primaryNote + ";");
         })
         $.each(options, (index, v) => {
-            $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.song.channels[editor._doc.channel].color, editor._doc.channel).primaryNote + ";");
+            $(v)[0].setAttribute("style", "color: " + ColorConfig.getChannelColor(editor._doc.song, editor._doc.song.channels[editor._doc.channel].color, editor._doc.channel, editor._doc.prefs.fixChannelColorOrder).primaryNote + ";");
         })
 
         $('.select2-dropdown--below').css('opacity', 1);

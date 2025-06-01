@@ -1942,9 +1942,9 @@ var beepbox = (function (exports) {
                 }
             }
         }
-        static getComputedChannelColor(song, color, channel) {
+        static getComputedChannelColor(song, color, channel, useFixedOrder) {
             if (!this.usesColorFormula) {
-                let base = ColorConfig.getChannelColor(song, color, channel);
+                let base = ColorConfig.getChannelColor(song, color, channel, useFixedOrder);
                 var regex = /\(([^\,)]+)/;
                 let newChannelSecondary = ColorConfig.getComputed(regex.exec(base.secondaryChannel)[1]);
                 let newChannelPrimary = ColorConfig.getComputed(regex.exec(base.primaryChannel)[1]);
@@ -1953,24 +1953,38 @@ var beepbox = (function (exports) {
                 return { secondaryChannel: newChannelSecondary, primaryChannel: newChannelPrimary, secondaryNote: newNoteSecondary, primaryNote: newNotePrimary };
             }
             else {
-                return ColorConfig.getChannelColor(song, color, channel);
+                return ColorConfig.getChannelColor(song, color, channel, useFixedOrder);
             }
         }
         ;
-        static getChannelColor(song, color, channel) {
-            console.log(channel);
+        static getChannelColor(song, color, channel, useFixedOrder) {
             if (!this.usesColorFormula) {
-                if (channel < song.pitchChannelCount) {
-                    return ColorConfig.pitchChannels[(color % this.c_pitchLimit) % ColorConfig.pitchChannels.length];
-                }
-                else if (channel < song.pitchChannelCount + song.noiseChannelCount) {
-                    return ColorConfig.noiseChannels[(color % this.c_noiseLimit) % ColorConfig.noiseChannels.length];
+                if (!useFixedOrder) {
+                    if (channel < song.pitchChannelCount) {
+                        return ColorConfig.pitchChannels[(color % this.c_pitchLimit) % ColorConfig.pitchChannels.length];
+                    }
+                    else if (channel < song.pitchChannelCount + song.noiseChannelCount) {
+                        return ColorConfig.noiseChannels[(color % this.c_noiseLimit) % ColorConfig.noiseChannels.length];
+                    }
+                    else {
+                        return ColorConfig.modChannels[(color % this.c_modLimit) % ColorConfig.modChannels.length];
+                    }
                 }
                 else {
-                    return ColorConfig.modChannels[(color % this.c_modLimit) % ColorConfig.modChannels.length];
+                    if (channel < song.pitchChannelCount) {
+                        return ColorConfig.pitchChannels[(channel % this.c_pitchLimit) % ColorConfig.pitchChannels.length];
+                    }
+                    else if (channel < song.pitchChannelCount + song.noiseChannelCount) {
+                        return ColorConfig.noiseChannels[(channel - song.pitchChannelCount % this.c_noiseLimit) % ColorConfig.noiseChannels.length];
+                    }
+                    else {
+                        return ColorConfig.modChannels[(channel - song.pitchChannelCount - song.modChannelCount % this.c_modLimit) % ColorConfig.modChannels.length];
+                    }
                 }
             }
             else {
+                if (useFixedOrder)
+                    color = channel;
                 if (ColorConfig.colorLookup.has(color)) {
                     return ColorConfig.colorLookup.get(color);
                 }
@@ -11833,7 +11847,7 @@ var beepbox = (function (exports) {
                 for (let i = 0; i < encodedChannelName.length; i++) {
                     buffer.push(encodedChannelName.charCodeAt(i));
                 }
-                buffer.push(base64IntToCharCode[clamp(0, 63, this.channels[channel].color)]);
+                buffer.push(base64IntToCharCode[this.channels[channel].color % 60]);
             }
             buffer.push(105, base64IntToCharCode[(this.layeredInstruments << 1) | this.patternInstruments]);
             if (this.layeredInstruments || this.patternInstruments) {
@@ -23971,6 +23985,7 @@ var beepbox = (function (exports) {
     let currentNoteFlashElements = [];
     let currentNoteFlashBar = -1;
     const notesFlashWhenPlayed = getLocalStorage("notesFlashWhenPlayed") == "true";
+    const fixChannelColorOrder = getLocalStorage("fixChannelColorOrder") != "false";
     const outVolumeBarBg = SVG.rect({ "pointer-events": "none", width: "90%", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetBackground });
     const outVolumeBar = SVG.rect({ "pointer-events": "none", height: "50%", width: "0%", x: "5%", y: "25%", fill: "url('#volumeGrad2')" });
     const outVolumeCap = SVG.rect({ "pointer-events": "none", width: "2px", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetFocus });
@@ -24277,7 +24292,7 @@ var beepbox = (function (exports) {
                     const note = pattern.notes[i];
                     for (const pitch of note.pitches) {
                         const d = drawNote(pitch, note.start, note.pins, (pitchHeight + 1) / 2, offsetX, offsetY, partWidth, pitchHeight);
-                        const noteElement = path({ d: d, fill: ColorConfig.getChannelColor(synth.song, synth.song.channels[channel].color, channel).primaryChannel });
+                        const noteElement = path({ d: d, fill: ColorConfig.getChannelColor(synth.song, synth.song.channels[channel].color, channel, fixChannelColorOrder).primaryChannel });
                         if (isNoise)
                             noteElement.style.opacity = String(0.6);
                         timeline.appendChild(noteElement);

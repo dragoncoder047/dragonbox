@@ -100,7 +100,7 @@ export class ChannelRow {
         const barWidth: number = this._doc.getBarWidth();
         if (this._boxes.length != this._doc.song.barCount) {
             for (let x: number = this._boxes.length; x < this._doc.song.barCount; x++) {
-                const box: Box = new Box(this.index, ColorConfig.getChannelColor(this._doc.song, this.color, this.index).secondaryChannel);
+                const box: Box = new Box(this.index, ColorConfig.getChannelColor(this._doc.song, this.color, this.index, this._doc.prefs.fixChannelColorOrder).secondaryChannel);
                 box.setWidth(barWidth);
                 this.container.appendChild(box.container);
                 this._boxes[x] = box;
@@ -132,7 +132,7 @@ export class ChannelRow {
 
             const box: Box = this._boxes[i];
             if (i < this._doc.song.barCount) {
-                const colors: ChannelColors = ColorConfig.getChannelColor(this._doc.song, this.color, this.index);
+                const colors: ChannelColors = ColorConfig.getChannelColor(this._doc.song, this.color, this.index, this._doc.prefs.fixChannelColorOrder);
                 box.setIndex(this._doc.song.channels[this.index].bars[i], selected, dim, dim && !selected ? colors.secondaryChannel : colors.primaryChannel,
                     this.index >= this._doc.song.pitchChannelCount && this.index < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount, this.index >= this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount);
                 box.setVisibility("visible");

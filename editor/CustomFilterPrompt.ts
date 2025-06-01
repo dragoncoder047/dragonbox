@@ -77,7 +77,7 @@ export class CustomFilterPrompt implements Prompt {
         this._filterCopyButton.addEventListener("click", this._copyFilterSettings);
         this._filterPasteButton.addEventListener("click", this._pasteFilterSettings);
         this.updatePlayButton();
-        let colors = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel);
+        let colors = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel, this._doc.prefs.fixChannelColorOrder);
 
         this.filterEditor = new FilterEditor(_doc, _useNoteFilter, true, this.forSong, _effectIndex);
         this._filterContainer.appendChild(this.filterEditor.container);

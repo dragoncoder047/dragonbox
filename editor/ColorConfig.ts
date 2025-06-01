@@ -6084,9 +6084,9 @@ export class ColorConfig {
     }
 
     // Same as below, but won't return var colors
-    public static getComputedChannelColor(song: Song, color: number, channel: number): ChannelColors {
+    public static getComputedChannelColor(song: Song, color: number, channel: number, useFixedOrder: boolean): ChannelColors {
         if (!this.usesColorFormula) {
-            let base: ChannelColors = ColorConfig.getChannelColor(song, color, channel);
+            let base: ChannelColors = ColorConfig.getChannelColor(song, color, channel, useFixedOrder);
             // Trim away "var(...)"
             var regex = /\(([^\,)]+)/;
             let newChannelSecondary: string = ColorConfig.getComputed((regex.exec(base.secondaryChannel) as RegExpExecArray)[1] as string);
@@ -6096,23 +6096,34 @@ export class ColorConfig {
             return <ChannelColors>{ secondaryChannel: newChannelSecondary, primaryChannel: newChannelPrimary, secondaryNote: newNoteSecondary, primaryNote: newNotePrimary };
         }
         else {
-            return ColorConfig.getChannelColor(song, color, channel);
+            return ColorConfig.getChannelColor(song, color, channel, useFixedOrder);
         }
     };
 
-	public static getChannelColor(song: Song, color: number, channel: number): ChannelColors {
-		console.log(channel)
+	public static getChannelColor(song: Song, color: number, channel: number, useFixedOrder: boolean): ChannelColors {
         if (!this.usesColorFormula) {
             // Set colors, not defined by formula
-			if (channel < song.pitchChannelCount) {
-				return ColorConfig.pitchChannels[(color % this.c_pitchLimit) % ColorConfig.pitchChannels.length];
-			} else if (channel < song.pitchChannelCount + song.noiseChannelCount) {
-				return ColorConfig.noiseChannels[(color % this.c_noiseLimit) % ColorConfig.noiseChannels.length];
-			} else {
-				return ColorConfig.modChannels[(color % this.c_modLimit) % ColorConfig.modChannels.length];
+			if (!useFixedOrder) {
+				if (channel < song.pitchChannelCount) {
+					return ColorConfig.pitchChannels[(color % this.c_pitchLimit) % ColorConfig.pitchChannels.length];
+				} else if (channel < song.pitchChannelCount + song.noiseChannelCount) {
+					return ColorConfig.noiseChannels[(color % this.c_noiseLimit) % ColorConfig.noiseChannels.length];
+				} else {
+					return ColorConfig.modChannels[(color % this.c_modLimit) % ColorConfig.modChannels.length];
+				}
+			}
+			else {
+				if (channel < song.pitchChannelCount) {
+					return ColorConfig.pitchChannels[(channel % this.c_pitchLimit) % ColorConfig.pitchChannels.length];
+				} else if (channel < song.pitchChannelCount + song.noiseChannelCount) {
+					return ColorConfig.noiseChannels[((channel - song.pitchChannelCount) % this.c_noiseLimit) % ColorConfig.noiseChannels.length];
+				} else {
+					return ColorConfig.modChannels[((channel - song.pitchChannelCount - song.modChannelCount) % this.c_modLimit) % ColorConfig.modChannels.length];
+				}
 			}
         }
         else {
+			if (useFixedOrder) color = channel;
             // Determine if color is cached
 			if (ColorConfig.colorLookup.has(color)) {
                 return ColorConfig.colorLookup.get(color) as ChannelColors;

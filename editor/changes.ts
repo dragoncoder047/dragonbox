@@ -2074,7 +2074,7 @@ export class ChangeChannelCount extends Change {
                     } else {
                         newChannels[channelIndex] = new Channel();
                         newChannels[channelIndex].octave = octave;
-                        newChannels[channelIndex].color = channelIndex % 64;
+                        newChannels[channelIndex].color = channelIndex % 60;
                         for (let j: number = 0; j < Config.instrumentCountMin; j++) {
                             const instrument: Instrument = new Instrument(isNoise, isMod);
                             if (!isMod) {

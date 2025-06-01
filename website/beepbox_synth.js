@@ -5164,7 +5164,7 @@ var beepbox = (function (exports) {
                 for (let i = 0; i < encodedChannelName.length; i++) {
                     buffer.push(encodedChannelName.charCodeAt(i));
                 }
-                buffer.push(base64IntToCharCode[clamp(0, 63, this.channels[channel].color)]);
+                buffer.push(base64IntToCharCode[this.channels[channel].color % 60]);
             }
             buffer.push(105, base64IntToCharCode[(this.layeredInstruments << 1) | this.patternInstruments]);
             if (this.layeredInstruments || this.patternInstruments) {

@@ -1214,7 +1214,7 @@ export class EuclideanRhythmPrompt implements Prompt {
             }
         }
 
-        const colors: ChannelColors = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._sequences[this._sequenceIndex].channel].color, this._sequences[this._sequenceIndex].channel);
+        const colors: ChannelColors = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._sequences[this._sequenceIndex].channel].color, this._sequences[this._sequenceIndex].channel, this._doc.prefs.fixChannelColorOrder);
         this._sequenceButtonContainer.style.setProperty("--text-color-lit", colors.primaryNote);
         this._sequenceButtonContainer.style.setProperty("--text-color-dim", colors.secondaryNote);
         this._sequenceButtonContainer.style.setProperty("--background-color-lit", colors.primaryChannel);
@@ -1254,7 +1254,7 @@ export class EuclideanRhythmPrompt implements Prompt {
         const invert: boolean = sequence.invert;
         const on: number = invert ? 0 : 1;
 
-        const color: string = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[channelIndex].color, channelIndex).primaryNote;
+        const color: string = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[channelIndex].color, channelIndex, this._doc.prefs.fixChannelColorOrder).primaryNote;
         const backgroundColor: string = ColorConfig.editorBackground;
 
         this._clockWire.setAttribute("stroke", color);
@@ -1305,7 +1305,7 @@ export class EuclideanRhythmPrompt implements Prompt {
 
         const generateFadingNotes: boolean = sequence.generateFadingNotes;
 
-        const channelColors: ChannelColors = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[channelIndex].color, channelIndex);
+        const channelColors: ChannelColors = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[channelIndex].color, channelIndex, this._doc.prefs.fixChannelColorOrder);
         const color: string = channelColors.primaryNote;
         const secondaryColor: string = channelColors.secondaryNote;
 

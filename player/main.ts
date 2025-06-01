@@ -208,6 +208,7 @@ const volumeSlider: HTMLInputElement = input({ title: "volume", type: "range", v
 	let currentNoteFlashElements: SVGPathElement[] = [];
 	let currentNoteFlashBar: number = -1;
 	const notesFlashWhenPlayed: boolean = getLocalStorage("notesFlashWhenPlayed") == "true";
+	const fixChannelColorOrder: boolean = getLocalStorage("fixChannelColorOrder") != "false";
 
 const outVolumeBarBg: SVGRectElement = SVG.rect({ "pointer-events": "none", width: "90%", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetBackground });
 const outVolumeBar: SVGRectElement = SVG.rect({ "pointer-events": "none", height: "50%", width: "0%", x: "5%", y: "25%", fill: "url('#volumeGrad2')" });
@@ -603,7 +604,7 @@ function renderTimeline(): void {
 					
 				for (const pitch of note.pitches) {
 					const d: string = drawNote(pitch, note.start, note.pins, (pitchHeight + 1) / 2, offsetX, offsetY, partWidth, pitchHeight);
-						const noteElement: SVGPathElement = path({d: d, fill: ColorConfig.getChannelColor(synth.song, synth.song.channels[channel].color, channel).primaryChannel});
+						const noteElement: SVGPathElement = path({d: d, fill: ColorConfig.getChannelColor(synth.song, synth.song.channels[channel].color, channel, fixChannelColorOrder).primaryChannel});
 					if (isNoise) noteElement.style.opacity = String(0.6);
 					timeline.appendChild(noteElement);
 

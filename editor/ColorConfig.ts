@@ -6118,7 +6118,7 @@ export class ColorConfig {
 				} else if (channel < song.pitchChannelCount + song.noiseChannelCount) {
 					return ColorConfig.noiseChannels[((channel - song.pitchChannelCount) % this.c_noiseLimit) % ColorConfig.noiseChannels.length];
 				} else {
-					return ColorConfig.modChannels[((channel - song.pitchChannelCount - song.modChannelCount) % this.c_modLimit) % ColorConfig.modChannels.length];
+					return ColorConfig.modChannels[((channel - song.pitchChannelCount - song.noiseChannelCount) % this.c_modLimit) % ColorConfig.modChannels.length];
 				}
 			}
         }

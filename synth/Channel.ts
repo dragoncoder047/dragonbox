@@ -9,6 +9,7 @@ export class Channel {
     public readonly patterns: Pattern[] = [];
     public readonly bars: number[] = [];
     public muted: boolean = false;
+    public visible: boolean = true;
     public name: string = "";
     public color: number = 0;
 }

@@ -2141,6 +2141,7 @@ var beepbox = (function (exports) {
             this.patterns = [];
             this.bars = [];
             this.muted = false;
+            this.visible = true;
             this.name = "";
             this.color = 0;
         }

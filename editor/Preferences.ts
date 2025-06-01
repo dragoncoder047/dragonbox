@@ -65,7 +65,7 @@ export class Preferences {
 		this.instrumentImportExport = window.localStorage.getItem("instrumentImportExport") == "true";
 		this.instrumentButtonsAtTop = window.localStorage.getItem("instrumentButtonsAtTop") != "false"
 		this.enableChannelMuting = window.localStorage.getItem("enableChannelMuting") != "false";
-		this.fixChannelColorOrder = window.localStorage.getItem("enableChannelMuting") != "false";
+		this.fixChannelColorOrder = window.localStorage.getItem("fixChannelColorOrder") != "false";
 		this.displayBrowserUrl = window.localStorage.getItem("displayBrowserUrl") != "false";
 		this.pressControlForShortcuts = window.localStorage.getItem("pressControlForShortcuts") == "true";
 		this.enableMidi = window.localStorage.getItem("enableMidi") != "false";

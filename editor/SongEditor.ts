@@ -4380,6 +4380,22 @@ export class SongEditor {
                     this._doc.prefs.save();
                     event.preventDefault();
                     location.reload();
+                } else if (this._doc.prefs.enableChannelMuting && this._doc.prefs.showChannels) {
+                    if (event.shiftKey) {
+                        this._doc.selection.hideChannels(false);
+                    } else {
+                        this._doc.selection.showChannels(false);
+                    }
+                    event.preventDefault();
+                }
+                break;
+            case 75: // k
+                if (canPlayNotes) break;
+                if (needControlForShortcuts == (event.ctrlKey || event.metaKey)) {
+                    if (this._doc.prefs.enableChannelMuting && this._doc.prefs.showChannels) {
+                        this._doc.selection.hideChannels(event.shiftKey);
+                        event.preventDefault();
+                    }
                 }
                 break;
             case 76: // l

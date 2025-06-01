@@ -691,6 +691,34 @@ export class Selection {
         this._doc.notifier.changed();
     }
 
+    public hideChannels(allChannels: boolean): void {
+        if (allChannels) {
+            let anyVisible: boolean = false;
+            for (let channelIndex: number = 0; channelIndex < this._doc.song.channels.length; channelIndex++) {
+                if (this._doc.song.channels[channelIndex].visible) {
+                    anyVisible = true;
+                    break;
+                }
+            }
+            for (let channelIndex: number = 0; channelIndex < this._doc.song.channels.length; channelIndex++) {
+                this._doc.song.channels[channelIndex].visible = !anyVisible;
+            }
+        } else {
+            let anyInvisible: boolean = false;
+            for (const channelIndex of this._eachSelectedChannel()) {
+                if (!this._doc.song.channels[channelIndex].visible) {
+                    anyInvisible = true;
+                    break;
+                }
+            }
+            for (const channelIndex of this._eachSelectedChannel()) {
+                this._doc.song.channels[channelIndex].visible = anyInvisible;
+            }
+        }
+
+        this._doc.notifier.changed();
+    }
+
     public soloChannels(invert: boolean): void {
         let alreadySoloed: boolean = true;
 
@@ -754,6 +782,30 @@ export class Selection {
                 }
             }
 
+        }
+
+        this._doc.notifier.changed();
+    }
+
+    public showChannels(invert: boolean): void {
+        let alreadyShown: boolean = true;
+
+        for (let channelIndex: number = 0; channelIndex < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; channelIndex++) {
+            const shouldBeHidden: boolean = (channelIndex < this.boxSelectionChannel || channelIndex >= this.boxSelectionChannel + this.boxSelectionHeight) ? invert : !invert;
+            if (this._doc.song.channels[channelIndex].visible != shouldBeHidden) {
+                alreadyShown = false;
+                break;
+            }
+        }
+
+        if (alreadyShown) {
+            for (let channelIndex: number = 0; channelIndex < this._doc.song.channels.length; channelIndex++) {
+                this._doc.song.channels[channelIndex].visible = true;
+            }
+        } else {
+            for (let channelIndex: number = 0; channelIndex < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; channelIndex++) {
+                this._doc.song.channels[channelIndex].visible = (channelIndex < this.boxSelectionChannel || channelIndex >= this.boxSelectionChannel + this.boxSelectionHeight) ? invert : !invert;
+            }
         }
 
         this._doc.notifier.changed();

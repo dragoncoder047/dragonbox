@@ -2685,7 +2685,7 @@ export class PatternEditor {
                 let noteFlashColor: string = "#ffffff77";
                 if (this._doc.prefs.notesFlashWhenPlayed) noteFlashColor = ColorConfig.getComputed("--note-flash-secondary");
                 for (let channel: number = this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount - 1; channel >= 0; channel--) {
-                    if (channel == this._doc.channel) continue;
+                    if (channel == this._doc.channel || !this._doc.song.channels[channel].visible) continue;
                     if (this._doc.song.getChannelIsNoise(channel) != this._doc.song.getChannelIsNoise(this._doc.channel)) continue;
 
                     const pattern2: Pattern | null = this._doc.song.getPattern(channel, this._doc.bar + this._barOffset);

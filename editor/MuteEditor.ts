@@ -203,7 +203,8 @@ export class MuteEditor {
         if (index == -1) return;
         let xPos: number = event.clientX - this._buttons[0].getBoundingClientRect().left;
         if (xPos < 21.0) {
-            this._doc.song.channels[index].muted = !this._doc.song.channels[index].muted;
+            if (event.shiftKey) this._doc.song.channels[index].visible = !this._doc.song.channels[index].visible;
+            else this._doc.song.channels[index].muted = !this._doc.song.channels[index].muted;
         }
         this._doc.notifier.changed();
     }
@@ -315,22 +316,42 @@ export class MuteEditor {
             if (this._doc.song.channels[y].muted) {
                 this._buttons[y].children[0].classList.add("muted");
 
-                if (y < this._doc.song.pitchChannelCount)
-                    this._channelCounts[y].style.color = ColorConfig.trackEditorBgPitchDim;
-                else if (y < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
-                    this._channelCounts[y].style.color = ColorConfig.trackEditorBgNoiseDim;
-                else
-                    this._channelCounts[y].style.color = ColorConfig.trackEditorBgModDim;
 
+                if (this._doc.song.channels[y].visible) {
+                    if (y < this._doc.song.pitchChannelCount)
+                        this._channelCounts[y].style.color = ColorConfig.trackEditorBgPitch;
+                    else if (y < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
+                        this._channelCounts[y].style.color = ColorConfig.trackEditorBgNoise;
+                    else
+                        this._channelCounts[y].style.color = ColorConfig.trackEditorBgMod;
+                }
+                else {
+                    if (y < this._doc.song.pitchChannelCount)
+                        this._channelCounts[y].style.color = ColorConfig.trackEditorBgPitchDim;
+                    else if (y < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
+                        this._channelCounts[y].style.color = ColorConfig.trackEditorBgNoiseDim;
+                    else
+                        this._channelCounts[y].style.color = ColorConfig.trackEditorBgModDim;
+                }
             } else {
                 this._buttons[y].children[0].classList.remove("muted");
 
-                if (y < this._doc.song.pitchChannelCount)
-                    this._channelCounts[y].style.color = ColorConfig.trackEditorBgPitch;
-                else if (y < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
-                    this._channelCounts[y].style.color = ColorConfig.trackEditorBgNoise;
-                else
-                    this._channelCounts[y].style.color = ColorConfig.trackEditorBgMod;
+                if (this._doc.song.channels[y].visible) {
+                    if (y < this._doc.song.pitchChannelCount)
+                        this._channelCounts[y].style.color = ColorConfig.trackEditorBgPitch;
+                    else if (y < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
+                        this._channelCounts[y].style.color = ColorConfig.trackEditorBgNoise;
+                    else
+                        this._channelCounts[y].style.color = ColorConfig.trackEditorBgMod;
+                }
+                else {
+                    if (y < this._doc.song.pitchChannelCount)
+                        this._channelCounts[y].style.color = ColorConfig.trackEditorBgPitchDim;
+                    else if (y < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount)
+                        this._channelCounts[y].style.color = ColorConfig.trackEditorBgNoiseDim;
+                    else
+                        this._channelCounts[y].style.color = ColorConfig.trackEditorBgModDim;
+                }
             }
         }
 

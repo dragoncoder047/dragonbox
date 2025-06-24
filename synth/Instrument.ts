@@ -19,23 +19,23 @@ export interface LegacySettings {
 }
 
 export class Operator {
-    public frequency: number = 4;
-    public amplitude: number = 0;
-    public waveform: number = 0;
-    public pulseWidth: number = 0.5;
+    frequency: number = 4;
+    amplitude: number = 0;
+    waveform: number = 0;
+    pulseWidth: number = 0.5;
 
     constructor(index: number) {
         this.reset(index);
     }
 
-    public reset(index: number): void {
+    reset(index: number): void {
         this.frequency = 4; //defualt to 1x
         this.amplitude = (index <= 1) ? Config.operatorAmplitudeMax : 0;
         this.waveform = 0;
         this.pulseWidth = 5;
     }
 
-    public copy(other: Operator): void {
+    copy(other: Operator): void {
         this.frequency = other.frequency;
         this.amplitude = other.amplitude;
         this.waveform = other.waveform;
@@ -44,16 +44,16 @@ export class Operator {
 }
 
 export class CustomAlgorithm {
-    public name: string = "";
-    public carrierCount: number = 0;
-    public modulatedBy: number[][] = [[], [], [], [], [], []];
-    public associatedCarrier: number[] = [];
+    name: string = "";
+    carrierCount: number = 0;
+    modulatedBy: number[][] = [[], [], [], [], [], []];
+    associatedCarrier: number[] = [];
 
     constructor() {
         this.fromPreset(1);
     }
 
-    public set(carriers: number, modulation: number[][]) {
+    set(carriers: number, modulation: number[][]) {
         this.reset();
         this.carrierCount = carriers;
         for (let i = 0; i < this.modulatedBy.length; i++) {
@@ -77,21 +77,21 @@ export class CustomAlgorithm {
         }
     }
 
-    public reset(): void {
+    reset(): void {
         this.name = ""
         this.carrierCount = 1;
         this.modulatedBy = [[2, 3, 4, 5, 6], [], [], [], [], []];
         this.associatedCarrier = [1, 1, 1, 1, 1, 1];
     }
 
-    public copy(other: CustomAlgorithm): void {
+    copy(other: CustomAlgorithm): void {
         this.name = other.name;
         this.carrierCount = other.carrierCount;
         this.modulatedBy = other.modulatedBy;
         this.associatedCarrier = other.associatedCarrier;
     }
 
-    public fromPreset(other: number): void {
+    fromPreset(other: number): void {
         this.reset();
         let preset = Config.algorithms6Op[other]
         this.name = preset.name;
@@ -104,14 +104,14 @@ export class CustomAlgorithm {
 }
 
 export class CustomFeedBack { //feels redunant
-    public name: string = "";
-    public indices: number[][] = [[], [], [], [], [], []];
+    name: string = "";
+    indices: number[][] = [[], [], [], [], [], []];
 
     constructor() {
         this.fromPreset(1);
     }
 
-    public set(inIndices: number[][]) {
+    set(inIndices: number[][]) {
         this.reset();
         for (let i = 0; i < this.indices.length; i++) {
             this.indices[i] = inIndices[i];
@@ -123,18 +123,18 @@ export class CustomFeedBack { //feels redunant
         }
     }
 
-    public reset(): void {
+    reset(): void {
         this.reset;
         this.name = "";
         this.indices = [[1], [], [], [], [], []];
     }
 
-    public copy(other: CustomFeedBack): void {
+    copy(other: CustomFeedBack): void {
         this.name = other.name;
         this.indices = other.indices;
     }
 
-    public fromPreset(other: number): void {
+    fromPreset(other: number): void {
         this.reset();
         let preset = Config.feedbacks6Op[other]
         for (var i = 0; i < preset.indices.length; i++) {
@@ -149,14 +149,14 @@ export class CustomFeedBack { //feels redunant
 }
 
 export class SpectrumWave {
-    public spectrum: number[] = [];
-    public hash: number = -1;
+    spectrum: number[] = [];
+    hash: number = -1;
 
     constructor(isNoiseChannel: boolean) {
         this.reset(isNoiseChannel);
     }
 
-    public reset(isNoiseChannel: boolean): void {
+    reset(isNoiseChannel: boolean): void {
         for (let i: number = 0; i < Config.spectrumControlPoints; i++) {
             if (isNoiseChannel) {
                 this.spectrum[i] = Math.round(Config.spectrumMax * (1 / Math.sqrt(1 + i / 3)));
@@ -168,7 +168,7 @@ export class SpectrumWave {
         this.markCustomWaveDirty();
     }
 
-    public markCustomWaveDirty(): void {
+    markCustomWaveDirty(): void {
         const hashMult: number = fittingPowerOfTwo(Config.spectrumMax + 2) - 1;
         let hash: number = 0;
         for (const point of this.spectrum) hash = ((hash * hashMult) + point) >>> 0;
@@ -177,14 +177,14 @@ export class SpectrumWave {
 }
 
 export class HarmonicsWave {
-    public harmonics: number[] = [];
-    public hash: number = -1;
+    harmonics: number[] = [];
+    hash: number = -1;
 
     constructor() {
         this.reset();
     }
 
-    public reset(): void {
+    reset(): void {
         for (let i: number = 0; i < Config.harmonicsControlPoints; i++) {
             this.harmonics[i] = 0;
         }
@@ -194,7 +194,7 @@ export class HarmonicsWave {
         this.markCustomWaveDirty();
     }
 
-    public markCustomWaveDirty(): void {
+    markCustomWaveDirty(): void {
         const hashMult: number = fittingPowerOfTwo(Config.harmonicsMax + 2) - 1;
         let hash: number = 0;
         for (const point of this.harmonics) hash = ((hash * hashMult) + point) >>> 0;
@@ -203,87 +203,87 @@ export class HarmonicsWave {
 }
 
 export class Instrument {
-    public type: InstrumentType = InstrumentType.chip;
-    public preset: number = 0;
-    public chipWave: number = 2;
+    type: InstrumentType = InstrumentType.chip;
+    preset: number = 0;
+    chipWave: number = 2;
     // advloop addition
-    public isUsingAdvancedLoopControls: boolean = false;
-    public chipWaveLoopStart: number = 0;
-    public chipWaveLoopEnd = Config.rawRawChipWaves[this.chipWave].samples.length - 1;
-    public chipWaveLoopMode: number = 0; // 0: loop, 1: ping-pong, 2: once, 3: play loop once
-    public chipWavePlayBackwards: boolean = false;
-    public chipWaveStartOffset: number = 0;
+    isUsingAdvancedLoopControls: boolean = false;
+    chipWaveLoopStart: number = 0;
+    chipWaveLoopEnd = Config.rawRawChipWaves[this.chipWave].samples.length - 1;
+    chipWaveLoopMode: number = 0; // 0: loop, 1: ping-pong, 2: once, 3: play loop once
+    chipWavePlayBackwards: boolean = false;
+    chipWaveStartOffset: number = 0;
     // advloop addition
-    public chipWaveInStereo: boolean = false;
-    public chipNoise: number = 1;
-    public noteFilter: FilterSettings = new FilterSettings();
-    public noteFilterType: boolean = false;
-    public noteFilterSimpleCut: number = Config.filterSimpleCutRange - 1;
-    public noteFilterSimplePeak: number = 0;
-    public noteSubFilters: (FilterSettings | null)[] = [];
-    public tmpNoteFilterStart: FilterSettings | null;
-    public tmpNoteFilterEnd: FilterSettings | null;
-    public envelopes: EnvelopeSettings[] = [];
-    public fadeIn: number = 0;
-    public fadeOut: number = Config.fadeOutNeutral;
-    public envelopeCount: number = 0;
-    public transition: number = Config.transitions.dictionary["normal"].index;
-    public pitchShift: number = 0;
-    public detune: number = 0;
-    public vibrato: number = 0;
-    public interval: number = 0;
-    public vibratoDepth: number = 0;
-    public vibratoSpeed: number = 10;
-    public vibratoDelay: number = 0;
-    public vibratoType: number = 0;
-    public envelopeSpeed: number = 12;
-    public unison: number = 0;
-    public unisonVoices: number = 1;
-    public unisonSpread: number = 0.0;
-    public unisonOffset: number = 0.0;
-    public unisonExpression: number = 1.4;
-    public unisonSign: number = 1.0;
-    public effects: Effect[] = [];
-    public effectCount: number = 0;
-    public mdeffects: number = 0;
-    public chord: number = 1;
-    public volume: number = 0;
-    public arpeggioSpeed: number = 12;
-    public monoChordTone: number = 0;
-    public fastTwoNoteArp: boolean = false;
-    public legacyTieOver: boolean = false;
-    public clicklessTransition: boolean = false;
-    public aliases: boolean = false;
-    public pulseWidth: number = Config.pulseWidthRange;
-    public decimalOffset: number = 0;
-    public supersawDynamism: number = Config.supersawDynamismMax;
-    public supersawSpread: number = Math.ceil(Config.supersawSpreadMax / 2.0);
-    public supersawShape: number = 0;
-    public stringSustain: number = 10;
-    public stringSustainType: SustainType = SustainType.acoustic;
-    public algorithm: number = 0;
-    public feedbackType: number = 0;
-    public algorithm6Op: number = 1;
-    public feedbackType6Op: number = 1;//default to not custom
-    public customAlgorithm: CustomAlgorithm = new CustomAlgorithm(); //{ name: "1←4(2←5 3←6", carrierCount: 3, associatedCarrier: [1, 2, 3, 1, 2, 3], modulatedBy: [[2, 3, 4], [5], [6], [], [], []] };
-    public customFeedbackType: CustomFeedBack = new CustomFeedBack(); //{ name: "1↔4 2↔5 3↔6", indices: [[3], [5], [6], [1], [2], [3]] };
-    public feedbackAmplitude: number = 0;
-    public customChipWave: Float32Array = new Float32Array(64);
-    public customChipWaveIntegral: Float32Array = new Float32Array(65); // One extra element for wrap-around in chipSynth.
-    public readonly operators: Operator[] = [];
-    public readonly spectrumWave: SpectrumWave;
-    public readonly harmonicsWave: HarmonicsWave = new HarmonicsWave();
-    public readonly drumsetEnvelopes: number[] = [];
-    public readonly drumsetSpectrumWaves: SpectrumWave[] = [];
-    public modChannels: number[][] = [];
-    public modInstruments: number[][] = [];
-    public modulators: number[] = [];
-    public modFilterTypes: number[] = [];
-    public modEnvelopeNumbers: number[] = [];
-    public invalidModulators: boolean[] = [];
+    chipWaveInStereo: boolean = false;
+    chipNoise: number = 1;
+    noteFilter: FilterSettings = new FilterSettings();
+    noteFilterType: boolean = false;
+    noteFilterSimpleCut: number = Config.filterSimpleCutRange - 1;
+    noteFilterSimplePeak: number = 0;
+    noteSubFilters: (FilterSettings | null)[] = [];
+    tmpNoteFilterStart: FilterSettings | null;
+    tmpNoteFilterEnd: FilterSettings | null;
+    envelopes: EnvelopeSettings[] = [];
+    fadeIn: number = 0;
+    fadeOut: number = Config.fadeOutNeutral;
+    envelopeCount: number = 0;
+    transition: number = Config.transitions.dictionary["normal"].index;
+    pitchShift: number = 0;
+    detune: number = 0;
+    vibrato: number = 0;
+    interval: number = 0;
+    vibratoDepth: number = 0;
+    vibratoSpeed: number = 10;
+    vibratoDelay: number = 0;
+    vibratoType: number = 0;
+    envelopeSpeed: number = 12;
+    unison: number = 0;
+    unisonVoices: number = 1;
+    unisonSpread: number = 0.0;
+    unisonOffset: number = 0.0;
+    unisonExpression: number = 1.4;
+    unisonSign: number = 1.0;
+    effects: Effect[] = [];
+    effectCount: number = 0;
+    mdeffects: number = 0;
+    chord: number = 1;
+    volume: number = 0;
+    arpeggioSpeed: number = 12;
+    monoChordTone: number = 0;
+    fastTwoNoteArp: boolean = false;
+    legacyTieOver: boolean = false;
+    clicklessTransition: boolean = false;
+    aliases: boolean = false;
+    pulseWidth: number = Config.pulseWidthRange;
+    decimalOffset: number = 0;
+    supersawDynamism: number = Config.supersawDynamismMax;
+    supersawSpread: number = Math.ceil(Config.supersawSpreadMax / 2.0);
+    supersawShape: number = 0;
+    stringSustain: number = 10;
+    stringSustainType: SustainType = SustainType.acoustic;
+    algorithm: number = 0;
+    feedbackType: number = 0;
+    algorithm6Op: number = 1;
+    feedbackType6Op: number = 1;//default to not custom
+    customAlgorithm: CustomAlgorithm = new CustomAlgorithm(); //{ name: "1←4(2←5 3←6", carrierCount: 3, associatedCarrier: [1, 2, 3, 1, 2, 3], modulatedBy: [[2, 3, 4], [5], [6], [], [], []] };
+    customFeedbackType: CustomFeedBack = new CustomFeedBack(); //{ name: "1↔4 2↔5 3↔6", indices: [[3], [5], [6], [1], [2], [3]] };
+    feedbackAmplitude: number = 0;
+    customChipWave: Float32Array = new Float32Array(64);
+    customChipWaveIntegral: Float32Array = new Float32Array(65); // One extra element for wrap-around in chipSynth.
+    readonly operators: Operator[] = [];
+    readonly spectrumWave: SpectrumWave;
+    readonly harmonicsWave: HarmonicsWave = new HarmonicsWave();
+    readonly drumsetEnvelopes: number[] = [];
+    readonly drumsetSpectrumWaves: SpectrumWave[] = [];
+    modChannels: number[][] = [];
+    modInstruments: number[][] = [];
+    modulators: number[] = [];
+    modFilterTypes: number[] = [];
+    modEnvelopeNumbers: number[] = [];
+    invalidModulators: boolean[] = [];
 
     //Literally just for pitch envelopes.
-    public isNoiseInstrument: boolean = false;
+    isNoiseInstrument: boolean = false;
     constructor(isNoiseChannel: boolean, isModChannel: boolean) {
 
         // @jummbus - My screed on how modulator arrays for instruments work, for the benefit of myself in the future, or whoever else.
@@ -348,7 +348,7 @@ export class Instrument {
 
     }
 
-    public setTypeAndReset(type: InstrumentType, isNoiseChannel: boolean, isModChannel: boolean): void {
+    setTypeAndReset(type: InstrumentType, isNoiseChannel: boolean, isModChannel: boolean): void {
         // Mod channels are forced to one type.
         if (isModChannel) type = InstrumentType.mod;
         this.type = type;
@@ -513,7 +513,7 @@ export class Instrument {
     }
 
     // (only) difference for JummBox: Returns whether or not the note filter was chosen for filter conversion.
-    public convertLegacySettings(legacySettings: LegacySettings, forceSimpleFilter: boolean): void {
+    convertLegacySettings(legacySettings: LegacySettings, forceSimpleFilter: boolean): void {
         let legacyCutoffSetting: number | undefined = legacySettings.filterCutoff;
         let legacyResonanceSetting: number | undefined = legacySettings.filterResonance;
         let legacyFilterEnv: Envelope | undefined = legacySettings.filterEnvelope;
@@ -606,7 +606,7 @@ export class Instrument {
         }
     }
 
-    public toJsonObject(): Object {
+    toJsonObject(): Object {
         const instrumentObject: any = {
             "type": Config.instrumentTypeNames[this.type],
             "volume": this.volume,
@@ -906,7 +906,7 @@ export class Instrument {
     }
 
 
-    public fromJsonObject(instrumentObject: any, isNoiseChannel: boolean, isModChannel: boolean, useSlowerRhythm: boolean, useFastTwoNoteArp: boolean, legacyGlobalReverb: number = 0, jsonFormat: string = Config.jsonFormat): void {
+    fromJsonObject(instrumentObject: any, isNoiseChannel: boolean, isModChannel: boolean, useSlowerRhythm: boolean, useFastTwoNoteArp: boolean, legacyGlobalReverb: number = 0, jsonFormat: string = Config.jsonFormat): void {
         if (instrumentObject == undefined) instrumentObject = {};
 
         const format: string = jsonFormat.toLowerCase();
@@ -1552,7 +1552,7 @@ export class Instrument {
     }
     // advloop addition
 
-    public getLargestControlPointCount(forNoteFilter: boolean) {
+    getLargestControlPointCount(forNoteFilter: boolean) {
         let largest: number;
         if (forNoteFilter) {
             largest = this.noteFilter.controlPointCount;
@@ -1575,18 +1575,18 @@ export class Instrument {
         return largest;
     }
 
-    public static frequencyFromPitch(pitch: number): number {
+    static frequencyFromPitch(pitch: number): number {
         return 440.0 * Math.pow(2.0, (pitch - 69.0) / 12.0);
     }
 
-    public addEffect(type: EffectType): Effect {
+    addEffect(type: EffectType): Effect {
         let newEffect: Effect = new Effect(type);
         this.effects.push(newEffect);
         this.effectCount++;
         return newEffect;
     }
 
-    public removeEffect(type: EffectType): void {
+    removeEffect(type: EffectType): void {
         for(let i: number = 0; i < this.effectCount; i++) {
             if (this.effects[i] != null && this.effects[i]!.type == type) {
                 this.effects.splice(i, 1);
@@ -1596,12 +1596,12 @@ export class Instrument {
         this.effectCount--;
     }
 
-    public effectsIncludeType(type: EffectType): boolean {
+    effectsIncludeType(type: EffectType): boolean {
         for (let i: number = 0; i < this.effects.length; i++) if (this.effects[i] != null && this.effects[i]!.type == type) return true;
         return false;
     }
 
-    public addEnvelope(target: number, index: number, envelope: number, newEnvelopes: boolean, start: number = 0, end: number = -1, inverse: boolean = false, perEnvelopeSpeed: number = -1, perEnvelopeLowerBound: number = 0, perEnvelopeUpperBound: number = 1, steps: number = 2, seed: number = 2, waveform: number = LFOEnvelopeTypes.sine, discrete: boolean = false): void {
+    addEnvelope(target: number, index: number, envelope: number, newEnvelopes: boolean, start: number = 0, end: number = -1, inverse: boolean = false, perEnvelopeSpeed: number = -1, perEnvelopeLowerBound: number = 0, perEnvelopeUpperBound: number = 1, steps: number = 2, seed: number = 2, waveform: number = LFOEnvelopeTypes.sine, discrete: boolean = false): void {
         end = end != -1 ? end : this.isNoiseInstrument ? Config.drumCount - 1 : Config.maxPitch; //find default if none is given
         perEnvelopeSpeed = perEnvelopeSpeed != -1 ? perEnvelopeSpeed : newEnvelopes ? 1 : Config.envelopes[envelope].speed; //find default if none is given
         let makeEmpty: boolean = false;
@@ -1629,7 +1629,7 @@ export class Instrument {
         this.envelopeCount++;
     }
 
-    public supportsEnvelopeTarget(target: number, index: number): boolean {
+    supportsEnvelopeTarget(target: number, index: number): boolean {
         const automationTarget: AutomationTarget = Config.instrumentAutomationTargets[target];
         if (automationTarget.computeIndex == null && automationTarget.name != "none") {
             return false;
@@ -1659,7 +1659,7 @@ export class Instrument {
         return true;
     }
 
-    public clearInvalidEnvelopeTargets(): void {
+    clearInvalidEnvelopeTargets(): void {
         for (let envelopeIndex: number = 0; envelopeIndex < this.envelopeCount; envelopeIndex++) {
             const target: number = this.envelopes[envelopeIndex].target;
             const index: number = this.envelopes[envelopeIndex].index;
@@ -1670,24 +1670,24 @@ export class Instrument {
         }
     }
 
-    public getTransition(): Transition {
+    getTransition(): Transition {
         return effectsIncludeTransition(this.mdeffects) ? Config.transitions[this.transition] :
             (this.type == InstrumentType.mod ? Config.transitions.dictionary["interrupt"] : Config.transitions.dictionary["normal"]);
     }
 
-    public getFadeInSeconds(): number {
+    getFadeInSeconds(): number {
         return (this.type == InstrumentType.drumset) ? 0.0 : fadeInSettingToSeconds(this.fadeIn);
     }
 
-    public getFadeOutTicks(): number {
+    getFadeOutTicks(): number {
         return (this.type == InstrumentType.drumset) ? Config.drumsetFadeOutTicks : fadeOutSettingToTicks(this.fadeOut)
     }
 
-    public getChord(): Chord {
+    getChord(): Chord {
         return effectsIncludeChord(this.mdeffects) ? Config.chords[this.chord] : Config.chords.dictionary["simultaneous"];
     }
 
-    public getDrumsetEnvelope(pitch: number): Envelope {
+    getDrumsetEnvelope(pitch: number): Envelope {
         if (this.type != InstrumentType.drumset) throw new Error("Can't getDrumsetEnvelope() for non-drumset.");
         return Config.envelopes[this.drumsetEnvelopes[pitch]];
     }

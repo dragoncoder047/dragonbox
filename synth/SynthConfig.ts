@@ -332,10 +332,10 @@ export function getSampleLoadingStatusName(status: SampleLoadingStatus): string 
 }
 
 export class SampleLoadingState {
-    public statusTable: Dictionary<SampleLoadingStatus>;
-    public urlTable: Dictionary<string>;
-    public totalSamples: number;
-    public samplesLoaded: number;
+    statusTable: Dictionary<SampleLoadingStatus>;
+    urlTable: Dictionary<string>;
+    totalSamples: number;
+    samplesLoaded: number;
 
     constructor() {
 	this.statusTable = {};
@@ -348,8 +348,8 @@ export class SampleLoadingState {
 export const sampleLoadingState: SampleLoadingState = new SampleLoadingState();
 
 export class SampleLoadedEvent extends Event {
-    public readonly totalSamples: number;
-    public readonly samplesLoaded: number;
+    readonly totalSamples: number;
+    readonly samplesLoaded: number;
 
     constructor(totalSamples: number, samplesLoaded: number) {
 	super("sampleloaded");
@@ -889,18 +889,18 @@ export function loadBuiltInSamples(set: number): void {
 
 export class Config {
     // Params for post-processing compressor
-    public static thresholdVal: number = -10;
-    public static kneeVal: number = 40;
-    public static ratioVal: number = 12;
-    public static attackVal: number = 0;
-    public static releaseVal: number = 0.25;
+    static thresholdVal: number = -10;
+    static kneeVal: number = 40;
+    static ratioVal: number = 12;
+    static attackVal: number = 0;
+    static releaseVal: number = 0.25;
 
-    public static willReloadForCustomSamples: boolean = false;
+    static willReloadForCustomSamples: boolean = false;
 
-    public static jsonFormat: string = "DragonBox";
+    static jsonFormat: string = "DragonBox";
     // public static thurmboxImportUrl: string = "https://file.garden/ZMQ0Om5nmTe-x2hq/PandoraArchive%20Samples/";
 
-    public static readonly scales: DictionaryArray<Scale> = toNameMap([
+    static readonly scales: DictionaryArray<Scale> = toNameMap([
 
         //   C     Db      D     Eb      E      F     F#      G     Ab      A     Bb      B      C
         { name: "Free", realName: "chromatic", flags: [true, true, true, true, true, true, true, true, true, true, true, true] }, // Free
@@ -932,7 +932,7 @@ export class Config {
         { name: "Test Scale (TB)", realName: "**t", flags: [true, true, false, false, false, true, true, false, false, true, true, false] },
         { name: "Custom", realName: "custom", flags: [true, false, true, true, false, false, false, true, true, false, true, true] }, // Custom? considering allowing this one to be be completely configurable
     ]);
-    public static readonly keys: DictionaryArray<Key> = toNameMap([
+    static readonly keys: DictionaryArray<Key> = toNameMap([
         { name: "C", isWhiteKey: true, basePitch: 12 }, // C0 has index 12 on the MIDI scale. C7 is 96, and C9 is 120. C10 is barely in the audible range.
         { name: "C♯", isWhiteKey: false, basePitch: 13 },
         { name: "D", isWhiteKey: true, basePitch: 14 },
@@ -954,33 +954,33 @@ export class Config {
         // { name: "oh no (F-)", isWhiteKey: true, basePitch: 5 },
         //shitbox
     ]);
-    public static readonly blackKeyNameParents: ReadonlyArray<number> = [-1, 1, -1, 1, -1, 1, -1, -1, 1, -1, 1, -1];
-    public static readonly tempoMin: number = 1;
-    public static readonly tempoMax: number = 2000;
-    public static readonly octaveMin: number = -2;
-    public static readonly octaveMax: number = 2;
-    public static readonly echoDelayRange: number = 24;
-    public static readonly echoDelayStepTicks: number = 4;
-    public static readonly echoSustainRange: number = 24;
-    public static readonly echoShelfHz: number = 4000.0; // The cutoff freq of the shelf filter that is used to decay echoes.
-    public static readonly echoShelfGain: number = Math.pow(2.0, -0.5);
-    public static readonly reverbShelfHz: number = 8000.0; // The cutoff freq of the shelf filter that is used to decay reverb.
-    public static readonly reverbShelfGain: number = Math.pow(2.0, -1.5);
-    public static readonly reverbRange: number = 32;
-    public static readonly reverbDelayBufferSize: number = 16384; // TODO: Compute a buffer size based on sample rate.
-    public static readonly reverbDelayBufferMask: number = Config.reverbDelayBufferSize - 1; // TODO: Compute a buffer size based on sample rate.
-    public static readonly beatsPerBarMin: number = 1;
-    public static readonly beatsPerBarMax: number = 64;
-    public static readonly barCountMin: number = 1;
-    public static readonly barCountMax: number = 1024;
-    public static readonly instrumentCountMin: number = 1;
-    public static readonly layeredInstrumentCountMax: number = 10;
-    public static readonly patternInstrumentCountMax: number = 10;
-	public static readonly partsPerBeat: number = 24;
-	public static readonly ticksPerPart: number = 2;
-	public static readonly ticksPerArpeggio: number = 3;
-	public static readonly arpeggioPatterns: ReadonlyArray<ReadonlyArray<number>> = [[0], [0, 1], [0, 1, 2, 1], [0, 1, 2, 3], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5, 6], [0, 1, 2, 3, 4, 5, 6, 7] ];
-	public static readonly rhythms: DictionaryArray<Rhythm> = toNameMap([
+    static readonly blackKeyNameParents: ReadonlyArray<number> = [-1, 1, -1, 1, -1, 1, -1, -1, 1, -1, 1, -1];
+    static readonly tempoMin: number = 1;
+    static readonly tempoMax: number = 2000;
+    static readonly octaveMin: number = -2;
+    static readonly octaveMax: number = 2;
+    static readonly echoDelayRange: number = 24;
+    static readonly echoDelayStepTicks: number = 4;
+    static readonly echoSustainRange: number = 24;
+    static readonly echoShelfHz: number = 4000.0; // The cutoff freq of the shelf filter that is used to decay echoes.
+    static readonly echoShelfGain: number = Math.pow(2.0, -0.5);
+    static readonly reverbShelfHz: number = 8000.0; // The cutoff freq of the shelf filter that is used to decay reverb.
+    static readonly reverbShelfGain: number = Math.pow(2.0, -1.5);
+    static readonly reverbRange: number = 32;
+    static readonly reverbDelayBufferSize: number = 16384; // TODO: Compute a buffer size based on sample rate.
+    static readonly reverbDelayBufferMask: number = Config.reverbDelayBufferSize - 1; // TODO: Compute a buffer size based on sample rate.
+    static readonly beatsPerBarMin: number = 1;
+    static readonly beatsPerBarMax: number = 64;
+    static readonly barCountMin: number = 1;
+    static readonly barCountMax: number = 1024;
+    static readonly instrumentCountMin: number = 1;
+    static readonly layeredInstrumentCountMax: number = 10;
+    static readonly patternInstrumentCountMax: number = 10;
+	static readonly partsPerBeat: number = 24;
+	static readonly ticksPerPart: number = 2;
+	static readonly ticksPerArpeggio: number = 3;
+	static readonly arpeggioPatterns: ReadonlyArray<ReadonlyArray<number>> = [[0], [0, 1], [0, 1, 2, 1], [0, 1, 2, 3], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5, 6], [0, 1, 2, 3, 4, 5, 6, 7] ];
+	static readonly rhythms: DictionaryArray<Rhythm> = toNameMap([
 		{ name: "÷3 (triplets)", stepsPerBeat: 3, /*ticksPerArpeggio: 4, arpeggioPatterns: [[0], [0, 0, 1, 1], [0, 1, 2, 1], [0, 1, 2, 3]]*/ roundUpThresholds: [/*0*/ 5, /*8*/ 12, /*16*/ 18 /*24*/] },
 		{ name: "÷4 (standard)", stepsPerBeat: 4, /*ticksPerArpeggio: 3, arpeggioPatterns: [[0], [0, 0, 1, 1], [0, 1, 2, 1], [0, 1, 2, 3]]*/ roundUpThresholds: [/*0*/ 3, /*6*/ 9, /*12*/ 17, /*18*/ 21 /*24*/] },
 		{ name: "÷6", stepsPerBeat: 6, /*ticksPerArpeggio: 4, arpeggioPatterns: [[0], [0, 1], [0, 1, 2, 1], [0, 1, 2, 3]]*/ roundUpThresholds: null },
@@ -989,21 +989,21 @@ export class Config {
 		{ name: "freehand", stepsPerBeat: 24, /*ticksPerArpeggio: 3, arpeggioPatterns: [[0], [0, 1], [0, 1, 2, 1], [0, 1, 2, 3]]*/ roundUpThresholds: null },
 	]);
 
-    public static readonly instrumentTypeNames: ReadonlyArray<string> = ["chip", "FM", "noise", "spectrum", "drumset", "harmonics", "PWM", "Picked String", "supersaw", "custom chip", "mod", "FM6op"];
-    public static readonly instrumentTypeHasSpecialInterval: ReadonlyArray<boolean> = [true, true, false, false, false, true, false, false, false, false, false];
-    public static readonly chipBaseExpression: number = 0.03375; // Doubled by unison feature, but affected by expression adjustments per unison setting and wave shape. Custom chip is multiplied by 0.05 in instrumentState.updateWaves
-    public static readonly fmBaseExpression: number = 0.03;
-    public static readonly noiseBaseExpression: number = 0.19;
-    public static readonly spectrumBaseExpression: number = 0.3; // Spectrum can be in pitch or noise channels, the expression is doubled for noise.
-    public static readonly drumsetBaseExpression: number = 0.45; // Drums tend to be loud but brief!
-    public static readonly harmonicsBaseExpression: number = 0.025;
-    public static readonly pwmBaseExpression: number = 0.04725; // It's actually closer to half of this, the synthesized pulse amplitude range is only .5 to -.5, but also note that the fundamental sine partial amplitude of a square wave is 4/π times the measured square wave amplitude.
-    public static readonly supersawBaseExpression: number = 0.061425; // It's actually closer to half of this, the synthesized sawtooth amplitude range is only .5 to -.5.
-    public static readonly pickedStringBaseExpression: number = 0.025; // Same as harmonics.
-    public static readonly distortionBaseVolume: number = 0.011; // Distortion is not affected by pitchDamping, which otherwise approximately halves expression for notes around the middle of the range.
-    public static readonly bitcrusherBaseVolume: number = 0.010; // Also not affected by pitchDamping, used when bit crushing is maxed out (aka "1-bit" output).
-    public static readonly granularOutputLoudnessCompensation: number = 0.5; //compensate for multiple grains playing at once
-    public static rawChipWaves: DictionaryArray<ChipWave> = toNameMap([
+    static readonly instrumentTypeNames: ReadonlyArray<string> = ["chip", "FM", "noise", "spectrum", "drumset", "harmonics", "PWM", "Picked String", "supersaw", "custom chip", "mod", "FM6op"];
+    static readonly instrumentTypeHasSpecialInterval: ReadonlyArray<boolean> = [true, true, false, false, false, true, false, false, false, false, false];
+    static readonly chipBaseExpression: number = 0.03375; // Doubled by unison feature, but affected by expression adjustments per unison setting and wave shape. Custom chip is multiplied by 0.05 in instrumentState.updateWaves
+    static readonly fmBaseExpression: number = 0.03;
+    static readonly noiseBaseExpression: number = 0.19;
+    static readonly spectrumBaseExpression: number = 0.3; // Spectrum can be in pitch or noise channels, the expression is doubled for noise.
+    static readonly drumsetBaseExpression: number = 0.45; // Drums tend to be loud but brief!
+    static readonly harmonicsBaseExpression: number = 0.025;
+    static readonly pwmBaseExpression: number = 0.04725; // It's actually closer to half of this, the synthesized pulse amplitude range is only .5 to -.5, but also note that the fundamental sine partial amplitude of a square wave is 4/π times the measured square wave amplitude.
+    static readonly supersawBaseExpression: number = 0.061425; // It's actually closer to half of this, the synthesized sawtooth amplitude range is only .5 to -.5.
+    static readonly pickedStringBaseExpression: number = 0.025; // Same as harmonics.
+    static readonly distortionBaseVolume: number = 0.011; // Distortion is not affected by pitchDamping, which otherwise approximately halves expression for notes around the middle of the range.
+    static readonly bitcrusherBaseVolume: number = 0.010; // Also not affected by pitchDamping, used when bit crushing is maxed out (aka "1-bit" output).
+    static readonly granularOutputLoudnessCompensation: number = 0.5; //compensate for multiple grains playing at once
+    static rawChipWaves: DictionaryArray<ChipWave> = toNameMap([
         { name: "rounded", expression: 0.94, samples: centerWave([0.0, 0.2, 0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.95, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.95, 0.9, 0.85, 0.8, 0.7, 0.6, 0.5, 0.4, 0.2, 0.0, -0.2, -0.4, -0.5, -0.6, -0.7, -0.8, -0.85, -0.9, -0.95, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -0.95, -0.9, -0.85, -0.8, -0.7, -0.6, -0.5, -0.4, -0.2]) },
         { name: "triangle", expression: 1.0, samples: centerWave([1.0 / 15.0, 3.0 / 15.0, 5.0 / 15.0, 7.0 / 15.0, 9.0 / 15.0, 11.0 / 15.0, 13.0 / 15.0, 15.0 / 15.0, 15.0 / 15.0, 13.0 / 15.0, 11.0 / 15.0, 9.0 / 15.0, 7.0 / 15.0, 5.0 / 15.0, 3.0 / 15.0, 1.0 / 15.0, -1.0 / 15.0, -3.0 / 15.0, -5.0 / 15.0, -7.0 / 15.0, -9.0 / 15.0, -11.0 / 15.0, -13.0 / 15.0, -15.0 / 15.0, -15.0 / 15.0, -13.0 / 15.0, -11.0 / 15.0, -9.0 / 15.0, -7.0 / 15.0, -5.0 / 15.0, -3.0 / 15.0, -1.0 / 15.0]) },
         { name: "square", expression: 0.5, samples: centerWave([1.0, -1.0]) },
@@ -1103,13 +1103,13 @@ export class Config {
         // search "normie alert" in beepcord
         { name: "ultrabox shortened od guitar", expression: 0.5, samples: centerAndNormalizeWave([-0.82785, -0.67621, -0.40268, -0.43817, -0.45468, -0.22531, -0.18329, 0.24750, 0.71246, 0.52155, 0.56082, 0.48395, 0.33990, 0.46957, 0.27744, 0.42313, 0.47104, 0.18796, 0.12930, -0.13901, -0.07431, -0.16348, -0.74857, -0.73206, -0.35181, -0.26227, -0.41882, -0.27786, -0.19806, -0.19867, 0.18643, 0.24808, 0.08847, -0.06964, 0.06912, 0.20474, -0.05304, 0.29416, 0.31967, 0.14243, 0.27521, -0.23932, -0.14752, 0.12360, -0.26123, -0.26111, 0.06616, 0.26520, 0.08090, 0.15240, 0.16254, -0.12061, 0.04562, 0.00131, 0.04050, 0.08182, -0.21729, -0.17041, -0.16312, -0.08563, 0.06390, 0.05099, 0.05627, 0.02728, 0.00726, -0.13028, -0.05673, -0.14969, -0.17645, 0.35492, 0.16766, -0.00897, 0.24326, -0.00461, -0.04456, 0.01776, -0.04950, -0.01221, 0.02039, 0.07684, 0.13397, 0.39850, 0.35962, 0.13754, 0.42310, 0.27161, -0.17609, 0.03659, 0.10635, -0.21909, -0.22046, -0.20258, -0.40973, -0.40280, -0.40521, -0.66284]) },
     ]);
-    public static chipWaves: DictionaryArray<ChipWave> = rawChipToIntegrated(Config.rawChipWaves);
-    public static rawRawChipWaves: DictionaryArray<ChipWave> = Config.rawChipWaves;
+    static chipWaves: DictionaryArray<ChipWave> = rawChipToIntegrated(Config.rawChipWaves);
+    static rawRawChipWaves: DictionaryArray<ChipWave> = Config.rawChipWaves;
 
-    public static firstIndexForSamplesInChipWaveList: number = Config.chipWaves.length;
+    static firstIndexForSamplesInChipWaveList: number = Config.chipWaves.length;
   
     // Noise waves have too many samples to write by hand, they're generated on-demand by getDrumWave instead.
-    public static readonly chipNoises: DictionaryArray<ChipNoise> = toNameMap([
+    static readonly chipNoises: DictionaryArray<ChipNoise> = toNameMap([
         { name: "retro", expression: 0.25, basePitch: 69, pitchFilterMult: 1024.0, isSoft: false, samples: null },
         { name: "white", expression: 1.0, basePitch: 69, pitchFilterMult: 8.0, isSoft: true, samples: null },
         // The "clang" and "buzz" noises are based on similar noises in the modded beepbox! :D
@@ -1130,34 +1130,34 @@ export class Config {
         { name: "brownian", expression: 1.0, basePitch: 69, pitchFilterMult: 8.0, isSoft: true, samples: null },
     ]);
 	
-    public static readonly filterFreqStep: number = 1.0 / 4.0;
-    public static readonly filterFreqRange: number = 34;
-    public static readonly filterFreqReferenceSetting: number = 28;
-    public static readonly filterFreqReferenceHz: number = 8000.0;
-    public static readonly filterFreqMaxHz: number = Config.filterFreqReferenceHz * Math.pow(2.0, Config.filterFreqStep * (Config.filterFreqRange - 1 - Config.filterFreqReferenceSetting)); // ~19khz
-    public static readonly filterFreqMinHz: number = 8.0;
-    public static readonly filterGainRange: number = 15;
-    public static readonly filterGainCenter: number = 7;
-    public static readonly filterGainStep: number = 1.0 / 2.0;
-    public static readonly filterMaxPoints: number = 8;
-    public static readonly filterTypeNames: ReadonlyArray<string> = ["low-pass", "high-pass", "peak"]; // See FilterType enum above.
-    public static readonly filterMorphCount: number = 10; // Number of filter shapes allowed for modulating between. Counts the 0/default position.
+    static readonly filterFreqStep: number = 1.0 / 4.0;
+    static readonly filterFreqRange: number = 34;
+    static readonly filterFreqReferenceSetting: number = 28;
+    static readonly filterFreqReferenceHz: number = 8000.0;
+    static readonly filterFreqMaxHz: number = Config.filterFreqReferenceHz * Math.pow(2.0, Config.filterFreqStep * (Config.filterFreqRange - 1 - Config.filterFreqReferenceSetting)); // ~19khz
+    static readonly filterFreqMinHz: number = 8.0;
+    static readonly filterGainRange: number = 15;
+    static readonly filterGainCenter: number = 7;
+    static readonly filterGainStep: number = 1.0 / 2.0;
+    static readonly filterMaxPoints: number = 8;
+    static readonly filterTypeNames: ReadonlyArray<string> = ["low-pass", "high-pass", "peak"]; // See FilterType enum above.
+    static readonly filterMorphCount: number = 10; // Number of filter shapes allowed for modulating between. Counts the 0/default position.
 
-    public static readonly filterSimpleCutRange: number = 11;
-    public static readonly filterSimplePeakRange: number = 8;
+    static readonly filterSimpleCutRange: number = 11;
+    static readonly filterSimplePeakRange: number = 8;
 
-    public static readonly fadeInRange: number = 10;
-    public static readonly fadeOutTicks: ReadonlyArray<number> = [-24, -12, -6, -3, -1, 6, 12, 24, 48, 72, 96];
-    public static readonly fadeOutNeutral: number = 4;
-    public static readonly drumsetFadeOutTicks: number = 48;
-    public static readonly transitions: DictionaryArray<Transition> = toNameMap([
+    static readonly fadeInRange: number = 10;
+    static readonly fadeOutTicks: ReadonlyArray<number> = [-24, -12, -6, -3, -1, 6, 12, 24, 48, 72, 96];
+    static readonly fadeOutNeutral: number = 4;
+    static readonly drumsetFadeOutTicks: number = 48;
+    static readonly transitions: DictionaryArray<Transition> = toNameMap([
         { name: "normal", isSeamless: false, continues: false, slides: false, slideTicks: 3, includeAdjacentPatterns: false },
         { name: "interrupt", isSeamless: true, continues: false, slides: false, slideTicks: 3, includeAdjacentPatterns: true },
         { name: "continue", isSeamless: true, continues: true, slides: false, slideTicks: 3, includeAdjacentPatterns: true },
         { name: "slide", isSeamless: true, continues: false, slides: true, slideTicks: 3, includeAdjacentPatterns: true },
         { name: "slide in pattern", isSeamless: true, continues: false, slides: true, slideTicks: 3, includeAdjacentPatterns: false }
     ]);
-    public static readonly vibratos: DictionaryArray<Vibrato> = toNameMap([
+    static readonly vibratos: DictionaryArray<Vibrato> = toNameMap([
         { name: "none", amplitude: 0.0, type: 0, delayTicks: 0 },
         { name: "light", amplitude: 0.15, type: 0, delayTicks: 0 },
         { name: "delayed", amplitude: 0.3, type: 0, delayTicks: 37 }, // It will fade in over the previous two ticks.
@@ -1176,14 +1176,14 @@ export class Config {
         //too much wub breaks things just a little bit at it's original amplitude
         //sandbox
     ]);
-    public static readonly vibratoTypes: DictionaryArray<VibratoType> = toNameMap([
+    static readonly vibratoTypes: DictionaryArray<VibratoType> = toNameMap([
         { name: "normal", periodsSeconds: [0.14], period: 0.14 },
         { name: "shaky", periodsSeconds: [0.11, 1.618 * 0.11, 3 * 0.11], period: 266.97 }, // LCM of all periods
     ]);
     // This array is more or less a linear step by 0.1 but there's a bit of range added at the start to hit specific ratios, and the end starts to grow faster.
     //                                                             0       1      2    3     4      5    6    7      8     9   10   11 12   13   14   15   16   17   18   19   20   21 22   23   24   25   26   27   28   29   30   31 32   33   34   35   36   37   38    39  40   41 42    43   44   45   46 47   48 49 50
-    public static readonly arpSpeedScale: ReadonlyArray<number> = [0, 0.0625, 0.125, 0.2, 0.25, 1 / 3, 0.4, 0.5, 2 / 3, 0.75, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4, 4.15, 4.3, 4.5, 4.8, 5, 5.5, 6, 8];
-    public static readonly unisons: DictionaryArray<Unison> = toNameMap([
+    static readonly arpSpeedScale: ReadonlyArray<number> = [0, 0.0625, 0.125, 0.2, 0.25, 1 / 3, 0.4, 0.5, 2 / 3, 0.75, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4, 4.15, 4.3, 4.5, 4.8, 5, 5.5, 6, 8];
+    static readonly unisons: DictionaryArray<Unison> = toNameMap([
         { name: "none", voices: 1, spread: 0.0, offset: 0.0, expression: 1.4, sign: 1.0 },
         { name: "shimmer", voices: 2, spread: 0.018, offset: 0.0, expression: 0.8, sign: 1.0 },
         { name: "hum", voices: 2, spread: 0.045, offset: 0.0, expression: 1.0, sign: 1.0 },
@@ -1220,60 +1220,60 @@ export class Config {
 		
         //for modbox; voices = riffapp, spread = intervals, offset = offsets, expression = volume, and sign = signs
     ]);
-    public static readonly effectNames: ReadonlyArray<string> = ["reverb", "chorus", "panning", "distortion", "bitcrusher", "post eq", "echo", "ring mod", "granular", "gain", "flanger"];
-    public static readonly effectDisplayNames: ReadonlyArray<string> = ["Reverb", "Chorus", "Panning", "Distortion", "Bitcrusher", "Post EQ", "Echo", "Ring Mod", "Granular", "Gain", "Flanger"];
-    public static readonly effectOrder: ReadonlyArray<EffectType> = [EffectType.reverb, EffectType.chorus, EffectType.panning, EffectType.distortion, EffectType.bitcrusher, EffectType.eqFilter,EffectType.echo,  EffectType.ringModulation, EffectType.granular, EffectType.gain, EffectType.flanger];
-    public static readonly effectCount: 11
-    public static readonly mdeffectNames: ReadonlyArray<string> = ["pitch shift", "detune", "vibrato", "transition type", "chord type", "note range"];
-    public static readonly mdeffectOrder: ReadonlyArray<MDEffectType> = [MDEffectType.transition, MDEffectType.chord, MDEffectType.pitchShift, MDEffectType.detune, MDEffectType.vibrato, MDEffectType.noteRange];
-    public static readonly mdeffectCount: 6
-    public static readonly noteSizeMax: number = 6;
-    public static readonly volumeRange: number = 100;
+    static readonly effectNames: ReadonlyArray<string> = ["reverb", "chorus", "panning", "distortion", "bitcrusher", "post eq", "echo", "ring mod", "granular", "gain", "flanger"];
+    static readonly effectDisplayNames: ReadonlyArray<string> = ["Reverb", "Chorus", "Panning", "Distortion", "Bitcrusher", "Post EQ", "Echo", "Ring Mod", "Granular", "Gain", "Flanger"];
+    static readonly effectOrder: ReadonlyArray<EffectType> = [EffectType.reverb, EffectType.chorus, EffectType.panning, EffectType.distortion, EffectType.bitcrusher, EffectType.eqFilter,EffectType.echo,  EffectType.ringModulation, EffectType.granular, EffectType.gain, EffectType.flanger];
+    static readonly effectCount: 11
+    static readonly mdeffectNames: ReadonlyArray<string> = ["pitch shift", "detune", "vibrato", "transition type", "chord type", "note range"];
+    static readonly mdeffectOrder: ReadonlyArray<MDEffectType> = [MDEffectType.transition, MDEffectType.chord, MDEffectType.pitchShift, MDEffectType.detune, MDEffectType.vibrato, MDEffectType.noteRange];
+    static readonly mdeffectCount: 6
+    static readonly noteSizeMax: number = 6;
+    static readonly volumeRange: number = 100;
     // Beepbox's old volume scale used factor -0.5 and was [0~7] had roughly value 6 = 0.125 power. This new value is chosen to have -21 be the same,
     // given that the new scale is [-25~25]. This is such that conversion between the scales is roughly equivalent by satisfying (0.5*6 = 0.1428*21)
-    public static readonly volumeLogScale: number = 0.0714;
-    public static readonly gainRangeMult: number = 2;
-    public static readonly panCenter: number = 50;
-    public static readonly panMax: number = Config.panCenter * 2;
-    public static readonly panDelaySecondsMax: number = 0.001;
-    public static readonly ringModRange: number = 8;
-    public static readonly ringModHzRange: number = 64;
-    public static readonly ringModMinHz: number = 20;  
-    public static readonly ringModMaxHz: number = 4400;
-    public static readonly rmHzOffsetCenter: number = 200;
-    public static readonly rmHzOffsetMax: number = 400;
-    public static readonly rmHzOffsetMin: number = 0;
-    public static readonly granularRange: number = 10;
-    public static readonly grainSizeMin: number = 40;
-    public static readonly grainSizeMax: number = 2000;
-    public static readonly grainSizeStep: number = 40;
-    public static readonly grainRangeMax: number = 1600;
-    public static readonly grainAmountsMax: number = 10; //2^grainAmountsMax is what is actually used
-    public static readonly granularEnvelopeType: number = GranularEnvelopeType.parabolic; //here you can change which envelope implementation is used for grains (RaisedCosineBell still needs work)
-    public static readonly flangerRange: number = 24;
-    public static readonly flangerSpeedRange: number = 16;
-    public static readonly flangerDepthRange: number = 16;
-    public static readonly flangerFeedbackRange: number = 16;
-    public static readonly flangerMaxDelay: number = 0.0034 * 4.35;
-    public static readonly flangerPeriodMult: number = 0.000004;
-    public static readonly flangerVolumeMult: number = 0.45;
-    public static readonly chorusRange: number = 24;
-    public static readonly chorusPeriodSeconds: number = 2.0;
-    public static readonly chorusDelayRange: number = 0.0034;
-    public static readonly chorusDelayOffsets: ReadonlyArray<ReadonlyArray<number>> = [[1.51, 2.10, 3.35], [1.47, 2.15, 3.25]];
-    public static readonly chorusPhaseOffsets: ReadonlyArray<ReadonlyArray<number>> = [[0.0, 2.1, 4.2], [3.2, 5.3, 1.0]];
-    public static readonly chorusMaxDelay: number = Config.chorusDelayRange * (1.0 + Config.chorusDelayOffsets[0].concat(Config.chorusDelayOffsets[1]).reduce((x, y) => Math.max(x, y)));
-    public static readonly chords: DictionaryArray<Chord> = toNameMap([
+    static readonly volumeLogScale: number = 0.0714;
+    static readonly gainRangeMult: number = 2;
+    static readonly panCenter: number = 50;
+    static readonly panMax: number = Config.panCenter * 2;
+    static readonly panDelaySecondsMax: number = 0.001;
+    static readonly ringModRange: number = 8;
+    static readonly ringModHzRange: number = 64;
+    static readonly ringModMinHz: number = 20;  
+    static readonly ringModMaxHz: number = 4400;
+    static readonly rmHzOffsetCenter: number = 200;
+    static readonly rmHzOffsetMax: number = 400;
+    static readonly rmHzOffsetMin: number = 0;
+    static readonly granularRange: number = 10;
+    static readonly grainSizeMin: number = 40;
+    static readonly grainSizeMax: number = 2000;
+    static readonly grainSizeStep: number = 40;
+    static readonly grainRangeMax: number = 1600;
+    static readonly grainAmountsMax: number = 10; //2^grainAmountsMax is what is actually used
+    static readonly granularEnvelopeType: number = GranularEnvelopeType.parabolic; //here you can change which envelope implementation is used for grains (RaisedCosineBell still needs work)
+    static readonly flangerRange: number = 24;
+    static readonly flangerSpeedRange: number = 16;
+    static readonly flangerDepthRange: number = 16;
+    static readonly flangerFeedbackRange: number = 16;
+    static readonly flangerMaxDelay: number = 0.0034 * 4.35;
+    static readonly flangerPeriodMult: number = 0.000004;
+    static readonly flangerVolumeMult: number = 0.45;
+    static readonly chorusRange: number = 24;
+    static readonly chorusPeriodSeconds: number = 2.0;
+    static readonly chorusDelayRange: number = 0.0034;
+    static readonly chorusDelayOffsets: ReadonlyArray<ReadonlyArray<number>> = [[1.51, 2.10, 3.35], [1.47, 2.15, 3.25]];
+    static readonly chorusPhaseOffsets: ReadonlyArray<ReadonlyArray<number>> = [[0.0, 2.1, 4.2], [3.2, 5.3, 1.0]];
+    static readonly chorusMaxDelay: number = Config.chorusDelayRange * (1.0 + Config.chorusDelayOffsets[0].concat(Config.chorusDelayOffsets[1]).reduce((x, y) => Math.max(x, y)));
+    static readonly chords: DictionaryArray<Chord> = toNameMap([
         { name: "simultaneous", customInterval: false, arpeggiates: false, strumParts: 0, singleTone: false },
         { name: "strum", customInterval: false, arpeggiates: false, strumParts: 1, singleTone: false },
         { name: "arpeggio", customInterval: false, arpeggiates: true, strumParts: 0, singleTone: true },
         { name: "custom interval", customInterval: true, arpeggiates: false, strumParts: 0, singleTone: true },
         { name: "monophonic", customInterval: false, arpeggiates: false, strumParts: 0, singleTone: true}
     ]);
-    public static readonly maxChordSize: number = 9;
-    public static readonly operatorCount: number = 4;
-    public static readonly maxPitchOrOperatorCount: number = Math.max(Config.maxChordSize, Config.operatorCount + 2);
-    public static readonly algorithms: DictionaryArray<Algorithm> = toNameMap([
+    static readonly maxChordSize: number = 9;
+    static readonly operatorCount: number = 4;
+    static readonly maxPitchOrOperatorCount: number = Math.max(Config.maxChordSize, Config.operatorCount + 2);
+    static readonly algorithms: DictionaryArray<Algorithm> = toNameMap([
         { name: "1←(2 3 4)", carrierCount: 1, associatedCarrier: [1, 1, 1, 1], modulatedBy: [[2, 3, 4], [], [], []] },
         { name: "1←(2 3←4)", carrierCount: 1, associatedCarrier: [1, 1, 1, 1], modulatedBy: [[2, 3], [], [4], []] },
         { name: "1←2←(3 4)", carrierCount: 1, associatedCarrier: [1, 1, 1, 1], modulatedBy: [[2], [3, 4], [], []] },
@@ -1290,7 +1290,7 @@ export class Config {
         { name: "1←(2 3) 2←4", carrierCount: 2, associatedCarrier: [1, 2, 1, 2], modulatedBy: [[2, 3], [4], [], []] },
         { name: "1←(2 (3 (4", carrierCount: 3, associatedCarrier: [1, 2, 3, 3], modulatedBy: [[2, 3, 4], [3, 4], [4], []] },
     ]);
-    public static readonly algorithms6Op: DictionaryArray<Algorithm> = toNameMap([
+    static readonly algorithms6Op: DictionaryArray<Algorithm> = toNameMap([
         //placeholder makes life easier for later
         { name: "Custom", carrierCount: 1, associatedCarrier: [1, 1, 1, 1, 1, 1], modulatedBy: [[2, 3, 4, 5, 6], [], [], [], [], []] },
         //yoinked from SynthBox
@@ -1333,9 +1333,9 @@ export class Config {
         { name: "1←4(2←5(3←6", carrierCount: 3, associatedCarrier: [1, 2, 3, 1, 2, 3], modulatedBy: [[2, 3, 4], [3, 5], [6], [], [], []] },
         { name: "1←4(2←5 3←6", carrierCount: 3, associatedCarrier: [1, 2, 3, 1, 2, 3], modulatedBy: [[2, 3, 4], [5], [6], [], [], []] },
     ]);
-    public static readonly operatorCarrierInterval: ReadonlyArray<number> = [0.0, 0.04, -0.073, 0.091, 0.061, 0.024];
-    public static readonly operatorAmplitudeMax: number = 15;
-    public static readonly operatorFrequencies: DictionaryArray<OperatorFrequency> = toNameMap([
+    static readonly operatorCarrierInterval: ReadonlyArray<number> = [0.0, 0.04, -0.073, 0.091, 0.061, 0.024];
+    static readonly operatorAmplitudeMax: number = 15;
+    static readonly operatorFrequencies: DictionaryArray<OperatorFrequency> = toNameMap([
         { name: "0.12×", mult: 0.125, hzOffset: 0.0, amplitudeSign: 1.0 },
         { name: "0.25×", mult: 0.25, hzOffset: 0.0, amplitudeSign: 1.0 },
         { name: "0.5×", mult: 0.5, hzOffset: 0.0, amplitudeSign: 1.0 },
@@ -1380,7 +1380,7 @@ export class Config {
     ]);
 
     //still used for drumsets
-    public static readonly envelopes: DictionaryArray<Envelope> = toNameMap([
+    static readonly envelopes: DictionaryArray<Envelope> = toNameMap([
         { name: "none", type: EnvelopeType.none, speed: 0.0 },
         { name: "note size", type: EnvelopeType.noteSize, speed: 0.0 },
         { name: "pitch", type: EnvelopeType.pitch, speed: 0.0 }, // Slarmoo's box (fairly useless on drumsets)
@@ -1453,7 +1453,7 @@ export class Config {
         { name: "fall 3", type: EnvelopeType.fall, speed: 2.0 },
     ]);
 
-    public static readonly newEnvelopes: DictionaryArray<Envelope> = toNameMap([
+    static readonly newEnvelopes: DictionaryArray<Envelope> = toNameMap([
         { name: "none", type: EnvelopeType.none, speed: 0.0 },
         { name: "note size", type: EnvelopeType.noteSize, speed: 0.0 },
         { name: "pitch", type: EnvelopeType.pitch, speed: 0.0 },
@@ -1474,7 +1474,7 @@ export class Config {
 
 
 
-	public static readonly feedbacks: DictionaryArray<Feedback> = toNameMap([
+	static readonly feedbacks: DictionaryArray<Feedback> = toNameMap([
 		{ name: "1⟲", indices: [[1], [], [], []] },
 		{ name: "2⟲", indices: [[], [2], [], []] },
 		{ name: "3⟲", indices: [[], [], [3], []] },
@@ -1500,7 +1500,7 @@ export class Config {
         { name: "(1 2 3)→4", indices: [[], [], [], [1, 2, 3]] },
         { name: "ALL", indices: [[1,2,3,4], [1,2,3,4], [1,2,3,4], [1, 2, 3,4]] },
     ]);
-    public static readonly feedbacks6Op: DictionaryArray<Feedback> = toNameMap([
+    static readonly feedbacks6Op: DictionaryArray<Feedback> = toNameMap([
         //placeholder makes life easier for later
         { name: "Custom", indices: [[2, 3, 4, 5, 6], [], [], [], [], []] },
 
@@ -1536,81 +1536,81 @@ export class Config {
         { name: "(1,2,3,4,5)→6", indices: [[], [], [], [], [], [1, 2, 3, 4, 5]] },
         { name: "ALL", indices: [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6]] },
     ]);
-    public static readonly chipNoiseLength: number = 1 << 15; // 32768
-    public static readonly spectrumNoiseLength: number = 1 << 15; // 32768
-    public static readonly spectrumBasePitch: number = 24;
-    public static readonly spectrumControlPoints: number = 30;
-    public static readonly spectrumControlPointsPerOctave: number = 7;
-    public static readonly spectrumControlPointBits: number = 3;
-    public static readonly spectrumMax: number = (1 << Config.spectrumControlPointBits) - 1;
-    public static readonly harmonicsControlPoints: number = 28;
-    public static readonly harmonicsRendered: number = 64;
-    public static readonly harmonicsRenderedForPickedString: number = 1 << 8; // 256
-    public static readonly harmonicsControlPointBits: number = 3;
-    public static readonly harmonicsMax: number = (1 << Config.harmonicsControlPointBits) - 1;
-    public static readonly harmonicsWavelength: number = 1 << 11; // 2048
-    public static readonly pulseWidthRange: number = 50;
-    public static readonly pulseWidthStepPower: number = 0.5;
-    public static readonly supersawVoiceCount: number = 7;
-	public static readonly supersawDynamismMax: number = 6;
-	public static readonly supersawSpreadMax: number = 12;
-	public static readonly supersawShapeMax: number = 6;
-    public static readonly pitchChannelCountMin: number = 1;
-    public static readonly pitchChannelCountMax: number = 60;
-    public static readonly noiseChannelCountMin: number = 0;
-    public static readonly noiseChannelCountMax: number = 60;
-    public static readonly modChannelCountMin: number = 0;
-    public static readonly modChannelCountMax: number = 60;
-    public static readonly noiseInterval: number = 6;
-    public static readonly pitchesPerOctave: number = 12; // TODO: Use this for converting pitch to frequency.
-    public static readonly drumCount: number = 12;
-    public static readonly pitchOctaves: number = 8;
-    public static readonly modCount: number = 6;
-    public static readonly maxPitch: number = Config.pitchOctaves * Config.pitchesPerOctave;
-    public static readonly maximumTonesPerChannel: number = Config.maxChordSize * 2;
-    public static readonly justIntonationSemitones: number[] = [1.0 / 2.0, 8.0 / 15.0, 9.0 / 16.0, 3.0 / 5.0, 5.0 / 8.0, 2.0 / 3.0, 32.0 / 45.0, 3.0 / 4.0, 4.0 / 5.0, 5.0 / 6.0, 8.0 / 9.0, 15.0 / 16.0, 1.0, 16.0 / 15.0, 9.0 / 8.0, 6.0 / 5.0, 5.0 / 4.0, 4.0 / 3.0, 45.0 / 32.0, 3.0 / 2.0, 8.0 / 5.0, 5.0 / 3.0, 16.0 / 9.0, 15.0 / 8.0, 2.0].map(x => Math.log2(x) * Config.pitchesPerOctave);
-    public static readonly pitchShiftRange: number = Config.justIntonationSemitones.length;
-    public static readonly pitchShiftCenter: number = Config.pitchShiftRange >> 1;
-    public static readonly detuneCenter: number = 200;
-    public static readonly detuneMax: number = 400;
-    public static readonly detuneMin: number = 0;
-    public static readonly songDetuneMin: number = 0;
-    public static readonly songDetuneMax: number = 500;
-    public static readonly unisonVoicesMin: number = 1;
-    public static readonly unisonVoicesMax: number = 9;
-    public static readonly unisonSpreadMin: number = -96;
-    public static readonly unisonSpreadMax: number = 96; 
-    public static readonly unisonOffsetMin: number = -96;
-    public static readonly unisonOffsetMax: number = 96; 
-    public static readonly unisonExpressionMin: number = -2;
-    public static readonly unisonExpressionMax: number = 2; 
-    public static readonly unisonSignMin: number = -2;
-    public static readonly unisonSignMax: number = 2; 
-    public static readonly sineWaveLength: number = 1 << 8; // 256
-    public static readonly sineWaveMask: number = Config.sineWaveLength - 1;
+    static readonly chipNoiseLength: number = 1 << 15; // 32768
+    static readonly spectrumNoiseLength: number = 1 << 15; // 32768
+    static readonly spectrumBasePitch: number = 24;
+    static readonly spectrumControlPoints: number = 30;
+    static readonly spectrumControlPointsPerOctave: number = 7;
+    static readonly spectrumControlPointBits: number = 3;
+    static readonly spectrumMax: number = (1 << Config.spectrumControlPointBits) - 1;
+    static readonly harmonicsControlPoints: number = 28;
+    static readonly harmonicsRendered: number = 64;
+    static readonly harmonicsRenderedForPickedString: number = 1 << 8; // 256
+    static readonly harmonicsControlPointBits: number = 3;
+    static readonly harmonicsMax: number = (1 << Config.harmonicsControlPointBits) - 1;
+    static readonly harmonicsWavelength: number = 1 << 11; // 2048
+    static readonly pulseWidthRange: number = 50;
+    static readonly pulseWidthStepPower: number = 0.5;
+    static readonly supersawVoiceCount: number = 7;
+	static readonly supersawDynamismMax: number = 6;
+	static readonly supersawSpreadMax: number = 12;
+	static readonly supersawShapeMax: number = 6;
+    static readonly pitchChannelCountMin: number = 1;
+    static readonly pitchChannelCountMax: number = 60;
+    static readonly noiseChannelCountMin: number = 0;
+    static readonly noiseChannelCountMax: number = 60;
+    static readonly modChannelCountMin: number = 0;
+    static readonly modChannelCountMax: number = 60;
+    static readonly noiseInterval: number = 6;
+    static readonly pitchesPerOctave: number = 12; // TODO: Use this for converting pitch to frequency.
+    static readonly drumCount: number = 12;
+    static readonly pitchOctaves: number = 8;
+    static readonly modCount: number = 6;
+    static readonly maxPitch: number = Config.pitchOctaves * Config.pitchesPerOctave;
+    static readonly maximumTonesPerChannel: number = Config.maxChordSize * 2;
+    static readonly justIntonationSemitones: number[] = [1.0 / 2.0, 8.0 / 15.0, 9.0 / 16.0, 3.0 / 5.0, 5.0 / 8.0, 2.0 / 3.0, 32.0 / 45.0, 3.0 / 4.0, 4.0 / 5.0, 5.0 / 6.0, 8.0 / 9.0, 15.0 / 16.0, 1.0, 16.0 / 15.0, 9.0 / 8.0, 6.0 / 5.0, 5.0 / 4.0, 4.0 / 3.0, 45.0 / 32.0, 3.0 / 2.0, 8.0 / 5.0, 5.0 / 3.0, 16.0 / 9.0, 15.0 / 8.0, 2.0].map(x => Math.log2(x) * Config.pitchesPerOctave);
+    static readonly pitchShiftRange: number = Config.justIntonationSemitones.length;
+    static readonly pitchShiftCenter: number = Config.pitchShiftRange >> 1;
+    static readonly detuneCenter: number = 200;
+    static readonly detuneMax: number = 400;
+    static readonly detuneMin: number = 0;
+    static readonly songDetuneMin: number = 0;
+    static readonly songDetuneMax: number = 500;
+    static readonly unisonVoicesMin: number = 1;
+    static readonly unisonVoicesMax: number = 9;
+    static readonly unisonSpreadMin: number = -96;
+    static readonly unisonSpreadMax: number = 96; 
+    static readonly unisonOffsetMin: number = -96;
+    static readonly unisonOffsetMax: number = 96; 
+    static readonly unisonExpressionMin: number = -2;
+    static readonly unisonExpressionMax: number = 2; 
+    static readonly unisonSignMin: number = -2;
+    static readonly unisonSignMax: number = 2; 
+    static readonly sineWaveLength: number = 1 << 8; // 256
+    static readonly sineWaveMask: number = Config.sineWaveLength - 1;
 
-    public static generateSineWave(): Float32Array {
+    static generateSineWave(): Float32Array {
         const wave: Float32Array = new Float32Array(Config.sineWaveLength + 1);
         for (let i: number = 0; i < Config.sineWaveLength + 1; i++) {
             wave[i] = Math.sin(i * Math.PI * 2.0 / Config.sineWaveLength);
         }
         return wave;
     }
-    public static generateTriWave(): Float32Array {
+    static generateTriWave(): Float32Array {
         const wave: Float32Array = new Float32Array(Config.sineWaveLength + 1);
         for (let i: number = 0; i < Config.sineWaveLength + 1; i++) {
             wave[i] = Math.asin(Math.sin(i * Math.PI * 2.0 / Config.sineWaveLength)) / (Math.PI / 2);
         }
         return wave;
     }
-    public static generateTrapezoidWave(drive: number = 2): Float32Array {
+    static generateTrapezoidWave(drive: number = 2): Float32Array {
         const wave: Float32Array = new Float32Array(Config.sineWaveLength + 1);
         for (let i: number = 0; i < Config.sineWaveLength + 1; i++) {
             wave[i] = Math.max(-1.0, Math.min(1.0, Math.asin(Math.sin(i * Math.PI * 2.0 / Config.sineWaveLength)) * drive));
         }
         return wave;
     }
-    public static generateSquareWave(phaseWidth: number = 0): Float32Array {
+    static generateSquareWave(phaseWidth: number = 0): Float32Array {
         const wave: Float32Array = new Float32Array(Config.sineWaveLength + 1);
         const centerPoint: number = Config.sineWaveLength / 4;
         for (let i: number = 0; i < Config.sineWaveLength + 1; i++) {
@@ -1619,7 +1619,7 @@ export class Config {
         }
         return wave;
     }
-    public static generateSawWave(inverse: boolean = false): Float32Array {
+    static generateSawWave(inverse: boolean = false): Float32Array {
         const wave: Float32Array = new Float32Array(Config.sineWaveLength + 1);
         for (let i: number = 0; i < Config.sineWaveLength + 1; i++) {
             wave[i] = ((i + (Config.sineWaveLength / 4.0)) * 2.0 / Config.sineWaveLength) % 2 - 1;
@@ -1641,17 +1641,17 @@ export class Config {
         // }
         // return wave;
     // }
-    public static generateQuasiSineWave() {
+    static generateQuasiSineWave() {
         const wave = new Float32Array(Config.sineWaveLength + 1);
         for (let i = 0; i < Config.sineWaveLength + 1; i++) {
             wave[i] = Math.round(Math.sin(i * Math.PI * 2.0 / Config.sineWaveLength));
         }
         return wave;
     }
-    public static readonly sineWave: Float32Array = Config.generateSineWave();
+    static readonly sineWave: Float32Array = Config.generateSineWave();
 
-    public static readonly perEnvelopeSpeedIndices: number[] = [0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.2, 0.25, 0.3, 0.3333, 0.4, 0.5, 0.6, 0.6667, 0.7, 0.75, 0.8, 0.9, 1, 1.25, 1.3333, 1.5, 1.6667, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 24, 32, 40, 64, 128, 256];
-    public static readonly perEnvelopeSpeedToIndices: Dictionary<number> = { //used to convert speeds back into indices
+    static readonly perEnvelopeSpeedIndices: number[] = [0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.2, 0.25, 0.3, 0.3333, 0.4, 0.5, 0.6, 0.6667, 0.7, 0.75, 0.8, 0.9, 1, 1.25, 1.3333, 1.5, 1.6667, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 24, 32, 40, 64, 128, 256];
+    static readonly perEnvelopeSpeedToIndices: Dictionary<number> = { //used to convert speeds back into indices
         0: 0,
         0.01: 1,
         0.02: 2,
@@ -1718,30 +1718,30 @@ export class Config {
         256: 63,
     }
 
-    public static readonly perEnvelopeBoundMin: number = 0; //probably should leave at 0. Negative envelopes are problematic right now
-    public static readonly perEnvelopeBoundMax: number = 2; //max of 6.3 unless you update url
-    public static readonly randomEnvelopeSeedMax: number = 63; //if you increase this you'll need to update the url to support it
-    public static readonly randomEnvelopeStepsMax: number = 24; 
+    static readonly perEnvelopeBoundMin: number = 0; //probably should leave at 0. Negative envelopes are problematic right now
+    static readonly perEnvelopeBoundMax: number = 2; //max of 6.3 unless you update url
+    static readonly randomEnvelopeSeedMax: number = 63; //if you increase this you'll need to update the url to support it
+    static readonly randomEnvelopeStepsMax: number = 24; 
 
     // Picked strings have an all-pass filter with a corner frequency based on the tone fundamental frequency, in order to add a slight inharmonicity. (Which is important for distortion.)
-    public static readonly pickedStringDispersionCenterFreq: number = 6000.0; // The tone fundamental freq is pulled toward this freq for computing the all-pass corner freq.
-    public static readonly pickedStringDispersionFreqScale: number = 0.3; // The tone fundamental freq freq moves this much toward the center freq for computing the all-pass corner freq.
-    public static readonly pickedStringDispersionFreqMult: number = 4.0; // The all-pass corner freq is based on this times the adjusted tone fundamental freq.
-    public static readonly pickedStringShelfHz: number = 4000.0; // The cutoff freq of the shelf filter that is used to decay the high frequency energy in the picked string.
+    static readonly pickedStringDispersionCenterFreq: number = 6000.0; // The tone fundamental freq is pulled toward this freq for computing the all-pass corner freq.
+    static readonly pickedStringDispersionFreqScale: number = 0.3; // The tone fundamental freq freq moves this much toward the center freq for computing the all-pass corner freq.
+    static readonly pickedStringDispersionFreqMult: number = 4.0; // The all-pass corner freq is based on this times the adjusted tone fundamental freq.
+    static readonly pickedStringShelfHz: number = 4000.0; // The cutoff freq of the shelf filter that is used to decay the high frequency energy in the picked string.
 
-    public static readonly distortionRange: number = 16;
-    public static readonly stringSustainRange: number = 15;
-    public static readonly stringDecayRate: number = 0.12;
-    public static readonly enableAcousticSustain: boolean = false;
-	public static readonly sustainTypeNames: ReadonlyArray<string> = ["bright", "acoustic"]; // See SustainType enum above.
+    static readonly distortionRange: number = 16;
+    static readonly stringSustainRange: number = 15;
+    static readonly stringDecayRate: number = 0.12;
+    static readonly enableAcousticSustain: boolean = false;
+	static readonly sustainTypeNames: ReadonlyArray<string> = ["bright", "acoustic"]; // See SustainType enum above.
 
-    public static readonly bitcrusherFreqRange: number = 14;
-    public static readonly bitcrusherOctaveStep: number = 0.5;
-    public static readonly bitcrusherQuantizationRange: number = 8;
+    static readonly bitcrusherFreqRange: number = 14;
+    static readonly bitcrusherOctaveStep: number = 0.5;
+    static readonly bitcrusherQuantizationRange: number = 8;
 
-    public static readonly maxEnvelopeCount: number = 16;
-    public static readonly defaultAutomationRange: number = 13;
-    public static readonly instrumentAutomationTargets: DictionaryArray<AutomationTarget> = toNameMap([
+    static readonly maxEnvelopeCount: number = 16;
+    static readonly defaultAutomationRange: number = 13;
+    static readonly instrumentAutomationTargets: DictionaryArray<AutomationTarget> = toNameMap([
         { name: "none", computeIndex: null, displayName: "none",             /*perNote: false,*/ interleave: false, isFilter: false, /*range: 0,                              */    maxCount: 1, effect: null, mdeffect: null, compatibleInstruments: null },
         { name: "noteVolume", computeIndex: EnvelopeComputeIndex.noteVolume, displayName: "pre volume",      /*perNote:  true,*/ interleave: false, isFilter: false, /*range: Config.volumeRange,             */    maxCount: 1, effect: null, mdeffect: null, compatibleInstruments: null },
         { name: "mixVolume", computeIndex: EnvelopeComputeIndex.mixVolume, displayName: "post volume",      /*perNote:  true,*/ interleave: false, isFilter: false, /*range: Config.volumeRange,             */    maxCount: 1, effect: null, mdeffect: null, compatibleInstruments: null },
@@ -1790,7 +1790,7 @@ export class Config {
         {name: "envelope#",              computeIndex: null,                                             displayName: "envelope",         perNote: false, interleave: false, isFilter: false, range: Config.defaultAutomationRange,      maxCount: Config.maxEnvelopeCount, effect: null, compatibleInstruments: null}, // maxCount special case for envelopes to be allowed to target earlier ones.
         */
     ]);
-    public static readonly operatorWaves: DictionaryArray<OperatorWave> = toNameMap([
+    static readonly operatorWaves: DictionaryArray<OperatorWave> = toNameMap([
 		{ name: "sine", samples: Config.sineWave },
 		{ name: "triangle", samples: Config.generateTriWave() },
 		{ name: "pulse width", samples: Config.generateSquareWave(0.5) },
@@ -1801,7 +1801,7 @@ export class Config {
 		//{ name: "white noise", samples: generateWhiteNoiseFmWave() },
 		//{ name: "1-bit white noise", samples: generateOneBitWhiteNoiseFmWave() },
     ]);
-    public static readonly pwmOperatorWaves: DictionaryArray<OperatorWave> = toNameMap([
+    static readonly pwmOperatorWaves: DictionaryArray<OperatorWave> = toNameMap([
         { name: "1%", samples: Config.generateSquareWave(0.01) },
         { name: "5%", samples: Config.generateSquareWave(0.05) },
         { name: "12.5%", samples: Config.generateSquareWave(0.125) },
@@ -1817,10 +1817,10 @@ export class Config {
 
 
     // Height of the small editor column for inserting/deleting rows, in pixels.
-    public static readonly barEditorHeight: number = 10;
+    static readonly barEditorHeight: number = 10;
 
     // Careful about changing index ordering for this. Index is stored in URL/JSON etc.
-    public static readonly modulators: DictionaryArray<Modulator> = toNameMap([
+    static readonly modulators: DictionaryArray<Modulator> = toNameMap([
         { name: "none", pianoName: "None", maxRawVol: 6, newNoteVol: 6, forSong: true, convertRealFactor: 0, associatedEffect: EffectType.length, associatedMDEffect: MDEffectType.length, maxIndex: 0,
             promptName: "No Mod Setting", promptDesc: [ "No setting has been chosen yet, so this modulator will have no effect. Try choosing a setting with the dropdown, then click this '?' again for more info.", "[$LO - $HI]" ] },
         { name: "song volume", pianoName: "Volume", maxRawVol: 100, newNoteVol: 100, forSong: true, convertRealFactor: 0, associatedEffect: EffectType.length, associatedMDEffect: MDEffectType.length, maxIndex: 0,

@@ -1,5 +1,5 @@
 {
-	"name": "DragonBox",
+	"name": "dragonbox",
 	"version": "1.0.0",
 	"description": "DragonBox is a mod of Theepbox. It expands the world of BeepBox into a whole new realm!",
 	"author": "dragoncoder047",
@@ -28,7 +28,8 @@
 		"package": "electron-packager ./to_deploy --platform=darwin,linux,win32 --arch=ia32,x64 --asar --overwrite && npm run build-offline-html",
 		"package-host": "electron-packager ./to_deploy DragonBox --asar --overwrite && npm run build-offline-html",
 		"live-editor": "bash ./scripts/live_editor.sh",
-		"live-editor-fast-typeless": "bash ./scripts/live_editor_fast_typeless.sh"
+		"live-editor-fast-typeless": "bash ./scripts/live_editor_fast_typeless.sh",
+        "lint": "tsc --noEmit -p scripts/tsconfig_synth_only.json && tsc --noEmit -p scripts/tsconfig_editor.json && tsc --noEmit -p scripts/tsconfig_player.json"
 	},
 	"repository": {
 		"type": "git",

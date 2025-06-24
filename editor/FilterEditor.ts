@@ -35,8 +35,8 @@ export class FilterEditor {
     private selfUndoHistoryPos: number = 0;
     private readonly _label: HTMLDivElement = HTML.div({ style: "position: absolute; bottom: 0; left: 2px; font-size: 8px; line-height: 1; pointer-events: none;" });
 
-    public coordText: HTMLElement | null = null;
-    public readonly container: HTMLElement = HTML.div({ class: "filterEditor", style: "height: 100%; position: relative;" },
+    coordText: HTMLElement | null = null;
+    readonly container: HTMLElement = HTML.div({ class: "filterEditor", style: "height: 100%; position: relative;" },
         this._svg,
         this._label,
     );
@@ -571,7 +571,7 @@ export class FilterEditor {
     }
 
     // Swap to new filter settings all at once.
-    public swapToSettings(settings: FilterSettings, useHistory: boolean = false) {
+    swapToSettings(settings: FilterSettings, useHistory: boolean = false) {
         if (this._forSong) {
             new ChangeSongFilterSettings(this._doc, settings, this._filterSettings, this._subFilters, this._doc.song.eqSubFilters);
         } else {
@@ -591,7 +591,7 @@ export class FilterEditor {
     }
 
     // Save settings on prompt close (record a change from first settings to newest)
-    public saveSettings() {
+    saveSettings() {
         let firstFilter: FilterSettings = new FilterSettings;
         firstFilter.fromJsonObject(JSON.parse(String(this.selfUndoSettings[0])));
         if (this._forSong) {
@@ -605,7 +605,7 @@ export class FilterEditor {
 
     // Self-undo history management
     // Returns the subfilter index to swap to, if any
-    public undo(): number {
+    undo(): number {
         if (this.selfUndoHistoryPos > 0) {
             this.selfUndoHistoryPos--;
             // Jump back and load latest state of this subfilter. Also save subfilter settings for current index
@@ -630,7 +630,7 @@ export class FilterEditor {
     }
 
     // Returns the subfilter index to swap to, if any
-    public redo(): number {
+    redo(): number {
         if (this.selfUndoHistoryPos < this.selfUndoSettings.length - 1) {
             this.selfUndoHistoryPos++;
             // Check if next index in undo queue is a command to jump to a new filter index
@@ -649,12 +649,12 @@ export class FilterEditor {
 
     }
 
-    public resetToInitial() {
+    resetToInitial() {
         this.selfUndoHistoryPos = 1;
         this.undo();
     }
 
-    public swapSubfilterIndices(newIndex: number) {
+    swapSubfilterIndices(newIndex: number) {
         if (this._selectedIndex == -1)
             return;
 
@@ -668,7 +668,7 @@ export class FilterEditor {
         this.render();
     }
 
-    public swapToSubfilter(oldIndex: number, newIndex: number, useHistory: boolean = false) {
+    swapToSubfilter(oldIndex: number, newIndex: number, useHistory: boolean = false) {
         if (oldIndex != newIndex) {
             // Save current subfilter
             let currFilter: FilterSettings = new FilterSettings();
@@ -713,7 +713,7 @@ export class FilterEditor {
         return targetSettings;
     }
 
-    public render(activeMods: boolean = false, forceModRender: boolean = false): void {
+    render(activeMods: boolean = false, forceModRender: boolean = false): void {
         this._writingMods = forceModRender && this._mouseDown;
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         const effect: Effect = <Effect>instrument.effects[this._effectIndex];

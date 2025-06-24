@@ -30,100 +30,100 @@ const epsilon: number = (1.0e-24); // For detecting and avoiding float denormals
 //let samplePerformance: number = 0;
 
 export class Tone {
-    public instrumentIndex: number;
-    public readonly pitches: number[] = Array(Config.maxChordSize + 2).fill(0);
-    public pitchCount: number = 0;
-    public chordSize: number = 0;
-    public drumsetPitch: number | null = null;
-    public note: Note | null = null;
-    public prevNote: Note | null = null;
-    public nextNote: Note | null = null;
-    public prevNotePitchIndex: number = 0;
-    public nextNotePitchIndex: number = 0;
-    public freshlyAllocated: boolean = true;
-    public atNoteStart: boolean = false;
-    public isOnLastTick: boolean = false; // Whether the tone is finished fading out and ready to be freed.
-    public passedEndOfNote: boolean = false;
-    public forceContinueAtStart: boolean = false;
-    public forceContinueAtEnd: boolean = false;
-    public noteStartPart: number = 0;
-    public noteEndPart: number = 0;
-    public ticksSinceReleased: number = 0;
-    public liveInputSamplesHeld: number = 0;
-    public lastInterval: number = 0;
-    public chipWaveStartOffset: number = 0;
-    public noiseSample: number = 0.0;
-    public noiseSampleA: number = 0.0;
-    public noiseSampleB: number = 0.0;
-    public stringSustainStart: number = 0;
-    public stringSustainEnd: number = 0;
-    public readonly noiseSamples: number[] = [];
-    public readonly phases: number[] = [];
-    public readonly operatorWaves: OperatorWave[] = [];
-    public readonly phaseDeltas: number[] = [];
+    instrumentIndex: number;
+    readonly pitches: number[] = Array(Config.maxChordSize + 2).fill(0);
+    pitchCount: number = 0;
+    chordSize: number = 0;
+    drumsetPitch: number | null = null;
+    note: Note | null = null;
+    prevNote: Note | null = null;
+    nextNote: Note | null = null;
+    prevNotePitchIndex: number = 0;
+    nextNotePitchIndex: number = 0;
+    freshlyAllocated: boolean = true;
+    atNoteStart: boolean = false;
+    isOnLastTick: boolean = false; // Whether the tone is finished fading out and ready to be freed.
+    passedEndOfNote: boolean = false;
+    forceContinueAtStart: boolean = false;
+    forceContinueAtEnd: boolean = false;
+    noteStartPart: number = 0;
+    noteEndPart: number = 0;
+    ticksSinceReleased: number = 0;
+    liveInputSamplesHeld: number = 0;
+    lastInterval: number = 0;
+    chipWaveStartOffset: number = 0;
+    noiseSample: number = 0.0;
+    noiseSampleA: number = 0.0;
+    noiseSampleB: number = 0.0;
+    stringSustainStart: number = 0;
+    stringSustainEnd: number = 0;
+    readonly noiseSamples: number[] = [];
+    readonly phases: number[] = [];
+    readonly operatorWaves: OperatorWave[] = [];
+    readonly phaseDeltas: number[] = [];
 			// advloop addition
-        public directions: number[] = [];
-        public chipWaveCompletions: number[] = [];
-        public chipWavePrevWavesL: number[] = [];
-        public chipWavePrevWavesR: number[] = [];
-        public chipWaveCompletionsLastWaveL: number[] = [];
-        public chipWaveCompletionsLastWaveR: number[] = [];
+        directions: number[] = [];
+        chipWaveCompletions: number[] = [];
+        chipWavePrevWavesL: number[] = [];
+        chipWavePrevWavesR: number[] = [];
+        chipWaveCompletionsLastWaveL: number[] = [];
+        chipWaveCompletionsLastWaveR: number[] = [];
            // advloop addition
-    public readonly phaseDeltaScales: number[] = [];
-    public expression: number = 0.0;
-    public expressionDelta: number = 0.0;
-    public readonly operatorExpressions: number[] = [];
-    public readonly operatorExpressionDeltas: number[] = [];
-    public readonly prevPitchExpressions: Array<number | null> = Array(Config.maxPitchOrOperatorCount).fill(null);
-    public prevVibrato: number | null = null;
-    public prevStringDecay: number | null = null;
-    public pulseWidth: number = 0.0;
-    public pulseWidthDelta: number = 0.0;
-    public decimalOffset: number = 0.0;
-    public supersawDynamism: number = 0.0;
-    public supersawDynamismDelta: number = 0.0;
-    public supersawUnisonDetunes: number[] = []; // These can change over time, but slowly enough that I'm not including corresponding delta values within a tick run.
-    public supersawShape: number = 0.0;
-    public supersawShapeDelta: number = 0.0;
-    public supersawDelayLength: number = 0.0;
-    public supersawDelayLengthDelta: number = 0.0;
-    public supersawDelayLine: Float32Array | null = null;
-    public supersawDelayIndex: number = -1;
-    public supersawPrevPhaseDelta: number | null = null;
-    public readonly pickedStrings: PickedString[] = [];
+    readonly phaseDeltaScales: number[] = [];
+    expression: number = 0.0;
+    expressionDelta: number = 0.0;
+    readonly operatorExpressions: number[] = [];
+    readonly operatorExpressionDeltas: number[] = [];
+    readonly prevPitchExpressions: Array<number | null> = Array(Config.maxPitchOrOperatorCount).fill(null);
+    prevVibrato: number | null = null;
+    prevStringDecay: number | null = null;
+    pulseWidth: number = 0.0;
+    pulseWidthDelta: number = 0.0;
+    decimalOffset: number = 0.0;
+    supersawDynamism: number = 0.0;
+    supersawDynamismDelta: number = 0.0;
+    supersawUnisonDetunes: number[] = []; // These can change over time, but slowly enough that I'm not including corresponding delta values within a tick run.
+    supersawShape: number = 0.0;
+    supersawShapeDelta: number = 0.0;
+    supersawDelayLength: number = 0.0;
+    supersawDelayLengthDelta: number = 0.0;
+    supersawDelayLine: Float32Array | null = null;
+    supersawDelayIndex: number = -1;
+    supersawPrevPhaseDelta: number | null = null;
+    readonly pickedStrings: PickedString[] = [];
 
-    public readonly noteFiltersL: DynamicBiquadFilter[] = [];
-    public readonly noteFiltersR: DynamicBiquadFilter[] = [];
-    public noteFilterCount: number = 0;
-    public initialNoteFilterInputL1: number = 0.0;
-    public initialNoteFilterInputR1: number = 0.0;
-    public initialNoteFilterInputL2: number = 0.0;
-    public initialNoteFilterInputR2: number = 0.0;
+    readonly noteFiltersL: DynamicBiquadFilter[] = [];
+    readonly noteFiltersR: DynamicBiquadFilter[] = [];
+    noteFilterCount: number = 0;
+    initialNoteFilterInputL1: number = 0.0;
+    initialNoteFilterInputR1: number = 0.0;
+    initialNoteFilterInputL2: number = 0.0;
+    initialNoteFilterInputR2: number = 0.0;
 
-    public specialIntervalExpressionMult: number = 1.0;
-    public readonly feedbackOutputs: number[] = [];
-    public feedbackMult: number = 0.0;
-    public feedbackDelta: number = 0.0;
-    public stereoVolumeLStart: number = 0.0;
-    public stereoVolumeRStart: number = 0.0;
-    public stereoVolumeLDelta: number = 0.0;
-    public stereoVolumeRDelta: number = 0.0;
-    public stereoDelayStart: number = 0.0;
-    public stereoDelayEnd: number = 0.0;
-    public stereoDelayDelta: number = 0.0;
-    public customVolumeStart: number = 0.0;
-    public customVolumeEnd: number = 0.0;
-    public filterResonanceStart: number = 0.0;
-    public filterResonanceDelta: number = 0.0;
-    public isFirstOrder: boolean = false;
+    specialIntervalExpressionMult: number = 1.0;
+    readonly feedbackOutputs: number[] = [];
+    feedbackMult: number = 0.0;
+    feedbackDelta: number = 0.0;
+    stereoVolumeLStart: number = 0.0;
+    stereoVolumeRStart: number = 0.0;
+    stereoVolumeLDelta: number = 0.0;
+    stereoVolumeRDelta: number = 0.0;
+    stereoDelayStart: number = 0.0;
+    stereoDelayEnd: number = 0.0;
+    stereoDelayDelta: number = 0.0;
+    customVolumeStart: number = 0.0;
+    customVolumeEnd: number = 0.0;
+    filterResonanceStart: number = 0.0;
+    filterResonanceDelta: number = 0.0;
+    isFirstOrder: boolean = false;
 
-    public readonly envelopeComputer: EnvelopeComputer = new EnvelopeComputer(/*true*/);
+    readonly envelopeComputer: EnvelopeComputer = new EnvelopeComputer(/*true*/);
 
     constructor() {
         this.reset();
     }
 
-    public reset(): void {
+    reset(): void {
         // this.noiseSample = 0.0;
         for (let i: number = 0; i < Config.unisonVoicesMax; i++) {
             this.noiseSamples[i] = 0.0;
@@ -191,7 +191,7 @@ export class Synth {
         }
     }
 
-    public initModFilters(song: Song | null): void {
+    initModFilters(song: Song | null): void {
         if (song != null) {
             song.tmpEqFilterStart = song.eqFilter;
             song.tmpEqFilterEnd = null;
@@ -209,7 +209,7 @@ export class Synth {
             }
         }
     }
-    public warmUpSynthesizer(song: Song | null): void {
+    warmUpSynthesizer(song: Song | null): void {
         // Don't bother to generate the drum waves unless the song actually
         // uses them, since they may require a lot of computation.
         if (song != null) {
@@ -239,7 +239,7 @@ export class Synth {
     }
 
 
-    public computeLatestModValues(): void {
+    computeLatestModValues(): void {
 
         if (this.song != null && this.song.modChannelCount > 0) {
 
@@ -443,7 +443,7 @@ export class Synth {
     // Detects if a modulator is set, but not valid for the current effects/instrument type/filter type
     // Note, setting 'none' or the intermediary steps when clicking to add a mod, like an unset channel/unset instrument, counts as valid.
     // TODO: This kind of check is mirrored in SongEditor.ts' whenUpdated. Creates a lot of redundancy for adding new mods. Can be moved into new properties for mods, to avoid this later.
-    public determineInvalidModulators(instrument: Instrument): void {
+    determineInvalidModulators(instrument: Instrument): void {
         if (this.song == null)
             return;
         for (let mod: number = 0; mod < Config.modCount; mod++) {
@@ -498,36 +498,36 @@ export class Synth {
         return (Math.pow(16.0, amplitude / 15.0) - 1.0) / 15.0;
     }
 
-    public samplesPerSecond: number = 44100;
-    public panningDelayBufferSize: number;
-    public panningDelayBufferMask: number;
-    public flangerDelayBufferSize: number;
-    public flangerDelayBufferMask: number;
-    public chorusDelayBufferSize: number;
-    public chorusDelayBufferMask: number;
+    samplesPerSecond: number = 44100;
+    panningDelayBufferSize: number;
+    panningDelayBufferMask: number;
+    flangerDelayBufferSize: number;
+    flangerDelayBufferMask: number;
+    chorusDelayBufferSize: number;
+    chorusDelayBufferMask: number;
     // TODO: reverb
 
-    public song: Song | null = null;
-    public preferLowerLatency: boolean = false; // enable when recording performances from keyboard or MIDI. Takes effect next time you activate audio.
-    public anticipatePoorPerformance: boolean = false; // enable on mobile devices to reduce audio stutter glitches. Takes effect next time you activate audio.
-    public liveInputDuration: number = 0;
-    public liveBassInputDuration: number = 0;
-    public liveInputStarted: boolean = false;
-    public liveBassInputStarted: boolean = false;
-    public liveInputPitches: number[] = [];
-    public liveBassInputPitches: number[] = [];
-    public liveInputChannel: number = 0;
-    public liveBassInputChannel: number = 0;
-    public liveInputInstruments: number[] = [];
-    public liveBassInputInstruments: number[] = [];
-    public loopRepeatCount: number = -1;
-    public volume: number = 1.0;
-    public oscRefreshEventTimer: number = 0;
-    public oscEnabled: boolean = true;
-    public enableMetronome: boolean = false;
-    public countInMetronome: boolean = false;
-    public renderingSong: boolean = false;
-    public heldMods: HeldMod[] = [];
+    song: Song | null = null;
+    preferLowerLatency: boolean = false; // enable when recording performances from keyboard or MIDI. Takes effect next time you activate audio.
+    anticipatePoorPerformance: boolean = false; // enable on mobile devices to reduce audio stutter glitches. Takes effect next time you activate audio.
+    liveInputDuration: number = 0;
+    liveBassInputDuration: number = 0;
+    liveInputStarted: boolean = false;
+    liveBassInputStarted: boolean = false;
+    liveInputPitches: number[] = [];
+    liveBassInputPitches: number[] = [];
+    liveInputChannel: number = 0;
+    liveBassInputChannel: number = 0;
+    liveInputInstruments: number[] = [];
+    liveBassInputInstruments: number[] = [];
+    loopRepeatCount: number = -1;
+    volume: number = 1.0;
+    oscRefreshEventTimer: number = 0;
+    oscEnabled: boolean = true;
+    enableMetronome: boolean = false;
+    countInMetronome: boolean = false;
+    renderingSong: boolean = false;
+    heldMods: HeldMod[] = [];
     private wantToSkip: boolean = false;
     private playheadInternal: number = 0.0;
     private bar: number = 0;
@@ -536,24 +536,24 @@ export class Synth {
     private beat: number = 0;
     private part: number = 0;
     private tick: number = 0;
-    public isAtStartOfTick: boolean = true;
-    public isAtEndOfTick: boolean = true;
-    public tickSampleCountdown: number = 0;
+    isAtStartOfTick: boolean = true;
+    isAtEndOfTick: boolean = true;
+    tickSampleCountdown: number = 0;
     private modValues: (number | null)[] = [];
-    public modInsValues: (number | null)[][][] = [];
+    modInsValues: (number | null)[][][] = [];
     private nextModValues: (number | null)[] = [];
-    public nextModInsValues: (number | null)[][][] = [];
+    nextModInsValues: (number | null)[][][] = [];
     private isPlayingSong: boolean = false;
     private isRecording: boolean = false;
     private liveInputEndTime: number = 0.0;
     private browserAutomaticallyClearsAudioBuffer: boolean = true; // Assume true until proven otherwise. Older Chrome does not clear the buffer so it needs to be cleared manually.
 
-    public static readonly tempFilterStartCoefficients: FilterCoefficients = new FilterCoefficients();
-    public static readonly tempFilterEndCoefficients: FilterCoefficients = new FilterCoefficients();
+    static readonly tempFilterStartCoefficients: FilterCoefficients = new FilterCoefficients();
+    static readonly tempFilterEndCoefficients: FilterCoefficients = new FilterCoefficients();
     private tempDrumSetControlPoint: FilterControlPoint = new FilterControlPoint();
-    public tempFrequencyResponse: FrequencyResponse = new FrequencyResponse();
-    public loopBarStart: number = -1;
-    public loopBarEnd: number = -1;
+    tempFrequencyResponse: FrequencyResponse = new FrequencyResponse();
+    loopBarStart: number = -1;
+    loopBarEnd: number = -1;
 
     private static readonly fmSynthFunctionCache: Dictionary<Function> = {};
     private static readonly fm6SynthFunctionCache: Dictionary<Function> = {};
@@ -568,7 +568,7 @@ export class Synth {
     //private static readonly harmonicsFunctionCache: Function[] = [];
     //private static readonly loopableChipFunctionCache: Function[][] = Array(Config.unisonVoicesMax + 1).fill([]); //For loopable chips, we have a matrix where the rows represent voices and the columns represent loop types
 
-    public readonly channels: ChannelState[] = [];
+    readonly channels: ChannelState[] = [];
     private readonly tonePool: Deque<Tone> = new Deque<Tone>();
     private readonly tempMatchedPitchTones: Array<Tone | null> = Array(Config.maxChordSize).fill(null);
 
@@ -579,15 +579,15 @@ export class Synth {
     private metronomeFilter: number = 0.0;
     private limit: number = 0.0;
 
-    public songEqFilterVolume: number = 1.0;
-    public songEqFilterVolumeDelta: number = 0.0;
-    public readonly songEqFiltersL: DynamicBiquadFilter[] = [];
-    public readonly songEqFiltersR: DynamicBiquadFilter[] = [];
-    public songEqFilterCount: number = 0;
-    public initialSongEqFilterInput1L: number = 0.0;
-    public initialSongEqFilterInput2L: number = 0.0;
-    public initialSongEqFilterInput1R: number = 0.0;
-    public initialSongEqFilterInput2R: number = 0.0;
+    songEqFilterVolume: number = 1.0;
+    songEqFilterVolumeDelta: number = 0.0;
+    readonly songEqFiltersL: DynamicBiquadFilter[] = [];
+    readonly songEqFiltersR: DynamicBiquadFilter[] = [];
+    songEqFilterCount: number = 0;
+    initialSongEqFilterInput1L: number = 0.0;
+    initialSongEqFilterInput2L: number = 0.0;
+    initialSongEqFilterInput1R: number = 0.0;
+    initialSongEqFilterInput2R: number = 0.0;
 
     private tempInstrumentSampleBufferL: Float32Array | null = null;
     private tempInstrumentSampleBufferR: Float32Array | null = null;
@@ -595,19 +595,19 @@ export class Synth {
     private audioCtx: any | null = null;
     private scriptNode: any | null = null;
 
-    public get playing(): boolean {
+    get playing(): boolean {
         return this.isPlayingSong;
     }
 
-    public get recording(): boolean {
+    get recording(): boolean {
         return this.isRecording;
     }
 
-    public get playhead(): number {
+    get playhead(): number {
         return this.playheadInternal;
     }
 
-    public set playhead(value: number) {
+    set playhead(value: number) {
         if (this.song != null) {
             this.playheadInternal = Math.max(0, Math.min(this.song.barCount, value));
             let remainder: number = this.playheadInternal;
@@ -624,15 +624,15 @@ export class Synth {
         }
     }
 
-    public getSamplesPerBar(): number {
+    getSamplesPerBar(): number {
         if (this.song == null) throw new Error();
         return this.getSamplesPerTick() * Config.ticksPerPart * Config.partsPerBeat * this.song.beatsPerBar;
     }
 
-    public getTicksIntoBar(): number {
+    getTicksIntoBar(): number {
         return (this.beat * Config.partsPerBeat + this.part) * Config.ticksPerPart + this.tick;
     }
-    public getCurrentPart(): number {
+    getCurrentPart(): number {
         return (this.beat * Config.partsPerBeat + this.part);
     }
 
@@ -660,7 +660,7 @@ export class Synth {
     }
 
     // Returns the total samples in the song
-    public getTotalSamples(enableIntro: boolean, enableOutro: boolean, loop: number): number {
+    getTotalSamples(enableIntro: boolean, enableOutro: boolean, loop: number): number {
         if (this.song == null)
             return -1;
 
@@ -847,7 +847,7 @@ export class Synth {
         }
     }
 
-    public getTotalBars(enableIntro: boolean, enableOutro: boolean, useLoopCount: number = this.loopRepeatCount): number {
+    getTotalBars(enableIntro: boolean, enableOutro: boolean, useLoopCount: number = this.loopRepeatCount): number {
         if (this.song == null) throw new Error();
         let bars: number = this.song.loopLength * (useLoopCount + 1);
         if (enableIntro) bars += this.song.loopStart;
@@ -860,7 +860,7 @@ export class Synth {
         if (song != null) this.setSong(song);
     }
 
-    public setSong(song: Song | string): void {
+    setSong(song: Song | string): void {
         if (typeof (song) == "string") {
             this.song = new Song(song);
         } else if (song instanceof Song) {
@@ -905,12 +905,12 @@ export class Synth {
         }
     }
 
-    public maintainLiveInput(): void {
+    maintainLiveInput(): void {
         this.activateAudio();
         this.liveInputEndTime = performance.now() + 10000.0;
     }
 
-    public play(): void {
+    play(): void {
         if (this.isPlayingSong) return;
         this.initModFilters(this.song);
         this.computeLatestModValues();
@@ -919,7 +919,7 @@ export class Synth {
         this.isPlayingSong = true;
     }
 
-    public pause(): void {
+    pause(): void {
         if (!this.isPlayingSong) return;
         this.isPlayingSong = false;
         this.isRecording = false;
@@ -941,13 +941,13 @@ export class Synth {
         }
     }
 
-    public startRecording(): void {
+    startRecording(): void {
         this.preferLowerLatency = true;
         this.isRecording = true;
         this.play();
     }
 
-    public resetEffects(): void {
+    resetEffects(): void {
         this.limit = 0.0;
         this.freeAllTones();
         if (this.song != null) {
@@ -959,7 +959,7 @@ export class Synth {
         }
     }
 
-    public setModValue(volumeStart: number, volumeEnd: number, channelIndex: number, instrumentIndex: number, setting: number): number {
+    setModValue(volumeStart: number, volumeEnd: number, channelIndex: number, instrumentIndex: number, setting: number): number {
         let val: number = volumeStart + Config.modulators[setting].convertRealFactor;
         let nextVal: number = volumeEnd + Config.modulators[setting].convertRealFactor;
         if (Config.modulators[setting].forSong) {
@@ -979,7 +979,7 @@ export class Synth {
         return val;
     }
 
-    public getModValue(setting: number, channel?: number | null, instrument?: number | null, nextVal?: boolean): number {
+    getModValue(setting: number, channel?: number | null, instrument?: number | null, nextVal?: boolean): number {
         const forSong: boolean = Config.modulators[setting].forSong;
         if (forSong) {
             if (this.modValues[setting] != null && this.nextModValues[setting] != null) {
@@ -994,7 +994,7 @@ export class Synth {
     }
 
     // Checks if any mod is active for the given channel/instrument OR if any mod is active for the song scope. Could split the logic if needed later.
-    public isAnyModActive(channel: number, instrument: number): boolean {
+    isAnyModActive(channel: number, instrument: number): boolean {
         for (let setting: number = 0; setting < Config.modulators.length; setting++) {
             if ((this.modValues != undefined && this.modValues[setting] != null)
                 || (this.modInsValues != undefined && this.modInsValues[channel] != undefined && this.modInsValues[channel][instrument] != undefined && this.modInsValues[channel][instrument][setting] != null)) {
@@ -1004,7 +1004,7 @@ export class Synth {
         return false;
     }
 
-    public unsetMod(setting: number, channel?: number, instrument?: number) {
+    unsetMod(setting: number, channel?: number, instrument?: number) {
         if (this.isModActive(setting) || (channel != undefined && instrument != undefined && this.isModActive(setting, channel, instrument))) {
             this.modValues[setting] = null;
             this.nextModValues[setting] = null;
@@ -1024,7 +1024,7 @@ export class Synth {
         }
     }
 
-    public isFilterModActive(forNoteFilter: boolean, channelIdx: number, instrumentIdx: number, forSong?: boolean) {
+    isFilterModActive(forNoteFilter: boolean, channelIdx: number, instrumentIdx: number, forSong?: boolean) {
         const instrument: Instrument = this.song!.channels[channelIdx].instruments[instrumentIdx];
 
         if (forNoteFilter) {
@@ -1051,7 +1051,7 @@ export class Synth {
         return false
     }
 
-    public isModActive(setting: number, channel?: number, instrument?: number): boolean {
+    isModActive(setting: number, channel?: number, instrument?: number): boolean {
         const forSong: boolean = Config.modulators[setting].forSong;
         if (forSong) {
             return (this.modValues != undefined && this.modValues[setting] != null);
@@ -1062,7 +1062,7 @@ export class Synth {
     }
 
     // Force a modulator to be held at the given volumeStart for a brief duration.
-    public forceHoldMods(volumeStart: number, channelIndex: number, instrumentIndex: number, setting: number): void {
+    forceHoldMods(volumeStart: number, channelIndex: number, instrumentIndex: number, setting: number): void {
         let found: boolean = false;
         for (let i: number = 0; i < this.heldMods.length; i++) {
             if (this.heldMods[i].channelIndex == channelIndex && this.heldMods[i].instrumentIndex == instrumentIndex && this.heldMods[i].setting == setting) {
@@ -1076,19 +1076,19 @@ export class Synth {
             this.heldMods.push({ volume: volumeStart, channelIndex: channelIndex, instrumentIndex: instrumentIndex, setting: setting, holdFor: 24 });
     }
 
-    public snapToStart(): void {
+    snapToStart(): void {
         this.bar = 0;
         this.resetEffects();
         this.snapToBar();
     }
 
-    public goToBar(bar: number): void {
+    goToBar(bar: number): void {
         this.bar = bar;
         this.resetEffects();
         this.playheadInternal = this.bar;
     }
 
-    public snapToBar(): void {
+    snapToBar(): void {
         this.playheadInternal = this.bar;
         this.beat = 0;
         this.part = 0;
@@ -1096,7 +1096,7 @@ export class Synth {
         this.tickSampleCountdown = 0;
     }
 
-    public jumpIntoLoop(): void {
+    jumpIntoLoop(): void {
         if (!this.song) return;
         if (this.bar < this.song.loopStart || this.bar >= this.song.loopStart + this.song.loopLength) {
             const oldBar: number = this.bar;
@@ -1108,7 +1108,7 @@ export class Synth {
         }
     }
 
-    public goToNextBar(): void {
+    goToNextBar(): void {
         if (!this.song) return;
         this.prevBar = this.bar;
         const oldBar: number = this.bar;
@@ -1122,7 +1122,7 @@ export class Synth {
             this.computeLatestModValues();
     }
 
-    public goToPrevBar(): void {
+    goToPrevBar(): void {
         if (!this.song) return;
         this.prevBar = null;
         const oldBar: number = this.bar;
@@ -1151,7 +1151,7 @@ export class Synth {
         return nextBar;
     }
 
-    public skipBar(): void {
+    skipBar(): void {
         if (!this.song) return;
         const samplesPerTick: number = this.getSamplesPerTick();
         this.prevBar = this.bar; // Bugfix by LeoV
@@ -1314,7 +1314,7 @@ export class Synth {
                 this.songEqFilterVolumeDelta = (eqFilterVolumeEnd - eqFilterVolumeStart) / roundedSamplesPerTick;
             }
 
-    public synthesize(outputDataL: Float32Array, outputDataR: Float32Array, outputBufferLength: number, playSong: boolean = true): void {
+    synthesize(outputDataL: Float32Array, outputDataR: Float32Array, outputBufferLength: number, playSong: boolean = true): void {
         if (this.song == null) {
             for (let i: number = 0; i < outputBufferLength; i++) {
                 outputDataL[i] = 0.0;
@@ -1912,7 +1912,7 @@ export class Synth {
         instrumentState.releasedTones.remove(toneIndex);
     }
 
-    public freeAllTones(): void {
+    freeAllTones(): void {
         for (const channelState of this.channels) {
             for (const instrumentState of channelState.instruments) {
                 while (instrumentState.activeTones.count() > 0) this.freeTone(instrumentState.activeTones.popBack());
@@ -2109,7 +2109,7 @@ export class Synth {
         }
     }
 
-    public static adjacentNotesHaveMatchingPitches(firstNote: Note, secondNote: Note): boolean {
+    static adjacentNotesHaveMatchingPitches(firstNote: Note, secondNote: Note): boolean {
         if (firstNote.pitches.length != secondNote.pitches.length) return false;
         const firstNoteInterval: number = firstNote.pins[firstNote.pins.length - 1].interval;
         for (const pitch of firstNote.pitches) {
@@ -3542,7 +3542,7 @@ export class Synth {
         }
     }
 
-    public static getLFOAmplitude(instrument: Instrument, secondsIntoBar: number): number {
+    static getLFOAmplitude(instrument: Instrument, secondsIntoBar: number): number {
         let effect: number = 0.0;
         for (const vibratoPeriodSeconds of Config.vibratoTypes[instrument.vibratoType].periodsSeconds) {
             effect += Math.sin(Math.PI * 2.0 * secondsIntoBar / vibratoPeriodSeconds);
@@ -3551,7 +3551,7 @@ export class Synth {
     }
 
 
-    public static getInstrumentSynthFunction(instrument: Instrument): Function {
+    static getInstrumentSynthFunction(instrument: Instrument): Function {
         if (instrument.type == InstrumentType.fm) {
             const fingerprint: string = instrument.algorithm + "_" + instrument.feedbackType;
             if (Synth.fmSynthFunctionCache[fingerprint] == undefined) {
@@ -6451,7 +6451,7 @@ export class Synth {
         }
     }
 
-    public static findRandomZeroCrossing(wave: Float32Array, waveLength: number): number { //literally only public to let typescript compile
+    static findRandomZeroCrossing(wave: Float32Array, waveLength: number): number { //literally only public to let typescript compile
         let phase: number = Math.random() * waveLength;
         const phaseMask: number = waveLength - 1;
 
@@ -6492,20 +6492,20 @@ export class Synth {
         return phase;
     }
 
-    public static instrumentVolumeToVolumeMult(instrumentVolume: number): number {
+    static instrumentVolumeToVolumeMult(instrumentVolume: number): number {
         return (instrumentVolume == -Config.volumeRange / 2.0) ? 0.0 : Math.pow(2, Config.volumeLogScale * instrumentVolume);
     }
-    public static volumeMultToInstrumentVolume(volumeMult: number): number {
+    static volumeMultToInstrumentVolume(volumeMult: number): number {
         return (volumeMult <= 0.0) ? -Config.volumeRange / 2 : Math.min(Config.volumeRange, (Math.log(volumeMult) / Math.LN2) / Config.volumeLogScale);
     }
-    public static noteSizeToVolumeMult(size: number): number {
+    static noteSizeToVolumeMult(size: number): number {
         return Math.pow(Math.max(0.0, size) / Config.noteSizeMax, 1.5);
     }
-    public static volumeMultToNoteSize(volumeMult: number): number {
+    static volumeMultToNoteSize(volumeMult: number): number {
         return Math.pow(Math.max(0.0, volumeMult), 1 / 1.5) * Config.noteSizeMax;
     }
 
-    public static getOperatorWave(waveform: number, pulseWidth: number) {
+    static getOperatorWave(waveform: number, pulseWidth: number) {
         if (waveform != 2) {
             return Config.operatorWaves[waveform];
         }
@@ -6514,7 +6514,7 @@ export class Synth {
         }
     }
 
-    public getSamplesPerTick(): number {
+    getSamplesPerTick(): number {
         if (this.song == null) return 0;
         let beatsPerMinute: number = this.song.getBeatsPerMinute();
         if (this.isModActive(Config.modulators.dictionary["tempo"].index)) {
@@ -6551,7 +6551,7 @@ export class Synth {
         }
     }
 
-    public static sanitizeDelayLine(delayLine: Float32Array, lastIndex: number, mask: number): void {
+    static sanitizeDelayLine(delayLine: Float32Array, lastIndex: number, mask: number): void {
         while (true) {
             lastIndex--;
             const index: number = lastIndex & mask;
@@ -6561,7 +6561,7 @@ export class Synth {
         }
     }
 
-    public static applyFilters(sample: number, input1: number, input2: number, filterCount: number, filters: DynamicBiquadFilter[]): number {
+    static applyFilters(sample: number, input1: number, input2: number, filterCount: number, filters: DynamicBiquadFilter[]): number {
         for (let i: number = 0; i < filterCount; i++) {
             const filter: DynamicBiquadFilter = filters[i];
             const output1: number = filter.output1;
@@ -6592,7 +6592,7 @@ export class Synth {
         return sample;
     }
 
-    public computeTicksSinceStart(ofBar: boolean = false) {
+    computeTicksSinceStart(ofBar: boolean = false) {
         const beatsPerBar = this.song?.beatsPerBar ? this.song?.beatsPerBar : 8;
         if (ofBar) {
             return Config.ticksPerPart * Config.partsPerBeat * beatsPerBar * this.bar;

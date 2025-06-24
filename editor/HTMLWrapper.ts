@@ -17,7 +17,7 @@ export class InputBox {
         input.addEventListener("change", this._whenChange);
     }
 
-    public updateValue(value: string): void {
+    updateValue(value: string): void {
         this._value = value;
         this.input.value = String(value);
     }
@@ -39,7 +39,7 @@ export class Slider {
     private _change: Change | null = null;
     private _value: number = 0;
     private _oldValue: number = 0;
-    public container: HTMLSpanElement;
+    container: HTMLSpanElement;
 
     constructor(public readonly input: HTMLInputElement, private readonly _doc: SongDocument, private readonly _getChange: ((oldValue: number, newValue: number) => Change) | null, midTick: boolean) {
         // A container is created around the input to allow for spec-compliant pseudo css classes (e.g ::before and ::after, which must be added to containers, not the input itself)
@@ -48,7 +48,7 @@ export class Slider {
         input.addEventListener("change", this._whenChange);
     }
 
-    public updateValue(value: number): void {
+    updateValue(value: number): void {
         this._value = value;
         this.input.value = String(value);
     }
@@ -62,11 +62,11 @@ export class Slider {
         }
     };
 
-    public getValueBeforeProspectiveChange(): number {
+    getValueBeforeProspectiveChange(): number {
         return this._oldValue;
     }
 
-    public getValue(): number {
+    getValue(): number {
         return this._value;
     }
 

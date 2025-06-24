@@ -2,7 +2,7 @@ import { ColorConfig } from "../editor/ColorConfig";
 import { events } from "./Events";
 
 export class oscilloscopeCanvas {
-    public _EventUpdateCanvas:Function;
+    _EventUpdateCanvas:Function;
 
     constructor(public readonly canvas: HTMLCanvasElement, readonly scale: number = 1) {
         this._EventUpdateCanvas = function (directlinkL: Float32Array, directlinkR?: Float32Array): void {

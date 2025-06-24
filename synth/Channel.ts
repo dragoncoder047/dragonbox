@@ -4,12 +4,12 @@ import { Instrument } from "./Instrument";
 import { Pattern } from "./Pattern";
 
 export class Channel {
-    public octave: number = 0;
-    public readonly instruments: Instrument[] = [];
-    public readonly patterns: Pattern[] = [];
-    public readonly bars: number[] = [];
-    public muted: boolean = false;
-    public visible: boolean = true;
-    public name: string = "";
-    public color: number = 0;
+    octave: number = 0;
+    readonly instruments: Instrument[] = [];
+    readonly patterns: Pattern[] = [];
+    readonly bars: number[] = [];
+    muted: boolean = false;
+    visible: boolean = true;
+    name: string = "";
+    color: number = 0;
 }

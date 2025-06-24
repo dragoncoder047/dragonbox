@@ -10,26 +10,26 @@ import { prettyNumber } from "./EditorConfig";
 import { Slider } from "./HTMLWrapper";
 
 export class EnvelopeEditor {
-	public readonly container: HTMLElement = HTML.div({ class: "envelopeEditor" });
+	readonly container: HTMLElement = HTML.div({ class: "envelopeEditor" });
 
 	private readonly _rows: HTMLDivElement[] = [];
 	private readonly _targetSelects: HTMLSelectElement[] = [];
 	private readonly _envelopeSelects: HTMLSelectElement[] = [];
 	private readonly _deleteButtons: HTMLButtonElement[] = [];
 	//dropdown stuff
-	public readonly extraSettingsDropdowns: HTMLButtonElement[] = []; //need to be accessed in SongEditor to function
-	public readonly extraPitchSettingsGroups: HTMLDivElement[] = [];
-	public readonly extraSettingsDropdownGroups: HTMLDivElement[] = [];
-	public readonly extraRandomSettingsGroups: HTMLDivElement[] = [];
-	public readonly extraLFODropdownGroups: HTMLDivElement[] = [];
-	public readonly openExtraSettingsDropdowns: Boolean[] = [];
-	public readonly perEnvelopeSpeedGroups: HTMLElement[] = [];
+	readonly extraSettingsDropdowns: HTMLButtonElement[] = []; //need to be accessed in SongEditor to function
+	readonly extraPitchSettingsGroups: HTMLDivElement[] = [];
+	readonly extraSettingsDropdownGroups: HTMLDivElement[] = [];
+	readonly extraRandomSettingsGroups: HTMLDivElement[] = [];
+	readonly extraLFODropdownGroups: HTMLDivElement[] = [];
+	readonly openExtraSettingsDropdowns: Boolean[] = [];
+	readonly perEnvelopeSpeedGroups: HTMLElement[] = [];
 
 	//pitch envelope sliders/boxes
 	private readonly _pitchStartSliders: HTMLInputElement[] = [];
-	public readonly pitchStartBoxes: HTMLInputElement[] = [];
+	readonly pitchStartBoxes: HTMLInputElement[] = [];
 	private readonly _pitchEndSliders: HTMLInputElement[] = [];
-	public readonly pitchEndBoxes: HTMLInputElement[] = [];
+	readonly pitchEndBoxes: HTMLInputElement[] = [];
 	//pitch envelope note name displays
 	private readonly _startNoteDisplays: HTMLSpanElement[] = [];
 	private readonly _endNoteDisplays: HTMLSpanElement[] = [];
@@ -37,16 +37,16 @@ export class EnvelopeEditor {
 	private readonly _inverters: HTMLInputElement[] = [];
 	private readonly _discreters: HTMLInputElement[] = [];
 	//envelope speed sliders/displays
-	public readonly perEnvelopeSpeedSliders: Slider[] = [];
+	readonly perEnvelopeSpeedSliders: Slider[] = [];
 	private readonly _perEnvelopeSpeedDisplays: HTMLSpanElement[] = [];
 	//envelope bounds sliders/boxes
-	public readonly perEnvelopeLowerBoundBoxes: HTMLInputElement[] = [];
-	public readonly perEnvelopeUpperBoundBoxes: HTMLInputElement[] = [];
-	public readonly perEnvelopeLowerBoundSliders: Slider[] = [];
-	public readonly perEnvelopeUpperBoundSliders: Slider[] = [];
+	readonly perEnvelopeLowerBoundBoxes: HTMLInputElement[] = [];
+	readonly perEnvelopeUpperBoundBoxes: HTMLInputElement[] = [];
+	readonly perEnvelopeLowerBoundSliders: Slider[] = [];
+	readonly perEnvelopeUpperBoundSliders: Slider[] = [];
 	//random envelopes
-	public readonly randomStepsBoxes: HTMLInputElement[] = [];
-	public readonly randomSeedBoxes: HTMLInputElement[] = [];
+	readonly randomStepsBoxes: HTMLInputElement[] = [];
+	readonly randomSeedBoxes: HTMLInputElement[] = [];
 	private readonly _randomStepsSliders: HTMLInputElement[] = [];
 	private readonly _randomSeedSliders: HTMLInputElement[] = [];
 	private readonly _randomEnvelopeTypeSelects: HTMLSelectElement[] = [];
@@ -56,7 +56,7 @@ export class EnvelopeEditor {
 	private readonly _envelopePasteButtons: HTMLButtonElement[] = [];
 	//lfo
 	private readonly _waveformSelects: HTMLSelectElement[] = [];
-	public readonly LFOStepsBoxes: HTMLInputElement[] = [];
+	readonly LFOStepsBoxes: HTMLInputElement[] = [];
 	private readonly _LFOStepsSliders: HTMLInputElement[] = [];
 	private readonly _LFOStepsWrappers: HTMLDivElement[] = [];
 
@@ -221,7 +221,7 @@ export class EnvelopeEditor {
 		return "[" + text + Math.floor((value + Config.pitchesPerOctave) / 12 + this._doc.song.octave - 1) + "]";
 	}
 
-	public rerenderExtraSettings(index: number = 0) { //probably not the best solution, but very reliable and easy
+	rerenderExtraSettings(index: number = 0) { //probably not the best solution, but very reliable and easy
 		const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
 		for (let i = index; i < Config.maxEnvelopeCount; i++) {
 			if (i >= instrument.envelopeCount) {
@@ -357,7 +357,7 @@ export class EnvelopeEditor {
 		}
 	}
 
-	public static convertIndexSpeed(value: number, convertTo: string): number {
+	static convertIndexSpeed(value: number, convertTo: string): number {
 		switch (convertTo) {
 			case "index":
 				return Config.perEnvelopeSpeedToIndices[value] != null ? Config.perEnvelopeSpeedToIndices[value] : 23;
@@ -372,7 +372,7 @@ export class EnvelopeEditor {
 		this._perEnvelopeSpeedDisplays[envelopeIndex].textContent = "Spd: x" + prettyNumber(this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()].envelopes[envelopeIndex].perEnvelopeSpeed  /*this.convertIndexSpeed(this.perEnvelopeSpeedSliders[envelopeIndex].getValueBeforeProspectiveChange(), "speed")*/);
 	}
 
-	public render(): void {
+	render(): void {
 		const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
 
 		for (let envelopeIndex: number = this._rows.length; envelopeIndex < instrument.envelopeCount; envelopeIndex++) {

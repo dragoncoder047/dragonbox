@@ -17,14 +17,14 @@ export function makeNotePin(interval: number, time: number, size: number): NoteP
 }
 
 export class Note {
-    public pitches: number[];
-    public pins: NotePin[];
-    public start: number;
-    public end: number;
-    public continuesLastPattern: boolean;
-    public chipWaveStartOffset: number;
+    pitches: number[];
+    pins: NotePin[];
+    start: number;
+    end: number;
+    continuesLastPattern: boolean;
+    chipWaveStartOffset: number;
 
-    public constructor(pitch: number, start: number, end: number, size: number, fadeout: boolean = false, chipWaveStartOffset: number = 0) {
+    constructor(pitch: number, start: number, end: number, size: number, fadeout: boolean = false, chipWaveStartOffset: number = 0) {
         this.pitches = [pitch];
         this.pins = [makeNotePin(0, 0, size), makeNotePin(0, end - start, fadeout ? 0 : size)];
         this.start = start;
@@ -33,7 +33,7 @@ export class Note {
         this.chipWaveStartOffset = chipWaveStartOffset;
     }
 
-    public pickMainInterval(): number {
+    pickMainInterval(): number {
         let longestFlatIntervalDuration: number = 0;
         let mainInterval: number = 0;
         for (let pinIndex: number = 1; pinIndex < this.pins.length; pinIndex++) {
@@ -60,7 +60,7 @@ export class Note {
         return mainInterval;
     }
 
-    public clone(): Note {
+    clone(): Note {
         const newNote: Note = new Note(-1, this.start, this.end, 3);
         newNote.pitches = this.pitches.concat();
         newNote.pins = [];
@@ -71,7 +71,7 @@ export class Note {
         return newNote;
     }
 
-    public getEndPinIndex(part: number): number {
+    getEndPinIndex(part: number): number {
         let endPinIndex: number;
         for (endPinIndex = 1; endPinIndex < this.pins.length - 1; endPinIndex++) {
             if (this.pins[endPinIndex].time + this.start > part) break;
@@ -81,10 +81,10 @@ export class Note {
 }
 
 export class Pattern {
-    public notes: Note[] = [];
-    public readonly instruments: number[] = [0];
+    notes: Note[] = [];
+    readonly instruments: number[] = [0];
 
-    public cloneNotes(): Note[] {
+    cloneNotes(): Note[] {
         const result: Note[] = [];
         for (const note of this.notes) {
             result.push(note.clone());
@@ -92,13 +92,13 @@ export class Pattern {
         return result;
     }
 
-    public reset(): void {
+    reset(): void {
         this.notes.length = 0;
         this.instruments[0] = 0;
         this.instruments.length = 1;
     }
 
-    public toJsonObject(song: Song, channel: Channel, isModChannel: boolean): any {
+    toJsonObject(song: Song, channel: Channel, isModChannel: boolean): any {
         const noteArray: Object[] = [];
         for (const note of this.notes) {
             // Only one ins per pattern is enforced in mod channels.
@@ -133,7 +133,7 @@ export class Pattern {
         return patternObject;
     }
 
-    public fromJsonObject(patternObject: any, song: Song, channel: Channel, importedPartsPerBeat: number, isNoiseChannel: boolean, isModChannel: boolean, jsonFormat: string = "auto"): void {
+    fromJsonObject(patternObject: any, song: Song, channel: Channel, importedPartsPerBeat: number, isNoiseChannel: boolean, isModChannel: boolean, jsonFormat: string = "auto"): void {
         const format: string = jsonFormat.toLowerCase();
 
         if (song.patternInstruments) {

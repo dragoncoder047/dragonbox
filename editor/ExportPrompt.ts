@@ -87,7 +87,7 @@ export class ExportPrompt implements Prompt {
         0x51, // spiky -> sawtooth wave
     ];
 
-    public readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 200px;" },
+    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 200px;" },
         h2("Export Options"),
         div({ style: "display: flex; flex-direction: row; align-items: center; justify-content: space-between;" },
             "File name:",
@@ -173,7 +173,7 @@ export class ExportPrompt implements Prompt {
     }
 
     // Could probably be moved to doc or synth. Fine here for now until needed by something else.
-    public static samplesToTime(_doc: SongDocument, samples: number): string {
+    static samplesToTime(_doc: SongDocument, samples: number): string {
         const rawSeconds: number = Math.round(samples / _doc.synth.samplesPerSecond);
         const seconds: number = rawSeconds % 60;
         const minutes: number = Math.floor(rawSeconds / 60);
@@ -187,11 +187,11 @@ export class ExportPrompt implements Prompt {
         this._doc.undo();
     }
 
-    public changeFileName(newValue: string) {
+    changeFileName(newValue: string) {
         this._fileName.value = newValue;
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         this._fileName.removeEventListener("input", ExportPrompt._validateFileName);
         this._loopDropDown.removeEventListener("blur", ExportPrompt._validateNumber);
         this._exportButton.removeEventListener("click", this._export);

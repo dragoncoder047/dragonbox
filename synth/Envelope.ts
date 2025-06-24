@@ -3,28 +3,28 @@
 import { Config, LFOEnvelopeTypes, EnvelopeType, Envelope, AutomationTarget } from "./SynthConfig";
 import { clamp } from "./utils";
 export class EnvelopeSettings {
-    public target: number = 0;
-    public index: number = 0;
-    public envelope: number = 0;
+    target: number = 0;
+    index: number = 0;
+    envelope: number = 0;
     //slarmoo's box 1.0
-    public pitchEnvelopeStart: number;
-    public pitchEnvelopeEnd: number;
-    public inverse: boolean;
+    pitchEnvelopeStart: number;
+    pitchEnvelopeEnd: number;
+    inverse: boolean;
     //midbox
-    public perEnvelopeSpeed: number = Config.envelopes[this.envelope].speed;
-    public perEnvelopeLowerBound: number = 0;
-    public perEnvelopeUpperBound: number = 1;
+    perEnvelopeSpeed: number = Config.envelopes[this.envelope].speed;
+    perEnvelopeLowerBound: number = 0;
+    perEnvelopeUpperBound: number = 1;
     //modulation support
-    public tempEnvelopeSpeed: number | null = null;
-    public tempEnvelopeLowerBound: number | null = null;
-    public tempEnvelopeUpperBound: number | null = null;
+    tempEnvelopeSpeed: number | null = null;
+    tempEnvelopeLowerBound: number | null = null;
+    tempEnvelopeUpperBound: number | null = null;
     //pseudo random
-    public steps: number = 2;
-    public seed: number = 2;
+    steps: number = 2;
+    seed: number = 2;
     //lfo and random types
-    public waveform: number = LFOEnvelopeTypes.sine;
+    waveform: number = LFOEnvelopeTypes.sine;
     //moved discrete into here
-    public discrete: boolean = false;
+    discrete: boolean = false;
 
     constructor(public isNoiseEnvelope: boolean) {
         this.reset();
@@ -50,7 +50,7 @@ export class EnvelopeSettings {
         this.discrete = false;
     }
 
-    public toJsonObject(): Object {
+    toJsonObject(): Object {
         const envelopeObject: any = {
             "target": Config.instrumentAutomationTargets[this.target].name,
             "envelope": Config.newEnvelopes[this.envelope].name,
@@ -77,7 +77,7 @@ export class EnvelopeSettings {
         return envelopeObject;
     }
 
-    public fromJsonObject(envelopeObject: any, format: string): void {
+    fromJsonObject(envelopeObject: any, format: string): void {
         this.reset();
 
         let target: AutomationTarget = Config.instrumentAutomationTargets.dictionary[envelopeObject["target"]];

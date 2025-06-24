@@ -35,7 +35,7 @@ export class ImportPrompt implements Prompt {
         option({ value: "slarmoosbox"}, "Slarmoo's Box")
     );
 
-    public readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 300px;" },
+    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 300px;" },
         h2("Import"),
         p({ style: "text-align: left; margin: 0.5em 0;" },
             "BeepBox songs can be exported and re-imported as .json files. You could also use other means to make .json files for BeepBox as long as they follow the same structure.",
@@ -60,7 +60,7 @@ export class ImportPrompt implements Prompt {
         this._doc.undo();
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         this._fileInput.removeEventListener("change", this._whenFileSelected);
         this._cancelButton.removeEventListener("click", this._close);
     }

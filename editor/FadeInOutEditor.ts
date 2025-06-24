@@ -20,7 +20,7 @@ export class FadeInOutEditor {
         this._dottedLinePath,
         this._controlCurve,
     );
-    public readonly container: HTMLElement = HTML.div({ class: "fadeInOut", style: "height: 100%;" }, this._svg);
+    readonly container: HTMLElement = HTML.div({ class: "fadeInOut", style: "height: 100%;" }, this._svg);
 
     private _mouseX: number = 0;
     private _mouseXStart: number = 0;
@@ -149,7 +149,7 @@ export class FadeInOutEditor {
         this._mouseDown = false;
     }
 
-    public render(): void {
+    render(): void {
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
 
         if (this._renderedFadeIn == instrument.fadeIn && this._renderedFadeOut == instrument.fadeOut) {

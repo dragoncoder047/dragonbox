@@ -15,7 +15,7 @@ export class SampleLoadingStatusPrompt {
     private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
     private _statusesContainer: HTMLDivElement = div();
     private _noSamplesMessage: HTMLDivElement = div({ style: "margin-top: 0.5em; display: none;" }, "There's no custom samples in this song.");
-    public container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 350px;" },
+    container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 350px;" },
         div(
             h2("Sample Loading Status"),
             div({ style: "display: flex; flex-direction: column; align-items: center; margin-bottom: 0.5em;" },
@@ -38,7 +38,7 @@ export class SampleLoadingStatusPrompt {
         this._doc.undo();
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         while (this._statusesContainer.firstChild !== null) {
             this._statusesContainer.removeChild(this._statusesContainer.firstChild);
         }

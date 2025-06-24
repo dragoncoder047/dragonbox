@@ -16,7 +16,7 @@ export class InstrumentExportPrompt implements Prompt {
     private readonly _channelName: String = this._doc.song.channels[this._doc.channel].name == "" ? Config.jsonFormat + "-Instrument" : this._doc.song.channels[this._doc.channel].name;
     private readonly _fileName: HTMLInputElement = input({ type: "text", style: "width: 10em;", value: this._channelName, maxlength: 250, "autofocus": "autofocus" });
 
-    public readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 200px;" },
+    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 200px;" },
         h2("Export Instruments Options"),
         div({ style: "display: flex; flex-direction: row; align-items: center; justify-content: space-between;" },
             "File name:",
@@ -44,16 +44,16 @@ export class InstrumentExportPrompt implements Prompt {
         this._doc.undo();
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         this._cancelButton.removeEventListener("click", this._close);
         this._exportButton.removeEventListener("click", this._decide_export);
         this._fileName.removeEventListener("input", InstrumentExportPrompt._validateFileName)
     }
 
-    public _decide_export = (): void => {
+    _decide_export = (): void => {
         this._exportMultipleBox.checked ? this._export_multiple() : this._export_single()
     }
-    public _export_multiple = (): void => {
+    _export_multiple = (): void => {
         const channel: Channel = this._doc.song.channels[this._doc.channel];
         const instruments: Instrument[] = channel.instruments.map((instrument) => {
             const instrumentCopy: any = instrument.toJsonObject();
@@ -72,7 +72,7 @@ export class InstrumentExportPrompt implements Prompt {
         // this._editor.refocusStage();
         this._close();
     }
-    public _export_single = (): void => {
+    _export_single = (): void => {
         const channel: Channel = this._doc.song.channels[this._doc.channel];
         const instrument: Instrument = channel.instruments[this._doc.getCurrentInstrument()];
         const instrumentCopy: any = instrument.toJsonObject();

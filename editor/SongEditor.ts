@@ -185,9 +185,9 @@ class CustomChipCanvas {
     private continuousEdit: boolean;
     private lastX: number;
     private lastY: number;
-    public newArray: Float32Array;
-    public renderedArray: Float32Array;
-    public renderedColor: string;
+    newArray: Float32Array;
+    renderedArray: Float32Array;
+    renderedColor: string;
 
     private _change: Change | null = null;
 
@@ -211,7 +211,7 @@ class CustomChipCanvas {
 
     }
 
-    public redrawCanvas(): void {
+    redrawCanvas(): void {
         const chipData: Float32Array = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()].customChipWave;
         const renderColor: string = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel, this._doc.prefs.fixChannelColorOrder).primaryNote;
 
@@ -368,15 +368,15 @@ class CustomAlgorythmCanvas {
     //private continuousEdit: boolean;
     //private lastX: number;
     //private lastY: number;
-    public newMods: number[][];
-    public lookUpArray: number[][];
-    public selected: number;
-    public inverseModulation: number[][];
-    public feedback: number[][];
-    public inverseFeedback: number[][];
-    public carriers: number;
-    public drawArray: number[][];
-    public mode: string;
+    newMods: number[][];
+    lookUpArray: number[][];
+    selected: number;
+    inverseModulation: number[][];
+    feedback: number[][];
+    inverseFeedback: number[][];
+    carriers: number;
+    drawArray: number[][];
+    mode: string;
 
     private _change: Change | null = null;
 
@@ -406,12 +406,12 @@ class CustomAlgorythmCanvas {
 
     }
 
-    public reset(): void {
+    reset(): void {
         this.redrawCanvas(false);
         this.selected = -1;
     }
 
-    public fillDrawArray(noReset: boolean = false): void {
+    fillDrawArray(noReset: boolean = false): void {
         if (noReset) {
             this.drawArray = [];
             this.drawArray = [[], [], [], [], [], []];
@@ -586,7 +586,7 @@ class CustomAlgorythmCanvas {
         }
     }
 
-    public redrawCanvas(noReset: boolean = false): void {
+    redrawCanvas(noReset: boolean = false): void {
         this.fillDrawArray(noReset);
         var ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
 
@@ -728,9 +728,9 @@ class CustomAlgorythmCanvas {
 }
 
 export class SongEditor {
-    public prompt: Prompt | null = null;
+    prompt: Prompt | null = null;
 
-    public _doc: SongDocument = new SongDocument(); // @TODO: Maybe this should have the underscore dropped. Also maybe all of these should be initialized in the constructor instead of here, but I'm trying to minimize the diff.
+    _doc: SongDocument = new SongDocument(); // @TODO: Maybe this should have the underscore dropped. Also maybe all of these should be initialized in the constructor instead of here, but I'm trying to minimize the diff.
     private readonly _keyboardLayout: KeyboardLayout = new KeyboardLayout(this._doc);
     private readonly _patternEditorPrev: PatternEditor = new PatternEditor(this._doc, false, -1);
     private readonly _patternEditor: PatternEditor = new PatternEditor(this._doc, true, 0);
@@ -1086,7 +1086,7 @@ export class SongEditor {
         ]),
     ]);
 
-    public readonly _globalOscscope: oscilloscopeCanvas = new oscilloscopeCanvas(canvas({ width: 144, height: 32, style: `border: 2px solid ${ColorConfig.uiWidgetBackground}; position: static;`, id: "oscilloscopeAll" }), 1);
+    readonly _globalOscscope: oscilloscopeCanvas = new oscilloscopeCanvas(canvas({ width: 144, height: 32, style: `border: 2px solid ${ColorConfig.uiWidgetBackground}; position: static;`, id: "oscilloscopeAll" }), 1);
     private readonly _globalOscscopeContainer: HTMLDivElement = div({ style: "height: 38px; margin-left: auto; margin-right: auto;" },
         this._globalOscscope.canvas
     );
@@ -1245,7 +1245,7 @@ export class SongEditor {
         this._trackContainer,
         this._trackVisibleArea,
     );
-    public readonly _barScrollBar: BarScrollBar = new BarScrollBar(this._doc);
+    readonly _barScrollBar: BarScrollBar = new BarScrollBar(this._doc);
     private readonly _trackArea: HTMLDivElement = div({ class: "track-area" },
         this._trackAndMuteContainer,
         this._barScrollBar.container,
@@ -1321,7 +1321,7 @@ export class SongEditor {
     private readonly _instrumentSettingsArea: HTMLDivElement = div({ class: "instrument-settings-area" },
         this._instrumentSettingsGroup,
         this._modulatorGroup);
-    public readonly _settingsArea: HTMLDivElement = div({ class: "settings-area noSelection" },
+    readonly _settingsArea: HTMLDivElement = div({ class: "settings-area noSelection" },
         div({ class: "version-area" },
             div({ style: `text-align: center; margin: 3px 0; color: ${ColorConfig.secondaryText};` },
                 this._songTitleInputBox.input,
@@ -1349,7 +1349,7 @@ export class SongEditor {
         this._instrumentSettingsArea,
     );
 
-    public readonly mainLayer: HTMLDivElement = div({ class: "beepboxEditor", tabIndex: "0" },
+    readonly mainLayer: HTMLDivElement = div({ class: "beepboxEditor", tabIndex: "0" },
         this._patternArea,
         this._trackArea,
         this._settingsArea,
@@ -1397,7 +1397,7 @@ export class SongEditor {
     private outVolumeHistoricCapR: number = 0;
     private lastOutVolumeCapL: number = 0;
     private lastOutVolumeCapR: number = 0;
-    public patternUsed: boolean = false;
+    patternUsed: boolean = false;
     private _modRecTimeout: number = -1;
 
     constructor() {
@@ -1976,7 +1976,7 @@ export class SongEditor {
 
     }
 
-    public getSliderForModSetting(setting: number, index?: number): Slider | null {
+    getSliderForModSetting(setting: number, index?: number): Slider | null {
         index = index == undefined ? 1 : index;
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         switch (setting) {
@@ -2260,7 +2260,7 @@ export class SongEditor {
     }
 
 
-    public refocusStage = (): void => {
+    refocusStage = (): void => {
         this.mainLayer.focus({ preventScroll: true });
     }
 
@@ -2278,11 +2278,11 @@ export class SongEditor {
             this.mainLayer.focus({ preventScroll: true });
     }
 
-    public changeBarScrollPos(offset: number) {
+    changeBarScrollPos(offset: number) {
         this._barScrollBar.changePos(offset);
     }
 
-    public whenUpdated = (): void => {
+    whenUpdated = (): void => {
         const prefs: Preferences = this._doc.prefs;
         this._muteEditor.container.style.display = prefs.enableChannelMuting ? "" : "none";
         const trackBounds: DOMRect = this._trackVisibleArea.getBoundingClientRect();
@@ -3712,7 +3712,7 @@ export class SongEditor {
 
     }
 
-    public handleModRecording(): void {
+    handleModRecording(): void {
         window.clearTimeout(this._modRecTimeout);
         const lastChange: Change | null = this._doc.checkLastChange();
         if ((this._ctrlHeld || this._shiftHeld) && lastChange != null && this._doc.synth.playing) {
@@ -3811,7 +3811,7 @@ export class SongEditor {
         }
     }
 
-    public updatePlayButton = (): void => {
+    updatePlayButton = (): void => {
         if (this._renderedIsPlaying != this._doc.synth.playing || this._renderedIsRecording != this._doc.synth.recording || this._renderedShowRecordButton != this._doc.prefs.showRecordButton || this._renderedCtrlHeld != this._ctrlHeld) {
             this._renderedIsPlaying = this._doc.synth.playing;
             this._renderedIsRecording = this._doc.synth.recording;
@@ -4845,7 +4845,7 @@ export class SongEditor {
         this._barScrollBar.animatePlayhead();
     }
 
-    public togglePlay = (): void => {
+    togglePlay = (): void => {
         if (this._doc.synth.playing) {
             this._doc.performance.pause();
             this.outVolumeHistoricCapL = 0;
@@ -4864,7 +4864,7 @@ export class SongEditor {
         }
     }
 
-    public _animate = (): void => {
+    _animate = (): void => {
         // Need to update mods once more to clear the slider display
         this._modSliderUpdate();
         // Same for volume display
@@ -4890,7 +4890,7 @@ export class SongEditor {
         window.requestAnimationFrame(this._animate);
     }
 
-    public _volumeUpdate = (): void => {
+    _volumeUpdate = (): void => {
         this.outVolumeHistoricTimerL--;
         this.outVolumeHistoricTimerR--;
         if (this.outVolumeHistoricTimerL <= 0) {
@@ -5071,17 +5071,17 @@ export class SongEditor {
         }
     }
 
-    public _refocus = (): void => {
+    _refocus = (): void => {
         // Waits a bit because select2 "steals" back focus even after the close event fires.
         var selfRef = this;
         setTimeout(function () { selfRef.mainLayer.focus(); }, 20);
     }
 
-    public _whenSetPitchedPreset = (): void => {
+    _whenSetPitchedPreset = (): void => {
         this._setPreset($('#pitchPresetSelect').val() + "");
     }
 
-    public _whenSetDrumPreset = (): void => {
+    _whenSetDrumPreset = (): void => {
         this._setPreset($('#drumPresetSelect').val() + "");
     }
 

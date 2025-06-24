@@ -17,7 +17,7 @@ export class MuteEditor {
     private readonly _buttons: HTMLDivElement[] = [];
     private readonly _channelCounts: HTMLDivElement[] = [];
     private readonly _channelNameDisplay: HTMLDivElement = HTML.div({ style: `background-color: ${ColorConfig.uiWidgetFocus}; white-space:nowrap; display: none; transform:translate(20px); width: auto; pointer-events: none; position: absolute; border-radius: 0.2em; z-index: 2;`, "color": ColorConfig.primaryText }, "");
-    public readonly _channelNameInput: InputBox = new InputBox(HTML.input({ style: `color: ${ColorConfig.primaryText}; background-color: ${ColorConfig.uiWidgetFocus}; margin-top: -2px; display: none; width: 6em; position: absolute; border-radius: 0.2em; z-index: 2;`, "color": ColorConfig.primaryText }, ""), this._doc, (oldValue: string, newValue: string) => new ChangeChannelName(this._doc, oldValue, newValue));
+    readonly _channelNameInput: InputBox = new InputBox(HTML.input({ style: `color: ${ColorConfig.primaryText}; background-color: ${ColorConfig.uiWidgetFocus}; margin-top: -2px; display: none; width: 6em; position: absolute; border-radius: 0.2em; z-index: 2;`, "color": ColorConfig.primaryText }, ""), this._doc, (oldValue: string, newValue: string) => new ChangeChannelName(this._doc, oldValue, newValue));
 
     private readonly _channelDropDown: HTMLSelectElement = HTML.select({ style: "width: 0px; left: 19px; height: 19px; position:absolute; opacity:0" },
 
@@ -30,7 +30,7 @@ export class MuteEditor {
         HTML.option({ value: "chnDelete" }, "Delete This Channel"),
     );
 
-    public readonly container: HTMLElement = HTML.div({ class: "muteEditor", style: "position: sticky; padding-top: " + Config.barEditorHeight + "px;" }, this._channelNameDisplay, this._channelNameInput.input, this._channelDropDown);
+    readonly container: HTMLElement = HTML.div({ class: "muteEditor", style: "position: sticky; padding-top: " + Config.barEditorHeight + "px;" }, this._channelNameDisplay, this._channelNameInput.input, this._channelDropDown);
 
     private _editorHeight: number = 128;
     private _renderedPitchChannels: number = 0;
@@ -267,7 +267,7 @@ export class MuteEditor {
         }
     }
 
-    public onKeyUp(event: KeyboardEvent): void {
+    onKeyUp(event: KeyboardEvent): void {
         switch (event.keyCode) {
             case 27: // esc
                 this._channelDropDownOpen = false;
@@ -284,7 +284,7 @@ export class MuteEditor {
         }
     }
 
-    public render(): void {
+    render(): void {
         if (!this._doc.prefs.enableChannelMuting) return;
         let startingChannelCount: number = this._buttons.length;
 

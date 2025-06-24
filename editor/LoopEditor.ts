@@ -35,7 +35,7 @@ export class LoopEditor {
         this._barLoop
     );
 
-    public readonly container: HTMLElement = HTML.div({ class: "loopEditor" }, this._svg);
+    readonly container: HTMLElement = HTML.div({ class: "loopEditor" }, this._svg);
 
     private _barWidth: number = 32;
     private _change: ChangeLoop | null = null;
@@ -299,7 +299,7 @@ export class LoopEditor {
         this._render();
     }
 
-    public setLoopAt(startBar: number, endBar: number): void {
+    setLoopAt(startBar: number, endBar: number): void {
         this._loopAtPointStart = startBar;
         this._loopAtPointEnd = endBar;
         this._trackEditor.render();

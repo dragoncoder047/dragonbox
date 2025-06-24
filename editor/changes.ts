@@ -742,12 +742,12 @@ export class ChangeRandomGeneratedInstrument extends Change {
 
         class PotentialFilterPoint {
             constructor(
-                public readonly chance: number,
-                public readonly type: FilterType,
-                public readonly minFreq: number,
-                public readonly maxFreq: number,
-                public readonly centerHz: number,
-                public readonly centerGain: number,
+                readonly chance: number,
+                readonly type: FilterType,
+                readonly minFreq: number,
+                readonly maxFreq: number,
+                readonly centerHz: number,
+                readonly centerGain: number,
             ) { };
         }
         function applyFilterPoints(filter: FilterSettings, potentialPoints: ReadonlyArray<PotentialFilterPoint>): void {
@@ -2569,7 +2569,7 @@ class ChangeInstrumentSlider extends Change {
         this._instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
     }
 
-    public commit(): void {
+    commit(): void {
         if (!this.isNoop()) {
             this._instrument.preset = this._instrument.type;
             this._doc.notifier.changed();
@@ -2587,7 +2587,7 @@ class IndexableChange extends ChangeInstrumentSlider {
 
     private index: number = 0;
 
-    public getIndex(): number {
+    getIndex(): number {
         return this.index;
     }
 }
@@ -2995,9 +2995,9 @@ export class ChangeFilterAddPoint extends UndoableChange {
 }
 
 export class FilterMoveData {
-    public point: FilterControlPoint;
-    public freq: number;
-    public gain: number;
+    point: FilterControlPoint;
+    freq: number;
+    gain: number;
 
     constructor(usePoint: FilterControlPoint, useFreq: number, useGain: number) {
         this.point = usePoint;
@@ -3013,8 +3013,8 @@ export class ChangeSongFilterMovePoint extends UndoableChange {
     private _newFreq: number;
     private _oldGain: number;
     private _newGain: number;
-    public pointIndex: number;
-    public pointType: FilterType;
+    pointIndex: number;
+    pointType: FilterType;
     constructor(doc: SongDocument, point: FilterControlPoint, oldFreq: number, newFreq: number, oldGain: number, newGain: number, pointIndex: number) {
             super(false);
             this._doc = doc;
@@ -3029,7 +3029,7 @@ export class ChangeSongFilterMovePoint extends UndoableChange {
             this.redo();
         }
 
-        public getMoveData(beforeChange: boolean): FilterMoveData {
+        getMoveData(beforeChange: boolean): FilterMoveData {
             if (beforeChange) {
                     return new FilterMoveData(this._point, this._oldFreq, this._oldGain);
                 }
@@ -3059,9 +3059,9 @@ export class ChangeFilterMovePoint extends UndoableChange {
     private _newFreq: number;
     private _oldGain: number;
     private _newGain: number;
-    public useNoteFilter: boolean;
-    public pointIndex: number;
-    public pointType: FilterType;
+    useNoteFilter: boolean;
+    pointIndex: number;
+    pointType: FilterType;
     constructor(doc: SongDocument, point: FilterControlPoint, oldFreq: number, newFreq: number, oldGain: number, newGain: number, useNoteFilter: boolean, effectIndex: number, pointIndex: number) {
         super(false);
         this._doc = doc;
@@ -3080,7 +3080,7 @@ export class ChangeFilterMovePoint extends UndoableChange {
         this.redo();
     }
 
-    public getMoveData(beforeChange: boolean): FilterMoveData {
+    getMoveData(beforeChange: boolean): FilterMoveData {
         if (beforeChange) {
             return new FilterMoveData(this._point, this._oldFreq, this._oldGain);
         }
@@ -3356,7 +3356,7 @@ export class ChangeOperatorFrequency extends Change {
 }
 
 export class ChangeOperatorAmplitude extends ChangeInstrumentSlider {
-    public operatorIndex: number = 0;
+    operatorIndex: number = 0;
     constructor(doc: SongDocument, operatorIndex: number, oldValue: number, newValue: number) {
         super(doc);
         this.operatorIndex = operatorIndex;
@@ -5148,9 +5148,9 @@ export class ChangeDragSelectedNotes extends ChangeSequence {
 }
 
 export class ChangeHoldingModRecording extends Change {
-    public storedChange: Change | null;
-    public storedValues: number[] | null;
-    public storedSlider: Slider | null;
+    storedChange: Change | null;
+    storedValues: number[] | null;
+    storedSlider: Slider | null;
     constructor(doc: SongDocument, storedChange: Change | null, storedValues: number[] | null, slider: Slider | null) {
         super();
         this.storedChange = storedChange;

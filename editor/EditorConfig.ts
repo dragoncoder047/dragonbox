@@ -23,18 +23,18 @@ export function prettyNumber(value: number): string {
 }
 
 export class EditorConfig {
-    public static readonly version: string = "v1";
-    public static readonly versionDisplayName: string = "DragonBox!";
+    static readonly version: string = "v1";
+    static readonly versionDisplayName: string = "DragonBox!";
 
-    public static readonly releaseNotesURL: string = "./patch_notes.html";
+    static readonly releaseNotesURL: string = "./patch_notes.html";
 
-    public static readonly isOnMac: boolean = /^Mac/i.test(navigator.platform) || /Mac OS X/i.test(navigator.userAgent) || /^(iPhone|iPad|iPod)/i.test(navigator.platform) || /(iPhone|iPad|iPod)/i.test(navigator.userAgent);
-    public static readonly ctrlSymbol: string = EditorConfig.isOnMac ? "⌘" : "Ctrl+";
-    public static readonly ctrlName: string = EditorConfig.isOnMac ? "command" : "control";
+    static readonly isOnMac: boolean = /^Mac/i.test(navigator.platform) || /Mac OS X/i.test(navigator.userAgent) || /^(iPhone|iPad|iPod)/i.test(navigator.platform) || /(iPhone|iPad|iPod)/i.test(navigator.userAgent);
+    static readonly ctrlSymbol: string = EditorConfig.isOnMac ? "⌘" : "Ctrl+";
+    static readonly ctrlName: string = EditorConfig.isOnMac ? "command" : "control";
 
-    public static customSamples: string[] | null;
+    static customSamples: string[] | null;
 
-    public static readonly presetCategories: DictionaryArray<PresetCategory> = toNameMap([
+    static readonly presetCategories: DictionaryArray<PresetCategory> = toNameMap([
         {
             // The order of this array needs to line up with the order of the InstrumentType declarations in SynthConfig.ts. (changes.ts' random instrument generation relies on this, for one.)
             name: "Custom Instruments", presets: <DictionaryArray<Preset>>toNameMap([
@@ -414,13 +414,13 @@ export class EditorConfig {
         }
     ]);
 
-    public static valueToPreset(presetValue: number): Preset | null {
+    static valueToPreset(presetValue: number): Preset | null {
         const categoryIndex: number = presetValue >> 6;
         const presetIndex: number = presetValue & 0x3F;
         return EditorConfig.presetCategories[categoryIndex]?.presets[presetIndex];
     }
 
-    public static midiProgramToPresetValue(program: number): number | null {
+    static midiProgramToPresetValue(program: number): number | null {
         for (let categoryIndex: number = 0; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
             const category: PresetCategory = EditorConfig.presetCategories[categoryIndex];
             for (let presetIndex: number = 0; presetIndex < category.presets.length; presetIndex++) {
@@ -431,7 +431,7 @@ export class EditorConfig {
         return null;
     }
 
-    public static nameToPresetValue(presetName: string): number | null {
+    static nameToPresetValue(presetName: string): number | null {
         for (let categoryIndex: number = 0; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
             const category: PresetCategory = EditorConfig.presetCategories[categoryIndex];
             for (let presetIndex: number = 0; presetIndex < category.presets.length; presetIndex++) {
@@ -442,7 +442,7 @@ export class EditorConfig {
         return null;
     }
 
-    public static instrumentToPreset(instrument: InstrumentType): Preset | null {
+    static instrumentToPreset(instrument: InstrumentType): Preset | null {
         return EditorConfig.presetCategories[0].presets.dictionary?.[TypePresets?.[instrument]];
     }
 }

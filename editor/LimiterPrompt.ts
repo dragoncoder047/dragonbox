@@ -65,7 +65,7 @@ export class LimiterCanvas {
         this._outVolumeCap,
     );
 
-    public readonly container: HTMLElement = HTML.div({ class: "", style: "height: 4em; width: 80%; padding-bottom: 1.5em;" }, this._svg);
+    readonly container: HTMLElement = HTML.div({ class: "", style: "height: 4em; width: 80%; padding-bottom: 1.5em;" }, this._svg);
 
     private _limiterPrompt: LimiterPrompt;
 
@@ -81,14 +81,14 @@ export class LimiterCanvas {
 
     }
 
-    public animateVolume(inVolumeCap: number, historicInCap: number, outVolumeCap: number, historicOutCap: number): void {
+    animateVolume(inVolumeCap: number, historicInCap: number, outVolumeCap: number, historicOutCap: number): void {
         this._inVolumeBar.setAttribute("width", "" + Math.min(this._editorWidth, inVolumeCap * (this._editorWidth / 2.0)));
         this._inVolumeCap.setAttribute("x", "" + Math.min(this._editorWidth, historicInCap * (this._editorWidth / 2.0)));
         this._outVolumeBar.setAttribute("width", "" + Math.min(this._editorWidth, outVolumeCap * (this._editorWidth / 2.0)));
         this._outVolumeCap.setAttribute("x", "" + Math.min(this._editorWidth, historicOutCap * (this._editorWidth / 2.0)));
     }
 
-    public render(): void {
+    render(): void {
         const controlPointToHeight = (point: number): number => {
             return Math.max(0, (1 - (point / 5)) * (this._editorHeight - 1) + 1);
         }
@@ -178,15 +178,15 @@ export class LimiterPrompt implements Prompt {
 
     private limiterCanvas: LimiterCanvas = new LimiterCanvas(this);
 
-    public readonly _playButton: HTMLButtonElement = button({ style: "width: 55%;", type: "button" });
+    readonly _playButton: HTMLButtonElement = button({ style: "width: 55%;", type: "button" });
 
-    public readonly limitDecaySlider: HTMLInputElement = input({ title: "limit decay", style: `width: 5em; flex-grow: 1; margin: 0;`, type: "range", min: "1", max: "30", value: "4", step: "1" });
-    public readonly limitRiseSlider: HTMLInputElement = input({ title: "limit rise", style: `width: 5em; flex-grow: 1; margin: 0;`, type: "range", min: "2000", max: "10000", value: "4000", step: "250" });
-    public readonly compressionThresholdSlider: HTMLInputElement = input({ title: "compressor threshold", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "1.1", value: "1", step: "0.05" });
-    public readonly limitThresholdSlider: HTMLInputElement = input({ title: "limiter threshold", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "2", value: "1", step: "0.05" });
-    public readonly compressionRatioSlider: HTMLInputElement = input({ title: "compressor ratio", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "20", value: "10", step: "1" });
-    public readonly limitRatioSlider: HTMLInputElement = input({ title: "limiter ratio", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "20", value: "10", step: "1" });
-    public readonly masterGainSlider: HTMLInputElement = input({ title: "master gain", style: `width: 5em; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "5", value: "1", step: "0.02" });
+    readonly limitDecaySlider: HTMLInputElement = input({ title: "limit decay", style: `width: 5em; flex-grow: 1; margin: 0;`, type: "range", min: "1", max: "30", value: "4", step: "1" });
+    readonly limitRiseSlider: HTMLInputElement = input({ title: "limit rise", style: `width: 5em; flex-grow: 1; margin: 0;`, type: "range", min: "2000", max: "10000", value: "4000", step: "250" });
+    readonly compressionThresholdSlider: HTMLInputElement = input({ title: "compressor threshold", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "1.1", value: "1", step: "0.05" });
+    readonly limitThresholdSlider: HTMLInputElement = input({ title: "limiter threshold", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "2", value: "1", step: "0.05" });
+    readonly compressionRatioSlider: HTMLInputElement = input({ title: "compressor ratio", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "20", value: "10", step: "1" });
+    readonly limitRatioSlider: HTMLInputElement = input({ title: "limiter ratio", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "20", value: "10", step: "1" });
+    readonly masterGainSlider: HTMLInputElement = input({ title: "master gain", style: `width: 5em; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "5", value: "1", step: "0.02" });
 
     private startingLimitDecay: number;
     private startingLimitRise: number;
@@ -205,7 +205,7 @@ export class LimiterPrompt implements Prompt {
     private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
     private readonly _resetButton: HTMLButtonElement = button({ style: "width:45%;" }, "Reset");
 
-    public readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 250px;" },
+    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 250px;" },
         h2("Limiter Options"),
         div({ style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
             this._playButton,
@@ -343,7 +343,7 @@ export class LimiterPrompt implements Prompt {
         this.updatePlayButton();
     }
 
-    public updatePlayButton(): void {
+    updatePlayButton(): void {
         if (this._doc.synth.playing) {
             this._playButton.classList.remove("playButton");
             this._playButton.classList.add("pauseButton");
@@ -392,7 +392,7 @@ export class LimiterPrompt implements Prompt {
         this._doc.prompt = null;
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         this._okayButton.removeEventListener("click", this._saveChanges);
         this._resetButton.removeEventListener("click", this._resetDefaults);
         this._cancelButton.removeEventListener("click", this._close);
@@ -408,7 +408,7 @@ export class LimiterPrompt implements Prompt {
         this._playButton.removeEventListener("click", this._togglePlay);
     }
 
-    public whenKeyPressed = (event: KeyboardEvent): void => {
+    whenKeyPressed = (event: KeyboardEvent): void => {
         if ((<Element>event.target).tagName != "BUTTON" && event.keyCode == 13) { // Enter key
             this._saveChanges();
         }

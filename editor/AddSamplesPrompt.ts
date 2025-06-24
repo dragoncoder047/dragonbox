@@ -133,7 +133,7 @@ export class AddSamplesPrompt {
         ),
         div({ style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" }, this._bulkAddConfirmButton),
     );
-    public container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 450px; max-height: calc(100% - 100px);" },
+    container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 450px; max-height: calc(100% - 100px);" },
         this._addSamplesArea,
         this._bulkAddArea,
         this._instructionsArea,
@@ -160,7 +160,7 @@ export class AddSamplesPrompt {
         this._render(false);
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         while (this._entryContainer.firstChild !== null) {
             this._entryContainer.removeChild(this._entryContainer.firstChild);
         }

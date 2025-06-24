@@ -27,7 +27,7 @@ export class SpectrumEditor {
         this._arrow,
     );
 
-    public readonly container: HTMLElement = HTML.div({ class: "spectrum", style: "height: 100%;" }, this._svg);
+    readonly container: HTMLElement = HTML.div({ class: "spectrum", style: "height: 100%;" }, this._svg);
 
     private _mouseX: number = 0;
     private _mouseY: number = 0;
@@ -68,7 +68,7 @@ export class SpectrumEditor {
         this.container.addEventListener("touchcancel", this._whenCursorReleased);
     }
 
-    public storeChange = (): void => {
+    storeChange = (): void => {
         // Check if change is unique compared to the current history state
         var sameCheck = true;
         if (this._changeQueue.length > 0) {
@@ -97,7 +97,7 @@ export class SpectrumEditor {
 
     }
 
-    public undo = (): void => {
+    undo = (): void => {
         // Go backward, if there is a change to go back to
         if (this._undoHistoryState < this._changeQueue.length - 1) {
             this._undoHistoryState++;
@@ -107,7 +107,7 @@ export class SpectrumEditor {
 
     }
 
-    public redo = (): void => {
+    redo = (): void => {
         // Go forward, if there is a change to go to
         if (this._undoHistoryState > 0) {
             this._undoHistoryState--;
@@ -216,7 +216,7 @@ export class SpectrumEditor {
         this._mouseDown = false;
     }
 
-    public getSpectrumWave(): SpectrumWave {
+    getSpectrumWave(): SpectrumWave {
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         if (this._spectrumIndex == null) {
             return instrument.spectrumWave;
@@ -225,7 +225,7 @@ export class SpectrumEditor {
         }
     }
 
-    public setSpectrumWave(spectrum: number[], saveHistory: boolean = false) {
+    setSpectrumWave(spectrum: number[], saveHistory: boolean = false) {
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         if (this._spectrumIndex == null) {
             for (let i = 0; i < Config.spectrumControlPoints; i++) {
@@ -247,7 +247,7 @@ export class SpectrumEditor {
         this.render();
     }
 
-    public saveSettings(): ChangeSpectrum {
+    saveSettings(): ChangeSpectrum {
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         if (this._spectrumIndex == null || this._spectrumIndex == undefined) {
             return new ChangeSpectrum(this._doc, instrument, instrument.spectrumWave);
@@ -256,12 +256,12 @@ export class SpectrumEditor {
         }
     }
 
-    public resetToInitial() {
+    resetToInitial() {
         this._changeQueue = [];
         this._undoHistoryState = 0;
     }
 
-    public render(): void {
+    render(): void {
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         const spectrumWave: SpectrumWave = (this._spectrumIndex == null) ? instrument.spectrumWave : instrument.drumsetSpectrumWaves[this._spectrumIndex];
         const controlPointToHeight = (point: number): number => {
@@ -307,16 +307,16 @@ export class SpectrumEditor {
 
 export class SpectrumEditorPrompt implements Prompt {
 
-    public spectrumEditor: SpectrumEditor = new SpectrumEditor(this._doc, null, true);
+    spectrumEditor: SpectrumEditor = new SpectrumEditor(this._doc, null, true);
 
     private readonly spectrumEditors: SpectrumEditor[] = [];
 
     private _drumsetSpectrumIndex: number = 0;
 
-    public readonly _playButton: HTMLButtonElement = HTML.button({ style: "width: 55%;", type: "button" });
+    readonly _playButton: HTMLButtonElement = HTML.button({ style: "width: 55%;", type: "button" });
 
-    public readonly _drumsetButtons: HTMLButtonElement[] = [];
-    public readonly _drumsetButtonContainer: HTMLDivElement = HTML.div({ class: "instrument-bar", style: "justify-content: center;" });
+    readonly _drumsetButtons: HTMLButtonElement[] = [];
+    readonly _drumsetButtonContainer: HTMLDivElement = HTML.div({ class: "instrument-bar", style: "justify-content: center;" });
 
     private readonly _cancelButton: HTMLButtonElement = HTML.button({ class: "cancelButton" });
     private readonly _okayButton: HTMLButtonElement = HTML.button({ class: "okayButton", style: "width:45%;" }, "Okay");
@@ -337,7 +337,7 @@ export class SpectrumEditorPrompt implements Prompt {
         ]),
     ]);
     private readonly copyPasteContainer: HTMLDivElement = HTML.div({ style: "width: 185px;" }, this.copyButton, this.pasteButton);
-    public readonly container: HTMLDivElement = HTML.div({ class: "prompt noSelection", style: "width: 500px;" },
+    readonly container: HTMLDivElement = HTML.div({ class: "prompt noSelection", style: "width: 500px;" },
         HTML.h2("Edit Spectrum Instrument"),
         HTML.div({ style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
             this._playButton,
@@ -418,7 +418,7 @@ export class SpectrumEditorPrompt implements Prompt {
         this.updatePlayButton();
     }
 
-    public updatePlayButton(): void {
+    updatePlayButton(): void {
         if (this._doc.synth.playing) {
             this._playButton.classList.remove("playButton");
             this._playButton.classList.add("pauseButton");
@@ -437,7 +437,7 @@ export class SpectrumEditorPrompt implements Prompt {
         this._doc.undo();
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         this._okayButton.removeEventListener("click", this._saveChanges);
         this._cancelButton.removeEventListener("click", this._close);
         this.container.removeEventListener("keydown", this.whenKeyPressed);
@@ -455,7 +455,7 @@ export class SpectrumEditorPrompt implements Prompt {
         this.spectrumEditor.setSpectrumWave(storedSpectrumWave);
     }
 
-    public whenKeyPressed = (event: KeyboardEvent): void => {
+    whenKeyPressed = (event: KeyboardEvent): void => {
         if ((<Element>event.target).tagName != "BUTTON" && event.keyCode == 13) { // Enter key
             this._saveChanges();
         }

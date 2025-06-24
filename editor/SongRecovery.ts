@@ -56,7 +56,7 @@ export class SongRecovery {
 
     private _song: Song = new Song();
 
-    public static getAllRecoveredSongs(): RecoveredSong[] {
+    static getAllRecoveredSongs(): RecoveredSong[] {
         const songs: RecoveredSong[] = [];
         const songsByUid: Dictionary<RecoveredSong> = {};
         for (let i = 0; i < localStorage.length; i++) {
@@ -79,7 +79,7 @@ export class SongRecovery {
         return songs;
     }
 
-    public saveVersion(uid: string, name: string, songData: string): void {
+    saveVersion(uid: string, name: string, songData: string): void {
         const newName: string = name;
         const newTime: number = Math.round(Date.now());
 

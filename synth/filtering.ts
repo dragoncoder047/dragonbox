@@ -189,17 +189,17 @@ create extra resonance.
 */
 
 export class FilterCoefficients {
-	public readonly a: number[] = [1.0]; // output coefficients (negated, keep a[0]=1)
-	public readonly b: number[] = [1.0]; // input coefficients
-	public order: number = 0;
+	readonly a: number[] = [1.0]; // output coefficients (negated, keep a[0]=1)
+	readonly b: number[] = [1.0]; // input coefficients
+	order: number = 0;
 	
-	public linearGain0thOrder(linearGain: number): void {
+	linearGain0thOrder(linearGain: number): void {
 		//a[0] = 1.0; // a0 should always be normalized to 1.0, no need to assign it directly.
 		this.b[0] = linearGain;
 		this.order = 0;
 	}
 	
-	public lowPass1stOrderButterworth(cornerRadiansPerSample: number): void {
+	lowPass1stOrderButterworth(cornerRadiansPerSample: number): void {
 		// First-order Butterworth low-pass filter according to:
 		// https://www.researchgate.net/publication/338022014_Digital_Implementation_of_Butterworth_First-Order_Filter_Type_IIR
 		// A butterworth filter is one where the amplitude response is equal to:
@@ -211,7 +211,7 @@ export class FilterCoefficients {
 		this.order = 1;
 	}
 	
-	public lowPass1stOrderSimplified(cornerRadiansPerSample: number): void {
+	lowPass1stOrderSimplified(cornerRadiansPerSample: number): void {
 		// The output of this filter is nearly identical to the 1st order
 		// Butterworth low-pass above, except if the cutoff is set to nyquist/3,
 		// then the output is the same as the input, and if the cutoff is higher
@@ -239,7 +239,7 @@ export class FilterCoefficients {
 		this.order = 1;
 	}
 	
-	public highPass1stOrderButterworth(cornerRadiansPerSample: number): void {
+	highPass1stOrderButterworth(cornerRadiansPerSample: number): void {
 		// First-order Butterworth high-pass filter according to:
 		// https://www.researchgate.net/publication/338022014_Digital_Implementation_of_Butterworth_First-Order_Filter_Type_IIR
 		const g: number = 1.0 / Math.tan(cornerRadiansPerSample * 0.5);
@@ -250,7 +250,7 @@ export class FilterCoefficients {
 		this.order = 1;
 	}
 	/*
-	public highPass1stOrderSimplified(cornerRadiansPerSample: number): void {
+	highPass1stOrderSimplified(cornerRadiansPerSample: number): void {
 		// The output of this filter is nearly identical to the 1st order
 		// Butterworth high-pass above, except it resonates when the cutoff
 		// appoaches the nyquist.
@@ -261,7 +261,7 @@ export class FilterCoefficients {
 		this.order = 1;
 	}
 	*/
-	public highShelf1stOrder(cornerRadiansPerSample: number, shelfLinearGain: number): void {
+	highShelf1stOrder(cornerRadiansPerSample: number, shelfLinearGain: number): void {
 		// I had trouble figuring this one out because I couldn't find any
 		// online algorithms that I understood. There are 3 degrees of freedom
 		// and I could narrow down a couple of them based on the desired gain at
@@ -279,7 +279,7 @@ export class FilterCoefficients {
 		this.order = 1;
 	}
 	
-	public allPass1stOrderInvertPhaseAbove(cornerRadiansPerSample: number): void {
+	allPass1stOrderInvertPhaseAbove(cornerRadiansPerSample: number): void {
 		const g: number = (Math.sin(cornerRadiansPerSample) - 1.0) / Math.cos(cornerRadiansPerSample);
 		this.a[1] = g;
 		this.b[0] = g;
@@ -290,7 +290,7 @@ export class FilterCoefficients {
 	/*
 	// I haven't found a practical use for this version of the all pass filter.
 	// It seems to create a weird subharmonic when used in a delay feedback loop.
-	public allPass1stOrderInvertPhaseBelow(cornerRadiansPerSample: number): void {
+	allPass1stOrderInvertPhaseBelow(cornerRadiansPerSample: number): void {
 		const g: number = (Math.sin(cornerRadiansPerSample) - 1.0) / Math.cos(cornerRadiansPerSample);
 		this.a[1] = g;
 		this.b[0] = -g;
@@ -299,7 +299,7 @@ export class FilterCoefficients {
 	}
 	*/
 	
-	public allPass1stOrderFractionalDelay(delay: number) {
+	allPass1stOrderFractionalDelay(delay: number) {
 		// Very similar to allPass1stOrderInvertPhaseAbove, but configured
 		// differently and for a different purpose! Useful for interpolating
 		// between samples in a delay line.
@@ -310,7 +310,7 @@ export class FilterCoefficients {
 		this.order = 1;
 	}
 	
-	public lowPass2ndOrderButterworth(cornerRadiansPerSample: number, peakLinearGain: number): void {
+	lowPass2ndOrderButterworth(cornerRadiansPerSample: number, peakLinearGain: number): void {
 		// This is Butterworth if peakLinearGain=1/√2 according to:
 		// http://web.archive.org/web/20191213120120/https://crypto.stanford.edu/~blynn/sound/analog.html
 		// An interesting property is that if peakLinearGain=1/16 then the
@@ -326,7 +326,7 @@ export class FilterCoefficients {
 		this.order = 2;
 	}
 	
-	public lowPass2ndOrderSimplified(cornerRadiansPerSample: number, peakLinearGain: number): void {
+	lowPass2ndOrderSimplified(cornerRadiansPerSample: number, peakLinearGain: number): void {
 		// This filter is adapted from the one in the SFXR source code:
 		// https://www.drpetter.se/project_sfxr.html
 		// The output is nearly identical to the resonant Butterworth low-pass
@@ -344,7 +344,7 @@ export class FilterCoefficients {
 		this.order = 2;
 	}
 	
-	public highPass2ndOrderButterworth(cornerRadiansPerSample: number, peakLinearGain: number): void {
+	highPass2ndOrderButterworth(cornerRadiansPerSample: number, peakLinearGain: number): void {
 		const alpha: number = Math.sin(cornerRadiansPerSample) / (2 * peakLinearGain);
 		const cos: number = Math.cos(cornerRadiansPerSample);
 		const a0: number = 1.0 + alpha;
@@ -355,7 +355,7 @@ export class FilterCoefficients {
 		this.order = 2;
 	}
 	/*
-	public highPass2ndOrderSimplified(cornerRadiansPerSample: number, peakLinearGain: number): void {
+	highPass2ndOrderSimplified(cornerRadiansPerSample: number, peakLinearGain: number): void {
 		const g: number = 2.0 * Math.sin(cornerRadiansPerSample * 0.5);
 		const filterResonance: number = 1.0 - 1.0 / (2.0 * peakLinearGain);
 		const feedback: number = filterResonance + filterResonance / (1.0 - g);
@@ -367,7 +367,7 @@ export class FilterCoefficients {
 		this.order = 2;
 	}
 	*/
-	public highShelf2ndOrder(cornerRadiansPerSample: number, shelfLinearGain: number, slope: number): void {
+	highShelf2ndOrder(cornerRadiansPerSample: number, shelfLinearGain: number, slope: number): void {
 		const A: number = Math.sqrt(shelfLinearGain);
 		const c: number = Math.cos(cornerRadiansPerSample);
 		const Aplus: number = A + 1.0;
@@ -383,7 +383,7 @@ export class FilterCoefficients {
 		this.order = 2;
 	}
 
-	public peak2ndOrder(cornerRadiansPerSample: number, peakLinearGain: number, bandWidthScale: number): void {
+	peak2ndOrder(cornerRadiansPerSample: number, peakLinearGain: number, bandWidthScale: number): void {
 		const sqrtGain: number = Math.sqrt(peakLinearGain);
 		const bandWidth: number = bandWidthScale * cornerRadiansPerSample / (sqrtGain >= 1 ? sqrtGain : 1/sqrtGain);
 		//const bandWidth: number = bandWidthScale * cornerRadiansPerSample / Math.max(sqrtGain, 1.0);
@@ -399,7 +399,7 @@ export class FilterCoefficients {
 	// Create a higher order filter by combining two lower order filters.
 	// However, making high order filters in this manner results in instability.
 	// It is recommended to apply the 2nd order filters (biquads) in sequence instead.
-	public combination(filter1: FilterCoefficients, filter2: FilterCoefficients): void {
+	combination(filter1: FilterCoefficients, filter2: FilterCoefficients): void {
 		this.order = filter1.order + filter2.order;
 		for (let i: number = 0; i <= this.order; i++) {
 			this.a[i] = 0.0;
@@ -413,7 +413,7 @@ export class FilterCoefficients {
 		}
 	}
 	
-	public scaledDifference(other: FilterCoefficients, scale: number): void {
+	scaledDifference(other: FilterCoefficients, scale: number): void {
 		if (other.order != this.order) throw new Error();
 		for (let i: number = 0; i <= this.order; i++) {
 			this.a[i] = (this.a[i] - other.a[i]) * scale;
@@ -421,7 +421,7 @@ export class FilterCoefficients {
 		}
 	}
 	
-	public copy(other: FilterCoefficients): void {
+	copy(other: FilterCoefficients): void {
 		this.order = other.order;
 		for (let i: number = 0; i <= this.order; i++) {
 			this.a[i] = other.a[i];
@@ -432,15 +432,15 @@ export class FilterCoefficients {
 }
 
 export class FrequencyResponse {
-	public real: number = 0.0;
-	public imag: number = 0.0;
-	public denom: number = 1.0;
+	real: number = 0.0;
+	imag: number = 0.0;
+	denom: number = 1.0;
 	
-	public analyze(filter: FilterCoefficients, radiansPerSample: number): void {
+	analyze(filter: FilterCoefficients, radiansPerSample: number): void {
 		this.analyzeComplex(filter, Math.cos(radiansPerSample), Math.sin(radiansPerSample));
 	}
 	
-	public analyzeComplex(filter: FilterCoefficients, real: number, imag: number): void {
+	analyzeComplex(filter: FilterCoefficients, real: number, imag: number): void {
 		const a: number[] = filter.a;
 		const b: number[] = filter.b;
 		const realZ1: number = real;
@@ -466,40 +466,40 @@ export class FrequencyResponse {
 		this.imag = imagNum * realDenom - realNum * imagDenom;
 	}
 	
-	public magnitude(): number {
+	magnitude(): number {
 		return Math.sqrt(this.real * this.real + this.imag * this.imag) / this.denom;
 	}
 	
-	public angle(): number {
+	angle(): number {
 		return Math.atan2(this.imag, this.real);
 	}
 }
 
 export class DynamicBiquadFilter {
-	public a1: number = 0.0;
-	public a2: number = 0.0;
-	public b0: number = 1.0;
-	public b1: number = 0.0;
-	public b2: number = 0.0;
-	public a1Delta: number = 0.0;
-	public a2Delta: number = 0.0;
-	public b0Delta: number = 0.0;
-	public b1Delta: number = 0.0;
-	public b2Delta: number = 0.0;
-	public output1: number = 0.0;
-	public output2: number = 0.0;
+	a1: number = 0.0;
+	a2: number = 0.0;
+	b0: number = 1.0;
+	b1: number = 0.0;
+	b2: number = 0.0;
+	a1Delta: number = 0.0;
+	a2Delta: number = 0.0;
+	b0Delta: number = 0.0;
+	b1Delta: number = 0.0;
+	b2Delta: number = 0.0;
+	output1: number = 0.0;
+	output2: number = 0.0;
 	
 	// Some filter types are more stable when interpolating between coefficients
 	// if the "b" coefficient interpolation is multiplicative. Don't enable this
 	// for filter types where the "b" coefficients might change sign!
-	public useMultiplicativeInputCoefficients: boolean = false;
+	useMultiplicativeInputCoefficients: boolean = false;
 	
-	public resetOutput(): void {
+	resetOutput(): void {
 		this.output1 = 0.0;
 		this.output2 = 0.0;
 	}
 	
-	public loadCoefficientsWithGradient(start: FilterCoefficients, end: FilterCoefficients, deltaRate: number, useMultiplicativeInputCoefficients: boolean): void {
+	loadCoefficientsWithGradient(start: FilterCoefficients, end: FilterCoefficients, deltaRate: number, useMultiplicativeInputCoefficients: boolean): void {
 		if (start.order != 2 || end.order != 2) throw new Error();
 		this.a1 = start.a[1];
 		this.a2 = start.a[2];

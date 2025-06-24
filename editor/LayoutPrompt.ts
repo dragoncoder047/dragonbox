@@ -114,7 +114,7 @@ export class LayoutPrompt implements Prompt {
         ),
     );
 
-    public readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 300px;" },
+    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 300px;" },
         h2("Layout"),
         this._form,
         div({ style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
@@ -138,7 +138,7 @@ export class LayoutPrompt implements Prompt {
         this._doc.undo();
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         this._okayButton.removeEventListener("click", this._confirm);
         this._cancelButton.removeEventListener("click", this._close);
         this.container.removeEventListener("keydown", this._whenKeyPressed);

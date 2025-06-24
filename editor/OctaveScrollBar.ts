@@ -20,7 +20,7 @@ export class OctaveScrollBar {
     private readonly _downHighlight: SVGPathElement = SVG.path({ fill: ColorConfig.hoverPreview, "pointer-events": "none" });
 
     private readonly _svg: SVGSVGElement = SVG.svg({ style: "background-color: ${ColorConfig.editorBackground}; touch-action: pan-x; position: absolute;", width: this._editorWidth, height: "100%", viewBox: "0 0 20 " + this._editorHeight, preserveAspectRatio: "none" });
-    public readonly container: HTMLDivElement = HTML.div({ id: "octaveScrollBarContainer", style: "width: 20px; height: 100%; overflow: hidden; position: relative; flex-shrink: 0;" }, this._svg);
+    readonly container: HTMLDivElement = HTML.div({ id: "octaveScrollBarContainer", style: "width: 20px; height: 100%; overflow: hidden; position: relative; flex-shrink: 0;" }, this._svg);
 
     //private _mouseX: number = 0;
     private _mouseY: number = 0;

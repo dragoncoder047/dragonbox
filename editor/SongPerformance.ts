@@ -33,14 +33,14 @@ export class SongPerformance {
         window.requestAnimationFrame(this._onAnimationFrame);
     }
 
-    public play(): void {
+    play(): void {
         this._doc.synth.play();
         this._doc.synth.enableMetronome = false;
         this._doc.synth.countInMetronome = false
         this._doc.synth.maintainLiveInput();
     }
 
-    public pause(): void {
+    pause(): void {
         this.clearAllPitches();
         this.clearAllBassPitches();
         if (this._recordingChange != null) {
@@ -65,7 +65,7 @@ export class SongPerformance {
         this._doc.synth.snapToBar();
     }
 
-    public record(): void {
+    record(): void {
         this._doc.synth.snapToBar();
         const playheadBar: number = Math.floor(this._doc.synth.playhead);
         if (playheadBar != this._doc.bar) {
@@ -98,16 +98,16 @@ export class SongPerformance {
         this._doc.setProspectiveChange(this._recordingChange);
     }
 
-    public abortRecording(): void {
+    abortRecording(): void {
         this._recordingChange = null;
         this.pause();
     }
 
-    public pitchesAreTemporary(): boolean {
+    pitchesAreTemporary(): boolean {
         return this._pitchesAreTemporary;
     }
 
-    public bassPitchesAreTemporary(): boolean {
+    bassPitchesAreTemporary(): boolean {
         return this._bassPitchesAreTemporary;
     }
 
@@ -357,7 +357,7 @@ export class SongPerformance {
         return dirty;
     }
 
-    public setTemporaryPitches(pitches: number[], duration: number): void {
+    setTemporaryPitches(pitches: number[], duration: number): void {
         this._updateRecordedNotes();
         for (let i: number = 0; i < pitches.length; i++) {
             this._doc.synth.liveInputPitches[i] = pitches[i];
@@ -369,7 +369,7 @@ export class SongPerformance {
         this._pitchesChanged = true;
     }
 
-    public setTemporaryBassPitches(pitches: number[], duration: number): void {
+    setTemporaryBassPitches(pitches: number[], duration: number): void {
         this._updateRecordedBassNotes();
         for (let i: number = 0; i < pitches.length; i++) {
             this._doc.synth.liveBassInputPitches[i] = pitches[i];
@@ -381,7 +381,7 @@ export class SongPerformance {
         this._bassPitchesChanged = true;
     }
 
-    public addPerformedPitch(pitch: number): void {
+    addPerformedPitch(pitch: number): void {
         this._doc.synth.maintainLiveInput();
 
         if (pitch > Piano.getBassCutoffPitch(this._doc) || this._getBassOffsetChannel() == this._doc.channel) {
@@ -446,7 +446,7 @@ export class SongPerformance {
         }
     }
 
-    public removePerformedPitch(pitch: number): void {
+    removePerformedPitch(pitch: number): void {
         if (pitch > Piano.getBassCutoffPitch(this._doc) || this._getBassOffsetChannel() == this._doc.channel) {
             this._updateRecordedNotes();
             for (let i: number = 0; i < this._doc.synth.liveInputPitches.length; i++) {
@@ -469,13 +469,13 @@ export class SongPerformance {
         }
     }
 
-    public clearAllPitches(): void {
+    clearAllPitches(): void {
         this._updateRecordedNotes();
         this._doc.synth.liveInputPitches.length = 0;
         this._pitchesChanged = true;
     }
 
-    public clearAllBassPitches(): void {
+    clearAllBassPitches(): void {
         this._updateRecordedBassNotes();
         this._doc.synth.liveBassInputPitches.length = 0;
         this._bassPitchesChanged = true;

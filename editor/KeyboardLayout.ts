@@ -17,7 +17,7 @@ export class KeyboardLayout {
         [11, 13, null, 16, 18, null, 21, 23, 25, null, 28, 30, null],
     ];
 
-    public static keyPosToPitch(doc: SongDocument, x: number, y: number, keyboardLayout: string): number | null {
+    static keyPosToPitch(doc: SongDocument, x: number, y: number, keyboardLayout: string): number | null {
         let pitchOffset: number | null = null;
         let forcedKey: number | null = null;
         switch (keyboardLayout) {
@@ -75,7 +75,7 @@ export class KeyboardLayout {
         }
     }
 
-    public handleKeyEvent(event: KeyboardEvent, pressed: boolean): void {
+    handleKeyEvent(event: KeyboardEvent, pressed: boolean): void {
         // See: https://www.w3.org/TR/uievents-code/#key-alphanumeric-writing-system
         switch (event.code) {
             case "Backquote": this.handleKey(-1, 3, pressed); break;
@@ -147,7 +147,7 @@ export class KeyboardLayout {
         event.preventDefault();
     }
 
-    public handleKey(x: number, y: number, pressed: boolean): void {
+    handleKey(x: number, y: number, pressed: boolean): void {
 
         const isDrum: boolean = this._doc.song.getChannelIsNoise(this._doc.channel);
         if (isDrum) {

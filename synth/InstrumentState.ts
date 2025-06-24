@@ -12,10 +12,10 @@ import { EnvelopeComputer } from "./EnvelopeComputer";
 import { fittingPowerOfTwo } from "./utils";
 
 export class SpectrumWaveState {
-    public wave: Float32Array | null = null;
+    wave: Float32Array | null = null;
     private _hash: number = -1;
 
-    public getCustomWave(settings: SpectrumWave, lowestOctave: number): Float32Array {
+    getCustomWave(settings: SpectrumWave, lowestOctave: number): Float32Array {
         if (this._hash == settings.hash) return this.wave!;
         this._hash = settings.hash;
 
@@ -63,11 +63,11 @@ export class SpectrumWaveState {
 }
 
 export class HarmonicsWaveState {
-    public wave: Float32Array | null = null;
+    wave: Float32Array | null = null;
     private _hash: number = -1;
     private _generatedForType: InstrumentType;
 
-    public getCustomWave(settings: HarmonicsWave, instrumentType: InstrumentType): Float32Array {
+    getCustomWave(settings: HarmonicsWave, instrumentType: InstrumentType): Float32Array {
         if (this._hash == settings.hash && this._generatedForType == instrumentType) return this.wave!;
         this._hash = settings.hash;
         this._generatedForType = instrumentType;
@@ -125,37 +125,37 @@ export class HarmonicsWaveState {
 }
 
 export class PickedString {
-    public delayLine: Float32Array | null = null;
-    public delayIndex: number;
-    public allPassSample: number;
-    public allPassPrevInput: number;
-    public sustainFilterSample: number;
-    public sustainFilterPrevOutput2: number;
-    public sustainFilterPrevInput1: number;
-    public sustainFilterPrevInput2: number;
-    public fractionalDelaySample: number;
-    public prevDelayLength: number;
-    public delayLengthDelta: number;
-    public delayResetOffset: number;
+    delayLine: Float32Array | null = null;
+    delayIndex: number;
+    allPassSample: number;
+    allPassPrevInput: number;
+    sustainFilterSample: number;
+    sustainFilterPrevOutput2: number;
+    sustainFilterPrevInput1: number;
+    sustainFilterPrevInput2: number;
+    fractionalDelaySample: number;
+    prevDelayLength: number;
+    delayLengthDelta: number;
+    delayResetOffset: number;
 
-    public allPassG: number = 0.0;
-    public allPassGDelta: number = 0.0;
-    public sustainFilterA1: number = 0.0;
-    public sustainFilterA1Delta: number = 0.0;
-    public sustainFilterA2: number = 0.0;
-    public sustainFilterA2Delta: number = 0.0;
-    public sustainFilterB0: number = 0.0;
-    public sustainFilterB0Delta: number = 0.0;
-    public sustainFilterB1: number = 0.0;
-    public sustainFilterB1Delta: number = 0.0;
-    public sustainFilterB2: number = 0.0;
-    public sustainFilterB2Delta: number = 0.0;
+    allPassG: number = 0.0;
+    allPassGDelta: number = 0.0;
+    sustainFilterA1: number = 0.0;
+    sustainFilterA1Delta: number = 0.0;
+    sustainFilterA2: number = 0.0;
+    sustainFilterA2Delta: number = 0.0;
+    sustainFilterB0: number = 0.0;
+    sustainFilterB0Delta: number = 0.0;
+    sustainFilterB1: number = 0.0;
+    sustainFilterB1Delta: number = 0.0;
+    sustainFilterB2: number = 0.0;
+    sustainFilterB2Delta: number = 0.0;
 
     constructor() {
         this.reset();
     }
 
-    public reset(): void {
+    reset(): void {
         this.delayIndex = -1;
         this.allPassSample = 0.0;
         this.allPassPrevInput = 0.0;
@@ -168,7 +168,7 @@ export class PickedString {
         this.delayResetOffset = 0;
     }
 
-    public update(synth: Synth, instrumentState: InstrumentState, tone: Tone, stringIndex: number, roundedSamplesPerTick: number, stringDecayStart: number, stringDecayEnd: number, sustainType: SustainType): void {
+    update(synth: Synth, instrumentState: InstrumentState, tone: Tone, stringIndex: number, roundedSamplesPerTick: number, stringDecayStart: number, stringDecayEnd: number, sustainType: SustainType): void {
         const allPassCenter: number = 2.0 * Math.PI * Config.pickedStringDispersionCenterFreq / synth.samplesPerSecond;
 
         const prevDelayLength: number = this.prevDelayLength;
@@ -347,58 +347,58 @@ export class PickedString {
 }
 
 export class InstrumentState {
-    public awake: boolean = false; // Whether the instrument's effects-processing loop should continue.
-    public computed: boolean = false; // Whether the effects-processing parameters are up-to-date for the current synth run.
-    public tonesAddedInThisTick: boolean = false; // Whether any instrument tones are currently active.
-    public flushingDelayLines: boolean = false; // If no tones were active recently, enter a mode where the delay lines are filled with zeros to reset them for later use.
-    public deactivateAfterThisTick: boolean = false; // Whether the instrument is ready to be deactivated because the delay lines, if any, are fully zeroed.
-    public attentuationProgress: number = 0.0; // How long since an active tone introduced an input signal to the delay lines, normalized from 0 to 1 based on how long to wait until the delay lines signal will have audibly dissapated.
-    public flushedSamples: number = 0; // How many delay line samples have been flushed to zero.
-    public readonly activeTones: Deque<Tone> = new Deque<Tone>();
-    public readonly activeModTones: Deque<Tone> = new Deque<Tone>();
-    public readonly releasedTones: Deque<Tone> = new Deque<Tone>(); // Tones that are in the process of fading out after the corresponding notes ended.
-    public readonly liveInputTones: Deque<Tone> = new Deque<Tone>(); // Tones that are initiated by a source external to the loaded song data.
+    awake: boolean = false; // Whether the instrument's effects-processing loop should continue.
+    computed: boolean = false; // Whether the effects-processing parameters are up-to-date for the current synth run.
+    tonesAddedInThisTick: boolean = false; // Whether any instrument tones are currently active.
+    flushingDelayLines: boolean = false; // If no tones were active recently, enter a mode where the delay lines are filled with zeros to reset them for later use.
+    deactivateAfterThisTick: boolean = false; // Whether the instrument is ready to be deactivated because the delay lines, if any, are fully zeroed.
+    attentuationProgress: number = 0.0; // How long since an active tone introduced an input signal to the delay lines, normalized from 0 to 1 based on how long to wait until the delay lines signal will have audibly dissapated.
+    flushedSamples: number = 0; // How many delay line samples have been flushed to zero.
+    readonly activeTones: Deque<Tone> = new Deque<Tone>();
+    readonly activeModTones: Deque<Tone> = new Deque<Tone>();
+    readonly releasedTones: Deque<Tone> = new Deque<Tone>(); // Tones that are in the process of fading out after the corresponding notes ended.
+    readonly liveInputTones: Deque<Tone> = new Deque<Tone>(); // Tones that are initiated by a source external to the loaded song data.
 
-    public type: InstrumentType = InstrumentType.chip;
-    public synthesizer: Function | null = null;
-    public waveL: Float32Array | null = null;
-    public waveR: Float32Array | null = null;
-    public isStereo: boolean = false; //this refers to whether or not the synth should be processed through the effect chain in mono or stereo...
+    type: InstrumentType = InstrumentType.chip;
+    synthesizer: Function | null = null;
+    waveL: Float32Array | null = null;
+    waveR: Float32Array | null = null;
+    isStereo: boolean = false; //this refers to whether or not the synth should be processed through the effect chain in mono or stereo...
     // advloop addition
-    public isUsingAdvancedLoopControls = false;
-    public chipWaveLoopStart = 0;
-    public chipWaveLoopEnd = 0;
-    public chipWaveLoopMode = 0;
-    public chipWavePlayBackwards = false;
-    public chipWaveStartOffset = 0;
+    isUsingAdvancedLoopControls = false;
+    chipWaveLoopStart = 0;
+    chipWaveLoopEnd = 0;
+    chipWaveLoopMode = 0;
+    chipWavePlayBackwards = false;
+    chipWaveStartOffset = 0;
     // advloop addition
-    public chipWaveInStereo = false; //...and this refers to whether or not the stereo checkmark is active.
-    public noisePitchFilterMult: number = 1.0;
-    public unison: Unison | null = null;
-    public unisonVoices: number = 1;
-    public unisonSpread: number = 0.0;
-    public unisonOffset: number = 0.0;
-    public unisonExpression: number = 1.4;
-    public unisonSign: number = 1.0;
-    public chord: Chord | null = null;
-    public effects: EffectState[] = [];
+    chipWaveInStereo = false; //...and this refers to whether or not the stereo checkmark is active.
+    noisePitchFilterMult: number = 1.0;
+    unison: Unison | null = null;
+    unisonVoices: number = 1;
+    unisonSpread: number = 0.0;
+    unisonOffset: number = 0.0;
+    unisonExpression: number = 1.4;
+    unisonSign: number = 1.0;
+    chord: Chord | null = null;
+    effects: EffectState[] = [];
 
-    public volumeScale: number = 0;
-    public aliases: boolean = false;
-    public arpTime: number = 0;
-    public vibratoTime: number = 0;
-    public nextVibratoTime: number = 0;
-    public envelopeTime: number[] = [];
-    public mixVolume: number = 1.0;
-    public mixVolumeDelta: number = 0.0;
-    public delayDuration: number = 0.0;
-    public totalDelaySamples: number = 0.0;
-    public delayInputMult: number = 0.0;
-    public delayInputMultDelta: number = 0.0;
+    volumeScale: number = 0;
+    aliases: boolean = false;
+    arpTime: number = 0;
+    vibratoTime: number = 0;
+    nextVibratoTime: number = 0;
+    envelopeTime: number[] = [];
+    mixVolume: number = 1.0;
+    mixVolumeDelta: number = 0.0;
+    delayDuration: number = 0.0;
+    totalDelaySamples: number = 0.0;
+    delayInputMult: number = 0.0;
+    delayInputMultDelta: number = 0.0;
 
-    public readonly spectrumWave: SpectrumWaveState = new SpectrumWaveState();
-    public readonly harmonicsWave: HarmonicsWaveState = new HarmonicsWaveState();
-    public readonly drumsetSpectrumWaves: SpectrumWaveState[] = [];
+    readonly spectrumWave: SpectrumWaveState = new SpectrumWaveState();
+    readonly harmonicsWave: HarmonicsWaveState = new HarmonicsWaveState();
+    readonly drumsetSpectrumWaves: SpectrumWaveState[] = [];
 
     constructor() {
         for (let i: number = 0; i < Config.drumCount; i++) {
@@ -406,9 +406,9 @@ export class InstrumentState {
         }
     }
 
-    public readonly envelopeComputer: EnvelopeComputer = new EnvelopeComputer();
+    readonly envelopeComputer: EnvelopeComputer = new EnvelopeComputer();
 
-    public allocateNecessaryBuffers(synth: Synth, instrument: Instrument, samplesPerTick: number): void {
+    allocateNecessaryBuffers(synth: Synth, instrument: Instrument, samplesPerTick: number): void {
         for (let effectIndex: number = 0; effectIndex < instrument.effects.length; effectIndex++) {
             if (this.effects[effectIndex] != null) {
                 let effect: Effect = instrument.effects[effectIndex]!
@@ -417,7 +417,7 @@ export class InstrumentState {
         }
     }
 
-    public deactivate(): void {
+    deactivate(): void {
         for (let effectIndex: number = 0; effectIndex < this.effects.length; effectIndex++) {
             if (this.effects[effectIndex] != null) this.effects[effectIndex]!.deactivate();
         }
@@ -432,7 +432,7 @@ export class InstrumentState {
         this.flushedSamples = 0;
     }
 
-    public resetAllEffects(): void {
+    resetAllEffects(): void {
         this.deactivate();
         // LFOs are reset here rather than in deactivate() for periodic oscillation that stays "on the beat". Resetting in deactivate() will cause it to reset with each note.
         this.vibratoTime = 0;
@@ -446,7 +446,7 @@ export class InstrumentState {
         }
     }
 
-    public compute(synth: Synth, instrument: Instrument, samplesPerTick: number, roundedSamplesPerTick: number, tone: Tone | null, channelIndex: number, instrumentIndex: number): void {
+    compute(synth: Synth, instrument: Instrument, samplesPerTick: number, roundedSamplesPerTick: number, tone: Tone | null, channelIndex: number, instrumentIndex: number): void {
         this.computed = true;
 
         this.type = instrument.type;
@@ -573,7 +573,7 @@ export class InstrumentState {
         this.envelopeComputer.clearEnvelopes();
     }
 
-    public updateWaves(instrument: Instrument, samplesPerSecond: number): void {
+    updateWaves(instrument: Instrument, samplesPerSecond: number): void {
         this.volumeScale = 1.0;
         if (instrument.type == InstrumentType.chip) {
             this.waveL = (this.aliases) ? Config.rawChipWaves[instrument.chipWave].samples : Config.chipWaves[instrument.chipWave].samples;
@@ -651,7 +651,7 @@ export class InstrumentState {
         }
     }
 
-    public getDrumsetWave(pitch: number): Float32Array {
+    getDrumsetWave(pitch: number): Float32Array {
         if (this.type == InstrumentType.drumset) {
             return this.drumsetSpectrumWaves[pitch].wave!;
         } else {
@@ -659,7 +659,7 @@ export class InstrumentState {
         }
     }
 
-    public static drumsetIndexReferenceDelta(index: number): number {
+    static drumsetIndexReferenceDelta(index: number): number {
         return Instrument.frequencyFromPitch(Config.spectrumBasePitch + index * 6) / 44100;
     }
 
@@ -667,7 +667,7 @@ export class InstrumentState {
         return 15 + Math.log2(InstrumentState.drumsetIndexReferenceDelta(index));
     }
 
-    public effectsIncludeType(type: EffectType): boolean {
+    effectsIncludeType(type: EffectType): boolean {
         for (let i: number = 0; i < this.effects.length; i++) if (this.effects[i] != null && this.effects[i]!.type == type) return true;
         return false;
     }

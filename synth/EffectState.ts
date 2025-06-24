@@ -10,22 +10,22 @@ import { FilterSettings, FilterControlPoint } from "./Filter";
 import { fittingPowerOfTwo } from "./utils";
 
 class Grain {
-	public delayLinePosition: number; // Relative to latest sample
+	delayLinePosition: number; // Relative to latest sample
 
-	public ageInSamples: number;
-	public maxAgeInSamples: number;
-	public delay: number;
+	ageInSamples: number;
+	maxAgeInSamples: number;
+	delay: number;
 
 	//parabolic envelope implementation
-	public parabolicEnvelopeAmplitude: number;
-	public parabolicEnvelopeSlope: number;
-	public parabolicEnvelopeCurve: number;
+	parabolicEnvelopeAmplitude: number;
+	parabolicEnvelopeSlope: number;
+	parabolicEnvelopeCurve: number;
 
 	//raised cosine bell envelope implementation
-	public rcbEnvelopeAmplitude: number;
-	public rcbEnvelopeAttackIndex: number;
-	public rcbEnvelopeReleaseIndex: number;
-	public rcbEnvelopeSustain: number;
+	rcbEnvelopeAmplitude: number;
+	rcbEnvelopeAttackIndex: number;
+	rcbEnvelopeReleaseIndex: number;
+	rcbEnvelopeSustain: number;
 
 	constructor() {
 		this.delayLinePosition = 0;
@@ -44,7 +44,7 @@ class Grain {
 		this.rcbEnvelopeSustain = 0;
 	}
 
-	public initializeParabolicEnvelope(durationInSamples: number, amplitude: number): void {
+	initializeParabolicEnvelope(durationInSamples: number, amplitude: number): void {
 		this.parabolicEnvelopeAmplitude = 0;
 		const invDuration: number = 1.0 / durationInSamples;
 		const invDurationSquared: number = invDuration * invDuration;
@@ -52,12 +52,12 @@ class Grain {
 		this.parabolicEnvelopeCurve = -8.0 * amplitude * invDurationSquared;
 	}
 
-	public updateParabolicEnvelope(): void {
+	updateParabolicEnvelope(): void {
 		this.parabolicEnvelopeAmplitude += this.parabolicEnvelopeSlope;
 		this.parabolicEnvelopeSlope += this.parabolicEnvelopeCurve;
 	}
 
-	public initializeRCBEnvelope(durationInSamples: number, amplitude: number): void {
+	initializeRCBEnvelope(durationInSamples: number, amplitude: number): void {
 		// attack:
 		this.rcbEnvelopeAttackIndex = Math.floor(durationInSamples / 6);
 		// sustain:
@@ -66,7 +66,7 @@ class Grain {
 		this.rcbEnvelopeReleaseIndex = Math.floor(durationInSamples * 5 / 6);
 	}
 
-	public updateRCBEnvelope(): void {
+	updateRCBEnvelope(): void {
 		if (this.ageInSamples < this.rcbEnvelopeAttackIndex) { //attack
 			this.rcbEnvelopeAmplitude = (1.0 + Math.cos(Math.PI + (Math.PI * (this.ageInSamples / this.rcbEnvelopeAttackIndex) * (this.rcbEnvelopeSustain / 2.0))));
 		} else if (this.ageInSamples > this.rcbEnvelopeReleaseIndex) { //release
@@ -74,152 +74,152 @@ class Grain {
 		} //sustain covered by the end of attack
 	}
 
-	public addDelay(delay: number): void {
+	addDelay(delay: number): void {
 		this.delay = delay;
 	}
 }
 
 export class EffectState {
-	public type: EffectType = EffectType.reverb;
+	type: EffectType = EffectType.reverb;
 
-	public eqFilterVolume: number = 1.0;
-	public eqFilterVolumeDelta: number = 0.0;
+	eqFilterVolume: number = 1.0;
+	eqFilterVolumeDelta: number = 0.0;
 
-	public granularMix: number = 1.0;
-	public granularMixDelta: number = 0.0;
-	public granularDelayLineL: Float32Array | null = null;
-	public granularDelayLineR: Float32Array | null = null;
-	public granularDelayLineIndex: number = 0;
-	public granularMaximumDelayTimeInSeconds: number = 1;
-	public granularGrains: Grain[];
-	public granularGrainsLength: number;
-	public granularMaximumGrains: number;
-	public usesRandomGrainLocation: boolean = true; //eventually I might use the granular code for sample pitch shifting, but we'll see
-	public granularDelayLineDirty: boolean = false;
-	public computeGrains: boolean = true;
+	granularMix: number = 1.0;
+	granularMixDelta: number = 0.0;
+	granularDelayLineL: Float32Array | null = null;
+	granularDelayLineR: Float32Array | null = null;
+	granularDelayLineIndex: number = 0;
+	granularMaximumDelayTimeInSeconds: number = 1;
+	granularGrains: Grain[];
+	granularGrainsLength: number;
+	granularMaximumGrains: number;
+	usesRandomGrainLocation: boolean = true; //eventually I might use the granular code for sample pitch shifting, but we'll see
+	granularDelayLineDirty: boolean = false;
+	computeGrains: boolean = true;
 
-	public ringModMix: number = 0;
-	public ringModMixDelta: number = 0;
-	public ringModPhase: number = 0;
-	public ringModPhaseDelta: number = 0;
-	public ringModPhaseDeltaScale: number = 1.0;
-	public ringModWaveformIndex: number = 0.0;
-	public ringModPulseWidth: number = 0.0;
-	public ringModHzOffset: number = 0.0;
-	public ringModMixFade: number = 1.0;
-	public ringModMixFadeDelta: number = 0;
+	ringModMix: number = 0;
+	ringModMixDelta: number = 0;
+	ringModPhase: number = 0;
+	ringModPhaseDelta: number = 0;
+	ringModPhaseDeltaScale: number = 1.0;
+	ringModWaveformIndex: number = 0.0;
+	ringModPulseWidth: number = 0.0;
+	ringModHzOffset: number = 0.0;
+	ringModMixFade: number = 1.0;
+	ringModMixFadeDelta: number = 0;
 
-	public distortion: number = 0.0;
-	public distortionDelta: number = 0.0;
-	public distortionDrive: number = 0.0;
-	public distortionDriveDelta: number = 0.0;
-	public distortionFractionalInputL1: number = 0.0;
-	public distortionFractionalInputL2: number = 0.0;
-	public distortionFractionalInputL3: number = 0.0;
-	public distortionFractionalInputR1: number = 0.0;
-	public distortionFractionalInputR2: number = 0.0;
-	public distortionFractionalInputR3: number = 0.0;
-	public distortionPrevInputL: number = 0.0;
-	public distortionPrevInputR: number = 0.0;
-	public distortionNextOutputL: number = 0.0;
-	public distortionNextOutputR: number = 0.0;
+	distortion: number = 0.0;
+	distortionDelta: number = 0.0;
+	distortionDrive: number = 0.0;
+	distortionDriveDelta: number = 0.0;
+	distortionFractionalInputL1: number = 0.0;
+	distortionFractionalInputL2: number = 0.0;
+	distortionFractionalInputL3: number = 0.0;
+	distortionFractionalInputR1: number = 0.0;
+	distortionFractionalInputR2: number = 0.0;
+	distortionFractionalInputR3: number = 0.0;
+	distortionPrevInputL: number = 0.0;
+	distortionPrevInputR: number = 0.0;
+	distortionNextOutputL: number = 0.0;
+	distortionNextOutputR: number = 0.0;
 
-	public bitcrusherPrevInputL: number = 0.0;
-	public bitcrusherPrevInputR: number = 0.0;
-	public bitcrusherCurrentOutputL: number = 0.0;
-	public bitcrusherCurrentOutputR: number = 0.0;
-	public bitcrusherPhase: number = 1.0;
-	public bitcrusherPhaseDelta: number = 0.0;
-	public bitcrusherPhaseDeltaScale: number = 1.0;
-	public bitcrusherScale: number = 1.0;
-	public bitcrusherScaleScale: number = 1.0;
-	public bitcrusherFoldLevel: number = 1.0;
-	public bitcrusherFoldLevelScale: number = 1.0;
+	bitcrusherPrevInputL: number = 0.0;
+	bitcrusherPrevInputR: number = 0.0;
+	bitcrusherCurrentOutputL: number = 0.0;
+	bitcrusherCurrentOutputR: number = 0.0;
+	bitcrusherPhase: number = 1.0;
+	bitcrusherPhaseDelta: number = 0.0;
+	bitcrusherPhaseDeltaScale: number = 1.0;
+	bitcrusherScale: number = 1.0;
+	bitcrusherScaleScale: number = 1.0;
+	bitcrusherFoldLevel: number = 1.0;
+	bitcrusherFoldLevelScale: number = 1.0;
 
-	public readonly eqFiltersL: DynamicBiquadFilter[] = [];
-	public readonly eqFiltersR: DynamicBiquadFilter[] = [];
-	public eqFilterCount: number = 0;
-	public initialEqFilterInputL1: number = 0.0;
-	public initialEqFilterInputR1: number = 0.0;
-	public initialEqFilterInputL2: number = 0.0;
-	public initialEqFilterInputR2: number = 0.0;
+	readonly eqFiltersL: DynamicBiquadFilter[] = [];
+	readonly eqFiltersR: DynamicBiquadFilter[] = [];
+	eqFilterCount: number = 0;
+	initialEqFilterInputL1: number = 0.0;
+	initialEqFilterInputR1: number = 0.0;
+	initialEqFilterInputL2: number = 0.0;
+	initialEqFilterInputR2: number = 0.0;
 
-	public gain: number = 1.0;
-	public gainDelta: number = 0.0;
+	gain: number = 1.0;
+	gainDelta: number = 0.0;
 
-	public panningDelayLineL: Float32Array | null = null;
-	public panningDelayLineR: Float32Array | null = null;
-	public panningDelayPos: number = 0;
-	public panningVolumeL: number = 0.0;
-	public panningVolumeR: number = 0.0;
-	public panningVolumeDeltaL: number = 0.0;
-	public panningVolumeDeltaR: number = 0.0;
-	public panningOffsetL: number = 0.0;
-	public panningOffsetR: number = 0.0;
-	public panningOffsetDeltaL: number = 0.0;
-	public panningOffsetDeltaR: number = 0.0;
-	public panningMode: number = 0;
+	panningDelayLineL: Float32Array | null = null;
+	panningDelayLineR: Float32Array | null = null;
+	panningDelayPos: number = 0;
+	panningVolumeL: number = 0.0;
+	panningVolumeR: number = 0.0;
+	panningVolumeDeltaL: number = 0.0;
+	panningVolumeDeltaR: number = 0.0;
+	panningOffsetL: number = 0.0;
+	panningOffsetR: number = 0.0;
+	panningOffsetDeltaL: number = 0.0;
+	panningOffsetDeltaR: number = 0.0;
+	panningMode: number = 0;
 
-	public flangerDelayLineL: Float32Array | null = null;
-	public flangerDelayLineR: Float32Array | null = null;
-	public flangerDelayLineDirty: boolean = false;
-	public flangerDelayPos: number = 0;
-	public flanger: number = 0;
-	public flangerDelta: number = 0;
-	public flangerSpeed: number = 0;
-	public flangerSpeedDelta: number = 0;
-	public flangerDepth: number = 0;
-	public flangerDepthDelta: number = 0;
-	public flangerFeedback: number = 0;
-	public flangerFeedbackDelta: number = 0;
-	public flangerPhase: number = 0;
+	flangerDelayLineL: Float32Array | null = null;
+	flangerDelayLineR: Float32Array | null = null;
+	flangerDelayLineDirty: boolean = false;
+	flangerDelayPos: number = 0;
+	flanger: number = 0;
+	flangerDelta: number = 0;
+	flangerSpeed: number = 0;
+	flangerSpeedDelta: number = 0;
+	flangerDepth: number = 0;
+	flangerDepthDelta: number = 0;
+	flangerFeedback: number = 0;
+	flangerFeedbackDelta: number = 0;
+	flangerPhase: number = 0;
 
-	public chorusDelayLineL: Float32Array | null = null;
-	public chorusDelayLineR: Float32Array | null = null;
-	public chorusDelayLineDirty: boolean = false;
-	public chorusDelayPos: number = 0;
-	public chorusPhase: number = 0;
-	public chorusVoiceMult: number = 0;
-	public chorusVoiceMultDelta: number = 0;
-	public chorusCombinedMult: number = 0;
-	public chorusCombinedMultDelta: number = 0;
+	chorusDelayLineL: Float32Array | null = null;
+	chorusDelayLineR: Float32Array | null = null;
+	chorusDelayLineDirty: boolean = false;
+	chorusDelayPos: number = 0;
+	chorusPhase: number = 0;
+	chorusVoiceMult: number = 0;
+	chorusVoiceMultDelta: number = 0;
+	chorusCombinedMult: number = 0;
+	chorusCombinedMultDelta: number = 0;
 
-	public echoDelayLineL: Float32Array | null = null;
-	public echoDelayLineR: Float32Array | null = null;
-	public echoDelayLineDirty: boolean = false;
-	public echoDelayPosL: number = 0;
-	public echoDelayPosR: number = 0;
-	public echoDelayOffsetStart: number = 0;
-	public echoDelayOffsetEnd: number | null = null;
-	public echoDelayOffsetRatio: number = 0.0;
-	public echoDelayOffsetRatioDelta: number = 0.0;
-	public echoMult: number = 0.0;
-	public echoMultDelta: number = 0.0;
-	public echoPingPong: number = 0.0;
-	public echoShelfA1: number = 0.0;
-	public echoShelfB0: number = 0.0;
-	public echoShelfB1: number = 0.0;
-	public echoShelfSampleL: number = 0.0;
-	public echoShelfSampleR: number = 0.0;
-	public echoShelfPrevInputL: number = 0.0;
-	public echoShelfPrevInputR: number = 0.0;
+	echoDelayLineL: Float32Array | null = null;
+	echoDelayLineR: Float32Array | null = null;
+	echoDelayLineDirty: boolean = false;
+	echoDelayPosL: number = 0;
+	echoDelayPosR: number = 0;
+	echoDelayOffsetStart: number = 0;
+	echoDelayOffsetEnd: number | null = null;
+	echoDelayOffsetRatio: number = 0.0;
+	echoDelayOffsetRatioDelta: number = 0.0;
+	echoMult: number = 0.0;
+	echoMultDelta: number = 0.0;
+	echoPingPong: number = 0.0;
+	echoShelfA1: number = 0.0;
+	echoShelfB0: number = 0.0;
+	echoShelfB1: number = 0.0;
+	echoShelfSampleL: number = 0.0;
+	echoShelfSampleR: number = 0.0;
+	echoShelfPrevInputL: number = 0.0;
+	echoShelfPrevInputR: number = 0.0;
 
-	public reverbDelayLine: Float32Array | null = null;
-	public reverbDelayLineDirty: boolean = false;
-	public reverbDelayPos: number = 0;
-	public reverbMult: number = 0.0;
-	public reverbMultDelta: number = 0.0;
-	public reverbShelfA1: number = 0.0;
-	public reverbShelfB0: number = 0.0;
-	public reverbShelfB1: number = 0.0;
-	public reverbShelfSample0: number = 0.0;
-	public reverbShelfSample1: number = 0.0;
-	public reverbShelfSample2: number = 0.0;
-	public reverbShelfSample3: number = 0.0;
-	public reverbShelfPrevInput0: number = 0.0;
-	public reverbShelfPrevInput1: number = 0.0;
-	public reverbShelfPrevInput2: number = 0.0;
-	public reverbShelfPrevInput3: number = 0.0;
+	reverbDelayLine: Float32Array | null = null;
+	reverbDelayLineDirty: boolean = false;
+	reverbDelayPos: number = 0;
+	reverbMult: number = 0.0;
+	reverbMultDelta: number = 0.0;
+	reverbShelfA1: number = 0.0;
+	reverbShelfB0: number = 0.0;
+	reverbShelfB1: number = 0.0;
+	reverbShelfSample0: number = 0.0;
+	reverbShelfSample1: number = 0.0;
+	reverbShelfSample2: number = 0.0;
+	reverbShelfSample3: number = 0.0;
+	reverbShelfPrevInput0: number = 0.0;
+	reverbShelfPrevInput1: number = 0.0;
+	reverbShelfPrevInput2: number = 0.0;
+	reverbShelfPrevInput3: number = 0.0;
 
 	constructor(type: EffectType) {
 		this.type = type;
@@ -233,7 +233,7 @@ export class EffectState {
 		this.granularGrainsLength = 0;
 	}
 
-	public reset(): void {
+	reset(): void {
 		if (this.chorusDelayLineDirty) {
 			for (let i: number = 0; i < this.chorusDelayLineL!.length; i++) this.chorusDelayLineL![i] = 0.0;
 			for (let i: number = 0; i < this.chorusDelayLineR!.length; i++) this.chorusDelayLineR![i] = 0.0;
@@ -260,7 +260,7 @@ export class EffectState {
 		this.ringModMixFade = 1.0;
 	}
 
-	public allocateNecessaryBuffers(synth: Synth, instrument: Instrument, effect: Effect, samplesPerTick: number): void {
+	allocateNecessaryBuffers(synth: Synth, instrument: Instrument, effect: Effect, samplesPerTick: number): void {
 		if (effect.type == EffectType.panning) {
 			if (this.panningDelayLineL == null || this.panningDelayLineR == null || this.panningDelayLineL.length < synth.panningDelayBufferSize || this.panningDelayLineR.length < synth.panningDelayBufferSize) {
 				this.panningDelayLineL = new Float32Array(synth.panningDelayBufferSize);
@@ -314,7 +314,7 @@ export class EffectState {
 		}
 	}
 
-	public allocateEchoBuffers(samplesPerTick: number, echoDelay: number) {
+	allocateEchoBuffers(samplesPerTick: number, echoDelay: number) {
 		// account for tempo and delay automation changing delay length during a tick?
 		const safeEchoDelaySteps: number = Math.max(Config.echoDelayRange >> 1, (echoDelay + 1)); // The delay may be very short now, but if it increases later make sure we have enough sample history.
 		const baseEchoDelayBufferSize: number = fittingPowerOfTwo(safeEchoDelaySteps * Config.echoDelayStepTicks * samplesPerTick);
@@ -343,7 +343,7 @@ export class EffectState {
 		}
 	}
 
-	public deactivate(): void {
+	deactivate(): void {
 		this.bitcrusherPrevInputL = 0.0;
 		this.bitcrusherPrevInputR = 0.0;
 		this.bitcrusherCurrentOutputL = 0.0;
@@ -387,7 +387,7 @@ export class EffectState {
 		this.reverbShelfPrevInput3 = 0.0;
 	}
 
-	public compute(synth: Synth, instrument: Instrument, effect: Effect, instrumentState: InstrumentState, samplesPerTick: number, roundedSamplesPerTick: number, tone: Tone | null, channelIndex: number, instrumentIndex: number, envelopeStarts: number[], envelopeEnds: number[]): void {
+	compute(synth: Synth, instrument: Instrument, effect: Effect, instrumentState: InstrumentState, samplesPerTick: number, roundedSamplesPerTick: number, tone: Tone | null, channelIndex: number, instrumentIndex: number, envelopeStarts: number[], envelopeEnds: number[]): void {
 		const samplesPerSecond: number = synth.samplesPerSecond;
 
 		this.type = effect.type;

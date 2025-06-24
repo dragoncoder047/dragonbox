@@ -568,7 +568,7 @@ export class Layout {
 
     private static readonly _styleElement: HTMLStyleElement = document.head.appendChild(HTML.style({ type: "text/css" }));
 
-    public static setLayout(layout: string): void {
+    static setLayout(layout: string): void {
         this._styleElement.textContent = this._layoutMap[layout];
     }
 }

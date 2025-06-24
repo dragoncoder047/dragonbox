@@ -256,7 +256,7 @@ class BitFieldReader {
         }
     }
 
-    public read(bitCount: number): number {
+    read(bitCount: number): number {
         let result: number = 0;
         while (bitCount > 0) {
             result = result << 1;
@@ -266,7 +266,7 @@ class BitFieldReader {
         return result;
     }
 
-    public readLongTail(minValue: number, minBits: number): number {
+    readLongTail(minValue: number, minBits: number): number {
         let result: number = minValue;
         let numBits: number = minBits;
         while (this._bits[this._readIndex++]) {
@@ -282,19 +282,19 @@ class BitFieldReader {
         return result;
     }
 
-    public readPartDuration(): number {
+    readPartDuration(): number {
         return this.readLongTail(1, 3);
     }
 
-    public readLegacyPartDuration(): number {
+    readLegacyPartDuration(): number {
         return this.readLongTail(1, 2);
     }
 
-    public readPinCount(): number {
+    readPinCount(): number {
         return this.readLongTail(1, 0);
     }
 
-    public readPitchInterval(): number {
+    readPitchInterval(): number {
         if (this.read(1)) {
             return -this.readLongTail(1, 3);
         } else {
@@ -307,11 +307,11 @@ class BitFieldWriter {
     private _index: number = 0;
     private _bits: number[] = [];
 
-    public clear() {
+    clear() {
         this._index = 0;
     }
 
-    public write(bitCount: number, value: number): void {
+    write(bitCount: number, value: number): void {
         bitCount--;
         while (bitCount >= 0) {
             this._bits[this._index++] = (value >>> bitCount) & 1;
@@ -319,7 +319,7 @@ class BitFieldWriter {
         }
     }
 
-    public writeLongTail(minValue: number, minBits: number, value: number): void {
+    writeLongTail(minValue: number, minBits: number, value: number): void {
         if (value < minValue) throw new Error("value out of bounds");
         value -= minValue;
         let numBits: number = minBits;
@@ -335,15 +335,15 @@ class BitFieldWriter {
         }
     }
 
-    public writePartDuration(value: number): void {
+    writePartDuration(value: number): void {
         this.writeLongTail(1, 3, value);
     }
 
-    public writePinCount(value: number): void {
+    writePinCount(value: number): void {
         this.writeLongTail(1, 0, value);
     }
 
-    public writePitchInterval(value: number): void {
+    writePitchInterval(value: number): void {
         if (value < 0) {
             this.write(1, 1); // sign
             this.writeLongTail(1, 3, -value);
@@ -353,13 +353,13 @@ class BitFieldWriter {
         }
     }
 
-    public concat(other: BitFieldWriter): void {
+    concat(other: BitFieldWriter): void {
         for (let i: number = 0; i < other._index; i++) {
             this._bits[this._index++] = other._bits[i];
         }
     }
 
-    public encodeBase64(buffer: number[]): number[] {
+    encodeBase64(buffer: number[]): number[] {
 
         for (let i: number = 0; i < this._index; i += 6) {
             const value: number = (this._bits[i] << 5) | (this._bits[i + 1] << 4) | (this._bits[i + 2] << 3) | (this._bits[i + 3] << 2) | (this._bits[i + 4] << 1) | this._bits[i + 5];
@@ -368,7 +368,7 @@ class BitFieldWriter {
         return buffer;
     }
 
-    public lengthBase64(): number {
+    lengthBase64(): number {
         return Math.ceil(this._index / 6);
     }
 }
@@ -397,43 +397,43 @@ export class Song {
     //also "u" is ultrabox lol
     private static readonly _variant = 0x64; //"d" ~ DragonBox
 
-    public title: string;
-    public scale: number;
-    public scaleCustom: boolean[] = [];
-    public key: number;
-    public octave: number;
-    public tempo: number;
-    public reverb: number;
-    public beatsPerBar: number;
-    public barCount: number;
-    public patternsPerChannel: number;
-    public rhythm: number;
-    public layeredInstruments: boolean;
-    public patternInstruments: boolean;
-    public loopStart: number;
-    public loopLength: number;
-    public pitchChannelCount: number;
-    public noiseChannelCount: number;
-    public modChannelCount: number;
-    public readonly channels: Channel[] = [];
-    public limitDecay: number = 4.0;
-    public limitRise: number = 4000.0;
-    public compressionThreshold: number = 1.0;
-    public limitThreshold: number = 1.0;
-    public compressionRatio: number = 1.0;
-    public limitRatio: number = 1.0;
-    public masterGain: number = 1.0;
-    public inVolumeCap: number = 0.0;
-    public outVolumeCap: number = 0.0;
-    public outVolumeCapL: number = 0.0;
-    public outVolumeCapR: number = 0.0;
-    public eqFilter: FilterSettings = new FilterSettings();
-    public eqFilterType: boolean = false;
-    public eqFilterSimpleCut: number = Config.filterSimpleCutRange - 1;
-    public eqFilterSimplePeak: number = 0;
-    public eqSubFilters: (FilterSettings | null)[] = [];
-    public tmpEqFilterStart: FilterSettings | null;
-    public tmpEqFilterEnd: FilterSettings | null;
+    title: string;
+    scale: number;
+    scaleCustom: boolean[] = [];
+    key: number;
+    octave: number;
+    tempo: number;
+    reverb: number;
+    beatsPerBar: number;
+    barCount: number;
+    patternsPerChannel: number;
+    rhythm: number;
+    layeredInstruments: boolean;
+    patternInstruments: boolean;
+    loopStart: number;
+    loopLength: number;
+    pitchChannelCount: number;
+    noiseChannelCount: number;
+    modChannelCount: number;
+    readonly channels: Channel[] = [];
+    limitDecay: number = 4.0;
+    limitRise: number = 4000.0;
+    compressionThreshold: number = 1.0;
+    limitThreshold: number = 1.0;
+    compressionRatio: number = 1.0;
+    limitRatio: number = 1.0;
+    masterGain: number = 1.0;
+    inVolumeCap: number = 0.0;
+    outVolumeCap: number = 0.0;
+    outVolumeCapL: number = 0.0;
+    outVolumeCapR: number = 0.0;
+    eqFilter: FilterSettings = new FilterSettings();
+    eqFilterType: boolean = false;
+    eqFilterSimpleCut: number = Config.filterSimpleCutRange - 1;
+    eqFilterSimplePeak: number = 0;
+    eqSubFilters: (FilterSettings | null)[] = [];
+    tmpEqFilterStart: FilterSettings | null;
+    tmpEqFilterEnd: FilterSettings | null;
 
     constructor(string?: string) {
         if (string != undefined) {
@@ -444,7 +444,7 @@ export class Song {
     }
 
     // Returns the ideal new pre volume when dragging (max volume for a normal note, a "neutral" value for mod notes based on how they work)
-    public getNewNoteVolume = (isMod: boolean, modChannel?: number, modInstrument?: number, modCount?: number): number => {
+    getNewNoteVolume = (isMod: boolean, modChannel?: number, modInstrument?: number, modCount?: number): number => {
         if (!isMod || modChannel == undefined || modInstrument == undefined || modCount == undefined)
             return Config.noteSizeMax;
         else {
@@ -583,7 +583,7 @@ export class Song {
     }
 
 
-    public getVolumeCap = (isMod: boolean, modChannel?: number, modInstrument?: number, modCount?: number): number => {
+    getVolumeCap = (isMod: boolean, modChannel?: number, modInstrument?: number, modCount?: number): number => {
         if (!isMod || modChannel == undefined || modInstrument == undefined || modCount == undefined)
             return Config.noteSizeMax;
         else {
@@ -614,7 +614,7 @@ export class Song {
         }
     }
 
-    public getVolumeCapForSetting = (isMod: boolean, modSetting: number, filterType?: number): number => {
+    getVolumeCapForSetting = (isMod: boolean, modSetting: number, filterType?: number): number => {
         if (!isMod)
             return Config.noteSizeMax;
         else {
@@ -640,39 +640,39 @@ export class Song {
         }
     }
 
-    public getChannelCount(): number {
+    getChannelCount(): number {
         return this.pitchChannelCount + this.noiseChannelCount + this.modChannelCount;
     }
 
-    public getMaxInstrumentsPerChannel(): number {
+    getMaxInstrumentsPerChannel(): number {
         return Math.max(
             this.layeredInstruments ? Config.layeredInstrumentCountMax : Config.instrumentCountMin,
             this.patternInstruments ? Config.patternInstrumentCountMax : Config.instrumentCountMin);
     }
 
-    public getMaxInstrumentsPerPattern(channelIndex: number): number {
+    getMaxInstrumentsPerPattern(channelIndex: number): number {
         return this.getMaxInstrumentsPerPatternForChannel(this.channels[channelIndex]);
     }
 
-    public getMaxInstrumentsPerPatternForChannel(channel: Channel): number {
+    getMaxInstrumentsPerPatternForChannel(channel: Channel): number {
         return this.layeredInstruments
             ? Math.min(Config.layeredInstrumentCountMax, channel.instruments.length)
             : 1;
     }
 
-    public getChannelIsNoise(channelIndex: number): boolean {
+    getChannelIsNoise(channelIndex: number): boolean {
         return (channelIndex >= this.pitchChannelCount && channelIndex < this.pitchChannelCount + this.noiseChannelCount);
     }
 
-    public getChannelIsMod(channelIndex: number): boolean {
+    getChannelIsMod(channelIndex: number): boolean {
         return (channelIndex >= this.pitchChannelCount + this.noiseChannelCount);
     }
 
-    public static secondsToFadeInSetting(seconds: number): number {
+    static secondsToFadeInSetting(seconds: number): number {
         return clamp(0, Config.fadeInRange, Math.round((-0.95 + Math.sqrt(0.9025 + 0.2 * seconds / 0.0125)) / 0.1));
     }
 
-    public static ticksToFadeOutSetting(ticks: number): number {
+    static ticksToFadeOutSetting(ticks: number): number {
         let lower: number = Config.fadeOutTicks[0];
         if (ticks <= lower) return 0;
         for (let i: number = 1; i < Config.fadeOutTicks.length; i++) {
@@ -683,7 +683,7 @@ export class Song {
         return Config.fadeOutTicks.length - 1;
     }
 
-    public initToDefault(andResetChannels: boolean = true): void {
+    initToDefault(andResetChannels: boolean = true): void {
         this.scale = 1;
         this.scaleCustom = [true, false, true, true, false, false, false, true, true, false, true, true];
         //this.scaleCustom = [true, false, false, false, false, false, false, false, false, false, false, false];
@@ -749,7 +749,7 @@ export class Song {
     }
 
     //This determines the url
-    public toBase64String(): string {
+    toBase64String(): string {
         let bits: BitFieldWriter;
         let buffer: number[] = [];
 
@@ -1530,7 +1530,7 @@ export class Song {
         return Config.envelopes[clamp(0, Config.envelopes.length, legacyIndex)];
     }
 
-    public fromBase64String(compressed: string, jsonFormat: string = "auto"): void {
+    fromBase64String(compressed: string, jsonFormat: string = "auto"): void {
         if (compressed == null || compressed == "") {
             Song._clearSamples();
 
@@ -1619,7 +1619,7 @@ export class Song {
                 let willLoadLegacySamples = false;
                 let willLoadNintariboxSamples = false;
                 let willLoadMarioPaintboxSamples = false;
-                const customSampleUrls = [];
+                const customSampleUrls: string[] = [];
                 const customSamplePresets: Preset[] = [];
                 sampleLoadingState.statusTable = {};
                 sampleLoadingState.urlTable = {};
@@ -4192,7 +4192,7 @@ export class Song {
         ));
     }
 
-    public toJsonObject(enableIntro: boolean = true, loopCount: number = 1, enableOutro: boolean = true): Object {
+    toJsonObject(enableIntro: boolean = true, loopCount: number = 1, enableOutro: boolean = true): Object {
         const channelArray: Object[] = [];
         for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
             const channel: Channel = this.channels[channelIndex];
@@ -4274,7 +4274,7 @@ export class Song {
         return result;
     }
 
-    public fromJsonObject(jsonObject: any, jsonFormat: string = "auto"): void {
+    fromJsonObject(jsonObject: any, jsonFormat: string = "auto"): void {
         this.initToDefault(true);
         if (!jsonObject) return;
 
@@ -4873,22 +4873,22 @@ export class Song {
         }
     }
 
-    public getPattern(channelIndex: number, bar: number): Pattern | null {
+    getPattern(channelIndex: number, bar: number): Pattern | null {
         if (bar < 0 || bar >= this.barCount) return null;
         const patternIndex: number = this.channels[channelIndex].bars[bar];
         if (patternIndex == 0) return null;
         return this.channels[channelIndex].patterns[patternIndex - 1];
     }
 
-    public getBeatsPerMinute(): number {
+    getBeatsPerMinute(): number {
         return this.tempo;
     }
 
-    public static getNeededBits(maxValue: number): number {
+    static getNeededBits(maxValue: number): number {
         return 32 - Math.clz32(Math.ceil(maxValue + 1) - 1);
     }
 
-    public restoreLimiterDefaults(): void {
+    restoreLimiterDefaults(): void {
         this.compressionRatio = 1.0;
         this.limitRatio = 1.0;
         this.limitRise = 4000.0;

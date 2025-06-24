@@ -4,8 +4,8 @@ import { EnvelopeType, FilterType, Config, Envelope } from "./SynthConfig";
 import { FilterCoefficients, FrequencyResponse } from "./filtering";
 
 export class FilterSettings {
-    public readonly controlPoints: FilterControlPoint[] = [];
-    public controlPointCount: number = 0;
+    readonly controlPoints: FilterControlPoint[] = [];
+    controlPointCount: number = 0;
 
     constructor() {
         this.reset();
@@ -28,7 +28,7 @@ export class FilterSettings {
         controlPoint.set(freqSetting, gainSetting);
     }
 
-    public toJsonObject(): Object {
+    toJsonObject(): Object {
         const filterArray: any[] = [];
         for (let i: number = 0; i < this.controlPointCount; i++) {
             const point: FilterControlPoint = this.controlPoints[i];
@@ -41,7 +41,7 @@ export class FilterSettings {
         return filterArray;
     }
 
-    public fromJsonObject(filterObject: any): void {
+    fromJsonObject(filterObject: any): void {
         this.controlPoints.length = 0;
         if (filterObject) {
             for (const pointObject of filterObject) {
@@ -65,7 +65,7 @@ export class FilterSettings {
     }
 
     // Returns true if all filter control points match in number and type (but not freq/gain)
-    public static filtersCanMorph(filterA: FilterSettings, filterB: FilterSettings): boolean {
+    static filtersCanMorph(filterA: FilterSettings, filterB: FilterSettings): boolean {
         if (filterA.controlPointCount != filterB.controlPointCount)
             return false;
         for (let i: number = 0; i < filterA.controlPointCount; i++) {
@@ -76,7 +76,7 @@ export class FilterSettings {
     }
 
     // Interpolate two FilterSettings, where pos=0 is filterA and pos=1 is filterB
-    public static lerpFilters(filterA: FilterSettings, filterB: FilterSettings, pos: number): FilterSettings {
+    static lerpFilters(filterA: FilterSettings, filterB: FilterSettings, pos: number): FilterSettings {
 
         let lerpedFilter: FilterSettings = new FilterSettings();
 
@@ -109,7 +109,7 @@ export class FilterSettings {
         }
     }
 
-    public convertLegacySettings(legacyCutoffSetting: number, legacyResonanceSetting: number, legacyEnv: Envelope): void {
+    convertLegacySettings(legacyCutoffSetting: number, legacyResonanceSetting: number, legacyEnv: Envelope): void {
         this.reset();
 
         const legacyFilterCutoffMaxHz: number = 8000; // This was carefully calculated to correspond to no change in response when filtering at 48000 samples per second... when using the legacy simplified low-pass filter.
@@ -195,7 +195,7 @@ export class FilterSettings {
     }
 
     // Similar to above, but purpose-fit for quick conversions in synth calls.
-    public convertLegacySettingsForSynth(legacyCutoffSetting: number, legacyResonanceSetting: number, allowFirstOrder: boolean = false): void {
+    convertLegacySettingsForSynth(legacyCutoffSetting: number, legacyResonanceSetting: number, allowFirstOrder: boolean = false): void {
         this.reset();
 
         const legacyFilterCutoffMaxHz: number = 8000; // This was carefully calculated to correspond to no change in response when filtering at 48000 samples per second... when using the legacy simplified low-pass filter.
@@ -265,40 +265,40 @@ export class FilterSettings {
 }
 
 export class FilterControlPoint {
-    public freq: number = 0;
-    public gain: number = Config.filterGainCenter;
-    public type: FilterType = FilterType.peak;
+    freq: number = 0;
+    gain: number = Config.filterGainCenter;
+    type: FilterType = FilterType.peak;
 
-    public set(freqSetting: number, gainSetting: number): void {
+    set(freqSetting: number, gainSetting: number): void {
         this.freq = freqSetting;
         this.gain = gainSetting;
     }
 
-    public getHz(): number {
+    getHz(): number {
         return FilterControlPoint.getHzFromSettingValue(this.freq);
     }
 
-    public static getHzFromSettingValue(value: number): number {
+    static getHzFromSettingValue(value: number): number {
         return Config.filterFreqReferenceHz * Math.pow(2.0, (value - Config.filterFreqReferenceSetting) * Config.filterFreqStep);
     }
-    public static getSettingValueFromHz(hz: number): number {
+    static getSettingValueFromHz(hz: number): number {
         return Math.log2(hz / Config.filterFreqReferenceHz) / Config.filterFreqStep + Config.filterFreqReferenceSetting;
     }
-    public static getRoundedSettingValueFromHz(hz: number): number {
+    static getRoundedSettingValueFromHz(hz: number): number {
         return Math.max(0, Math.min(Config.filterFreqRange - 1, Math.round(FilterControlPoint.getSettingValueFromHz(hz))));
     }
 
-    public getLinearGain(peakMult: number = 1.0): number {
+    getLinearGain(peakMult: number = 1.0): number {
         const power: number = (this.gain - Config.filterGainCenter) * Config.filterGainStep;
         const neutral: number = (this.type == FilterType.peak) ? 0.0 : -0.5;
         const interpolatedPower: number = neutral + (power - neutral) * peakMult;
         return Math.pow(2.0, interpolatedPower);
     }
-    public static getRoundedSettingValueFromLinearGain(linearGain: number): number {
+    static getRoundedSettingValueFromLinearGain(linearGain: number): number {
         return Math.max(0, Math.min(Config.filterGainRange - 1, Math.round(Math.log2(linearGain) / Config.filterGainStep + Config.filterGainCenter)));
     }
 
-    public toCoefficients(filter: FilterCoefficients, sampleRate: number, freqMult: number = 1.0, peakMult: number = 1.0): void {
+    toCoefficients(filter: FilterCoefficients, sampleRate: number, freqMult: number = 1.0, peakMult: number = 1.0): void {
         const cornerRadiansPerSample: number = 2.0 * Math.PI * Math.max(Config.filterFreqMinHz, Math.min(Config.filterFreqMaxHz, freqMult * this.getHz())) / sampleRate;
         const linearGain: number = this.getLinearGain(peakMult);
         switch (this.type) {
@@ -316,7 +316,7 @@ export class FilterControlPoint {
         }
     }
 
-    public getVolumeCompensationMult(): number {
+    getVolumeCompensationMult(): number {
         const octave: number = (this.freq - Config.filterFreqReferenceSetting) * Config.filterFreqStep;
         const gainPow: number = (this.gain - Config.filterGainCenter) * Config.filterGainStep;
         switch (this.type) {

@@ -132,7 +132,7 @@ export class CustomThemePrompt implements Prompt {
 	private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
 	private readonly _resetButton: HTMLButtonElement = button({ style: "height: auto; min-height: var(--button-size);" }, "Reset to defaults");
 
-	public readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 300px;" },
+	readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 300px;" },
 		h2("Import"),
 		p({ style: "text-align: left; margin: 0.5em 0;" },
 			"You can upload images to create a custom theme. The first image will become the editor background, and the second image will be tiled across the webpage.",
@@ -190,7 +190,7 @@ export class CustomThemePrompt implements Prompt {
         }
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         this._okayButton.removeEventListener("click", this._close);
         this._cancelButton.removeEventListener("click", this._close);
         // this.container.removeEventListener("keydown", this._whenKeyPressed);

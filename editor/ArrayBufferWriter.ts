@@ -65,22 +65,22 @@ export class ArrayBufferWriter {
         }
     }
 
-    public getWriteIndex(): number {
+    getWriteIndex(): number {
         return this._writeIndex;
     }
 
-    public rewriteUint32(index: number, value: number): void {
+    rewriteUint32(index: number, value: number): void {
         this._data.setUint32(index, value >>> 0, false);
     }
 
-    public writeUint32(value: number): void {
+    writeUint32(value: number): void {
         value = value >>> 0;
         this._addBytes(4);
         this._data.setUint32(this._writeIndex, value, false);
         this._writeIndex = this._fileSize;
     }
 
-    public writeUint24(value: number): void {
+    writeUint24(value: number): void {
         value = value >>> 0;
         this._addBytes(3);
         this._data.setUint8(this._writeIndex, (value >> 16) & 0xff);
@@ -89,28 +89,28 @@ export class ArrayBufferWriter {
         this._writeIndex = this._fileSize;
     }
 
-    public writeUint16(value: number): void {
+    writeUint16(value: number): void {
         value = value >>> 0;
         this._addBytes(2);
         this._data.setUint16(this._writeIndex, value, false);
         this._writeIndex = this._fileSize;
     }
 
-    public writeUint8(value: number): void {
+    writeUint8(value: number): void {
         value = value >>> 0;
         this._addBytes(1);
         this._data.setUint8(this._writeIndex, value);
         this._writeIndex = this._fileSize;
     }
 
-    public writeInt8(value: number): void {
+    writeInt8(value: number): void {
         value = value | 0;
         this._addBytes(1);
         this._data.setInt8(this._writeIndex, value);
         this._writeIndex = this._fileSize;
     }
 
-    public writeMidi7Bits(value: number): void {
+    writeMidi7Bits(value: number): void {
         value = value >>> 0;
         if (value >= 0x80) throw new Error("7 bit value contained 8th bit!");
         this._addBytes(1);
@@ -118,7 +118,7 @@ export class ArrayBufferWriter {
         this._writeIndex = this._fileSize;
     }
 
-    public writeMidiVariableLength(value: number): void {
+    writeMidiVariableLength(value: number): void {
         value = value >>> 0;
         if (value > 0x0fffffff) throw new Error("writeVariableLength value too big.");
         let startWriting: boolean = false;
@@ -130,7 +130,7 @@ export class ArrayBufferWriter {
         }
     }
 
-    public writeMidiAscii(string: string): void {
+    writeMidiAscii(string: string): void {
         this.writeMidiVariableLength(string.length);
         for (let i: number = 0; i < string.length; i++) {
             const charCode: number = string.charCodeAt(i);
@@ -139,7 +139,7 @@ export class ArrayBufferWriter {
         }
     }
 
-    public toCompactArrayBuffer(): ArrayBuffer {
+    toCompactArrayBuffer(): ArrayBuffer {
         return transfer(this._arrayBuffer, this._fileSize);
     }
 }

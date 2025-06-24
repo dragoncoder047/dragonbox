@@ -9,7 +9,7 @@ class EventManager {
     }
 
 
-    public raise(eventType: string, eventData: any, extraEventData?: any): void {
+    raise(eventType: string, eventData: any, extraEventData?: any): void {
         if (this.listeners[eventType] == undefined) {
             return;
         }
@@ -20,14 +20,14 @@ class EventManager {
         this.activeEvents.pop();
     }
 
-    public listen(eventType: string, callback: Function): void {
+    listen(eventType: string, callback: Function): void {
         if (this.listeners[eventType] == undefined) {
             this.listeners[eventType] = []
         }
         this.listeners[eventType].push(callback)
     }
 
-    public unlisten(eventType: string, callback: Function): void {
+    unlisten(eventType: string, callback: Function): void {
         if (this.listeners[eventType] == undefined) {
             return;
         }
@@ -36,7 +36,7 @@ class EventManager {
             this.listeners[eventType].splice(lisen, 1);
         }
     }
-    public unlistenAll(eventType: string): void {
+    unlistenAll(eventType: string): void {
         if (this.listeners[eventType] == undefined) {
             return;
         }

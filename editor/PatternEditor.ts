@@ -23,25 +23,25 @@ function makeEmptyReplacementElement<T extends Node>(node: T): T {
 }
 
 class PatternCursor {
-    public valid: boolean = false;
-    public prevNote: Note | null = null;
-    public curNote: Note | null = null;
-    public nextNote: Note | null = null;
-    public pitch: number = 0;
-    public pitchIndex: number = -1;
-    public curIndex: number = 0;
-    public start: number = 0;
-    public end: number = 0;
-    public part: number = 0;
-    public exactPart: number = 0;
-    public nearPinIndex: number = 0;
-    public pins: NotePin[] = [];
-    public chipWaveSampleOffset: number = 0;
+    valid: boolean = false;
+    prevNote: Note | null = null;
+    curNote: Note | null = null;
+    nextNote: Note | null = null;
+    pitch: number = 0;
+    pitchIndex: number = -1;
+    curIndex: number = 0;
+    start: number = 0;
+    end: number = 0;
+    part: number = 0;
+    exactPart: number = 0;
+    nearPinIndex: number = 0;
+    pins: NotePin[] = [];
+    chipWaveSampleOffset: number = 0;
 }
 
 export class PatternEditor {
-    public controlMode: boolean = false;
-    public shiftMode: boolean = false;
+    controlMode: boolean = false;
+    shiftMode: boolean = false;
     // @TODO: Here I decided to move everything into the constructor since I'm
     // not sure what's the correct way to preserve the current behavior while
     // keeping them up here.
@@ -53,9 +53,9 @@ export class PatternEditor {
     private readonly _svgPlayhead: SVGRectElement;
     private readonly _selectionRect: SVGRectElement;
     private readonly _svgPreview: SVGPathElement;
-    public modDragValueLabel: HTMLDivElement;
-    public _svg: SVGSVGElement;
-    public readonly container: HTMLDivElement;
+    modDragValueLabel: HTMLDivElement;
+    _svg: SVGSVGElement;
+    readonly container: HTMLDivElement;
 
     private readonly _defaultModBorder: number = 34;
     private readonly _backgroundPitchRows: SVGRectElement[] = [];
@@ -67,7 +67,7 @@ export class PatternEditor {
     private _modDragValueLabelLeft: number = 0;
     private _modDragValueLabelTop: number = 0;
     private _modDragValueLabelWidth: number = 0;
-    public editingModLabel: boolean = false;
+    editingModLabel: boolean = false;
     private _modDragStartValue: number = 0;
     private _modDragPin: NotePin;
     private _modDragNote: Note;
@@ -601,7 +601,7 @@ export class PatternEditor {
         }
     }
 
-    public movePlayheadToMouse(): boolean {
+    movePlayheadToMouse(): boolean {
         if (this._mouseOver) {
             this._doc.synth.playhead = this._doc.bar + this._barOffset + (this._mouseX / this._editorWidth);
             return true;
@@ -609,7 +609,7 @@ export class PatternEditor {
         return false;
     }
 
-    public resetCopiedPins = (): void => {
+    resetCopiedPins = (): void => {
         const maxDivision: number = this._getMaxDivision();
         let cap: number = this._doc.song.getVolumeCap(false);
         this._copiedPinChannels.length = this._doc.song.getChannelCount();
@@ -733,7 +733,7 @@ export class PatternEditor {
 
 
     // For a given change type, check the modulator channels for a matching mod to the changed parameter. If it exists, add a pin onto the latest note, or make a new note if enough time elapsed since the last pin. 
-    public setModSettingsForChange(change: any, songEditor: SongEditor): boolean {
+    setModSettingsForChange(change: any, songEditor: SongEditor): boolean {
         const thisRef: PatternEditor = this;
         const timeQuantum = Math.max(4, (Config.partsPerBeat / Config.rhythms[this._doc.song.rhythm].stepsPerBeat));
         const currentBar: number = Math.floor(this._doc.synth.playhead);
@@ -1819,7 +1819,7 @@ export class PatternEditor {
         return changedPatterns;
     }
 
-    public stopEditingModLabel(discardChanges: boolean) {
+    stopEditingModLabel(discardChanges: boolean) {
         if (this.editingModLabel) {
             this.editingModLabel = false;
             this.modDragValueLabel.style.setProperty("pointer-events", "none");
@@ -2529,7 +2529,7 @@ export class PatternEditor {
         }
     }
 
-    public render(): void {
+    render(): void {
         const nextPattern: Pattern | null = this._doc.getCurrentPattern(this._barOffset);
 
         if (this._pattern != nextPattern) {

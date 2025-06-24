@@ -17,8 +17,8 @@ export class CustomChipPromptCanvas {
     private _lastIndex: number = 0;
     private _lastAmp: number = 0;
     private _mouseDown: boolean = false;
-    public chipData: Float32Array = new Float32Array(64);
-    public startingChipData: Float32Array = new Float32Array(64);
+    chipData: Float32Array = new Float32Array(64);
+    startingChipData: Float32Array = new Float32Array(64);
     private _undoHistoryState: number = 0;
     private _changeQueue: Float32Array[] = [];
     private readonly _editorWidth: number = 768; // 64*12
@@ -34,7 +34,7 @@ export class CustomChipPromptCanvas {
         this._blocks,
     );
 
-    public readonly container: HTMLElement = HTML.div({ class: "", style: "height: 294px; width: 768px; padding-bottom: 1.5em;" }, this._svg);
+    readonly container: HTMLElement = HTML.div({ class: "", style: "height: 294px; width: 768px; padding-bottom: 1.5em;" }, this._svg);
 
     constructor(doc: SongDocument) {
 
@@ -81,7 +81,7 @@ export class CustomChipPromptCanvas {
 
     }
 
-    public _storeChange = (): void => {
+    _storeChange = (): void => {
         // Check if change is unique compared to the current history state
         var sameCheck = true;
         if (this._changeQueue.length > 0) {
@@ -110,7 +110,7 @@ export class CustomChipPromptCanvas {
 
     }
 
-    public undo = (): void => {
+    undo = (): void => {
         // Go backward, if there is a change to go back to
         if (this._undoHistoryState < this._changeQueue.length - 1) {
             this._undoHistoryState++;
@@ -121,7 +121,7 @@ export class CustomChipPromptCanvas {
 
     }
 
-    public redo = (): void => {
+    redo = (): void => {
         // Go forward, if there is a change to go to
         if (this._undoHistoryState > 0) {
             this._undoHistoryState--;
@@ -237,7 +237,7 @@ export class CustomChipPromptCanvas {
         this._mouseDown = false;
     }
 
-    public render(): void {
+    render(): void {
         for (var i = 0; i < 64; i++) {
             this._blocks.children[i].setAttribute("y", "" + ((this.chipData[i] + 24) * (this._editorHeight / 49)));
         }
@@ -246,9 +246,9 @@ export class CustomChipPromptCanvas {
 
 export class CustomChipPrompt implements Prompt {
 
-    public customChipCanvas: CustomChipPromptCanvas = new CustomChipPromptCanvas(this._doc);
+    customChipCanvas: CustomChipPromptCanvas = new CustomChipPromptCanvas(this._doc);
 
-    public readonly _playButton: HTMLButtonElement = button({ style: "width: 55%;", type: "button" });
+    readonly _playButton: HTMLButtonElement = button({ style: "width: 55%;", type: "button" });
 
     private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
     private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
@@ -270,7 +270,7 @@ export class CustomChipPrompt implements Prompt {
     ]);
     private readonly copyPasteContainer: HTMLDivElement = div({ style: "width: 185px;" }, this.copyButton, this.pasteButton);
 
-    public readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 600px;" },
+    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 600px;" },
         h2("Edit Custom Chip Instrument"),
         div({ style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
             this._playButton,
@@ -306,7 +306,7 @@ export class CustomChipPrompt implements Prompt {
         this.updatePlayButton();
     }
 
-    public updatePlayButton(): void {
+    updatePlayButton(): void {
         if (this._doc.synth.playing) {
             this._playButton.classList.remove("playButton");
             this._playButton.classList.add("pauseButton");
@@ -325,7 +325,7 @@ export class CustomChipPrompt implements Prompt {
         this._doc.undo();
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         this._okayButton.removeEventListener("click", this._saveChanges);
         this._cancelButton.removeEventListener("click", this._close);
         this.container.removeEventListener("keydown", this.whenKeyPressed);
@@ -347,7 +347,7 @@ export class CustomChipPrompt implements Prompt {
         new ChangeCustomWave(this._doc, this.customChipCanvas.chipData);
     }
 
-    public whenKeyPressed = (event: KeyboardEvent): void => {
+    whenKeyPressed = (event: KeyboardEvent): void => {
         if ((<Element>event.target).tagName != "BUTTON" && event.keyCode == 13) { // Enter key
             this._saveChanges();
         }

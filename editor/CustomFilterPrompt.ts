@@ -15,18 +15,18 @@ const { button, div, h2, p } = HTML;
 
 export class CustomFilterPrompt implements Prompt {
 
-    public filterEditor: FilterEditor;
+    filterEditor: FilterEditor;
 
-    public filterData: FilterSettings = new FilterSettings;
-    public startingFilterData: FilterSettings = new FilterSettings;
+    filterData: FilterSettings = new FilterSettings;
+    startingFilterData: FilterSettings = new FilterSettings;
 
     private _subfilterIndex = 0;
 
-    public readonly _playButton: HTMLButtonElement = button({ style: "width: 55%;", type: "button" });
+    readonly _playButton: HTMLButtonElement = button({ style: "width: 55%;", type: "button" });
 
-    public readonly _filterButtons: HTMLButtonElement[] = [];
+    readonly _filterButtons: HTMLButtonElement[] = [];
 
-    public readonly _filterButtonContainer: HTMLDivElement = div({ class: "instrument-bar", style: "justify-content: center;" });
+    readonly _filterButtonContainer: HTMLDivElement = div({ class: "instrument-bar", style: "justify-content: center;" });
 
     private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
     private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
@@ -54,7 +54,7 @@ export class CustomFilterPrompt implements Prompt {
 
     private readonly _filterCoordinateText: HTMLDivElement = div({ style: "text-align: left; margin-bottom: 0px; font-size: x-small; height: 1.3em; color: " + ColorConfig.secondaryText + ";" }, p(""));
 
-    public readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 600px;" },
+    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 600px;" },
         this._editorTitle,
         div({ style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
             this._playButton
@@ -169,7 +169,7 @@ export class CustomFilterPrompt implements Prompt {
         this.updatePlayButton();
     }
 
-    public updatePlayButton(): void {
+    updatePlayButton(): void {
         if (this._doc.synth.playing) {
             this._playButton.classList.remove("playButton");
             this._playButton.classList.add("pauseButton");
@@ -190,7 +190,7 @@ export class CustomFilterPrompt implements Prompt {
         this._doc.undo();
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         this._okayButton.removeEventListener("click", this._saveChanges);
         this._cancelButton.removeEventListener("click", this._close);
         this.container.removeEventListener("keydown", this.whenKeyPressed);
@@ -198,7 +198,7 @@ export class CustomFilterPrompt implements Prompt {
         this._playButton.removeEventListener("click", this._togglePlay);
     }
 
-    public whenKeyPressed = (event: KeyboardEvent): void => {
+    whenKeyPressed = (event: KeyboardEvent): void => {
         if ((<Element>event.target).tagName != "BUTTON" && event.keyCode == 13) { // Enter key
             this._saveChanges();
         }

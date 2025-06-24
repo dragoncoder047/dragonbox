@@ -34,7 +34,7 @@ class VisualLoopControlsHandle {
     private _handleDragOffset: number | null = null;
     private _canvasWidth: number;
     private _canvasHeight: number;
-    public canvas: HTMLCanvasElement | null = null;
+    canvas: HTMLCanvasElement | null = null;
     private _context: CanvasRenderingContext2D | null = null;
 
     constructor(value: number, canvasWidth: number, canvasHeight: number, viewportX0: number, viewportX1: number, validator: HandleValueValidator, whenValueChanges: HandleValueChangeHandler, whenMouseUpHappens: () => void, shapeFunction: ShapeFunction | null) {
@@ -58,11 +58,11 @@ class VisualLoopControlsHandle {
         this.canvas!.addEventListener("touchcancel", this._whenTouchIsUp);
     }
 
-    public update = (newValue: number): void => {
+    update = (newValue: number): void => {
         this._value = this._validator(newValue);
     }
 
-    public render = (): void => {
+    render = (): void => {
         const cnv: HTMLCanvasElement = this.canvas!;
         const ctx: CanvasRenderingContext2D = this._context!;
         const w: number = cnv.width;
@@ -82,7 +82,7 @@ class VisualLoopControlsHandle {
         this._shapeFunction(cnv, ctx, bx, by, bw, bh);
     }
 
-    public updateViewport = (x0: number, x1: number): void => {
+    updateViewport = (x0: number, x1: number): void => {
         this._viewportX0 = x0;
         this._viewportX1 = x1;
     }
@@ -199,7 +199,7 @@ class VisualLoopControlsHandle {
         this._whenMouseUpHappens();
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         window.removeEventListener("mousemove", this._whenMouseMoves);
         this.canvas!.removeEventListener("mousedown", this._whenMouseIsDown);
         window.removeEventListener("mouseup", this._whenMouseIsUp);
@@ -413,7 +413,7 @@ export class VisualLoopControlsPrompt {
             )
         )
     );
-    public container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 500px;" },
+    container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 500px;" },
         div(
             h2({ style: "margin-bottom: 0.5em;" }, "Loop Controls"),
             this._sampleIsLoadingMessage,
@@ -423,7 +423,7 @@ export class VisualLoopControlsPrompt {
         this._cancelButton
     );
 
-    public gotMouseUp: boolean = false;
+    gotMouseUp: boolean = false;
 
     constructor(_doc: SongDocument, _songEditor: SongEditor) {
         this._doc = _doc;
@@ -518,7 +518,7 @@ export class VisualLoopControlsPrompt {
         return [y0, y1];
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         this._startOffsetHandle.cleanUp();
         this._loopStartHandle.cleanUp();
         this._loopEndHandle.cleanUp();

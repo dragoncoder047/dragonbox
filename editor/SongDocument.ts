@@ -29,35 +29,35 @@ interface HistoryState {
 }
 
 export class SongDocument {
-    public colorTheme: string;
-    public song: Song;
-    public synth: Synth;
-    public performance: SongPerformance;
-    public readonly notifier: ChangeNotifier = new ChangeNotifier();
-    public readonly selection: Selection = new Selection(this);
-    public readonly prefs: Preferences = new Preferences();
-    public channel: number = 0;
-    public muteEditorChannel: number = 0;
-    public bar: number = 0;
-    public recalcChannelNames: boolean;
-    public recalcChannelColors: boolean;
-    public recalcModChannels: boolean;
-    public recentPatternInstruments: number[][] = [];
-    public viewedInstrument: number[] = [];
-    public recordingModulators: boolean = false;
-    public continuingModRecordingChange: ChangeHoldingModRecording | null = null;
+    colorTheme: string;
+    song: Song;
+    synth: Synth;
+    performance: SongPerformance;
+    readonly notifier: ChangeNotifier = new ChangeNotifier();
+    readonly selection: Selection = new Selection(this);
+    readonly prefs: Preferences = new Preferences();
+    channel: number = 0;
+    muteEditorChannel: number = 0;
+    bar: number = 0;
+    recalcChannelNames: boolean;
+    recalcChannelColors: boolean;
+    recalcModChannels: boolean;
+    recentPatternInstruments: number[][] = [];
+    viewedInstrument: number[] = [];
+    recordingModulators: boolean = false;
+    continuingModRecordingChange: ChangeHoldingModRecording | null = null;
 
-    public trackVisibleBars: number = 16;
-    public trackVisibleChannels: number = 4;
-    public barScrollPos: number = 0;
-    public channelScrollPos: number = 0;
-    public prompt: string | null = null;
-    public promptEffectIndex: number | null = null;
+    trackVisibleBars: number = 16;
+    trackVisibleChannels: number = 4;
+    barScrollPos: number = 0;
+    channelScrollPos: number = 0;
+    prompt: string | null = null;
+    promptEffectIndex: number | null = null;
 
-    public addedEffect: boolean = false;
-    public addedEnvelope: boolean = false;
-    public currentPatternIsDirty: boolean = false;
-    public modRecordingHandler: () => void;
+    addedEffect: boolean = false;
+    addedEnvelope: boolean = false;
+    currentPatternIsDirty: boolean = false;
+    modRecordingHandler: () => void;
 
     private static readonly _maximumUndoHistory: number = 300;
     private _recovery: SongRecovery = new SongRecovery();
@@ -67,7 +67,7 @@ export class SongDocument {
     private _lastSequenceNumber: number = 0;
     private _stateShouldBePushed: boolean = false;
     private _recordedNewSong: boolean = false;
-    public _waitingToUpdateState: boolean = false;
+    _waitingToUpdateState: boolean = false;
 
     constructor() {
         this.notifier.watch(this._validateDocState);
@@ -134,7 +134,7 @@ export class SongDocument {
         this.performance = new SongPerformance(this);
     }
 
-    public toggleDisplayBrowserUrl() {
+    toggleDisplayBrowserUrl() {
         const state: HistoryState | null = this._getHistoryState();
         if (state == null) throw new Error("History state is null.");
         this.prefs.displayBrowserUrl = !this.prefs.displayBrowserUrl;
@@ -187,7 +187,7 @@ export class SongDocument {
         this._lastSequenceNumber = state.sequenceNumber;
     }
 
-	public hasRedoHistory(): boolean {
+	hasRedoHistory(): boolean {
 		return this._lastSequenceNumber > this._sequenceNumber;
 	}	
 		
@@ -375,7 +375,7 @@ export class SongDocument {
         this._recordedNewSong = false;
     }
 
-    public record(change: Change, replace: boolean = false, newSong: boolean = false): void {
+    record(change: Change, replace: boolean = false, newSong: boolean = false): void {
         if (change.isNoop()) {
             this._recentChange = null;
             if (replace) this._back();
@@ -398,7 +398,7 @@ export class SongDocument {
         this._recoveryUid = generateUid();
     }
 
-    public openPrompt(prompt: string, effectIndex?: number): void {
+    openPrompt(prompt: string, effectIndex?: number): void {
         this.prompt = prompt;
         if (effectIndex != undefined) this.promptEffectIndex = effectIndex;
         const hash: string = this.song.toBase64String();
@@ -407,32 +407,32 @@ export class SongDocument {
         this._pushState(state, hash);
     }
 
-    public undo(): void {
+    undo(): void {
         const state: HistoryState | null = this._getHistoryState();
         if (state == null || state.canUndo) this._back();
     }
 
-    public redo(): void {
+    redo(): void {
         this._forward();
     }
 
-    public setProspectiveChange(change: Change | null): void {
+    setProspectiveChange(change: Change | null): void {
         this._recentChange = change;
     }
 
-    public forgetLastChange(): void {
+    forgetLastChange(): void {
         this._recentChange = null;
     }
 
-    public checkLastChange(): Change | null {
+    checkLastChange(): Change | null {
         return this._recentChange;
     }
 
-    public lastChangeWas(change: Change | null): boolean {
+    lastChangeWas(change: Change | null): boolean {
         return change != null && change == this._recentChange;
     }
 
-    public goBackToStart(): void {
+    goBackToStart(): void {
         this.bar = 0;
         this.channel = 0;
         this.barScrollPos = 0;
@@ -441,7 +441,7 @@ export class SongDocument {
         this.notifier.changed();
     }
 
-    public setVolume(val: number): void {
+    setVolume(val: number): void {
         this.prefs.volume = val;
         this.prefs.save();
         this.synth.volume = this._calcVolume();
@@ -451,11 +451,11 @@ export class SongDocument {
         return Math.min(1.0, Math.pow(this.prefs.volume / 50.0, 0.5)) * Math.pow(2.0, (this.prefs.volume - 75.0) / 25.0);
     }
 
-    public getCurrentPattern(barOffset: number = 0): Pattern | null {
+    getCurrentPattern(barOffset: number = 0): Pattern | null {
         return this.song.getPattern(this.channel, this.bar + barOffset);
     }
 
-    public getCurrentInstrument(barOffset: number = 0): number {
+    getCurrentInstrument(barOffset: number = 0): number {
         if (barOffset == 0) {
             return this.viewedInstrument[this.channel];
         } else {
@@ -464,35 +464,35 @@ export class SongDocument {
         }
     }
 
-    public getMobileLayout(): boolean {
+    getMobileLayout(): boolean {
         return (this.prefs.layout == "wide") ? window.innerWidth <= 1000 : window.innerWidth <= 710;
     }
 
-    public getBarWidth(): number {
+    getBarWidth(): number {
         // Bugfix: In wide fullscreen, the 32 pixel display doesn't work as the trackEditor is still horizontally constrained
         return (!this.getMobileLayout() && this.prefs.enableChannelMuting && (!this.getFullScreen() || this.prefs.layout == "wide")) ? 30 : 32;
     }
 
-    public getChannelHeight(): number {
+    getChannelHeight(): number {
         const squashed: boolean = this.getMobileLayout() || this.song.getChannelCount() > 4 || (this.song.barCount > this.trackVisibleBars && this.song.getChannelCount() > 3);
         // TODO: Jummbox widescreen should allow more channels before squashing or megasquashing
         const megaSquashed: boolean = !this.getMobileLayout() && (((this.prefs.layout != "wide") && this.song.getChannelCount() > 11) || this.song.getChannelCount() > 22);
         return megaSquashed ? 23 : (squashed ? 27 : 32);
     }
 
-    public getFullScreen(): boolean {
+    getFullScreen(): boolean {
         return !this.getMobileLayout() && (this.prefs.layout != "small") && (this.prefs.layout != "small+");
     }
 
-    public getVisibleOctaveCount(): number {
+    getVisibleOctaveCount(): number {
         return this.getFullScreen() ? this.prefs.visibleOctaves : Preferences.defaultVisibleOctaves;
     }
 
-    public getVisiblePitchCount(): number {
+    getVisiblePitchCount(): number {
         return this.getVisibleOctaveCount() * Config.pitchesPerOctave + 1;
     }
 
-    public getBaseVisibleOctave(channel: number): number {
+    getBaseVisibleOctave(channel: number): number {
         const visibleOctaveCount: number = this.getVisibleOctaveCount();
         return Math.max(0, Math.min(Config.pitchOctaves - visibleOctaveCount, Math.ceil(this.song.channels[channel].octave - visibleOctaveCount * 0.5)));
     }

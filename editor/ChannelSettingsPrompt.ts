@@ -20,7 +20,7 @@ export class ChannelSettingsPrompt implements Prompt {
     private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
     private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
 
-    public readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 250px; text-align: right;" },
+    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 250px; text-align: right;" },
         h2("Channel Settings"),
         label({ style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
             "Pitch channels:",
@@ -96,7 +96,7 @@ export class ChannelSettingsPrompt implements Prompt {
         this._doc.undo();
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         this._okayButton.removeEventListener("click", this._saveChanges);
         this._cancelButton.removeEventListener("click", this._close);
         this._patternsStepper.removeEventListener("keypress", ChannelSettingsPrompt._validateKey);

@@ -12,47 +12,47 @@ import { xxHash32 } from "js-xxhash";
 export class EnvelopeComputer {
     // "Unscaled" values do not increase with Envelope Speed's timescale factor. Thus they are "real" seconds since the start of the note.
     // Fade envelopes notably use unscaled values instead of being tied to Envelope Speed.
-    public noteSecondsStart: number[] = [];
-    public noteSecondsStartUnscaled: number = 0.0;
-    public noteSecondsEnd: number[] = [];
-    public noteSecondsEndUnscaled: number = 0.0;
-    public noteTicksStart: number = 0.0;
-    public noteTicksEnd: number = 0.0;
-    public noteSizeStart: number = Config.noteSizeMax;
-    public noteSizeEnd: number = Config.noteSizeMax;
-    public prevNoteSize: number = Config.noteSizeMax;
-    public nextNoteSize: number = Config.noteSizeMax;
+    noteSecondsStart: number[] = [];
+    noteSecondsStartUnscaled: number = 0.0;
+    noteSecondsEnd: number[] = [];
+    noteSecondsEndUnscaled: number = 0.0;
+    noteTicksStart: number = 0.0;
+    noteTicksEnd: number = 0.0;
+    noteSizeStart: number = Config.noteSizeMax;
+    noteSizeEnd: number = Config.noteSizeMax;
+    prevNoteSize: number = Config.noteSizeMax;
+    nextNoteSize: number = Config.noteSizeMax;
     private _noteSizeFinal: number = Config.noteSizeMax;
-    public prevNoteSecondsStart: number[] = [];
-    public prevNoteSecondsStartUnscaled: number = 0.0;
-    public prevNoteSecondsEnd: number[] = [];
-    public prevNoteSecondsEndUnscaled: number = 0.0;
-    public prevNoteTicksStart: number = 0.0;
-    public prevNoteTicksEnd: number = 0.0;
+    prevNoteSecondsStart: number[] = [];
+    prevNoteSecondsStartUnscaled: number = 0.0;
+    prevNoteSecondsEnd: number[] = [];
+    prevNoteSecondsEndUnscaled: number = 0.0;
+    prevNoteTicksStart: number = 0.0;
+    prevNoteTicksEnd: number = 0.0;
     private _prevNoteSizeFinal: number = Config.noteSizeMax;
-    public tickTimeEnd: number[] = [];
+    tickTimeEnd: number[] = [];
 
-    public drumsetFilterEnvelopeStart: number = 0.0;
-    public drumsetFilterEnvelopeEnd: number = 0.0;
+    drumsetFilterEnvelopeStart: number = 0.0;
+    drumsetFilterEnvelopeEnd: number = 0.0;
 
-    public prevSlideStart: boolean = false;
-    public prevSlideEnd: boolean = false;
-    public nextSlideStart: boolean = false;
-    public nextSlideEnd: boolean = false;
-    public prevSlideRatioStart: number = 0.0;
-    public prevSlideRatioEnd: number = 0.0;
-    public nextSlideRatioStart: number = 0.0;
-    public nextSlideRatioEnd: number = 0.0;
+    prevSlideStart: boolean = false;
+    prevSlideEnd: boolean = false;
+    nextSlideStart: boolean = false;
+    nextSlideEnd: boolean = false;
+    prevSlideRatioStart: number = 0.0;
+    prevSlideRatioEnd: number = 0.0;
+    nextSlideRatioStart: number = 0.0;
+    nextSlideRatioEnd: number = 0.0;
 
-    public startPinTickAbsolute: number | null = null;
+    startPinTickAbsolute: number | null = null;
     private startPinTickDefaultPitch: number | null = null;
     private startPinTickPitch: number | null = null;
 
-    public readonly envelopeStarts: number[] = [];
-    public readonly envelopeEnds: number[] = [];
+    readonly envelopeStarts: number[] = [];
+    readonly envelopeEnds: number[] = [];
     private readonly _modifiedEnvelopeIndices: number[] = [];
     private _modifiedEnvelopeCount: number = 0;
-    public lowpassCutoffDecayVolumeCompensation: number = 1.0;
+    lowpassCutoffDecayVolumeCompensation: number = 1.0;
 
     constructor(/*private _perNote: boolean*/) {
         //const length: number = this._perNote ? EnvelopeComputeIndex.length : InstrumentAutomationIndex.length;
@@ -65,7 +65,7 @@ export class EnvelopeComputer {
         this.reset();
     }
 
-    public reset(): void {
+    reset(): void {
         for (let envelopeIndex: number = 0; envelopeIndex < Config.maxEnvelopeCount + 1; envelopeIndex++) {
             this.noteSecondsEnd[envelopeIndex] = 0.0;
             this.prevNoteSecondsEnd[envelopeIndex] = 0.0;
@@ -84,7 +84,7 @@ export class EnvelopeComputer {
         this.startPinTickPitch = null;
     }
 
-    public computeEnvelopes(instrument: Instrument, currentPart: number, tickTimeStart: number[], tickTimeStartReal: number, secondsPerTick: number, tone: Tone | null, timeScale: number[], instrumentState: InstrumentState, synth: Synth, channelIndex: number, instrumentIndex: number): void {
+    computeEnvelopes(instrument: Instrument, currentPart: number, tickTimeStart: number[], tickTimeStartReal: number, secondsPerTick: number, tone: Tone | null, timeScale: number[], instrumentState: InstrumentState, synth: Synth, channelIndex: number, instrumentIndex: number): void {
         const secondsPerTickUnscaled: number = secondsPerTick;
         const transition: Transition = instrument.getTransition();
         if (tone != null && tone.atNoteStart && !transition.continues && !tone.forceContinueAtStart) {
@@ -327,7 +327,7 @@ export class EnvelopeComputer {
         this.lowpassCutoffDecayVolumeCompensation = lowpassCutoffDecayVolumeCompensation;
     }
 
-    public clearEnvelopes(): void {
+    clearEnvelopes(): void {
         for (let envelopeIndex: number = 0; envelopeIndex < this._modifiedEnvelopeCount; envelopeIndex++) {
             const computeIndex: number = this._modifiedEnvelopeIndices[envelopeIndex];
             this.envelopeStarts[computeIndex] = 1.0;
@@ -336,7 +336,7 @@ export class EnvelopeComputer {
         this._modifiedEnvelopeCount = 0;
     }
 
-    public static computeEnvelope(envelope: Envelope, perEnvelopeSpeed: number, globalEnvelopeSpeed: number, unspedTime: number, time: number, beats: number, timeSinceStart: number, noteSize: number, pitch: number, inverse: boolean, perEnvelopeLowerBound: number, perEnvelopeUpperBound: number, isDrumset: boolean = false, steps: number, seed: number, waveform: number, defaultPitch: number, notePinStart: number): number {
+    static computeEnvelope(envelope: Envelope, perEnvelopeSpeed: number, globalEnvelopeSpeed: number, unspedTime: number, time: number, beats: number, timeSinceStart: number, noteSize: number, pitch: number, inverse: boolean, perEnvelopeLowerBound: number, perEnvelopeUpperBound: number, isDrumset: boolean = false, steps: number, seed: number, waveform: number, defaultPitch: number, notePinStart: number): number {
         const envelopeSpeed = isDrumset ? envelope.speed : 1;
         const boundAdjust = (perEnvelopeUpperBound - perEnvelopeLowerBound);
         switch (envelope.type) {
@@ -521,7 +521,7 @@ export class EnvelopeComputer {
 
     }
 
-    public getPitchValue(instrument: Instrument, tone: Tone | null, instrumentState: InstrumentState, calculateBends: boolean = true): number {
+    getPitchValue(instrument: Instrument, tone: Tone | null, instrumentState: InstrumentState, calculateBends: boolean = true): number {
         if (tone && tone.pitchCount >= 1) {
             const chord = instrument.getChord();
             const arpeggiates = chord.arpeggiates;
@@ -537,7 +537,7 @@ export class EnvelopeComputer {
         return 0;
     }
 
-    public computePitchEnvelope(instrument: Instrument, index: number, pitch: number = 0): number {
+    computePitchEnvelope(instrument: Instrument, index: number, pitch: number = 0): number {
         let startNote: number = 0;
         let endNote: number = Config.maxPitch;
         let inverse: boolean = false;
@@ -581,7 +581,7 @@ export class EnvelopeComputer {
         }
     }
 
-    public static getLowpassCutoffDecayVolumeCompensation(envelope: Envelope, perEnvelopeSpeed: number = 1): number {
+    static getLowpassCutoffDecayVolumeCompensation(envelope: Envelope, perEnvelopeSpeed: number = 1): number {
         // This is a little hokey in the details, but I designed it a while ago and keep it
         // around for compatibility. This decides how much to increase the volume (or
         // expression) to compensate for a decaying lowpass cutoff to maintain perceived
@@ -591,7 +591,7 @@ export class EnvelopeComputer {
         return 1.0;
     }
 
-    public computeDrumsetEnvelopes(instrument: Instrument, drumsetFilterEnvelope: Envelope, beatsPerPart: number, partTimeStart: number, partTimeEnd: number) {
+    computeDrumsetEnvelopes(instrument: Instrument, drumsetFilterEnvelope: Envelope, beatsPerPart: number, partTimeStart: number, partTimeEnd: number) {
 
         const pitch = 1
 

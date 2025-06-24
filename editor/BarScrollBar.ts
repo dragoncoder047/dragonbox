@@ -25,7 +25,7 @@ export class BarScrollBar {
         this._playhead,
     );
 
-    public readonly container: HTMLElement = HTML.div({ class: "barScrollBar", style: "width: 512px; height: 20px; overflow: hidden; position: relative;" }, this._svg);
+    readonly container: HTMLElement = HTML.div({ class: "barScrollBar", style: "width: 512px; height: 20px; overflow: hidden; position: relative;" }, this._svg);
 
     private _mouseX: number = 0;
     private _mouseDown: boolean = false;
@@ -56,7 +56,7 @@ export class BarScrollBar {
         this.container.addEventListener("touchcancel", this._whenCursorReleased);
     }
 
-    public animatePlayhead = (): void => {
+    animatePlayhead = (): void => {
         const playhead = Math.min(512, Math.max(0, (this._notchSpace * this._doc.synth.playhead - 2)));
         if (this._renderedPlayhead != playhead) {
             this._renderedPlayhead = playhead;
@@ -142,7 +142,7 @@ export class BarScrollBar {
         if (this._mouseOver) this._updatePreview();
     }
 
-    public changePos(offset: number) {
+    changePos(offset: number) {
         while (Math.abs(offset) >= 1) {
 
             if (offset < 0) {
@@ -201,7 +201,7 @@ export class BarScrollBar {
         this._handleHighlight.style.visibility = showHandleHighlight ? "visible" : "hidden";
     }
 
-    public render(): void {
+    render(): void {
         this._notchSpace = (this._editorWidth - 1) / Math.max(this._doc.trackVisibleBars, this._doc.song.barCount);
 
         const resized: boolean = this._renderedNotchCount != this._doc.song.barCount;

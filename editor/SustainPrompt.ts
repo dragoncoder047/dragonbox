@@ -18,7 +18,7 @@ export class SustainPrompt implements Prompt {
     private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
     private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
 
-    public readonly container: HTMLDivElement = div({ class: "prompt", style: "width: 300px;" },
+    readonly container: HTMLDivElement = div({ class: "prompt", style: "width: 300px;" },
         div(
             h2("String Sustain"),
             p("This setting controls how quickly the picked string vibration decays."),
@@ -49,7 +49,7 @@ export class SustainPrompt implements Prompt {
         this._doc.undo();
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         this._okayButton.removeEventListener("click", this._saveChanges);
         this._cancelButton.removeEventListener("click", this._close);
         this.container.removeEventListener("keydown", this._whenKeyPressed);

@@ -11,7 +11,7 @@ export class Piano {
     private readonly _drumContainer: HTMLDivElement = HTML.div({ style: "width: 100%; height: 100%; display: flex; flex-direction: column-reverse; align-items: stretch;" });
     private readonly _modContainer: HTMLDivElement = HTML.div({ style: "width: 100%; height: 100%; display: flex; flex-direction: column-reverse; align-items: stretch;" });
     private readonly _preview: HTMLDivElement = HTML.div({ style: `width: 100%; height: 40px; border: 2px solid ${ColorConfig.primaryText}; position: absolute; box-sizing: border-box; pointer-events: none;` });
-    public readonly container: HTMLDivElement = HTML.div({ style: "width: 32px; height: 100%; overflow: hidden; position: relative; flex-shrink: 0; touch-action: none;" },
+    readonly container: HTMLDivElement = HTML.div({ style: "width: 32px; height: 100%; overflow: hidden; position: relative; flex-shrink: 0; touch-action: none;" },
         this._pianoContainer,
         this._drumContainer,
         this._modContainer,
@@ -41,13 +41,13 @@ export class Piano {
     private readonly _renderedLiveInputPitches: number[] = [];
 
 
-    public forceRender(): void {
+    forceRender(): void {
         this._renderedScale = -1;
         this._documentChanged();
     }
 
     // Bass cutoff pitch is roughly half of the viewed window and below, though on odd-numbered octave counts the lead has priority for the middle octave.
-    public static getBassCutoffPitch(doc: SongDocument): number {
+    static getBassCutoffPitch(doc: SongDocument): number {
         const octaveOffset: number = doc.getBaseVisibleOctave(doc.channel);
         return octaveOffset * Config.pitchesPerOctave + Math.floor(doc.getVisiblePitchCount() / (Config.pitchesPerOctave * 2)) * Config.pitchesPerOctave;
     }
@@ -558,7 +558,7 @@ export class Piano {
         this._updatePreview();
     }
 
-    public static getPitchName(pitchNameIndex: number, scaleIndex: number, baseVisibleOctave: number): string {
+    static getPitchName(pitchNameIndex: number, scaleIndex: number, baseVisibleOctave: number): string {
         let text: string;
 
         // May wanna adjust this a little bit so a key and both it's sharp/flat won't all 

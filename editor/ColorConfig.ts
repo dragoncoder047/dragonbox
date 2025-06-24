@@ -12,10 +12,10 @@ export interface ChannelColors extends BeepBoxOption {
 }
 
 export class ColorConfig {
-    public static colorLookup: Map<number, ChannelColors> = new Map<number, ChannelColors>();
-	public static usesColorFormula: boolean = false;
-	public static readonly defaultTheme: string = "modbox classic";
-    public static readonly themes: { [name: string]: string } = {
+    static colorLookup: Map<number, ChannelColors> = new Map<number, ChannelColors>();
+	static usesColorFormula: boolean = false;
+	static readonly defaultTheme: string = "modbox classic";
+    static readonly themes: { [name: string]: string } = {
 	"dark classic": ``,
         "dark competition": `
 				:root {
@@ -5650,222 +5650,222 @@ export class ColorConfig {
 	"custom": `${localStorage.getItem("customColors") || `:root {  }`}`,
     };
 
-    public static readonly pageMargin: string = "var(--page-margin, black)";
-    public static readonly editorBackground: string = "var(--editor-background, black)";
-    public static readonly hoverPreview: string = "var(--hover-preview, white)";
-    public static readonly playhead: string = "var(--playhead, white)";
-    public static readonly primaryText: string = "var(--primary-text, white)";
-    public static readonly secondaryText: string = "var(--secondary-text, #999)";
-    public static readonly invertedText: string = "var(--inverted-text, black)";
-    public static readonly textSelection: string = "var(--text-selection, rgba(119,68,255,0.99))";
-    public static readonly boxSelectionFill: string = "var(--box-selection-fill, rgba(255,255,255,0.2))";
-    public static readonly loopAccent: string = "var(--loop-accent, #74f)";
-    public static readonly linkAccent: string = "var(--link-accent, #98f)";
-    public static readonly uiWidgetBackground: string = "var(--ui-widget-background, #444)";
-    public static readonly uiWidgetFocus: string = "var(--ui-widget-focus, #777)";
-    public static readonly pitchBackground: string = "var(--pitch-background, #444)";
-    public static readonly tonic: string = "var(--tonic, #864)";
-    public static readonly fifthNote: string = "var(--fifth-note, #468)";
-    public static readonly whitePianoKey: string = "var(--white-piano-key, #bbb)";
-    public static readonly blackPianoKey: string = "var(--black-piano-key, #444)";
-    public static readonly whitePianoKeyText: string = "var(--white-piano-key-text, #131200)";
-    public static readonly blackPianoKeyText: string = "var(--black-piano-key-text, #fff)";
+    static readonly pageMargin: string = "var(--page-margin, black)";
+    static readonly editorBackground: string = "var(--editor-background, black)";
+    static readonly hoverPreview: string = "var(--hover-preview, white)";
+    static readonly playhead: string = "var(--playhead, white)";
+    static readonly primaryText: string = "var(--primary-text, white)";
+    static readonly secondaryText: string = "var(--secondary-text, #999)";
+    static readonly invertedText: string = "var(--inverted-text, black)";
+    static readonly textSelection: string = "var(--text-selection, rgba(119,68,255,0.99))";
+    static readonly boxSelectionFill: string = "var(--box-selection-fill, rgba(255,255,255,0.2))";
+    static readonly loopAccent: string = "var(--loop-accent, #74f)";
+    static readonly linkAccent: string = "var(--link-accent, #98f)";
+    static readonly uiWidgetBackground: string = "var(--ui-widget-background, #444)";
+    static readonly uiWidgetFocus: string = "var(--ui-widget-focus, #777)";
+    static readonly pitchBackground: string = "var(--pitch-background, #444)";
+    static readonly tonic: string = "var(--tonic, #864)";
+    static readonly fifthNote: string = "var(--fifth-note, #468)";
+    static readonly whitePianoKey: string = "var(--white-piano-key, #bbb)";
+    static readonly blackPianoKey: string = "var(--black-piano-key, #444)";
+    static readonly whitePianoKeyText: string = "var(--white-piano-key-text, #131200)";
+    static readonly blackPianoKeyText: string = "var(--black-piano-key-text, #fff)";
 	//public static readonly oscilloscopeLineL: string = "var(--oscilloscope-line-L, var(--primary-text, white))";
 	//public static readonly oscilloscopeLineR: string = "var(--oscilloscope-line-R, var(--text-selection, rgba(119,68,255,0.99)))";
 	// modTitle can stay uncommented until it's used somwhere that's not index.html
 	// public static readonly modTitle: string = "var(--mod-title)";
-    public static readonly useColorFormula: string = "var(--use-color-formula, false)";
+    static readonly useColorFormula: string = "var(--use-color-formula, false)";
 	// public static readonly pitchLimit: string = "var(--pitch-channel-limit)";
 	// public static readonly noiseLimit: string = "var(--noise-channel-limit)";
 	// public static readonly modLimit: string = "var(--mod-channel-limit)";
 	// public static readonly colorFormulaPitchLimit: string = "var(--formula-pitch-channel-limit)";
 	// public static readonly colorFormulaNoiseLimit: string = "var(--formula-noise-channel-limit)";
 	// public static readonly colorFormulaModLimit: string = "var(--formula-mod-channel-limit)";
-    public static readonly pitchSecondaryChannelHue: string = "var(--pitch-secondary-channel-hue)";
-    public static readonly pitchSecondaryChannelHueScale: string = "var(--pitch-secondary-channel-hue-scale)";
-    public static readonly pitchSecondaryChannelSat: string = "var(--pitch-secondary-channel-sat)";
-    public static readonly pitchSecondaryChannelSatScale: string = "var(--pitch-secondary-channel-sat-scale)";
-    public static readonly pitchSecondaryChannelLum: string = "var(--pitch-secondary-channel-lum)";
-    public static readonly pitchSecondaryChannelLumScale: string = "var(--pitch-secondary-channel-lum-scale)";
-    public static readonly pitchPrimaryChannelHue: string = "var(--pitch-primary-channel-hue)";
-    public static readonly pitchPrimaryChannelHueScale: string = "var(--pitch-primary-channel-hue-scale)";
-    public static readonly pitchPrimaryChannelSat: string = "var(--pitch-primary-channel-sat)";
-    public static readonly pitchPrimaryChannelSatScale: string = "var(--pitch-primary-channel-sat-scale)";
-    public static readonly pitchPrimaryChannelLum: string = "var(--pitch-primary-channel-lum)";
-    public static readonly pitchPrimaryChannelLumScale: string = "var(--pitch-primary-channel-lum-scale)";
-    public static readonly pitchSecondaryNoteHue: string = "var(--pitch-secondary-note-hue)";
-    public static readonly pitchSecondaryNoteHueScale: string = "var(--pitch-secondary-note-hue-scale)";
-    public static readonly pitchSecondaryNoteSat: string = "var(--pitch-secondary-note-sat)";
-    public static readonly pitchSecondaryNoteSatScale: string = "var(--pitch-secondary-note-sat-scale)";
-    public static readonly pitchSecondaryNoteLum: string = "var(--pitch-secondary-note-lum)";
-    public static readonly pitchSecondaryNoteLumScale: string = "var(--pitch-secondary-note-lum-scale)";
-    public static readonly pitchPrimaryNoteHue: string = "var(--pitch-primary-note-hue)";
-    public static readonly pitchPrimaryNoteHueScale: string = "var(--pitch-primary-note-hue-scale)";
-    public static readonly pitchPrimaryNoteSat: string = "var(--pitch-primary-note-sat)";
-    public static readonly pitchPrimaryNoteSatScale: string = "var(--pitch-primary-note-sat-scale)";
-    public static readonly pitchPrimaryNoteLum: string = "var(--pitch-primary-note-lum)";
-    public static readonly pitchPrimaryNoteLumScale: string = "var(--pitch-primary-note-lum-scale)";
-    public static readonly modSecondaryChannelHue: string = "var(--mod-secondary-channel-hue)";
-    public static readonly modSecondaryChannelHueScale: string = "var(--mod-secondary-channel-hue-scale)";
-    public static readonly modSecondaryChannelSat: string = "var(--mod-secondary-channel-sat)";
-    public static readonly modSecondaryChannelSatScale: string = "var(--mod-secondary-channel-sat-scale)";
-    public static readonly modSecondaryChannelLum: string = "var(--mod-secondary-channel-lum)";
-    public static readonly modSecondaryChannelLumScale: string = "var(--mod-secondary-channel-lum-scale)";
-    public static readonly modPrimaryChannelHue: string = "var(--mod-primary-channel-hue)";
-    public static readonly modPrimaryChannelHueScale: string = "var(--mod-primary-channel-hue-scale)";
-    public static readonly modPrimaryChannelSat: string = "var(--mod-primary-channel-sat)";
-    public static readonly modPrimaryChannelSatScale: string = "var(--mod-primary-channel-sat-scale)";
-    public static readonly modPrimaryChannelLum: string = "var(--mod-primary-channel-lum)";
-    public static readonly modPrimaryChannelLumScale: string = "var(--mod-primary-channel-lum-scale)";
-    public static readonly modSecondaryNoteHue: string = "var(--mod-secondary-note-hue)";
-    public static readonly modSecondaryNoteHueScale: string = "var(--mod-secondary-note-hue-scale)";
-    public static readonly modSecondaryNoteSat: string = "var(--mod-secondary-note-sat)";
-    public static readonly modSecondaryNoteSatScale: string = "var(--mod-secondary-note-sat-scale)";
-    public static readonly modSecondaryNoteLum: string = "var(--mod-secondary-note-lum)";
-    public static readonly modSecondaryNoteLumScale: string = "var(--mod-secondary-note-lum-scale)";
-    public static readonly modPrimaryNoteHue: string = "var(--mod-primary-note-hue)";
-    public static readonly modPrimaryNoteHueScale: string = "var(--mod-primary-note-hue-scale)";
-    public static readonly modPrimaryNoteSat: string = "var(--mod-primary-note-sat)";
-    public static readonly modPrimaryNoteSatScale: string = "var(--mod-primary-note-sat-scale)";
-    public static readonly modPrimaryNoteLum: string = "var(--mod-primary-note-lum)";
-    public static readonly modPrimaryNoteLumScale: string = "var(--mod-primary-note-lum-scale)";
-    public static readonly noiseSecondaryChannelHue: string = "var(--noise-secondary-channel-hue)";
-    public static readonly noiseSecondaryChannelHueScale: string = "var(--noise-secondary-channel-hue-scale)";
-    public static readonly noiseSecondaryChannelSat: string = "var(--noise-secondary-channel-sat)";
-    public static readonly noiseSecondaryChannelSatScale: string = "var(--noise-secondary-channel-sat-scale)";
-    public static readonly noiseSecondaryChannelLum: string = "var(--noise-secondary-channel-lum)";
-    public static readonly noiseSecondaryChannelLumScale: string = "var(--noise-secondary-channel-lum-scale)";
-    public static readonly noisePrimaryChannelHue: string = "var(--noise-primary-channel-hue)";
-    public static readonly noisePrimaryChannelHueScale: string = "var(--noise-primary-channel-hue-scale)";
-    public static readonly noisePrimaryChannelSat: string = "var(--noise-primary-channel-sat)";
-    public static readonly noisePrimaryChannelSatScale: string = "var(--noise-primary-channel-sat-scale)";
-    public static readonly noisePrimaryChannelLum: string = "var(--noise-primary-channel-lum)";
-    public static readonly noisePrimaryChannelLumScale: string = "var(--noise-primary-channel-lum-scale)";
-    public static readonly noiseSecondaryNoteHue: string = "var(--noise-secondary-note-hue)";
-    public static readonly noiseSecondaryNoteHueScale: string = "var(--noise-secondary-note-hue-scale)";
-    public static readonly noiseSecondaryNoteSat: string = "var(--noise-secondary-note-sat)";
-    public static readonly noiseSecondaryNoteSatScale: string = "var(--noise-secondary-note-sat-scale)";
-    public static readonly noiseSecondaryNoteLum: string = "var(--noise-secondary-note-lum)";
-    public static readonly noiseSecondaryNoteLumScale: string = "var(--noise-secondary-note-lum-scale)";
-    public static readonly noisePrimaryNoteHue: string = "var(--noise-primary-note-hue)";
-    public static readonly noisePrimaryNoteHueScale: string = "var(--noise-primary-note-hue-scale)";
-    public static readonly noisePrimaryNoteSat: string = "var(--noise-primary-note-sat)";
-    public static readonly noisePrimaryNoteSatScale: string = "var(--noise-primary-note-sat-scale)";
-    public static readonly noisePrimaryNoteLum: string = "var(--noise-primary-note-lum)";
-    public static readonly noisePrimaryNoteLumScale: string = "var(--noise-primary-note-lum-scale)";
-    public static readonly trackEditorBgPitch: string = "var(--track-editor-bg-pitch, #444)";
-    public static readonly trackEditorBgPitchDim: string = "var(--track-editor-bg-pitch-dim, #333)";
-    public static readonly trackEditorBgNoise: string = "var(--track-editor-bg-noise, #444)";
-    public static readonly trackEditorBgNoiseDim: string = "var(--track-editor-bg-noise-dim, #333)";
-    public static readonly trackEditorBgMod: string = "var(--track-editor-bg-mod, #234)";
-    public static readonly trackEditorBgModDim: string = "var(--track-editor-bg-mod-dim, #123)";
-    public static readonly multiplicativeModSlider: string = "var(--multiplicative-mod-slider, #456;)";
-    public static readonly overwritingModSlider: string = "var(--overwriting-mod-slider, #654)";
-    public static readonly indicatorPrimary: string = "var(--indicator-primary, #74f)";
-    public static readonly indicatorSecondary: string = "var(--indicator-secondary, #444)";
-    public static readonly select2OptGroup: string = "var(--select2-opt-group, #585858)";
-    public static readonly inputBoxOutline: string = "var(--input-box-outline, #333)";
-    public static readonly muteButtonNormal: string = "var(--mute-button-normal, #ffa033)";
-    public static readonly muteButtonMod: string = "var(--mute-button-mod, #9a6bff)";
-    public static readonly modLabelPrimary: string = "var(--mod-label-primary, #999)";
-    public static readonly modLabelSecondaryText: string = "var(--mod-label-secondary-text, #333)";
-    public static readonly modLabelPrimaryText: string = "var(--mod-label-primary-text, black)";
-    public static readonly disabledNotePrimary: string = "var(--disabled-note-primary, #999)";
-    public static readonly disabledNoteSecondary: string = "var(--disabled-note-secondary, #666)";
+    static readonly pitchSecondaryChannelHue: string = "var(--pitch-secondary-channel-hue)";
+    static readonly pitchSecondaryChannelHueScale: string = "var(--pitch-secondary-channel-hue-scale)";
+    static readonly pitchSecondaryChannelSat: string = "var(--pitch-secondary-channel-sat)";
+    static readonly pitchSecondaryChannelSatScale: string = "var(--pitch-secondary-channel-sat-scale)";
+    static readonly pitchSecondaryChannelLum: string = "var(--pitch-secondary-channel-lum)";
+    static readonly pitchSecondaryChannelLumScale: string = "var(--pitch-secondary-channel-lum-scale)";
+    static readonly pitchPrimaryChannelHue: string = "var(--pitch-primary-channel-hue)";
+    static readonly pitchPrimaryChannelHueScale: string = "var(--pitch-primary-channel-hue-scale)";
+    static readonly pitchPrimaryChannelSat: string = "var(--pitch-primary-channel-sat)";
+    static readonly pitchPrimaryChannelSatScale: string = "var(--pitch-primary-channel-sat-scale)";
+    static readonly pitchPrimaryChannelLum: string = "var(--pitch-primary-channel-lum)";
+    static readonly pitchPrimaryChannelLumScale: string = "var(--pitch-primary-channel-lum-scale)";
+    static readonly pitchSecondaryNoteHue: string = "var(--pitch-secondary-note-hue)";
+    static readonly pitchSecondaryNoteHueScale: string = "var(--pitch-secondary-note-hue-scale)";
+    static readonly pitchSecondaryNoteSat: string = "var(--pitch-secondary-note-sat)";
+    static readonly pitchSecondaryNoteSatScale: string = "var(--pitch-secondary-note-sat-scale)";
+    static readonly pitchSecondaryNoteLum: string = "var(--pitch-secondary-note-lum)";
+    static readonly pitchSecondaryNoteLumScale: string = "var(--pitch-secondary-note-lum-scale)";
+    static readonly pitchPrimaryNoteHue: string = "var(--pitch-primary-note-hue)";
+    static readonly pitchPrimaryNoteHueScale: string = "var(--pitch-primary-note-hue-scale)";
+    static readonly pitchPrimaryNoteSat: string = "var(--pitch-primary-note-sat)";
+    static readonly pitchPrimaryNoteSatScale: string = "var(--pitch-primary-note-sat-scale)";
+    static readonly pitchPrimaryNoteLum: string = "var(--pitch-primary-note-lum)";
+    static readonly pitchPrimaryNoteLumScale: string = "var(--pitch-primary-note-lum-scale)";
+    static readonly modSecondaryChannelHue: string = "var(--mod-secondary-channel-hue)";
+    static readonly modSecondaryChannelHueScale: string = "var(--mod-secondary-channel-hue-scale)";
+    static readonly modSecondaryChannelSat: string = "var(--mod-secondary-channel-sat)";
+    static readonly modSecondaryChannelSatScale: string = "var(--mod-secondary-channel-sat-scale)";
+    static readonly modSecondaryChannelLum: string = "var(--mod-secondary-channel-lum)";
+    static readonly modSecondaryChannelLumScale: string = "var(--mod-secondary-channel-lum-scale)";
+    static readonly modPrimaryChannelHue: string = "var(--mod-primary-channel-hue)";
+    static readonly modPrimaryChannelHueScale: string = "var(--mod-primary-channel-hue-scale)";
+    static readonly modPrimaryChannelSat: string = "var(--mod-primary-channel-sat)";
+    static readonly modPrimaryChannelSatScale: string = "var(--mod-primary-channel-sat-scale)";
+    static readonly modPrimaryChannelLum: string = "var(--mod-primary-channel-lum)";
+    static readonly modPrimaryChannelLumScale: string = "var(--mod-primary-channel-lum-scale)";
+    static readonly modSecondaryNoteHue: string = "var(--mod-secondary-note-hue)";
+    static readonly modSecondaryNoteHueScale: string = "var(--mod-secondary-note-hue-scale)";
+    static readonly modSecondaryNoteSat: string = "var(--mod-secondary-note-sat)";
+    static readonly modSecondaryNoteSatScale: string = "var(--mod-secondary-note-sat-scale)";
+    static readonly modSecondaryNoteLum: string = "var(--mod-secondary-note-lum)";
+    static readonly modSecondaryNoteLumScale: string = "var(--mod-secondary-note-lum-scale)";
+    static readonly modPrimaryNoteHue: string = "var(--mod-primary-note-hue)";
+    static readonly modPrimaryNoteHueScale: string = "var(--mod-primary-note-hue-scale)";
+    static readonly modPrimaryNoteSat: string = "var(--mod-primary-note-sat)";
+    static readonly modPrimaryNoteSatScale: string = "var(--mod-primary-note-sat-scale)";
+    static readonly modPrimaryNoteLum: string = "var(--mod-primary-note-lum)";
+    static readonly modPrimaryNoteLumScale: string = "var(--mod-primary-note-lum-scale)";
+    static readonly noiseSecondaryChannelHue: string = "var(--noise-secondary-channel-hue)";
+    static readonly noiseSecondaryChannelHueScale: string = "var(--noise-secondary-channel-hue-scale)";
+    static readonly noiseSecondaryChannelSat: string = "var(--noise-secondary-channel-sat)";
+    static readonly noiseSecondaryChannelSatScale: string = "var(--noise-secondary-channel-sat-scale)";
+    static readonly noiseSecondaryChannelLum: string = "var(--noise-secondary-channel-lum)";
+    static readonly noiseSecondaryChannelLumScale: string = "var(--noise-secondary-channel-lum-scale)";
+    static readonly noisePrimaryChannelHue: string = "var(--noise-primary-channel-hue)";
+    static readonly noisePrimaryChannelHueScale: string = "var(--noise-primary-channel-hue-scale)";
+    static readonly noisePrimaryChannelSat: string = "var(--noise-primary-channel-sat)";
+    static readonly noisePrimaryChannelSatScale: string = "var(--noise-primary-channel-sat-scale)";
+    static readonly noisePrimaryChannelLum: string = "var(--noise-primary-channel-lum)";
+    static readonly noisePrimaryChannelLumScale: string = "var(--noise-primary-channel-lum-scale)";
+    static readonly noiseSecondaryNoteHue: string = "var(--noise-secondary-note-hue)";
+    static readonly noiseSecondaryNoteHueScale: string = "var(--noise-secondary-note-hue-scale)";
+    static readonly noiseSecondaryNoteSat: string = "var(--noise-secondary-note-sat)";
+    static readonly noiseSecondaryNoteSatScale: string = "var(--noise-secondary-note-sat-scale)";
+    static readonly noiseSecondaryNoteLum: string = "var(--noise-secondary-note-lum)";
+    static readonly noiseSecondaryNoteLumScale: string = "var(--noise-secondary-note-lum-scale)";
+    static readonly noisePrimaryNoteHue: string = "var(--noise-primary-note-hue)";
+    static readonly noisePrimaryNoteHueScale: string = "var(--noise-primary-note-hue-scale)";
+    static readonly noisePrimaryNoteSat: string = "var(--noise-primary-note-sat)";
+    static readonly noisePrimaryNoteSatScale: string = "var(--noise-primary-note-sat-scale)";
+    static readonly noisePrimaryNoteLum: string = "var(--noise-primary-note-lum)";
+    static readonly noisePrimaryNoteLumScale: string = "var(--noise-primary-note-lum-scale)";
+    static readonly trackEditorBgPitch: string = "var(--track-editor-bg-pitch, #444)";
+    static readonly trackEditorBgPitchDim: string = "var(--track-editor-bg-pitch-dim, #333)";
+    static readonly trackEditorBgNoise: string = "var(--track-editor-bg-noise, #444)";
+    static readonly trackEditorBgNoiseDim: string = "var(--track-editor-bg-noise-dim, #333)";
+    static readonly trackEditorBgMod: string = "var(--track-editor-bg-mod, #234)";
+    static readonly trackEditorBgModDim: string = "var(--track-editor-bg-mod-dim, #123)";
+    static readonly multiplicativeModSlider: string = "var(--multiplicative-mod-slider, #456;)";
+    static readonly overwritingModSlider: string = "var(--overwriting-mod-slider, #654)";
+    static readonly indicatorPrimary: string = "var(--indicator-primary, #74f)";
+    static readonly indicatorSecondary: string = "var(--indicator-secondary, #444)";
+    static readonly select2OptGroup: string = "var(--select2-opt-group, #585858)";
+    static readonly inputBoxOutline: string = "var(--input-box-outline, #333)";
+    static readonly muteButtonNormal: string = "var(--mute-button-normal, #ffa033)";
+    static readonly muteButtonMod: string = "var(--mute-button-mod, #9a6bff)";
+    static readonly modLabelPrimary: string = "var(--mod-label-primary, #999)";
+    static readonly modLabelSecondaryText: string = "var(--mod-label-secondary-text, #333)";
+    static readonly modLabelPrimaryText: string = "var(--mod-label-primary-text, black)";
+    static readonly disabledNotePrimary: string = "var(--disabled-note-primary, #999)";
+    static readonly disabledNoteSecondary: string = "var(--disabled-note-secondary, #666)";
 
-    public static c_pitchSecondaryChannelHue: number = 0;
-    public static c_pitchSecondaryChannelHueScale: number = 0;
-    public static c_pitchSecondaryChannelSat: number = 0;
-    public static c_pitchSecondaryChannelSatScale: number = 0;
-    public static c_pitchSecondaryChannelLum: number = 0;
-    public static c_pitchSecondaryChannelLumScale: number = 0;
-    public static c_pitchPrimaryChannelHue: number = 0;
-    public static c_pitchPrimaryChannelHueScale: number = 0;
-    public static c_pitchPrimaryChannelSat: number = 0;
-    public static c_pitchPrimaryChannelSatScale: number = 0;
-    public static c_pitchPrimaryChannelLum: number = 0;
-    public static c_pitchPrimaryChannelLumScale: number = 0;
-    public static c_pitchSecondaryNoteHue: number = 0;
-    public static c_pitchSecondaryNoteHueScale: number = 0;
-    public static c_pitchSecondaryNoteSat: number = 0;
-    public static c_pitchSecondaryNoteSatScale: number = 0;
-    public static c_pitchSecondaryNoteLum: number = 0;
-    public static c_pitchSecondaryNoteLumScale: number = 0;
-    public static c_pitchPrimaryNoteHue: number = 0;
-    public static c_pitchPrimaryNoteHueScale: number = 0;
-    public static c_pitchPrimaryNoteSat: number = 0;
-    public static c_pitchPrimaryNoteSatScale: number = 0;
-    public static c_pitchPrimaryNoteLum: number = 0;
-    public static c_pitchPrimaryNoteLumScale: number = 0;
-    public static c_modSecondaryChannelHue: number = 0;
-    public static c_modSecondaryChannelHueScale: number = 0;
-    public static c_modSecondaryChannelSat: number = 0;
-    public static c_modSecondaryChannelSatScale: number = 0;
-    public static c_modSecondaryChannelLum: number = 0;
-    public static c_modSecondaryChannelLumScale: number = 0;
-    public static c_modPrimaryChannelHue: number = 0;
-    public static c_modPrimaryChannelHueScale: number = 0;
-    public static c_modPrimaryChannelSat: number = 0;
-    public static c_modPrimaryChannelSatScale: number = 0;
-    public static c_modPrimaryChannelLum: number = 0;
-    public static c_modPrimaryChannelLumScale: number = 0;
-    public static c_modSecondaryNoteHue: number = 0;
-    public static c_modSecondaryNoteHueScale: number = 0;
-    public static c_modSecondaryNoteSat: number = 0;
-    public static c_modSecondaryNoteSatScale: number = 0;
-    public static c_modSecondaryNoteLum: number = 0;
-    public static c_modSecondaryNoteLumScale: number = 0;
-    public static c_modPrimaryNoteHue: number = 0;
-    public static c_modPrimaryNoteHueScale: number = 0;
-    public static c_modPrimaryNoteSat: number = 0;
-    public static c_modPrimaryNoteSatScale: number = 0;
-    public static c_modPrimaryNoteLum: number = 0;
-    public static c_modPrimaryNoteLumScale: number = 0;
-    public static c_noiseSecondaryChannelHue: number = 0;
-    public static c_noiseSecondaryChannelHueScale: number = 0;
-    public static c_noiseSecondaryChannelSat: number = 0;
-    public static c_noiseSecondaryChannelSatScale: number = 0;
-    public static c_noiseSecondaryChannelLum: number = 0;
-    public static c_noiseSecondaryChannelLumScale: number = 0;
-    public static c_noisePrimaryChannelHue: number = 0;
-    public static c_noisePrimaryChannelHueScale: number = 0;
-    public static c_noisePrimaryChannelSat: number = 0;
-    public static c_noisePrimaryChannelSatScale: number = 0;
-    public static c_noisePrimaryChannelLum: number = 0;
-    public static c_noisePrimaryChannelLumScale: number = 0;
-    public static c_noiseSecondaryNoteHue: number = 0;
-    public static c_noiseSecondaryNoteHueScale: number = 0;
-    public static c_noiseSecondaryNoteSat: number = 0;
-    public static c_noiseSecondaryNoteSatScale: number = 0;
-    public static c_noiseSecondaryNoteLum: number = 0;
-    public static c_noiseSecondaryNoteLumScale: number = 0;
-    public static c_noisePrimaryNoteHue: number = 0;
-    public static c_noisePrimaryNoteHueScale: number = 0;
-    public static c_noisePrimaryNoteSat: number = 0;
-    public static c_noisePrimaryNoteSatScale: number = 0;
-    public static c_noisePrimaryNoteLum: number = 0;
-    public static c_noisePrimaryNoteLumScale: number = 0;
+    static c_pitchSecondaryChannelHue: number = 0;
+    static c_pitchSecondaryChannelHueScale: number = 0;
+    static c_pitchSecondaryChannelSat: number = 0;
+    static c_pitchSecondaryChannelSatScale: number = 0;
+    static c_pitchSecondaryChannelLum: number = 0;
+    static c_pitchSecondaryChannelLumScale: number = 0;
+    static c_pitchPrimaryChannelHue: number = 0;
+    static c_pitchPrimaryChannelHueScale: number = 0;
+    static c_pitchPrimaryChannelSat: number = 0;
+    static c_pitchPrimaryChannelSatScale: number = 0;
+    static c_pitchPrimaryChannelLum: number = 0;
+    static c_pitchPrimaryChannelLumScale: number = 0;
+    static c_pitchSecondaryNoteHue: number = 0;
+    static c_pitchSecondaryNoteHueScale: number = 0;
+    static c_pitchSecondaryNoteSat: number = 0;
+    static c_pitchSecondaryNoteSatScale: number = 0;
+    static c_pitchSecondaryNoteLum: number = 0;
+    static c_pitchSecondaryNoteLumScale: number = 0;
+    static c_pitchPrimaryNoteHue: number = 0;
+    static c_pitchPrimaryNoteHueScale: number = 0;
+    static c_pitchPrimaryNoteSat: number = 0;
+    static c_pitchPrimaryNoteSatScale: number = 0;
+    static c_pitchPrimaryNoteLum: number = 0;
+    static c_pitchPrimaryNoteLumScale: number = 0;
+    static c_modSecondaryChannelHue: number = 0;
+    static c_modSecondaryChannelHueScale: number = 0;
+    static c_modSecondaryChannelSat: number = 0;
+    static c_modSecondaryChannelSatScale: number = 0;
+    static c_modSecondaryChannelLum: number = 0;
+    static c_modSecondaryChannelLumScale: number = 0;
+    static c_modPrimaryChannelHue: number = 0;
+    static c_modPrimaryChannelHueScale: number = 0;
+    static c_modPrimaryChannelSat: number = 0;
+    static c_modPrimaryChannelSatScale: number = 0;
+    static c_modPrimaryChannelLum: number = 0;
+    static c_modPrimaryChannelLumScale: number = 0;
+    static c_modSecondaryNoteHue: number = 0;
+    static c_modSecondaryNoteHueScale: number = 0;
+    static c_modSecondaryNoteSat: number = 0;
+    static c_modSecondaryNoteSatScale: number = 0;
+    static c_modSecondaryNoteLum: number = 0;
+    static c_modSecondaryNoteLumScale: number = 0;
+    static c_modPrimaryNoteHue: number = 0;
+    static c_modPrimaryNoteHueScale: number = 0;
+    static c_modPrimaryNoteSat: number = 0;
+    static c_modPrimaryNoteSatScale: number = 0;
+    static c_modPrimaryNoteLum: number = 0;
+    static c_modPrimaryNoteLumScale: number = 0;
+    static c_noiseSecondaryChannelHue: number = 0;
+    static c_noiseSecondaryChannelHueScale: number = 0;
+    static c_noiseSecondaryChannelSat: number = 0;
+    static c_noiseSecondaryChannelSatScale: number = 0;
+    static c_noiseSecondaryChannelLum: number = 0;
+    static c_noiseSecondaryChannelLumScale: number = 0;
+    static c_noisePrimaryChannelHue: number = 0;
+    static c_noisePrimaryChannelHueScale: number = 0;
+    static c_noisePrimaryChannelSat: number = 0;
+    static c_noisePrimaryChannelSatScale: number = 0;
+    static c_noisePrimaryChannelLum: number = 0;
+    static c_noisePrimaryChannelLumScale: number = 0;
+    static c_noiseSecondaryNoteHue: number = 0;
+    static c_noiseSecondaryNoteHueScale: number = 0;
+    static c_noiseSecondaryNoteSat: number = 0;
+    static c_noiseSecondaryNoteSatScale: number = 0;
+    static c_noiseSecondaryNoteLum: number = 0;
+    static c_noiseSecondaryNoteLumScale: number = 0;
+    static c_noisePrimaryNoteHue: number = 0;
+    static c_noisePrimaryNoteHueScale: number = 0;
+    static c_noisePrimaryNoteSat: number = 0;
+    static c_noisePrimaryNoteSatScale: number = 0;
+    static c_noisePrimaryNoteLum: number = 0;
+    static c_noisePrimaryNoteLumScale: number = 0;
 
-	public static c_pitchChannelCountOverride: number = 40;
-	public static c_noiseChannelCountOverride: number = 16;
-	public static c_modChannelCountOverride: number = 12;
+	static c_pitchChannelCountOverride: number = 40;
+	static c_noiseChannelCountOverride: number = 16;
+	static c_modChannelCountOverride: number = 12;
 
-	public static c_pitchLimit: number = 1;
-	public static c_noiseLimit: number = 1;
-	public static c_modLimit: number = 1;
-	public static c_colorFormulaPitchLimit: number = 1;
-	public static c_colorFormulaNoiseLimit: number = 1;
-	public static c_colorFormulaModLimit: number = 1;
+	static c_pitchLimit: number = 1;
+	static c_noiseLimit: number = 1;
+	static c_modLimit: number = 1;
+	static c_colorFormulaPitchLimit: number = 1;
+	static c_colorFormulaNoiseLimit: number = 1;
+	static c_colorFormulaModLimit: number = 1;
 
-	public static c_invertedText: string = "";
-	public static c_trackEditorBgNoiseDim: string = "";
-	public static c_trackEditorBgNoise: string = "";
-	public static c_trackEditorBgModDim: string = "";
-	public static c_trackEditorBgMod: string = "";
-	public static c_trackEditorBgPitchDim: string = "";
-	public static c_trackEditorBgPitch: string = "";
+	static c_invertedText: string = "";
+	static c_trackEditorBgNoiseDim: string = "";
+	static c_trackEditorBgNoise: string = "";
+	static c_trackEditorBgModDim: string = "";
+	static c_trackEditorBgMod: string = "";
+	static c_trackEditorBgPitchDim: string = "";
+	static c_trackEditorBgPitch: string = "";
 
-    public static readonly pitchChannels: DictionaryArray<ChannelColors> = toNameMap([
+    static readonly pitchChannels: DictionaryArray<ChannelColors> = toNameMap([
         {
             name: "pitch1", // cyan
             secondaryChannel: "var(--pitch1-secondary-channel, #0099A1)",
@@ -5928,7 +5928,7 @@ export class ColorConfig {
             primaryNote: "var(--pitch10-primary-note, #DFACFF)",
         },
     ]);
-    public static readonly noiseChannels: DictionaryArray<ChannelColors> = toNameMap([
+    static readonly noiseChannels: DictionaryArray<ChannelColors> = toNameMap([
         {
             name: "noise1", // gray
             secondaryChannel: "var(--noise1-secondary-channel, #6F6F6F)",
@@ -5961,7 +5961,7 @@ export class ColorConfig {
             primaryNote: "var(--noise5-primary-note, #C5E2B2)",
         },
     ]);
-    public static readonly modChannels: DictionaryArray<ChannelColors> = toNameMap([
+    static readonly modChannels: DictionaryArray<ChannelColors> = toNameMap([
         {
             name: "mod1",
             secondaryChannel: "var(--mod1-secondary-channel, #339955)",
@@ -5989,11 +5989,11 @@ export class ColorConfig {
         },
     ]);
 
-    public static resetColors() {
+    static resetColors() {
         this.colorLookup.clear();
     }
 
-    public static getArbitaryChannelColor(type: string, channel: number): ChannelColors {
+    static getArbitaryChannelColor(type: string, channel: number): ChannelColors {
 
         if (!this.usesColorFormula) {
             let base: ChannelColors;
@@ -6084,7 +6084,7 @@ export class ColorConfig {
     }
 
     // Same as below, but won't return var colors
-    public static getComputedChannelColor(song: Song, color: number, channel: number, useFixedOrder: boolean): ChannelColors {
+    static getComputedChannelColor(song: Song, color: number, channel: number, useFixedOrder: boolean): ChannelColors {
         if (!this.usesColorFormula) {
             let base: ChannelColors = ColorConfig.getChannelColor(song, color, channel, useFixedOrder);
             // Trim away "var(...)"
@@ -6100,7 +6100,7 @@ export class ColorConfig {
         }
     };
 
-	public static getChannelColor(song: Song, color: number, channel: number, useFixedOrder: boolean): ChannelColors {
+	static getChannelColor(song: Song, color: number, channel: number, useFixedOrder: boolean): ChannelColors {
         if (!this.usesColorFormula) {
             // Set colors, not defined by formula
 			if (!useFixedOrder) {
@@ -6200,7 +6200,7 @@ export class ColorConfig {
 
     private static readonly _styleElement: HTMLStyleElement = document.head.appendChild(HTML.style({ type: "text/css" }));
 
-    public static setTheme(name: string): void {
+    static setTheme(name: string): void {
 		let theme: string = this.themes[name];
 		if (theme == undefined) theme = ColorConfig.defaultTheme;
 		this._styleElement.textContent = theme;
@@ -6427,7 +6427,7 @@ export class ColorConfig {
 
     }
 
-    public static getComputed(name: string): string {
+    static getComputed(name: string): string {
         return getComputedStyle(this._styleElement).getPropertyValue(name);
     }
 }

@@ -11962,7 +11962,7 @@ li.select2-results__option[role=group] > strong:hover {
       this.order = 1;
     }
     /*
-    public highPass1stOrderSimplified(cornerRadiansPerSample: number): void {
+    highPass1stOrderSimplified(cornerRadiansPerSample: number): void {
     	// The output of this filter is nearly identical to the 1st order
     	// Butterworth high-pass above, except it resonates when the cutoff
     	// appoaches the nyquist.
@@ -11993,7 +11993,7 @@ li.select2-results__option[role=group] > strong:hover {
     /*
     // I haven't found a practical use for this version of the all pass filter.
     // It seems to create a weird subharmonic when used in a delay feedback loop.
-    public allPass1stOrderInvertPhaseBelow(cornerRadiansPerSample: number): void {
+    allPass1stOrderInvertPhaseBelow(cornerRadiansPerSample: number): void {
     	const g: number = (Math.sin(cornerRadiansPerSample) - 1.0) / Math.cos(cornerRadiansPerSample);
     	this.a[1] = g;
     	this.b[0] = -g;
@@ -12040,7 +12040,7 @@ li.select2-results__option[role=group] > strong:hover {
       this.order = 2;
     }
     /*
-    public highPass2ndOrderSimplified(cornerRadiansPerSample: number, peakLinearGain: number): void {
+    highPass2ndOrderSimplified(cornerRadiansPerSample: number, peakLinearGain: number): void {
     	const g: number = 2.0 * Math.sin(cornerRadiansPerSample * 0.5);
     	const filterResonance: number = 1.0 - 1.0 / (2.0 * peakLinearGain);
     	const feedback: number = filterResonance + filterResonance / (1.0 - g);
@@ -12082,7 +12082,7 @@ li.select2-results__option[role=group] > strong:hover {
     // Create a higher order filter by combining two lower order filters.
     // However, making high order filters in this manner results in instability.
     // It is recommended to apply the 2nd order filters (biquads) in sequence instead.
-    public combination(filter1: FilterCoefficients, filter2: FilterCoefficients): void {
+    combination(filter1: FilterCoefficients, filter2: FilterCoefficients): void {
     	this.order = filter1.order + filter2.order;
     	for (let i: number = 0; i <= this.order; i++) {
     		this.a[i] = 0.0;
@@ -12096,7 +12096,7 @@ li.select2-results__option[role=group] > strong:hover {
     	}
     }
     
-    public scaledDifference(other: FilterCoefficients, scale: number): void {
+    scaledDifference(other: FilterCoefficients, scale: number): void {
     	if (other.order != this.order) throw new Error();
     	for (let i: number = 0; i <= this.order; i++) {
     		this.a[i] = (this.a[i] - other.a[i]) * scale;
@@ -12104,7 +12104,7 @@ li.select2-results__option[role=group] > strong:hover {
     	}
     }
     
-    public copy(other: FilterCoefficients): void {
+    copy(other: FilterCoefficients): void {
     	this.order = other.order;
     	for (let i: number = 0; i <= this.order; i++) {
     		this.a[i] = other.a[i];

@@ -13,7 +13,7 @@ export class ShortenerConfigPrompt implements Prompt {
     private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
     private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
 
-    public readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 250px;" },
+    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 250px;" },
         h2("Configure Shortener"),
         div({ style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
             div({ class: "selectContainer", style: "width: 100%;" }, this._shortenerStrategySelect),
@@ -39,7 +39,7 @@ export class ShortenerConfigPrompt implements Prompt {
         this._doc.undo();
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         this._okayButton.removeEventListener("click", this._saveChanges);
         this._cancelButton.removeEventListener("click", this._close);
         this.container.removeEventListener("keydown", this._whenKeyPressed);

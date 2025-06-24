@@ -9,7 +9,7 @@ import { SongEditor } from "./SongEditor";
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
 
 export class TrackEditor {
-    public readonly _barDropDown: HTMLSelectElement = HTML.select({ style: "width: 32px; height: " + Config.barEditorHeight + "px; top: 0px; position: absolute; opacity: 0" },
+    readonly _barDropDown: HTMLSelectElement = HTML.select({ style: "width: 32px; height: " + Config.barEditorHeight + "px; top: 0px; position: absolute; opacity: 0" },
 
         HTML.option({ value: "barBefore" }, "Insert Bar Before"),
         HTML.option({ value: "barAfter" }, "Insert Bar After"),
@@ -33,7 +33,7 @@ export class TrackEditor {
         this._playhead,
     );
     private readonly _select: HTMLSelectElement = HTML.select({ class: "trackSelectBox", style: "background: none; border: none; appearance: none; border-radius: initial; box-shadow: none; color: transparent; position: absolute; touch-action: none;" });
-    public readonly container: HTMLElement = HTML.div({ class: "noSelection", style: `background-color: ${ColorConfig.editorBackground}; position: relative; overflow: hidden;` },
+    readonly container: HTMLElement = HTML.div({ class: "noSelection", style: `background-color: ${ColorConfig.editorBackground}; position: relative; overflow: hidden;` },
         this._channelRowContainer,
         this._svg,
         this._select,
@@ -164,7 +164,7 @@ export class TrackEditor {
         window.requestAnimationFrame(this._animatePlayhead);
     }
 
-    public movePlayheadToMouse(): boolean {
+    movePlayheadToMouse(): boolean {
         if (this._mouseOver) {
             this._doc.synth.playhead = this._mouseBar + (this._mouseX % this._barWidth) / this._barWidth;
             return true;
@@ -371,7 +371,7 @@ export class TrackEditor {
         if (this._select.selectedIndex != selectedPattern) this._select.selectedIndex = selectedPattern;
     }
 
-    public rerenderChannelColors(): void {
+    rerenderChannelColors(): void {
         for (let y: number = 0; y < this._doc.song.getChannelCount(); y++) {
             this._channelRowContainer.removeChild(this._channels[y].container);
         }
@@ -391,7 +391,7 @@ export class TrackEditor {
         }
     }
 
-    public render(): void {
+    render(): void {
 
         this._barWidth = this._doc.getBarWidth();
 

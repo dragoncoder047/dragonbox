@@ -4,53 +4,53 @@ import {Scale, Config} from "../synth/SynthConfig";
 import {ColorConfig} from "../editor/ColorConfig";
 
 export class Preferences {
-	public static readonly defaultVisibleOctaves: number = 3;
+	static readonly defaultVisibleOctaves: number = 3;
 	
-	public customTheme: string | null;
-	public customTheme2: string | null;
-	public autoPlay: boolean;
-	public autoFollow: boolean;
-	public enableNotePreview: boolean;
-	public showFifth: boolean = true;
-	public notesOutsideScale: boolean;
-	public defaultScale: number;
-	public showLetters: boolean;
-	public showChannels: boolean;
-	public showScrollBar: boolean;
-	public alwaysFineNoteVol: boolean;
-	public displayVolumeBar: boolean;
-	public instrumentCopyPaste: boolean;
-	public instrumentImportExport: boolean;
-	public instrumentButtonsAtTop: boolean;
-	public enableChannelMuting: boolean;
-	public colorTheme: string;
-	public fixChannelColorOrder: boolean;
-	public layout: string;
-	public displayBrowserUrl: boolean;
-	public volume: number = 75;
-	public visibleOctaves: number = Preferences.defaultVisibleOctaves;
-	public pressControlForShortcuts: boolean;
-	public keyboardLayout: string;
-	public bassOffset: number;
-	public enableMidi: boolean;
-	public showRecordButton: boolean;
-	public snapRecordedNotesToRhythm: boolean;
-	public ignorePerformedNotesNotInScale: boolean;
-	public metronomeCountIn: boolean;
-	public metronomeWhileRecording: boolean;
-	public notesFlashWhenPlayed: boolean;
-	public showOscilloscope: boolean;
-	public showSampleLoadingStatus: boolean;
-	public showDescription: boolean;
-	public showInstrumentScrollbars: boolean;
-	public closePromptByClickoff: boolean;
-	public frostedGlassBackground: boolean;
+	customTheme: string | null;
+	customTheme2: string | null;
+	autoPlay: boolean;
+	autoFollow: boolean;
+	enableNotePreview: boolean;
+	showFifth: boolean = true;
+	notesOutsideScale: boolean;
+	defaultScale: number;
+	showLetters: boolean;
+	showChannels: boolean;
+	showScrollBar: boolean;
+	alwaysFineNoteVol: boolean;
+	displayVolumeBar: boolean;
+	instrumentCopyPaste: boolean;
+	instrumentImportExport: boolean;
+	instrumentButtonsAtTop: boolean;
+	enableChannelMuting: boolean;
+	colorTheme: string;
+	fixChannelColorOrder: boolean;
+	layout: string;
+	displayBrowserUrl: boolean;
+	volume: number = 75;
+	visibleOctaves: number = Preferences.defaultVisibleOctaves;
+	pressControlForShortcuts: boolean;
+	keyboardLayout: string;
+	bassOffset: number;
+	enableMidi: boolean;
+	showRecordButton: boolean;
+	snapRecordedNotesToRhythm: boolean;
+	ignorePerformedNotesNotInScale: boolean;
+	metronomeCountIn: boolean;
+	metronomeWhileRecording: boolean;
+	notesFlashWhenPlayed: boolean;
+	showOscilloscope: boolean;
+	showSampleLoadingStatus: boolean;
+	showDescription: boolean;
+	showInstrumentScrollbars: boolean;
+	closePromptByClickoff: boolean;
+	frostedGlassBackground: boolean;
 	
 	constructor() {
 		this.reload();
 	}
 	
-	public reload(): void {
+	reload(): void {
 		this.autoPlay = window.localStorage.getItem("autoPlay") == "true";
 		this.autoFollow = window.localStorage.getItem("autoFollow") == "true";
 		this.enableNotePreview = window.localStorage.getItem("enableNotePreview") != "false";
@@ -103,7 +103,7 @@ export class Preferences {
 		
 	}
 	
-	public save(): void {
+	save(): void {
 		window.localStorage.setItem("autoPlay", this.autoPlay ? "true" : "false");
 		window.localStorage.setItem("autoFollow", this.autoFollow ? "true" : "false");
 		window.localStorage.setItem("enableNotePreview", this.enableNotePreview ? "true" : "false");

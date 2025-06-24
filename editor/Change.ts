@@ -7,11 +7,11 @@ export class Change {
         this._noop = false;
     }
 
-    public isNoop(): boolean {
+    isNoop(): boolean {
         return this._noop;
     }
 
-    public commit(): void { }
+     commit(): void { }
 }
 
 export class UndoableChange extends Change {
@@ -23,7 +23,7 @@ export class UndoableChange extends Change {
         this._doneForwards = !reversed;
     }
 
-    public undo(): void {
+    undo(): void {
         if (this._reversed) {
             this._doForwards();
             this._doneForwards = true;
@@ -33,7 +33,7 @@ export class UndoableChange extends Change {
         }
     }
 
-    public redo(): void {
+    redo(): void {
         if (this._reversed) {
             this._doBackwards();
             this._doneForwards = false;
@@ -65,7 +65,7 @@ export class ChangeGroup extends Change {
         super();
     }
 
-    public append(change: Change): void {
+    append(change: Change): void {
         if (change.isNoop()) return;
         this._didSomething();
     }
@@ -84,13 +84,13 @@ export class ChangeSequence extends UndoableChange {
         this._committed = false;
     }
 
-    public checkFirst(): UndoableChange | null {
+    checkFirst(): UndoableChange | null {
         if (this._changes.length > 0)
             return this._changes[0];
         return null;
     }
 
-    public append(change: UndoableChange): void {
+    append(change: UndoableChange): void {
         if (change.isNoop()) return;
         this._changes[this._changes.length] = change;
         this._didSomething();
@@ -108,11 +108,11 @@ export class ChangeSequence extends UndoableChange {
         }
     }
 
-    public isCommitted(): boolean {
+    isCommitted(): boolean {
         return this._committed;
     }
 
-    public commit(): void {
+    commit(): void {
         this._committed = true;
     }
 }

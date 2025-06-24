@@ -8,7 +8,7 @@ import { HTML } from "imperative-html/dist/esm/elements-strict";
 export class Box {
     private readonly _text: Text = document.createTextNode("");
     private readonly _label: HTMLElement = HTML.div({ class: "channelBoxLabel" }, this._text);
-    public readonly container: HTMLElement = HTML.div({ class: "channelBox", style: `margin: 1px; height: ${ChannelRow.patternHeight - 2}px;` }, this._label);
+    readonly container: HTMLElement = HTML.div({ class: "channelBox", style: `margin: 1px; height: ${ChannelRow.patternHeight - 2}px;` }, this._label);
     private _renderedIndex: number = -1;
     private _renderedLabelColor: string = "?";
     private _renderedVisibility: string = "?";
@@ -20,15 +20,15 @@ export class Box {
         this._label.style.color = color;
     }
 
-    public setWidth(width: number): void {
+    setWidth(width: number): void {
         this.container.style.width = (width - 2) + "px"; // there's a 1 pixel margin on either side.
     }
 
-    public setHeight(height: number): void {
+    setHeight(height: number): void {
         this.container.style.height = (height - 2) + "px"; // there's a 1 pixel margin on either side.
     }
 
-    public setIndex(index: number, selected: boolean, dim: boolean, color: string, isNoise: boolean, isMod: boolean): void {
+    setIndex(index: number, selected: boolean, dim: boolean, color: string, isNoise: boolean, isMod: boolean): void {
         if (this._renderedIndex != index) {
             if (index >= 100) {
                 this._label.setAttribute("font-size", "16");
@@ -63,19 +63,19 @@ export class Box {
     }
     // These cache the value given to them, since they're apparently quite
     // expensive to set.
-    public setVisibility(visibility: string): void {
+    setVisibility(visibility: string): void {
         if (this._renderedVisibility != visibility) {
             this.container.style.visibility = visibility;
             this._renderedVisibility = visibility;
         }
     }
-    public setBorderLeft(borderLeft: string): void {
+    setBorderLeft(borderLeft: string): void {
         if (this._renderedBorderLeft != borderLeft) {
             this.container.style.setProperty("border-left", borderLeft);
             this._renderedBorderLeft = borderLeft;
         }
     }
-    public setBorderRight(borderRight: string): void {
+    setBorderRight(borderRight: string): void {
         if (this._renderedBorderRight != borderRight) {
             this.container.style.setProperty("border-right", borderRight);
             this._renderedBorderRight = borderRight;
@@ -84,17 +84,17 @@ export class Box {
 }
 
 export class ChannelRow {
-    public static patternHeight: number = 28;
+    static patternHeight: number = 28;
 
     private _renderedBarWidth: number = -1;
     private _renderedBarHeight: number = -1;
     private _boxes: Box[] = [];
 
-    public readonly container: HTMLElement = HTML.div({ class: "channelRow" });
+    readonly container: HTMLElement = HTML.div({ class: "channelRow" });
 
     constructor(private readonly _doc: SongDocument, public readonly index: number, public readonly color: number) { }
 
-    public render(): void {
+    render(): void {
         ChannelRow.patternHeight = this._doc.getChannelHeight();
 
         const barWidth: number = this._doc.getBarWidth();

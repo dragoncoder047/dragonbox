@@ -25,7 +25,7 @@ export class HarmonicsEditor {
         this._lastControlPointContainer,
     );
 
-    public readonly container: HTMLElement = HTML.div({ class: "harmonics", style: "height: 100%;" }, this._svg);
+    readonly container: HTMLElement = HTML.div({ class: "harmonics", style: "height: 100%;" }, this._svg);
 
     private _mouseX: number = 0;
     private _mouseY: number = 0;
@@ -68,7 +68,7 @@ export class HarmonicsEditor {
         this.container.addEventListener("touchcancel", this._whenCursorReleased);
     }
 
-    public storeChange = (): void => {
+    storeChange = (): void => {
         // Check if change is unique compared to the current history state
         var sameCheck = true;
         if (this._changeQueue.length > 0) {
@@ -97,7 +97,7 @@ export class HarmonicsEditor {
 
     }
 
-    public undo = (): void => {
+    undo = (): void => {
         // Go backward, if there is a change to go back to
         if (this._undoHistoryState < this._changeQueue.length - 1) {
             this._undoHistoryState++;
@@ -107,7 +107,7 @@ export class HarmonicsEditor {
 
     }
 
-    public redo = (): void => {
+    redo = (): void => {
         // Go forward, if there is a change to go to
         if (this._undoHistoryState > 0) {
             this._undoHistoryState--;
@@ -216,12 +216,12 @@ export class HarmonicsEditor {
         this._mouseDown = false;
     }
 
-    public getHarmonicsWave(): HarmonicsWave {
+    getHarmonicsWave(): HarmonicsWave {
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         return instrument.harmonicsWave;
     }
 
-    public setHarmonicsWave(harmonics: number[]) {
+    setHarmonicsWave(harmonics: number[]) {
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         for (let i = 0; i < Config.harmonicsControlPoints; i++) {
             instrument.harmonicsWave.harmonics[i] = harmonics[i];
@@ -230,18 +230,18 @@ export class HarmonicsEditor {
         this.render();
     }
 
-    public saveSettings(): ChangeHarmonics {
+    saveSettings(): ChangeHarmonics {
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         return new ChangeHarmonics(this._doc, instrument, instrument.harmonicsWave);
     }
 
-    public resetToInitial() {
+    resetToInitial() {
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         this.setHarmonicsWave(this._initial.harmonics);
         this._doc.record(new ChangeHarmonics(this._doc, instrument, this._initial));
     }
 
-    public render(): void {
+    render(): void {
         const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         const harmonicsWave: HarmonicsWave = instrument.harmonicsWave; //(this._harmonicsIndex == null) ? instrument.harmonicsWave : instrument.drumsetSpectrumWaves[this._harmonicsIndex];
         const controlPointToHeight = (point: number): number => {
@@ -277,9 +277,9 @@ export class HarmonicsEditor {
 
 export class HarmonicsEditorPrompt implements Prompt {
 
-    public readonly harmonicsEditor: HarmonicsEditor = new HarmonicsEditor(this._doc, true);
+    readonly harmonicsEditor: HarmonicsEditor = new HarmonicsEditor(this._doc, true);
 
-    public readonly _playButton: HTMLButtonElement = HTML.button({ style: "width: 55%;", type: "button" });
+    readonly _playButton: HTMLButtonElement = HTML.button({ style: "width: 55%;", type: "button" });
 
     private readonly _cancelButton: HTMLButtonElement = HTML.button({ class: "cancelButton" });
     private readonly _okayButton: HTMLButtonElement = HTML.button({ class: "okayButton", style: "width:45%;" }, "Okay");
@@ -300,7 +300,7 @@ export class HarmonicsEditorPrompt implements Prompt {
         ]),
     ]);
     private readonly copyPasteContainer: HTMLDivElement = HTML.div({ style: "width: 185px;" }, this.copyButton, this.pasteButton);
-    public readonly container: HTMLDivElement = HTML.div({ class: "prompt noSelection", style: "width: 500px;"},
+    readonly container: HTMLDivElement = HTML.div({ class: "prompt noSelection", style: "width: 500px;"},
         HTML.h2("Edit Harmonics Instrument"),
                                                          HTML.div({ style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
                                                                   this._playButton,
@@ -338,7 +338,7 @@ export class HarmonicsEditorPrompt implements Prompt {
         this.updatePlayButton();
     }
 
-    public updatePlayButton(): void {
+    updatePlayButton(): void {
         if (this._doc.synth.playing) {
             this._playButton.classList.remove("playButton");
             this._playButton.classList.add("pauseButton");
@@ -357,7 +357,7 @@ export class HarmonicsEditorPrompt implements Prompt {
         this._doc.undo();
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         this._okayButton.removeEventListener("click", this._saveChanges);
         this._cancelButton.removeEventListener("click", this._close);
         this.container.removeEventListener("keydown", this.whenKeyPressed);
@@ -376,7 +376,7 @@ export class HarmonicsEditorPrompt implements Prompt {
         this.harmonicsEditor.storeChange();
     }
 
-    public whenKeyPressed = (event: KeyboardEvent): void => {
+    whenKeyPressed = (event: KeyboardEvent): void => {
         if ((<Element>event.target).tagName != "BUTTON" && event.keyCode == 13) { // Enter key
             this._saveChanges();
         }

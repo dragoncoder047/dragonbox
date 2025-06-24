@@ -10,7 +10,7 @@ const { button, div, p, h2, h3 } = HTML;
 export class TipPrompt implements Prompt {
 	private readonly _closeButton: HTMLButtonElement = button({ class: "cancelButton" });
 
-	public readonly container: HTMLDivElement;
+	readonly container: HTMLDivElement;
 
 	constructor(private _doc: SongDocument, type: string) {
 		let message: HTMLDivElement;
@@ -761,7 +761,7 @@ export class TipPrompt implements Prompt {
 		this._doc.undo();
 	}
 
-	public cleanUp = (): void => {
+	cleanUp = (): void => {
 		this._closeButton.removeEventListener("click", this._close);
 	}
 }

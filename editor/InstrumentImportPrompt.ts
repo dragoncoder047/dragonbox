@@ -27,7 +27,7 @@ export class InstrumentImportPrompt implements Prompt {
         " to change the import strategy.",
     );
 
-    public readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 300px;" },
+    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 300px;" },
         h2("Import Instrument(s)"),
         this._strategyInfoText,
         div({ style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
@@ -93,12 +93,12 @@ export class InstrumentImportPrompt implements Prompt {
         this._doc.undo();
     }
 
-    public cleanUp = (): void => {
+    cleanUp = (): void => {
         this._fileInput.removeEventListener("change", this._whenFileSelected);
         this._cancelButton.removeEventListener("click", this._close);
     }
 
-    public _import_multiple = (file: any): void => {
+    _import_multiple = (file: any): void => {
         const channel: Channel = this._doc.song.channels[this._doc.channel];
         const currentInstrum: Instrument = channel.instruments[this._doc.getCurrentInstrument()];
         switch (this._importStrategySelect.value) {
@@ -155,14 +155,14 @@ export class InstrumentImportPrompt implements Prompt {
 
     }
 
-    public _validate_instrument_limit = (channel: Channel): boolean => {
+    _validate_instrument_limit = (channel: Channel): boolean => {
         if (this._doc.song.getMaxInstrumentsPerChannel() <= channel.instruments.length) {
             return false;
         }
         return true;
     }
 
-    public _import_single = (file: any): void => {
+    _import_single = (file: any): void => {
         const channel: Channel = this._doc.song.channels[this._doc.channel];
         const currentInstrum: Instrument = channel.instruments[this._doc.getCurrentInstrument()];
         switch (this._importStrategySelect.value) {

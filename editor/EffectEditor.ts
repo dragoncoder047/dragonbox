@@ -32,53 +32,53 @@ function setSelectedValue(menu: HTMLSelectElement, value: number, isSelect2: boo
 }
 
 export class EffectEditor {
-	public readonly container: HTMLElement = HTML.div({ class: "effectEditor" });
+	readonly container: HTMLElement = HTML.div({ class: "effectEditor" });
 
 	private readonly _rows: HTMLDivElement[] = [];
 
-	public readonly moveupButtons: HTMLButtonElement[] = [];
-	public readonly movedownButtons: HTMLButtonElement[] = [];
-	public readonly minimizeButtons: HTMLButtonElement[] = [];
-	public readonly deleteButtons: HTMLButtonElement[] = [];
+	readonly moveupButtons: HTMLButtonElement[] = [];
+	readonly movedownButtons: HTMLButtonElement[] = [];
+	readonly minimizeButtons: HTMLButtonElement[] = [];
+	readonly deleteButtons: HTMLButtonElement[] = [];
 
-	public readonly renderEffectRows: boolean[] = [];
+	readonly renderEffectRows: boolean[] = [];
 
-	public readonly chorusSliders: Slider[] = [];
-	public readonly reverbSliders: Slider[] = [];
-	public readonly flangerSliders: Slider[] = [];
-	public readonly flangerSpeedSliders: Slider[] = [];
-	public readonly flangerDepthSliders: Slider[] = [];
-	public readonly flangerFeedbackSliders: Slider[] = [];
-	public readonly ringModWaveSelects: HTMLSelectElement[] = [];
-	public readonly ringModSliders: Slider[] = [];
-	public readonly ringModHzSliders: Slider[] = [];
-	public readonly granularSliders: Slider[] = [];
-	public readonly grainSizeSliders: Slider[] = [];
-	public readonly grainAmountsSliders: Slider[] = [];
-	public readonly grainRangeSliders: Slider[] = [];
-	public readonly echoSustainSliders: Slider[] = [];
-	public readonly echoDelaySliders: Slider[] = [];
-	public readonly echoPingPongSliders: Slider[] = [];
-	public readonly gainSliders: Slider[] = [];
-	public readonly gainSliderInputBoxes: HTMLInputElement[] = [];
-	public readonly panSliders: Slider[] = [];
-	public readonly panSliderInputBoxes: HTMLInputElement[] = [];
-	public readonly panDelaySliders: Slider[] = [];
-	public readonly panModeSelects: HTMLSelectElement[] = [];
-	public readonly distortionSliders: Slider[] = [];
-	public readonly aliasingBoxes: HTMLInputElement[] = [];
-	public readonly bitcrusherQuantizationSliders: Slider[] = [];
-	public readonly bitcrusherFreqSliders: Slider[] = [];
-	public readonly eqFilterSimpleButtons: HTMLButtonElement[] = [];
-	public readonly eqFilterAdvancedButtons: HTMLButtonElement[] = [];
-	public readonly eqFilterEditors: FilterEditor[] = [];
-	public readonly eqFilterSimpleCutSliders: Slider[] = [];
-	public readonly eqFilterSimplePeakSliders: Slider[] = [];
+	readonly chorusSliders: Slider[] = [];
+	readonly reverbSliders: Slider[] = [];
+	readonly flangerSliders: Slider[] = [];
+	readonly flangerSpeedSliders: Slider[] = [];
+	readonly flangerDepthSliders: Slider[] = [];
+	readonly flangerFeedbackSliders: Slider[] = [];
+	readonly ringModWaveSelects: HTMLSelectElement[] = [];
+	readonly ringModSliders: Slider[] = [];
+	readonly ringModHzSliders: Slider[] = [];
+	readonly granularSliders: Slider[] = [];
+	readonly grainSizeSliders: Slider[] = [];
+	readonly grainAmountsSliders: Slider[] = [];
+	readonly grainRangeSliders: Slider[] = [];
+	readonly echoSustainSliders: Slider[] = [];
+	readonly echoDelaySliders: Slider[] = [];
+	readonly echoPingPongSliders: Slider[] = [];
+	readonly gainSliders: Slider[] = [];
+	readonly gainSliderInputBoxes: HTMLInputElement[] = [];
+	readonly panSliders: Slider[] = [];
+	readonly panSliderInputBoxes: HTMLInputElement[] = [];
+	readonly panDelaySliders: Slider[] = [];
+	readonly panModeSelects: HTMLSelectElement[] = [];
+	readonly distortionSliders: Slider[] = [];
+	readonly aliasingBoxes: HTMLInputElement[] = [];
+	readonly bitcrusherQuantizationSliders: Slider[] = [];
+	readonly bitcrusherFreqSliders: Slider[] = [];
+	readonly eqFilterSimpleButtons: HTMLButtonElement[] = [];
+	readonly eqFilterAdvancedButtons: HTMLButtonElement[] = [];
+	readonly eqFilterEditors: FilterEditor[] = [];
+	readonly eqFilterSimpleCutSliders: Slider[] = [];
+	readonly eqFilterSimplePeakSliders: Slider[] = [];
 
-	public readonly ringModHzNums: HTMLParagraphElement[] = [];
+	readonly ringModHzNums: HTMLParagraphElement[] = [];
 	//public readonly grainRangeNums: HTMLParagraphElement[] = [];
 	//public readonly grainSizeNums: HTMLParagraphElement[] = [];
-	public readonly echoDelayNums: HTMLParagraphElement[] = [];
+	readonly echoDelayNums: HTMLParagraphElement[] = [];
 
 	private _lastChange: Change | null = null;
 	private _viewedChannel: Channel | null = null;
@@ -171,7 +171,7 @@ export class EffectEditor {
 		this.render(true)
 	}
 
-	public render(forceRender: boolean = false): void {
+	render(forceRender: boolean = false): void {
 		const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
 
 		if (instrument.effects.length != this.container.children.length || this._doc.song.channels[this._doc.channel] != this._viewedChannel || forceRender) {

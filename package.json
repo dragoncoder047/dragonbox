@@ -1,13 +1,18 @@
 {
-	"name": "theepbox",
+	"name": "DragonBox",
 	"version": "1.0.0",
-	"description": "theepbox is a mod of Slarmoo's Box. It expands the world of BeepBox into a whole new realm!",
-	"author": "Theepicosity",
+	"description": "DragonBox is a mod of Theepbox. It expands the world of BeepBox into a whole new realm!",
+	"author": "dragoncoder047",
 	"contributors": [
-		"Theepicosity"
+        "dragoncoder047",
+		"Theepicosity",
+        "Slarmoo",
+        "Main",
+        "Jummbus",
+        "shaktool"
 	],
 	"license": "MIT",
-	"homepage": "https://theepicosity.space/theepbox",
+	"homepage": "https://dragoncoder047.github.io/dragonbox",
 	"type": "module",
 	"main": "main.js",
 	"icon": "path.join(__dirname, 'icon.ico')",
@@ -21,31 +26,30 @@
 		"deploy-files": "bash ./scripts/deploy_files.sh",
 		"start": "electron ./to_deploy",
 		"package": "electron-packager ./to_deploy --platform=darwin,linux,win32 --arch=ia32,x64 --asar --overwrite && npm run build-offline-html",
-		"package-host": "electron-packager ./to_deploy theepbox --asar --overwrite && npm run build-offline-html",
+		"package-host": "electron-packager ./to_deploy DragonBox --asar --overwrite && npm run build-offline-html",
 		"live-editor": "bash ./scripts/live_editor.sh",
 		"live-editor-fast-typeless": "bash ./scripts/live_editor_fast_typeless.sh"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Theepicosity/theepbox.git"
+		"url": "git+https://github.com/dragoncoder047/dragonbox.git"
 	},
 	"devDependencies": {
-		"@electron/packager": "^18.3.5",
-		"@rollup/plugin-node-resolve": "^15.1.0",
-		"electron": "^33.2.0",
-		"rollup": "^2.79.1",
+		"@rollup/plugin-node-resolve": "^15.3.1",
+		"electron": "^33.4.11",
+		"rollup": "^2.79.2",
 		"rollup-plugin-sourcemaps": "^0.6.3",
-		"terser": "^5.19.2",
-		"typescript": "^5.6.3"
+		"terser": "^5.43.1",
+		"typescript": "^5.8.3"
 	},
 	"dependencies": {
+		"@electron/packager": "^18.3.6",
 		"@types/jquery": "^3.5.32",
 		"@types/select2": "^4.0.63",
-		"electron-packager": "^17.1.2",
-		"imperative-html": "^0.1.2",
+		"esbuild": "^0.23.1",
 		"express": "^4.21.2",
+		"imperative-html": "^0.1.2",
 		"js-xxhash": "^4.0.0",
-		"select2": "^4.0.13",
-		"esbuild": "^0.23.0"
+		"select2": "^4.0.13"
 	}
 }

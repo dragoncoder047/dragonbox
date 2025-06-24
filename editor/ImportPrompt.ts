@@ -22,6 +22,7 @@ export class ImportPrompt implements Prompt {
     private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
     private readonly _modeImportSelect: HTMLSelectElement = select({ style: "width: 100%;" },
         option({ value: "auto" }, "Auto-detect mode (for json)"),
+        option({ value: "DragonBox" }, "DragonBox (most likely to be broken)"),
         option({ value: "BeepBox" }, "BeepBox"),
         option({ value: "ModBox" }, "ModBox"),
         option({ value: "JummBox" }, "JummBox"),
@@ -833,7 +834,7 @@ export class ImportPrompt implements Prompt {
             // flipped relative to the UI, so we need to pick a pitch value accordingly.
             const tempoModPitch = Config.modCount - 1;
             let currentBar = -1;
-            let pattern = null;
+            let pattern: Pattern | null = null;
             let prevChangeEndPart = 0;
             for (let changeIndex = 0; changeIndex < tempoChanges.length; changeIndex++) {
                 const change = tempoChanges[changeIndex];

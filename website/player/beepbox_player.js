@@ -474,7 +474,7 @@ var beepbox = (function (exports) {
     Config.attackVal = 0;
     Config.releaseVal = 0.25;
     Config.willReloadForCustomSamples = false;
-    Config.jsonFormat = "theepbox";
+    Config.jsonFormat = "DragonBox";
     Config.scales = toNameMap([
         { name: "Free", realName: "chromatic", flags: [true, true, true, true, true, true, true, true, true, true, true, true] },
         { name: "Major", realName: "ionian", flags: [true, false, true, false, true, true, false, true, false, true, false, true] },
@@ -10062,7 +10062,7 @@ var beepbox = (function (exports) {
                 this.preset = instrumentObject["preset"] >>> 0;
             }
             if (instrumentObject["volume"] != undefined) {
-                if (format == "jummbox" || format == "midbox" || format == "synthbox" || format == "goldbox" || format == "paandorasbox" || format == "ultrabox" || format == "slarmoosbox" || format == "theepbox") {
+                if (format == "jummbox" || format == "midbox" || format == "synthbox" || format == "goldbox" || format == "paandorasbox" || format == "ultrabox" || format == "slarmoosbox" || format == "Theepbox") {
                     this.volume = clamp(-Config.volumeRange / 2, (Config.volumeRange / 2) + 1, instrumentObject["volume"] | 0);
                 }
                 else {
@@ -10945,7 +10945,7 @@ var beepbox = (function (exports) {
         }
     }
     EditorConfig.version = "v1";
-    EditorConfig.versionDisplayName = "theepbox!";
+    EditorConfig.versionDisplayName = "DragonBox!";
     EditorConfig.releaseNotesURL = "./patch_notes.html";
     EditorConfig.isOnMac = /^Mac/i.test(navigator.platform) || /Mac OS X/i.test(navigator.userAgent) || /^(iPhone|iPad|iPod)/i.test(navigator.platform) || /(iPhone|iPad|iPod)/i.test(navigator.userAgent);
     EditorConfig.ctrlSymbol = EditorConfig.isOnMac ? "⌘" : "Ctrl+";

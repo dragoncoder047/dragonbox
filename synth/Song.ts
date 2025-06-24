@@ -395,7 +395,7 @@ export class Song {
     private static readonly _latestSlarmoosBoxVersion: number = 5;
     // One-character variant detection at the start of URL to distinguish variants such as JummBox, Or Goldbox. "j" and "g" respectively
     //also "u" is ultrabox lol
-    private static readonly _variant = 0x74; //"t" ~ theepbox
+    private static readonly _variant = 0x64; //"d" ~ DragonBox
 
     public title: string;
     public scale: number;
@@ -900,7 +900,7 @@ export class Song {
                     }
                 }
 
-                //in theepbox, effects are stored in arbitary order. this allows it to have multiple of the same effect!
+                //in Theepbox, effects are stored in arbitary order. this allows it to have multiple of the same effect!
 
                 buffer.push(SongTagCode.effects, base64IntToCharCode[instrument.effectCount]);
                 for (let effectIndex = 0; effectIndex < instrument.effectCount; effectIndex++) {
@@ -1082,7 +1082,7 @@ export class Song {
                     buffer.push(base64IntToCharCode[encodedLoopMode]);
                     // The same encoding above is used here, but with the release mode
                     // (which isn't implemented currently), and the backwards toggle.
-                    // changed in theepbox! now i added stereo toggle :3
+                    // changed in Theepbox! now i added stereo toggle :3
                     const encodedReleaseMode: number = (
                         (clamp(0, 31 + 1, 0) << 2)
                         | ((instrument.chipWaveInStereo ? 1 : 0) << 1)
@@ -2114,7 +2114,7 @@ export class Song {
                 } else {
                     const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     let typeCheck: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                    if (fromTheepBox) { //in mods that arent theepbox, pre eq is switched with post eq
+                    if (fromTheepBox) { //in mods that arent Theepbox, pre eq is switched with post eq
                         if (typeCheck == 0) {
                             instrument.noteFilterType = false;
                             typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];

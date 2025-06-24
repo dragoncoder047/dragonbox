@@ -298,7 +298,7 @@ export class Instrument {
         // modInstruments[mod] gives the index of an instrument within the channel set for this mod.
         //   [0 ~ channel.instruments.length-1]     channel's instrument index
         //
-        // in theepbox, the channel and instrument is given as a list because many channel-instrument pairs can be enabled at once :3
+        // in Theepbox, the channel and instrument is given as a list because many channel-instrument pairs can be enabled at once :3
         //
         // modFilterTypes[mod] gives some info about the filter type: 0 is morph, 1+ is index in the dot selection array (dot 1 x, dot 1 y, dot 2 x...)
         //   0  filter morph
@@ -922,7 +922,7 @@ export class Instrument {
         }
 
         if (instrumentObject["volume"] != undefined) {
-            if (format == "jummbox" || format == "midbox" || format == "synthbox" || format == "goldbox" || format == "paandorasbox" || format == "ultrabox" || format == "slarmoosbox" || format == "theepbox") {
+            if (format == "jummbox" || format == "midbox" || format == "synthbox" || format == "goldbox" || format == "paandorasbox" || format == "ultrabox" || format == "slarmoosbox" || format == "Theepbox") {
                 this.volume = clamp(-Config.volumeRange / 2, (Config.volumeRange / 2) + 1, instrumentObject["volume"] | 0);
             } else {
                 this.volume = Math.round(-clamp(0, 8, Math.round(5 - (instrumentObject["volume"] | 0) / 20)) * 25.0 / 7.0);

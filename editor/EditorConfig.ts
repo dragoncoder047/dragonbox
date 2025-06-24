@@ -24,7 +24,7 @@ export function prettyNumber(value: number): string {
 
 export class EditorConfig {
     public static readonly version: string = "v1";
-    public static readonly versionDisplayName: string = "theepbox!";
+    public static readonly versionDisplayName: string = "DragonBox!";
 
     public static readonly releaseNotesURL: string = "./patch_notes.html";
 

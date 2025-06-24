@@ -102,7 +102,7 @@ function buildPresetOptions(isNoise: boolean, idSet: string): HTMLSelectElement 
         menu.appendChild(option({ value: InstrumentType.noise }, EditorConfig.valueToPreset(InstrumentType.noise)!.name));
     }
 
-    // all presets are disabled for now until i update them to play nice with theepbox :) ~ theepie
+    // all presets are disabled for now until i update them to play nice with Theepbox :) ~ theepie
     /*
     const randomGroup: HTMLElement = optgroup({ label: "Randomize ▾" });
     randomGroup.appendChild(option({ value: "randomPreset" }, "Random Preset"));

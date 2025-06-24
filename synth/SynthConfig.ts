@@ -345,7 +345,7 @@ export class SampleLoadingState {
     }
 }
 
-export const sampleLoadingState: SampleLoadingState = new SampleLoadingState();
+export const sampleLoadingState = new SampleLoadingState();
 
 export class SampleLoadedEvent extends Event {
     readonly totalSamples: number;
@@ -368,7 +368,7 @@ export class SampleLoadEvents extends EventTarget {
     }
 }
 
-export const sampleLoadEvents: SampleLoadEvents = new SampleLoadEvents();
+export const sampleLoadEvents = new SampleLoadEvents();
 
 export async function startLoadingSample(url: string, chipWaveIndex: number, presetSettings: Dictionary<any>, rawLoopOptions: any, customSampleRate: number): Promise<void> {
     // @TODO: Make parts of the code that expect everything to already be
@@ -379,7 +379,7 @@ export async function startLoadingSample(url: string, chipWaveIndex: number, pre
     // revisited so as to be able to work with a changing list of chip
     // waves that may or may not be ready to be used.
     const sampleLoaderAudioContext = new AudioContext({ sampleRate: customSampleRate });
-    let closedSampleLoaderAudioContext: boolean = false;
+    let closedSampleLoaderAudioContext = false;
     const chipWave = Config.chipWaves[chipWaveIndex];
     const rawChipWave = Config.rawChipWaves[chipWaveIndex];
     const rawRawChipWave = Config.rawRawChipWaves[chipWaveIndex];
@@ -561,7 +561,7 @@ function loadScript(url: string): Promise<void> {
 }
 
 export function loadBuiltInSamples(set: number): void {
-    const defaultIndex: number = 0;
+    const defaultIndex = 0;
     const defaultIntegratedSamples: Float32Array = Config.chipWaves[defaultIndex].samples;
     const defaultSamples: Float32Array = Config.rawRawChipWaves[defaultIndex].samples;
 
@@ -644,9 +644,9 @@ export function loadBuiltInSamples(set: number): void {
 
         // This assumes that Config.rawRawChipWaves and Config.chipWaves have
         // the same number of elements.
-        const startIndex: number = Config.rawRawChipWaves.length;
+        const startIndex = Config.rawRawChipWaves.length;
         for (const chipWave of chipWaves) {
-            const chipWaveIndex: number = Config.rawRawChipWaves.length;
+            const chipWaveIndex = Config.rawRawChipWaves.length;
             const rawChipWave = { index: chipWaveIndex, name: chipWave.name, expression: chipWave.expression, isSampled: chipWave.isSampled, isPercussion: chipWave.isPercussion, extraSampleDetune: chipWave.extraSampleDetune, samples: defaultSamples };
             const rawRawChipWave = { index: chipWaveIndex, name: chipWave.name, expression: chipWave.expression, isSampled: chipWave.isSampled, isPercussion: chipWave.isPercussion, extraSampleDetune: chipWave.extraSampleDetune, samples: defaultSamples };
             const integratedChipWave = { index: chipWaveIndex, name: chipWave.name, expression: chipWave.expression, isSampled: chipWave.isSampled, isPercussion: chipWave.isPercussion, extraSampleDetune: chipWave.extraSampleDetune, samples: defaultIntegratedSamples };
@@ -741,9 +741,9 @@ export function loadBuiltInSamples(set: number): void {
                     centerWave(funkcrashtip),
                     centerWave(funkride)
                 ];
-                let chipWaveIndexOffset: number = 0;
+                let chipWaveIndexOffset = 0;
                 for (const chipWaveSample of chipWaveSamples) {
-                    const chipWaveIndex: number = startIndex + chipWaveIndexOffset;
+                    const chipWaveIndex = startIndex + chipWaveIndexOffset;
                     Config.rawChipWaves[chipWaveIndex].samples = chipWaveSample;
                     Config.rawRawChipWaves[chipWaveIndex].samples = chipWaveSample;
                     Config.chipWaves[chipWaveIndex].samples = performIntegral(chipWaveSample);
@@ -771,9 +771,9 @@ export function loadBuiltInSamples(set: number): void {
 
         // This assumes that Config.rawRawChipWaves and Config.chipWaves have
         // the same number of elements.
-        const startIndex: number = Config.rawRawChipWaves.length;
+        const startIndex = Config.rawRawChipWaves.length;
         for (const chipWave of chipWaves) {
-            const chipWaveIndex: number = Config.rawRawChipWaves.length;
+            const chipWaveIndex = Config.rawRawChipWaves.length;
             const rawChipWave = { index: chipWaveIndex, name: chipWave.name, expression: chipWave.expression, isSampled: chipWave.isSampled, isPercussion: chipWave.isPercussion, extraSampleDetune: chipWave.extraSampleDetune, samples: defaultSamples };
             const rawRawChipWave = { index: chipWaveIndex, name: chipWave.name, expression: chipWave.expression, isSampled: chipWave.isSampled, isPercussion: chipWave.isPercussion, extraSampleDetune: chipWave.extraSampleDetune, samples: defaultSamples };
             const integratedChipWave = { index: chipWaveIndex, name: chipWave.name, expression: chipWave.expression, isSampled: chipWave.isSampled, isPercussion: chipWave.isPercussion, extraSampleDetune: chipWave.extraSampleDetune, samples: defaultIntegratedSamples };
@@ -797,9 +797,9 @@ export function loadBuiltInSamples(set: number): void {
                     centerWave(woodclicksample),
                     centerWave(acousticsnaresample)
                 ];
-                let chipWaveIndexOffset: number = 0;
+                let chipWaveIndexOffset = 0;
                 for (const chipWaveSample of chipWaveSamples) {
-                    const chipWaveIndex: number = startIndex + chipWaveIndexOffset;
+                    const chipWaveIndex = startIndex + chipWaveIndexOffset;
                     Config.rawChipWaves[chipWaveIndex].samples = chipWaveSample;
                     Config.rawRawChipWaves[chipWaveIndex].samples = chipWaveSample;
                     Config.chipWaves[chipWaveIndex].samples = performIntegral(chipWaveSample);
@@ -833,9 +833,9 @@ export function loadBuiltInSamples(set: number): void {
 
         // This assumes that Config.rawRawChipWaves and Config.chipWaves have
         // the same number of elements.
-        const startIndex: number = Config.rawRawChipWaves.length;
+        const startIndex = Config.rawRawChipWaves.length;
         for (const chipWave of chipWaves) {
-            const chipWaveIndex: number = Config.rawRawChipWaves.length;
+            const chipWaveIndex = Config.rawRawChipWaves.length;
             const rawChipWave = { index: chipWaveIndex, name: chipWave.name, expression: chipWave.expression, isSampled: chipWave.isSampled, isPercussion: chipWave.isPercussion, extraSampleDetune: chipWave.extraSampleDetune, samples: defaultSamples };
             const rawRawChipWave = { index: chipWaveIndex, name: chipWave.name, expression: chipWave.expression, isSampled: chipWave.isSampled, isPercussion: chipWave.isPercussion, extraSampleDetune: chipWave.extraSampleDetune, samples: defaultSamples };
             const integratedChipWave = { index: chipWaveIndex, name: chipWave.name, expression: chipWave.expression, isSampled: chipWave.isSampled, isPercussion: chipWave.isPercussion, extraSampleDetune: chipWave.extraSampleDetune, samples: defaultIntegratedSamples };
@@ -866,9 +866,9 @@ export function loadBuiltInSamples(set: number): void {
                     centerWave(swanpaintboxsample),
                     centerWave(facepaintboxsample)
                 ];
-                let chipWaveIndexOffset: number = 0;
+                let chipWaveIndexOffset = 0;
                 for (const chipWaveSample of chipWaveSamples) {
-                    const chipWaveIndex: number = startIndex + chipWaveIndexOffset;
+                    const chipWaveIndex = startIndex + chipWaveIndexOffset;
                     Config.rawChipWaves[chipWaveIndex].samples = chipWaveSample;
                     Config.rawRawChipWaves[chipWaveIndex].samples = chipWaveSample;
                     Config.chipWaves[chipWaveIndex].samples = performIntegral(chipWaveSample);
@@ -889,16 +889,16 @@ export function loadBuiltInSamples(set: number): void {
 
 export class Config {
     // Params for post-processing compressor
-    static thresholdVal: number = -10;
-    static kneeVal: number = 40;
-    static ratioVal: number = 12;
-    static attackVal: number = 0;
-    static releaseVal: number = 0.25;
+    static thresholdVal = -10;
+    static kneeVal = 40;
+    static ratioVal = 12;
+    static attackVal = 0;
+    static releaseVal = 0.25;
 
-    static willReloadForCustomSamples: boolean = false;
+    static willReloadForCustomSamples = false;
 
-    static jsonFormat: string = "DragonBox";
-    // public static thurmboxImportUrl: string = "https://file.garden/ZMQ0Om5nmTe-x2hq/PandoraArchive%20Samples/";
+    static jsonFormat = "DragonBox";
+    // public static thurmboxImportUrl = "https://file.garden/ZMQ0Om5nmTe-x2hq/PandoraArchive%20Samples/";
 
     static readonly scales: DictionaryArray<Scale> = toNameMap([
 
@@ -955,30 +955,30 @@ export class Config {
         //shitbox
     ]);
     static readonly blackKeyNameParents: ReadonlyArray<number> = [-1, 1, -1, 1, -1, 1, -1, -1, 1, -1, 1, -1];
-    static readonly tempoMin: number = 1;
-    static readonly tempoMax: number = 2000;
-    static readonly octaveMin: number = -2;
-    static readonly octaveMax: number = 2;
-    static readonly echoDelayRange: number = 24;
-    static readonly echoDelayStepTicks: number = 4;
-    static readonly echoSustainRange: number = 24;
-    static readonly echoShelfHz: number = 4000.0; // The cutoff freq of the shelf filter that is used to decay echoes.
-    static readonly echoShelfGain: number = Math.pow(2.0, -0.5);
-    static readonly reverbShelfHz: number = 8000.0; // The cutoff freq of the shelf filter that is used to decay reverb.
-    static readonly reverbShelfGain: number = Math.pow(2.0, -1.5);
-    static readonly reverbRange: number = 32;
-    static readonly reverbDelayBufferSize: number = 16384; // TODO: Compute a buffer size based on sample rate.
-    static readonly reverbDelayBufferMask: number = Config.reverbDelayBufferSize - 1; // TODO: Compute a buffer size based on sample rate.
-    static readonly beatsPerBarMin: number = 1;
-    static readonly beatsPerBarMax: number = 64;
-    static readonly barCountMin: number = 1;
-    static readonly barCountMax: number = 1024;
-    static readonly instrumentCountMin: number = 1;
-    static readonly layeredInstrumentCountMax: number = 10;
-    static readonly patternInstrumentCountMax: number = 10;
-    static readonly partsPerBeat: number = 24;
-    static readonly ticksPerPart: number = 2;
-    static readonly ticksPerArpeggio: number = 3;
+    static readonly tempoMin = 1;
+    static readonly tempoMax = 2000;
+    static readonly octaveMin = -2;
+    static readonly octaveMax = 2;
+    static readonly echoDelayRange = 24;
+    static readonly echoDelayStepTicks = 4;
+    static readonly echoSustainRange = 24;
+    static readonly echoShelfHz = 4000.0; // The cutoff freq of the shelf filter that is used to decay echoes.
+    static readonly echoShelfGain = Math.pow(2.0, -0.5);
+    static readonly reverbShelfHz = 8000.0; // The cutoff freq of the shelf filter that is used to decay reverb.
+    static readonly reverbShelfGain = Math.pow(2.0, -1.5);
+    static readonly reverbRange = 32;
+    static readonly reverbDelayBufferSize = 16384; // TODO: Compute a buffer size based on sample rate.
+    static readonly reverbDelayBufferMask = Config.reverbDelayBufferSize - 1; // TODO: Compute a buffer size based on sample rate.
+    static readonly beatsPerBarMin = 1;
+    static readonly beatsPerBarMax = 64;
+    static readonly barCountMin = 1;
+    static readonly barCountMax = 1024;
+    static readonly instrumentCountMin = 1;
+    static readonly layeredInstrumentCountMax = 10;
+    static readonly patternInstrumentCountMax = 10;
+    static readonly partsPerBeat = 24;
+    static readonly ticksPerPart = 2;
+    static readonly ticksPerArpeggio = 3;
     static readonly arpeggioPatterns: ReadonlyArray<ReadonlyArray<number>> = [[0], [0, 1], [0, 1, 2, 1], [0, 1, 2, 3], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5, 6], [0, 1, 2, 3, 4, 5, 6, 7]];
     static readonly rhythms: DictionaryArray<Rhythm> = toNameMap([
         { name: "÷3 (triplets)", stepsPerBeat: 3, /*ticksPerArpeggio: 4, arpeggioPatterns: [[0], [0, 0, 1, 1], [0, 1, 2, 1], [0, 1, 2, 3]]*/ roundUpThresholds: [/*0*/ 5, /*8*/ 12, /*16*/ 18 /*24*/] },
@@ -991,18 +991,18 @@ export class Config {
 
     static readonly instrumentTypeNames: ReadonlyArray<string> = ["chip", "FM", "noise", "spectrum", "drumset", "harmonics", "PWM", "Picked String", "supersaw", "custom chip", "mod", "FM6op"];
     static readonly instrumentTypeHasSpecialInterval: ReadonlyArray<boolean> = [true, true, false, false, false, true, false, false, false, false, false];
-    static readonly chipBaseExpression: number = 0.03375; // Doubled by unison feature, but affected by expression adjustments per unison setting and wave shape. Custom chip is multiplied by 0.05 in instrumentState.updateWaves
-    static readonly fmBaseExpression: number = 0.03;
-    static readonly noiseBaseExpression: number = 0.19;
-    static readonly spectrumBaseExpression: number = 0.3; // Spectrum can be in pitch or noise channels, the expression is doubled for noise.
-    static readonly drumsetBaseExpression: number = 0.45; // Drums tend to be loud but brief!
-    static readonly harmonicsBaseExpression: number = 0.025;
-    static readonly pwmBaseExpression: number = 0.04725; // It's actually closer to half of this, the synthesized pulse amplitude range is only .5 to -.5, but also note that the fundamental sine partial amplitude of a square wave is 4/π times the measured square wave amplitude.
-    static readonly supersawBaseExpression: number = 0.061425; // It's actually closer to half of this, the synthesized sawtooth amplitude range is only .5 to -.5.
-    static readonly pickedStringBaseExpression: number = 0.025; // Same as harmonics.
-    static readonly distortionBaseVolume: number = 0.011; // Distortion is not affected by pitchDamping, which otherwise approximately halves expression for notes around the middle of the range.
-    static readonly bitcrusherBaseVolume: number = 0.010; // Also not affected by pitchDamping, used when bit crushing is maxed out (aka "1-bit" output).
-    static readonly granularOutputLoudnessCompensation: number = 0.5; //compensate for multiple grains playing at once
+    static readonly chipBaseExpression = 0.03375; // Doubled by unison feature, but affected by expression adjustments per unison setting and wave shape. Custom chip is multiplied by 0.05 in instrumentState.updateWaves
+    static readonly fmBaseExpression = 0.03;
+    static readonly noiseBaseExpression = 0.19;
+    static readonly spectrumBaseExpression = 0.3; // Spectrum can be in pitch or noise channels, the expression is doubled for noise.
+    static readonly drumsetBaseExpression = 0.45; // Drums tend to be loud but brief!
+    static readonly harmonicsBaseExpression = 0.025;
+    static readonly pwmBaseExpression = 0.04725; // It's actually closer to half of this, the synthesized pulse amplitude range is only .5 to -.5, but also note that the fundamental sine partial amplitude of a square wave is 4/π times the measured square wave amplitude.
+    static readonly supersawBaseExpression = 0.061425; // It's actually closer to half of this, the synthesized sawtooth amplitude range is only .5 to -.5.
+    static readonly pickedStringBaseExpression = 0.025; // Same as harmonics.
+    static readonly distortionBaseVolume = 0.011; // Distortion is not affected by pitchDamping, which otherwise approximately halves expression for notes around the middle of the range.
+    static readonly bitcrusherBaseVolume = 0.010; // Also not affected by pitchDamping, used when bit crushing is maxed out (aka "1-bit" output).
+    static readonly granularOutputLoudnessCompensation = 0.5; //compensate for multiple grains playing at once
     static rawChipWaves: DictionaryArray<ChipWave> = toNameMap([
         { name: "rounded", expression: 0.94, samples: centerWave([0.0, 0.2, 0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.95, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.95, 0.9, 0.85, 0.8, 0.7, 0.6, 0.5, 0.4, 0.2, 0.0, -0.2, -0.4, -0.5, -0.6, -0.7, -0.8, -0.85, -0.9, -0.95, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -0.95, -0.9, -0.85, -0.8, -0.7, -0.6, -0.5, -0.4, -0.2]) },
         { name: "triangle", expression: 1.0, samples: centerWave([1.0 / 15.0, 3.0 / 15.0, 5.0 / 15.0, 7.0 / 15.0, 9.0 / 15.0, 11.0 / 15.0, 13.0 / 15.0, 15.0 / 15.0, 15.0 / 15.0, 13.0 / 15.0, 11.0 / 15.0, 9.0 / 15.0, 7.0 / 15.0, 5.0 / 15.0, 3.0 / 15.0, 1.0 / 15.0, -1.0 / 15.0, -3.0 / 15.0, -5.0 / 15.0, -7.0 / 15.0, -9.0 / 15.0, -11.0 / 15.0, -13.0 / 15.0, -15.0 / 15.0, -15.0 / 15.0, -13.0 / 15.0, -11.0 / 15.0, -9.0 / 15.0, -7.0 / 15.0, -5.0 / 15.0, -3.0 / 15.0, -1.0 / 15.0]) },
@@ -1106,7 +1106,7 @@ export class Config {
     static chipWaves: DictionaryArray<ChipWave> = rawChipToIntegrated(Config.rawChipWaves);
     static rawRawChipWaves: DictionaryArray<ChipWave> = Config.rawChipWaves;
 
-    static firstIndexForSamplesInChipWaveList: number = Config.chipWaves.length;
+    static firstIndexForSamplesInChipWaveList = Config.chipWaves.length;
 
     // Noise waves have too many samples to write by hand, they're generated on-demand by getDrumWave instead.
     static readonly chipNoises: DictionaryArray<ChipNoise> = toNameMap([
@@ -1130,26 +1130,26 @@ export class Config {
         { name: "brownian", expression: 1.0, basePitch: 69, pitchFilterMult: 8.0, isSoft: true, samples: null },
     ]);
 
-    static readonly filterFreqStep: number = 1.0 / 4.0;
-    static readonly filterFreqRange: number = 34;
-    static readonly filterFreqReferenceSetting: number = 28;
-    static readonly filterFreqReferenceHz: number = 8000.0;
-    static readonly filterFreqMaxHz: number = Config.filterFreqReferenceHz * Math.pow(2.0, Config.filterFreqStep * (Config.filterFreqRange - 1 - Config.filterFreqReferenceSetting)); // ~19khz
-    static readonly filterFreqMinHz: number = 8.0;
-    static readonly filterGainRange: number = 15;
-    static readonly filterGainCenter: number = 7;
-    static readonly filterGainStep: number = 1.0 / 2.0;
-    static readonly filterMaxPoints: number = 8;
+    static readonly filterFreqStep = 1.0 / 4.0;
+    static readonly filterFreqRange = 34;
+    static readonly filterFreqReferenceSetting = 28;
+    static readonly filterFreqReferenceHz = 8000.0;
+    static readonly filterFreqMaxHz = Config.filterFreqReferenceHz * Math.pow(2.0, Config.filterFreqStep * (Config.filterFreqRange - 1 - Config.filterFreqReferenceSetting)); // ~19khz
+    static readonly filterFreqMinHz = 8.0;
+    static readonly filterGainRange = 15;
+    static readonly filterGainCenter = 7;
+    static readonly filterGainStep = 1.0 / 2.0;
+    static readonly filterMaxPoints = 8;
     static readonly filterTypeNames: ReadonlyArray<string> = ["low-pass", "high-pass", "peak"]; // See FilterType enum above.
-    static readonly filterMorphCount: number = 10; // Number of filter shapes allowed for modulating between. Counts the 0/default position.
+    static readonly filterMorphCount = 10; // Number of filter shapes allowed for modulating between. Counts the 0/default position.
 
-    static readonly filterSimpleCutRange: number = 11;
-    static readonly filterSimplePeakRange: number = 8;
+    static readonly filterSimpleCutRange = 11;
+    static readonly filterSimplePeakRange = 8;
 
-    static readonly fadeInRange: number = 10;
+    static readonly fadeInRange = 10;
     static readonly fadeOutTicks: ReadonlyArray<number> = [-24, -12, -6, -3, -1, 6, 12, 24, 48, 72, 96];
-    static readonly fadeOutNeutral: number = 4;
-    static readonly drumsetFadeOutTicks: number = 48;
+    static readonly fadeOutNeutral = 4;
+    static readonly drumsetFadeOutTicks = 48;
     static readonly transitions: DictionaryArray<Transition> = toNameMap([
         { name: "normal", isSeamless: false, continues: false, slides: false, slideTicks: 3, includeAdjacentPatterns: false },
         { name: "interrupt", isSeamless: true, continues: false, slides: false, slideTicks: 3, includeAdjacentPatterns: true },
@@ -1227,42 +1227,42 @@ export class Config {
     static readonly mdeffectNames: ReadonlyArray<string> = ["pitch shift", "detune", "vibrato", "transition type", "chord type", "note range"];
     static readonly mdeffectOrder: ReadonlyArray<MDEffectType> = [MDEffectType.transition, MDEffectType.chord, MDEffectType.pitchShift, MDEffectType.detune, MDEffectType.vibrato, MDEffectType.noteRange];
     static readonly mdeffectCount: 6
-    static readonly noteSizeMax: number = 6;
-    static readonly volumeRange: number = 100;
+    static readonly noteSizeMax = 6;
+    static readonly volumeRange = 100;
     // Beepbox's old volume scale used factor -0.5 and was [0~7] had roughly value 6 = 0.125 power. This new value is chosen to have -21 be the same,
     // given that the new scale is [-25~25]. This is such that conversion between the scales is roughly equivalent by satisfying (0.5*6 = 0.1428*21)
-    static readonly volumeLogScale: number = 0.0714;
-    static readonly gainRangeMult: number = 2;
-    static readonly panCenter: number = 50;
-    static readonly panMax: number = Config.panCenter * 2;
-    static readonly panDelaySecondsMax: number = 0.001;
-    static readonly ringModRange: number = 8;
-    static readonly ringModHzRange: number = 64;
-    static readonly ringModMinHz: number = 20;
-    static readonly ringModMaxHz: number = 4400;
-    static readonly rmHzOffsetCenter: number = 200;
-    static readonly rmHzOffsetMax: number = 400;
-    static readonly rmHzOffsetMin: number = 0;
-    static readonly granularRange: number = 10;
-    static readonly grainSizeMin: number = 40;
-    static readonly grainSizeMax: number = 2000;
-    static readonly grainSizeStep: number = 40;
-    static readonly grainRangeMax: number = 1600;
-    static readonly grainAmountsMax: number = 10; //2^grainAmountsMax is what is actually used
-    static readonly granularEnvelopeType: number = GranularEnvelopeType.parabolic; //here you can change which envelope implementation is used for grains (RaisedCosineBell still needs work)
-    static readonly flangerRange: number = 24;
-    static readonly flangerSpeedRange: number = 16;
-    static readonly flangerDepthRange: number = 16;
-    static readonly flangerFeedbackRange: number = 16;
-    static readonly flangerMaxDelay: number = 0.0034 * 4.35;
-    static readonly flangerPeriodMult: number = 0.000004;
-    static readonly flangerVolumeMult: number = 0.45;
-    static readonly chorusRange: number = 24;
-    static readonly chorusPeriodSeconds: number = 2.0;
-    static readonly chorusDelayRange: number = 0.0034;
+    static readonly volumeLogScale = 0.0714;
+    static readonly gainRangeMult = 2;
+    static readonly panCenter = 50;
+    static readonly panMax = Config.panCenter * 2;
+    static readonly panDelaySecondsMax = 0.001;
+    static readonly ringModRange = 8;
+    static readonly ringModHzRange = 64;
+    static readonly ringModMinHz = 20;
+    static readonly ringModMaxHz = 4400;
+    static readonly rmHzOffsetCenter = 200;
+    static readonly rmHzOffsetMax = 400;
+    static readonly rmHzOffsetMin = 0;
+    static readonly granularRange = 10;
+    static readonly grainSizeMin = 40;
+    static readonly grainSizeMax = 2000;
+    static readonly grainSizeStep = 40;
+    static readonly grainRangeMax = 1600;
+    static readonly grainAmountsMax = 10; //2^grainAmountsMax is what is actually used
+    static readonly granularEnvelopeType = GranularEnvelopeType.parabolic; //here you can change which envelope implementation is used for grains (RaisedCosineBell still needs work)
+    static readonly flangerRange = 24;
+    static readonly flangerSpeedRange = 16;
+    static readonly flangerDepthRange = 16;
+    static readonly flangerFeedbackRange = 16;
+    static readonly flangerMaxDelay = 0.0034 * 4.35;
+    static readonly flangerPeriodMult = 0.000004;
+    static readonly flangerVolumeMult = 0.45;
+    static readonly chorusRange = 24;
+    static readonly chorusPeriodSeconds = 2.0;
+    static readonly chorusDelayRange = 0.0034;
     static readonly chorusDelayOffsets: ReadonlyArray<ReadonlyArray<number>> = [[1.51, 2.10, 3.35], [1.47, 2.15, 3.25]];
     static readonly chorusPhaseOffsets: ReadonlyArray<ReadonlyArray<number>> = [[0.0, 2.1, 4.2], [3.2, 5.3, 1.0]];
-    static readonly chorusMaxDelay: number = Config.chorusDelayRange * (1.0 + Config.chorusDelayOffsets[0].concat(Config.chorusDelayOffsets[1]).reduce((x, y) => Math.max(x, y)));
+    static readonly chorusMaxDelay = Config.chorusDelayRange * (1.0 + Config.chorusDelayOffsets[0].concat(Config.chorusDelayOffsets[1]).reduce((x, y) => Math.max(x, y)));
     static readonly chords: DictionaryArray<Chord> = toNameMap([
         { name: "simultaneous", customInterval: false, arpeggiates: false, strumParts: 0, singleTone: false },
         { name: "strum", customInterval: false, arpeggiates: false, strumParts: 1, singleTone: false },
@@ -1270,9 +1270,9 @@ export class Config {
         { name: "custom interval", customInterval: true, arpeggiates: false, strumParts: 0, singleTone: true },
         { name: "monophonic", customInterval: false, arpeggiates: false, strumParts: 0, singleTone: true }
     ]);
-    static readonly maxChordSize: number = 9;
-    static readonly operatorCount: number = 4;
-    static readonly maxPitchOrOperatorCount: number = Math.max(Config.maxChordSize, Config.operatorCount + 2);
+    static readonly maxChordSize = 9;
+    static readonly operatorCount = 4;
+    static readonly maxPitchOrOperatorCount = Math.max(Config.maxChordSize, Config.operatorCount + 2);
     static readonly algorithms: DictionaryArray<Algorithm> = toNameMap([
         { name: "1←(2 3 4)", carrierCount: 1, associatedCarrier: [1, 1, 1, 1], modulatedBy: [[2, 3, 4], [], [], []] },
         { name: "1←(2 3←4)", carrierCount: 1, associatedCarrier: [1, 1, 1, 1], modulatedBy: [[2, 3], [], [4], []] },
@@ -1334,7 +1334,7 @@ export class Config {
         { name: "1←4(2←5 3←6", carrierCount: 3, associatedCarrier: [1, 2, 3, 1, 2, 3], modulatedBy: [[2, 3, 4], [5], [6], [], [], []] },
     ]);
     static readonly operatorCarrierInterval: ReadonlyArray<number> = [0.0, 0.04, -0.073, 0.091, 0.061, 0.024];
-    static readonly operatorAmplitudeMax: number = 15;
+    static readonly operatorAmplitudeMax = 15;
     static readonly operatorFrequencies: DictionaryArray<OperatorFrequency> = toNameMap([
         { name: "0.12×", mult: 0.125, hzOffset: 0.0, amplitudeSign: 1.0 },
         { name: "0.25×", mult: 0.25, hzOffset: 0.0, amplitudeSign: 1.0 },
@@ -1536,92 +1536,92 @@ export class Config {
         { name: "(1,2,3,4,5)→6", indices: [[], [], [], [], [], [1, 2, 3, 4, 5]] },
         { name: "ALL", indices: [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6]] },
     ]);
-    static readonly chipNoiseLength: number = 1 << 15; // 32768
-    static readonly spectrumNoiseLength: number = 1 << 15; // 32768
-    static readonly spectrumBasePitch: number = 24;
-    static readonly spectrumControlPoints: number = 30;
-    static readonly spectrumControlPointsPerOctave: number = 7;
-    static readonly spectrumControlPointBits: number = 3;
-    static readonly spectrumMax: number = (1 << Config.spectrumControlPointBits) - 1;
-    static readonly harmonicsControlPoints: number = 28;
-    static readonly harmonicsRendered: number = 64;
-    static readonly harmonicsRenderedForPickedString: number = 1 << 8; // 256
-    static readonly harmonicsControlPointBits: number = 3;
-    static readonly harmonicsMax: number = (1 << Config.harmonicsControlPointBits) - 1;
-    static readonly harmonicsWavelength: number = 1 << 11; // 2048
-    static readonly pulseWidthRange: number = 50;
-    static readonly pulseWidthStepPower: number = 0.5;
-    static readonly supersawVoiceCount: number = 7;
-    static readonly supersawDynamismMax: number = 6;
-    static readonly supersawSpreadMax: number = 12;
-    static readonly supersawShapeMax: number = 6;
-    static readonly pitchChannelCountMin: number = 1;
-    static readonly pitchChannelCountMax: number = 60;
-    static readonly noiseChannelCountMin: number = 0;
-    static readonly noiseChannelCountMax: number = 60;
-    static readonly modChannelCountMin: number = 0;
-    static readonly modChannelCountMax: number = 60;
-    static readonly noiseInterval: number = 6;
-    static readonly pitchesPerOctave: number = 12; // TODO: Use this for converting pitch to frequency.
-    static readonly drumCount: number = 12;
-    static readonly pitchOctaves: number = 8;
-    static readonly modCount: number = 6;
-    static readonly maxPitch: number = Config.pitchOctaves * Config.pitchesPerOctave;
-    static readonly maximumTonesPerChannel: number = Config.maxChordSize * 2;
+    static readonly chipNoiseLength = 1 << 15; // 32768
+    static readonly spectrumNoiseLength = 1 << 15; // 32768
+    static readonly spectrumBasePitch = 24;
+    static readonly spectrumControlPoints = 30;
+    static readonly spectrumControlPointsPerOctave = 7;
+    static readonly spectrumControlPointBits = 3;
+    static readonly spectrumMax = (1 << Config.spectrumControlPointBits) - 1;
+    static readonly harmonicsControlPoints = 28;
+    static readonly harmonicsRendered = 64;
+    static readonly harmonicsRenderedForPickedString = 1 << 8; // 256
+    static readonly harmonicsControlPointBits = 3;
+    static readonly harmonicsMax = (1 << Config.harmonicsControlPointBits) - 1;
+    static readonly harmonicsWavelength = 1 << 11; // 2048
+    static readonly pulseWidthRange = 50;
+    static readonly pulseWidthStepPower = 0.5;
+    static readonly supersawVoiceCount = 7;
+    static readonly supersawDynamismMax = 6;
+    static readonly supersawSpreadMax = 12;
+    static readonly supersawShapeMax = 6;
+    static readonly pitchChannelCountMin = 1;
+    static readonly pitchChannelCountMax = 60;
+    static readonly noiseChannelCountMin = 0;
+    static readonly noiseChannelCountMax = 60;
+    static readonly modChannelCountMin = 0;
+    static readonly modChannelCountMax = 60;
+    static readonly noiseInterval = 6;
+    static readonly pitchesPerOctave = 12; // TODO: Use this for converting pitch to frequency.
+    static readonly drumCount = 12;
+    static readonly pitchOctaves = 8;
+    static readonly modCount = 6;
+    static readonly maxPitch = Config.pitchOctaves * Config.pitchesPerOctave;
+    static readonly maximumTonesPerChannel = Config.maxChordSize * 2;
     static readonly justIntonationSemitones: number[] = [1.0 / 2.0, 8.0 / 15.0, 9.0 / 16.0, 3.0 / 5.0, 5.0 / 8.0, 2.0 / 3.0, 32.0 / 45.0, 3.0 / 4.0, 4.0 / 5.0, 5.0 / 6.0, 8.0 / 9.0, 15.0 / 16.0, 1.0, 16.0 / 15.0, 9.0 / 8.0, 6.0 / 5.0, 5.0 / 4.0, 4.0 / 3.0, 45.0 / 32.0, 3.0 / 2.0, 8.0 / 5.0, 5.0 / 3.0, 16.0 / 9.0, 15.0 / 8.0, 2.0].map(x => Math.log2(x) * Config.pitchesPerOctave);
-    static readonly pitchShiftRange: number = Config.justIntonationSemitones.length;
-    static readonly pitchShiftCenter: number = Config.pitchShiftRange >> 1;
-    static readonly detuneCenter: number = 200;
-    static readonly detuneMax: number = 400;
-    static readonly detuneMin: number = 0;
-    static readonly songDetuneMin: number = 0;
-    static readonly songDetuneMax: number = 500;
-    static readonly unisonVoicesMin: number = 1;
-    static readonly unisonVoicesMax: number = 9;
-    static readonly unisonSpreadMin: number = -96;
-    static readonly unisonSpreadMax: number = 96;
-    static readonly unisonOffsetMin: number = -96;
-    static readonly unisonOffsetMax: number = 96;
-    static readonly unisonExpressionMin: number = -2;
-    static readonly unisonExpressionMax: number = 2;
-    static readonly unisonSignMin: number = -2;
-    static readonly unisonSignMax: number = 2;
-    static readonly sineWaveLength: number = 1 << 8; // 256
-    static readonly sineWaveMask: number = Config.sineWaveLength - 1;
+    static readonly pitchShiftRange = Config.justIntonationSemitones.length;
+    static readonly pitchShiftCenter = Config.pitchShiftRange >> 1;
+    static readonly detuneCenter = 200;
+    static readonly detuneMax = 400;
+    static readonly detuneMin = 0;
+    static readonly songDetuneMin = 0;
+    static readonly songDetuneMax = 500;
+    static readonly unisonVoicesMin = 1;
+    static readonly unisonVoicesMax = 9;
+    static readonly unisonSpreadMin = -96;
+    static readonly unisonSpreadMax = 96;
+    static readonly unisonOffsetMin = -96;
+    static readonly unisonOffsetMax = 96;
+    static readonly unisonExpressionMin = -2;
+    static readonly unisonExpressionMax = 2;
+    static readonly unisonSignMin = -2;
+    static readonly unisonSignMax = 2;
+    static readonly sineWaveLength = 1 << 8; // 256
+    static readonly sineWaveMask = Config.sineWaveLength - 1;
 
     static generateSineWave(): Float32Array {
         const wave: Float32Array = new Float32Array(Config.sineWaveLength + 1);
-        for (let i: number = 0; i < Config.sineWaveLength + 1; i++) {
+        for (let i = 0; i < Config.sineWaveLength + 1; i++) {
             wave[i] = Math.sin(i * Math.PI * 2.0 / Config.sineWaveLength);
         }
         return wave;
     }
     static generateTriWave(): Float32Array {
         const wave: Float32Array = new Float32Array(Config.sineWaveLength + 1);
-        for (let i: number = 0; i < Config.sineWaveLength + 1; i++) {
+        for (let i = 0; i < Config.sineWaveLength + 1; i++) {
             wave[i] = Math.asin(Math.sin(i * Math.PI * 2.0 / Config.sineWaveLength)) / (Math.PI / 2);
         }
         return wave;
     }
-    static generateTrapezoidWave(drive: number = 2): Float32Array {
+    static generateTrapezoidWave(drive = 2): Float32Array {
         const wave: Float32Array = new Float32Array(Config.sineWaveLength + 1);
-        for (let i: number = 0; i < Config.sineWaveLength + 1; i++) {
+        for (let i = 0; i < Config.sineWaveLength + 1; i++) {
             wave[i] = Math.max(-1.0, Math.min(1.0, Math.asin(Math.sin(i * Math.PI * 2.0 / Config.sineWaveLength)) * drive));
         }
         return wave;
     }
-    static generateSquareWave(phaseWidth: number = 0): Float32Array {
+    static generateSquareWave(phaseWidth = 0): Float32Array {
         const wave: Float32Array = new Float32Array(Config.sineWaveLength + 1);
-        const centerPoint: number = Config.sineWaveLength / 4;
-        for (let i: number = 0; i < Config.sineWaveLength + 1; i++) {
+        const centerPoint = Config.sineWaveLength / 4;
+        for (let i = 0; i < Config.sineWaveLength + 1; i++) {
             wave[i] = +((Math.abs(i - centerPoint) < phaseWidth * Config.sineWaveLength / 2)
                 || ((Math.abs(i - Config.sineWaveLength - centerPoint) < phaseWidth * Config.sineWaveLength / 2))) * 2 - 1;
         }
         return wave;
     }
-    static generateSawWave(inverse: boolean = false): Float32Array {
+    static generateSawWave(inverse = false): Float32Array {
         const wave: Float32Array = new Float32Array(Config.sineWaveLength + 1);
-        for (let i: number = 0; i < Config.sineWaveLength + 1; i++) {
+        for (let i = 0; i < Config.sineWaveLength + 1; i++) {
             wave[i] = ((i + (Config.sineWaveLength / 4.0)) * 2.0 / Config.sineWaveLength) % 2 - 1;
             wave[i] = inverse ? -wave[i] : wave[i];
         }
@@ -1718,29 +1718,29 @@ export class Config {
         256: 63,
     }
 
-    static readonly perEnvelopeBoundMin: number = 0; //probably should leave at 0. Negative envelopes are problematic right now
-    static readonly perEnvelopeBoundMax: number = 2; //max of 6.3 unless you update url
-    static readonly randomEnvelopeSeedMax: number = 63; //if you increase this you'll need to update the url to support it
-    static readonly randomEnvelopeStepsMax: number = 24;
+    static readonly perEnvelopeBoundMin = 0; //probably should leave at 0. Negative envelopes are problematic right now
+    static readonly perEnvelopeBoundMax = 2; //max of 6.3 unless you update url
+    static readonly randomEnvelopeSeedMax = 63; //if you increase this you'll need to update the url to support it
+    static readonly randomEnvelopeStepsMax = 24;
 
     // Picked strings have an all-pass filter with a corner frequency based on the tone fundamental frequency, in order to add a slight inharmonicity. (Which is important for distortion.)
-    static readonly pickedStringDispersionCenterFreq: number = 6000.0; // The tone fundamental freq is pulled toward this freq for computing the all-pass corner freq.
-    static readonly pickedStringDispersionFreqScale: number = 0.3; // The tone fundamental freq freq moves this much toward the center freq for computing the all-pass corner freq.
-    static readonly pickedStringDispersionFreqMult: number = 4.0; // The all-pass corner freq is based on this times the adjusted tone fundamental freq.
-    static readonly pickedStringShelfHz: number = 4000.0; // The cutoff freq of the shelf filter that is used to decay the high frequency energy in the picked string.
+    static readonly pickedStringDispersionCenterFreq = 6000.0; // The tone fundamental freq is pulled toward this freq for computing the all-pass corner freq.
+    static readonly pickedStringDispersionFreqScale = 0.3; // The tone fundamental freq freq moves this much toward the center freq for computing the all-pass corner freq.
+    static readonly pickedStringDispersionFreqMult = 4.0; // The all-pass corner freq is based on this times the adjusted tone fundamental freq.
+    static readonly pickedStringShelfHz = 4000.0; // The cutoff freq of the shelf filter that is used to decay the high frequency energy in the picked string.
 
-    static readonly distortionRange: number = 16;
-    static readonly stringSustainRange: number = 15;
-    static readonly stringDecayRate: number = 0.12;
-    static readonly enableAcousticSustain: boolean = false;
+    static readonly distortionRange = 16;
+    static readonly stringSustainRange = 15;
+    static readonly stringDecayRate = 0.12;
+    static readonly enableAcousticSustain = false;
     static readonly sustainTypeNames: ReadonlyArray<string> = ["bright", "acoustic"]; // See SustainType enum above.
 
-    static readonly bitcrusherFreqRange: number = 14;
-    static readonly bitcrusherOctaveStep: number = 0.5;
-    static readonly bitcrusherQuantizationRange: number = 8;
+    static readonly bitcrusherFreqRange = 14;
+    static readonly bitcrusherOctaveStep = 0.5;
+    static readonly bitcrusherQuantizationRange = 8;
 
-    static readonly maxEnvelopeCount: number = 16;
-    static readonly defaultAutomationRange: number = 13;
+    static readonly maxEnvelopeCount = 16;
+    static readonly defaultAutomationRange = 13;
     static readonly instrumentAutomationTargets: DictionaryArray<AutomationTarget> = toNameMap([
         { name: "none", computeIndex: null, displayName: "none",             /*perNote: false,*/ interleave: false, isFilter: false, /*range: 0,                              */    maxCount: 1, effect: null, mdeffect: null, compatibleInstruments: null },
         { name: "noteVolume", computeIndex: EnvelopeComputeIndex.noteVolume, displayName: "pre volume",      /*perNote:  true,*/ interleave: false, isFilter: false, /*range: Config.volumeRange,             */    maxCount: 1, effect: null, mdeffect: null, compatibleInstruments: null },
@@ -1817,7 +1817,7 @@ export class Config {
 
 
     // Height of the small editor column for inserting/deleting rows, in pixels.
-    static readonly barEditorHeight: number = 10;
+    static readonly barEditorHeight = 10;
 
     // Careful about changing index ordering for this. Index is stored in URL/JSON etc.
     static readonly modulators: DictionaryArray<Modulator> = toNameMap([
@@ -2072,27 +2072,27 @@ export class Config {
 }
 
 function centerWave(wave: Array<number>): Float32Array {
-    let sum: number = 0.0;
-    for (let i: number = 0; i < wave.length; i++) sum += wave[i];
-    const average: number = sum / wave.length;
-    for (let i: number = 0; i < wave.length; i++) wave[i] -= average;
+    let sum = 0.0;
+    for (let i = 0; i < wave.length; i++) sum += wave[i];
+    const average = sum / wave.length;
+    for (let i = 0; i < wave.length; i++) wave[i] -= average;
     performIntegral(wave);
     // The first sample should be zero, and we'll duplicate it at the end for easier interpolation.
     wave.push(0);
     return new Float32Array(wave);
 }
 function centerAndNormalizeWave(wave: Array<number>): Float32Array {
-    let magn: number = 0.0;
+    let magn = 0.0;
 
     centerWave(wave);
 
     // Going to length-1 because an extra 0 sample is added on the end as part of centerWave, which shouldn't impact magnitude calculation.
-    for (let i: number = 0; i < wave.length - 1; i++) {
+    for (let i = 0; i < wave.length - 1; i++) {
         magn += Math.abs(wave[i]);
     }
-    const magnAvg: number = magn / (wave.length - 1);
+    const magnAvg = magn / (wave.length - 1);
 
-    for (let i: number = 0; i < wave.length - 1; i++) {
+    for (let i = 0; i < wave.length - 1; i++) {
         wave[i] = wave[i] / magnAvg;
     }
 
@@ -2101,9 +2101,9 @@ function centerAndNormalizeWave(wave: Array<number>): Float32Array {
 }
 export function performIntegral(wave: { length: number, [index: number]: number }): Float32Array {
     // Perform the integral on the wave. The synth function will perform the derivative to get the original wave back but with antialiasing.
-    let cumulative: number = 0.0;
+    let cumulative = 0.0;
     let newWave: Float32Array = new Float32Array(wave.length);
-    for (let i: number = 0; i < wave.length; i++) {
+    for (let i = 0; i < wave.length; i++) {
         newWave[i] = cumulative;
         cumulative += wave[i];
     }
@@ -2112,8 +2112,8 @@ export function performIntegral(wave: { length: number, [index: number]: number 
 }
 export function performIntegralOld(wave: { length: number, [index: number]: number }): void {
     // Old ver used in harmonics/picked string instruments, manipulates wave in place.
-    let cumulative: number = 0.0;
-    for (let i: number = 0; i < wave.length; i++) {
+    let cumulative = 0.0;
+    for (let i = 0; i < wave.length; i++) {
         const temp = wave[i];
         wave[i] = cumulative;
         cumulative += temp;
@@ -2141,10 +2141,10 @@ export function getDrumWave(index: number, inverseRealFourierTransform: Function
 
         if (index == 0) {
             // The "retro" drum uses a "Linear Feedback Shift Register" similar to the NES noise channel.
-            let drumBuffer: number = 1;
-            for (let i: number = 0; i < Config.chipNoiseLength; i++) {
+            let drumBuffer = 1;
+            for (let i = 0; i < Config.chipNoiseLength; i++) {
                 wave[i] = (drumBuffer & 1) * 2.0 - 1.0;
-                let newBuffer: number = drumBuffer >> 1;
+                let newBuffer = drumBuffer >> 1;
                 if (((drumBuffer + newBuffer) & 1) == 1) {
                     newBuffer += 1 << 14;
                 }
@@ -2152,15 +2152,15 @@ export function getDrumWave(index: number, inverseRealFourierTransform: Function
             }
         } else if (index == 1) {
             // White noise is just random values for each sample.
-            for (let i: number = 0; i < Config.chipNoiseLength; i++) {
+            for (let i = 0; i < Config.chipNoiseLength; i++) {
                 wave[i] = Math.random() * 2.0 - 1.0;
             }
         } else if (index == 2) {
             // The "clang" noise wave is based on a similar noise wave in the modded beepbox made by DAzombieRE.
-            let drumBuffer: number = 1;
-            for (let i: number = 0; i < Config.chipNoiseLength; i++) {
+            let drumBuffer = 1;
+            for (let i = 0; i < Config.chipNoiseLength; i++) {
                 wave[i] = (drumBuffer & 1) * 2.0 - 1.0;
-                let newBuffer: number = drumBuffer >> 1;
+                let newBuffer = drumBuffer >> 1;
                 if (((drumBuffer + newBuffer) & 1) == 1) {
                     newBuffer += 2 << 14;
                 }
@@ -2168,10 +2168,10 @@ export function getDrumWave(index: number, inverseRealFourierTransform: Function
             }
         } else if (index == 3) {
             // The "buzz" noise wave is based on a similar noise wave in the modded beepbox made by DAzombieRE.
-            let drumBuffer: number = 1;
-            for (let i: number = 0; i < Config.chipNoiseLength; i++) {
+            let drumBuffer = 1;
+            for (let i = 0; i < Config.chipNoiseLength; i++) {
                 wave[i] = (drumBuffer & 1) * 2.0 - 1.0;
-                let newBuffer: number = drumBuffer >> 1;
+                let newBuffer = drumBuffer >> 1;
                 if (((drumBuffer + newBuffer) & 1) == 1) {
                     newBuffer += 10 << 2;
                 }
@@ -2224,10 +2224,10 @@ export function getDrumWave(index: number, inverseRealFourierTransform: Function
             }
         } else if (index == 9) {
             // a noise more like old static than white noise
-            let drumBuffer: number = 1;
-            for (let i: number = 0; i < Config.chipNoiseLength; i++) {
+            let drumBuffer = 1;
+            for (let i = 0; i < Config.chipNoiseLength; i++) {
                 wave[i] = (drumBuffer & 1) * 2.0 - 1.1;
-                let newBuffer: number = drumBuffer >> 1;
+                let newBuffer = drumBuffer >> 1;
                 if (((drumBuffer + newBuffer) & 1) == 1) {
                     newBuffer += 8 ^ 2 << 16;
                 }
@@ -2296,16 +2296,16 @@ export function getDrumWave(index: number, inverseRealFourierTransform: Function
 }
 
 export function drawNoiseSpectrum(wave: Float32Array, waveLength: number, lowOctave: number, highOctave: number, lowPower: number, highPower: number, overallSlope: number): number {
-    const referenceOctave: number = 11;
-    const referenceIndex: number = 1 << referenceOctave;
-    const lowIndex: number = Math.pow(2, lowOctave) | 0;
-    const highIndex: number = Math.min(waveLength >> 1, Math.pow(2, highOctave) | 0);
+    const referenceOctave = 11;
+    const referenceIndex = 1 << referenceOctave;
+    const lowIndex = Math.pow(2, lowOctave) | 0;
+    const highIndex = Math.min(waveLength >> 1, Math.pow(2, highOctave) | 0);
     const retroWave: Float32Array = getDrumWave(0, null, null);
-    let combinedAmplitude: number = 0.0;
-    for (let i: number = lowIndex; i < highIndex; i++) {
+    let combinedAmplitude = 0.0;
+    for (let i = lowIndex; i < highIndex; i++) {
 
-        let lerped: number = lowPower + (highPower - lowPower) * (Math.log2(i) - lowOctave) / (highOctave - lowOctave);
-        let amplitude: number = Math.pow(2, (lerped - 1) * 7 + 1) * lerped;
+        let lerped = lowPower + (highPower - lowPower) * (Math.log2(i) - lowOctave) / (highOctave - lowOctave);
+        let amplitude = Math.pow(2, (lerped - 1) * 7 + 1) * lerped;
 
         amplitude *= Math.pow(i / referenceIndex, overallSlope);
 
@@ -2318,7 +2318,7 @@ export function drawNoiseSpectrum(wave: Float32Array, waveLength: number, lowOct
         // LFSR retro wave (effectively random), and also rotate the phase
         // of each sine wave based on the golden angle to disrupt the symmetry.
         amplitude *= retroWave[i];
-        const radians: number = 0.61803398875 * i * i * Math.PI * 2.0;
+        const radians = 0.61803398875 * i * i * Math.PI * 2.0;
 
         wave[i] = Math.cos(radians) * amplitude;
         wave[waveLength - i] = Math.sin(radians) * amplitude;
@@ -2342,7 +2342,7 @@ export function getArpeggioPitchIndex(pitchCount: number, useFastTwoNoteArp: boo
 // Pardon the messy type casting. This allows accessing array members by numerical index or string name.
 export function toNameMap<T extends BeepBoxOption>(array: Array<Pick<T, Exclude<keyof T, "index">>>): DictionaryArray<T> {
     const dictionary: Dictionary<T> = {};
-    for (let i: number = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         const value: any = array[i];
         value.index = i;
         dictionary[value.name] = <T>value;
@@ -2371,7 +2371,7 @@ export function effectsIncludeNoteRange(effects: number): boolean {
     return (effects & (1 << MDEffectType.noteRange)) != 0;
 }
 
-export function calculateRingModHertz(sliderHz: number, sliderHzOffset: number = 0): number {
+export function calculateRingModHertz(sliderHz: number, sliderHzOffset = 0): number {
     //replaces the value 21 with 0
     if (sliderHz == 0) return 0;
     if (sliderHz > 0) sliderHz -= 1 / Config.ringModHzRange;
@@ -2382,7 +2382,7 @@ export function calculateRingModHertz(sliderHz: number, sliderHzOffset: number =
 export function rawChipToIntegrated(raw: DictionaryArray<ChipWave>): DictionaryArray<ChipWave> {
     const newArray: Array<ChipWave> = new Array<ChipWave>(raw.length);
     const dictionary: Dictionary<ChipWave> = {};
-    for (let i: number = 0; i < newArray.length; i++) {
+    for (let i = 0; i < newArray.length; i++) {
         newArray[i] = Object.assign([], raw[i]);
         const value: any = newArray[i];
         value.index = i;

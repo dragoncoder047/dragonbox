@@ -1,25 +1,24 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Config, EffectType, calculateRingModHertz } from "../synth/SynthConfig";
-import { Instrument } from "../synth/Instrument";
+import { HTML } from "imperative-html/dist/esm/elements-strict";
 import { Channel } from "../synth/Channel";
 import { Effect } from "../synth/Effect";
-import { SongDocument } from "./SongDocument";
-import { ChangeChorus, ChangeReverb, ChangeFlanger, ChangeFlangerSpeed, ChangeFlangerDepth, ChangeFlangerFeedback, ChangeRingModChipWave, ChangeRingMod, ChangeRingModHz, ChangeGranular, ChangeGrainSize, ChangeGrainAmounts, ChangeGrainRange, ChangeEchoDelay, ChangeEchoSustain, ChangeEchoPingPong, ChangeGain, ChangePan, ChangePanMode, ChangePanDelay, ChangeDistortion, ChangeAliasing, ChangeBitcrusherQuantization, ChangeBitcrusherFreq, ChangeEQFilterType, ChangeEQFilterSimpleCut, ChangeEQFilterSimplePeak, ChangeRemoveEffects, ChangeReorderEffects } from "./changes";
-import { HTML } from "imperative-html/dist/esm/elements-strict";
+import { Config, EffectType, calculateRingModHertz } from "../synth/SynthConfig";
 import { Change } from "./Change";
-import { FilterEditor } from "./FilterEditor";
 import { ColorConfig } from "./ColorConfig";
+import { FilterEditor } from "./FilterEditor";
 import { Slider } from "./HTMLWrapper";
+import { SongDocument } from "./SongDocument";
+import { ChangeAliasing, ChangeBitcrusherFreq, ChangeBitcrusherQuantization, ChangeChorus, ChangeDistortion, ChangeEQFilterSimpleCut, ChangeEQFilterSimplePeak, ChangeEQFilterType, ChangeEchoDelay, ChangeEchoPingPong, ChangeEchoSustain, ChangeFlanger, ChangeFlangerDepth, ChangeFlangerFeedback, ChangeFlangerSpeed, ChangeGain, ChangeGrainAmounts, ChangeGrainRange, ChangeGrainSize, ChangeGranular, ChangePan, ChangePanDelay, ChangePanMode, ChangeRemoveEffects, ChangeReorderEffects, ChangeReverb, ChangeRingMod, ChangeRingModChipWave, ChangeRingModHz } from "./changes";
 
 function buildOptions(menu: HTMLSelectElement, items: ReadonlyArray<string | number>): HTMLSelectElement {
-	for (let index: number = 0; index < items.length; index++) {
+	for (let index = 0; index < items.length; index++) {
 		menu.appendChild(HTML.option({ value: index }, items[index]));
 	}
 	return menu;
 }
 
-function setSelectedValue(menu: HTMLSelectElement, value: number, isSelect2: boolean = false): void {
+function setSelectedValue(menu: HTMLSelectElement, value: number, isSelect2 = false): void {
 	const stringValue = value.toString();
 	if (menu.value != stringValue) {
 		menu.value = stringValue;
@@ -32,7 +31,7 @@ function setSelectedValue(menu: HTMLSelectElement, value: number, isSelect2: boo
 }
 
 export class EffectEditor {
-	readonly container: HTMLElement = HTML.div({ class: "effectEditor" });
+	readonly container = HTML.div({ class: "effectEditor" });
 
 	private readonly _rows: HTMLDivElement[] = [];
 
@@ -90,19 +89,19 @@ export class EffectEditor {
 	}
 
 	private _onChange = (event: Event): void => {
-		const ringModWaveSelectIndex: number = this.ringModWaveSelects.indexOf(<any>event.target);
-		const panModeSelectIndex: number = this.panModeSelects.indexOf(<any>event.target);
-		const aliasingBoxIndex: number = this.aliasingBoxes.indexOf(<any>event.target);
+		const ringModWaveSelectIndex = this.ringModWaveSelects.indexOf(<any>event.target);
+		const panModeSelectIndex = this.panModeSelects.indexOf(<any>event.target);
+		const aliasingBoxIndex = this.aliasingBoxes.indexOf(<any>event.target);
 
-		const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+		const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
 		if (ringModWaveSelectIndex != -1) {
-			let effect: Effect = <Effect>instrument.effects[ringModWaveSelectIndex];
+			let effect = <Effect>instrument.effects[ringModWaveSelectIndex];
 			this._doc.record(new ChangeRingModChipWave(this._doc, effect, parseInt(this.ringModWaveSelects[ringModWaveSelectIndex].value)));
 		} else if (panModeSelectIndex != -1) {
-			let effect: Effect = <Effect>instrument.effects[panModeSelectIndex];
+			let effect = <Effect>instrument.effects[panModeSelectIndex];
 			this._doc.record(new ChangePanMode(this._doc, effect, parseInt(this.panModeSelects[panModeSelectIndex].value)));
 		} else if (aliasingBoxIndex != -1) {
-			let effect: Effect = <Effect>instrument.effects[aliasingBoxIndex];
+			let effect = <Effect>instrument.effects[aliasingBoxIndex];
 			this._doc.record(new ChangeAliasing(this._doc, effect, this.aliasingBoxes[aliasingBoxIndex].checked));
 		} else if (this._lastChange != null) {
 			this._doc.record(this._lastChange);
@@ -111,10 +110,10 @@ export class EffectEditor {
 	}
 
 	private _onClick = (event: MouseEvent): void => {
-		const moveupButtonIndex: number = this.moveupButtons.indexOf(<any>event.target);
-		const movedownButtonIndex: number = this.movedownButtons.indexOf(<any>event.target);
-		const minimizeButtonIndex: number = this.minimizeButtons.indexOf(<any>event.target);
-		const deleteButtonIndex: number = this.deleteButtons.indexOf(<any>event.target);
+		const moveupButtonIndex = this.moveupButtons.indexOf(<any>event.target);
+		const movedownButtonIndex = this.movedownButtons.indexOf(<any>event.target);
+		const minimizeButtonIndex = this.minimizeButtons.indexOf(<any>event.target);
+		const deleteButtonIndex = this.deleteButtons.indexOf(<any>event.target);
 		if (deleteButtonIndex != -1) {
 			this._doc.record(new ChangeRemoveEffects(this._doc, deleteButtonIndex, null));
 			this.render(true)
@@ -134,26 +133,26 @@ export class EffectEditor {
 	}
 
 	private _onInput = (event: Event): void => {
-		const panSliderInputBoxIndex: number = this.panSliderInputBoxes.indexOf(<any>event.target);
-		const gainSliderInputBoxIndex: number = this.gainSliderInputBoxes.indexOf(<any>event.target);
+		const panSliderInputBoxIndex = this.panSliderInputBoxes.indexOf(<any>event.target);
+		const gainSliderInputBoxIndex = this.gainSliderInputBoxes.indexOf(<any>event.target);
 
-		const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+		const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
 
 		if (panSliderInputBoxIndex != -1) {
-			let effect: Effect = <Effect>instrument.effects[panSliderInputBoxIndex];
+			let effect = <Effect>instrument.effects[panSliderInputBoxIndex];
 			this._doc.record(new ChangePan(this._doc, effect, Math.min(100.0, Math.max(0.0, Math.round(+this.panSliderInputBoxes[panSliderInputBoxIndex].value)))));
 			this.panSliders[panSliderInputBoxIndex].updateValue(effect.pan);
 		}
 		if (gainSliderInputBoxIndex != -1) {
-			let effect: Effect = <Effect>instrument.effects[gainSliderInputBoxIndex];
+			let effect = <Effect>instrument.effects[gainSliderInputBoxIndex];
 			this._doc.record(new ChangeGain(this._doc, effect, Math.min(100.0, Math.max(0.0, Math.round(+this.gainSliderInputBoxes[gainSliderInputBoxIndex].value)))));
 			this.gainSliders[gainSliderInputBoxIndex].updateValue(effect.gain);
 		}
 
 		// re-render non-input values
-		for (let effectIndex: number = 0; effectIndex < instrument.effectCount; effectIndex++) {
+		for (let effectIndex = 0; effectIndex < instrument.effectCount; effectIndex++) {
 			if (instrument.effects[effectIndex] == null) continue;
-			const effect: Effect = instrument.effects[effectIndex] as Effect;
+			const effect = instrument.effects[effectIndex] as Effect;
 
 			this.panSliderInputBoxes[effectIndex].value = effect.pan + "";
 			this.gainSliderInputBoxes[effectIndex].value = effect.gain + "";
@@ -166,58 +165,58 @@ export class EffectEditor {
 	}
 
 	private _switchEQFilterType = (simpleFilter: boolean, effect: Effect): void => {
-		const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+		const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
 		this._doc.record(new ChangeEQFilterType(this._doc, effect, instrument, simpleFilter));
 		this.render(true)
 	}
 
-	render(forceRender: boolean = false): void {
-		const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+	render(forceRender = false): void {
+		const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
 
 		if (instrument.effects.length != this.container.children.length || this._doc.song.channels[this._doc.channel] != this._viewedChannel || forceRender) {
 			this.container.replaceChildren();
-			for (let effectIndex: number = 0; effectIndex < instrument.effectCount; effectIndex++) {
-				const effect: Effect = instrument.effects[effectIndex];
+			for (let effectIndex = 0; effectIndex < instrument.effectCount; effectIndex++) {
+				const effect = instrument.effects[effectIndex];
 
-				const moveupButton: HTMLButtonElement = HTML.button({ type: "button", class: "moveup-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "🞁");
-				const movedownButton: HTMLButtonElement = HTML.button({ type: "button", class: "movedown-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "🞃");
-				const minimizeButton: HTMLButtonElement = HTML.button({ type: "button", class: "minimize-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "-");
-				const deleteButton: HTMLButtonElement = HTML.button({ type: "button", class: "delete-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "x");
+				const moveupButton = HTML.button({ type: "button", class: "moveup-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "🞁");
+				const movedownButton = HTML.button({ type: "button", class: "movedown-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "🞃");
+				const minimizeButton = HTML.button({ type: "button", class: "minimize-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "-");
+				const deleteButton = HTML.button({ type: "button", class: "delete-effect", style: "width: 16px; height: 70%; font-size: small; flex: 1; margin-left:0.2em;" }, "x");
 
-				const effectButtonsText: HTMLDivElement = HTML.div({ style: `width: 50%; color: ${ColorConfig.secondaryText};` }, Config.effectDisplayNames[effect.type]);
+				const effectButtonsText = HTML.div({ style: `width: 50%; color: ${ColorConfig.secondaryText};` }, Config.effectDisplayNames[effect.type]);
 
-				const chorusSlider: Slider = new Slider(HTML.input({ value: effect.chorus, type: "range", min: 0, max: Config.chorusRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeChorus(this._doc, effect, newValue), false);
-				const reverbSlider: Slider = new Slider(HTML.input({ value: effect.reverb, type: "range", min: 0, max: Config.reverbRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeReverb(this._doc, effect, newValue), false);
-				const flangerSlider: Slider = new Slider(HTML.input({ value: effect.flanger, type: "range", min: 0, max: Config.flangerRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeFlanger(this._doc, effect, newValue), false);
-				const flangerSpeedSlider: Slider = new Slider(HTML.input({ value: effect.flangerSpeed, type: "range", min: 0, max: Config.flangerSpeedRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeFlangerSpeed(this._doc, effect, newValue), false);
-				const flangerDepthSlider: Slider = new Slider(HTML.input({ value: effect.flangerDepth, type: "range", min: 0, max: Config.flangerDepthRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeFlangerDepth(this._doc, effect, newValue), false);
-				const flangerFeedbackSlider: Slider = new Slider(HTML.input({ value: effect.flangerFeedback, type: "range", min: 0, max: Config.flangerFeedbackRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeFlangerFeedback(this._doc, effect, newValue), false);
-				const ringModWaveSelect: HTMLSelectElement = buildOptions(HTML.select(), Config.operatorWaves.map(wave => wave.name));
-				const ringModSlider: Slider = new Slider(HTML.input({ value: effect.ringModulation, type: "range", min: 0, max: Config.ringModRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeRingMod(this._doc, effect, newValue), false);
-				const ringModHzSlider: Slider = new Slider(HTML.input({ value: effect.ringModulationHz, type: "range", min: 0, max: Config.ringModHzRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeRingModHz(this._doc, effect, newValue), false);
-				const granularSlider: Slider = new Slider(HTML.input({ value: effect.granular, type: "range", min: 0, max: Config.granularRange, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeGranular(this._doc, effect, newValue), false);
-				const grainSizeSlider: Slider = new Slider(HTML.input({ value: effect.grainSize, type: "range", min: Config.grainSizeMin / Config.grainSizeStep, max: Config.grainSizeMax / Config.grainSizeStep, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeGrainSize(this._doc, effect, newValue), false);
-				const grainAmountsSlider: Slider = new Slider(HTML.input({ value: effect.grainAmounts, type: "range", min: "0", max: Config.grainAmountsMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeGrainAmounts(this._doc, effect, newValue), false);
-				const grainRangeSlider: Slider = new Slider(HTML.input({ value: effect.grainRange, type: "range", min: "0", max: Config.grainRangeMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeGrainRange(this._doc, effect, newValue), false);
-				const echoSustainSlider: Slider = new Slider(HTML.input({ value: effect.echoSustain, type: "range", min: 0, max: Config.echoSustainRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEchoSustain(this._doc, effect, newValue), false);
-				const echoDelaySlider: Slider = new Slider(HTML.input({ value: effect.echoDelay, type: "range", min: 0, max: Config.echoDelayRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEchoDelay(this._doc, effect, newValue), false);
-				const echoPingPongSlider: Slider = new Slider(HTML.input({ value: effect.echoPingPong, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEchoPingPong(this._doc, effect, newValue), true);
-				const gainSlider: Slider = new Slider(HTML.input({ value: effect.gain, type: "range", min: 0, max: Config.volumeRange / 2 * Config.gainRangeMult, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeGain(this._doc, effect, newValue), true);
-				const gainSliderInputBox: HTMLInputElement = HTML.input({ style: "width: 4em; font-size: 80%; ", id: "gainSliderInputBox", type: "number", step: "1", min: "0", max:  Config.volumeRange * Config.gainRangeMult + "", value: effect.gain.toString() });
-				const panSlider: Slider = new Slider(HTML.input({ value: effect.pan, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangePan(this._doc, effect, newValue), true);
-				const panSliderInputBox: HTMLInputElement = HTML.input({ style: "width: 4em; font-size: 80%; ", id: "panSliderInputBox", type: "number", step: "1", min: "0", max: "100", value: effect.pan.toString() });
-				const panDelaySlider: Slider = new Slider(HTML.input({ value: effect.panDelay, type: "range", min: 0, max: Config.modulators.dictionary["pan delay"].maxRawVol, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangePanDelay(this._doc, effect, newValue), false);
-				const panModeSelect: HTMLSelectElement = buildOptions(HTML.select(), ["stereo", "split stereo", "mono"]); //TODO: put this in SynthConfig.ts
-				const distortionSlider: Slider = new Slider(HTML.input({ value: effect.distortion, type: "range", min: 0, max: Config.distortionRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeDistortion(this._doc, effect, newValue), false);
-				const aliasingBox: HTMLInputElement = HTML.input({ type: "checkbox", style: "width: 1em; padding: 0; margin-right: 4em;" });
-				const bitcrusherQuantizationSlider: Slider = new Slider(HTML.input({ value: effect.bitcrusherQuantization, type: "range", min: 0, max: Config.bitcrusherQuantizationRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeBitcrusherQuantization(this._doc, effect, newValue), false);
-				const bitcrusherFreqSlider: Slider = new Slider(HTML.input({ value: effect.bitcrusherFreq, type: "range", min: 0, max: Config.bitcrusherFreqRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeBitcrusherFreq(this._doc, effect, newValue), false);
-				const eqFilterSimpleButton: HTMLButtonElement = HTML.button({ style: "font-size: x-small; width: 50%; height: 40%", class: "no-underline", onclick: () => this._switchEQFilterType(true, effect) }, "simple");
-				const eqFilterAdvancedButton: HTMLButtonElement = HTML.button({ style: "font-size: x-small; width: 50%; height: 40%", class: "last-button no-underline", onclick: () => this._switchEQFilterType(false, effect) }, "advanced");
-				const eqFilterEditor: FilterEditor = new FilterEditor(this._doc, false, false, false, effectIndex);
-				const eqFilterSimpleCutSlider: Slider = new Slider(HTML.input({ value: effect.eqFilterSimpleCut, type: "range", min: 0, max: Config.filterSimpleCutRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEQFilterSimpleCut(this._doc, effect, newValue), false);
-				const eqFilterSimplePeakSlider: Slider = new Slider(HTML.input({ value: effect.eqFilterSimplePeak, type: "range", min: 0, max: Config.filterSimplePeakRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEQFilterSimplePeak(this._doc, effect, newValue), false);
-				const eqFilterZoom: HTMLButtonElement = HTML.button({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px; text-align: center; font-size: smaller;", onclick: () => this._openPrompt("customEQFilterSettings", effectIndex) }, "+");
+				const chorusSlider = new Slider(HTML.input({ value: effect.chorus, type: "range", min: 0, max: Config.chorusRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeChorus(this._doc, effect, newValue), false);
+				const reverbSlider = new Slider(HTML.input({ value: effect.reverb, type: "range", min: 0, max: Config.reverbRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeReverb(this._doc, effect, newValue), false);
+				const flangerSlider = new Slider(HTML.input({ value: effect.flanger, type: "range", min: 0, max: Config.flangerRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeFlanger(this._doc, effect, newValue), false);
+				const flangerSpeedSlider = new Slider(HTML.input({ value: effect.flangerSpeed, type: "range", min: 0, max: Config.flangerSpeedRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeFlangerSpeed(this._doc, effect, newValue), false);
+				const flangerDepthSlider = new Slider(HTML.input({ value: effect.flangerDepth, type: "range", min: 0, max: Config.flangerDepthRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeFlangerDepth(this._doc, effect, newValue), false);
+				const flangerFeedbackSlider = new Slider(HTML.input({ value: effect.flangerFeedback, type: "range", min: 0, max: Config.flangerFeedbackRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeFlangerFeedback(this._doc, effect, newValue), false);
+				const ringModWaveSelect = buildOptions(HTML.select(), Config.operatorWaves.map(wave => wave.name));
+				const ringModSlider = new Slider(HTML.input({ value: effect.ringModulation, type: "range", min: 0, max: Config.ringModRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeRingMod(this._doc, effect, newValue), false);
+				const ringModHzSlider = new Slider(HTML.input({ value: effect.ringModulationHz, type: "range", min: 0, max: Config.ringModHzRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeRingModHz(this._doc, effect, newValue), false);
+				const granularSlider = new Slider(HTML.input({ value: effect.granular, type: "range", min: 0, max: Config.granularRange, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeGranular(this._doc, effect, newValue), false);
+				const grainSizeSlider = new Slider(HTML.input({ value: effect.grainSize, type: "range", min: Config.grainSizeMin / Config.grainSizeStep, max: Config.grainSizeMax / Config.grainSizeStep, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeGrainSize(this._doc, effect, newValue), false);
+				const grainAmountsSlider = new Slider(HTML.input({ value: effect.grainAmounts, type: "range", min: "0", max: Config.grainAmountsMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeGrainAmounts(this._doc, effect, newValue), false);
+				const grainRangeSlider = new Slider(HTML.input({ value: effect.grainRange, type: "range", min: "0", max: Config.grainRangeMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeGrainRange(this._doc, effect, newValue), false);
+				const echoSustainSlider = new Slider(HTML.input({ value: effect.echoSustain, type: "range", min: 0, max: Config.echoSustainRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEchoSustain(this._doc, effect, newValue), false);
+				const echoDelaySlider = new Slider(HTML.input({ value: effect.echoDelay, type: "range", min: 0, max: Config.echoDelayRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEchoDelay(this._doc, effect, newValue), false);
+				const echoPingPongSlider = new Slider(HTML.input({ value: effect.echoPingPong, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEchoPingPong(this._doc, effect, newValue), true);
+				const gainSlider = new Slider(HTML.input({ value: effect.gain, type: "range", min: 0, max: Config.volumeRange / 2 * Config.gainRangeMult, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeGain(this._doc, effect, newValue), true);
+				const gainSliderInputBox = HTML.input({ style: "width: 4em; font-size: 80%; ", id: "gainSliderInputBox", type: "number", step: "1", min: "0", max:  Config.volumeRange * Config.gainRangeMult + "", value: effect.gain.toString() });
+				const panSlider = new Slider(HTML.input({ value: effect.pan, type: "range", min: 0, max: Config.panMax, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangePan(this._doc, effect, newValue), true);
+				const panSliderInputBox = HTML.input({ style: "width: 4em; font-size: 80%; ", id: "panSliderInputBox", type: "number", step: "1", min: "0", max: "100", value: effect.pan.toString() });
+				const panDelaySlider = new Slider(HTML.input({ value: effect.panDelay, type: "range", min: 0, max: Config.modulators.dictionary["pan delay"].maxRawVol, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangePanDelay(this._doc, effect, newValue), false);
+				const panModeSelect = buildOptions(HTML.select(), ["stereo", "split stereo", "mono"]); //TODO: put this in SynthConfig.ts
+				const distortionSlider = new Slider(HTML.input({ value: effect.distortion, type: "range", min: 0, max: Config.distortionRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeDistortion(this._doc, effect, newValue), false);
+				const aliasingBox = HTML.input({ type: "checkbox", style: "width: 1em; padding: 0; margin-right: 4em;" });
+				const bitcrusherQuantizationSlider = new Slider(HTML.input({ value: effect.bitcrusherQuantization, type: "range", min: 0, max: Config.bitcrusherQuantizationRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeBitcrusherQuantization(this._doc, effect, newValue), false);
+				const bitcrusherFreqSlider = new Slider(HTML.input({ value: effect.bitcrusherFreq, type: "range", min: 0, max: Config.bitcrusherFreqRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeBitcrusherFreq(this._doc, effect, newValue), false);
+				const eqFilterSimpleButton = HTML.button({ style: "font-size: x-small; width: 50%; height: 40%", class: "no-underline", onclick: () => this._switchEQFilterType(true, effect) }, "simple");
+				const eqFilterAdvancedButton = HTML.button({ style: "font-size: x-small; width: 50%; height: 40%", class: "last-button no-underline", onclick: () => this._switchEQFilterType(false, effect) }, "advanced");
+				const eqFilterEditor = new FilterEditor(this._doc, false, false, false, effectIndex);
+				const eqFilterSimpleCutSlider = new Slider(HTML.input({ value: effect.eqFilterSimpleCut, type: "range", min: 0, max: Config.filterSimpleCutRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEQFilterSimpleCut(this._doc, effect, newValue), false);
+				const eqFilterSimplePeakSlider = new Slider(HTML.input({ value: effect.eqFilterSimplePeak, type: "range", min: 0, max: Config.filterSimplePeakRange - 1, step: 1, style: "margin: 0;" }), this._doc, (oldValue: number, newValue: number) => new ChangeEQFilterSimplePeak(this._doc, effect, newValue), false);
+				const eqFilterZoom = HTML.button({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px; text-align: center; font-size: smaller;", onclick: () => this._openPrompt("customEQFilterSettings", effectIndex) }, "+");
 
 				setSelectedValue(ringModWaveSelect, effect.ringModWaveformIndex);
 				setSelectedValue(panModeSelect, effect.panMode);
@@ -227,45 +226,45 @@ export class EffectEditor {
 
 				// i've left the grain range and size display commented out for now because i don't really get what the numbers mean ~ theepie
 
-				const ringModHzNum: HTMLParagraphElement = HTML.div({ style: "font-size: 80%; ", id: "ringModHzNum" });
-				const echoDelayNum: HTMLParagraphElement = HTML.div({ style: "font-size: 80%; ", id: "echoDelayNum" });
-				//const grainSizeNum: HTMLParagraphElement = HTML.div({ style: "font-size: 80%; ", id: "grainSizeNum" });
-				//const grainRangeNum: HTMLParagraphElement = HTML.div({ style: "font-size: 80%; ", id: "grainRangeNum" });
+				const ringModHzNum = HTML.div({ style: "font-size: 80%; ", id: "ringModHzNum" });
+				const echoDelayNum = HTML.div({ style: "font-size: 80%; ", id: "echoDelayNum" });
+				//const grainSizeNum = HTML.div({ style: "font-size: 80%; ", id: "grainSizeNum" });
+				//const grainRangeNum = HTML.div({ style: "font-size: 80%; ", id: "grainRangeNum" });
 
 				ringModHzNum.innerHTML = calculateRingModHertz(effect.ringModulationHz / (Config.ringModHzRange - 1)) + " Hz";
 				echoDelayNum.innerHTML = (Math.round((effect.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat) * 1000) / 1000) + " beat(s)";
 				//grainSizeNum.innerHTML = effect.grainSize * Config.grainSizeStep;
 				//grainRangeNum.innerHTML = effect.grainRange * Config.grainSizeStep;
 
-				const effectButtonsRow: HTMLDivElement = HTML.div({ class: "selectRow", style: `padding-left: 12.5%; max-width: 75%; height: 80%; padding-top: 0.2em;` }, effectButtonsText, moveupButton, movedownButton, minimizeButton, deleteButton);
-				const chorusRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("chorus") }, "Chorus:"), chorusSlider.container);
-				const reverbRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("reverb") }, "Reverb:"), reverbSlider.container);
-				const flangerRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("flanger") }, "Flanger:"), flangerSlider.container);
-				const flangerSpeedRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("flangerSpeed") }, "Speed:"), flangerSpeedSlider.container);
-				const flangerDepthRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("flangerDepth") }, "Depth:"), flangerDepthSlider.container);
-				const flangerFeedbackRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("flangerFeedback") }, "Feedback:"), flangerFeedbackSlider.container);
-				const ringModWaveRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Wave:"), HTML.div({ class: "selectContainer" }, ringModWaveSelect));
-				const ringModRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringMod") }, "Ring Mod:"), ringModSlider.container);
-				const ringModHzRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Hertz:"), HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, ringModHzNum), ringModHzSlider.container);
-				const granularRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("granular") }, "Granular:"), granularSlider.container);
-				const grainSizeRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainSize") }, "Grain Size:"), /*HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, grainSizeNum),*/ grainSizeSlider.container);
-				const grainAmountsRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainAmounts") }, "Grain Amount:"), grainAmountsSlider.container);
-				const grainRangeRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainRange") }, "Grain Range:"), /*HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, grainRangeNum),*/ grainRangeSlider.container);
-				const echoSustainRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echo") }, "Echo:"), echoSustainSlider.container);
-				const echoDelayRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Echo Delay:"), HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, echoDelayNum), echoDelaySlider.container);
-				const echoPingPongRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Ping Pong:"), echoPingPongSlider.container);
-				const gainRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.div({}, HTML.span({ class: "tip", tabindex: "0", style: "height:1em; font-size: smaller;", onclick: () => this._openPrompt("gain") }, "Gain: "), HTML.div({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, gainSliderInputBox)), gainSlider.container);
-				const panRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.div({}, HTML.span({ class: "tip", tabindex: "0", style: "height:1em; font-size: smaller;", onclick: () => this._openPrompt("pan") }, "Pan: "), HTML.div({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, panSliderInputBox)), panSlider.container);
-				const panDelayRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("panDelay") }, "Pan Delay:"), panDelaySlider.container);
-				const panModeRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("panMode") }, "Pan Mode:"), HTML.div({ class: "selectContainer" }, panModeSelect));
-				const distortionRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("distortion") }, "Distortion:"), distortionSlider.container);
-				const aliasingRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("aliasing") }, "Aliasing:"), aliasingBox);
-				const bitcrusherQuantizationRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("bitcrusherQuantization") }, "Bit Crush:"), bitcrusherQuantizationSlider.container);
-				const bitcrusherFreqRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("bitcrusherFreq") }, "Freq Crush:"), bitcrusherFreqSlider.container);
-				const eqFilterButtonsRow: HTMLElement = HTML.div({ class: "selectRow", style: "display: none; padding-top: 4px; margin-bottom: 0px;" }, HTML.span({ style: "font-size: x-small;", class: "tip", onclick: () => this._openPrompt("filterType") }, "Post EQ Type:"), HTML.div({ class: "instrument-bar" }, eqFilterSimpleButton, eqFilterAdvancedButton));
-				const eqFilterEditorRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("eqFilter") }, "Post EQ:"), eqFilterZoom,  eqFilterEditor.container);
-				const eqFilterSimpleCutRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("filterCutoff") }, "Filter Cut:"), eqFilterSimpleCutSlider.container);
-				const eqFilterSimplePeakRow: HTMLDivElement = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("filterPeak") }, "Filter Peak:"), eqFilterSimplePeakSlider.container);
+				const effectButtonsRow = HTML.div({ class: "selectRow", style: `padding-left: 12.5%; max-width: 75%; height: 80%; padding-top: 0.2em;` }, effectButtonsText, moveupButton, movedownButton, minimizeButton, deleteButton);
+				const chorusRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("chorus") }, "Chorus:"), chorusSlider.container);
+				const reverbRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("reverb") }, "Reverb:"), reverbSlider.container);
+				const flangerRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("flanger") }, "Flanger:"), flangerSlider.container);
+				const flangerSpeedRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("flangerSpeed") }, "Speed:"), flangerSpeedSlider.container);
+				const flangerDepthRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("flangerDepth") }, "Depth:"), flangerDepthSlider.container);
+				const flangerFeedbackRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("flangerFeedback") }, "Feedback:"), flangerFeedbackSlider.container);
+				const ringModWaveRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Wave:"), HTML.div({ class: "selectContainer" }, ringModWaveSelect));
+				const ringModRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringMod") }, "Ring Mod:"), ringModSlider.container);
+				const ringModHzRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("ringModHz") }, "Hertz:"), HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, ringModHzNum), ringModHzSlider.container);
+				const granularRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("granular") }, "Granular:"), granularSlider.container);
+				const grainSizeRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainSize") }, "Grain Size:"), /*HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, grainSizeNum),*/ grainSizeSlider.container);
+				const grainAmountsRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainAmounts") }, "Grain Amount:"), grainAmountsSlider.container);
+				const grainRangeRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("grainRange") }, "Grain Range:"), /*HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, grainRangeNum),*/ grainRangeSlider.container);
+				const echoSustainRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echo") }, "Echo:"), echoSustainSlider.container);
+				const echoDelayRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Echo Delay:"), HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, echoDelayNum), echoDelaySlider.container);
+				const echoPingPongRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("echoDelay") }, "Ping Pong:"), echoPingPongSlider.container);
+				const gainRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.div({}, HTML.span({ class: "tip", tabindex: "0", style: "height:1em; font-size: smaller;", onclick: () => this._openPrompt("gain") }, "Gain: "), HTML.div({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, gainSliderInputBox)), gainSlider.container);
+				const panRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.div({}, HTML.span({ class: "tip", tabindex: "0", style: "height:1em; font-size: smaller;", onclick: () => this._openPrompt("pan") }, "Pan: "), HTML.div({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, panSliderInputBox)), panSlider.container);
+				const panDelayRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("panDelay") }, "Pan Delay:"), panDelaySlider.container);
+				const panModeRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("panMode") }, "Pan Mode:"), HTML.div({ class: "selectContainer" }, panModeSelect));
+				const distortionRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("distortion") }, "Distortion:"), distortionSlider.container);
+				const aliasingRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("aliasing") }, "Aliasing:"), aliasingBox);
+				const bitcrusherQuantizationRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("bitcrusherQuantization") }, "Bit Crush:"), bitcrusherQuantizationSlider.container);
+				const bitcrusherFreqRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("bitcrusherFreq") }, "Freq Crush:"), bitcrusherFreqSlider.container);
+				const eqFilterButtonsRow = HTML.div({ class: "selectRow", style: "display: none; padding-top: 4px; margin-bottom: 0px;" }, HTML.span({ style: "font-size: x-small;", class: "tip", onclick: () => this._openPrompt("filterType") }, "Post EQ Type:"), HTML.div({ class: "instrument-bar" }, eqFilterSimpleButton, eqFilterAdvancedButton));
+				const eqFilterEditorRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("eqFilter") }, "Post EQ:"), eqFilterZoom,  eqFilterEditor.container);
+				const eqFilterSimpleCutRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("filterCutoff") }, "Filter Cut:"), eqFilterSimpleCutSlider.container);
+				const eqFilterSimplePeakRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._openPrompt("filterPeak") }, "Filter Peak:"), eqFilterSimplePeakSlider.container);
 
 				if (this.renderEffectRows[effectIndex] == null) this.renderEffectRows[effectIndex] = true
 
@@ -323,7 +322,7 @@ export class EffectEditor {
 					}
 				}
 
-				const row: HTMLDivElement = HTML.div({ class: "effect-row" },
+				const row = HTML.div({ class: "effect-row" },
 					effectButtonsRow,
 					chorusRow,
 					reverbRow,
@@ -405,8 +404,8 @@ export class EffectEditor {
 			}
 		}
 
-		for (let effectIndex: number = 0; effectIndex < instrument.effects.length; effectIndex++) {
-			const effect: Effect = instrument.effects[effectIndex];
+		for (let effectIndex = 0; effectIndex < instrument.effects.length; effectIndex++) {
+			const effect = instrument.effects[effectIndex];
 
 			this.chorusSliders[effectIndex].updateValue(effect.chorus);
 			this.reverbSliders[effectIndex].updateValue(effect.reverb);

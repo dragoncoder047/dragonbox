@@ -26,7 +26,7 @@ interface MIDIMessageEvent {
 }
 
 // A unique id for this tab.
-const id: string = ((Math.random() * 0xffffffff) >>> 0).toString(16);
+const id = ((Math.random() * 0xffffffff) >>> 0).toString(16);
 
 export class MidiInputHandler {
     constructor(private _doc: SongDocument) {
@@ -81,7 +81,7 @@ export class MidiInputHandler {
         // Ignore midi events if disabled or a different tab is handling them.
         if (!this._doc.prefs.enableMidi || localStorage.getItem("midiHandlerId") != id) return;
 
-        const isDrum: boolean = this._doc.song.getChannelIsNoise(this._doc.channel);
+        const isDrum = this._doc.song.getChannelIsNoise(this._doc.channel);
         let [eventType, key, velocity] = event.data;
         eventType &= 0xF0;
 

@@ -46,8 +46,8 @@ class Grain {
 
 	initializeParabolicEnvelope(durationInSamples: number, amplitude: number): void {
 		this.parabolicEnvelopeAmplitude = 0;
-		const invDuration: number = 1.0 / durationInSamples;
-		const invDurationSquared: number = invDuration * invDuration;
+		const invDuration = 1.0 / durationInSamples;
+		const invDurationSquared = invDuration * invDuration;
 		this.parabolicEnvelopeSlope = 4.0 * amplitude * (invDuration - invDurationSquared);
 		this.parabolicEnvelopeCurve = -8.0 * amplitude * invDurationSquared;
 	}
@@ -80,146 +80,146 @@ class Grain {
 }
 
 export class EffectState {
-	type: EffectType = EffectType.reverb;
+	type = EffectType.reverb;
 
-	eqFilterVolume: number = 1.0;
-	eqFilterVolumeDelta: number = 0.0;
+	eqFilterVolume = 1.0;
+	eqFilterVolumeDelta = 0.0;
 
-	granularMix: number = 1.0;
-	granularMixDelta: number = 0.0;
+	granularMix = 1.0;
+	granularMixDelta = 0.0;
 	granularDelayLineL: Float32Array | null = null;
 	granularDelayLineR: Float32Array | null = null;
-	granularDelayLineIndex: number = 0;
-	granularMaximumDelayTimeInSeconds: number = 1;
+	granularDelayLineIndex = 0;
+	granularMaximumDelayTimeInSeconds = 1;
 	granularGrains: Grain[];
 	granularGrainsLength: number;
 	granularMaximumGrains: number;
-	usesRandomGrainLocation: boolean = true; //eventually I might use the granular code for sample pitch shifting, but we'll see
-	granularDelayLineDirty: boolean = false;
-	computeGrains: boolean = true;
+	usesRandomGrainLocation = true; //eventually I might use the granular code for sample pitch shifting, but we'll see
+	granularDelayLineDirty = false;
+	computeGrains = true;
 
-	ringModMix: number = 0;
-	ringModMixDelta: number = 0;
-	ringModPhase: number = 0;
-	ringModPhaseDelta: number = 0;
-	ringModPhaseDeltaScale: number = 1.0;
-	ringModWaveformIndex: number = 0.0;
-	ringModPulseWidth: number = 0.0;
-	ringModHzOffset: number = 0.0;
-	ringModMixFade: number = 1.0;
-	ringModMixFadeDelta: number = 0;
+	ringModMix = 0;
+	ringModMixDelta = 0;
+	ringModPhase = 0;
+	ringModPhaseDelta = 0;
+	ringModPhaseDeltaScale = 1.0;
+	ringModWaveformIndex = 0.0;
+	ringModPulseWidth = 0.0;
+	ringModHzOffset = 0.0;
+	ringModMixFade = 1.0;
+	ringModMixFadeDelta = 0;
 
-	distortion: number = 0.0;
-	distortionDelta: number = 0.0;
-	distortionDrive: number = 0.0;
-	distortionDriveDelta: number = 0.0;
-	distortionFractionalInputL1: number = 0.0;
-	distortionFractionalInputL2: number = 0.0;
-	distortionFractionalInputL3: number = 0.0;
-	distortionFractionalInputR1: number = 0.0;
-	distortionFractionalInputR2: number = 0.0;
-	distortionFractionalInputR3: number = 0.0;
-	distortionPrevInputL: number = 0.0;
-	distortionPrevInputR: number = 0.0;
-	distortionNextOutputL: number = 0.0;
-	distortionNextOutputR: number = 0.0;
+	distortion = 0.0;
+	distortionDelta = 0.0;
+	distortionDrive = 0.0;
+	distortionDriveDelta = 0.0;
+	distortionFractionalInputL1 = 0.0;
+	distortionFractionalInputL2 = 0.0;
+	distortionFractionalInputL3 = 0.0;
+	distortionFractionalInputR1 = 0.0;
+	distortionFractionalInputR2 = 0.0;
+	distortionFractionalInputR3 = 0.0;
+	distortionPrevInputL = 0.0;
+	distortionPrevInputR = 0.0;
+	distortionNextOutputL = 0.0;
+	distortionNextOutputR = 0.0;
 
-	bitcrusherPrevInputL: number = 0.0;
-	bitcrusherPrevInputR: number = 0.0;
-	bitcrusherCurrentOutputL: number = 0.0;
-	bitcrusherCurrentOutputR: number = 0.0;
-	bitcrusherPhase: number = 1.0;
-	bitcrusherPhaseDelta: number = 0.0;
-	bitcrusherPhaseDeltaScale: number = 1.0;
-	bitcrusherScale: number = 1.0;
-	bitcrusherScaleScale: number = 1.0;
-	bitcrusherFoldLevel: number = 1.0;
-	bitcrusherFoldLevelScale: number = 1.0;
+	bitcrusherPrevInputL = 0.0;
+	bitcrusherPrevInputR = 0.0;
+	bitcrusherCurrentOutputL = 0.0;
+	bitcrusherCurrentOutputR = 0.0;
+	bitcrusherPhase = 1.0;
+	bitcrusherPhaseDelta = 0.0;
+	bitcrusherPhaseDeltaScale = 1.0;
+	bitcrusherScale = 1.0;
+	bitcrusherScaleScale = 1.0;
+	bitcrusherFoldLevel = 1.0;
+	bitcrusherFoldLevelScale = 1.0;
 
 	readonly eqFiltersL: DynamicBiquadFilter[] = [];
 	readonly eqFiltersR: DynamicBiquadFilter[] = [];
-	eqFilterCount: number = 0;
-	initialEqFilterInputL1: number = 0.0;
-	initialEqFilterInputR1: number = 0.0;
-	initialEqFilterInputL2: number = 0.0;
-	initialEqFilterInputR2: number = 0.0;
+	eqFilterCount = 0;
+	initialEqFilterInputL1 = 0.0;
+	initialEqFilterInputR1 = 0.0;
+	initialEqFilterInputL2 = 0.0;
+	initialEqFilterInputR2 = 0.0;
 
-	gain: number = 1.0;
-	gainDelta: number = 0.0;
+	gain = 1.0;
+	gainDelta = 0.0;
 
 	panningDelayLineL: Float32Array | null = null;
 	panningDelayLineR: Float32Array | null = null;
-	panningDelayPos: number = 0;
-	panningVolumeL: number = 0.0;
-	panningVolumeR: number = 0.0;
-	panningVolumeDeltaL: number = 0.0;
-	panningVolumeDeltaR: number = 0.0;
-	panningOffsetL: number = 0.0;
-	panningOffsetR: number = 0.0;
-	panningOffsetDeltaL: number = 0.0;
-	panningOffsetDeltaR: number = 0.0;
-	panningMode: number = 0;
+	panningDelayPos = 0;
+	panningVolumeL = 0.0;
+	panningVolumeR = 0.0;
+	panningVolumeDeltaL = 0.0;
+	panningVolumeDeltaR = 0.0;
+	panningOffsetL = 0.0;
+	panningOffsetR = 0.0;
+	panningOffsetDeltaL = 0.0;
+	panningOffsetDeltaR = 0.0;
+	panningMode = 0;
 
 	flangerDelayLineL: Float32Array | null = null;
 	flangerDelayLineR: Float32Array | null = null;
-	flangerDelayLineDirty: boolean = false;
-	flangerDelayPos: number = 0;
-	flanger: number = 0;
-	flangerDelta: number = 0;
-	flangerSpeed: number = 0;
-	flangerSpeedDelta: number = 0;
-	flangerDepth: number = 0;
-	flangerDepthDelta: number = 0;
-	flangerFeedback: number = 0;
-	flangerFeedbackDelta: number = 0;
-	flangerPhase: number = 0;
+	flangerDelayLineDirty = false;
+	flangerDelayPos = 0;
+	flanger = 0;
+	flangerDelta = 0;
+	flangerSpeed = 0;
+	flangerSpeedDelta = 0;
+	flangerDepth = 0;
+	flangerDepthDelta = 0;
+	flangerFeedback = 0;
+	flangerFeedbackDelta = 0;
+	flangerPhase = 0;
 
 	chorusDelayLineL: Float32Array | null = null;
 	chorusDelayLineR: Float32Array | null = null;
-	chorusDelayLineDirty: boolean = false;
-	chorusDelayPos: number = 0;
-	chorusPhase: number = 0;
-	chorusVoiceMult: number = 0;
-	chorusVoiceMultDelta: number = 0;
-	chorusCombinedMult: number = 0;
-	chorusCombinedMultDelta: number = 0;
+	chorusDelayLineDirty = false;
+	chorusDelayPos = 0;
+	chorusPhase = 0;
+	chorusVoiceMult = 0;
+	chorusVoiceMultDelta = 0;
+	chorusCombinedMult = 0;
+	chorusCombinedMultDelta = 0;
 
 	echoDelayLineL: Float32Array | null = null;
 	echoDelayLineR: Float32Array | null = null;
-	echoDelayLineDirty: boolean = false;
-	echoDelayPosL: number = 0;
-	echoDelayPosR: number = 0;
-	echoDelayOffsetStart: number = 0;
+	echoDelayLineDirty = false;
+	echoDelayPosL = 0;
+	echoDelayPosR = 0;
+	echoDelayOffsetStart = 0;
 	echoDelayOffsetEnd: number | null = null;
-	echoDelayOffsetRatio: number = 0.0;
-	echoDelayOffsetRatioDelta: number = 0.0;
-	echoMult: number = 0.0;
-	echoMultDelta: number = 0.0;
-	echoPingPong: number = 0.0;
-	echoShelfA1: number = 0.0;
-	echoShelfB0: number = 0.0;
-	echoShelfB1: number = 0.0;
-	echoShelfSampleL: number = 0.0;
-	echoShelfSampleR: number = 0.0;
-	echoShelfPrevInputL: number = 0.0;
-	echoShelfPrevInputR: number = 0.0;
+	echoDelayOffsetRatio = 0.0;
+	echoDelayOffsetRatioDelta = 0.0;
+	echoMult = 0.0;
+	echoMultDelta = 0.0;
+	echoPingPong = 0.0;
+	echoShelfA1 = 0.0;
+	echoShelfB0 = 0.0;
+	echoShelfB1 = 0.0;
+	echoShelfSampleL = 0.0;
+	echoShelfSampleR = 0.0;
+	echoShelfPrevInputL = 0.0;
+	echoShelfPrevInputR = 0.0;
 
 	reverbDelayLine: Float32Array | null = null;
-	reverbDelayLineDirty: boolean = false;
-	reverbDelayPos: number = 0;
-	reverbMult: number = 0.0;
-	reverbMultDelta: number = 0.0;
-	reverbShelfA1: number = 0.0;
-	reverbShelfB0: number = 0.0;
-	reverbShelfB1: number = 0.0;
-	reverbShelfSample0: number = 0.0;
-	reverbShelfSample1: number = 0.0;
-	reverbShelfSample2: number = 0.0;
-	reverbShelfSample3: number = 0.0;
-	reverbShelfPrevInput0: number = 0.0;
-	reverbShelfPrevInput1: number = 0.0;
-	reverbShelfPrevInput2: number = 0.0;
-	reverbShelfPrevInput3: number = 0.0;
+	reverbDelayLineDirty = false;
+	reverbDelayPos = 0;
+	reverbMult = 0.0;
+	reverbMultDelta = 0.0;
+	reverbShelfA1 = 0.0;
+	reverbShelfB0 = 0.0;
+	reverbShelfB1 = 0.0;
+	reverbShelfSample0 = 0.0;
+	reverbShelfSample1 = 0.0;
+	reverbShelfSample2 = 0.0;
+	reverbShelfSample3 = 0.0;
+	reverbShelfPrevInput0 = 0.0;
+	reverbShelfPrevInput1 = 0.0;
+	reverbShelfPrevInput2 = 0.0;
+	reverbShelfPrevInput3 = 0.0;
 
 	constructor(type: EffectType) {
 		this.type = type;
@@ -227,7 +227,7 @@ export class EffectState {
 		// granularGrainsLength is what indicates how many grains actually "exist".
 		this.granularGrains = [];
 		this.granularMaximumGrains = 256;
-		for (let i: number = 0; i < this.granularMaximumGrains; i++) {
+		for (let i = 0; i < this.granularMaximumGrains; i++) {
 			this.granularGrains.push(new Grain());
 		}
 		this.granularGrainsLength = 0;
@@ -235,23 +235,23 @@ export class EffectState {
 
 	reset(): void {
 		if (this.chorusDelayLineDirty) {
-			for (let i: number = 0; i < this.chorusDelayLineL!.length; i++) this.chorusDelayLineL![i] = 0.0;
-			for (let i: number = 0; i < this.chorusDelayLineR!.length; i++) this.chorusDelayLineR![i] = 0.0;
+			for (let i = 0; i < this.chorusDelayLineL!.length; i++) this.chorusDelayLineL![i] = 0.0;
+			for (let i = 0; i < this.chorusDelayLineR!.length; i++) this.chorusDelayLineR![i] = 0.0;
 		}
 		if (this.flangerDelayLineDirty) {
-			for (let i: number = 0; i < this.flangerDelayLineL!.length; i++) this.flangerDelayLineL![i] = 0.0;
-			for (let i: number = 0; i < this.flangerDelayLineR!.length; i++) this.flangerDelayLineR![i] = 0.0;
+			for (let i = 0; i < this.flangerDelayLineL!.length; i++) this.flangerDelayLineL![i] = 0.0;
+			for (let i = 0; i < this.flangerDelayLineR!.length; i++) this.flangerDelayLineR![i] = 0.0;
 		}
 		if (this.echoDelayLineDirty) {
-			for (let i: number = 0; i < this.echoDelayLineL!.length; i++) this.echoDelayLineL![i] = 0.0;
-			for (let i: number = 0; i < this.echoDelayLineR!.length; i++) this.echoDelayLineR![i] = 0.0;
+			for (let i = 0; i < this.echoDelayLineL!.length; i++) this.echoDelayLineL![i] = 0.0;
+			for (let i = 0; i < this.echoDelayLineR!.length; i++) this.echoDelayLineR![i] = 0.0;
 		}
 		if (this.reverbDelayLineDirty) {
-			for (let i: number = 0; i < this.reverbDelayLine!.length; i++) this.reverbDelayLine![i] = 0.0;
+			for (let i = 0; i < this.reverbDelayLine!.length; i++) this.reverbDelayLine![i] = 0.0;
 		}
 		if (this.granularDelayLineDirty) {
-			for (let i: number = 0; i < this.granularDelayLineL!.length; i++) this.granularDelayLineL![i] = 0.0;
-			for (let i: number = 0; i < this.granularDelayLineR!.length; i++) this.granularDelayLineR![i] = 0.0;
+			for (let i = 0; i < this.granularDelayLineL!.length; i++) this.granularDelayLineL![i] = 0.0;
+			for (let i = 0; i < this.granularDelayLineR!.length; i++) this.granularDelayLineR![i] = 0.0;
 		}
 
 		this.flangerPhase = 0.0;
@@ -293,18 +293,18 @@ export class EffectState {
 			}
 		}
 		if (effect.type == EffectType.granular) {
-			const granularDelayLineSizeInMilliseconds: number = 2500;
-			const granularDelayLineSizeInSeconds: number = granularDelayLineSizeInMilliseconds / 1000; // Maximum possible delay time
+			const granularDelayLineSizeInMilliseconds = 2500;
+			const granularDelayLineSizeInSeconds = granularDelayLineSizeInMilliseconds / 1000; // Maximum possible delay time
 			this.granularMaximumDelayTimeInSeconds = granularDelayLineSizeInSeconds;
-			const granularDelayLineSizeInSamples: number = fittingPowerOfTwo(Math.floor(granularDelayLineSizeInSeconds * synth.samplesPerSecond));
+			const granularDelayLineSizeInSamples = fittingPowerOfTwo(Math.floor(granularDelayLineSizeInSeconds * synth.samplesPerSecond));
 			if (this.granularDelayLineL == null || this.granularDelayLineR == null || this.granularDelayLineL.length != granularDelayLineSizeInSamples || this.granularDelayLineR.length != granularDelayLineSizeInSamples) {
 				this.granularDelayLineL = new Float32Array(granularDelayLineSizeInSamples);
 				this.granularDelayLineR = new Float32Array(granularDelayLineSizeInSamples);
 				this.granularDelayLineIndex = 0;
 			}
-			const oldGrainsLength: number = this.granularGrains.length;
+			const oldGrainsLength = this.granularGrains.length;
 			if (this.granularMaximumGrains > oldGrainsLength) { //increase grain amount if it changes
-				for (let i: number = oldGrainsLength; i < this.granularMaximumGrains+1; i++) {
+				for (let i = oldGrainsLength; i < this.granularMaximumGrains+1; i++) {
 					this.granularGrains.push(new Grain());
 				}
 			}
@@ -316,9 +316,9 @@ export class EffectState {
 
 	allocateEchoBuffers(samplesPerTick: number, echoDelay: number) {
 		// account for tempo and delay automation changing delay length during a tick?
-		const safeEchoDelaySteps: number = Math.max(Config.echoDelayRange >> 1, (echoDelay + 1)); // The delay may be very short now, but if it increases later make sure we have enough sample history.
-		const baseEchoDelayBufferSize: number = fittingPowerOfTwo(safeEchoDelaySteps * Config.echoDelayStepTicks * samplesPerTick);
-		const safeEchoDelayBufferSize: number = baseEchoDelayBufferSize * 2; // If the tempo or delay changes and we suddenly need a longer delay, make sure that we have enough sample history to accomodate the longer delay.
+		const safeEchoDelaySteps = Math.max(Config.echoDelayRange >> 1, (echoDelay + 1)); // The delay may be very short now, but if it increases later make sure we have enough sample history.
+		const baseEchoDelayBufferSize = fittingPowerOfTwo(safeEchoDelaySteps * Config.echoDelayStepTicks * samplesPerTick);
+		const safeEchoDelayBufferSize = baseEchoDelayBufferSize * 2; // If the tempo or delay changes and we suddenly need a longer delay, make sure that we have enough sample history to accomodate the longer delay.
 
 		if (this.echoDelayLineL == null || this.echoDelayLineR == null) {
 			this.echoDelayLineL = new Float32Array(safeEchoDelayBufferSize);
@@ -329,7 +329,7 @@ export class EffectState {
 			// so we need to copy the contents of the old buffer to the new one.
 			const newDelayLineL: Float32Array = new Float32Array(safeEchoDelayBufferSize);
 			const newDelayLineR: Float32Array = new Float32Array(safeEchoDelayBufferSize);
-			const oldMask: number = this.echoDelayLineL.length - 1;
+			const oldMask = this.echoDelayLineL.length - 1;
 
 			for (let i = 0; i < this.echoDelayLineL.length; i++) {
 				newDelayLineL[i] = this.echoDelayLineL[(this.echoDelayPosL + i) & oldMask];
@@ -349,7 +349,7 @@ export class EffectState {
 		this.bitcrusherCurrentOutputL = 0.0;
 		this.bitcrusherCurrentOutputR = 0.0;
 		this.bitcrusherPhase = 1.0;
-		for (let i: number = 0; i < this.eqFilterCount; i++) {
+		for (let i = 0; i < this.eqFilterCount; i++) {
 			this.eqFiltersL[i].resetOutput();
 			this.eqFiltersR[i].resetOutput();
 		}
@@ -370,8 +370,8 @@ export class EffectState {
 		this.distortionNextOutputR = 0.0;
 		this.flangerDelayPos = 0;
 		this.panningDelayPos = 0;
-		if (this.panningDelayLineL != null) for (let i: number = 0; i < this.panningDelayLineL.length; i++) this.panningDelayLineL[i] = 0.0;
-		if (this.panningDelayLineR != null) for (let i: number = 0; i < this.panningDelayLineR.length; i++) this.panningDelayLineR[i] = 0.0;
+		if (this.panningDelayLineL != null) for (let i = 0; i < this.panningDelayLineL.length; i++) this.panningDelayLineL[i] = 0.0;
+		if (this.panningDelayLineR != null) for (let i = 0; i < this.panningDelayLineR.length; i++) this.panningDelayLineR[i] = 0.0;
 		this.echoDelayOffsetEnd = null;
 		this.echoShelfSampleL = 0.0;
 		this.echoShelfSampleR = 0.0;
@@ -388,21 +388,21 @@ export class EffectState {
 	}
 
 	compute(synth: Synth, instrument: Instrument, effect: Effect, instrumentState: InstrumentState, samplesPerTick: number, roundedSamplesPerTick: number, tone: Tone | null, channelIndex: number, instrumentIndex: number, envelopeStarts: number[], envelopeEnds: number[]): void {
-		const samplesPerSecond: number = synth.samplesPerSecond;
+		const samplesPerSecond = synth.samplesPerSecond;
 
 		this.type = effect.type;
 
-		const usesGranular: boolean = effect.type == EffectType.granular;
-		const usesRingModulation: boolean = effect.type == EffectType.ringModulation;
-		const usesDistortion: boolean = effect.type == EffectType.distortion;
-		const usesBitcrusher: boolean = effect.type == EffectType.bitcrusher;
-		const usesGain: boolean = effect.type == EffectType.gain;
-		const usesPanning: boolean = effect.type == EffectType.panning;
-		const usesFlanger: boolean = effect.type == EffectType.flanger;
-		const usesChorus: boolean = effect.type == EffectType.chorus;
-		const usesEcho: boolean = effect.type == EffectType.echo;
-		const usesReverb: boolean = effect.type == EffectType.reverb;
-		const usesEQFilter: boolean = effect.type == EffectType.eqFilter;
+		const usesGranular = effect.type == EffectType.granular;
+		const usesRingModulation = effect.type == EffectType.ringModulation;
+		const usesDistortion = effect.type == EffectType.distortion;
+		const usesBitcrusher = effect.type == EffectType.bitcrusher;
+		const usesGain = effect.type == EffectType.gain;
+		const usesPanning = effect.type == EffectType.panning;
+		const usesFlanger = effect.type == EffectType.flanger;
+		const usesChorus = effect.type == EffectType.chorus;
+		const usesEcho = effect.type == EffectType.echo;
+		const usesReverb = effect.type == EffectType.reverb;
+		const usesEQFilter = effect.type == EffectType.eqFilter;
 
 		if (usesGranular) { //has to happen before buffer allocation
 			this.granularMaximumGrains = Math.pow(2, effect.grainAmounts * envelopeStarts[EnvelopeComputeIndex.grainAmount]);
@@ -425,10 +425,10 @@ export class EffectState {
 			this.granularMix *= envelopeStarts[EnvelopeComputeIndex.granular];
 			granularMixEnd *= envelopeEnds[EnvelopeComputeIndex.granular];
 			this.granularMixDelta = (granularMixEnd - this.granularMix) / roundedSamplesPerTick;
-			for (let iterations: number = 0; iterations < Math.ceil(Math.random() * Math.random() * 10); iterations++) { //dirty weighting toward lower numbers
+			for (let iterations = 0; iterations < Math.ceil(Math.random() * Math.random() * 10); iterations++) { //dirty weighting toward lower numbers
 				//create a grain
 				if (this.granularGrainsLength < this.granularMaximumGrains) {
-					let granularMinGrainSizeInMilliseconds: number = effect.grainSize;
+					let granularMinGrainSizeInMilliseconds = effect.grainSize;
 					if (synth.isModActive(Config.modulators.dictionary["grain size"].index, channelIndex, instrumentIndex)) {
 						granularMinGrainSizeInMilliseconds = synth.getModValue(Config.modulators.dictionary["grain size"].index, channelIndex, instrumentIndex, false);
 					}
@@ -438,22 +438,22 @@ export class EffectState {
 						grainRange = synth.getModValue(Config.modulators.dictionary["grain range"].index, channelIndex, instrumentIndex, false);
 					}
 					grainRange *= envelopeStarts[EnvelopeComputeIndex.grainRange];
-					const granularMaxGrainSizeInMilliseconds: number = granularMinGrainSizeInMilliseconds + grainRange;
-					const granularGrainSizeInMilliseconds: number = granularMinGrainSizeInMilliseconds + (granularMaxGrainSizeInMilliseconds - granularMinGrainSizeInMilliseconds) * Math.random();
-					const granularGrainSizeInSeconds: number = granularGrainSizeInMilliseconds / 1000.0;
-					const granularGrainSizeInSamples: number = Math.floor(granularGrainSizeInSeconds * samplesPerSecond);
-					const granularDelayLineLength: number = this.granularDelayLineL!.length;
-					const grainIndex: number = this.granularGrainsLength;
+					const granularMaxGrainSizeInMilliseconds = granularMinGrainSizeInMilliseconds + grainRange;
+					const granularGrainSizeInMilliseconds = granularMinGrainSizeInMilliseconds + (granularMaxGrainSizeInMilliseconds - granularMinGrainSizeInMilliseconds) * Math.random();
+					const granularGrainSizeInSeconds = granularGrainSizeInMilliseconds / 1000.0;
+					const granularGrainSizeInSamples = Math.floor(granularGrainSizeInSeconds * samplesPerSecond);
+					const granularDelayLineLength = this.granularDelayLineL!.length;
+					const grainIndex = this.granularGrainsLength;
 
 					this.granularGrainsLength++;
-					const grain: Grain = this.granularGrains[grainIndex];
+					const grain = this.granularGrains[grainIndex];
 					grain.ageInSamples = 0;
 					grain.maxAgeInSamples = granularGrainSizeInSamples;
-					// const minDelayTimeInMilliseconds: number = 2;
-					// const minDelayTimeInSeconds: number = minDelayTimeInMilliseconds / 1000.0;
-					const minDelayTimeInSeconds: number = 0.02;
-					// const maxDelayTimeInSeconds: number = this.granularMaximumDelayTimeInSeconds;
-					const maxDelayTimeInSeconds: number = 2.4;
+					// const minDelayTimeInMilliseconds = 2;
+					// const minDelayTimeInSeconds = minDelayTimeInMilliseconds / 1000.0;
+					const minDelayTimeInSeconds = 0.02;
+					// const maxDelayTimeInSeconds = this.granularMaximumDelayTimeInSeconds;
+					const maxDelayTimeInSeconds = 2.4;
 					grain.delayLinePosition = this.usesRandomGrainLocation ? (minDelayTimeInSeconds + (maxDelayTimeInSeconds - minDelayTimeInSeconds) * Math.random() * Math.random() * samplesPerSecond) % (granularDelayLineLength - 1) : minDelayTimeInSeconds; //dirty weighting toward lower numbers ; The clamp was clumping everything at the end, so I decided to use a modulo instead
 					if (Config.granularEnvelopeType == GranularEnvelopeType.parabolic) {
 						grain.initializeParabolicEnvelope(grain.maxAgeInSamples, 1.0);
@@ -468,8 +468,8 @@ export class EffectState {
 		}
 
 		if (usesDistortion) {
-			let useDistortionStart: number = effect.distortion;
-			let useDistortionEnd: number = effect.distortion;
+			let useDistortionStart = effect.distortion;
+			let useDistortionEnd = effect.distortion;
 
 			// Check for distortion mods
 			if (synth.isModActive(Config.modulators.dictionary["distortion"].index, channelIndex, instrumentIndex)) {
@@ -479,10 +479,10 @@ export class EffectState {
 
 			const distortionSliderStart = Math.min(1.0, envelopeStarts[EnvelopeComputeIndex.distortion] * useDistortionStart / (Config.distortionRange - 1));
 			const distortionSliderEnd = Math.min(1.0, envelopeEnds[EnvelopeComputeIndex.distortion] * useDistortionEnd / (Config.distortionRange - 1));
-			const distortionStart: number = Math.pow(1.0 - 0.895 * (Math.pow(20.0, distortionSliderStart) - 1.0) / 19.0, 2.0);
-			const distortionEnd: number = Math.pow(1.0 - 0.895 * (Math.pow(20.0, distortionSliderEnd) - 1.0) / 19.0, 2.0);
-			const distortionDriveStart: number = (1.0 + 2.0 * distortionSliderStart) / Config.distortionBaseVolume;
-			const distortionDriveEnd: number = (1.0 + 2.0 * distortionSliderEnd) / Config.distortionBaseVolume;
+			const distortionStart = Math.pow(1.0 - 0.895 * (Math.pow(20.0, distortionSliderStart) - 1.0) / 19.0, 2.0);
+			const distortionEnd = Math.pow(1.0 - 0.895 * (Math.pow(20.0, distortionSliderEnd) - 1.0) / 19.0, 2.0);
+			const distortionDriveStart = (1.0 + 2.0 * distortionSliderStart) / Config.distortionBaseVolume;
+			const distortionDriveEnd = (1.0 + 2.0 * distortionSliderEnd) / Config.distortionBaseVolume;
 			this.distortion = distortionStart;
 			this.distortionDelta = (distortionEnd - distortionStart) / roundedSamplesPerTick;
 			this.distortionDrive = distortionDriveStart;
@@ -490,8 +490,8 @@ export class EffectState {
 		}
 
 		if (usesBitcrusher) {
-			let freqSettingStart: number = effect.bitcrusherFreq * Math.sqrt(envelopeStarts[EnvelopeComputeIndex.bitcrusherFrequency]);
-			let freqSettingEnd: number = effect.bitcrusherFreq * Math.sqrt(envelopeEnds[EnvelopeComputeIndex.bitcrusherFrequency]);
+			let freqSettingStart = effect.bitcrusherFreq * Math.sqrt(envelopeStarts[EnvelopeComputeIndex.bitcrusherFrequency]);
+			let freqSettingEnd = effect.bitcrusherFreq * Math.sqrt(envelopeEnds[EnvelopeComputeIndex.bitcrusherFrequency]);
 
 			// Check for freq crush mods
 			if (synth.isModActive(Config.modulators.dictionary["freq crush"].index, channelIndex, instrumentIndex)) {
@@ -499,8 +499,8 @@ export class EffectState {
 				freqSettingEnd = synth.getModValue(Config.modulators.dictionary["freq crush"].index, channelIndex, instrumentIndex, true) * Math.sqrt(envelopeEnds[EnvelopeComputeIndex.bitcrusherFrequency]);
 			}
 
-			let quantizationSettingStart: number = effect.bitcrusherQuantization * Math.sqrt(envelopeStarts[EnvelopeComputeIndex.bitcrusherQuantization]);
-			let quantizationSettingEnd: number = effect.bitcrusherQuantization * Math.sqrt(envelopeEnds[EnvelopeComputeIndex.bitcrusherQuantization]);
+			let quantizationSettingStart = effect.bitcrusherQuantization * Math.sqrt(envelopeStarts[EnvelopeComputeIndex.bitcrusherQuantization]);
+			let quantizationSettingEnd = effect.bitcrusherQuantization * Math.sqrt(envelopeEnds[EnvelopeComputeIndex.bitcrusherQuantization]);
 
 			// Check for bitcrush mods
 			if (synth.isModActive(Config.modulators.dictionary["bit crush"].index, channelIndex, instrumentIndex)) {
@@ -508,41 +508,41 @@ export class EffectState {
 				quantizationSettingEnd = synth.getModValue(Config.modulators.dictionary["bit crush"].index, channelIndex, instrumentIndex, true) * Math.sqrt(envelopeEnds[EnvelopeComputeIndex.bitcrusherQuantization]);
 			}
 
-			const basePitch: number = Config.keys[synth.song!.key].basePitch + (Config.pitchesPerOctave * synth.song!.octave); // TODO: What if there's a key change mid-song?
-			const freqStart: number = Instrument.frequencyFromPitch(basePitch + 60) * Math.pow(2.0, (Config.bitcrusherFreqRange - 1 - freqSettingStart) * Config.bitcrusherOctaveStep);
-			const freqEnd: number = Instrument.frequencyFromPitch(basePitch + 60) * Math.pow(2.0, (Config.bitcrusherFreqRange - 1 - freqSettingEnd) * Config.bitcrusherOctaveStep);
-			const phaseDeltaStart: number = Math.min(1.0, freqStart / samplesPerSecond);
-			const phaseDeltaEnd: number = Math.min(1.0, freqEnd / samplesPerSecond);
+			const basePitch = Config.keys[synth.song!.key].basePitch + (Config.pitchesPerOctave * synth.song!.octave); // TODO: What if there's a key change mid-song?
+			const freqStart = Instrument.frequencyFromPitch(basePitch + 60) * Math.pow(2.0, (Config.bitcrusherFreqRange - 1 - freqSettingStart) * Config.bitcrusherOctaveStep);
+			const freqEnd = Instrument.frequencyFromPitch(basePitch + 60) * Math.pow(2.0, (Config.bitcrusherFreqRange - 1 - freqSettingEnd) * Config.bitcrusherOctaveStep);
+			const phaseDeltaStart = Math.min(1.0, freqStart / samplesPerSecond);
+			const phaseDeltaEnd = Math.min(1.0, freqEnd / samplesPerSecond);
 			this.bitcrusherPhaseDelta = phaseDeltaStart;
 			this.bitcrusherPhaseDeltaScale = Math.pow(phaseDeltaEnd / phaseDeltaStart, 1.0 / roundedSamplesPerTick);
 
-			const scaleStart: number = 2.0 * Config.bitcrusherBaseVolume * Math.pow(2.0, 1.0 - Math.pow(2.0, (Config.bitcrusherQuantizationRange - 1 - quantizationSettingStart) * 0.5));
-			const scaleEnd: number = 2.0 * Config.bitcrusherBaseVolume * Math.pow(2.0, 1.0 - Math.pow(2.0, (Config.bitcrusherQuantizationRange - 1 - quantizationSettingEnd) * 0.5));
+			const scaleStart = 2.0 * Config.bitcrusherBaseVolume * Math.pow(2.0, 1.0 - Math.pow(2.0, (Config.bitcrusherQuantizationRange - 1 - quantizationSettingStart) * 0.5));
+			const scaleEnd = 2.0 * Config.bitcrusherBaseVolume * Math.pow(2.0, 1.0 - Math.pow(2.0, (Config.bitcrusherQuantizationRange - 1 - quantizationSettingEnd) * 0.5));
 			this.bitcrusherScale = scaleStart;
 			this.bitcrusherScaleScale = Math.pow(scaleEnd / scaleStart, 1.0 / roundedSamplesPerTick);
 
-			const foldLevelStart: number = 2.0 * Config.bitcrusherBaseVolume * Math.pow(1.5, Config.bitcrusherQuantizationRange - 1 - quantizationSettingStart);
-			const foldLevelEnd: number = 2.0 * Config.bitcrusherBaseVolume * Math.pow(1.5, Config.bitcrusherQuantizationRange - 1 - quantizationSettingEnd);
+			const foldLevelStart = 2.0 * Config.bitcrusherBaseVolume * Math.pow(1.5, Config.bitcrusherQuantizationRange - 1 - quantizationSettingStart);
+			const foldLevelEnd = 2.0 * Config.bitcrusherBaseVolume * Math.pow(1.5, Config.bitcrusherQuantizationRange - 1 - quantizationSettingEnd);
 			this.bitcrusherFoldLevel = foldLevelStart;
 			this.bitcrusherFoldLevelScale = Math.pow(foldLevelEnd / foldLevelStart, 1.0 / roundedSamplesPerTick);
 		}
 
 		if (usesEQFilter) {
-			let eqFilterVolume: number = 1.0; //this.envelopeComputer.lowpassCutoffDecayVolumeCompensation;
+			let eqFilterVolume = 1.0; //this.envelopeComputer.lowpassCutoffDecayVolumeCompensation;
 			if (effect.eqFilterType) {
 				// Simple EQ filter (old style). For analysis, using random filters from normal style since they are N/A in this context.
-				const eqFilterSettingsStart: FilterSettings = effect.eqFilter;
+				const eqFilterSettingsStart = effect.eqFilter;
 				if (effect.eqSubFilters[1] == null)
 					effect.eqSubFilters[1] = new FilterSettings();
-				const eqFilterSettingsEnd: FilterSettings = effect.eqSubFilters[1];
+				const eqFilterSettingsEnd = effect.eqSubFilters[1];
 
 				// Change location based on slider values
-				let startSimpleFreq: number = effect.eqFilterSimpleCut;
-				let startSimpleGain: number = effect.eqFilterSimplePeak;
-				let endSimpleFreq: number = effect.eqFilterSimpleCut;
-				let endSimpleGain: number = effect.eqFilterSimplePeak;
+				let startSimpleFreq = effect.eqFilterSimpleCut;
+				let startSimpleGain = effect.eqFilterSimplePeak;
+				let endSimpleFreq = effect.eqFilterSimpleCut;
+				let endSimpleGain = effect.eqFilterSimplePeak;
 
-				let filterChanges: boolean = false;
+				let filterChanges = false;
 
 				if (synth.isModActive(Config.modulators.dictionary["eq filt cut"].index, channelIndex, instrumentIndex)) {
 					startSimpleFreq = synth.getModValue(Config.modulators.dictionary["eq filt cut"].index, channelIndex, instrumentIndex, false);
@@ -562,7 +562,7 @@ export class EffectState {
 					eqFilterSettingsEnd.convertLegacySettingsForSynth(endSimpleFreq, endSimpleGain);
 
 					startPoint = eqFilterSettingsStart.controlPoints[0];
-					let endPoint: FilterControlPoint = eqFilterSettingsEnd.controlPoints[0];
+					let endPoint = eqFilterSettingsEnd.controlPoints[0];
 
 					startPoint.toCoefficients(Synth.tempFilterStartCoefficients, samplesPerSecond, 1.0, 1.0);
 					endPoint.toCoefficients(Synth.tempFilterEndCoefficients, samplesPerSecond, 1.0, 1.0);
@@ -588,16 +588,16 @@ export class EffectState {
 				eqFilterVolume *= startPoint.getVolumeCompensationMult();
 			}
 			else {
-				const eqFilterSettings: FilterSettings = (effect.tmpEqFilterStart != null) ? effect.tmpEqFilterStart : effect.eqFilter;
-				//const eqAllFreqsEnvelopeStart: number = envelopeStarts[InstrumentAutomationIndex.eqFilterAllFreqs];
-				//const eqAllFreqsEnvelopeEnd:   number = envelopeEnds[  InstrumentAutomationIndex.eqFilterAllFreqs];
-				for (let i: number = 0; i < eqFilterSettings.controlPointCount; i++) {
-					//const eqFreqEnvelopeStart: number = envelopeStarts[InstrumentAutomationIndex.eqFilterFreq0 + i];
-					//const eqFreqEnvelopeEnd:   number = envelopeEnds[  InstrumentAutomationIndex.eqFilterFreq0 + i];
-					//const eqPeakEnvelopeStart: number = envelopeStarts[InstrumentAutomationIndex.eqFilterGain0 + i];
-					//const eqPeakEnvelopeEnd:   number = envelopeEnds[  InstrumentAutomationIndex.eqFilterGain0 + i];
-					let startPoint: FilterControlPoint = eqFilterSettings.controlPoints[i];
-					let endPoint: FilterControlPoint = (effect.tmpEqFilterEnd != null && effect.tmpEqFilterEnd.controlPoints[i] != null) ? effect.tmpEqFilterEnd.controlPoints[i] : eqFilterSettings.controlPoints[i];
+				const eqFilterSettings = (effect.tmpEqFilterStart != null) ? effect.tmpEqFilterStart : effect.eqFilter;
+				//const eqAllFreqsEnvelopeStart = envelopeStarts[InstrumentAutomationIndex.eqFilterAllFreqs];
+				//const eqAllFreqsEnvelopeEnd = envelopeEnds[  InstrumentAutomationIndex.eqFilterAllFreqs];
+				for (let i = 0; i < eqFilterSettings.controlPointCount; i++) {
+					//const eqFreqEnvelopeStart = envelopeStarts[InstrumentAutomationIndex.eqFilterFreq0 + i];
+					//const eqFreqEnvelopeEnd = envelopeEnds[  InstrumentAutomationIndex.eqFilterFreq0 + i];
+					//const eqPeakEnvelopeStart = envelopeStarts[InstrumentAutomationIndex.eqFilterGain0 + i];
+					//const eqPeakEnvelopeEnd = envelopeEnds[  InstrumentAutomationIndex.eqFilterGain0 + i];
+					let startPoint = eqFilterSettings.controlPoints[i];
+					let endPoint = (effect.tmpEqFilterEnd != null && effect.tmpEqFilterEnd.controlPoints[i] != null) ? effect.tmpEqFilterEnd.controlPoints[i] : eqFilterSettings.controlPoints[i];
 
 					// If switching dot type, do it all at once and do not try to interpolate since no valid interpolation exists.
 					if (startPoint.type != endPoint.type) {
@@ -617,8 +617,8 @@ export class EffectState {
 			}
 			eqFilterVolume = Math.min(3.0, eqFilterVolume);
 
-			let eqFilterVolumeStart: number = eqFilterVolume;
-			let eqFilterVolumeEnd: number = eqFilterVolume;
+			let eqFilterVolumeStart = eqFilterVolume;
+			let eqFilterVolumeEnd = eqFilterVolume;
 
 			this.eqFilterVolume = eqFilterVolumeStart;
 			this.eqFilterVolumeDelta = (eqFilterVolumeEnd - eqFilterVolumeStart) / roundedSamplesPerTick;
@@ -627,40 +627,40 @@ export class EffectState {
 		if (usesPanning) {
 			this.panningMode = effect.panMode;
 
-			const panEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.panning] * 2.0 - 1.0;
-			const panEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.panning] * 2.0 - 1.0;
+			const panEnvelopeStart = envelopeStarts[EnvelopeComputeIndex.panning] * 2.0 - 1.0;
+			const panEnvelopeEnd = envelopeEnds[EnvelopeComputeIndex.panning] * 2.0 - 1.0;
 
-			let usePanStart: number = effect.pan;
-			let usePanEnd: number = effect.pan;
+			let usePanStart = effect.pan;
+			let usePanEnd = effect.pan;
 			// Check for pan mods
 			if (synth.isModActive(Config.modulators.dictionary["pan"].index, channelIndex, instrumentIndex)) {
 				usePanStart = synth.getModValue(Config.modulators.dictionary["pan"].index, channelIndex, instrumentIndex, false);
 				usePanEnd = synth.getModValue(Config.modulators.dictionary["pan"].index, channelIndex, instrumentIndex, true);
 			}
 
-			let panStart: number = Math.max(-1.0, Math.min(1.0, (usePanStart - Config.panCenter) / Config.panCenter * panEnvelopeStart));
-			let panEnd: number = Math.max(-1.0, Math.min(1.0, (usePanEnd - Config.panCenter) / Config.panCenter * panEnvelopeEnd));
+			let panStart = Math.max(-1.0, Math.min(1.0, (usePanStart - Config.panCenter) / Config.panCenter * panEnvelopeStart));
+			let panEnd = Math.max(-1.0, Math.min(1.0, (usePanEnd - Config.panCenter) / Config.panCenter * panEnvelopeEnd));
 
-			const volumeStartL: number = Math.cos((1 + panStart) * Math.PI * 0.25) * 1.414;
-			const volumeStartR: number = Math.cos((1 - panStart) * Math.PI * 0.25) * 1.414;
-			const volumeEndL: number = Math.cos((1 + panEnd) * Math.PI * 0.25) * 1.414;
-			const volumeEndR: number = Math.cos((1 - panEnd) * Math.PI * 0.25) * 1.414;
-			const maxDelaySamples: number = samplesPerSecond * Config.panDelaySecondsMax;
+			const volumeStartL = Math.cos((1 + panStart) * Math.PI * 0.25) * 1.414;
+			const volumeStartR = Math.cos((1 - panStart) * Math.PI * 0.25) * 1.414;
+			const volumeEndL = Math.cos((1 + panEnd) * Math.PI * 0.25) * 1.414;
+			const volumeEndR = Math.cos((1 - panEnd) * Math.PI * 0.25) * 1.414;
+			const maxDelaySamples = samplesPerSecond * Config.panDelaySecondsMax;
 
-			let usePanDelayStart: number = effect.panDelay;
-			let usePanDelayEnd: number = effect.panDelay;
+			let usePanDelayStart = effect.panDelay;
+			let usePanDelayEnd = effect.panDelay;
 			// Check for pan delay mods
 			if (synth.isModActive(Config.modulators.dictionary["pan delay"].index, channelIndex, instrumentIndex)) {
 				usePanDelayStart = synth.getModValue(Config.modulators.dictionary["pan delay"].index, channelIndex, instrumentIndex, false);
 				usePanDelayEnd = synth.getModValue(Config.modulators.dictionary["pan delay"].index, channelIndex, instrumentIndex, true);
 			}
 
-			const delayStart: number = panStart * usePanDelayStart * maxDelaySamples / 10;
-			const delayEnd: number = panEnd * usePanDelayEnd * maxDelaySamples / 10;
-			const delayStartL: number = Math.max(0.0, delayStart);
-			const delayStartR: number = Math.max(0.0, -delayStart);
-			const delayEndL: number = Math.max(0.0, delayEnd);
-			const delayEndR: number = Math.max(0.0, -delayEnd);
+			const delayStart = panStart * usePanDelayStart * maxDelaySamples / 10;
+			const delayEnd = panEnd * usePanDelayEnd * maxDelaySamples / 10;
+			const delayStartL = Math.max(0.0, delayStart);
+			const delayStartR = Math.max(0.0, -delayStart);
+			const delayEndL = Math.max(0.0, delayEnd);
+			const delayEndR = Math.max(0.0, -delayEnd);
 
 			this.panningVolumeL = volumeStartL;
 			this.panningVolumeR = volumeStartR;
@@ -673,37 +673,37 @@ export class EffectState {
 		}
 
 		if (usesGain) {
-			const gainEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.gain];
-			const gainEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.gain];
+			const gainEnvelopeStart = envelopeStarts[EnvelopeComputeIndex.gain];
+			const gainEnvelopeEnd = envelopeEnds[EnvelopeComputeIndex.gain];
 
-			let useGainStart: number = effect.gain;
-			let useGainEnd: number = effect.gain;
+			let useGainStart = effect.gain;
+			let useGainEnd = effect.gain;
 			// Check for pan mods
 			if (synth.isModActive(Config.modulators.dictionary["gain"].index, channelIndex, instrumentIndex)) {
 				useGainStart = synth.getModValue(Config.modulators.dictionary["gain"].index, channelIndex, instrumentIndex, false);
 				useGainEnd = synth.getModValue(Config.modulators.dictionary["gain"].index, channelIndex, instrumentIndex, true);
 			}
 
-			let gainStart: number = Math.min(Config.gainRangeMult, gainEnvelopeStart * useGainStart / (Config.volumeRange / 2 * Config.gainRangeMult)) * Config.gainRangeMult;
-			let gainEnd: number = Math.min(Config.gainRangeMult, gainEnvelopeEnd * useGainEnd / (Config.volumeRange / 2 * Config.gainRangeMult)) * Config.gainRangeMult;
+			let gainStart = Math.min(Config.gainRangeMult, gainEnvelopeStart * useGainStart / (Config.volumeRange / 2 * Config.gainRangeMult)) * Config.gainRangeMult;
+			let gainEnd = Math.min(Config.gainRangeMult, gainEnvelopeEnd * useGainEnd / (Config.volumeRange / 2 * Config.gainRangeMult)) * Config.gainRangeMult;
 
 			this.gain = gainStart;
 			this.gainDelta = (gainEnd - gainStart) / roundedSamplesPerTick;
 		}
 
 		if (usesChorus) {
-			const chorusEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.chorus];
-			const chorusEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.chorus];
-			let useChorusStart: number = effect.chorus;
-			let useChorusEnd: number = effect.chorus;
+			const chorusEnvelopeStart = envelopeStarts[EnvelopeComputeIndex.chorus];
+			const chorusEnvelopeEnd = envelopeEnds[EnvelopeComputeIndex.chorus];
+			let useChorusStart = effect.chorus;
+			let useChorusEnd = effect.chorus;
 			// Check for chorus mods
 			if (synth.isModActive(Config.modulators.dictionary["chorus"].index, channelIndex, instrumentIndex)) {
 				useChorusStart = synth.getModValue(Config.modulators.dictionary["chorus"].index, channelIndex, instrumentIndex, false);
 				useChorusEnd = synth.getModValue(Config.modulators.dictionary["chorus"].index, channelIndex, instrumentIndex, true);
 			}
 
-			let chorusStart: number = Math.min(1.0, chorusEnvelopeStart * useChorusStart / (Config.chorusRange - 1));
-			let chorusEnd: number = Math.min(1.0, chorusEnvelopeEnd * useChorusEnd / (Config.chorusRange - 1));
+			let chorusStart = Math.min(1.0, chorusEnvelopeStart * useChorusStart / (Config.chorusRange - 1));
+			let chorusEnd = Math.min(1.0, chorusEnvelopeEnd * useChorusEnd / (Config.chorusRange - 1));
 			chorusStart = chorusStart * 0.6 + (Math.pow(chorusStart, 6.0)) * 0.4;
 			chorusEnd = chorusEnd * 0.6 + (Math.pow(chorusEnd, 6.0)) * 0.4;
 			const chorusCombinedMultStart = 1.0 / Math.sqrt(3.0 * chorusStart * chorusStart + 1.0);
@@ -715,49 +715,49 @@ export class EffectState {
 		}
 
 		if (usesFlanger) {
-			const flangerEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.flanger];
-			const flangerEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.flanger];
-			let useFlangerStart: number = effect.flanger;
-			let useFlangerEnd: number = effect.flanger;
+			const flangerEnvelopeStart = envelopeStarts[EnvelopeComputeIndex.flanger];
+			const flangerEnvelopeEnd = envelopeEnds[EnvelopeComputeIndex.flanger];
+			let useFlangerStart = effect.flanger;
+			let useFlangerEnd = effect.flanger;
 			if (synth.isModActive(Config.modulators.dictionary["flanger"].index, channelIndex, instrumentIndex)) {
 				useFlangerStart = synth.getModValue(Config.modulators.dictionary["flanger"].index, channelIndex, instrumentIndex, false);
 				useFlangerEnd = synth.getModValue(Config.modulators.dictionary["flanger"].index, channelIndex, instrumentIndex, true);
 			}
-			let flangerStart: number = Math.min(1.0, flangerEnvelopeStart * useFlangerStart / (Config.flangerRange - 1));
-			let flangerEnd: number = Math.min(1.0, flangerEnvelopeEnd * useFlangerEnd / (Config.flangerRange - 1));
+			let flangerStart = Math.min(1.0, flangerEnvelopeStart * useFlangerStart / (Config.flangerRange - 1));
+			let flangerEnd = Math.min(1.0, flangerEnvelopeEnd * useFlangerEnd / (Config.flangerRange - 1));
 
-			const flangerSpeedEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.flangerSpeed];
-			const flangerSpeedEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.flangerSpeed];
-			let useFlangerSpeedStart: number = effect.flangerSpeed;
-			let useFlangerSpeedEnd: number = effect.flangerSpeed;
+			const flangerSpeedEnvelopeStart = envelopeStarts[EnvelopeComputeIndex.flangerSpeed];
+			const flangerSpeedEnvelopeEnd = envelopeEnds[EnvelopeComputeIndex.flangerSpeed];
+			let useFlangerSpeedStart = effect.flangerSpeed;
+			let useFlangerSpeedEnd = effect.flangerSpeed;
 			if (synth.isModActive(Config.modulators.dictionary["flanger speed"].index, channelIndex, instrumentIndex)) {
 				useFlangerSpeedStart = synth.getModValue(Config.modulators.dictionary["flanger speed"].index, channelIndex, instrumentIndex, false);
 				useFlangerSpeedEnd = synth.getModValue(Config.modulators.dictionary["flanger speed"].index, channelIndex, instrumentIndex, true);
 			}
-			let flangerSpeedStart: number = flangerSpeedEnvelopeStart * useFlangerSpeedStart + 2;
-			let flangerSpeedEnd: number = flangerSpeedEnvelopeEnd * useFlangerSpeedEnd + 2;
+			let flangerSpeedStart = flangerSpeedEnvelopeStart * useFlangerSpeedStart + 2;
+			let flangerSpeedEnd = flangerSpeedEnvelopeEnd * useFlangerSpeedEnd + 2;
 
-			const flangerDepthEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.flangerDepth];
-			const flangerDepthEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.flangerDepth];
-			let useFlangerDepthStart: number = effect.flangerDepth;
-			let useFlangerDepthEnd: number = effect.flangerDepth;
+			const flangerDepthEnvelopeStart = envelopeStarts[EnvelopeComputeIndex.flangerDepth];
+			const flangerDepthEnvelopeEnd = envelopeEnds[EnvelopeComputeIndex.flangerDepth];
+			let useFlangerDepthStart = effect.flangerDepth;
+			let useFlangerDepthEnd = effect.flangerDepth;
 			if (synth.isModActive(Config.modulators.dictionary["flanger depth"].index, channelIndex, instrumentIndex)) {
 				useFlangerDepthStart = synth.getModValue(Config.modulators.dictionary["flanger depth"].index, channelIndex, instrumentIndex, false);
 				useFlangerDepthEnd = synth.getModValue(Config.modulators.dictionary["flanger depth"].index, channelIndex, instrumentIndex, true);
 			}
-			let flangerDepthStart: number = flangerDepthEnvelopeStart * useFlangerDepthStart * 2 + 2;
-			let flangerDepthEnd: number = flangerDepthEnvelopeEnd * useFlangerDepthEnd * 2 + 2;
+			let flangerDepthStart = flangerDepthEnvelopeStart * useFlangerDepthStart * 2 + 2;
+			let flangerDepthEnd = flangerDepthEnvelopeEnd * useFlangerDepthEnd * 2 + 2;
 
-			const flangerFeedbackEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.flangerFeedback];
-			const flangerFeedbackEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.flangerFeedback];
-			let useFlangerFeedbackStart: number = effect.flangerFeedback;
-			let useFlangerFeedbackEnd: number = effect.flangerFeedback;
+			const flangerFeedbackEnvelopeStart = envelopeStarts[EnvelopeComputeIndex.flangerFeedback];
+			const flangerFeedbackEnvelopeEnd = envelopeEnds[EnvelopeComputeIndex.flangerFeedback];
+			let useFlangerFeedbackStart = effect.flangerFeedback;
+			let useFlangerFeedbackEnd = effect.flangerFeedback;
 			if (synth.isModActive(Config.modulators.dictionary["flanger feedback"].index, channelIndex, instrumentIndex)) {
 				useFlangerFeedbackStart = synth.getModValue(Config.modulators.dictionary["flanger feedback"].index, channelIndex, instrumentIndex, false);
 				useFlangerFeedbackEnd = synth.getModValue(Config.modulators.dictionary["flanger feedback"].index, channelIndex, instrumentIndex, true);
 			}
-			let flangerFeedbackStart: number = flangerFeedbackEnvelopeStart * useFlangerFeedbackStart * 1.5;
-			let flangerFeedbackEnd: number = flangerFeedbackEnvelopeEnd * useFlangerFeedbackEnd * 1.5;
+			let flangerFeedbackStart = flangerFeedbackEnvelopeStart * useFlangerFeedbackStart * 1.5;
+			let flangerFeedbackEnd = flangerFeedbackEnvelopeEnd * useFlangerFeedbackEnd * 1.5;
 
 			this.flanger = flangerStart;
 			this.flangerDelta = (flangerEnd - flangerStart) / roundedSamplesPerTick;
@@ -770,16 +770,16 @@ export class EffectState {
 		}
 
 		if (usesRingModulation) {
-			let useRingModStart: number = effect.ringModulation;
-			let useRingModEnd: number = effect.ringModulation;
+			let useRingModStart = effect.ringModulation;
+			let useRingModEnd = effect.ringModulation;
 
-			let useRingModEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.ringModulation];
-			let useRingModEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.ringModulation];
+			let useRingModEnvelopeStart = envelopeStarts[EnvelopeComputeIndex.ringModulation];
+			let useRingModEnvelopeEnd = envelopeEnds[EnvelopeComputeIndex.ringModulation];
 
-			let useRingModHzStart: number = Math.min(1.0, effect.ringModulationHz / (Config.ringModHzRange - 1));
-			let useRingModHzEnd: number = Math.min(1.0, effect.ringModulationHz / (Config.ringModHzRange - 1));
-			let useRingModHzEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.ringModulationHz];
-			let useRingModHzEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.ringModulationHz];
+			let useRingModHzStart = Math.min(1.0, effect.ringModulationHz / (Config.ringModHzRange - 1));
+			let useRingModHzEnd = Math.min(1.0, effect.ringModulationHz / (Config.ringModHzRange - 1));
+			let useRingModHzEnvelopeStart = envelopeStarts[EnvelopeComputeIndex.ringModulationHz];
+			let useRingModHzEnvelopeEnd = envelopeEnds[EnvelopeComputeIndex.ringModulationHz];
 
 
 			if (synth.isModActive(Config.modulators.dictionary["ring modulation"].index, channelIndex, instrumentIndex)) {
@@ -792,8 +792,8 @@ export class EffectState {
 			}
 			useRingModHzStart *= useRingModHzEnvelopeStart;
 			useRingModHzEnd *= useRingModHzEnvelopeEnd;
-			let ringModStart: number = Math.min(1.0, (useRingModStart * useRingModEnvelopeStart) / (Config.ringModRange - 1));
-			let ringModEnd: number = Math.min(1.0, (useRingModEnd * useRingModEnvelopeEnd) / (Config.ringModRange - 1));
+			let ringModStart = Math.min(1.0, (useRingModStart * useRingModEnvelopeStart) / (Config.ringModRange - 1));
+			let ringModEnd = Math.min(1.0, (useRingModEnd * useRingModEnvelopeEnd) / (Config.ringModRange - 1));
 
 			this.ringModMix = ringModStart;
 			this.ringModMixDelta = (ringModEnd - ringModStart) / roundedSamplesPerTick;
@@ -820,20 +820,20 @@ export class EffectState {
 		}
 
 		let maxEchoMult = 0.0;
-		let averageEchoDelaySeconds: number = 0.0;
+		let averageEchoDelaySeconds = 0.0;
 
 		if (usesEcho) {
-			const echoSustainEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.echoSustain];
-			const echoSustainEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.echoSustain];
-			let useEchoSustainStart: number = effect.echoSustain;
-			let useEchoSustainEnd: number = effect.echoSustain;
+			const echoSustainEnvelopeStart = envelopeStarts[EnvelopeComputeIndex.echoSustain];
+			const echoSustainEnvelopeEnd = envelopeEnds[EnvelopeComputeIndex.echoSustain];
+			let useEchoSustainStart = effect.echoSustain;
+			let useEchoSustainEnd = effect.echoSustain;
 			// Check for echo mods
 			if (synth.isModActive(Config.modulators.dictionary["echo"].index, channelIndex, instrumentIndex)) {
 				useEchoSustainStart = Math.max(0.0, synth.getModValue(Config.modulators.dictionary["echo"].index, channelIndex, instrumentIndex, false));
 				useEchoSustainEnd = Math.max(0.0, synth.getModValue(Config.modulators.dictionary["echo"].index, channelIndex, instrumentIndex, true));
 			}
-			const echoMultStart: number = Math.min(1.0, Math.pow(echoSustainEnvelopeStart * useEchoSustainStart / Config.echoSustainRange, 1.1)) * 0.9;
-			const echoMultEnd: number = Math.min(1.0, Math.pow(echoSustainEnvelopeEnd * useEchoSustainEnd / Config.echoSustainRange, 1.1)) * 0.9;
+			const echoMultStart = Math.min(1.0, Math.pow(echoSustainEnvelopeStart * useEchoSustainStart / Config.echoSustainRange, 1.1)) * 0.9;
+			const echoMultEnd = Math.min(1.0, Math.pow(echoSustainEnvelopeEnd * useEchoSustainEnd / Config.echoSustainRange, 1.1)) * 0.9;
 			this.echoMult = echoMultStart;
 			this.echoMultDelta = Math.max(0.0, (echoMultEnd - echoMultStart) / roundedSamplesPerTick);
 			maxEchoMult = Math.max(echoMultStart, echoMultEnd);
@@ -841,11 +841,11 @@ export class EffectState {
 			// TODO: After computing a tick's settings once for multiple run lengths (which is
 			// good for audio worklet threads), compute the echo delay envelopes at tick (or
 			// part) boundaries to interpolate between two delay taps.
-			const echoDelayEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.echoDelay];
-			const echoDelayEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.echoDelay];
-			let useEchoDelayStart: number = effect.echoDelay * echoDelayEnvelopeStart;
-			let useEchoDelayEnd: number = effect.echoDelay * echoDelayEnvelopeEnd;
-			// let ignoreTicks: boolean = false;
+			const echoDelayEnvelopeStart = envelopeStarts[EnvelopeComputeIndex.echoDelay];
+			const echoDelayEnvelopeEnd = envelopeEnds[EnvelopeComputeIndex.echoDelay];
+			let useEchoDelayStart = effect.echoDelay * echoDelayEnvelopeStart;
+			let useEchoDelayEnd = effect.echoDelay * echoDelayEnvelopeEnd;
+			// let ignoreTicks = false;
 			// Check for echo delay mods
 			if (synth.isModActive(Config.modulators.dictionary["echo delay"].index, channelIndex, instrumentIndex)) {
 				useEchoDelayStart = synth.getModValue(Config.modulators.dictionary["echo delay"].index, channelIndex, instrumentIndex, false) * echoDelayEnvelopeStart;
@@ -853,8 +853,8 @@ export class EffectState {
 				// ignoreTicks = true;
 				// this.allocateEchoBuffers(samplesPerTick, Math.max(useEchoDelayStart,useEchoDelayEnd)); //update buffer size for modulation / envelopes
 			}
-			const tmpEchoDelayOffsetStart: number = /*ignoreTicks ? (useEchoDelayStart + 1) * Config.echoDelayStepTicks * samplesPerTick : */Math.round((useEchoDelayStart + 1) * Config.echoDelayStepTicks * samplesPerTick);
-			const tmpEchoDelayOffsetEnd: number = /*ignoreTicks ? (useEchoDelayEnd + 1) * Config.echoDelayStepTicks * samplesPerTick : */Math.round((useEchoDelayEnd + 1) * Config.echoDelayStepTicks * samplesPerTick);
+			const tmpEchoDelayOffsetStart = /*ignoreTicks ? (useEchoDelayStart + 1) * Config.echoDelayStepTicks * samplesPerTick : */Math.round((useEchoDelayStart + 1) * Config.echoDelayStepTicks * samplesPerTick);
+			const tmpEchoDelayOffsetEnd = /*ignoreTicks ? (useEchoDelayEnd + 1) * Config.echoDelayStepTicks * samplesPerTick : */Math.round((useEchoDelayEnd + 1) * Config.echoDelayStepTicks * samplesPerTick);
 			if (this.echoDelayOffsetEnd != null/* && !ignoreTicks*/) {
 				this.echoDelayOffsetStart = this.echoDelayOffsetEnd;
 			} else {
@@ -870,7 +870,7 @@ export class EffectState {
 			this.echoPingPong = ((effect.echoPingPong / Config.panMax) - 0.5) * 2;
 			//const echoPingPongEnd
 
-			const shelfRadians: number = 2.0 * Math.PI * Config.echoShelfHz / synth.samplesPerSecond;
+			const shelfRadians = 2.0 * Math.PI * Config.echoShelfHz / synth.samplesPerSecond;
 			Synth.tempFilterStartCoefficients.highShelf1stOrder(shelfRadians, Config.echoShelfGain);
 			this.echoShelfA1 = Synth.tempFilterStartCoefficients.a[1];
 			this.echoShelfB0 = Synth.tempFilterStartCoefficients.b[0];
@@ -880,11 +880,11 @@ export class EffectState {
 		let maxReverbMult = 0.0;
 
 		if (usesReverb) {
-			const reverbEnvelopeStart: number = envelopeStarts[EnvelopeComputeIndex.reverb];
-			const reverbEnvelopeEnd: number = envelopeEnds[EnvelopeComputeIndex.reverb];
+			const reverbEnvelopeStart = envelopeStarts[EnvelopeComputeIndex.reverb];
+			const reverbEnvelopeEnd = envelopeEnds[EnvelopeComputeIndex.reverb];
 
-			let useReverbStart: number = effect.reverb;
-			let useReverbEnd: number = effect.reverb;
+			let useReverbStart = effect.reverb;
+			let useReverbEnd = effect.reverb;
 
 			// Check for mod reverb, instrument level
 			if (synth.isModActive(Config.modulators.dictionary["reverb"].index, channelIndex, instrumentIndex)) {
@@ -897,14 +897,14 @@ export class EffectState {
 				useReverbEnd *= (synth.getModValue(Config.modulators.dictionary["song reverb"].index, undefined, undefined, true) - Config.modulators.dictionary["song reverb"].convertRealFactor) / Config.reverbRange;
 			}
 
-			const reverbStart: number = Math.min(1.0, Math.pow(reverbEnvelopeStart * useReverbStart / Config.reverbRange, 0.667)) * 0.425;
-			const reverbEnd: number = Math.min(1.0, Math.pow(reverbEnvelopeEnd * useReverbEnd / Config.reverbRange, 0.667)) * 0.425;
+			const reverbStart = Math.min(1.0, Math.pow(reverbEnvelopeStart * useReverbStart / Config.reverbRange, 0.667)) * 0.425;
+			const reverbEnd = Math.min(1.0, Math.pow(reverbEnvelopeEnd * useReverbEnd / Config.reverbRange, 0.667)) * 0.425;
 
 			this.reverbMult = reverbStart;
 			this.reverbMultDelta = (reverbEnd - reverbStart) / roundedSamplesPerTick;
 			maxReverbMult = Math.max(reverbStart, reverbEnd);
 
-			const shelfRadians: number = 2.0 * Math.PI * Config.reverbShelfHz / synth.samplesPerSecond;
+			const shelfRadians = 2.0 * Math.PI * Config.reverbShelfHz / synth.samplesPerSecond;
 			Synth.tempFilterStartCoefficients.highShelf1stOrder(shelfRadians, Config.reverbShelfGain);
 			this.reverbShelfA1 = Synth.tempFilterStartCoefficients.a[1];
 			this.reverbShelfB0 = Synth.tempFilterStartCoefficients.b[0];
@@ -912,8 +912,8 @@ export class EffectState {
 		}
 
 		if (!instrumentState.tonesAddedInThisTick && !instrumentState.flushingDelayLines) {
-			const attenuationThreshold: number = 1.0 / 256.0; // when the delay line signal has attenuated this much, it should be inaudible and should be flushed to zero.
-			const halfLifeMult: number = -Math.log2(attenuationThreshold);
+			const attenuationThreshold = 1.0 / 256.0; // when the delay line signal has attenuated this much, it should be inaudible and should be flushed to zero.
+			const halfLifeMult = -Math.log2(attenuationThreshold);
 
 			if (usesChorus) {
 				instrumentState.delayDuration += Config.chorusMaxDelay;
@@ -924,18 +924,18 @@ export class EffectState {
 			}
 
 			if (usesEcho) {
-				const attenuationPerSecond: number = Math.pow(maxEchoMult, 1.0 / averageEchoDelaySeconds);
-				const halfLife: number = -1.0 / Math.log2(attenuationPerSecond);
-				const echoDuration: number = halfLife * halfLifeMult;
+				const attenuationPerSecond = Math.pow(maxEchoMult, 1.0 / averageEchoDelaySeconds);
+				const halfLife = -1.0 / Math.log2(attenuationPerSecond);
+				const echoDuration = halfLife * halfLifeMult;
 				instrumentState.delayDuration += echoDuration;
 			}
 
 			if (usesReverb) {
-				const averageMult: number = maxReverbMult * 2.0;
-				const averageReverbDelaySeconds: number = (Config.reverbDelayBufferSize / 4.0) / samplesPerSecond;
-				const attenuationPerSecond: number = Math.pow(averageMult, 1.0 / averageReverbDelaySeconds);
-				const halfLife: number = -1.0 / Math.log2(attenuationPerSecond);
-				const reverbDuration: number = halfLife * halfLifeMult;
+				const averageMult = maxReverbMult * 2.0;
+				const averageReverbDelaySeconds = (Config.reverbDelayBufferSize / 4.0) / samplesPerSecond;
+				const attenuationPerSecond = Math.pow(averageMult, 1.0 / averageReverbDelaySeconds);
+				const halfLife = -1.0 / Math.log2(attenuationPerSecond);
+				const reverbDuration = halfLife * halfLifeMult;
 				instrumentState.delayDuration += reverbDuration;
 			}
 

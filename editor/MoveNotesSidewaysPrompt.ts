@@ -10,15 +10,15 @@ import { ColorConfig } from "./ColorConfig";
 const { button, div, span, h2, input, br, select, option } = HTML;
 
 export class MoveNotesSidewaysPrompt implements Prompt {
-    private readonly _beatsStepper: HTMLInputElement = input({ style: "width: 3em; margin-left: 1em;", type: "number", step: "0.01", value: "0" });
-    private readonly _conversionStrategySelect: HTMLSelectElement = select({ style: "width: 100%;" },
+    private readonly _beatsStepper = input({ style: "width: 3em; margin-left: 1em;", type: "number", step: "0.01", value: "0" });
+    private readonly _conversionStrategySelect = select({ style: "width: 100%;" },
         option({ value: "overflow" }, "Overflow notes across bars."),
         option({ value: "wrapAround" }, "Wrap notes around within bars."),
     );
-    private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-    private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
+    private readonly _cancelButton = button({ class: "cancelButton" });
+    private readonly _okayButton = button({ class: "okayButton", style: "width:45%;" }, "Okay");
 
-    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 250px;" },
+    readonly container = div({ class: "prompt noSelection", style: "width: 250px;" },
         h2("Move Notes Sideways"),
         div({ style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
             div({ style: "text-align: right;" },
@@ -73,8 +73,8 @@ export class MoveNotesSidewaysPrompt implements Prompt {
     }
 
     private static _validateNumber(event: Event): void {
-        const input: HTMLInputElement = <HTMLInputElement>event.target;
-        let value: number = +input.value;
+        const input = <HTMLInputElement>event.target;
+        let value = +input.value;
         value = Math.round(value * Config.partsPerBeat) / Config.partsPerBeat;
         value = Math.round(value * 100) / 100;
         input.value = Math.max(+input.min, Math.min(+input.max, value)) + "";

@@ -9,8 +9,8 @@ const { span } = HTML;
 
 export class InputBox {
     private _change: Change | null = null;
-    private _value: string = "";
-    private _oldValue: string = "";
+    private _value = "";
+    private _oldValue = "";
 
     constructor(public readonly input: HTMLInputElement, private readonly _doc: SongDocument, private readonly _getChange: (oldValue: string, newValue: string) => Change) {
         input.addEventListener("input", this._whenInput);
@@ -23,7 +23,7 @@ export class InputBox {
     }
 
     private _whenInput = (): void => {
-        const continuingProspectiveChange: boolean = this._doc.lastChangeWas(this._change);
+        const continuingProspectiveChange = this._doc.lastChangeWas(this._change);
         if (!continuingProspectiveChange) this._oldValue = this._value;
         this._change = this._getChange(this._oldValue, this.input.value);
         this._doc.setProspectiveChange(this._change);
@@ -37,8 +37,8 @@ export class InputBox {
 
 export class Slider {
     private _change: Change | null = null;
-    private _value: number = 0;
-    private _oldValue: number = 0;
+    private _value = 0;
+    private _oldValue = 0;
     container: HTMLSpanElement;
 
     constructor(public readonly input: HTMLInputElement, private readonly _doc: SongDocument, private readonly _getChange: ((oldValue: number, newValue: number) => Change) | null, midTick: boolean) {
@@ -54,7 +54,7 @@ export class Slider {
     }
 
     private _whenInput = (): void => {
-        const continuingProspectiveChange: boolean = this._doc.lastChangeWas(this._change);
+        const continuingProspectiveChange = this._doc.lastChangeWas(this._change);
         if (!continuingProspectiveChange) this._oldValue = this._value;
         if (this._getChange != null) {
             this._change = this._getChange(this._oldValue, parseFloat(this.input.value));

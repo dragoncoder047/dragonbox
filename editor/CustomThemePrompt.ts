@@ -9,9 +9,9 @@ import { PatternEditor } from "./PatternEditor";
 const { button, div, h2, input, p, a } = HTML;
 let doReload = false;
 export class CustomThemePrompt implements Prompt {
-	private readonly _fileInput: HTMLInputElement = input({ type: "file", accept: "image/*", text: "choose editor background image"});
-	private readonly _fileInput2: HTMLInputElement = input({ type: "file", accept: "image/*", text: "choose website background image" });
-	private readonly _colorInput: HTMLInputElement = input({ type: "text", value: localStorage.getItem("customColors") || `:root {
+	private readonly _fileInput = input({ type: "file", accept: "image/*", text: "choose editor background image"});
+	private readonly _fileInput2 = input({ type: "file", accept: "image/*", text: "choose website background image" });
+	private readonly _colorInput = input({ type: "text", value: localStorage.getItem("customColors") || `:root {
 	--page-margin: black;
 	--editor-background: black;
 	--hover-preview: white;
@@ -128,11 +128,11 @@ export class CustomThemePrompt implements Prompt {
 	--mod-label-primary-text:   black;
 	--disabled-note-primary:    #999;
 	--disabled-note-secondary:  #666; }`});
-	private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-	private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
-	private readonly _resetButton: HTMLButtonElement = button({ style: "height: auto; min-height: var(--button-size);" }, "Reset to defaults");
+	private readonly _cancelButton = button({ class: "cancelButton" });
+	private readonly _okayButton = button({ class: "okayButton", style: "width:45%;" }, "Okay");
+	private readonly _resetButton = button({ style: "height: auto; min-height: var(--button-size);" }, "Reset to defaults");
 
-	readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 300px;" },
+	readonly container = div({ class: "prompt noSelection", style: "width: 300px;" },
 		h2("Import"),
 		p({ style: "text-align: left; margin: 0.5em 0;" },
 			"You can upload images to create a custom theme. The first image will become the editor background, and the second image will be tiled across the webpage.",
@@ -219,9 +219,9 @@ export class CustomThemePrompt implements Prompt {
         doReload = true;
     }
     private _whenFileSelected = (): void => {
-        const file: File = this._fileInput.files![0];
+        const file = this._fileInput.files![0];
         if (!file) return;
-        const reader: FileReader = new FileReader();
+        const reader = new FileReader();
         reader.addEventListener("load", (event: Event): void => {
             //this._doc.prompt = null;
             //this._doc.goBackToStart();
@@ -235,9 +235,9 @@ export class CustomThemePrompt implements Prompt {
         reader.readAsDataURL(file);
     }
     private _whenFileSelected2 = (): void => {
-        const file: File = this._fileInput2.files![0];
+        const file = this._fileInput2.files![0];
         if (!file) return;
-        const reader: FileReader = new FileReader();
+        const reader = new FileReader();
         reader.addEventListener("load", (event: Event): void => {
             //this._doc.prompt = null;
             //this._doc.goBackToStart();

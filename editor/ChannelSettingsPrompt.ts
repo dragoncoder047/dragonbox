@@ -10,17 +10,17 @@ import { ChangePatternsPerChannel, ChangeInstrumentsFlags, ChangeChannelCount } 
 const { button, div, label, br, h2, input } = HTML;
 
 export class ChannelSettingsPrompt implements Prompt {
-    private readonly _patternsStepper: HTMLInputElement = input({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
-    private readonly _pitchChannelStepper: HTMLInputElement = input({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
-    private readonly _drumChannelStepper: HTMLInputElement = input({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
-    private readonly _modChannelStepper: HTMLInputElement = input({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
-    private readonly _layeredInstrumentsBox: HTMLInputElement = input({ style: "width: 3em; margin-left: 1em;", type: "checkbox" });
-    private readonly _patternInstrumentsBox: HTMLInputElement = input({ style: "width: 3em; margin-left: 1em;", type: "checkbox" });
+    private readonly _patternsStepper = input({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
+    private readonly _pitchChannelStepper = input({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
+    private readonly _drumChannelStepper = input({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
+    private readonly _modChannelStepper = input({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
+    private readonly _layeredInstrumentsBox = input({ style: "width: 3em; margin-left: 1em;", type: "checkbox" });
+    private readonly _patternInstrumentsBox = input({ style: "width: 3em; margin-left: 1em;", type: "checkbox" });
 
-    private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-    private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
+    private readonly _cancelButton = button({ class: "cancelButton" });
+    private readonly _okayButton = button({ class: "okayButton", style: "width:45%;" }, "Okay");
 
-    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 250px; text-align: right;" },
+    readonly container = div({ class: "prompt noSelection", style: "width: 250px; text-align: right;" },
         h2("Channel Settings"),
         label({ style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
             "Pitch channels:",
@@ -126,7 +126,7 @@ export class ChannelSettingsPrompt implements Prompt {
     }
 
     private _validateNumber = (event: Event): void => {
-        const input: HTMLInputElement = <HTMLInputElement>event.target;
+        const input = <HTMLInputElement>event.target;
         input.value = String(ChannelSettingsPrompt._validate(input));
     }
 
@@ -135,7 +135,7 @@ export class ChannelSettingsPrompt implements Prompt {
     }
 
     private _saveChanges = (): void => {
-        const group: ChangeGroup = new ChangeGroup();
+        const group = new ChangeGroup();
         group.append(new ChangeInstrumentsFlags(this._doc, this._layeredInstrumentsBox.checked, this._patternInstrumentsBox.checked));
         group.append(new ChangePatternsPerChannel(this._doc, ChannelSettingsPrompt._validate(this._patternsStepper)));
         group.append(new ChangeChannelCount(this._doc, ChannelSettingsPrompt._validate(this._pitchChannelStepper), ChannelSettingsPrompt._validate(this._drumChannelStepper), ChannelSettingsPrompt._validate(this._modChannelStepper)));

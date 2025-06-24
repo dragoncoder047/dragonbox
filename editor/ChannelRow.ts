@@ -1,20 +1,20 @@
 // Copyright (C) 2021 John Nesky, distributed under the MIT license.
 
-import { Pattern } from "../synth/Pattern";
-import { ColorConfig, ChannelColors } from "./ColorConfig";
-import { SongDocument } from "./SongDocument";
 import { HTML } from "imperative-html/dist/esm/elements-strict";
+import { Pattern } from "../synth/Pattern";
+import { ColorConfig } from "./ColorConfig";
+import { SongDocument } from "./SongDocument";
 
 export class Box {
-    private readonly _text: Text = document.createTextNode("");
-    private readonly _label: HTMLElement = HTML.div({ class: "channelBoxLabel" }, this._text);
-    readonly container: HTMLElement = HTML.div({ class: "channelBox", style: `margin: 1px; height: ${ChannelRow.patternHeight - 2}px;` }, this._label);
-    private _renderedIndex: number = -1;
-    private _renderedLabelColor: string = "?";
-    private _renderedVisibility: string = "?";
-    private _renderedBorderLeft: string = "?";
-    private _renderedBorderRight: string = "?";
-    private _renderedBackgroundColor: string = "?";
+    private readonly _text = document.createTextNode("");
+    private readonly _label = HTML.div({ class: "channelBoxLabel" }, this._text);
+    readonly container = HTML.div({ class: "channelBox", style: `margin: 1px; height: ${ChannelRow.patternHeight - 2}px;` }, this._label);
+    private _renderedIndex = -1;
+    private _renderedLabelColor = "?";
+    private _renderedVisibility = "?";
+    private _renderedBorderLeft = "?";
+    private _renderedBorderRight = "?";
+    private _renderedBackgroundColor = "?";
     constructor(channel: number, color: string) {
         this.container.style.background = ColorConfig.uiWidgetBackground;
         this._label.style.color = color;
@@ -42,7 +42,7 @@ export class Box {
             this._renderedIndex = index;
             this._text.data = String(index);
         }
-        let useColor: string = selected ? ColorConfig.c_invertedText : color;
+        let useColor = selected ? ColorConfig.c_invertedText : color;
         if (this._renderedLabelColor != useColor) {
             this._label.style.color = useColor;
             this._renderedLabelColor = useColor;
@@ -84,28 +84,28 @@ export class Box {
 }
 
 export class ChannelRow {
-    static patternHeight: number = 28;
+    static patternHeight = 28;
 
-    private _renderedBarWidth: number = -1;
-    private _renderedBarHeight: number = -1;
+    private _renderedBarWidth = -1;
+    private _renderedBarHeight = -1;
     private _boxes: Box[] = [];
 
-    readonly container: HTMLElement = HTML.div({ class: "channelRow" });
+    readonly container = HTML.div({ class: "channelRow" });
 
     constructor(private readonly _doc: SongDocument, public readonly index: number, public readonly color: number) { }
 
     render(): void {
         ChannelRow.patternHeight = this._doc.getChannelHeight();
 
-        const barWidth: number = this._doc.getBarWidth();
+        const barWidth = this._doc.getBarWidth();
         if (this._boxes.length != this._doc.song.barCount) {
-            for (let x: number = this._boxes.length; x < this._doc.song.barCount; x++) {
-                const box: Box = new Box(this.index, ColorConfig.getChannelColor(this._doc.song, this.color, this.index, this._doc.prefs.fixChannelColorOrder).secondaryChannel);
+            for (let x = this._boxes.length; x < this._doc.song.barCount; x++) {
+                const box = new Box(this.index, ColorConfig.getChannelColor(this._doc.song, this.color, this.index, this._doc.prefs.fixChannelColorOrder).secondaryChannel);
                 box.setWidth(barWidth);
                 this.container.appendChild(box.container);
                 this._boxes[x] = box;
             }
-            for (let x: number = this._doc.song.barCount; x < this._boxes.length; x++) {
+            for (let x = this._doc.song.barCount; x < this._boxes.length; x++) {
                 this.container.removeChild(this._boxes[x].container);
             }
             this._boxes.length = this._doc.song.barCount;
@@ -113,26 +113,26 @@ export class ChannelRow {
 
         if (this._renderedBarWidth != barWidth) {
             this._renderedBarWidth = barWidth;
-            for (let x: number = 0; x < this._boxes.length; x++) {
+            for (let x = 0; x < this._boxes.length; x++) {
                 this._boxes[x].setWidth(barWidth);
             }
         }
 
         if (this._renderedBarHeight != ChannelRow.patternHeight) {
             this._renderedBarHeight = ChannelRow.patternHeight;
-            for (let x: number = 0; x < this._boxes.length; x++) {
+            for (let x = 0; x < this._boxes.length; x++) {
                 this._boxes[x].setHeight(ChannelRow.patternHeight);
             }
         }
 
-        for (let i: number = 0; i < this._boxes.length; i++) {
+        for (let i = 0; i < this._boxes.length; i++) {
             const pattern: Pattern | null = this._doc.song.getPattern(this.index, i);
-            const selected: boolean = (i == this._doc.bar && this.index == this._doc.channel);
-            const dim: boolean = (pattern == null || pattern.notes.length == 0);
+            const selected = (i == this._doc.bar && this.index == this._doc.channel);
+            const dim = (pattern == null || pattern.notes.length == 0);
 
-            const box: Box = this._boxes[i];
+            const box = this._boxes[i];
             if (i < this._doc.song.barCount) {
-                const colors: ChannelColors = ColorConfig.getChannelColor(this._doc.song, this.color, this.index, this._doc.prefs.fixChannelColorOrder);
+                const colors = ColorConfig.getChannelColor(this._doc.song, this.color, this.index, this._doc.prefs.fixChannelColorOrder);
                 box.setIndex(this._doc.song.channels[this.index].bars[i], selected, dim, dim && !selected ? colors.secondaryChannel : colors.primaryChannel,
                     this.index >= this._doc.song.pitchChannelCount && this.index < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount, this.index >= this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount);
                 box.setVisibility("visible");

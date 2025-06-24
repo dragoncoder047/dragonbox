@@ -1,7 +1,7 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-export const defaultMidiExpression: number = 0x7F;
-export const defaultMidiPitchBend: number = 0x2000;
+export const defaultMidiExpression = 0x7F;
+export const defaultMidiPitchBend = 0x2000;
 
 export const enum MidiChunkType {
     header = 0x4D546864, // "MThd" as bytes, big endian

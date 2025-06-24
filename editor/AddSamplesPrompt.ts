@@ -1,5 +1,5 @@
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
-import { Dictionary, Config } from "../synth/SynthConfig";
+import { Config, Dictionary } from "../synth/SynthConfig";
 import { clamp, parseFloatWithDefault, parseIntWithDefault } from "../synth/utils";
 import { ColorConfig } from "./ColorConfig";
 import { EditorConfig } from "./EditorConfig";
@@ -31,22 +31,22 @@ interface ParsedEntries {
 // - Use constants or an enum for the key-value pairs.
 
 export class AddSamplesPrompt {
-    private readonly _maxSamples: number = 64;
+    private readonly _maxSamples = 64;
 
     private _doc: SongDocument;
     private readonly _entries: SampleEntry[] = [];
     private readonly _entryOptionsDisplayStates: Dictionary<boolean> = {};
-    private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-    private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width: 45%;" }, "Okay");
-    private readonly _addSampleButton: HTMLButtonElement = button({ style: "height: auto; min-height: var(--button-size);" }, "Add sample");
-    private readonly _entryContainer: HTMLDivElement = div();
-    private readonly _addMultipleSamplesButton: HTMLButtonElement = button({ style: "height: auto; min-height: var(--button-size); margin-left: 0.5em;" }, "Add multiple samples");
-    private readonly _addSamplesAreaBottom: HTMLDivElement = div({ style: "margin-top: 0.5em;" },
+    private readonly _cancelButton = button({ class: "cancelButton" });
+    private readonly _okayButton = button({ class: "okayButton", style: "width: 45%;" }, "Okay");
+    private readonly _addSampleButton = button({ style: "height: auto; min-height: var(--button-size);" }, "Add sample");
+    private readonly _entryContainer = div();
+    private readonly _addMultipleSamplesButton = button({ style: "height: auto; min-height: var(--button-size); margin-left: 0.5em;" }, "Add multiple samples");
+    private readonly _addSamplesAreaBottom = div({ style: "margin-top: 0.5em;" },
         this._addSampleButton,
         this._addMultipleSamplesButton
     );
-    private readonly _instructionsLink: HTMLAnchorElement = a({ href: "#" }, "Here's more information and some instructions on how to use custom samples in Slarmoo's Box.");
-    private readonly _description: HTMLDivElement = div(
+    private readonly _instructionsLink = a({ href: "#" }, "Here's more information and some instructions on how to use custom samples in Slarmoo's Box.");
+    private readonly _description = div(
         div({ style: "margin-bottom: 0.5em; -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; cursor: text;" },
             "In order to use the old Slarmoo's Box samples, you should add ",
             code("legacySamples"),
@@ -63,8 +63,8 @@ export class AddSamplesPrompt {
             this._instructionsLink,
         )
     );
-    private readonly _closeInstructionsButton: HTMLButtonElement = button({ style: "height: auto; min-height: var(--button-size); width: 100%;" }, "Close instructions");
-    private readonly _instructionsArea: HTMLDivElement = div(
+    private readonly _closeInstructionsButton = button({ style: "height: auto; min-height: var(--button-size); width: 100%;" }, "Close instructions");
+    private readonly _instructionsArea = div(
         { style: "display: none; margin-top: 0; -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; cursor: text; overflow-y: auto;" },
         h2("Add Samples"),
         div({ style: "margin-top: 0.5em; margin-bottom: 0.5em;" },
@@ -110,7 +110,7 @@ export class AddSamplesPrompt {
         ),
         div({ style: "display: flex; flex-direction: row-reverse; justify-content: space-between; margin-top: 0.5em;" }, this._closeInstructionsButton)
     );
-    private readonly _addSamplesArea: HTMLDivElement = div({ style: "overflow-y: auto;" },
+    private readonly _addSamplesArea = div({ style: "overflow-y: auto;" },
         h2("Add Samples"),
         div({ style: "display: flex; flex-direction: column; align-items: center; margin-bottom: 0.5em;" },
             this._description,
@@ -119,11 +119,11 @@ export class AddSamplesPrompt {
         ),
         div({ style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" }, this._okayButton)
     );
-    private readonly _bulkAddTextarea: HTMLTextAreaElement = textarea({
+    private readonly _bulkAddTextarea = textarea({
         style: "width: 100%; height: 100%; resize: none; box-sizing: border-box;",
     });
-    private readonly _bulkAddConfirmButton: HTMLButtonElement = button({ style: "height: auto; min-height: var(--button-size); width: 100%;" }, "Add");
-    private readonly _bulkAddArea: HTMLDivElement = div(
+    private readonly _bulkAddConfirmButton = button({ style: "height: auto; min-height: var(--button-size); width: 100%;" }, "Add");
+    private readonly _bulkAddArea = div(
         { style: "display: none; overflow-y: auto;" },
         h2({ style: "margin-bottom: 0.5em;" }, "Add Multiple Samples"),
         div({ style: "display: flex; flex-direction: column; align-items: center;" },
@@ -133,7 +133,7 @@ export class AddSamplesPrompt {
         ),
         div({ style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" }, this._bulkAddConfirmButton),
     );
-    container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 450px; max-height: calc(100% - 100px);" },
+    container = div({ class: "prompt noSelection", style: "width: 450px; max-height: calc(100% - 100px);" },
         this._addSamplesArea,
         this._bulkAddArea,
         this._instructionsArea,
@@ -180,7 +180,7 @@ export class AddSamplesPrompt {
     }
 
     private _saveChanges = (): void => {
-        const urlData: string = this._generateURLData();
+        const urlData = this._generateURLData();
         EditorConfig.customSamples = urlData.split("|").filter(x => x !== "");
         Config.willReloadForCustomSamples = true;
         window.location.hash = this._doc.song.toBase64String();
@@ -189,7 +189,7 @@ export class AddSamplesPrompt {
     }
 
     private _whenAddSampleClicked = (event: Event): void => {
-        const entryIndex: number = this._entries.length;
+        const entryIndex = this._entries.length;
         this._entries.push({
             url: "",
             sampleRate: 44100,
@@ -228,7 +228,7 @@ export class AddSamplesPrompt {
         this._bulkAddArea.style.display = "none";
         // In this case, we shouldn't really bother supporting the old syntax,
         // as people are only really sharing URLs with the new one.
-        const parsed: ParsedEntries = this._parseURLs(
+        const parsed = this._parseURLs(
             this._bulkAddTextarea.value
                 .replace(/\n/g, "|")
                 .split("|")
@@ -244,7 +244,7 @@ export class AddSamplesPrompt {
             if (this._entries.length >= this._maxSamples) break;
             if (seen.has(entry.url)) continue;
             seen.set(entry.url, true);
-            const entryIndex: number = this._entries.length;
+            const entryIndex = this._entries.length;
             this._entries.push(entry);
             this._entryOptionsDisplayStates[entryIndex] = false;
         }
@@ -253,8 +253,8 @@ export class AddSamplesPrompt {
     }
 
     private _whenOptionsAreToggled = (event: Event): void => {
-        const element: HTMLDetailsElement = <HTMLDetailsElement>event.target;
-        const entryIndex: number = +(element.dataset.index!);
+        const element = <HTMLDetailsElement>event.target;
+        const entryIndex = +(element.dataset.index!);
         if (element.open) {
             this._entryOptionsDisplayStates[entryIndex] = true;
         } else {
@@ -263,32 +263,32 @@ export class AddSamplesPrompt {
     }
 
     private _whenURLChanges = (event: Event): void => {
-        const element: HTMLInputElement = <HTMLInputElement>event.target;
-        const entryIndex: number = +(element.dataset.index!);
+        const element = <HTMLInputElement>event.target;
+        const entryIndex = +(element.dataset.index!);
         this._entries[entryIndex].url = element.value;
         const sampleNameElement: HTMLDivElement | null | undefined = element.parentNode?.parentNode?.querySelector(".add-sample-prompt-sample-name");
         if (sampleNameElement != null) {
-            const sampleName: string = this._getSampleName(this._entries[entryIndex]);
+            const sampleName = this._getSampleName(this._entries[entryIndex]);
             sampleNameElement.innerText = sampleName;
             sampleNameElement.title = sampleName;
         }
     }
 
     private _whenSampleRateChanges = (event: Event): void => {
-        const element: HTMLInputElement = <HTMLInputElement>event.target;
-        const entryIndex: number = +(element.dataset.index!);
-        const value: number = clamp(8000, 96000 + 1, parseFloatWithDefault(element.value, 44100));
+        const element = <HTMLInputElement>event.target;
+        const entryIndex = +(element.dataset.index!);
+        const value = clamp(8000, 96000 + 1, parseFloatWithDefault(element.value, 44100));
         this._entries[entryIndex].sampleRate = value;
     }
 
     private _whenRootKeyChanges = (event: Event): void => {
-        const element: HTMLInputElement = <HTMLInputElement>event.target;
-        const entryIndex: number = +(element.dataset.index!);
-        const value: number = parseFloatWithDefault(element.value, 60);
+        const element = <HTMLInputElement>event.target;
+        const entryIndex = +(element.dataset.index!);
+        const value = parseFloatWithDefault(element.value, 60);
         this._entries[entryIndex].rootKey = value;
         const rootKeyDisplay: HTMLSpanElement | null | undefined = element.parentNode?.parentNode?.querySelector(".add-sample-prompt-root-key-display");
         if (rootKeyDisplay != null) {
-            const noteName: string = this._noteNameFromPitchNumber(this._entries[entryIndex].rootKey);
+            const noteName = this._noteNameFromPitchNumber(this._entries[entryIndex].rootKey);
             if (noteName !== "") {
                 rootKeyDisplay.innerText = `(${noteName})`;
             }
@@ -296,36 +296,36 @@ export class AddSamplesPrompt {
     }
 
     private _whenPercussionChanges = (event: Event): void => {
-        const element: HTMLInputElement = <HTMLInputElement>event.target;
-        const entryIndex: number = +(element.dataset.index!);
+        const element = <HTMLInputElement>event.target;
+        const entryIndex = +(element.dataset.index!);
         this._entries[entryIndex].percussion = element.checked ? true : false;
     }
 
     private _whenChipWaveLoopStartChanges = (event: Event): void => {
-        const element: HTMLInputElement = <HTMLInputElement>event.target;
-        const entryIndex: number = +(element.dataset.index!);
+        const element = <HTMLInputElement>event.target;
+        const entryIndex = +(element.dataset.index!);
         const value: number | null = parseIntWithDefault(element.value, null);
         this._entries[entryIndex].chipWaveLoopStart = value;
     }
 
     private _whenChipWaveLoopEndChanges = (event: Event): void => {
-        const element: HTMLInputElement = <HTMLInputElement>event.target;
-        const entryIndex: number = +(element.dataset.index!);
+        const element = <HTMLInputElement>event.target;
+        const entryIndex = +(element.dataset.index!);
         const value: number | null = parseIntWithDefault(element.value, null);
         this._entries[entryIndex].chipWaveLoopEnd = value;
     }
 
     private _whenChipWaveStartOffsetChanges = (event: Event): void => {
-        const element: HTMLInputElement = <HTMLInputElement>event.target;
-        const entryIndex: number = +(element.dataset.index!);
+        const element = <HTMLInputElement>event.target;
+        const entryIndex = +(element.dataset.index!);
         const value: number | null = parseIntWithDefault(element.value, null);
         this._entries[entryIndex].chipWaveStartOffset = value;
     }
 
     private _whenChipWaveLoopModeChanges = (event: Event): void => {
-        const element: HTMLSelectElement = <HTMLSelectElement>event.target;
-        const entryIndex: number = +(element.dataset.index!);
-        const newValue: number = +element.value;
+        const element = <HTMLSelectElement>event.target;
+        const entryIndex = +(element.dataset.index!);
+        const newValue = +element.value;
         if (newValue === -1) {
             this._entries[entryIndex].chipWaveLoopMode = null;
         } else {
@@ -334,9 +334,9 @@ export class AddSamplesPrompt {
     }
 
     private _whenChipWavePlayBackwardsChanges = (event: Event): void => {
-        const element: HTMLInputElement = <HTMLInputElement>event.target;
-        const entryIndex: number = +(element.dataset.index!);
-        const newValue: boolean = element.checked;
+        const element = <HTMLInputElement>event.target;
+        const entryIndex = +(element.dataset.index!);
+        const newValue = element.checked;
         this._entries[entryIndex].chipWavePlayBackwards = newValue;
     }
 
@@ -353,25 +353,25 @@ export class AddSamplesPrompt {
             });
             return;
         }
-        const textField: HTMLTextAreaElement = document.createElement("textarea");
+        const textField = document.createElement("textarea");
         textField.textContent = text;
         document.body.appendChild(textField);
         textField.select();
-        const succeeded: boolean = document.execCommand("copy");
+        const succeeded = document.execCommand("copy");
         textField.remove();
         this.container.focus({ preventScroll: true });
         if (!succeeded) window.prompt("Copy this:", text);
     }
 
     private _whenCopyLinkPresetClicked = (event: Event): void => {
-        const element: HTMLButtonElement = <HTMLButtonElement>event.target;
-        const entryIndex: number = +(element.dataset.index!);
+        const element = <HTMLButtonElement>event.target;
+        const entryIndex = +(element.dataset.index!);
         this._copyTextToClipboard(this._generateURLDataForEntry(this._entries[entryIndex]));
     }
 
     private _whenRemoveSampleClicked = (event: Event): void => {
-        const element: HTMLButtonElement = <HTMLButtonElement>event.target;
-        const entryIndex: number = +(element.dataset.index!);
+        const element = <HTMLButtonElement>event.target;
+        const entryIndex = +(element.dataset.index!);
         this._entryOptionsDisplayStates[entryIndex] = false;
         this._entries.splice(entryIndex, 1);
         this._reconfigureAddSampleButton();
@@ -379,14 +379,14 @@ export class AddSamplesPrompt {
     }
 
     private _whenMoveSampleUpClicked = (event: Event): void => {
-        const element: HTMLButtonElement = <HTMLButtonElement>event.target;
-        const entryIndex: number = +(element.dataset.index!);
-        const upEntryIndex: number = entryIndex - 1;
+        const element = <HTMLButtonElement>event.target;
+        const entryIndex = +(element.dataset.index!);
+        const upEntryIndex = entryIndex - 1;
         if (this._entries.length >= 2 && upEntryIndex >= 0) {
-            const upEntry: SampleEntry = this._entries[upEntryIndex];
-            const entry: SampleEntry = this._entries[entryIndex];
-            const upEntryOptionsVisibility: boolean = this._entryOptionsDisplayStates[upEntryIndex];
-            const entryOptionsVisibility: boolean = this._entryOptionsDisplayStates[entryIndex];
+            const upEntry = this._entries[upEntryIndex];
+            const entry = this._entries[entryIndex];
+            const upEntryOptionsVisibility = this._entryOptionsDisplayStates[upEntryIndex];
+            const entryOptionsVisibility = this._entryOptionsDisplayStates[entryIndex];
             this._entries[upEntryIndex] = entry;
             this._entries[entryIndex] = upEntry;
             this._entryOptionsDisplayStates[upEntryIndex] = entryOptionsVisibility;
@@ -396,14 +396,14 @@ export class AddSamplesPrompt {
     }
 
     private _whenMoveSampleDownClicked = (event: Event): void => {
-        const element: HTMLButtonElement = <HTMLButtonElement>event.target;
-        const entryIndex: number = +(element.dataset.index!);
-        const downEntryIndex: number = entryIndex + 1;
+        const element = <HTMLButtonElement>event.target;
+        const entryIndex = +(element.dataset.index!);
+        const downEntryIndex = entryIndex + 1;
         if (this._entries.length >= 2 && downEntryIndex < this._entries.length) {
-            const downEntry: SampleEntry = this._entries[downEntryIndex];
-            const entry: SampleEntry = this._entries[entryIndex];
-            const downEntryOptionsVisibility: boolean = this._entryOptionsDisplayStates[downEntryIndex];
-            const entryOptionsVisibility: boolean = this._entryOptionsDisplayStates[entryIndex];
+            const downEntry = this._entries[downEntryIndex];
+            const entry = this._entries[entryIndex];
+            const downEntryOptionsVisibility = this._entryOptionsDisplayStates[downEntryIndex];
+            const entryOptionsVisibility = this._entryOptionsDisplayStates[entryIndex];
             this._entries[downEntryIndex] = entry;
             this._entries[entryIndex] = downEntry;
             this._entryOptionsDisplayStates[downEntryIndex] = entryOptionsVisibility;
@@ -432,9 +432,9 @@ export class AddSamplesPrompt {
             const rootKey = parseFloatWithDefault(url.slice(url.indexOf("!") + 1), 60);
             return [newUrl, rootKey];
         }
-        let useLegacySamples: boolean = false;
-        let useNintariboxSamples: boolean = false;
-        let useMarioPaintboxSamples: boolean = false;
+        let useLegacySamples = false;
+        let useNintariboxSamples = false;
+        let useMarioPaintboxSamples = false;
         const parsedEntries: SampleEntry[] = [];
         for (const url of urls) {
             if (url === "") continue;
@@ -484,25 +484,25 @@ export class AddSamplesPrompt {
                 }
                 useMarioPaintboxSamples = true;
             } else {
-                let urlSliced: string = url;
-                let sampleRate: number = 44100;
-                let rootKey: number = 60;
-                let percussion: boolean = false;
+                let urlSliced = url;
+                let sampleRate = 44100;
+                let rootKey = 60;
+                let percussion = false;
                 let chipWaveLoopStart: number | null = null;
                 let chipWaveLoopEnd: number | null = null;
                 let chipWaveStartOffset: number | null = null;
                 let chipWaveLoopMode: number | null = null;
-                let chipWavePlayBackwards: boolean = false;
-                let optionsStartIndex: number = url.indexOf("!");
-                let optionsEndIndex: number = -1;
-                let parsedSampleOptions: boolean = false;
+                let chipWavePlayBackwards = false;
+                let optionsStartIndex = url.indexOf("!");
+                let optionsEndIndex = -1;
+                let parsedSampleOptions = false;
                 if (optionsStartIndex === 0) {
                     optionsEndIndex = url.indexOf("!", optionsStartIndex + 1);
                     if (optionsEndIndex !== -1) {
                         const rawOptions: string[] = url.slice(optionsStartIndex + 1, optionsEndIndex).split(",");
                         for (const rawOption of rawOptions) {
-                            const optionCode: string = rawOption.charAt(0);
-                            const optionData: string = rawOption.slice(1, rawOption.length);
+                            const optionCode = rawOption.charAt(0);
+                            const optionData = rawOption.slice(1, rawOption.length);
                             if (optionCode === "s") {
                                 sampleRate = clamp(8000, 96000 + 1, parseFloatWithDefault(optionData, 44100));
                             } else if (optionCode === "r") {
@@ -574,17 +574,17 @@ export class AddSamplesPrompt {
     }
 
     private _generateURLDataForEntry = (entry: SampleEntry): string => {
-        const url: string = entry.url.trim();
-        const sampleRate: number = entry.sampleRate;
-        const rootKey: number = entry.rootKey;
-        const percussion: boolean = entry.percussion;
+        const url = entry.url.trim();
+        const sampleRate = entry.sampleRate;
+        const rootKey = entry.rootKey;
+        const percussion = entry.percussion;
         const chipWaveLoopStart: number | null = entry.chipWaveLoopStart;
         const chipWaveLoopEnd: number | null = entry.chipWaveLoopEnd;
         const chipWaveStartOffset: number | null = entry.chipWaveStartOffset;
         const chipWaveLoopMode: number | null = entry.chipWaveLoopMode;
-        const chipWavePlayBackwards: boolean = entry.chipWavePlayBackwards;
-        const urlInLowerCase: string = url.toLowerCase();
-        const isBundledSamplePack: boolean = (
+        const chipWavePlayBackwards = entry.chipWavePlayBackwards;
+        const urlInLowerCase = url.toLowerCase();
+        const isBundledSamplePack = (
             urlInLowerCase === "legacysamples"
             || urlInLowerCase === "nintariboxsamples"
             || urlInLowerCase === "mariopaintboxsamples"
@@ -608,7 +608,7 @@ export class AddSamplesPrompt {
     private _generateURLData = (): string => {
         let output = "";
         for (const entry of this._entries) {
-            const url: string = entry.url.trim();
+            const url = entry.url.trim();
             if (url === "") continue;
             output += "|" + this._generateURLDataForEntry(entry);
         }
@@ -617,7 +617,7 @@ export class AddSamplesPrompt {
 
     private _getSampleName = (entry: SampleEntry): string => {
         try {
-            const parsedUrl: URL = new URL(entry.url);
+            const parsedUrl = new URL(entry.url);
             return decodeURIComponent(parsedUrl.pathname.replace(/^([^\/]*\/)+/, ""));
         } catch (error) {
             return entry.url;
@@ -629,13 +629,13 @@ export class AddSamplesPrompt {
             return (x % b + b) % b;
         }
         n = Math.floor(n) - 12;
-        const pitchNameIndex: number = wrap(n + Config.keys[this._doc.song.key].basePitch, Config.pitchesPerOctave);
-        let pitch: string = "";
+        const pitchNameIndex = wrap(n + Config.keys[this._doc.song.key].basePitch, Config.pitchesPerOctave);
+        let pitch = "";
         if (Config.keys[pitchNameIndex].isWhiteKey) {
             pitch = Config.keys[pitchNameIndex].name;
         }
         else {
-            const shiftDir: number = Config.blackKeyNameParents[wrap(n, Config.pitchesPerOctave)];
+            const shiftDir = Config.blackKeyNameParents[wrap(n, Config.pitchesPerOctave)];
             pitch = Config.keys[wrap(pitchNameIndex + Config.pitchesPerOctave + shiftDir, Config.pitchesPerOctave)].name;
             if (shiftDir == 1) {
                 pitch += "♭";
@@ -654,20 +654,20 @@ export class AddSamplesPrompt {
         while (this._entryContainer.firstChild !== null) {
             this._entryContainer.removeChild(this._entryContainer.firstChild);
         }
-        for (let entryIndex: number = 0; entryIndex < this._entries.length; entryIndex++) {
-            const canMoveUp: boolean = this._entries.length >= 2 && entryIndex > 0;
-            const canMoveDown: boolean = this._entries.length >= 2 && entryIndex < this._entries.length - 1;
-            const entry: SampleEntry = this._entries[entryIndex];
-            const optionsVisible: boolean = Boolean(this._entryOptionsDisplayStates[entryIndex]);
-            const urlInput: HTMLInputElement = input({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", value: entry.url });
-            const sampleRateStepper: HTMLInputElement = input({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: "" + entry.sampleRate, min: "8000", max: "96000", step: "1" });
-            const rootKeyStepper: HTMLInputElement = input({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: "" + entry.rootKey, min: "0", max: Config.maxPitch + Config.pitchesPerOctave, step: "1" });
-            const rootKeyDisplay: HTMLSpanElement = span({ class: "add-sample-prompt-root-key-display", style: "margin-left: 0.4em; width: 3em; text-align: left; text-overflow: ellipsis; overflow: hidden; flex-shrink: 0;" }, `(${this._noteNameFromPitchNumber(entry.rootKey)})`);
-            const percussionBox: HTMLInputElement = input({ style: "width: 1em; margin-left: 1em;", type: "checkbox" });
-            const chipWaveLoopStartStepper: HTMLInputElement = input({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: "" + (entry.chipWaveLoopStart != null ? entry.chipWaveLoopStart : ""), min: "0", step: "1" });
-            const chipWaveLoopEndStepper: HTMLInputElement = input({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: "" + (entry.chipWaveLoopEnd != null ? entry.chipWaveLoopEnd : ""), min: "0", step: "1" });
-            const chipWaveStartOffsetStepper: HTMLInputElement = input({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: "" + (entry.chipWaveStartOffset != null ? entry.chipWaveStartOffset : ""), min: "0", step: "1" });
-            const chipWaveLoopModeSelect: HTMLSelectElement = select({ style: "width: 100%; flex-grow: 1; margin-left: 0.5em;" },
+        for (let entryIndex = 0; entryIndex < this._entries.length; entryIndex++) {
+            const canMoveUp = this._entries.length >= 2 && entryIndex > 0;
+            const canMoveDown = this._entries.length >= 2 && entryIndex < this._entries.length - 1;
+            const entry = this._entries[entryIndex];
+            const optionsVisible = Boolean(this._entryOptionsDisplayStates[entryIndex]);
+            const urlInput = input({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", value: entry.url });
+            const sampleRateStepper = input({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: "" + entry.sampleRate, min: "8000", max: "96000", step: "1" });
+            const rootKeyStepper = input({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: "" + entry.rootKey, min: "0", max: Config.maxPitch + Config.pitchesPerOctave, step: "1" });
+            const rootKeyDisplay = span({ class: "add-sample-prompt-root-key-display", style: "margin-left: 0.4em; width: 3em; text-align: left; text-overflow: ellipsis; overflow: hidden; flex-shrink: 0;" }, `(${this._noteNameFromPitchNumber(entry.rootKey)})`);
+            const percussionBox = input({ style: "width: 1em; margin-left: 1em;", type: "checkbox" });
+            const chipWaveLoopStartStepper = input({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: "" + (entry.chipWaveLoopStart != null ? entry.chipWaveLoopStart : ""), min: "0", step: "1" });
+            const chipWaveLoopEndStepper = input({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: "" + (entry.chipWaveLoopEnd != null ? entry.chipWaveLoopEnd : ""), min: "0", step: "1" });
+            const chipWaveStartOffsetStepper = input({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: "" + (entry.chipWaveStartOffset != null ? entry.chipWaveStartOffset : ""), min: "0", step: "1" });
+            const chipWaveLoopModeSelect = select({ style: "width: 100%; flex-grow: 1; margin-left: 0.5em;" },
                 option({ value: -1 }, ""),
                 option({ value: 0 }, "Loop"),
                 option({ value: 1 }, "Ping-Pong"),
@@ -677,15 +677,15 @@ export class AddSamplesPrompt {
             if (entry.chipWaveLoopMode != null) {
                 chipWaveLoopModeSelect.value = "" + entry.chipWaveLoopMode;
             }
-            const chipWavePlayBackwardsBox: HTMLInputElement = input({ type: "checkbox", style: "width: 1em; padding: 0; margin-left: auto; margin-right: auto;" });
+            const chipWavePlayBackwardsBox = input({ type: "checkbox", style: "width: 1em; padding: 0; margin-left: auto; margin-right: auto;" });
             chipWavePlayBackwardsBox.checked = entry.chipWavePlayBackwards;
-            const sampleName: string = this._getSampleName(entry);
+            const sampleName = this._getSampleName(entry);
             percussionBox.checked = entry.percussion;
-            const copyLinkPresetButton: HTMLButtonElement = button({ style: "height: auto; min-height: var(--button-size);", title: "For use with \"Add multiple samples\"" }, "Copy link preset");
-            const removeButton: HTMLButtonElement = button({ style: "height: auto; min-height: var(--button-size); margin-left: 0.5em;" }, "Remove");
-            const moveUpButton: HTMLButtonElement = button({ style: "height: auto; min-height: var(--button-size); margin-left: 0.5em;" }, SVG.svg({ width: "16", height: "16", viewBox: "-13 -14 26 26", "pointer-events": "none", style: "width: 100%; height: 100%;" }, SVG.path({ d: "M -6 6 L 0 -6 L 6 6 z", fill: ColorConfig.primaryText })));
-            const moveDownButton: HTMLButtonElement = button({ style: "height: auto; min-height: var(--button-size); margin-left: 0.5em;" }, SVG.svg({ width: "16", height: "16", viewBox: "-13 -14 26 26", "pointer-events": "none", style: "width: 100%; height: 100%;" }, SVG.path({ d: "M -6 -6 L 6 -6 L 0 6 z", fill: ColorConfig.primaryText })));
-            const optionsContainer: HTMLDetailsElement = details(
+            const copyLinkPresetButton = button({ style: "height: auto; min-height: var(--button-size);", title: "For use with \"Add multiple samples\"" }, "Copy link preset");
+            const removeButton = button({ style: "height: auto; min-height: var(--button-size); margin-left: 0.5em;" }, "Remove");
+            const moveUpButton = button({ style: "height: auto; min-height: var(--button-size); margin-left: 0.5em;" }, SVG.svg({ width: "16", height: "16", viewBox: "-13 -14 26 26", "pointer-events": "none", style: "width: 100%; height: 100%;" }, SVG.path({ d: "M -6 6 L 0 -6 L 6 6 z", fill: ColorConfig.primaryText })));
+            const moveDownButton = button({ style: "height: auto; min-height: var(--button-size); margin-left: 0.5em;" }, SVG.svg({ width: "16", height: "16", viewBox: "-13 -14 26 26", "pointer-events": "none", style: "width: 100%; height: 100%;" }, SVG.path({ d: "M -6 -6 L 6 -6 L 0 6 z", fill: ColorConfig.primaryText })));
+            const optionsContainer = details(
                 { open: optionsVisible, style: "margin-bottom: 2em; margin-top: 1em;" },
                 summary({ style: "margin-bottom: 1em;" }, "Options"),
                 div({ style: "display: flex; flex-direction: row; align-items: center; justify-content: flex-end; margin-bottom: 0.5em;" },
@@ -736,14 +736,14 @@ export class AddSamplesPrompt {
             moveUpButton.dataset.index = "" + entryIndex;
             moveDownButton.dataset.index = "" + entryIndex;
             optionsContainer.dataset.index = "" + entryIndex;
-            const bottomButtons: HTMLDivElement = div({ style: "display: flex; flex-direction: row; align-items: center; justify-content: flex-end;" }, copyLinkPresetButton, removeButton);
+            const bottomButtons = div({ style: "display: flex; flex-direction: row; align-items: center; justify-content: flex-end;" }, copyLinkPresetButton, removeButton);
             if (canMoveUp) {
                 bottomButtons.appendChild(moveUpButton);
             }
             if (canMoveDown) {
                 bottomButtons.appendChild(moveDownButton);
             }
-            const entryElement: HTMLDivElement = div({ style: `padding: 0.6em; margin: 0.4em; border: 1px solid ${ColorConfig.uiWidgetBackground}; border-radius: 4px;` },
+            const entryElement = div({ style: `padding: 0.6em; margin: 0.4em; border: 1px solid ${ColorConfig.uiWidgetBackground}; border-radius: 4px;` },
                 div({
                     class: "add-sample-prompt-sample-name",
                     style: `margin-bottom: 0.5em; color: ${ColorConfig.secondaryText}; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;`,
@@ -777,7 +777,7 @@ export class AddSamplesPrompt {
                 moveDownButton.addEventListener("click", this._whenMoveSampleDownClicked);
             }
             this._entryContainer.appendChild(entryElement);
-            const thisIsTheLastElement: boolean = entryIndex === this._entries.length - 1;
+            const thisIsTheLastElement = entryIndex === this._entries.length - 1;
             if (scrollToBottom && thisIsTheLastElement) {
                 entryElement.scrollIntoView({ "block": "nearest", "inline": "nearest" });
             }

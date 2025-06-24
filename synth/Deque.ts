@@ -1,11 +1,11 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
 export class Deque<T> {
-	private _capacity: number = 1;
+	private _capacity = 1;
 	private _buffer: Array<T | undefined> = [undefined];
-	private _mask: number = 0;
-	private _offset: number = 0;
-	private _count: number = 0;
+	private _mask = 0;
+	private _offset = 0;
+	private _count = 0;
 
 	pushFront(element: T): void {
 		if (this._count >= this._capacity) this._embiggen();
@@ -20,7 +20,7 @@ export class Deque<T> {
 	}
 	popFront(): T {
 		if (this._count <= 0) throw new Error("No elements left to pop.");
-		const element: T = <T>this._buffer[this._offset];
+		const element = <T>this._buffer[this._offset];
 		this._buffer[this._offset] = undefined;
 		this._offset = (this._offset + 1) & this._mask;
 		this._count--;
@@ -29,8 +29,8 @@ export class Deque<T> {
 	popBack(): T {
 		if (this._count <= 0) throw new Error("No elements left to pop.");
 		this._count--;
-		const index: number = (this._offset + this._count) & this._mask;
-		const element: T = <T>this._buffer[index];
+		const index = (this._offset + this._count) & this._mask;
+		const element = <T>this._buffer[index];
 		this._buffer[index] = undefined;
 		return element;
 	}
@@ -76,8 +76,8 @@ export class Deque<T> {
 		this._capacity = this._capacity << 1;
 		const oldBuffer: Array<T | undefined> = this._buffer;
 		const newBuffer: Array<T | undefined> = new Array(this._capacity);
-		const size: number = this._count | 0;
-		const offset: number = this._offset | 0;
+		const size = this._count | 0;
+		const offset = this._offset | 0;
 		for (let i = 0; i < size; i++) {
 			newBuffer[i] = oldBuffer[(offset + i) & this._mask];
 		}

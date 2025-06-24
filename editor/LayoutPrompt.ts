@@ -8,10 +8,10 @@ import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
 const { button, label, div, form, h2, input } = HTML;
 
 export class LayoutPrompt implements Prompt {
-    private readonly _fileInput: HTMLInputElement = input({ type: "file", accept: ".json,application/json,.mid,.midi,audio/midi,audio/x-midi" });
-    private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
-    private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-    private readonly _form: HTMLFormElement = form({ style: "display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;" },
+    private readonly _fileInput = input({ type: "file", accept: ".json,application/json,.mid,.midi,audio/midi,audio/x-midi" });
+    private readonly _okayButton = button({ class: "okayButton", style: "width:45%;" }, "Okay");
+    private readonly _cancelButton = button({ class: "cancelButton" });
+    private readonly _form = form({ style: "display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;" },
         label({ class: "layout-option" },
             input({ type: "radio", name: "layout", value: "small" }),
             SVG(`\
@@ -114,7 +114,7 @@ export class LayoutPrompt implements Prompt {
         ),
     );
 
-    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 300px;" },
+    readonly container = div({ class: "prompt noSelection", style: "width: 300px;" },
         h2("Layout"),
         this._form,
         div({ style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },

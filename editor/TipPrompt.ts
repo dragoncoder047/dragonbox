@@ -8,7 +8,7 @@ import { Config } from "../synth/SynthConfig";
 const { button, div, p, h2, h3 } = HTML;
 
 export class TipPrompt implements Prompt {
-	private readonly _closeButton: HTMLButtonElement = button({ class: "cancelButton" });
+	private readonly _closeButton = button({ class: "cancelButton" });
 
 	readonly container: HTMLDivElement;
 
@@ -722,10 +722,10 @@ export class TipPrompt implements Prompt {
 			default:
 				// Check for modSetinfo#
 				if (type.indexOf("modSetInfo") >= 0) {
-					let modNum: number = +type[type.length - 1];
-					let modulator: number = _doc.song.channels[_doc.channel].instruments[_doc.getCurrentInstrument()].modulators[modNum];
+					let modNum = +type[type.length - 1];
+					let modulator = _doc.song.channels[_doc.channel].instruments[_doc.getCurrentInstrument()].modulators[modNum];
 					let pList: HTMLParagraphElement[] = [];
-					for (let s: number = 0; s < Config.modulators[modulator].promptDesc.length; s++) {
+					for (let s = 0; s < Config.modulators[modulator].promptDesc.length; s++) {
 						pList.push(p(
 							Config.modulators[modulator].promptDesc[s]
 								.replace("$LO", "" + Config.modulators[modulator].convertRealFactor)

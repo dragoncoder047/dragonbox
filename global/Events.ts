@@ -1,33 +1,33 @@
 //A simple events system for effectively direct links without actualy linking files or references
-class EventManager {
-    private activeEvents: string[] = [];
-    private listeners: any = {};
+class EventManager<T extends string, D, E, C extends (data: D, extradata: E | undefined) => void> {
+    private activeEvents: T[];
+    private listeners: Record<T, C[]>;
 
     constructor() {
         this.activeEvents = [];
-        this.listeners = {};
+        this.listeners = {} as any;
     }
 
 
-    raise(eventType: string, eventData: any, extraEventData?: any): void {
+    raise(eventType: T, eventData: D, extraEventData?: E): void {
         if (this.listeners[eventType] == undefined) {
             return;
         }
         this.activeEvents.push(eventType);
-        for (let i: number = 0; i < this.listeners[eventType].length; i++) {
+        for (let i = 0; i < this.listeners[eventType].length; i++) {
             this.listeners[eventType][i](eventData, extraEventData)
         }
         this.activeEvents.pop();
     }
 
-    listen(eventType: string, callback: Function): void {
+    listen(eventType: T, callback: C): void {
         if (this.listeners[eventType] == undefined) {
             this.listeners[eventType] = []
         }
         this.listeners[eventType].push(callback)
     }
 
-    unlisten(eventType: string, callback: Function): void {
+    unlisten(eventType: T, callback: C): void {
         if (this.listeners[eventType] == undefined) {
             return;
         }
@@ -36,7 +36,7 @@ class EventManager {
             this.listeners[eventType].splice(lisen, 1);
         }
     }
-    unlistenAll(eventType: string): void {
+    unlistenAll(eventType: T): void {
         if (this.listeners[eventType] == undefined) {
             return;
         }
@@ -44,4 +44,4 @@ class EventManager {
     }
 }
 
-export const events: EventManager = new EventManager()
+export const events = new EventManager()

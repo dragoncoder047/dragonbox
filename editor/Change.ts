@@ -1,7 +1,7 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
 export class Change {
-    private _noop: boolean = true;
+    private _noop = true;
 
     protected _didSomething(): void {
         this._noop = false;
@@ -97,13 +97,13 @@ export class ChangeSequence extends UndoableChange {
     }
 
     protected _doForwards(): void {
-        for (let i: number = 0; i < this._changes.length; i++) {
+        for (let i = 0; i < this._changes.length; i++) {
             this._changes[i].redo();
         }
     }
 
     protected _doBackwards(): void {
-        for (let i: number = this._changes.length - 1; i >= 0; i--) {
+        for (let i = this._changes.length - 1; i >= 0; i--) {
             this._changes[i].undo();
         }
     }

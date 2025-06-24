@@ -12,35 +12,35 @@ import { prettyNumber } from "./EditorConfig";
 const { button, div, h2, input } = HTML;
 
 export class LimiterCanvas {
-    private readonly _editorWidth: number = 200; // 112
-    private readonly _editorHeight: number = 52; // 26
-    private readonly _fill: SVGPathElement = SVG.path({ fill: ColorConfig.uiWidgetBackground, "pointer-events": "none" });
-    private readonly _ticks: SVGSVGElement = SVG.svg({ "pointer-events": "none" });
-    private readonly _subticks: SVGSVGElement = SVG.svg({ "pointer-events": "none" });
-    private readonly _boostCurve: SVGPathElement = SVG.path({ fill: "none", stroke: ColorConfig.textSelection, "stroke-width": 2, "pointer-events": "none" });
-    private readonly _boostDot: SVGCircleElement = SVG.circle({ fill: ColorConfig.textSelection, stroke: "none", r: "3" });
-    private readonly _midCurve: SVGPathElement = SVG.path({ fill: "none", stroke: ColorConfig.primaryText, "stroke-width": 2, "pointer-events": "none" });
-    private readonly _limitCurve: SVGPathElement = SVG.path({ fill: "none", stroke: ColorConfig.linkAccent, "stroke-width": 2, "pointer-events": "none" });
-    private readonly _limitDot: SVGCircleElement = SVG.circle({ fill: ColorConfig.linkAccent, stroke: "none", r: "3" });
-    private readonly _label0: SVGTextElement = SVG.text({ x: "-1.5%", y: "148.5%", "pointer-events": "none", "font-size": "7pt", fill: "var(--secondary-text)" }, "0");
-    private readonly _label1: SVGTextElement = SVG.text({ x: "48.2%", y: "148.5%", "pointer-events": "none", "font-size": "7pt", fill: "var(--secondary-text)" }, "1");
-    private readonly _label2: SVGTextElement = SVG.text({ x: "98.2%", y: "148.5%", "pointer-events": "none", "font-size": "7pt", fill: "var(--secondary-text)" }, "2");
-    private readonly _inLabel: SVGTextElement = SVG.text({ x: "-5%", y: "113.5%", "pointer-events": "none", "font-size": "6pt", fill: "var(--secondary-text)" }, "In");
-    private readonly _outLabel: SVGTextElement = SVG.text({ x: "-9%", y: "131%", "pointer-events": "none", "font-size": "6pt", fill: "var(--secondary-text)" }, "Out");
-    private readonly _xAxisLabel: SVGTextElement = SVG.text({ x: "42%", y: "172%", "pointer-events": "none", "font-size": "7pt", fill: "var(--primary-text)" }, "Volume");
-    private readonly _yAxisLabel: SVGTextElement = SVG.text({ x: "55.2%", y: "160%", "pointer-events": "none", "font-size": "7pt", transform: "rotate(-90 30,120)", fill: "var(--primary-text)" }, "Gain");
-    private readonly _inVolumeBg: SVGRectElement = SVG.rect({ "pointer-events": "none", width: "100%", height: "6px", x: "0%", y: "105%", fill: ColorConfig.uiWidgetBackground });
-    private readonly _outVolumeBg: SVGRectElement = SVG.rect({ "pointer-events": "none", width: "100%", height: "6px", x: "0%", y: "120%", fill: ColorConfig.uiWidgetBackground });
-    private readonly _inVolumeBar: SVGRectElement = SVG.rect({ "pointer-events": "none", height: "6px", x: "0%", y: "105%", fill: "url('#volumeGrad')" });
-    private readonly _inVolumeCap: SVGRectElement = SVG.rect({ "pointer-events": "none", width: "2px", height: "6px", y: "105%", fill: ColorConfig.uiWidgetFocus });
-    private readonly _outVolumeBar: SVGRectElement = SVG.rect({ "pointer-events": "none", height: "6px", x: "0%", y: "120%", fill: "url('#volumeGrad')" });
-    private readonly _outVolumeCap: SVGRectElement = SVG.rect({ "pointer-events": "none", width: "2px", height: "6px", y: "120%", fill: ColorConfig.uiWidgetFocus });
-    private readonly _stop1: SVGStopElement = SVG.stop({ "stop-color": "lime", offset: "30%" });
-    private readonly _stop2: SVGStopElement = SVG.stop({ "stop-color": "orange", offset: "45%" });
-    private readonly _stop3: SVGStopElement = SVG.stop({ "stop-color": "red", offset: "50%" });
-    private readonly _gradient: SVGGradientElement = SVG.linearGradient({ id: "volumeGrad", gradientUnits: "userSpaceOnUse" }, this._stop1, this._stop2, this._stop3);
-    private readonly _defs: SVGDefsElement = SVG.defs({}, this._gradient);
-    private readonly _svg: SVGSVGElement = SVG.svg({ style: `background-color: ${ColorConfig.editorBackground}; touch-action: none; overflow: visible;`, width: "100%", height: "100%", viewBox: "0 0 " + this._editorWidth + " " + this._editorHeight, preserveAspectRatio: "none" },
+    private readonly _editorWidth = 200; // 112
+    private readonly _editorHeight = 52; // 26
+    private readonly _fill = SVG.path({ fill: ColorConfig.uiWidgetBackground, "pointer-events": "none" });
+    private readonly _ticks = SVG.svg({ "pointer-events": "none" });
+    private readonly _subticks = SVG.svg({ "pointer-events": "none" });
+    private readonly _boostCurve = SVG.path({ fill: "none", stroke: ColorConfig.textSelection, "stroke-width": 2, "pointer-events": "none" });
+    private readonly _boostDot = SVG.circle({ fill: ColorConfig.textSelection, stroke: "none", r: "3" });
+    private readonly _midCurve = SVG.path({ fill: "none", stroke: ColorConfig.primaryText, "stroke-width": 2, "pointer-events": "none" });
+    private readonly _limitCurve = SVG.path({ fill: "none", stroke: ColorConfig.linkAccent, "stroke-width": 2, "pointer-events": "none" });
+    private readonly _limitDot = SVG.circle({ fill: ColorConfig.linkAccent, stroke: "none", r: "3" });
+    private readonly _label0 = SVG.text({ x: "-1.5%", y: "148.5%", "pointer-events": "none", "font-size": "7pt", fill: "var(--secondary-text)" }, "0");
+    private readonly _label1 = SVG.text({ x: "48.2%", y: "148.5%", "pointer-events": "none", "font-size": "7pt", fill: "var(--secondary-text)" }, "1");
+    private readonly _label2 = SVG.text({ x: "98.2%", y: "148.5%", "pointer-events": "none", "font-size": "7pt", fill: "var(--secondary-text)" }, "2");
+    private readonly _inLabel = SVG.text({ x: "-5%", y: "113.5%", "pointer-events": "none", "font-size": "6pt", fill: "var(--secondary-text)" }, "In");
+    private readonly _outLabel = SVG.text({ x: "-9%", y: "131%", "pointer-events": "none", "font-size": "6pt", fill: "var(--secondary-text)" }, "Out");
+    private readonly _xAxisLabel = SVG.text({ x: "42%", y: "172%", "pointer-events": "none", "font-size": "7pt", fill: "var(--primary-text)" }, "Volume");
+    private readonly _yAxisLabel = SVG.text({ x: "55.2%", y: "160%", "pointer-events": "none", "font-size": "7pt", transform: "rotate(-90 30,120)", fill: "var(--primary-text)" }, "Gain");
+    private readonly _inVolumeBg = SVG.rect({ "pointer-events": "none", width: "100%", height: "6px", x: "0%", y: "105%", fill: ColorConfig.uiWidgetBackground });
+    private readonly _outVolumeBg = SVG.rect({ "pointer-events": "none", width: "100%", height: "6px", x: "0%", y: "120%", fill: ColorConfig.uiWidgetBackground });
+    private readonly _inVolumeBar = SVG.rect({ "pointer-events": "none", height: "6px", x: "0%", y: "105%", fill: "url('#volumeGrad')" });
+    private readonly _inVolumeCap = SVG.rect({ "pointer-events": "none", width: "2px", height: "6px", y: "105%", fill: ColorConfig.uiWidgetFocus });
+    private readonly _outVolumeBar = SVG.rect({ "pointer-events": "none", height: "6px", x: "0%", y: "120%", fill: "url('#volumeGrad')" });
+    private readonly _outVolumeCap = SVG.rect({ "pointer-events": "none", width: "2px", height: "6px", y: "120%", fill: ColorConfig.uiWidgetFocus });
+    private readonly _stop1 = SVG.stop({ "stop-color": "lime", offset: "30%" });
+    private readonly _stop2 = SVG.stop({ "stop-color": "orange", offset: "45%" });
+    private readonly _stop3 = SVG.stop({ "stop-color": "red", offset: "50%" });
+    private readonly _gradient = SVG.linearGradient({ id: "volumeGrad", gradientUnits: "userSpaceOnUse" }, this._stop1, this._stop2, this._stop3);
+    private readonly _defs = SVG.defs({}, this._gradient);
+    private readonly _svg = SVG.svg({ style: `background-color: ${ColorConfig.editorBackground}; touch-action: none; overflow: visible;`, width: "100%", height: "100%", viewBox: "0 0 " + this._editorWidth + " " + this._editorHeight, preserveAspectRatio: "none" },
         this._defs,
         this._fill,
         this._ticks,
@@ -65,15 +65,15 @@ export class LimiterCanvas {
         this._outVolumeCap,
     );
 
-    readonly container: HTMLElement = HTML.div({ class: "", style: "height: 4em; width: 80%; padding-bottom: 1.5em;" }, this._svg);
+    readonly container = HTML.div({ class: "", style: "height: 4em; width: 80%; padding-bottom: 1.5em;" }, this._svg);
 
     private _limiterPrompt: LimiterPrompt;
 
     constructor(lim: LimiterPrompt) {
-        for (let i: number = 0; i <= 2; i++) {
+        for (let i = 0; i <= 2; i++) {
             this._ticks.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: (i * this._editorWidth / 2) - 1, y: 0, width: 2, height: this._editorHeight }));
         }
-        for (let i: number = 1; i <= 3; i += 2) {
+        for (let i = 1; i <= 3; i += 2) {
             this._subticks.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: (i * this._editorWidth / 4) - 1, y: 0, width: 1, height: this._editorHeight }));
         }
 
@@ -93,21 +93,21 @@ export class LimiterCanvas {
             return Math.max(0, (1 - (point / 5)) * (this._editorHeight - 1) + 1);
         }
 
-        let lastValue: number = 0;
-        let currentSubpathIdx: number = 0;
-        let lastSubpathIdx: number = -1;
-        let path: string = "";
+        let lastValue = 0;
+        let currentSubpathIdx = 0;
+        let lastSubpathIdx = -1;
+        let path = "";
         let subPaths: string[] = ["", "", ""];
-        for (let i: number = 0; i < 64; i++) {
+        for (let i = 0; i < 64; i++) {
             // Calculate next value based on limiter settings
-            let limiterRatio: number = +this._limiterPrompt.limitRatioSlider.value;
+            let limiterRatio = +this._limiterPrompt.limitRatioSlider.value;
             limiterRatio = (limiterRatio < 10 ? limiterRatio / 10 : (limiterRatio - 9));
-            let compressorRatio: number = +this._limiterPrompt.compressionRatioSlider.value;
+            let compressorRatio = +this._limiterPrompt.compressionRatioSlider.value;
             compressorRatio = (compressorRatio < 10 ? compressorRatio / 10 : (1 + (compressorRatio - 10) / 60));
-            let limiterThreshold: number = +this._limiterPrompt.limitThresholdSlider.value;
-            let compressorThreshold: number = +this._limiterPrompt.compressionThresholdSlider.value;
-            let useVol: number = i * 2.0 / 64.0; // Scale from 0~2
-            let nextValue: number = 1 / 1.05;
+            let limiterThreshold = +this._limiterPrompt.limitThresholdSlider.value;
+            let compressorThreshold = +this._limiterPrompt.compressionThresholdSlider.value;
+            let useVol = i * 2.0 / 64.0; // Scale from 0~2
+            let nextValue = 1 / 1.05;
             if (useVol >= limiterThreshold) {
                 // Limiter falloff
                 nextValue = 1 / (1.05 * (useVol + 1 - limiterThreshold) * limiterRatio + (1 - limiterRatio));
@@ -161,7 +161,7 @@ export class LimiterCanvas {
             }
         }
 
-        const lastHeight: number = controlPointToHeight(lastValue);
+        const lastHeight = controlPointToHeight(lastValue);
         if (lastValue > 0) {
             path += "L " + (this._editorWidth - 1) + " " + prettyNumber(lastHeight) + " ";
             subPaths[currentSubpathIdx] += "L " + (this._editorWidth - 1) + " " + prettyNumber(lastHeight) + " ";
@@ -176,17 +176,17 @@ export class LimiterCanvas {
 
 export class LimiterPrompt implements Prompt {
 
-    private limiterCanvas: LimiterCanvas = new LimiterCanvas(this);
+    private limiterCanvas = new LimiterCanvas(this);
 
-    readonly _playButton: HTMLButtonElement = button({ style: "width: 55%;", type: "button" });
+    readonly _playButton = button({ style: "width: 55%;", type: "button" });
 
-    readonly limitDecaySlider: HTMLInputElement = input({ title: "limit decay", style: `width: 5em; flex-grow: 1; margin: 0;`, type: "range", min: "1", max: "30", value: "4", step: "1" });
-    readonly limitRiseSlider: HTMLInputElement = input({ title: "limit rise", style: `width: 5em; flex-grow: 1; margin: 0;`, type: "range", min: "2000", max: "10000", value: "4000", step: "250" });
-    readonly compressionThresholdSlider: HTMLInputElement = input({ title: "compressor threshold", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "1.1", value: "1", step: "0.05" });
-    readonly limitThresholdSlider: HTMLInputElement = input({ title: "limiter threshold", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "2", value: "1", step: "0.05" });
-    readonly compressionRatioSlider: HTMLInputElement = input({ title: "compressor ratio", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "20", value: "10", step: "1" });
-    readonly limitRatioSlider: HTMLInputElement = input({ title: "limiter ratio", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "20", value: "10", step: "1" });
-    readonly masterGainSlider: HTMLInputElement = input({ title: "master gain", style: `width: 5em; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "5", value: "1", step: "0.02" });
+    readonly limitDecaySlider = input({ title: "limit decay", style: `width: 5em; flex-grow: 1; margin: 0;`, type: "range", min: "1", max: "30", value: "4", step: "1" });
+    readonly limitRiseSlider = input({ title: "limit rise", style: `width: 5em; flex-grow: 1; margin: 0;`, type: "range", min: "2000", max: "10000", value: "4000", step: "250" });
+    readonly compressionThresholdSlider = input({ title: "compressor threshold", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "1.1", value: "1", step: "0.05" });
+    readonly limitThresholdSlider = input({ title: "limiter threshold", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "2", value: "1", step: "0.05" });
+    readonly compressionRatioSlider = input({ title: "compressor ratio", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "20", value: "10", step: "1" });
+    readonly limitRatioSlider = input({ title: "limiter ratio", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "20", value: "10", step: "1" });
+    readonly masterGainSlider = input({ title: "master gain", style: `width: 5em; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "5", value: "1", step: "0.02" });
 
     private startingLimitDecay: number;
     private startingLimitRise: number;
@@ -196,16 +196,16 @@ export class LimiterPrompt implements Prompt {
     private startingLimitRatio: number;
     private startingMasterGain: number;
 
-    private inVolumeHistoricTimer: number = 0.0;
-    private inVolumeHistoricCap: number = 0.0;
-    private outVolumeHistoricTimer: number = 0.0;
-    private outVolumeHistoricCap: number = 0.0;
+    private inVolumeHistoricTimer = 0.0;
+    private inVolumeHistoricCap = 0.0;
+    private outVolumeHistoricTimer = 0.0;
+    private outVolumeHistoricCap = 0.0;
 
-    private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-    private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
-    private readonly _resetButton: HTMLButtonElement = button({ style: "width:45%;" }, "Reset");
+    private readonly _cancelButton = button({ class: "cancelButton" });
+    private readonly _okayButton = button({ class: "okayButton", style: "width:45%;" }, "Okay");
+    private readonly _resetButton = button({ style: "width:45%;" }, "Reset");
 
-    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 250px;" },
+    readonly container = div({ class: "prompt noSelection", style: "width: 250px;" },
         h2("Limiter Options"),
         div({ style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
             this._playButton,

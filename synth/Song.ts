@@ -1,13 +1,13 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { startLoadingSample, sampleLoadingState, SampleLoadingState, sampleLoadEvents, SampleLoadedEvent, SampleLoadingStatus, loadBuiltInSamples, Dictionary, DictionaryArray, toNameMap, FilterType, SustainType, EnvelopeType, InstrumentType, EffectType, MDEffectType, Envelope, Config, effectsIncludeTransition, effectsIncludeChord, effectsIncludePitchShift, effectsIncludeDetune, effectsIncludeVibrato, LFOEnvelopeTypes, RandomEnvelopeTypes } from "./SynthConfig";
-import { Preset, EditorConfig } from "../editor/EditorConfig";
+import { EditorConfig, Preset } from "../editor/EditorConfig";
 import { Channel } from "./Channel";
-import { Instrument, LegacySettings } from "./Instrument";
 import { Effect } from "./Effect";
-import { Note, NotePin, makeNotePin, Pattern } from "./Pattern";
-import { FilterSettings, FilterControlPoint } from "./Filter";
-import { clamp, validateRange, parseFloatWithDefault, parseIntWithDefault, secondsToFadeInSetting, ticksToFadeOutSetting } from "./utils";
+import { FilterControlPoint, FilterSettings } from "./Filter";
+import { Instrument, LegacySettings } from "./Instrument";
+import { makeNotePin, Note, Pattern } from "./Pattern";
+import { Config, Dictionary, DictionaryArray, effectsIncludeChord, effectsIncludeDetune, effectsIncludePitchShift, effectsIncludeTransition, effectsIncludeVibrato, EffectType, Envelope, EnvelopeType, FilterType, InstrumentType, LFOEnvelopeTypes, loadBuiltInSamples, MDEffectType, RandomEnvelopeTypes, SampleLoadedEvent, sampleLoadEvents, sampleLoadingState, SampleLoadingState, SampleLoadingStatus, startLoadingSample, SustainType, toNameMap } from "./SynthConfig";
+import { clamp, parseFloatWithDefault, parseIntWithDefault, secondsToFadeInSetting, ticksToFadeOutSetting, validateRange } from "./utils";
 //import { Synth } from "./synth";
 
 function encode32BitNumber(buffer: number[], x: number): void {
@@ -28,7 +28,7 @@ function encode32BitNumber(buffer: number[], x: number): void {
 // @TODO: This is error-prone, because the caller has to remember to increment
 // charIndex by 6 afterwards.
 function decode32BitNumber(compressed: string, charIndex: number): number {
-    let x: number = 0;
+    let x = 0;
     // 0b11_
     x |= base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << (6 * 5);
     //      111111_
@@ -69,8 +69,8 @@ function encodeUnisonSettings(buffer: number[], v: number, s: number, o: number,
 }
 
 function convertLegacyKeyToKeyAndOctave(rawKeyIndex: number): [number, number] {
-    let key: number = clamp(0, Config.keys.length, rawKeyIndex);
-    let octave: number = 0;
+    let key = clamp(0, Config.keys.length, rawKeyIndex);
+    let octave = 0;
     // This conversion code depends on C through B being
     // available as keys, of course.
     if (rawKeyIndex === 12) {
@@ -242,11 +242,11 @@ const base64CharCodeToInt: ReadonlyArray<number> = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
 class BitFieldReader {
     private _bits: number[] = [];
-    private _readIndex: number = 0;
+    private _readIndex = 0;
 
     constructor(source: string, startIndex: number, stopIndex: number) {
-        for (let i: number = startIndex; i < stopIndex; i++) {
-            const value: number = base64CharCodeToInt[source.charCodeAt(i)];
+        for (let i = startIndex; i < stopIndex; i++) {
+            const value = base64CharCodeToInt[source.charCodeAt(i)];
             this._bits.push((value >> 5) & 0x1);
             this._bits.push((value >> 4) & 0x1);
             this._bits.push((value >> 3) & 0x1);
@@ -257,7 +257,7 @@ class BitFieldReader {
     }
 
     read(bitCount: number): number {
-        let result: number = 0;
+        let result = 0;
         while (bitCount > 0) {
             result = result << 1;
             result += this._bits[this._readIndex++];
@@ -267,8 +267,8 @@ class BitFieldReader {
     }
 
     readLongTail(minValue: number, minBits: number): number {
-        let result: number = minValue;
-        let numBits: number = minBits;
+        let result = minValue;
+        let numBits = minBits;
         while (this._bits[this._readIndex++]) {
             result += 1 << numBits;
             numBits++;
@@ -304,7 +304,7 @@ class BitFieldReader {
 }
 
 class BitFieldWriter {
-    private _index: number = 0;
+    private _index = 0;
     private _bits: number[] = [];
 
     clear() {
@@ -322,7 +322,7 @@ class BitFieldWriter {
     writeLongTail(minValue: number, minBits: number, value: number): void {
         if (value < minValue) throw new Error("value out of bounds");
         value -= minValue;
-        let numBits: number = minBits;
+        let numBits = minBits;
         while (value >= (1 << numBits)) {
             this._bits[this._index++] = 1;
             value -= 1 << numBits;
@@ -354,15 +354,15 @@ class BitFieldWriter {
     }
 
     concat(other: BitFieldWriter): void {
-        for (let i: number = 0; i < other._index; i++) {
+        for (let i = 0; i < other._index; i++) {
             this._bits[this._index++] = other._bits[i];
         }
     }
 
     encodeBase64(buffer: number[]): number[] {
 
-        for (let i: number = 0; i < this._index; i += 6) {
-            const value: number = (this._bits[i] << 5) | (this._bits[i + 1] << 4) | (this._bits[i + 2] << 3) | (this._bits[i + 3] << 2) | (this._bits[i + 4] << 1) | this._bits[i + 5];
+        for (let i = 0; i < this._index; i += 6) {
+            const value = (this._bits[i] << 5) | (this._bits[i + 1] << 4) | (this._bits[i + 2] << 3) | (this._bits[i + 3] << 2) | (this._bits[i + 4] << 1) | this._bits[i + 5];
             buffer.push(base64IntToCharCode[value]);
         }
         return buffer;
@@ -382,17 +382,17 @@ export interface HeldMod {
 }
 
 export class Song {
-    private static readonly _format: string = Config.jsonFormat;
-    private static readonly _oldestBeepboxVersion: number = 2;
-    private static readonly _latestBeepboxVersion: number = 9;
-    private static readonly _oldestJummBoxVersion: number = 1;
-    private static readonly _latestJummBoxVersion: number = 6;
-    private static readonly _oldestGoldBoxVersion: number = 1;
-    private static readonly _latestGoldBoxVersion: number = 4;
-    private static readonly _oldestUltraBoxVersion: number = 1;
-    private static readonly _latestUltraBoxVersion: number = 5;
-    private static readonly _oldestSlarmoosBoxVersion: number = 1;
-    private static readonly _latestSlarmoosBoxVersion: number = 5;
+    private static readonly _format = Config.jsonFormat;
+    private static readonly _oldestBeepboxVersion = 2;
+    private static readonly _latestBeepboxVersion = 9;
+    private static readonly _oldestJummBoxVersion = 1;
+    private static readonly _latestJummBoxVersion = 6;
+    private static readonly _oldestGoldBoxVersion = 1;
+    private static readonly _latestGoldBoxVersion = 4;
+    private static readonly _oldestUltraBoxVersion = 1;
+    private static readonly _latestUltraBoxVersion = 5;
+    private static readonly _oldestSlarmoosBoxVersion = 1;
+    private static readonly _latestSlarmoosBoxVersion = 5;
     // One-character variant detection at the start of URL to distinguish variants such as JummBox, Or Goldbox. "j" and "g" respectively
     //also "u" is ultrabox lol
     private static readonly _variant = 0x64; //"d" ~ DragonBox
@@ -416,21 +416,21 @@ export class Song {
     noiseChannelCount: number;
     modChannelCount: number;
     readonly channels: Channel[] = [];
-    limitDecay: number = 4.0;
-    limitRise: number = 4000.0;
-    compressionThreshold: number = 1.0;
-    limitThreshold: number = 1.0;
-    compressionRatio: number = 1.0;
-    limitRatio: number = 1.0;
-    masterGain: number = 1.0;
-    inVolumeCap: number = 0.0;
-    outVolumeCap: number = 0.0;
-    outVolumeCapL: number = 0.0;
-    outVolumeCapR: number = 0.0;
-    eqFilter: FilterSettings = new FilterSettings();
-    eqFilterType: boolean = false;
-    eqFilterSimpleCut: number = Config.filterSimpleCutRange - 1;
-    eqFilterSimplePeak: number = 0;
+    limitDecay = 4.0;
+    limitRise = 4000.0;
+    compressionThreshold = 1.0;
+    limitThreshold = 1.0;
+    compressionRatio = 1.0;
+    limitRatio = 1.0;
+    masterGain = 1.0;
+    inVolumeCap = 0.0;
+    outVolumeCap = 0.0;
+    outVolumeCapL = 0.0;
+    outVolumeCapR = 0.0;
+    eqFilter = new FilterSettings();
+    eqFilterType = false;
+    eqFilterSimpleCut = Config.filterSimpleCutRange - 1;
+    eqFilterSimplePeak = 0;
     eqSubFilters: (FilterSettings | null)[] = [];
     tmpEqFilterStart: FilterSettings | null;
     tmpEqFilterEnd: FilterSettings | null;
@@ -451,44 +451,44 @@ export class Song {
             // Sigh, the way pitches count up and the visual ordering in the UI are flipped.
             modCount = Config.modCount - modCount - 1;
 
-            const instrument: Instrument = this.channels[modChannel].instruments[modInstrument];
+            const instrument = this.channels[modChannel].instruments[modInstrument];
             let vol: number | undefined = Config.modulators[instrument.modulators[modCount]].newNoteVol;
 
-            let currentIndex: number = instrument.modulators[modCount];
+            let currentIndex = instrument.modulators[modCount];
             // For tempo, actually use user defined tempo
-            let tempoIndex: number = Config.modulators.dictionary["tempo"].index;
+            let tempoIndex = Config.modulators.dictionary["tempo"].index;
             if(currentIndex == tempoIndex) vol = this.tempo - Config.modulators[tempoIndex].convertRealFactor;
             //for effects and envelopes, use the user defined value of the selected instrument (or the default value if all or active is selected)
             if (!Config.modulators[currentIndex].forSong && instrument.modInstruments[modCount][0] < this.channels[instrument.modChannels[modCount][0]].instruments.length) {
-                let chorusIndex: number = Config.modulators.dictionary["chorus"].index;
-                let reverbIndex: number = Config.modulators.dictionary["reverb"].index;
-                let gainIndex: number = Config.modulators.dictionary["gain"].index;
-                let panningIndex: number = Config.modulators.dictionary["pan"].index;
-                let panDelayIndex: number = Config.modulators.dictionary["pan delay"].index;
-                let distortionIndex: number = Config.modulators.dictionary["distortion"].index;
-                let detuneIndex: number = Config.modulators.dictionary["detune"].index;
-                let vibratoDepthIndex: number = Config.modulators.dictionary["vibrato depth"].index;
-                let vibratoSpeedIndex: number = Config.modulators.dictionary["vibrato speed"].index;
-                let vibratoDelayIndex: number = Config.modulators.dictionary["vibrato delay"].index;
-                let arpSpeedIndex: number = Config.modulators.dictionary["arp speed"].index;
-                let bitCrushIndex: number = Config.modulators.dictionary["bit crush"].index;
-                let freqCrushIndex: number = Config.modulators.dictionary["freq crush"].index;
-                let echoIndex: number = Config.modulators.dictionary["echo"].index;
-                let echoDelayIndex: number = Config.modulators.dictionary["echo delay"].index;
-                let echoPingPongIndex: number = Config.modulators.dictionary["echo ping pong"].index;
-                let pitchShiftIndex: number = Config.modulators.dictionary["pitch shift"].index;
-                let ringModIndex: number = Config.modulators.dictionary["ring modulation"].index;
-                let ringModHertzIndex: number = Config.modulators.dictionary["ring mod hertz"].index;
-                let granularIndex: number = Config.modulators.dictionary["granular"].index;
-                let grainAmountIndex: number = Config.modulators.dictionary["grain freq"].index;
-                let grainSizeIndex: number = Config.modulators.dictionary["grain size"].index;
-                let grainRangeIndex: number = Config.modulators.dictionary["grain range"].index;
-                let envSpeedIndex: number = Config.modulators.dictionary["envelope speed"].index;
-                let perEnvSpeedIndex: number = Config.modulators.dictionary["individual envelope speed"].index;
-                let perEnvLowerIndex: number = Config.modulators.dictionary["individual envelope lower bound"].index;
-                let perEnvUpperIndex: number = Config.modulators.dictionary["individual envelope upper bound"].index;
-                let instrumentIndex: number = instrument.modInstruments[modCount][0];
-                let effectIndex: number = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effectCount; //in a moment i should be working to make this work with mods
+                let chorusIndex = Config.modulators.dictionary["chorus"].index;
+                let reverbIndex = Config.modulators.dictionary["reverb"].index;
+                let gainIndex = Config.modulators.dictionary["gain"].index;
+                let panningIndex = Config.modulators.dictionary["pan"].index;
+                let panDelayIndex = Config.modulators.dictionary["pan delay"].index;
+                let distortionIndex = Config.modulators.dictionary["distortion"].index;
+                let detuneIndex = Config.modulators.dictionary["detune"].index;
+                let vibratoDepthIndex = Config.modulators.dictionary["vibrato depth"].index;
+                let vibratoSpeedIndex = Config.modulators.dictionary["vibrato speed"].index;
+                let vibratoDelayIndex = Config.modulators.dictionary["vibrato delay"].index;
+                let arpSpeedIndex = Config.modulators.dictionary["arp speed"].index;
+                let bitCrushIndex = Config.modulators.dictionary["bit crush"].index;
+                let freqCrushIndex = Config.modulators.dictionary["freq crush"].index;
+                let echoIndex = Config.modulators.dictionary["echo"].index;
+                let echoDelayIndex = Config.modulators.dictionary["echo delay"].index;
+                let echoPingPongIndex = Config.modulators.dictionary["echo ping pong"].index;
+                let pitchShiftIndex = Config.modulators.dictionary["pitch shift"].index;
+                let ringModIndex = Config.modulators.dictionary["ring modulation"].index;
+                let ringModHertzIndex = Config.modulators.dictionary["ring mod hertz"].index;
+                let granularIndex = Config.modulators.dictionary["granular"].index;
+                let grainAmountIndex = Config.modulators.dictionary["grain freq"].index;
+                let grainSizeIndex = Config.modulators.dictionary["grain size"].index;
+                let grainRangeIndex = Config.modulators.dictionary["grain range"].index;
+                let envSpeedIndex = Config.modulators.dictionary["envelope speed"].index;
+                let perEnvSpeedIndex = Config.modulators.dictionary["individual envelope speed"].index;
+                let perEnvLowerIndex = Config.modulators.dictionary["individual envelope lower bound"].index;
+                let perEnvUpperIndex = Config.modulators.dictionary["individual envelope upper bound"].index;
+                let instrumentIndex = instrument.modInstruments[modCount][0];
+                let effectIndex = this.channels[instrument.modChannels[modCount][0]].instruments[instrumentIndex].effectCount; //in a moment i should be working to make this work with mods
 
                 switch (currentIndex) {
                     case chorusIndex:
@@ -590,7 +590,7 @@ export class Song {
             // Sigh, the way pitches count up and the visual ordering in the UI are flipped.
             modCount = Config.modCount - modCount - 1;
 
-            let instrument: Instrument = this.channels[modChannel].instruments[modInstrument];
+            let instrument = this.channels[modChannel].instruments[modInstrument];
             let modulator = Config.modulators[instrument.modulators[modCount]];
             let cap: number | undefined = modulator.maxRawVol;
 
@@ -673,17 +673,17 @@ export class Song {
     }
 
     static ticksToFadeOutSetting(ticks: number): number {
-        let lower: number = Config.fadeOutTicks[0];
+        let lower = Config.fadeOutTicks[0];
         if (ticks <= lower) return 0;
-        for (let i: number = 1; i < Config.fadeOutTicks.length; i++) {
-            let upper: number = Config.fadeOutTicks[i];
+        for (let i = 1; i < Config.fadeOutTicks.length; i++) {
+            let upper = Config.fadeOutTicks[i];
             if (ticks <= upper) return (ticks < (lower + upper) / 2) ? i - 1 : i;
             lower = upper;
         }
         return Config.fadeOutTicks.length - 1;
     }
 
-    initToDefault(andResetChannels: boolean = true): void {
+    initToDefault(andResetChannels = true): void {
         this.scale = 1;
         this.scaleCustom = [true, false, true, true, false, false, false, true, true, false, true, true];
         //this.scaleCustom = [true, false, false, false, false, false, false, false, false, false, false, false];
@@ -700,7 +700,7 @@ export class Song {
         this.layeredInstruments = false;
         this.patternInstruments = false;
         this.eqFilter.reset();
-        for (let i: number = 0; i < Config.filterMorphCount - 1; i++) {
+        for (let i = 0; i < Config.filterMorphCount - 1; i++) {
             this.eqSubFilters[i] = null;
         }
 
@@ -712,17 +712,17 @@ export class Song {
             this.pitchChannelCount = 4;
             this.noiseChannelCount = 1;
             this.modChannelCount = 0;
-            for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
-                const isNoiseChannel: boolean = channelIndex >= this.pitchChannelCount && channelIndex < this.pitchChannelCount + this.noiseChannelCount;
-                const isModChannel: boolean = channelIndex >= this.pitchChannelCount + this.noiseChannelCount;
+            for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+                const isNoiseChannel = channelIndex >= this.pitchChannelCount && channelIndex < this.pitchChannelCount + this.noiseChannelCount;
+                const isModChannel = channelIndex >= this.pitchChannelCount + this.noiseChannelCount;
                 if (this.channels.length <= channelIndex) {
                     this.channels[channelIndex] = new Channel();
                     this.channels[channelIndex].color = channelIndex;
                 }
-                const channel: Channel = this.channels[channelIndex];
+                const channel = this.channels[channelIndex];
                 channel.octave = Math.max(4 - channelIndex, 0); // [4, 3, 2, 1, 0]; Descending octaves with drums at zero in last channel.
 
-                for (let pattern: number = 0; pattern < this.patternsPerChannel; pattern++) {
+                for (let pattern = 0; pattern < this.patternsPerChannel; pattern++) {
                     if (channel.patterns.length <= pattern) {
                         channel.patterns[pattern] = new Pattern();
                     } else {
@@ -731,7 +731,7 @@ export class Song {
                 }
                 channel.patterns.length = this.patternsPerChannel;
 
-                for (let instrument: number = 0; instrument < Config.instrumentCountMin; instrument++) {
+                for (let instrument = 0; instrument < Config.instrumentCountMin; instrument++) {
                     if (channel.instruments.length <= instrument) {
                         channel.instruments[instrument] = new Instrument(isNoiseChannel, isModChannel);
                     }
@@ -739,7 +739,7 @@ export class Song {
                 }
                 channel.instruments.length = Config.instrumentCountMin;
 
-                for (let bar: number = 0; bar < this.barCount; bar++) {
+                for (let bar = 0; bar < this.barCount; bar++) {
                     channel.bars[bar] = bar < 16 ? 1 : 0;
                 }
                 channel.bars.length = this.barCount;
@@ -758,11 +758,11 @@ export class Song {
 
         // Length of the song name string
         buffer.push(SongTagCode.songTitle);
-        var encodedSongTitle: string = encodeURIComponent(this.title);
+        var encodedSongTitle = encodeURIComponent(this.title);
         buffer.push(base64IntToCharCode[encodedSongTitle.length >> 6], base64IntToCharCode[encodedSongTitle.length & 0x3f]);
 
         // Actual encoded string follows
-        for (let i: number = 0; i < encodedSongTitle.length; i++) {
+        for (let i = 0; i < encodedSongTitle.length; i++) {
             buffer.push(encodedSongTitle.charCodeAt(i));
         }
 
@@ -805,38 +805,38 @@ export class Song {
             console.log("Null post eq settings detected in toBase64String for song");
         } else {
             buffer.push(base64IntToCharCode[this.eqFilter.controlPointCount]);
-            for (let j: number = 0; j < this.eqFilter.controlPointCount; j++) {
-                const point: FilterControlPoint = this.eqFilter.controlPoints[j];
+            for (let j = 0; j < this.eqFilter.controlPointCount; j++) {
+                const point = this.eqFilter.controlPoints[j];
                 buffer.push(base64IntToCharCode[point.type], base64IntToCharCode[Math.round(point.freq)], base64IntToCharCode[Math.round(point.gain)]);
             }
         }
 
         // Push subfilters as well. Skip Index 0, is a copy of the base filter.
-        let usingSubFilterBitfield: number = 0;
-        for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
+        let usingSubFilterBitfield = 0;
+        for (let j = 0; j < Config.filterMorphCount - 1; j++) {
             usingSubFilterBitfield |= (+(this.eqSubFilters[j + 1] != null) << j);
         }
         // Put subfilter usage into 2 chars (12 bits)
         buffer.push(base64IntToCharCode[usingSubFilterBitfield >> 6], base64IntToCharCode[usingSubFilterBitfield & 63]);
         // Put subfilter info in for all used subfilters
-        for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
+        for (let j = 0; j < Config.filterMorphCount - 1; j++) {
             if (usingSubFilterBitfield & (1 << j)) {
                 buffer.push(base64IntToCharCode[this.eqSubFilters[j + 1]!.controlPointCount]);
-                for (let k: number = 0; k < this.eqSubFilters[j + 1]!.controlPointCount; k++) {
-                    const point: FilterControlPoint = this.eqSubFilters[j + 1]!.controlPoints[k];
+                for (let k = 0; k < this.eqSubFilters[j + 1]!.controlPointCount; k++) {
+                    const point = this.eqSubFilters[j + 1]!.controlPoints[k];
                     buffer.push(base64IntToCharCode[point.type], base64IntToCharCode[Math.round(point.freq)], base64IntToCharCode[Math.round(point.gain)]);
                 }
             }
         }
 
         buffer.push(SongTagCode.channelNames);
-        for (let channel: number = 0; channel < this.getChannelCount(); channel++) {
+        for (let channel = 0; channel < this.getChannelCount(); channel++) {
             // Length of the channel name string
-            var encodedChannelName: string = encodeURIComponent(this.channels[channel].name);
+            var encodedChannelName = encodeURIComponent(this.channels[channel].name);
             buffer.push(base64IntToCharCode[encodedChannelName.length >> 6], base64IntToCharCode[encodedChannelName.length & 0x3f]);
 
             // Actual encoded string follows
-            for (let i: number = 0; i < encodedChannelName.length; i++) {
+            for (let i = 0; i < encodedChannelName.length; i++) {
                 buffer.push(encodedChannelName.charCodeAt(i));
             }
             buffer.push(base64IntToCharCode[this.channels[channel].color % 60]);
@@ -844,20 +844,20 @@ export class Song {
 
         buffer.push(SongTagCode.instrumentCount, base64IntToCharCode[(<any>this.layeredInstruments << 1) | <any>this.patternInstruments]);
         if (this.layeredInstruments || this.patternInstruments) {
-            for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+            for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
                 buffer.push(base64IntToCharCode[this.channels[channelIndex].instruments.length - Config.instrumentCountMin]);
             }
         }
 
         buffer.push(SongTagCode.channelOctave);
-        for (let channelIndex: number = 0; channelIndex < this.pitchChannelCount; channelIndex++) {
+        for (let channelIndex = 0; channelIndex < this.pitchChannelCount; channelIndex++) {
             buffer.push(base64IntToCharCode[this.channels[channelIndex].octave]);
         }
 
         //This is for specific instrument stuff to url
-        for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
-            for (let i: number = 0; i < this.channels[channelIndex].instruments.length; i++) {
-                const instrument: Instrument = this.channels[channelIndex].instruments[i];
+        for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+            for (let i = 0; i < this.channels[channelIndex].instruments.length; i++) {
+                const instrument = this.channels[channelIndex].instruments[i];
                 buffer.push(SongTagCode.startInstrument, base64IntToCharCode[instrument.type]);
                 buffer.push(SongTagCode.volume, base64IntToCharCode[(instrument.volume + Config.volumeRange / 2) >> 6], base64IntToCharCode[(instrument.volume + Config.volumeRange / 2) & 0x3f]);
                 buffer.push(SongTagCode.preset, base64IntToCharCode[instrument.preset >> 6], base64IntToCharCode[instrument.preset & 63]);
@@ -875,25 +875,25 @@ export class Song {
                         console.log("Null pre eq settings detected in toBase64String for channelIndex " + channelIndex + ", instrumentIndex " + i);
                     } else {
                         buffer.push(base64IntToCharCode[instrument.noteFilter.controlPointCount]);
-                        for (let j: number = 0; j < instrument.noteFilter.controlPointCount; j++) {
-                            const point: FilterControlPoint = instrument.noteFilter.controlPoints[j];
+                        for (let j = 0; j < instrument.noteFilter.controlPointCount; j++) {
+                            const point = instrument.noteFilter.controlPoints[j];
                             buffer.push(base64IntToCharCode[point.type], base64IntToCharCode[Math.round(point.freq)], base64IntToCharCode[Math.round(point.gain)]);
                         }
                     }
 
                     // Push subfilters as well. Skip Index 0, is a copy of the base filter.
-                    let usingSubFilterBitfield: number = 0;
-                    for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
+                    let usingSubFilterBitfield = 0;
+                    for (let j = 0; j < Config.filterMorphCount - 1; j++) {
                         usingSubFilterBitfield |= (+(instrument.noteSubFilters[j + 1] != null) << j);
                     }
                     // Put subfilter usage into 2 chars (12 bits)
                     buffer.push(base64IntToCharCode[usingSubFilterBitfield >> 6], base64IntToCharCode[usingSubFilterBitfield & 63]);
                     // Put subfilter info in for all used subfilters
-                    for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
+                    for (let j = 0; j < Config.filterMorphCount - 1; j++) {
                         if (usingSubFilterBitfield & (1 << j)) {
                             buffer.push(base64IntToCharCode[instrument.noteSubFilters[j + 1]!.controlPointCount]);
-                            for (let k: number = 0; k < instrument.noteSubFilters[j + 1]!.controlPointCount; k++) {
-                                const point: FilterControlPoint = instrument.noteSubFilters[j + 1]!.controlPoints[k];
+                            for (let k = 0; k < instrument.noteSubFilters[j + 1]!.controlPointCount; k++) {
+                                const point = instrument.noteSubFilters[j + 1]!.controlPoints[k];
                                 buffer.push(base64IntToCharCode[point.type], base64IntToCharCode[Math.round(point.freq)], base64IntToCharCode[Math.round(point.gain)]);
                             }
                         }
@@ -910,7 +910,7 @@ export class Song {
                         continue;
                     }
 
-                    let effect: Effect = instrument.effects[effectIndex] as Effect;
+                    let effect = instrument.effects[effectIndex] as Effect;
 
                     if (effect.type == EffectType.eqFilter) {
                         buffer.push(base64IntToCharCode[+effect.eqFilterType]);
@@ -926,25 +926,25 @@ export class Song {
                             }
                             else {
                                 buffer.push(base64IntToCharCode[effect.eqFilter.controlPointCount]);
-                                for (let j: number = 0; j < effect.eqFilter.controlPointCount; j++) {
-                                    const point: FilterControlPoint = effect.eqFilter.controlPoints[j];
+                                for (let j = 0; j < effect.eqFilter.controlPointCount; j++) {
+                                    const point = effect.eqFilter.controlPoints[j];
                                     buffer.push(base64IntToCharCode[point.type], base64IntToCharCode[Math.round(point.freq)], base64IntToCharCode[Math.round(point.gain)]);
                                 }
                             }
 
                             // Push subfilters as well. Skip Index 0, is a copy of the base filter.
-                            let usingSubFilterBitfield: number = 0;
-                            for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
+                            let usingSubFilterBitfield = 0;
+                            for (let j = 0; j < Config.filterMorphCount - 1; j++) {
                                 usingSubFilterBitfield |= (+(effect.eqSubFilters[j + 1] != null) << j);
                             }
                             // Put subfilter usage into 2 chars (12 bits)
                             buffer.push(base64IntToCharCode[usingSubFilterBitfield >> 6], base64IntToCharCode[usingSubFilterBitfield & 63]);
                             // Put subfilter info in for all used subfilters
-                            for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
+                            for (let j = 0; j < Config.filterMorphCount - 1; j++) {
                                 if (usingSubFilterBitfield & (1 << j)) {
                                     buffer.push(base64IntToCharCode[effect.eqSubFilters[j + 1]!.controlPointCount]);
-                                    for (let k: number = 0; k < effect.eqSubFilters[j + 1]!.controlPointCount; k++) {
-                                        const point: FilterControlPoint = effect.eqSubFilters[j + 1]!.controlPoints[k];
+                                    for (let k = 0; k < effect.eqSubFilters[j + 1]!.controlPointCount; k++) {
+                                        const point = effect.eqSubFilters[j + 1]!.controlPoints[k];
                                         buffer.push(base64IntToCharCode[point.type], base64IntToCharCode[Math.round(point.freq)], base64IntToCharCode[Math.round(point.gain)]);
                                     }
                                 }
@@ -1040,8 +1040,8 @@ export class Song {
 
                 if (instrument.type == InstrumentType.harmonics || instrument.type == InstrumentType.pickedString) {
                     buffer.push(SongTagCode.harmonics);
-                    const harmonicsBits: BitFieldWriter = new BitFieldWriter();
-                    for (let i: number = 0; i < Config.harmonicsControlPoints; i++) {
+                    const harmonicsBits = new BitFieldWriter();
+                    for (let i = 0; i < Config.harmonicsControlPoints; i++) {
                         harmonicsBits.write(Config.harmonicsControlPointBits, instrument.harmonicsWave.harmonics[i]);
                     }
                     harmonicsBits.encodeBase64(buffer);
@@ -1075,7 +1075,7 @@ export class Song {
                     //   ^^^^^---- chipWaveLoopMode
                     // This essentially allocates 32 different loop modes,
                     // which should be plenty.
-                    const encodedLoopMode: number = (
+                    const encodedLoopMode = (
                         (clamp(0, 31 + 1, instrument.chipWaveLoopMode) << 1)
                         | (instrument.isUsingAdvancedLoopControls ? 1 : 0)
                     );
@@ -1083,7 +1083,7 @@ export class Song {
                     // The same encoding above is used here, but with the release mode
                     // (which isn't implemented currently), and the backwards toggle.
                     // changed in Theepbox! now i added stereo toggle :3
-                    const encodedReleaseMode: number = (
+                    const encodedReleaseMode = (
                         (clamp(0, 31 + 1, 0) << 2)
                         | ((instrument.chipWaveInStereo ? 1 : 0) << 1)
                         | (instrument.chipWavePlayBackwards ? 1 : 0)
@@ -1102,8 +1102,8 @@ export class Song {
                         if (instrument.algorithm6Op == 0) {
                             buffer.push(SongTagCode.chord, base64IntToCharCode[instrument.customAlgorithm.carrierCount]);
                             buffer.push(SongTagCode.effects);
-                            for (let o: number = 0; o < instrument.customAlgorithm.modulatedBy.length; o++) {
-                                for (let j: number = 0; j < instrument.customAlgorithm.modulatedBy[o].length; j++) {
+                            for (let o = 0; o < instrument.customAlgorithm.modulatedBy.length; o++) {
+                                for (let j = 0; j < instrument.customAlgorithm.modulatedBy[o].length; j++) {
                                     buffer.push(base64IntToCharCode[instrument.customAlgorithm.modulatedBy[o][j]]);
                                 }
                                 buffer.push(SongTagCode.operatorWaves);
@@ -1113,8 +1113,8 @@ export class Song {
                         buffer.push(SongTagCode.feedbackType, base64IntToCharCode[instrument.feedbackType6Op]);
                         if (instrument.feedbackType6Op == 0) {
                             buffer.push(SongTagCode.effects);
-                            for (let o: number = 0; o < instrument.customFeedbackType.indices.length; o++) {
-                                for (let j: number = 0; j < instrument.customFeedbackType.indices[o].length; j++) {
+                            for (let o = 0; o < instrument.customFeedbackType.indices.length; o++) {
+                                for (let j = 0; j < instrument.customFeedbackType.indices[o].length; j++) {
                                     buffer.push(base64IntToCharCode[instrument.customFeedbackType.indices[o][j]]);
                                 }
                                 buffer.push(SongTagCode.operatorWaves);
@@ -1125,15 +1125,15 @@ export class Song {
                     buffer.push(SongTagCode.feedbackAmplitude, base64IntToCharCode[instrument.feedbackAmplitude]);
 
                     buffer.push(SongTagCode.operatorFrequencies);
-                    for (let o: number = 0; o < (instrument.type == InstrumentType.fm6op ? 6 : Config.operatorCount); o++) {
+                    for (let o = 0; o < (instrument.type == InstrumentType.fm6op ? 6 : Config.operatorCount); o++) {
                         buffer.push(base64IntToCharCode[instrument.operators[o].frequency]);
                     }
                     buffer.push(SongTagCode.operatorAmplitudes);
-                    for (let o: number = 0; o < (instrument.type == InstrumentType.fm6op ? 6 : Config.operatorCount); o++) {
+                    for (let o = 0; o < (instrument.type == InstrumentType.fm6op ? 6 : Config.operatorCount); o++) {
                         buffer.push(base64IntToCharCode[instrument.operators[o].amplitude]);
                     }
                     buffer.push(SongTagCode.operatorWaves);
-                    for (let o: number = 0; o < (instrument.type == InstrumentType.fm6op ? 6 : Config.operatorCount); o++) {
+                    for (let o = 0; o < (instrument.type == InstrumentType.fm6op ? 6 : Config.operatorCount); o++) {
                         buffer.push(base64IntToCharCode[instrument.operators[o].waveform]);
                         // Push pulse width if that type is used
                         if (instrument.operators[o].waveform == 2) {
@@ -1161,7 +1161,7 @@ export class Song {
                     if (instrument.unison == Config.unisons.length) encodeUnisonSettings(buffer, instrument.unisonVoices, instrument.unisonSpread, instrument.unisonOffset, instrument.unisonExpression, instrument.unisonSign);
                     buffer.push(SongTagCode.customChipWave);
                     // Push custom wave values
-                    for (let j: number = 0; j < 64; j++) {
+                    for (let j = 0; j < 64; j++) {
                         buffer.push(base64IntToCharCode[(instrument.customChipWave[j] + 24) as number]);
                     }
                 } else if (instrument.type == InstrumentType.noise) {
@@ -1170,8 +1170,8 @@ export class Song {
                     if (instrument.unison == Config.unisons.length) encodeUnisonSettings(buffer, instrument.unisonVoices, instrument.unisonSpread, instrument.unisonOffset, instrument.unisonExpression, instrument.unisonSign);
                 } else if (instrument.type == InstrumentType.spectrum) {
                     buffer.push(SongTagCode.spectrum);
-                    const spectrumBits: BitFieldWriter = new BitFieldWriter();
-                    for (let i: number = 0; i < Config.spectrumControlPoints; i++) {
+                    const spectrumBits = new BitFieldWriter();
+                    for (let i = 0; i < Config.spectrumControlPoints; i++) {
                         spectrumBits.write(Config.spectrumControlPointBits, instrument.spectrumWave.spectrum[i]);
                     }
                     spectrumBits.encodeBase64(buffer);
@@ -1179,14 +1179,14 @@ export class Song {
                     if (instrument.unison == Config.unisons.length) encodeUnisonSettings(buffer, instrument.unisonVoices, instrument.unisonSpread, instrument.unisonOffset, instrument.unisonExpression, instrument.unisonSign);
                 } else if (instrument.type == InstrumentType.drumset) {
                     buffer.push(SongTagCode.drumsetEnvelopes);
-                    for (let j: number = 0; j < Config.drumCount; j++) {
+                    for (let j = 0; j < Config.drumCount; j++) {
                         buffer.push(base64IntToCharCode[instrument.drumsetEnvelopes[j]]);
                     }
 
                     buffer.push(SongTagCode.spectrum);
-                    const spectrumBits: BitFieldWriter = new BitFieldWriter();
-                    for (let j: number = 0; j < Config.drumCount; j++) {
-                        for (let i: number = 0; i < Config.spectrumControlPoints; i++) {
+                    const spectrumBits = new BitFieldWriter();
+                    for (let j = 0; j < Config.drumCount; j++) {
+                        for (let i = 0; i < Config.spectrumControlPoints; i++) {
                             spectrumBits.write(Config.spectrumControlPointBits, instrument.drumsetSpectrumWaves[j].spectrum[i]);
                         }
                     }
@@ -1221,7 +1221,7 @@ export class Song {
                 buffer.push(SongTagCode.envelopes, base64IntToCharCode[instrument.envelopeCount]);
                 // Added in JB v6: Options for envelopes come next.
                 buffer.push(base64IntToCharCode[instrument.envelopeSpeed]);
-                for (let envelopeIndex: number = 0; envelopeIndex < instrument.envelopeCount; envelopeIndex++) {
+                for (let envelopeIndex = 0; envelopeIndex < instrument.envelopeCount; envelopeIndex++) {
                     buffer.push(base64IntToCharCode[instrument.envelopes[envelopeIndex].target]);
                     if (Config.instrumentAutomationTargets[instrument.envelopes[envelopeIndex].target].maxCount > 1) {
                         buffer.push(base64IntToCharCode[instrument.envelopes[envelopeIndex].index]);
@@ -1249,7 +1249,7 @@ export class Song {
                         }
                     }
                     //inverse
-                    let checkboxValues: number = +instrument.envelopes[envelopeIndex].discrete;
+                    let checkboxValues = +instrument.envelopes[envelopeIndex].discrete;
                     checkboxValues = checkboxValues << 1;
                     checkboxValues += +instrument.envelopes[envelopeIndex].inverse;
                     buffer.push(base64IntToCharCode[checkboxValues] ? base64IntToCharCode[checkboxValues] : base64IntToCharCode[0]);
@@ -1265,38 +1265,38 @@ export class Song {
 
         buffer.push(SongTagCode.bars);
         bits = new BitFieldWriter();
-        let neededBits: number = 0;
+        let neededBits = 0;
         while ((1 << neededBits) < this.patternsPerChannel + 1) neededBits++;
-        for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) for (let i: number = 0; i < this.barCount; i++) {
+        for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) for (let i = 0; i < this.barCount; i++) {
             bits.write(neededBits, this.channels[channelIndex].bars[i]);
         }
         bits.encodeBase64(buffer);
 
         buffer.push(SongTagCode.patterns);
         bits = new BitFieldWriter();
-        const shapeBits: BitFieldWriter = new BitFieldWriter();
-        const bitsPerNoteSize: number = Song.getNeededBits(Config.noteSizeMax);
-        for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
-            const channel: Channel = this.channels[channelIndex];
-            const maxInstrumentsPerPattern: number = this.getMaxInstrumentsPerPattern(channelIndex);
-            const isNoiseChannel: boolean = this.getChannelIsNoise(channelIndex);
-            const isModChannel: boolean = this.getChannelIsMod(channelIndex);
-            const neededInstrumentCountBits: number = Song.getNeededBits(maxInstrumentsPerPattern - Config.instrumentCountMin);
-            const neededInstrumentIndexBits: number = Song.getNeededBits(channel.instruments.length - 1);
+        const shapeBits = new BitFieldWriter();
+        const bitsPerNoteSize = Song.getNeededBits(Config.noteSizeMax);
+        for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+            const channel = this.channels[channelIndex];
+            const maxInstrumentsPerPattern = this.getMaxInstrumentsPerPattern(channelIndex);
+            const isNoiseChannel = this.getChannelIsNoise(channelIndex);
+            const isModChannel = this.getChannelIsMod(channelIndex);
+            const neededInstrumentCountBits = Song.getNeededBits(maxInstrumentsPerPattern - Config.instrumentCountMin);
+            const neededInstrumentIndexBits = Song.getNeededBits(channel.instruments.length - 1);
 
             // Some info about modulator settings immediately follows in mod channels.
             if (isModChannel) {
-                const neededModInstrumentIndexBits: number = Song.getNeededBits(this.getMaxInstrumentsPerChannel() + 2);
-                for (let instrumentIndex: number = 0; instrumentIndex < channel.instruments.length; instrumentIndex++) {
+                const neededModInstrumentIndexBits = Song.getNeededBits(this.getMaxInstrumentsPerChannel() + 2);
+                for (let instrumentIndex = 0; instrumentIndex < channel.instruments.length; instrumentIndex++) {
 
-                    let instrument: Instrument = this.channels[channelIndex].instruments[instrumentIndex];
+                    let instrument = this.channels[channelIndex].instruments[instrumentIndex];
 
-                    for (let mod: number = 0; mod < Config.modCount; mod++) {
+                    for (let mod = 0; mod < Config.modCount; mod++) {
                         const modChannels: number[] = instrument.modChannels[mod];
                         const modInstruments: number[] = instrument.modInstruments[mod];
-                        const modSetting: number = instrument.modulators[mod];
-                        const modFilter: number = instrument.modFilterTypes[mod];
-                        const modEnvelope: number = instrument.modEnvelopeNumbers[mod];
+                        const modSetting = instrument.modulators[mod];
+                        const modFilter = instrument.modFilterTypes[mod];
+                        const modEnvelope = instrument.modEnvelopeNumbers[mod];
 
                         // Still using legacy "mod status" format, but doing it manually as it's only used in the URL now.
                         // 0 - For pitch/noise
@@ -1304,7 +1304,7 @@ export class Song {
                         // 2 - For song
                         // 3 - None
 
-                        let status: number = Config.modulators[modSetting].forSong ? 2 : 0;
+                        let status = Config.modulators[modSetting].forSong ? 2 : 0;
                         if (modSetting == Config.modulators.dictionary["none"].index)
                             status = 3;
 
@@ -1313,9 +1313,9 @@ export class Song {
                         // Channel/Instrument is only used if the status isn't "song" or "none".
                         if (status == 0 || status == 1) {
                             bits.write(8, modChannels.length);
-                            for (let i: number = 0; i < modChannels.length; i++) bits.write(8, modChannels[i]);
+                            for (let i = 0; i < modChannels.length; i++) bits.write(8, modChannels[i]);
                             bits.write(8, modInstruments.length);
-                            for (let i: number = 0; i < modInstruments.length; i++) bits.write(neededModInstrumentIndexBits, modInstruments[i]);
+                            for (let i = 0; i < modInstruments.length; i++) bits.write(neededModInstrumentIndexBits, modInstruments[i]);
                         }
 
                         // Only used if setting isn't "none".
@@ -1339,18 +1339,18 @@ export class Song {
                     }
                 }
             }
-            const octaveOffset: number = (isNoiseChannel || isModChannel) ? 0 : channel.octave * Config.pitchesPerOctave;
-            let lastPitch: number = (isNoiseChannel ? 4 : octaveOffset);
+            const octaveOffset = (isNoiseChannel || isModChannel) ? 0 : channel.octave * Config.pitchesPerOctave;
+            let lastPitch = (isNoiseChannel ? 4 : octaveOffset);
             const recentPitches: number[] = isModChannel ? [0, 1, 2, 3, 4, 5] : (isNoiseChannel ? [4, 6, 7, 2, 3, 8, 0, 10] : [0, 7, 12, 19, 24, -5, -12]);
             const recentShapes: string[] = [];
-            for (let i: number = 0; i < recentPitches.length; i++) {
+            for (let i = 0; i < recentPitches.length; i++) {
                 recentPitches[i] += octaveOffset;
             }
             for (const pattern of channel.patterns) {
                 if (this.patternInstruments) {
-                    const instrumentCount: number = validateRange(Config.instrumentCountMin, maxInstrumentsPerPattern, pattern.instruments.length);
+                    const instrumentCount = validateRange(Config.instrumentCountMin, maxInstrumentsPerPattern, pattern.instruments.length);
                     bits.write(neededInstrumentCountBits, instrumentCount - Config.instrumentCountMin);
-                    for (let i: number = 0; i < instrumentCount; i++) {
+                    for (let i = 0; i < instrumentCount; i++) {
                         bits.write(neededInstrumentIndexBits, pattern.instruments[i]);
                     }
                 }
@@ -1358,7 +1358,7 @@ export class Song {
                 if (pattern.notes.length > 0) {
                     bits.write(1, 1);
 
-                    let curPart: number = 0;
+                    let curPart = 0;
                     for (const note of pattern.notes) {
 
                         // For mod channels, a negative offset may be necessary.
@@ -1405,13 +1405,13 @@ export class Song {
                             shapeBits.write(11, note.pins[0].size); // Modulator value. 11 bits for now = 2048 max mod value?
                         }
 
-                        let shapePart: number = 0;
-                        let startPitch: number = note.pitches[0];
-                        let currentPitch: number = startPitch;
+                        let shapePart = 0;
+                        let startPitch = note.pitches[0];
+                        let currentPitch = startPitch;
                         const pitchBends: number[] = [];
-                        for (let i: number = 1; i < note.pins.length; i++) {
-                            const pin: NotePin = note.pins[i];
-                            const nextPitch: number = startPitch + pin.interval;
+                        for (let i = 1; i < note.pins.length; i++) {
+                            const pin = note.pins[i];
+                            const nextPitch = startPitch + pin.interval;
                             if (currentPitch != nextPitch) {
                                 shapeBits.write(1, 1);
                                 pitchBends.push(nextPitch);
@@ -1428,8 +1428,8 @@ export class Song {
                             }
                         }
 
-                        const shapeString: string = String.fromCharCode.apply(null, shapeBits.encodeBase64([]));
-                        const shapeIndex: number = recentShapes.indexOf(shapeString);
+                        const shapeString = String.fromCharCode.apply(null, shapeBits.encodeBase64([]));
+                        const shapeIndex = recentShapes.indexOf(shapeString);
                         if (shapeIndex == -1) {
                             bits.write(2, 1); // new shape
                             bits.concat(shapeBits);
@@ -1442,12 +1442,12 @@ export class Song {
                         if (recentShapes.length > 10) recentShapes.pop();
 
                         const allPitches: number[] = note.pitches.concat(pitchBends);
-                        for (let i: number = 0; i < allPitches.length; i++) {
-                            const pitch: number = allPitches[i];
-                            const pitchIndex: number = recentPitches.indexOf(pitch);
+                        for (let i = 0; i < allPitches.length; i++) {
+                            const pitch = allPitches[i];
+                            const pitchIndex = recentPitches.indexOf(pitch);
                             if (pitchIndex == -1) {
-                                let interval: number = 0;
-                                let pitchIter: number = lastPitch;
+                                let interval = 0;
+                                let pitchIter = lastPitch;
                                 if (pitchIter < pitch) {
                                     while (pitchIter != pitch) {
                                         pitchIter++;
@@ -1493,7 +1493,7 @@ export class Song {
                 }
             }
         }
-        let stringLength: number = bits.lengthBase64();
+        let stringLength = bits.lengthBase64();
         let digits: number[] = [];
         while (stringLength > 0) {
             digits.unshift(base64IntToCharCode[stringLength & 0x3f]);
@@ -1503,7 +1503,7 @@ export class Song {
         Array.prototype.push.apply(buffer, digits); // append digits to buffer.
         bits.encodeBase64(buffer);
 
-        const maxApplyArgs: number = 64000;
+        const maxApplyArgs = 64000;
         let customSamplesStr = "";
         if (EditorConfig.customSamples != undefined && EditorConfig.customSamples.length > 0) {
             customSamplesStr = "|" + EditorConfig.customSamples.join("|")
@@ -1515,8 +1515,8 @@ export class Song {
             return String.fromCharCode.apply(null, buffer) + customSamplesStr;
             //samplemark
         } else {
-            let result: string = "";
-            for (let i: number = 0; i < buffer.length; i += maxApplyArgs) {
+            let result = "";
+            for (let i = 0; i < buffer.length; i += maxApplyArgs) {
                 result += String.fromCharCode.apply(null, buffer.slice(i, i + maxApplyArgs));
             }
             return result + customSamplesStr;
@@ -1530,14 +1530,14 @@ export class Song {
         return Config.envelopes[clamp(0, Config.envelopes.length, legacyIndex)];
     }
 
-    fromBase64String(compressed: string, jsonFormat: string = "auto"): void {
+    fromBase64String(compressed: string, jsonFormat = "auto"): void {
         if (compressed == null || compressed == "") {
             Song._clearSamples();
 
             this.initToDefault(true);
             return;
         }
-        let charIndex: number = 0;
+        let charIndex = 0;
         // skip whitespace.
         while (compressed.charCodeAt(charIndex) <= CharCode.SPACE) charIndex++;
         // skip hash mark.
@@ -1548,14 +1548,14 @@ export class Song {
             return;
         }
 
-        const variantTest: number = compressed.charCodeAt(charIndex);
+        const variantTest = compressed.charCodeAt(charIndex);
         //I cleaned up these boolean setters with an initial value. Idk why this wasn't done earlier...
-        let fromBeepBox: boolean = false;
-        let fromJummBox: boolean = false;
-        let fromGoldBox: boolean = false;
-        let fromUltraBox: boolean = false;
-        let fromSlarmoosBox: boolean = false;
-        let fromTheepBox: boolean = false;
+        let fromBeepBox = false;
+        let fromJummBox = false;
+        let fromGoldBox = false;
+        let fromUltraBox = false;
+        let fromSlarmoosBox = false;
+        let fromTheepBox = false;
         // let fromMidbox: boolean;
         // let fromDogebox2: boolean;
         // let fromAbyssBox: boolean;
@@ -1593,24 +1593,24 @@ export class Song {
             fromBeepBox = true;
         }
 
-        const version: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+        const version = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
         if (fromBeepBox && (version == -1 || version > Song._latestBeepboxVersion || version < Song._oldestBeepboxVersion)) return;
         if (fromJummBox && (version == -1 || version > Song._latestJummBoxVersion || version < Song._oldestJummBoxVersion)) return;
         if (fromGoldBox && (version == -1 || version > Song._latestGoldBoxVersion || version < Song._oldestGoldBoxVersion)) return;
         if (fromUltraBox && (version == -1 || version > Song._latestUltraBoxVersion || version < Song._oldestUltraBoxVersion)) return;
         if ((fromSlarmoosBox || fromTheepBox) && (version == -1 || version > Song._latestSlarmoosBoxVersion || version < Song._oldestSlarmoosBoxVersion)) return;
-        const beforeTwo: boolean = version < 2;
-        const beforeThree: boolean = version < 3;
-        const beforeFour: boolean = version < 4;
-        const beforeFive: boolean = version < 5;
-        const beforeSix: boolean = version < 6;
-        const beforeSeven: boolean = version < 7;
-        const beforeEight: boolean = version < 8;
-        const beforeNine: boolean = version < 9;
+        const beforeTwo = version < 2;
+        const beforeThree = version < 3;
+        const beforeFour = version < 4;
+        const beforeFive = version < 5;
+        const beforeSix = version < 6;
+        const beforeSeven = version < 7;
+        const beforeEight = version < 8;
+        const beforeNine = version < 9;
         this.initToDefault((fromBeepBox && beforeNine) || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox)));
-        const forceSimpleFilter: boolean = (fromBeepBox && beforeNine || fromJummBox && beforeFive);
+        const forceSimpleFilter = (fromBeepBox && beforeNine || fromJummBox && beforeFive);
 
-        let willLoadLegacySamplesForOldSongs: boolean = false;
+        let willLoadLegacySamplesForOldSongs = false;
 
         if (fromSlarmoosBox || fromUltraBox || fromGoldBox) {
             compressed = compressed.replaceAll("%7C", "|")
@@ -1659,8 +1659,8 @@ export class Song {
                     else {
                         // UB version 2 URLs and below will be using the old syntax, so we do need to parse it in that case.
                         // UB version 3 URLs should only have the new syntax, though, unless the user has edited the URL manually.
-                        const parseOldSyntax: boolean = beforeThree;
-                        const ok: boolean = Song._parseAndConfigureCustomSample(url, customSampleUrls, customSamplePresets, sampleLoadingState, parseOldSyntax);
+                        const parseOldSyntax = beforeThree;
+                        const ok = Song._parseAndConfigureCustomSample(url, customSampleUrls, customSamplePresets, sampleLoadingState, parseOldSyntax);
                         if (!ok) {
                             continue;
                         }
@@ -1706,19 +1706,19 @@ export class Song {
             // convertLegacySettings(), so I use this data structure to collect the settings
             // for each instrument if necessary.
             legacySettingsCache = [];
-            for (let i: number = legacySettingsCache.length; i < this.getChannelCount(); i++) {
+            for (let i = legacySettingsCache.length; i < this.getChannelCount(); i++) {
                 legacySettingsCache[i] = [];
-                for (let j: number = 0; j < Config.instrumentCountMin; j++) legacySettingsCache[i][j] = {};
+                for (let j = 0; j < Config.instrumentCountMin; j++) legacySettingsCache[i][j] = {};
             }
         }
 
-        let legacyGlobalReverb: number = 0; // beforeNine reverb was song-global, record that reverb here and adapt it to instruments as needed.
+        let legacyGlobalReverb = 0; // beforeNine reverb was song-global, record that reverb here and adapt it to instruments as needed.
 
-        let instrumentChannelIterator: number = 0;
-        let instrumentIndexIterator: number = -1;
+        let instrumentChannelIterator = 0;
+        let instrumentIndexIterator = -1;
         let command: number;
-        let useSlowerArpSpeed: boolean = false;
-        let useFastTwoNoteArp: boolean = false;
+        let useSlowerArpSpeed = false;
+        let useFastTwoNoteArp = false;
         while (charIndex < compressed.length) switch (command = compressed.charCodeAt(charIndex++)) {
             case SongTagCode.songTitle: {
                 // Length of song name string
@@ -1746,9 +1746,9 @@ export class Song {
                 }
                 this.channels.length = this.getChannelCount();
                 if ((fromBeepBox && beforeNine) || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
-                    for (let i: number = legacySettingsCache!.length; i < this.getChannelCount(); i++) {
+                    for (let i = legacySettingsCache!.length; i < this.getChannelCount(); i++) {
                         legacySettingsCache![i] = [];
-                        for (let j: number = 0; j < Config.instrumentCountMin; j++) legacySettingsCache![i][j] = {};
+                        for (let j = 0; j < Config.instrumentCountMin; j++) legacySettingsCache![i][j] = {};
                     }
                 }
             } break;
@@ -1775,7 +1775,7 @@ export class Song {
                     // same URL format, and those can have more keys. This
                     // shouldn't really result in anything other than 0-11 for
                     // the key and 0 for the octave for GoldBox songs.
-                    const rawKeyIndex: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                    const rawKeyIndex = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     const [key, octave]: [number, number] = convertLegacyKeyToKeyAndOctave(rawKeyIndex);
                     this.key = key;
                     this.octave = octave;
@@ -1828,9 +1828,9 @@ export class Song {
                 this.beatsPerBar = Math.max(Config.beatsPerBarMin, Math.min(Config.beatsPerBarMax, this.beatsPerBar));
             } break;
             case SongTagCode.barCount: {
-                const barCount: number = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + 1;
+                const barCount = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + 1;
                 this.barCount = validateRange(Config.barCountMin, Config.barCountMax, barCount);
-                for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+                for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
                     for (let bar = this.channels[channelIndex].bars.length; bar < this.barCount; bar++) {
                         this.channels[channelIndex].bars[bar] = (bar < 4) ? 1 : 0;
                     }
@@ -1845,8 +1845,8 @@ export class Song {
                     patternsPerChannel = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + 1;
                 }
                 this.patternsPerChannel = validateRange(1, Config.barCountMax, patternsPerChannel);
-                const channelCount: number = this.getChannelCount();
-                for (let channelIndex: number = 0; channelIndex < channelCount; channelIndex++) {
+                const channelCount = this.getChannelCount();
+                for (let channelIndex = 0; channelIndex < channelCount; channelIndex++) {
                     const patterns: Pattern[] = this.channels[channelIndex].patterns;
                     for (let pattern = patterns.length; pattern < this.patternsPerChannel; pattern++) {
                         patterns[pattern] = new Pattern();
@@ -1856,41 +1856,41 @@ export class Song {
             } break;
             case SongTagCode.instrumentCount: {
                 if ((beforeNine && fromBeepBox) || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
-                    const instrumentsPerChannel: number = validateRange(Config.instrumentCountMin, Config.patternInstrumentCountMax, base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + Config.instrumentCountMin);
+                    const instrumentsPerChannel = validateRange(Config.instrumentCountMin, Config.patternInstrumentCountMax, base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + Config.instrumentCountMin);
                     this.layeredInstruments = false;
                     this.patternInstruments = (instrumentsPerChannel > 1);
 
-                    for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
-                        const isNoiseChannel: boolean = channelIndex >= this.pitchChannelCount && channelIndex < this.pitchChannelCount + this.noiseChannelCount;
-                        const isModChannel: boolean = channelIndex >= this.pitchChannelCount + this.noiseChannelCount;
+                    for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+                        const isNoiseChannel = channelIndex >= this.pitchChannelCount && channelIndex < this.pitchChannelCount + this.noiseChannelCount;
+                        const isModChannel = channelIndex >= this.pitchChannelCount + this.noiseChannelCount;
 
-                        for (let instrumentIndex: number = this.channels[channelIndex].instruments.length; instrumentIndex < instrumentsPerChannel; instrumentIndex++) {
+                        for (let instrumentIndex = this.channels[channelIndex].instruments.length; instrumentIndex < instrumentsPerChannel; instrumentIndex++) {
                             this.channels[channelIndex].instruments[instrumentIndex] = new Instrument(isNoiseChannel, isModChannel);
                         }
                         this.channels[channelIndex].instruments.length = instrumentsPerChannel;
                         if (beforeSix && fromBeepBox) {
-                            for (let instrumentIndex: number = 0; instrumentIndex < instrumentsPerChannel; instrumentIndex++) {
+                            for (let instrumentIndex = 0; instrumentIndex < instrumentsPerChannel; instrumentIndex++) {
                                 this.channels[channelIndex].instruments[instrumentIndex].setTypeAndReset(isNoiseChannel ? InstrumentType.noise : InstrumentType.chip, isNoiseChannel, isModChannel);
                             }
                         }
 
-                        for (let j: number = legacySettingsCache![channelIndex].length; j < instrumentsPerChannel; j++) {
+                        for (let j = legacySettingsCache![channelIndex].length; j < instrumentsPerChannel; j++) {
                             legacySettingsCache![channelIndex][j] = {};
                         }
                     }
                 } else {
-                    const instrumentsFlagBits: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                    const instrumentsFlagBits = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     this.layeredInstruments = (instrumentsFlagBits & (1 << 1)) != 0;
                     this.patternInstruments = (instrumentsFlagBits & (1 << 0)) != 0;
-                    for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
-                        let instrumentCount: number = 1;
+                    for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+                        let instrumentCount = 1;
                         if (this.layeredInstruments || this.patternInstruments) {
                             instrumentCount = validateRange(Config.instrumentCountMin, this.getMaxInstrumentsPerChannel(), base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + Config.instrumentCountMin);
                         }
-                        const channel: Channel = this.channels[channelIndex];
-                        const isNoiseChannel: boolean = this.getChannelIsNoise(channelIndex);
-                        const isModChannel: boolean = this.getChannelIsMod(channelIndex);
-                        for (let i: number = channel.instruments.length; i < instrumentCount; i++) {
+                        const channel = this.channels[channelIndex];
+                        const isNoiseChannel = this.getChannelIsNoise(channelIndex);
+                        const isModChannel = this.getChannelIsMod(channelIndex);
+                        for (let i = channel.instruments.length; i < instrumentCount; i++) {
                             channel.instruments[i] = new Instrument(isNoiseChannel, isModChannel);
                         }
                         channel.instruments.length = instrumentCount;
@@ -1922,19 +1922,19 @@ export class Song {
             } break;
             case SongTagCode.channelOctave: {
                 if (beforeThree && fromBeepBox) {
-                    const channelIndex: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                    const channelIndex = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     this.channels[channelIndex].octave = clamp(0, Config.pitchOctaves, base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + 1);
                     if (channelIndex >= this.pitchChannelCount) this.channels[channelIndex].octave = 0;
                 } else if ((beforeNine && fromBeepBox) || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
-                    for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+                    for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
                         this.channels[channelIndex].octave = clamp(0, Config.pitchOctaves, base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + 1);
                         if (channelIndex >= this.pitchChannelCount) this.channels[channelIndex].octave = 0;
                     }
                 } else {
-                    for (let channelIndex: number = 0; channelIndex < this.pitchChannelCount; channelIndex++) {
+                    for (let channelIndex = 0; channelIndex < this.pitchChannelCount; channelIndex++) {
                         this.channels[channelIndex].octave = clamp(0, Config.pitchOctaves, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     }
-                    for (let channelIndex: number = this.pitchChannelCount; channelIndex < this.getChannelCount(); channelIndex++) {
+                    for (let channelIndex = this.pitchChannelCount; channelIndex < this.getChannelCount(); channelIndex++) {
                         this.channels[channelIndex].octave = 0;
                     }
                 }
@@ -1946,9 +1946,9 @@ export class Song {
                     instrumentIndexIterator = 0;
                 }
                 validateRange(0, this.channels.length - 1, instrumentChannelIterator);
-                const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                 // JB before v5 had custom chip and mod before pickedString and supersaw were added. Index +2.
-                let instrumentType: number = validateRange(0, InstrumentType.length - 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                let instrumentType = validateRange(0, InstrumentType.length - 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                 if ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox)) {
                     if (instrumentType == InstrumentType.pickedString || instrumentType == InstrumentType.supersaw) {
                         instrumentType += 2;
@@ -1965,7 +1965,7 @@ export class Song {
                 // Anti-aliasing was added in BeepBox 3.0 (v6->v7) and JummBox 1.3 (v1->v2 roughly but some leakage possible)
                 if (((beforeSeven && fromBeepBox) || (beforeTwo && fromJummBox)) && (instrumentType == InstrumentType.chip || instrumentType == InstrumentType.customChipWave || instrumentType == InstrumentType.pwm)) {
                     instrument.aliases = true;
-                    let newEffect: Effect = instrument.addEffect(EffectType.distortion);
+                    let newEffect = instrument.addEffect(EffectType.distortion);
                     newEffect.distortion = 0;
                 }
                 if (useSlowerArpSpeed) {
@@ -1986,7 +1986,7 @@ export class Song {
                 }
             } break;
             case SongTagCode.preset: {
-                const presetValue: number = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                const presetValue = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                 this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator].preset = presetValue;
                 // Picked string was inserted before custom chip in JB v5, so bump up preset index.
                 if ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox)) {
@@ -2015,8 +2015,8 @@ export class Song {
             case SongTagCode.wave: {
                 if (beforeThree && fromBeepBox) {
                     const legacyWaves: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 0];
-                    const channelIndex: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                    const instrument: Instrument = this.channels[channelIndex].instruments[0];
+                    const channelIndex = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                    const instrument = this.channels[channelIndex].instruments[0];
                     instrument.chipWave = clamp(0, Config.chipWaves.length, legacyWaves[base64CharCodeToInt[compressed.charCodeAt(charIndex++)]] | 0);
 
                     // Version 2 didn't save any settings for settings for filters, or envelopes,
@@ -2025,7 +2025,7 @@ export class Song {
 
                 } else if (beforeSix && fromBeepBox) {
                     const legacyWaves: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 0];
-                    for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+                    for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
                         for (const instrument of this.channels[channelIndex].instruments) {
                             if (channelIndex >= this.pitchChannelCount) {
                                 instrument.chipNoise = clamp(0, Config.chipNoises.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
@@ -2073,20 +2073,20 @@ export class Song {
                         const legacyToEnvelope: string[] = ["none", "none", "none", "none", "decay 1", "decay 2", "decay 3"];
 
                         if (beforeThree && fromBeepBox) {
-                            const channelIndex: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                            const instrument: Instrument = this.channels[channelIndex].instruments[0];
-                            const legacySettings: LegacySettings = legacySettingsCache![channelIndex][0];
-                            const legacyFilter: number = [1, 3, 4, 5][clamp(0, legacyToCutoff.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
+                            const channelIndex = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                            const instrument = this.channels[channelIndex].instruments[0];
+                            const legacySettings = legacySettingsCache![channelIndex][0];
+                            const legacyFilter = [1, 3, 4, 5][clamp(0, legacyToCutoff.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
                             legacySettings.filterCutoff = legacyToCutoff[legacyFilter];
                             legacySettings.filterResonance = 0;
                             legacySettings.filterEnvelope = Config.envelopes.dictionary[legacyToEnvelope[legacyFilter]];
                             instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
                         } else if (beforeSix && fromBeepBox) {
-                            for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
-                                for (let i: number = 0; i < this.channels[channelIndex].instruments.length; i++) {
-                                    const instrument: Instrument = this.channels[channelIndex].instruments[i];
-                                    const legacySettings: LegacySettings = legacySettingsCache![channelIndex][i];
-                                    const legacyFilter: number = clamp(0, legacyToCutoff.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + 1);
+                            for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+                                for (let i = 0; i < this.channels[channelIndex].instruments.length; i++) {
+                                    const instrument = this.channels[channelIndex].instruments[i];
+                                    const legacySettings = legacySettingsCache![channelIndex][i];
+                                    const legacyFilter = clamp(0, legacyToCutoff.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + 1);
                                     if (channelIndex < this.pitchChannelCount) {
                                         legacySettings.filterCutoff = legacyToCutoff[legacyFilter];
                                         legacySettings.filterResonance = 0;
@@ -2100,63 +2100,63 @@ export class Song {
                                 }
                             }
                         } else {
-                            const legacyFilter: number = clamp(0, legacyToCutoff.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                            const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                            const legacySettings: LegacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
+                            const legacyFilter = clamp(0, legacyToCutoff.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                            const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                            const legacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
                             legacySettings.filterCutoff = legacyToCutoff[legacyFilter];
                             legacySettings.filterResonance = 0;
                             legacySettings.filterEnvelope = Config.envelopes.dictionary[legacyToEnvelope[legacyFilter]];
                             instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
                         }
                     } else {
-                        const filterCutoffRange: number = 11;
-                        const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                        const legacySettings: LegacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
+                        const filterCutoffRange = 11;
+                        const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                        const legacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
                         legacySettings.filterCutoff = clamp(0, filterCutoffRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
                     }
                 } else {
-                    const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                    let typeCheck: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                    const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                    let typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     if (fromTheepBox) { //in mods that arent Theepbox, pre eq is switched with post eq
                         if (typeCheck == 0) {
                             instrument.noteFilterType = false;
                             typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                            const originalControlPointCount: number = typeCheck;
+                            const originalControlPointCount = typeCheck;
                             instrument.noteFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalControlPointCount);
-                            for (let i: number = instrument.noteFilter.controlPoints.length; i < instrument.noteFilter.controlPointCount; i++) {
+                            for (let i = instrument.noteFilter.controlPoints.length; i < instrument.noteFilter.controlPointCount; i++) {
                                 instrument.noteFilter.controlPoints[i] = new FilterControlPoint();
                             }
-                            for (let i: number = 0; i < instrument.noteFilter.controlPointCount; i++) {
-                                const point: FilterControlPoint = instrument.noteFilter.controlPoints[i];
+                            for (let i = 0; i < instrument.noteFilter.controlPointCount; i++) {
+                                const point = instrument.noteFilter.controlPoints[i];
                                 point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             }
-                            for (let i: number = instrument.noteFilter.controlPointCount; i < originalControlPointCount; i++) {
+                            for (let i = instrument.noteFilter.controlPointCount; i < originalControlPointCount; i++) {
                                 charIndex += 3;
                             }
 
                             // Get subfilters as well. Skip Index 0, is a copy of the base filter.
                             instrument.noteSubFilters[0] = instrument.noteFilter;
-                            let usingSubFilterBitfield: number = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                            for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
+                            let usingSubFilterBitfield = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                            for (let j = 0; j < Config.filterMorphCount - 1; j++) {
                                 if (usingSubFilterBitfield & (1 << j)) {
                                     // Number of control points
-                                    const originalSubfilterControlPointCount: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                    const originalSubfilterControlPointCount = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                     if (instrument.noteSubFilters[j + 1] == null)
                                         instrument.noteSubFilters[j + 1] = new FilterSettings();
                                     instrument.noteSubFilters[j + 1]!.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalSubfilterControlPointCount);
-                                    for (let i: number = instrument.noteSubFilters[j + 1]!.controlPoints.length; i < instrument.noteSubFilters[j + 1]!.controlPointCount; i++) {
+                                    for (let i = instrument.noteSubFilters[j + 1]!.controlPoints.length; i < instrument.noteSubFilters[j + 1]!.controlPointCount; i++) {
                                         instrument.noteSubFilters[j + 1]!.controlPoints[i] = new FilterControlPoint();
                                     }
-                                    for (let i: number = 0; i < instrument.noteSubFilters[j + 1]!.controlPointCount; i++) {
-                                        const point: FilterControlPoint = instrument.noteSubFilters[j + 1]!.controlPoints[i];
+                                    for (let i = 0; i < instrument.noteSubFilters[j + 1]!.controlPointCount; i++) {
+                                        const point = instrument.noteSubFilters[j + 1]!.controlPoints[i];
                                         point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                         point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                         point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     }
-                                    for (let i: number = instrument.noteSubFilters[j + 1]!.controlPointCount; i < originalSubfilterControlPointCount; i++) {
+                                    for (let i = instrument.noteSubFilters[j + 1]!.controlPointCount; i < originalSubfilterControlPointCount; i++) {
                                         charIndex += 3;
                                     }
                                 }
@@ -2168,47 +2168,47 @@ export class Song {
                             instrument.noteFilterSimplePeak = clamp(0, Config.filterSimplePeakRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         }
                     } else {
-                        let newEffect: Effect = instrument.addEffect(EffectType.eqFilter);
+                        let newEffect = instrument.addEffect(EffectType.eqFilter);
                         if (fromBeepBox || typeCheck == 0) {
                             newEffect.eqFilterType = false;
                             if (fromJummBox || fromGoldBox || fromUltraBox || fromSlarmoosBox)
                                 typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)]; // Skip to next to get control point count
-                                const originalControlPointCount: number = typeCheck;
+                                const originalControlPointCount = typeCheck;
                             newEffect.eqFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalControlPointCount);
-                            for (let i: number = newEffect.eqFilter.controlPoints.length; i < newEffect.eqFilter.controlPointCount; i++) {
+                            for (let i = newEffect.eqFilter.controlPoints.length; i < newEffect.eqFilter.controlPointCount; i++) {
                                 newEffect.eqFilter.controlPoints[i] = new FilterControlPoint();
                             }
-                            for (let i: number = 0; i < newEffect.eqFilter.controlPointCount; i++) {
-                                const point: FilterControlPoint = newEffect.eqFilter.controlPoints[i];
+                            for (let i = 0; i < newEffect.eqFilter.controlPointCount; i++) {
+                                const point = newEffect.eqFilter.controlPoints[i];
                                 point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             }
-                            for (let i: number = newEffect.eqFilter.controlPointCount; i < originalControlPointCount; i++) {
+                            for (let i = newEffect.eqFilter.controlPointCount; i < originalControlPointCount; i++) {
                                 charIndex += 3;
                             }
 
                             // Get subfilters as well. Skip Index 0, is a copy of the base filter.
                             newEffect.eqSubFilters[0] = newEffect.eqFilter;
                             if ((fromJummBox && !beforeFive) || (fromGoldBox && !beforeFour) || fromUltraBox || fromSlarmoosBox) {
-                                let usingSubFilterBitfield: number = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
+                                let usingSubFilterBitfield = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                for (let j = 0; j < Config.filterMorphCount - 1; j++) {
                                     if (usingSubFilterBitfield & (1 << j)) {
                                         // Number of control points
-                                        const originalSubfilterControlPointCount: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                        const originalSubfilterControlPointCount = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                         if (newEffect.eqSubFilters[j + 1] == null)
                                             newEffect.eqSubFilters[j + 1] = new FilterSettings();
                                         newEffect.eqSubFilters[j + 1]!.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalSubfilterControlPointCount);
-                                        for (let i: number = newEffect.eqSubFilters[j + 1]!.controlPoints.length; i < newEffect.eqSubFilters[j + 1]!.controlPointCount; i++) {
+                                        for (let i = newEffect.eqSubFilters[j + 1]!.controlPoints.length; i < newEffect.eqSubFilters[j + 1]!.controlPointCount; i++) {
                                             newEffect.eqSubFilters[j + 1]!.controlPoints[i] = new FilterControlPoint();
                                         }
-                                        for (let i: number = 0; i < newEffect.eqSubFilters[j + 1]!.controlPointCount; i++) {
-                                            const point: FilterControlPoint = newEffect.eqSubFilters[j + 1]!.controlPoints[i];
+                                        for (let i = 0; i < newEffect.eqSubFilters[j + 1]!.controlPointCount; i++) {
+                                            const point = newEffect.eqSubFilters[j + 1]!.controlPoints[i];
                                             point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                             point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                             point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                         }
-                                        for (let i: number = newEffect.eqSubFilters[j + 1]!.controlPointCount; i < originalSubfilterControlPointCount; i++) {
+                                        for (let i = newEffect.eqSubFilters[j + 1]!.controlPointCount; i < originalSubfilterControlPointCount; i++) {
                                             charIndex += 3;
                                         }
                                     }
@@ -2246,10 +2246,10 @@ export class Song {
                         }
                         const sampleLoopInfo: SampleLoopInfoEntry[] = JSON.parse(atob(sampleLoopInfoEncoded));
                         for (const entry of sampleLoopInfo) {
-                            const channelIndex: number = entry["channel"];
-                            const instrumentIndex: number = entry["instrument"];
-                            const info: SampleLoopInfo = entry["info"];
-                            const instrument: Instrument = this.channels[channelIndex].instruments[instrumentIndex];
+                            const channelIndex = entry["channel"];
+                            const instrumentIndex = entry["instrument"];
+                            const info = entry["info"];
+                            const instrument = this.channels[channelIndex].instruments[instrumentIndex];
                             instrument.isUsingAdvancedLoopControls = info["isUsingAdvancedLoopControls"];
                             instrument.chipWaveLoopStart = info["chipWaveLoopStart"];
                             instrument.chipWaveLoopEnd = info["chipWaveLoopEnd"];
@@ -2261,20 +2261,20 @@ export class Song {
                     } else {
                         // Read the new loop control data format.
                         // See Song.toBase64String for details on the encodings used here.
-                        const encodedLoopMode: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                        const isUsingAdvancedLoopControls: boolean = Boolean(encodedLoopMode & 1);
-                        const chipWaveLoopMode: number = encodedLoopMode >> 1;
-                        const encodedReleaseMode: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                        const chipWaveInStereo: boolean = Boolean(encodedReleaseMode & 2);
-                        const chipWavePlayBackwards: boolean = Boolean(encodedReleaseMode & 1);
-                        // const chipWaveReleaseMode: number = encodedReleaseMode >> 1;
-                        const chipWaveLoopStart: number = decode32BitNumber(compressed, charIndex);
+                        const encodedLoopMode = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                        const isUsingAdvancedLoopControls = Boolean(encodedLoopMode & 1);
+                        const chipWaveLoopMode = encodedLoopMode >> 1;
+                        const encodedReleaseMode = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                        const chipWaveInStereo = Boolean(encodedReleaseMode & 2);
+                        const chipWavePlayBackwards = Boolean(encodedReleaseMode & 1);
+                        // const chipWaveReleaseMode = encodedReleaseMode >> 1;
+                        const chipWaveLoopStart = decode32BitNumber(compressed, charIndex);
                         charIndex += 6;
-                        const chipWaveLoopEnd: number = decode32BitNumber(compressed, charIndex);
+                        const chipWaveLoopEnd = decode32BitNumber(compressed, charIndex);
                         charIndex += 6;
-                        const chipWaveStartOffset: number = decode32BitNumber(compressed, charIndex);
+                        const chipWaveStartOffset = decode32BitNumber(compressed, charIndex);
                         charIndex += 6;
-                        const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                        const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                         instrument.isUsingAdvancedLoopControls = isUsingAdvancedLoopControls;
                         instrument.chipWaveLoopStart = chipWaveLoopStart;
                         instrument.chipWaveLoopEnd = chipWaveLoopEnd;
@@ -2296,24 +2296,24 @@ export class Song {
                     }
                     this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator].chipWave = clamp(0, Config.chipWaves.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + 125);
                 } else if ((beforeNine && fromBeepBox) || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
-                    const filterResonanceRange: number = 8;
-                    const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                    const legacySettings: LegacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
+                    const filterResonanceRange = 8;
+                    const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                    const legacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
                     legacySettings.filterResonance = clamp(0, filterResonanceRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
 
                 }
             } break;
             case SongTagCode.drumsetEnvelopes: {
-                const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                 const pregoldToEnvelope: number[] = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29, 32, 33, 34, 31, 11];
                 if ((beforeNine && fromBeepBox) || (beforeFive && fromJummBox) || (beforeFour && fromGoldBox)) {
                     if ((beforeTwo && fromGoldBox) || (!fromGoldBox && !fromUltraBox && !fromSlarmoosBox)) {
 
                     }
                     if (instrument.type == InstrumentType.drumset) {
-                        for (let i: number = 0; i < Config.drumCount; i++) {
-                            let aa: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                        for (let i = 0; i < Config.drumCount; i++) {
+                            let aa = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                             if ((beforeTwo && fromGoldBox) || (!fromGoldBox && !fromUltraBox && !fromSlarmoosBox)) aa = pregoldToEnvelope[aa];
                             instrument.drumsetEnvelopes[i] = Song._envelopeFromLegacyIndex(aa).index;
                         }
@@ -2321,16 +2321,16 @@ export class Song {
                         // This used to be used for general filter envelopes.
                         // The presence of an envelope affects how convertLegacySettings
                         // decides the closest possible approximation, so update it.
-                        const legacySettings: LegacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
-                        let aa: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                        const legacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
+                        let aa = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         if ((beforeTwo && fromGoldBox) || (!fromGoldBox && !fromUltraBox && !fromSlarmoosBox)) aa = pregoldToEnvelope[aa];
                         legacySettings.filterEnvelope = Song._envelopeFromLegacyIndex(aa);
                         instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
                     }
                 } else {
                     // This tag is now only used for drumset filter envelopes.
-                    for (let i: number = 0; i < Config.drumCount; i++) {
-                        let aa: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                    for (let i = 0; i < Config.drumCount; i++) {
+                        let aa = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         if ((beforeTwo && fromGoldBox) || (!fromGoldBox && !fromUltraBox && !fromSlarmoosBox)) aa = pregoldToEnvelope[aa];
                         if (!fromSlarmoosBox && aa >= 2) aa++; //2 for pitch
                         instrument.drumsetEnvelopes[i] = clamp(0, Config.envelopes.length, aa);
@@ -2338,7 +2338,7 @@ export class Song {
                 }
             } break;
             case SongTagCode.pulseWidth: {
-                const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                 instrument.pulseWidth = clamp(0, Config.pulseWidthRange + (+(fromJummBox)) + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                 if (fromBeepBox) {
                     // BeepBox formula
@@ -2348,8 +2348,8 @@ export class Song {
 
                 if ((beforeNine && fromBeepBox) || (beforeFive && fromJummBox) || (beforeFour && fromGoldBox)) {
                     const pregoldToEnvelope: number[] = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29, 32, 33, 34, 31, 11];
-                    const legacySettings: LegacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
-                    let aa: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                    const legacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
+                    let aa = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     if ((beforeTwo && fromGoldBox) || (!fromGoldBox && !fromUltraBox && !fromSlarmoosBox)) aa = pregoldToEnvelope[aa];
                     legacySettings.pulseEnvelope = Song._envelopeFromLegacyIndex(aa);
                     instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
@@ -2361,8 +2361,8 @@ export class Song {
 
             } break;
             case SongTagCode.stringSustain: {
-                const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                const sustainValue: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                const sustainValue = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                 instrument.stringSustain = clamp(0, Config.stringSustainRange, sustainValue & 0x1F);
                 instrument.stringSustainType = Config.enableAcousticSustain ? clamp(0, SustainType.length, sustainValue >> 5) : SustainType.bright;
             } break;
@@ -2381,9 +2381,9 @@ export class Song {
                         { transition: "slide in pattern", fadeInSeconds: 0.025, fadeOutTicks: -3 },
                     ];
                     if (beforeThree && fromBeepBox) {
-                        const channelIndex: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                        const channelIndex = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         const settings = legacySettings[clamp(0, legacySettings.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
-                        const instrument: Instrument = this.channels[channelIndex].instruments[0];
+                        const instrument = this.channels[channelIndex].instruments[0];
                         instrument.fadeIn = secondsToFadeInSetting(settings.fadeInSeconds);
                         instrument.fadeOut = ticksToFadeOutSetting(settings.fadeOutTicks);
                         instrument.transition = Config.transitions.dictionary[settings.transition].index;
@@ -2392,7 +2392,7 @@ export class Song {
                             instrument.mdeffects |= 1 << MDEffectType.transition;
                         }
                     } else if (beforeSix && fromBeepBox) {
-                        for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+                        for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
                             for (const instrument of this.channels[channelIndex].instruments) {
                                 const settings = legacySettings[clamp(0, legacySettings.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
                                 instrument.fadeIn = secondsToFadeInSetting(settings.fadeInSeconds);
@@ -2406,7 +2406,7 @@ export class Song {
                         }
                     } else if ((beforeFour && !fromGoldBox && !fromUltraBox && !fromSlarmoosBox) || fromBeepBox) {
                         const settings = legacySettings[clamp(0, legacySettings.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
-                        const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                        const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                         instrument.fadeIn = secondsToFadeInSetting(settings.fadeInSeconds);
                         instrument.fadeOut = ticksToFadeOutSetting(settings.fadeOutTicks);
                         instrument.transition = Config.transitions.dictionary[settings.transition].index;
@@ -2416,7 +2416,7 @@ export class Song {
                         }
                     } else {
                         const settings = legacySettings[clamp(0, legacySettings.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
-                        const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                        const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                         instrument.fadeIn = secondsToFadeInSetting(settings.fadeInSeconds);
                         instrument.fadeOut = ticksToFadeOutSetting(settings.fadeOutTicks);
                         instrument.transition = Config.transitions.dictionary[settings.transition].index;
@@ -2435,7 +2435,7 @@ export class Song {
                         }
                     }
                 } else {
-                    const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                    const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     instrument.fadeIn = clamp(0, Config.fadeInRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     instrument.fadeOut = clamp(0, Config.fadeOutTicks.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     if (fromJummBox || fromGoldBox || fromUltraBox || fromSlarmoosBox)
@@ -2448,10 +2448,10 @@ export class Song {
                         if (beforeThree && fromBeepBox) {
                             const legacyEffects: number[] = [0, 3, 2, 0];
                             const legacyEnvelopes: string[] = ["none", "none", "none", "tremolo2"];
-                            const channelIndex: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                            const effect: number = clamp(0, legacyEffects.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                            const instrument: Instrument = this.channels[channelIndex].instruments[0];
-                            const legacySettings: LegacySettings = legacySettingsCache![channelIndex][0];
+                            const channelIndex = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                            const effect = clamp(0, legacyEffects.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                            const instrument = this.channels[channelIndex].instruments[0];
+                            const legacySettings = legacySettingsCache![channelIndex][0];
                             instrument.vibrato = legacyEffects[effect];
                             if (legacySettings.filterEnvelope == undefined || legacySettings.filterEnvelope.type == EnvelopeType.none) {
                                 // Imitate the legacy tremolo with a filter envelope.
@@ -2465,11 +2465,11 @@ export class Song {
                         } else if (beforeSix && fromBeepBox) {
                             const legacyEffects: number[] = [0, 1, 2, 3, 0, 0];
                             const legacyEnvelopes: string[] = ["none", "none", "none", "none", "tremolo5", "tremolo2"];
-                            for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
-                                for (let i: number = 0; i < this.channels[channelIndex].instruments.length; i++) {
-                                    const effect: number = clamp(0, legacyEffects.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                    const instrument: Instrument = this.channels[channelIndex].instruments[i];
-                                    const legacySettings: LegacySettings = legacySettingsCache![channelIndex][i];
+                            for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+                                for (let i = 0; i < this.channels[channelIndex].instruments.length; i++) {
+                                    const effect = clamp(0, legacyEffects.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                    const instrument = this.channels[channelIndex].instruments[i];
+                                    const legacySettings = legacySettingsCache![channelIndex][i];
                                     instrument.vibrato = legacyEffects[effect];
                                     if (legacySettings.filterEnvelope == undefined || legacySettings.filterEnvelope.type == EnvelopeType.none) {
                                         // Imitate the legacy tremolo with a filter envelope.
@@ -2482,7 +2482,7 @@ export class Song {
                                     }
                                     if ((legacyGlobalReverb != 0 || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) && !this.getChannelIsNoise(channelIndex)) {
                                         // Enable reverb if it was used globaly before. (Global reverb was added before the effects option so I need to pick somewhere else to initialize instrument reverb, and I picked the vibrato command.)
-                                        let newEffect: Effect = instrument.addEffect(EffectType.reverb);
+                                        let newEffect = instrument.addEffect(EffectType.reverb);
                                         newEffect.reverb = legacyGlobalReverb;
                                     }
                                 }
@@ -2490,9 +2490,9 @@ export class Song {
                         } else {
                             const legacyEffects: number[] = [0, 1, 2, 3, 0, 0];
                             const legacyEnvelopes: string[] = ["none", "none", "none", "none", "tremolo5", "tremolo2"];
-                            const effect: number = clamp(0, legacyEffects.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                            const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                            const legacySettings: LegacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
+                            const effect = clamp(0, legacyEffects.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                            const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                            const legacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
                             instrument.vibrato = legacyEffects[effect];
                             if (legacySettings.filterEnvelope == undefined || legacySettings.filterEnvelope.type == EnvelopeType.none) {
                                 // Imitate the legacy tremolo with a filter envelope.
@@ -2505,13 +2505,13 @@ export class Song {
                             }
                             if (legacyGlobalReverb != 0 || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
                                 // Enable reverb if it was used globaly before. (Global reverb was added before the effects option so I need to pick somewhere else to initialize instrument reverb, and I picked the vibrato command.)
-                                let newEffect: Effect = instrument.addEffect(EffectType.reverb);
+                                let newEffect = instrument.addEffect(EffectType.reverb);
                                 newEffect.reverb = legacyGlobalReverb;
                             }
                         }
                     } else {
-                        const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                        const vibrato: number = clamp(0, Config.vibratos.length + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                        const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                        const vibrato = clamp(0, Config.vibratos.length + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         instrument.vibrato = vibrato;
                         if (instrument.vibrato != Config.vibratos.dictionary["none"].index) {
                             // Enable vibrato if it was used.
@@ -2536,41 +2536,41 @@ export class Song {
                 } else {
                     // songeq
                     if (fromSlarmoosBox && !beforeFour) { //double check that it's from a valid version
-                        const originalControlPointCount: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                        const originalControlPointCount = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         this.eqFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalControlPointCount);
-                        for (let i: number = this.eqFilter.controlPoints.length; i < this.eqFilter.controlPointCount; i++) {
+                        for (let i = this.eqFilter.controlPoints.length; i < this.eqFilter.controlPointCount; i++) {
                             this.eqFilter.controlPoints[i] = new FilterControlPoint();
                         }
-                        for (let i: number = 0; i < this.eqFilter.controlPointCount; i++) {
-                            const point: FilterControlPoint = this.eqFilter.controlPoints[i];
+                        for (let i = 0; i < this.eqFilter.controlPointCount; i++) {
+                            const point = this.eqFilter.controlPoints[i];
                             point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         }
-                        for (let i: number = this.eqFilter.controlPointCount; i < originalControlPointCount; i++) {
+                        for (let i = this.eqFilter.controlPointCount; i < originalControlPointCount; i++) {
                             charIndex += 3;
                         }
 
                         // Get subfilters as well. Skip Index 0, is a copy of the base filter.
                         this.eqSubFilters[0] = this.eqFilter;
-                        let usingSubFilterBitfield: number = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                        for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
+                        let usingSubFilterBitfield = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                        for (let j = 0; j < Config.filterMorphCount - 1; j++) {
                             if (usingSubFilterBitfield & (1 << j)) {
                                 // Number of control points
-                                const originalSubfilterControlPointCount: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                const originalSubfilterControlPointCount = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                 if (this.eqSubFilters[j + 1] == null)
                                     this.eqSubFilters[j + 1] = new FilterSettings();
                                 this.eqSubFilters[j + 1]!.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalSubfilterControlPointCount);
-                                for (let i: number = this.eqSubFilters[j + 1]!.controlPoints.length; i < this.eqSubFilters[j + 1]!.controlPointCount; i++) {
+                                for (let i = this.eqSubFilters[j + 1]!.controlPoints.length; i < this.eqSubFilters[j + 1]!.controlPointCount; i++) {
                                     this.eqSubFilters[j + 1]!.controlPoints[i] = new FilterControlPoint();
                                 }
-                                for (let i: number = 0; i < this.eqSubFilters[j + 1]!.controlPointCount; i++) {
-                                    const point: FilterControlPoint = this.eqSubFilters[j + 1]!.controlPoints[i];
+                                for (let i = 0; i < this.eqSubFilters[j + 1]!.controlPointCount; i++) {
+                                    const point = this.eqSubFilters[j + 1]!.controlPoints[i];
                                     point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 }
-                                for (let i: number = this.eqSubFilters[j + 1]!.controlPointCount; i < originalSubfilterControlPointCount; i++) {
+                                for (let i = this.eqSubFilters[j + 1]!.controlPointCount; i < originalSubfilterControlPointCount; i++) {
                                     charIndex += 3;
                                 }
                             }
@@ -2581,7 +2581,7 @@ export class Song {
             case SongTagCode.arpeggioSpeed: {
                 // Deprecated, but supported for legacy purposes
                 if ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox)) {
-                    const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                    const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     instrument.arpeggioSpeed = clamp(0, Config.modulators.dictionary["arp speed"].maxRawVol + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     instrument.fastTwoNoteArp = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] ? true : false; // Two note arp setting piggybacks on this
                 }
@@ -2591,7 +2591,7 @@ export class Song {
             } break;
             case SongTagCode.unison: {
                 if (beforeThree && fromBeepBox) {
-                    const channelIndex: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                    const channelIndex = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     const instrument = this.channels[channelIndex].instruments[0];
                     instrument.unison = clamp(0, Config.unisons.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     instrument.unisonVoices = Config.unisons[instrument.unison].voices;
@@ -2600,10 +2600,10 @@ export class Song {
                     instrument.unisonExpression = Config.unisons[instrument.unison].expression;
                     instrument.unisonSign = Config.unisons[instrument.unison].sign;
                 } else if (beforeSix && fromBeepBox) {
-                    for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+                    for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
                         for (const instrument of this.channels[channelIndex].instruments) {
-                            const originalValue: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                            let unison: number = clamp(0, Config.unisons.length, originalValue);
+                            const originalValue = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                            let unison = clamp(0, Config.unisons.length, originalValue);
                             if (originalValue == 8) {
                                 // original "custom harmony" now maps to "hum" and "custom interval".
                                 unison = 2;
@@ -2618,8 +2618,8 @@ export class Song {
                         }
                     }
                 } else if (beforeSeven && fromBeepBox) {
-                    const originalValue: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                    let unison: number = clamp(0, Config.unisons.length, originalValue);
+                    const originalValue = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                    let unison = clamp(0, Config.unisons.length, originalValue);
                     const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     if (originalValue == 8) {
                         // original "custom harmony" now maps to "hum" and "custom interval".
@@ -2642,16 +2642,16 @@ export class Song {
                         instrument.unisonVoices = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
 
                         const unisonSpreadNegative = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                        const unisonSpread: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + ((base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * 63)) * 63);
+                        const unisonSpread = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + ((base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * 63)) * 63);
 
                         const unisonOffsetNegative = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                        const unisonOffset: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + ((base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * 63)) * 63);
+                        const unisonOffset = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + ((base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * 63)) * 63);
 
                         const unisonExpressionNegative = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                        const unisonExpression: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * 63);
+                        const unisonExpression = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * 63);
 
                         const unisonSignNegative = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                        const unisonSign: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * 63);
+                        const unisonSign = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * 63);
 
 
                         instrument.unisonSpread = unisonSpread / 1000;
@@ -2677,7 +2677,7 @@ export class Song {
             } break;
             case SongTagCode.chord: {
                 if ((beforeNine && fromBeepBox) || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
-                    const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                    const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     instrument.chord = clamp(0, Config.chords.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     if (instrument.chord != Config.chords.dictionary["simultaneous"].index) {
                         // Enable chord if it was used.
@@ -2688,7 +2688,7 @@ export class Song {
                 }
             } break;
             case SongTagCode.effects: {
-                const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                 if ((beforeNine && fromBeepBox) || ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox))) {
                     instrument.addEffect(base64CharCodeToInt[compressed.charCodeAt(charIndex++)] & ((1 << EffectType.length) - 1));
                     /*
@@ -2719,54 +2719,54 @@ export class Song {
 
                     // convertLegacySettings may need to force-enable pre eq, call
                     // it again here to make sure that this override takes precedence.
-                    const legacySettings: LegacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
+                    const legacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
                     instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
                 } else {
                     // if (EffectType.length > 9) throw new Error();
-                    const effectCount: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)]
+                    const effectCount = base64CharCodeToInt[compressed.charCodeAt(charIndex++)]
                     if (fromTheepBox) {
                         instrument.effects = [];
-                        for (let i: number = 0; i < effectCount; i++) { // this for loop caused me a lot of grief... i dont wanna talk about it
-                            let newEffect: Effect = instrument.addEffect(base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                        for (let i = 0; i < effectCount; i++) { // this for loop caused me a lot of grief... i dont wanna talk about it
+                            let newEffect = instrument.addEffect(base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             if (newEffect.type == EffectType.eqFilter) {
-                                let typeCheck: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                let typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                 if (typeCheck == 0) {
                                     newEffect.eqFilterType = false;
                                     typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                     newEffect.eqFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, typeCheck);
-                                    for (let i: number = newEffect.eqFilter.controlPoints.length; i < newEffect.eqFilter.controlPointCount; i++) {
+                                    for (let i = newEffect.eqFilter.controlPoints.length; i < newEffect.eqFilter.controlPointCount; i++) {
                                         newEffect.eqFilter.controlPoints[i] = new FilterControlPoint();
                                     }
-                                    for (let i: number = 0; i < newEffect.eqFilter.controlPointCount; i++) {
-                                        const point: FilterControlPoint = newEffect.eqFilter.controlPoints[i];
+                                    for (let i = 0; i < newEffect.eqFilter.controlPointCount; i++) {
+                                        const point = newEffect.eqFilter.controlPoints[i];
                                         point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                         point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                         point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     }
-                                    for (let i: number = newEffect.eqFilter.controlPointCount; i < typeCheck; i++) {
+                                    for (let i = newEffect.eqFilter.controlPointCount; i < typeCheck; i++) {
                                         charIndex += 3;
                                     }
 
                                     // Get subfilters as well. Skip Index 0, is a copy of the base filter.
                                     newEffect.eqSubFilters[0] = newEffect.eqFilter;
-                                    let usingSubFilterBitfield: number = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                    for (let j: number = 0; j < Config.filterMorphCount - 1; j++) {
+                                    let usingSubFilterBitfield = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                    for (let j = 0; j < Config.filterMorphCount - 1; j++) {
                                         if (usingSubFilterBitfield & (1 << j)) {
                                             // Number of control points
-                                            const originalSubfilterControlPointCount: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                            const originalSubfilterControlPointCount = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                             if (newEffect.eqSubFilters[j + 1] == null)
                                                 newEffect.eqSubFilters[j + 1] = new FilterSettings();
                                             newEffect.eqSubFilters[j + 1]!.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalSubfilterControlPointCount);
-                                            for (let i: number = newEffect.eqSubFilters[j + 1]!.controlPoints.length; i < newEffect.eqSubFilters[j + 1]!.controlPointCount; i++) {
+                                            for (let i = newEffect.eqSubFilters[j + 1]!.controlPoints.length; i < newEffect.eqSubFilters[j + 1]!.controlPointCount; i++) {
                                                 newEffect.eqSubFilters[j + 1]!.controlPoints[i] = new FilterControlPoint();
                                             }
-                                            for (let i: number = 0; i < newEffect.eqSubFilters[j + 1]!.controlPointCount; i++) {
-                                                const point: FilterControlPoint = newEffect.eqSubFilters[j + 1]!.controlPoints[i];
+                                            for (let i = 0; i < newEffect.eqSubFilters[j + 1]!.controlPointCount; i++) {
+                                                const point = newEffect.eqSubFilters[j + 1]!.controlPoints[i];
                                                 point.type = clamp(0, FilterType.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                                 point.freq = clamp(0, Config.filterFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                                 point.gain = clamp(0, Config.filterGainRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                             }
-                                            for (let i: number = newEffect.eqSubFilters[j + 1]!.controlPointCount; i < originalSubfilterControlPointCount; i++) {
+                                            for (let i = newEffect.eqSubFilters[j + 1]!.controlPointCount; i < originalSubfilterControlPointCount; i++) {
                                                 charIndex += 3;
                                             }
                                         }
@@ -2848,16 +2848,16 @@ export class Song {
                         // i will admit it feels pretty good to describe a feature as "legacy"
                         // hopefully this will inspire me to add more compatability code (although im not 100% sure i got it right here) ~ theepie
                         const legacyEffectTypes: (EffectType | MDEffectType)[] = [EffectType.reverb, EffectType.chorus, EffectType.panning, EffectType.distortion, EffectType.bitcrusher, EffectType.eqFilter, EffectType.echo, MDEffectType.pitchShift, MDEffectType.detune, MDEffectType.vibrato, MDEffectType.transition, MDEffectType.chord, MDEffectType.noteRange, EffectType.ringModulation, EffectType.granular];
-                        let bit: number = 0;
+                        let bit = 0;
                         if (fromSlarmoosBox && !beforeFive) {
-                            const bits: BitFieldReader = new BitFieldReader(compressed, charIndex, charIndex + 18);
+                            const bits = new BitFieldReader(compressed, charIndex, charIndex + 18);
                             for (let i = 0; i < 18; i++) {
                                 bit = bits.read(1)
                                 if (i > 6 && i < 13) instrument.mdeffects &= legacyEffectTypes[bit];
                                 else if (bit == 1) instrument.addEffect(legacyEffectTypes[i] as EffectType);
                             }
                         } else {
-                            const bits: BitFieldReader = new BitFieldReader(compressed, charIndex, charIndex + 12);
+                            const bits = new BitFieldReader(compressed, charIndex, charIndex + 12);
                             for (let i = 0; i < 12; i++) {
                                 bit = bits.read(1)
                                 if (i > 6) instrument.mdeffects &= legacyEffectTypes[bit];
@@ -2917,27 +2917,27 @@ export class Song {
             } break;
             case SongTagCode.volume: {
                 if (beforeThree && fromBeepBox) {
-                    const channelIndex: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                    const instrument: Instrument = this.channels[channelIndex].instruments[0];
+                    const channelIndex = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                    const instrument = this.channels[channelIndex].instruments[0];
                     instrument.volume = Math.round(clamp(-Config.volumeRange / 2, 1, -base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * 5.0));
                 } else if (beforeSix && fromBeepBox) {
-                    for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+                    for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
                         for (const instrument of this.channels[channelIndex].instruments) {
                             instrument.volume = Math.round(clamp(-Config.volumeRange / 2, 1, -base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * 5.0));
                         }
                     }
                 } else if (beforeSeven && fromBeepBox) {
-                    const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                    const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     instrument.volume = Math.round(clamp(-Config.volumeRange / 2, 1, -base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * 5.0));
                 } else if (fromBeepBox) {
                     // Beepbox v9's volume range is 0-7 (0 is max, 7 is mute)
-                    const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                    const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     instrument.volume = Math.round(clamp(-Config.volumeRange / 2, 1, -base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * 25.0 / 7.0));
                 } else if (!fromTheepBox) {
-                    const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                    const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     instrument.volume = Math.round(clamp(-Config.volumeRange / 2, Config.volumeRange / 2 + 1, ((base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)])) - Config.volumeRange / 2) * 2.0);
                 } else {
-                    const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                    const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     // shoutouts to later waffling
                     instrument.volume = Math.round(clamp(-Config.volumeRange / 2, Config.volumeRange / 2 + 1, ((base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) | (base64CharCodeToInt[compressed.charCodeAt(charIndex++)])) - Config.volumeRange / 2));
                 }
@@ -2946,10 +2946,10 @@ export class Song {
                 /*
                 if (beforeNine && fromBeepBox) {
                     // Beepbox has a panMax of 8 (9 total positions), Jummbox has a panMax of 100 (101 total positions)
-                    const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                    const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     instrument.pan = clamp(0, Config.panMax + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * ((Config.panMax) / 8.0));
                 } else if ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox)) {
-                    const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                    const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     instrument.pan = clamp(0, Config.panMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     // Pan delay follows on v3 + v4
                     if (fromJummBox && !beforeThree || fromGoldBox || fromUltraBox || fromSlarmoosBox) {
@@ -2960,7 +2960,7 @@ export class Song {
                 } */
             } break;
             case SongTagCode.detune: {
-                const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
 
                 if ((fromJummBox && beforeFive) || (beforeFour && fromGoldBox)) {
                     // Before jummbox v5, detune was -50 to 50. Now it is 0 to 400
@@ -2971,23 +2971,23 @@ export class Song {
                 }
             } break;
             case SongTagCode.customChipWave: {
-                let instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                let instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                 // Pop custom wave values
-                for (let j: number = 0; j < 64; j++) {
+                for (let j = 0; j < 64; j++) {
                     instrument.customChipWave[j]
                     = clamp(-24, 25, base64CharCodeToInt[compressed.charCodeAt(charIndex++)] - 24);
                 }
 
-                let sum: number = 0.0;
-                for (let i: number = 0; i < instrument.customChipWave.length; i++) {
+                let sum = 0.0;
+                for (let i = 0; i < instrument.customChipWave.length; i++) {
                     sum += instrument.customChipWave[i];
                 }
-                const average: number = sum / instrument.customChipWave.length;
+                const average = sum / instrument.customChipWave.length;
 
                 // Perform the integral on the wave. The chipSynth will perform the derivative to get the original wave back but with antialiasing.
-                let cumulative: number = 0;
-                let wavePrev: number = 0;
-                for (let i: number = 0; i < instrument.customChipWave.length; i++) {
+                let cumulative = 0;
+                let wavePrev = 0;
+                for (let i = 0; i < instrument.customChipWave.length; i++) {
                     cumulative += wavePrev;
                     wavePrev = instrument.customChipWave[i] - average;
                     instrument.customChipWaveIntegral[i] = cumulative;
@@ -2998,7 +2998,7 @@ export class Song {
 
             } break;
             case SongTagCode.limiterSettings: {
-                let nextValue: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                let nextValue = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
 
                 // Check if limiter settings are used... if not, restore to default
                 if (nextValue == 0x3f) {
@@ -3017,7 +3017,7 @@ export class Song {
                 }
             } break;
             case SongTagCode.channelNames: {
-                for (let channel: number = 0; channel < this.getChannelCount(); channel++) {
+                for (let channel = 0; channel < this.getChannelCount(); channel++) {
                     // Length of channel name string. Due to some crazy Unicode characters this needs to be 2 bytes...
                     var channelNameLength;
                     if (beforeFour && !fromGoldBox && !fromUltraBox && !fromSlarmoosBox)
@@ -3032,7 +3032,7 @@ export class Song {
                 }
             } break;
             case SongTagCode.algorithm: {
-                const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                 if (instrument.type == InstrumentType.fm) {
                     instrument.algorithm = clamp(0, Config.algorithms.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                 }
@@ -3045,11 +3045,11 @@ export class Song {
                         let tempModArray: number[][] = [];
                         if (compressed.charCodeAt(charIndex + 1) == SongTagCode.effects) {
                             charIndex++
-                            let j: number = 0;
+                            let j = 0;
                             charIndex++
                             while (compressed.charCodeAt(charIndex) != SongTagCode.effects) {
                                 tempModArray[j] = [];
-                                let o: number = 0;
+                                let o = 0;
                                 while (compressed.charCodeAt(charIndex) != SongTagCode.operatorWaves) {
                                     tempModArray[j][o] = clamp(1, Config.operatorCount + 3, base64CharCodeToInt[compressed.charCodeAt(charIndex)]);
                                     o++
@@ -3065,7 +3065,7 @@ export class Song {
                 }
                 if ((beforeNine && fromBeepBox) || (beforeFive && fromJummBox) || (beforeFour && fromGoldBox)) {
                     // The algorithm determines the carrier count, which affects how legacy settings are imported.
-                    const legacySettings: LegacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
+                    const legacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
                     instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
                 }
             } break;
@@ -3097,14 +3097,14 @@ export class Song {
                         this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator].chipWave = clamp(0, Config.chipWaves.length, chipWaveForCompat + 62);
                     }
                 } else {
-                    const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                    const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     instrument.supersawDynamism = clamp(0, Config.supersawDynamismMax + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     instrument.supersawSpread = clamp(0, Config.supersawSpreadMax + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     instrument.supersawShape = clamp(0, Config.supersawShapeMax + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                 }
             } break;
             case SongTagCode.feedbackType: {
-                const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                 if (instrument.type == InstrumentType.fm) {
                     instrument.feedbackType = clamp(0, Config.feedbacks.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                 }
@@ -3113,11 +3113,11 @@ export class Song {
                     instrument.customFeedbackType.fromPreset(instrument.feedbackType6Op);
                     let tempModArray: number[][] = [];
                     if (compressed.charCodeAt(charIndex) == SongTagCode.effects) {
-                        let j: number = 0;
+                        let j = 0;
                         charIndex++
                         while (compressed.charCodeAt(charIndex) != SongTagCode.effects) {
                             tempModArray[j] = [];
-                            let o: number = 0;
+                            let o = 0;
                             while (compressed.charCodeAt(charIndex) != SongTagCode.operatorWaves) {
                                 tempModArray[j][o] = clamp(1, Config.operatorCount + 2, base64CharCodeToInt[compressed.charCodeAt(charIndex)]);
                                 o++
@@ -3138,10 +3138,10 @@ export class Song {
             case SongTagCode.feedbackEnvelope: {
                 if ((beforeNine && fromBeepBox) || (beforeFive && fromJummBox) || (beforeFour && fromGoldBox)) {
                     const pregoldToEnvelope: number[] = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29, 32, 33, 34, 31, 11];
-                    const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                    const legacySettings: LegacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
+                    const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                    const legacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
 
-                    let aa: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                    let aa = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     if ((beforeTwo && fromGoldBox) || (!fromGoldBox && !fromUltraBox && !fromSlarmoosBox)) aa = pregoldToEnvelope[aa];
                     legacySettings.feedbackEnvelope = Song._envelopeFromLegacyIndex(base64CharCodeToInt[aa]);
                     instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
@@ -3173,8 +3173,8 @@ export class Song {
                 }
             } break;
             case SongTagCode.operatorAmplitudes: {
-                const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                for (let o: number = 0; o < (instrument.type == InstrumentType.fm6op ? 6 : Config.operatorCount); o++) {
+                const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                for (let o = 0; o < (instrument.type == InstrumentType.fm6op ? 6 : Config.operatorCount); o++) {
                     instrument.operators[o].amplitude = clamp(0, Config.operatorAmplitudeMax + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                 }
             } break;
@@ -3182,60 +3182,60 @@ export class Song {
                 const pregoldToEnvelope: number[] = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29, 32, 33, 34, 31, 11];
                 const jummToUltraEnvelope: number[] = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 23, 24, 25, 58, 59, 60];
                 const slarURL3toURL4Envelope: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 10, 11, 12, 13, 14];
-                const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                 if ((beforeNine && fromBeepBox) || (beforeFive && fromJummBox) || (beforeFour && fromGoldBox)) {
-                    const legacySettings: LegacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
+                    const legacySettings = legacySettingsCache![instrumentChannelIterator][instrumentIndexIterator];
                     legacySettings.operatorEnvelopes = [];
-                    for (let o: number = 0; o < (instrument.type == InstrumentType.fm6op ? 6 : Config.operatorCount); o++) {
-                        let aa: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                    for (let o = 0; o < (instrument.type == InstrumentType.fm6op ? 6 : Config.operatorCount); o++) {
+                        let aa = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         if ((beforeTwo && fromGoldBox) || (fromBeepBox)) aa = pregoldToEnvelope[aa];
                         if (fromJummBox) aa = jummToUltraEnvelope[aa];
                         legacySettings.operatorEnvelopes[o] = Song._envelopeFromLegacyIndex(aa);
                     }
                     instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
                 } else {
-                    const envelopeCount: number = clamp(0, Config.maxEnvelopeCount + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                    const envelopeCount = clamp(0, Config.maxEnvelopeCount + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     // JB v6 adds some envelope options here in the sequence.
-                    let envelopeDiscrete: boolean = false;
+                    let envelopeDiscrete = false;
                     if ((fromJummBox && !beforeSix) || (fromUltraBox && !beforeFive) || (fromSlarmoosBox)) {
                         instrument.envelopeSpeed = clamp(0, Config.modulators.dictionary["envelope speed"].maxRawVol + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         if(!fromSlarmoosBox || beforeFive) {
                             envelopeDiscrete = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) ? true : false;
                         }
                     }
-                    for (let i: number = 0; i < envelopeCount; i++) {
-                        const target: number = clamp(0, Config.instrumentAutomationTargets.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                        let index: number = 0;
-                        const maxCount: number = Config.instrumentAutomationTargets[target].maxCount;
+                    for (let i = 0; i < envelopeCount; i++) {
+                        const target = clamp(0, Config.instrumentAutomationTargets.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                        let index = 0;
+                        const maxCount = Config.instrumentAutomationTargets[target].maxCount;
                         if (maxCount > 1) {
                             index = clamp(0, maxCount, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         }
-                        let aa: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                        let aa = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         if ((beforeTwo && fromGoldBox) || (fromBeepBox)) aa = pregoldToEnvelope[aa];
                         if (fromJummBox) aa = jummToUltraEnvelope[aa];
                         if (!fromSlarmoosBox && aa >= 2) aa++; //2 for pitch
-                        let updatedEnvelopes: boolean = false;
-                        let perEnvelopeSpeed: number = 1;
+                        let updatedEnvelopes = false;
+                        let perEnvelopeSpeed = 1;
                         if (!fromSlarmoosBox || beforeThree) {
                             updatedEnvelopes = true;
                             perEnvelopeSpeed = Config.envelopes[aa].speed;
                             aa = Config.envelopes[aa].type; //update envelopes
                         } else if (beforeFour && aa >= 3) aa++; //3 for random
-                        let isTremolo2: boolean = false;
+                        let isTremolo2 = false;
                         if ((fromSlarmoosBox && !beforeThree && beforeFour) || updatedEnvelopes) { //remove tremolo2
                             if(aa == 9) isTremolo2 = true;
                             aa = slarURL3toURL4Envelope[aa];
                         }
-                        const envelope: number = clamp(0, ((fromSlarmoosBox && !beforeThree || updatedEnvelopes) ? Config.newEnvelopes.length : Config.envelopes.length), aa);
-                        let pitchEnvelopeStart: number = 0;
-                        let pitchEnvelopeEnd: number = Config.maxPitch;
-                        let envelopeInverse: boolean = false;
+                        const envelope = clamp(0, ((fromSlarmoosBox && !beforeThree || updatedEnvelopes) ? Config.newEnvelopes.length : Config.envelopes.length), aa);
+                        let pitchEnvelopeStart = 0;
+                        let pitchEnvelopeEnd = Config.maxPitch;
+                        let envelopeInverse = false;
                         perEnvelopeSpeed = (fromSlarmoosBox && !beforeThree) ? Config.newEnvelopes[envelope].speed : perEnvelopeSpeed;
-                        let perEnvelopeLowerBound: number = 0;
-                        let perEnvelopeUpperBound: number = 1;
-                        let steps: number = 2;
-                        let seed: number = 2;
-                        let waveform: number = LFOEnvelopeTypes.sine;
+                        let perEnvelopeLowerBound = 0;
+                        let perEnvelopeUpperBound = 1;
+                        let steps = 2;
+                        let seed = 2;
+                        let waveform = LFOEnvelopeTypes.sine;
                         //pull out unique envelope setting values first, then general ones
                         if (fromSlarmoosBox && !beforeFour) {
                             if (Config.newEnvelopes[envelope].name == "lfo") {
@@ -3252,7 +3252,7 @@ export class Song {
                         if (fromSlarmoosBox && !beforeThree) {
                             if (Config.newEnvelopes[envelope].name == "pitch") {
                                 if (!instrument.isNoiseInstrument) {
-                                    let pitchEnvelopeCompact: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                                    let pitchEnvelopeCompact = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                     pitchEnvelopeStart = clamp(0, Config.maxPitch+1, pitchEnvelopeCompact * 64 + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     pitchEnvelopeCompact = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                     pitchEnvelopeEnd = clamp(0, Config.maxPitch+1, pitchEnvelopeCompact * 64 + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
@@ -3261,7 +3261,7 @@ export class Song {
                                     pitchEnvelopeEnd = clamp(0, Config.drumCount, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 }
                             }
-                            let checkboxValues: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                            let checkboxValues = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                             if (fromSlarmoosBox && !beforeFive) {
                                 envelopeDiscrete = (checkboxValues >> 1) == 1 ? true : false;
                             }
@@ -3287,7 +3287,7 @@ export class Song {
 
                         instrument.addEnvelope(target, index, envelope, true, pitchEnvelopeStart, pitchEnvelopeEnd, envelopeInverse, perEnvelopeSpeed, perEnvelopeLowerBound, perEnvelopeUpperBound, steps, seed, waveform, envelopeDiscrete);
                         if (fromSlarmoosBox && beforeThree && !beforeTwo) {
-                            let pitchEnvelopeCompact: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                            let pitchEnvelopeCompact = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                             instrument.envelopes[i].pitchEnvelopeStart = pitchEnvelopeCompact * 64 + base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                             pitchEnvelopeCompact = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                             instrument.envelopes[i].pitchEnvelopeEnd = pitchEnvelopeCompact * 64 + base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
@@ -3295,16 +3295,16 @@ export class Song {
                         }
                     }
 
-                    let instrumentPitchEnvelopeStart: number = 0;
-                    let instrumentPitchEnvelopeEnd: number = Config.maxPitch;
-                    let instrumentEnvelopeInverse: boolean = false;
+                    let instrumentPitchEnvelopeStart = 0;
+                    let instrumentPitchEnvelopeEnd = Config.maxPitch;
+                    let instrumentEnvelopeInverse = false;
                     if (fromSlarmoosBox && beforeTwo) {
-                        let pitchEnvelopeCompact: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                        let pitchEnvelopeCompact = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         instrumentPitchEnvelopeStart = pitchEnvelopeCompact * 64 + base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         pitchEnvelopeCompact = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         instrumentPitchEnvelopeEnd = pitchEnvelopeCompact * 64 + base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         instrumentEnvelopeInverse = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] === 1 ? true : false;
-                        for (let i: number = 0; i < envelopeCount; i++) {
+                        for (let i = 0; i < envelopeCount; i++) {
                             instrument.envelopes[i].pitchEnvelopeStart = instrumentPitchEnvelopeStart;
                             instrument.envelopes[i].pitchEnvelopeEnd = instrumentPitchEnvelopeEnd;
                             instrument.envelopes[i].inverse = Config.envelopes[instrument.envelopes[i].envelope].name == "pitch" ? instrumentEnvelopeInverse : false;
@@ -3314,12 +3314,12 @@ export class Song {
                 }
             } break;
             case SongTagCode.operatorWaves: {
-                const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
 
                 if (beforeThree && fromGoldBox) {
-                    for (let o: number = 0; o < Config.operatorCount; o++) {
+                    for (let o = 0; o < Config.operatorCount; o++) {
                         const pre3To3g = [0, 1, 3, 2, 2, 2, 4, 5];
-                        const old: number = clamp(0, pre3To3g.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                        const old = clamp(0, pre3To3g.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         if (old == 3) {
                             instrument.operators[o].pulseWidth = 5;
                         } else if (old == 4) {
@@ -3330,7 +3330,7 @@ export class Song {
                         instrument.operators[o].waveform = pre3To3g[old];
                     }
                 } else {
-                    for (let o: number = 0; o < (instrument.type == InstrumentType.fm6op ? 6 : Config.operatorCount); o++) {
+                    for (let o = 0; o < (instrument.type == InstrumentType.fm6op ? 6 : Config.operatorCount); o++) {
                         if (fromJummBox) {
                             const jummToG = [0, 1, 3, 2, 4, 5];
                             instrument.operators[o].waveform = jummToG[clamp(0, Config.operatorWaves.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
@@ -3346,20 +3346,20 @@ export class Song {
 
             } break;
             case SongTagCode.spectrum: {
-                const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                 if (instrument.type == InstrumentType.spectrum) {
-                    const byteCount: number = Math.ceil(Config.spectrumControlPoints * Config.spectrumControlPointBits / 6)
-                    const bits: BitFieldReader = new BitFieldReader(compressed, charIndex, charIndex + byteCount);
-                    for (let i: number = 0; i < Config.spectrumControlPoints; i++) {
+                    const byteCount = Math.ceil(Config.spectrumControlPoints * Config.spectrumControlPointBits / 6)
+                    const bits = new BitFieldReader(compressed, charIndex, charIndex + byteCount);
+                    for (let i = 0; i < Config.spectrumControlPoints; i++) {
                         instrument.spectrumWave.spectrum[i] = bits.read(Config.spectrumControlPointBits);
                     }
                     instrument.spectrumWave.markCustomWaveDirty();
                     charIndex += byteCount;
                 } else if (instrument.type == InstrumentType.drumset) {
-                    const byteCount: number = Math.ceil(Config.drumCount * Config.spectrumControlPoints * Config.spectrumControlPointBits / 6)
-                    const bits: BitFieldReader = new BitFieldReader(compressed, charIndex, charIndex + byteCount);
-                    for (let j: number = 0; j < Config.drumCount; j++) {
-                        for (let i: number = 0; i < Config.spectrumControlPoints; i++) {
+                    const byteCount = Math.ceil(Config.drumCount * Config.spectrumControlPoints * Config.spectrumControlPointBits / 6)
+                    const bits = new BitFieldReader(compressed, charIndex, charIndex + byteCount);
+                    for (let j = 0; j < Config.drumCount; j++) {
+                        for (let i = 0; i < Config.spectrumControlPoints; i++) {
                             instrument.drumsetSpectrumWaves[j].spectrum[i] = bits.read(Config.spectrumControlPointBits);
                         }
                         instrument.drumsetSpectrumWaves[j].markCustomWaveDirty();
@@ -3370,10 +3370,10 @@ export class Song {
                 }
             } break;
             case SongTagCode.harmonics: {
-                const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                const byteCount: number = Math.ceil(Config.harmonicsControlPoints * Config.harmonicsControlPointBits / 6);
-                const bits: BitFieldReader = new BitFieldReader(compressed, charIndex, charIndex + byteCount);
-                for (let i: number = 0; i < Config.harmonicsControlPoints; i++) {
+                const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                const byteCount = Math.ceil(Config.harmonicsControlPoints * Config.harmonicsControlPointBits / 6);
+                const bits = new BitFieldReader(compressed, charIndex, charIndex + byteCount);
+                for (let i = 0; i < Config.harmonicsControlPoints; i++) {
                     instrument.harmonicsWave.harmonics[i] = bits.read(Config.harmonicsControlPointBits);
                 }
                 instrument.harmonicsWave.markCustomWaveDirty();
@@ -3381,15 +3381,15 @@ export class Song {
             } break;
             case SongTagCode.aliases: {
                 if ((fromJummBox && beforeFive) || (fromGoldBox && beforeFour)) {
-                    const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                    const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                     instrument.aliases = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) ? true : false;
                     if (instrument.aliases) {
-                        let newEffect: Effect = instrument.addEffect(EffectType.distortion);
+                        let newEffect = instrument.addEffect(EffectType.distortion);
                         newEffect.distortion = 0;
                     }
                 } else {
                     if (fromUltraBox || fromSlarmoosBox) {
-                        const instrument: Instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
+                        const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                         instrument.decimalOffset = clamp(0, 50 + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     }
                 }
@@ -3398,30 +3398,30 @@ export class Song {
             case SongTagCode.bars: {
                 let subStringLength: number;
                 if (beforeThree && fromBeepBox) {
-                    const channelIndex: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                    const barCount: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                    const channelIndex = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                    const barCount = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     subStringLength = Math.ceil(barCount * 0.5);
-                    const bits: BitFieldReader = new BitFieldReader(compressed, charIndex, charIndex + subStringLength);
-                    for (let i: number = 0; i < barCount; i++) {
+                    const bits = new BitFieldReader(compressed, charIndex, charIndex + subStringLength);
+                    for (let i = 0; i < barCount; i++) {
                         this.channels[channelIndex].bars[i] = bits.read(3) + 1;
                     }
                 } else if (beforeFive && fromBeepBox) {
-                    let neededBits: number = 0;
+                    let neededBits = 0;
                     while ((1 << neededBits) < this.patternsPerChannel) neededBits++;
                     subStringLength = Math.ceil(this.getChannelCount() * this.barCount * neededBits / 6);
-                    const bits: BitFieldReader = new BitFieldReader(compressed, charIndex, charIndex + subStringLength);
-                    for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
-                        for (let i: number = 0; i < this.barCount; i++) {
+                    const bits = new BitFieldReader(compressed, charIndex, charIndex + subStringLength);
+                    for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+                        for (let i = 0; i < this.barCount; i++) {
                             this.channels[channelIndex].bars[i] = bits.read(neededBits) + 1;
                         }
                     }
                 } else {
-                    let neededBits: number = 0;
+                    let neededBits = 0;
                     while ((1 << neededBits) < this.patternsPerChannel + 1) neededBits++;
                     subStringLength = Math.ceil(this.getChannelCount() * this.barCount * neededBits / 6);
-                    const bits: BitFieldReader = new BitFieldReader(compressed, charIndex, charIndex + subStringLength);
-                    for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
-                        for (let i: number = 0; i < this.barCount; i++) {
+                    const bits = new BitFieldReader(compressed, charIndex, charIndex + subStringLength);
+                    for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+                        for (let i = 0; i < this.barCount; i++) {
                             this.channels[channelIndex].bars[i] = bits.read(neededBits);
                         }
                     }
@@ -3429,23 +3429,23 @@ export class Song {
                 charIndex += subStringLength;
             } break;
             case SongTagCode.patterns: {
-                let bitStringLength: number = 0;
+                let bitStringLength = 0;
                 let channelIndex: number;
-                let largerChords: boolean = !((beforeFour && fromJummBox) || fromBeepBox);
-                let recentPitchBitLength: number = (largerChords ? 4 : 3);
-                let recentPitchLength: number = (largerChords ? 16 : 8);
+                let largerChords = !((beforeFour && fromJummBox) || fromBeepBox);
+                let recentPitchBitLength = (largerChords ? 4 : 3);
+                let recentPitchLength = (largerChords ? 16 : 8);
                 if (beforeThree && fromBeepBox) {
                     channelIndex = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
 
                     // The old format used the next character to represent the number of patterns in the channel, which is usually eight, the default.
-                    charIndex++; //let patternCount: number = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                    charIndex++; //let patternCount = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
 
                     bitStringLength = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     bitStringLength = bitStringLength << 6;
                     bitStringLength += base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                 } else {
                     channelIndex = 0;
-                    let bitStringLengthLength: number = validateRange(1, 4, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                    let bitStringLengthLength = validateRange(1, 4, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     while (bitStringLengthLength > 0) {
                         bitStringLength = bitStringLength << 6;
                         bitStringLength += base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
@@ -3453,53 +3453,53 @@ export class Song {
                     }
                 }
 
-                const bits: BitFieldReader = new BitFieldReader(compressed, charIndex, charIndex + bitStringLength);
+                const bits = new BitFieldReader(compressed, charIndex, charIndex + bitStringLength);
                 charIndex += bitStringLength;
 
-                const bitsPerNoteSize: number = Song.getNeededBits(Config.noteSizeMax);
-                let songReverbChannel: number = -1;
-                let songReverbInstrument: number = -1;
-                let songReverbIndex: number = -1;
+                const bitsPerNoteSize = Song.getNeededBits(Config.noteSizeMax);
+                let songReverbChannel = -1;
+                let songReverbInstrument = -1;
+                let songReverbIndex = -1;
 
                 // @TODO: Include GoldBox here.
-                const shouldCorrectTempoMods: boolean = fromJummBox;
-                const jummboxTempoMin: number = 30;
+                const shouldCorrectTempoMods = fromJummBox;
+                const jummboxTempoMin = 30;
 
                 while (true) {
-                    const channel: Channel = this.channels[channelIndex];
-                    const isNoiseChannel: boolean = this.getChannelIsNoise(channelIndex);
-                    const isModChannel: boolean = this.getChannelIsMod(channelIndex);
+                    const channel = this.channels[channelIndex];
+                    const isNoiseChannel = this.getChannelIsNoise(channelIndex);
+                    const isModChannel = this.getChannelIsMod(channelIndex);
 
-                    const maxInstrumentsPerPattern: number = this.getMaxInstrumentsPerPattern(channelIndex);
-                    const neededInstrumentCountBits: number = Song.getNeededBits(maxInstrumentsPerPattern - Config.instrumentCountMin);
+                    const maxInstrumentsPerPattern = this.getMaxInstrumentsPerPattern(channelIndex);
+                    const neededInstrumentCountBits = Song.getNeededBits(maxInstrumentsPerPattern - Config.instrumentCountMin);
 
-                    const neededInstrumentIndexBits: number = Song.getNeededBits(channel.instruments.length - 1);
+                    const neededInstrumentIndexBits = Song.getNeededBits(channel.instruments.length - 1);
 
                     // Some info about modulator settings immediately follows in mod channels.
                     if (isModChannel) {
-                        let jumfive: boolean = (beforeFive && fromJummBox) || (beforeFour && fromGoldBox)
+                        let jumfive = (beforeFive && fromJummBox) || (beforeFour && fromGoldBox)
 
                         // 2 more indices for 'all' and 'active'
-                        const neededModInstrumentIndexBits: number = (jumfive) ? neededInstrumentIndexBits : Song.getNeededBits(this.getMaxInstrumentsPerChannel() + 2);
+                        const neededModInstrumentIndexBits = (jumfive) ? neededInstrumentIndexBits : Song.getNeededBits(this.getMaxInstrumentsPerChannel() + 2);
 
-                        for (let instrumentIndex: number = 0; instrumentIndex < channel.instruments.length; instrumentIndex++) {
+                        for (let instrumentIndex = 0; instrumentIndex < channel.instruments.length; instrumentIndex++) {
 
-                            let instrument: Instrument = channel.instruments[instrumentIndex];
+                            let instrument = channel.instruments[instrumentIndex];
 
-                            for (let mod: number = 0; mod < Config.modCount; mod++) {
+                            for (let mod = 0; mod < Config.modCount; mod++) {
                                 // Still using legacy "mod status" format, but doing it manually as it's only used in the URL now.
                                 // 0 - For pitch/noise
                                 // 1 - (used to be For noise, not needed)
                                 // 2 - For song
                                 // 3 - None
-                                let status: number = bits.read(2);
+                                let status = bits.read(2);
 
                                 switch (status) {
                                     case 0: // Pitch
-                                        let modChannelLength: number = bits.read(8);
-                                        for (let i: number = 0; i < modChannelLength; i++) instrument.modChannels[mod][i] = clamp(0, this.pitchChannelCount + this.noiseChannelCount + 1, bits.read(8));
-                                        let modInstrumentLength: number = bits.read(8);
-                                        for (let i: number = 0; i < modInstrumentLength; i++) instrument.modInstruments[mod][i] = clamp(0, this.channels[instrument.modChannels[mod][i]].instruments.length + 2, bits.read(neededModInstrumentIndexBits));
+                                        let modChannelLength = bits.read(8);
+                                        for (let i = 0; i < modChannelLength; i++) instrument.modChannels[mod][i] = clamp(0, this.pitchChannelCount + this.noiseChannelCount + 1, bits.read(8));
+                                        let modInstrumentLength = bits.read(8);
+                                        for (let i = 0; i < modInstrumentLength; i++) instrument.modInstruments[mod][i] = clamp(0, this.channels[instrument.modChannels[mod][i]].instruments.length + 2, bits.read(neededModInstrumentIndexBits));
                                         break;
                                     case 1: // Noise
                                         // Getting a status of 1 means this is legacy mod info. Need to add pitch channel count, as it used to just store noise channel index and not overall channel index
@@ -3532,7 +3532,7 @@ export class Song {
                                 }
 
                                 if (jumfive && instrument.modChannels[mod][0] >= 0) {
-                                    let forNoteFilter: boolean = this.channels[instrument.modChannels[mod][0]].instruments[instrument.modInstruments[mod][0]].effectsIncludeType(EffectType.eqFilter);
+                                    let forNoteFilter = this.channels[instrument.modChannels[mod][0]].instruments[instrument.modInstruments[mod][0]].effectsIncludeType(EffectType.eqFilter);
 
                                     // For legacy filter cut/peak, need to denote since scaling must be applied
                                     if (instrument.modulators[mod] == 7) {
@@ -3582,29 +3582,29 @@ export class Song {
 
                     // Scalar applied to detune mods since its granularity was upped. Could be repurposed later if any other granularity changes occur.
                     const detuneScaleNotes: number[][] = [];
-                    for (let j: number = 0; j < channel.instruments.length; j++) {
+                    for (let j = 0; j < channel.instruments.length; j++) {
                         detuneScaleNotes[j] = [];
-                        for (let i: number = 0; i < Config.modCount; i++) {
+                        for (let i = 0; i < Config.modCount; i++) {
                             detuneScaleNotes[j][Config.modCount - 1 - i] = 1 + 3 * +(((beforeFive && fromJummBox) || (beforeFour && fromGoldBox)) && isModChannel && (channel.instruments[j].modulators[i] == Config.modulators.dictionary["detune"].index));
                         }
                     }
-                    const octaveOffset: number = (isNoiseChannel || isModChannel) ? 0 : channel.octave * 12;
-                    let lastPitch: number = ((isNoiseChannel || isModChannel) ? 4 : octaveOffset);
+                    const octaveOffset = (isNoiseChannel || isModChannel) ? 0 : channel.octave * 12;
+                    let lastPitch = ((isNoiseChannel || isModChannel) ? 4 : octaveOffset);
                     const recentPitches: number[] = isModChannel ? [0, 1, 2, 3, 4, 5] : (isNoiseChannel ? [4, 6, 7, 2, 3, 8, 0, 10] : [0, 7, 12, 19, 24, -5, -12]);
                     const recentShapes: any[] = [];
-                    for (let i: number = 0; i < recentPitches.length; i++) {
+                    for (let i = 0; i < recentPitches.length; i++) {
                         recentPitches[i] += octaveOffset;
                     }
-                    for (let i: number = 0; i < this.patternsPerChannel; i++) {
-                        const newPattern: Pattern = channel.patterns[i];
+                    for (let i = 0; i < this.patternsPerChannel; i++) {
+                        const newPattern = channel.patterns[i];
 
                         if ((beforeNine && fromBeepBox) || (beforeFive && fromJummBox) || (beforeFour && fromGoldBox)) {
                             newPattern.instruments[0] = validateRange(0, channel.instruments.length - 1, bits.read(neededInstrumentIndexBits));
                             newPattern.instruments.length = 1;
                         } else {
                             if (this.patternInstruments) {
-                                const instrumentCount: number = validateRange(Config.instrumentCountMin, maxInstrumentsPerPattern, bits.read(neededInstrumentCountBits) + Config.instrumentCountMin);
-                                for (let j: number = 0; j < instrumentCount; j++) {
+                                const instrumentCount = validateRange(Config.instrumentCountMin, maxInstrumentsPerPattern, bits.read(neededInstrumentCountBits) + Config.instrumentCountMin);
+                                for (let j = 0; j < instrumentCount; j++) {
                                     newPattern.instruments[j] = validateRange(0, channel.instruments.length - 1 + +(isModChannel) * 2, bits.read(neededInstrumentIndexBits));
                                 }
                                 newPattern.instruments.length = instrumentCount;
@@ -3619,15 +3619,15 @@ export class Song {
                             continue;
                         }
 
-                        let curPart: number = 0;
+                        let curPart = 0;
                         const newNotes: Note[] = newPattern.notes;
-                        let noteCount: number = 0;
+                        let noteCount = 0;
                         // Due to arbitrary note positioning, mod channels don't end the count until curPart actually exceeds the max
                         while (curPart < this.beatsPerBar * Config.partsPerBeat + (+isModChannel)) {
 
-                            const useOldShape: boolean = bits.read(1) == 1;
-                            let newNote: boolean = false;
-                            let shapeIndex: number = 0;
+                            const useOldShape = bits.read(1) == 1;
+                            let newNote = false;
+                            let shapeIndex = 0;
                             if (useOldShape) {
                                 shapeIndex = validateRange(0, recentShapes.length - 1, bits.readLongTail(0, 0));
                             } else {
@@ -3637,8 +3637,8 @@ export class Song {
                             if (!useOldShape && !newNote) {
                                 // For mod channels, check if you need to move backward too (notes can appear in any order and offset from each other).
                                 if (isModChannel) {
-                                    const isBackwards: boolean = bits.read(1) == 1;
-                                    const restLength: number = bits.readPartDuration();
+                                    const isBackwards = bits.read(1) == 1;
+                                    const restLength = bits.readPartDuration();
                                     if (isBackwards) {
                                         curPart -= restLength;
                                     }
@@ -3646,7 +3646,7 @@ export class Song {
                                         curPart += restLength;
                                     }
                                 } else {
-                                    const restLength: number = (beforeSeven && fromBeepBox)
+                                    const restLength = (beforeSeven && fromBeepBox)
                                     ? bits.readLegacyPartDuration() * Config.partsPerBeat / Config.rhythms[this.rhythm].stepsPerBeat
                                     : bits.readPartDuration();
                                     curPart += restLength;
@@ -3697,7 +3697,7 @@ export class Song {
                                     shape.pins = [];
                                     shape.length = 0;
                                     shape.bendCount = 0;
-                                    for (let j: number = 0; j < shape.pinCount; j++) {
+                                    for (let j = 0; j < shape.pinCount; j++) {
                                         let pinObj: any = {};
                                         pinObj.pitchBend = bits.read(1) == 1;
                                         if (pinObj.pitchBend) shape.bendCount++;
@@ -3731,14 +3731,14 @@ export class Song {
                                 }
 
                                 let pitch: number;
-                                let pitchCount: number = 0;
+                                let pitchCount = 0;
                                 const pitchBends: number[] = []; // TODO: allocate this array only once! keep separate length and iterator index. Use Deque?
-                                for (let j: number = 0; j < shape.pitchCount + shape.bendCount; j++) {
-                                    const useOldPitch: boolean = bits.read(1) == 1;
+                                for (let j = 0; j < shape.pitchCount + shape.bendCount; j++) {
+                                    const useOldPitch = bits.read(1) == 1;
                                     if (!useOldPitch) {
-                                        const interval: number = bits.readPitchInterval();
+                                        const interval = bits.readPitchInterval();
                                         pitch = lastPitch;
-                                        let intervalIter: number = interval;
+                                        let intervalIter = interval;
                                         while (intervalIter > 0) {
                                             pitch++;
                                             while (recentPitches.indexOf(pitch) != -1) pitch++;
@@ -3750,7 +3750,7 @@ export class Song {
                                             intervalIter++;
                                         }
                                     } else {
-                                        const pitchIndex: number = validateRange(0, recentPitches.length - 1, bits.read(recentPitchBitLength));
+                                        const pitchIndex = validateRange(0, recentPitches.length - 1, bits.read(recentPitchBitLength));
                                         pitch = recentPitches[pitchIndex];
                                         recentPitches.splice(pitchIndex, 1);
                                     }
@@ -3772,8 +3772,8 @@ export class Song {
                                 }
                                 note.pitches.length = pitchCount;
                                 pitchBends.unshift(note.pitches[0]); // TODO: Use Deque?
-                                const noteIsForTempoMod: boolean = isModChannel && channel.instruments[newPattern.instruments[0]].modulators[Config.modCount - 1 - note.pitches[0]] === Config.modulators.dictionary["tempo"].index;
-                                let tempoOffset: number = 0;
+                                const noteIsForTempoMod = isModChannel && channel.instruments[newPattern.instruments[0]].modulators[Config.modCount - 1 - note.pitches[0]] === Config.modulators.dictionary["tempo"].index;
+                                let tempoOffset = 0;
                                 if (shouldCorrectTempoMods && noteIsForTempoMod) {
                                     tempoOffset = jummboxTempoMin - Config.tempoMin; // convertRealFactor will add back Config.tempoMin as necessary
                                 }
@@ -3781,11 +3781,11 @@ export class Song {
                                     note.pins[0].size += tempoOffset;
                                     note.pins[0].size *= detuneScaleNotes[newPattern.instruments[0]][note.pitches[0]];
                                 }
-                                let pinCount: number = 1;
+                                let pinCount = 1;
                                 for (const pinObj of shape.pins) {
                                     if (pinObj.pitchBend) pitchBends.shift();
 
-                                    const interval: number = pitchBends[0] - note.pitches[0];
+                                    const interval = pitchBends[0] - note.pitches[0];
                                     if (note.pins.length <= pinCount) {
                                         if (isModChannel) {
                                             note.pins[pinCount++] = makeNotePin(interval, pinObj.time, pinObj.size * detuneScaleNotes[newPattern.instruments[0]][note.pitches[0]] + tempoOffset);
@@ -3793,7 +3793,7 @@ export class Song {
                                             note.pins[pinCount++] = makeNotePin(interval, pinObj.time, pinObj.size);
                                         }
                                     } else {
-                                        const pin: NotePin = note.pins[pinCount++];
+                                        const pin = note.pins[pinCount++];
                                         pin.interval = interval;
                                         pin.time = pinObj.time;
                                         if (isModChannel) {
@@ -3833,20 +3833,20 @@ export class Song {
 
                 // Correction for old JB songs that had song reverb mods. Change all instruments using reverb to max reverb
                 if (((fromJummBox && beforeFive) || (beforeFour && fromGoldBox)) && songReverbIndex >= 0) {
-                    for (let channelIndex: number = 0; channelIndex < this.channels.length; channelIndex++) {
-                        for (let instrumentIndex: number = 0; instrumentIndex < this.channels[channelIndex].instruments.length; instrumentIndex++) {
-                            const instrument: Instrument = this.channels[channelIndex].instruments[instrumentIndex];
+                    for (let channelIndex = 0; channelIndex < this.channels.length; channelIndex++) {
+                        for (let instrumentIndex = 0; instrumentIndex < this.channels[channelIndex].instruments.length; instrumentIndex++) {
+                            const instrument = this.channels[channelIndex].instruments[instrumentIndex];
                             if (instrument.effectsIncludeType(EffectType.reverb)) {
                                 //instrument.reverb = Config.reverbRange - 1;
                             }
                             // Set song reverb via mod to the old setting at song start.
                             if (songReverbChannel == channelIndex && songReverbInstrument == instrumentIndex) {
-                                const patternIndex: number = this.channels[channelIndex].bars[0];
+                                const patternIndex = this.channels[channelIndex].bars[0];
                                 if (patternIndex > 0) {
                                     // Doesn't work if 1st pattern isn't using the right ins for song reverb...
                                     // Add note to start of pattern
-                                    const pattern: Pattern = this.channels[channelIndex].patterns[patternIndex - 1];
-                                    let lowestPart: number = 6;
+                                    const pattern = this.channels[channelIndex].patterns[patternIndex - 1];
+                                    let lowestPart = 6;
                                     for (const note of pattern.notes) {
                                         if (note.pitches[0] == Config.modCount - 1 - songReverbIndex) {
                                             lowestPart = Math.min(lowestPart, note.start);
@@ -3860,11 +3860,11 @@ export class Song {
                                 else {
                                     // Add pattern
                                     if (this.channels[channelIndex].patterns.length < Config.barCountMax) {
-                                        const pattern: Pattern = new Pattern();
+                                        const pattern = new Pattern();
                                         this.channels[channelIndex].patterns.push(pattern);
                                         this.channels[channelIndex].bars[0] = this.channels[channelIndex].patterns.length;
                                         if (this.channels[channelIndex].patterns.length > this.patternsPerChannel) {
-                                            for (let chn: number = 0; chn < this.channels.length; chn++) {
+                                            for (let chn = 0; chn < this.channels.length; chn++) {
                                                 if (this.channels[chn].patterns.length <= this.patternsPerChannel) {
                                                     this.channels[chn].patterns.push(new Pattern());
                                                 }
@@ -3908,41 +3908,41 @@ export class Song {
 
     // @TODO: Share more of this code with AddSamplesPrompt.
     private static _parseAndConfigureCustomSample(url: string, customSampleUrls: string[], customSamplePresets: Preset[], sampleLoadingState: SampleLoadingState, parseOldSyntax: boolean): boolean {
-        const defaultIndex: number = 0;
+        const defaultIndex = 0;
         const defaultIntegratedSamplesL: Float32Array = Config.chipWaves[defaultIndex].samples;
         const defaultIntegratedSamplesR: Float32Array = Config.chipWaves[defaultIndex].samplesR || Config.chipWaves[defaultIndex].samples;
         const defaultSamplesL: Float32Array = Config.rawRawChipWaves[defaultIndex].samples;
         const defaultSamplesR: Float32Array = Config.rawRawChipWaves[defaultIndex].samplesR || Config.chipWaves[defaultIndex].samples;
 
-        const customSampleUrlIndex: number = customSampleUrls.length;
+        const customSampleUrlIndex = customSampleUrls.length;
         customSampleUrls.push(url);
         // This depends on `Config.chipWaves` being the same
         // length as `Config.rawRawChipWaves`.
-        const chipWaveIndex: number = Config.chipWaves.length;
+        const chipWaveIndex = Config.chipWaves.length;
 
-        let urlSliced: string = url;
+        let urlSliced = url;
 
-        let customSampleRate: number = 44100;
-        let isCustomPercussive: boolean = false;
-        let customRootKey: number = 60;
-        let presetIsUsingAdvancedLoopControls: boolean = false;
+        let customSampleRate = 44100;
+        let isCustomPercussive = false;
+        let customRootKey = 60;
+        let presetIsUsingAdvancedLoopControls = false;
         let presetChipWaveLoopStart: number | null = null;
         let presetChipWaveLoopEnd: number | null = null;
         let presetChipWaveStartOffset: number | null = null;
         let presetChipWaveLoopMode: number | null = null;
-        let presetChipWavePlayBackwards: boolean = false;
-        let presetChipWaveInStereo: boolean = false;
+        let presetChipWavePlayBackwards = false;
+        let presetChipWaveInStereo = false;
 
-        let parsedSampleOptions: boolean = false;
-        let optionsStartIndex: number = url.indexOf("!");
-        let optionsEndIndex: number = -1;
+        let parsedSampleOptions = false;
+        let optionsStartIndex = url.indexOf("!");
+        let optionsEndIndex = -1;
         if (optionsStartIndex === 0) {
             optionsEndIndex = url.indexOf("!", optionsStartIndex + 1);
             if (optionsEndIndex !== -1) {
                 const rawOptions: string[] = url.slice(optionsStartIndex + 1, optionsEndIndex).split(",");
                 for (const rawOption of rawOptions) {
-                    const optionCode: string = rawOption.charAt(0);
-                    const optionData: string = rawOption.slice(1, rawOption.length);
+                    const optionCode = rawOption.charAt(0);
+                    const optionData = rawOption.slice(1, rawOption.length);
                     if (optionCode === "s") {
                         customSampleRate = clamp(8000, 96000 + 1, parseFloatWithDefault(optionData, 44100));
                     } else if (optionCode === "r") {
@@ -4093,7 +4093,7 @@ export class Song {
             // The problem with using the url is that the name is
             // user-facing and long names break assumptions of the
             // UI.
-            const expression: number = 1.0;
+            const expression = 1.0;
             Config.chipWaves[chipWaveIndex] = {
                 name: name,
                 expression: expression,
@@ -4149,7 +4149,7 @@ export class Song {
                 customSamplePresetSettings["chipWavePlayBackwards"] = presetChipWavePlayBackwards;
                 customSamplePresetSettings["chipWaveStartOffset"] = presetChipWaveStartOffset != null ? presetChipWaveStartOffset : 0;
             }
-            const customSamplePreset: Preset = {
+            const customSamplePreset = {
                 index: 0, // This should be overwritten by toNameMap, in our caller.
                 name: name,
                 midiProgram: 80,
@@ -4157,7 +4157,7 @@ export class Song {
             };
             customSamplePresets.push(customSamplePreset);
             if (!Config.willReloadForCustomSamples) {
-                const rawLoopOptions: any = {
+                const rawLoopOptions = {
                     "isUsingAdvancedLoopControls": presetIsUsingAdvancedLoopControls,
                     "chipWaveLoopStart": presetChipWaveLoopStart,
                     "chipWaveLoopEnd": presetChipWaveLoopEnd,
@@ -4196,13 +4196,13 @@ export class Song {
         ));
     }
 
-    toJsonObject(enableIntro: boolean = true, loopCount: number = 1, enableOutro: boolean = true): Object {
+    toJsonObject(enableIntro = true, loopCount = 1, enableOutro = true): Object {
         const channelArray: Object[] = [];
-        for (let channelIndex: number = 0; channelIndex < this.getChannelCount(); channelIndex++) {
-            const channel: Channel = this.channels[channelIndex];
+        for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
+            const channel = this.channels[channelIndex];
             const instrumentArray: Object[] = [];
-            const isNoiseChannel: boolean = this.getChannelIsNoise(channelIndex);
-            const isModChannel: boolean = this.getChannelIsMod(channelIndex);
+            const isNoiseChannel = this.getChannelIsNoise(channelIndex);
+            const isModChannel = this.getChannelIsMod(channelIndex);
             for (const instrument of channel.instruments) {
                 instrumentArray.push(instrument.toJsonObject());
             }
@@ -4213,13 +4213,13 @@ export class Song {
             }
 
             const sequenceArray: number[] = [];
-            if (enableIntro) for (let i: number = 0; i < this.loopStart; i++) {
+            if (enableIntro) for (let i = 0; i < this.loopStart; i++) {
                 sequenceArray.push(channel.bars[i]);
             }
-            for (let l: number = 0; l < loopCount; l++) for (let i: number = this.loopStart; i < this.loopStart + this.loopLength; i++) {
+            for (let l = 0; l < loopCount; l++) for (let i = this.loopStart; i < this.loopStart + this.loopLength; i++) {
                 sequenceArray.push(channel.bars[i]);
             }
-            if (enableOutro) for (let i: number = this.loopStart + this.loopLength; i < this.barCount; i++) {
+            if (enableOutro) for (let i = this.loopStart + this.loopLength; i < this.barCount; i++) {
                 sequenceArray.push(channel.bars[i]);
             }
 
@@ -4267,7 +4267,7 @@ export class Song {
         };
 
         //song eq subfilters
-        for (let i: number = 0; i < Config.filterMorphCount - 1; i++) {
+        for (let i = 0; i < Config.filterMorphCount - 1; i++) {
             result["songEq" + i] = this.eqSubFilters[i];
         }
 
@@ -4278,11 +4278,11 @@ export class Song {
         return result;
     }
 
-    fromJsonObject(jsonObject: any, jsonFormat: string = "auto"): void {
+    fromJsonObject(jsonObject: any, jsonFormat = "auto"): void {
         this.initToDefault(true);
         if (!jsonObject) return;
 
-        //const version: number = jsonObject["version"] | 0;
+        //const version = jsonObject["version"] | 0;
         //if (version > Song._latestVersion) return; // Go ahead and try to parse something from the future I guess? JSON is pretty easy-going!
 
         // Code for auto-detect mode; if statements that are lower down have 'higher priority'
@@ -4301,7 +4301,7 @@ export class Song {
             }
         }
 
-        const format: string = (jsonFormat == "auto" ? jsonObject["format"] : jsonFormat).toLowerCase();
+        const format = (jsonFormat == "auto" ? jsonObject["format"] : jsonFormat).toLowerCase();
 
         if (jsonObject["name"] != undefined) {
             this.title = jsonObject["name"];
@@ -4318,9 +4318,9 @@ export class Song {
 
                 Song._restoreChipWaveListToDefault();
 
-                let willLoadLegacySamples: boolean = false;
-                let willLoadNintariboxSamples: boolean = false;
-                let willLoadMarioPaintboxSamples: boolean = false;
+                let willLoadLegacySamples = false;
+                let willLoadNintariboxSamples = false;
+                let willLoadMarioPaintboxSamples = false;
                 const customSampleUrls: string[] = [];
                 const customSamplePresets: Preset[] = [];
                 for (const url of customSamples) {
@@ -4351,7 +4351,7 @@ export class Song {
                         // export, it should be using the new syntax, unless
                         // the user has manually modified the URL, so we don't
                         // really need to parse the old syntax here.
-                        const parseOldSyntax: boolean = false;
+                        const parseOldSyntax = false;
                         Song._parseAndConfigureCustomSample(url, customSampleUrls, customSamplePresets, sampleLoadingState, parseOldSyntax);
                     }
                 }
@@ -4371,18 +4371,18 @@ export class Song {
             // No custom samples, so the only possibility at this point is that
             // we need to load the legacy samples. Let's check whether that's
             // necessary.
-            let shouldLoadLegacySamples: boolean = false;
+            let shouldLoadLegacySamples = false;
             if (jsonObject["channels"] != undefined) {
-                for (let channelIndex: number = 0; channelIndex < jsonObject["channels"].length; channelIndex++) {
-                    const channelObject: any = jsonObject["channels"][channelIndex];
+                for (let channelIndex = 0; channelIndex < jsonObject["channels"].length; channelIndex++) {
+                    const channelObject = jsonObject["channels"][channelIndex];
                     if (channelObject["type"] !== "pitch") {
                         // Legacy samples can only exist in pitch channels.
                         continue;
                     }
                     if (Array.isArray(channelObject["instruments"])) {
                         const instrumentObjects: any[] = channelObject["instruments"];
-                        for (let i: number = 0; i < instrumentObjects.length; i++) {
-                            const instrumentObject: any = instrumentObjects[i];
+                        for (let i = 0; i < instrumentObjects.length; i++) {
+                            const instrumentObject = instrumentObjects[i];
                             if (instrumentObject["type"] !== "chip") {
                                 // Legacy samples can only exist in chip wave
                                 // instruments.
@@ -4393,7 +4393,7 @@ export class Song {
                                 // correctly, but if they didn't, skip this.
                                 continue;
                             }
-                            const waveName: string = instrumentObject["wave"];
+                            const waveName = instrumentObject["wave"];
                             // @TODO: Avoid this duplication.
                             const names: string[] = [
                                 "paandorasbox kick",
@@ -4627,8 +4627,8 @@ export class Song {
                 "dbl harmonic :(": "double harmonic :(",
                 "enigma": "strange",
             };
-            const scaleName: string = (oldScaleNames[jsonObject["scale"]] != undefined) ? oldScaleNames[jsonObject["scale"]] : jsonObject["scale"];
-            const scale: number = Config.scales.findIndex(scale => scale.name == scaleName);
+            const scaleName = (oldScaleNames[jsonObject["scale"]] != undefined) ? oldScaleNames[jsonObject["scale"]] : jsonObject["scale"];
+            const scale = Config.scales.findIndex(scale => scale.name == scaleName);
             if (scale != -1) this.scale = scale;
             if (this.scale == Config.scales["dictionary"]["Custom"].index) {
                 if (jsonObject["customScale"] != undefined) {
@@ -4643,7 +4643,7 @@ export class Song {
             if (typeof (jsonObject["key"]) == "number") {
                 this.key = ((jsonObject["key"] + 1200) >>> 0) % Config.keys.length;
             } else if (typeof (jsonObject["key"]) == "string") {
-                const key: string = jsonObject["key"];
+                const key = jsonObject["key"];
                 // This conversion code depends on C through B being
                 // available as keys, of course.
                 if (key === "C+") {
@@ -4659,8 +4659,8 @@ export class Song {
                     this.key = 5;
                     this.octave = -1;
                 } else {
-                    const letter: string = key.charAt(0).toUpperCase();
-                    const symbol: string = key.charAt(1).toLowerCase();
+                    const letter = key.charAt(0).toUpperCase();
+                    const symbol = key.charAt(1).toLowerCase();
                     const letterMap: Readonly<Dictionary<number>> = { "C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11 };
                     const accidentalMap: Readonly<Dictionary<number>> = { "#": 1, "♯": 1, "b": -1, "♭": -1 };
                     let index: number | undefined = letterMap[letter];
@@ -4683,7 +4683,7 @@ export class Song {
             this.octave = clamp(Config.octaveMin, Config.octaveMax + 1, jsonObject["keyOctave"] | 0);
         }
 
-        let legacyGlobalReverb: number = 0; // In older songs, reverb was song-global, record that here and pass it to Instrument.fromJsonObject() for context.
+        let legacyGlobalReverb = 0; // In older songs, reverb was song-global, record that here and pass it to Instrument.fromJsonObject() for context.
         if (jsonObject["reverb"] != undefined) {
             legacyGlobalReverb = clamp(0, 32, jsonObject["reverb"] | 0);
         }
@@ -4692,7 +4692,7 @@ export class Song {
             this.beatsPerBar = Math.max(Config.beatsPerBarMin, Math.min(Config.beatsPerBarMax, jsonObject["beatsPerBar"] | 0));
         }
 
-        let importedPartsPerBeat: number = 4;
+        let importedPartsPerBeat = 4;
         if (jsonObject["ticksPerBeat"] != undefined) {
             importedPartsPerBeat = (jsonObject["ticksPerBeat"] | 0) || 4;
             this.rhythm = Config.rhythms.findIndex(rhythm => rhythm.stepsPerBeat == importedPartsPerBeat);
@@ -4751,7 +4751,7 @@ export class Song {
             this.eqFilter.reset();
         }
 
-        for (let i: number = 0; i < Config.filterMorphCount - 1; i++) {
+        for (let i = 0; i < Config.filterMorphCount - 1; i++) {
             if (jsonObject["songEq" + i]) {
                 this.eqSubFilters[i] = jsonObject["songEq" + i];
             } else {
@@ -4759,9 +4759,9 @@ export class Song {
             }
         }
 
-        let maxInstruments: number = 1;
-        let maxPatterns: number = 1;
-        let maxBars: number = 1;
+        let maxInstruments = 1;
+        let maxPatterns = 1;
+        let maxBars = 1;
         if (jsonObject["channels"] != undefined) {
             for (const channelObject of jsonObject["channels"]) {
                 if (channelObject["instruments"]) maxInstruments = Math.max(maxInstruments, channelObject["instruments"].length | 0);
@@ -4794,13 +4794,13 @@ export class Song {
         const newNoiseChannels: Channel[] = [];
         const newModChannels: Channel[] = [];
         if (jsonObject["channels"] != undefined) {
-            for (let channelIndex: number = 0; channelIndex < jsonObject["channels"].length; channelIndex++) {
-                let channelObject: any = jsonObject["channels"][channelIndex];
+            for (let channelIndex = 0; channelIndex < jsonObject["channels"].length; channelIndex++) {
+                let channelObject = jsonObject["channels"][channelIndex];
 
-                const channel: Channel = new Channel();
+                const channel = new Channel();
 
-                let isNoiseChannel: boolean = false;
-                let isModChannel: boolean = false;
+                let isNoiseChannel = false;
+                let isModChannel = false;
                 if (channelObject["type"] != undefined) {
                     isNoiseChannel = (channelObject["type"] == "drum");
                     isModChannel = (channelObject["type"] == "mod");
@@ -4831,20 +4831,20 @@ export class Song {
 
                 if (Array.isArray(channelObject["instruments"])) {
                     const instrumentObjects: any[] = channelObject["instruments"];
-                    for (let i: number = 0; i < instrumentObjects.length; i++) {
+                    for (let i = 0; i < instrumentObjects.length; i++) {
                         if (i >= this.getMaxInstrumentsPerChannel()) break;
-                        const instrument: Instrument = new Instrument(isNoiseChannel, isModChannel);
+                        const instrument = new Instrument(isNoiseChannel, isModChannel);
                         channel.instruments[i] = instrument;
                         instrument.fromJsonObject(instrumentObjects[i], isNoiseChannel, isModChannel, false, false, legacyGlobalReverb, format);
                     }
 
                 }
 
-                for (let i: number = 0; i < this.patternsPerChannel; i++) {
-                    const pattern: Pattern = new Pattern();
+                for (let i = 0; i < this.patternsPerChannel; i++) {
+                    const pattern = new Pattern();
                     channel.patterns[i] = pattern;
 
-                    let patternObject: any = undefined;
+                    let patternObject = undefined;
                     if (channelObject["patterns"]) patternObject = channelObject["patterns"][i];
                     if (patternObject == undefined) continue;
 
@@ -4852,7 +4852,7 @@ export class Song {
                 }
                 channel.patterns.length = this.patternsPerChannel;
 
-                for (let i: number = 0; i < this.barCount; i++) {
+                for (let i = 0; i < this.barCount; i++) {
                     channel.bars[i] = (channelObject["sequence"] != undefined) ? Math.min(this.patternsPerChannel, channelObject["sequence"][i] >>> 0) : 0;
                 }
                 channel.bars.length = this.barCount;
@@ -4879,7 +4879,7 @@ export class Song {
 
     getPattern(channelIndex: number, bar: number): Pattern | null {
         if (bar < 0 || bar >= this.barCount) return null;
-        const patternIndex: number = this.channels[channelIndex].bars[bar];
+        const patternIndex = this.channels[channelIndex].bars[bar];
         if (patternIndex == 0) return null;
         return this.channels[channelIndex].patterns[patternIndex - 1];
     }

@@ -1,17 +1,15 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { InstrumentType, /*EnvelopeType,*/ Config, getArpeggioPitchIndex } from "../synth/SynthConfig";
-import { Instrument } from "../synth/Instrument";
-import { Song } from "../synth/Song";
-import { Synth } from "../synth/synth";
-import { Pattern, Note } from "../synth/Pattern";
-import { ColorConfig } from "./ColorConfig";
-import { Preset, EditorConfig } from "./EditorConfig";
-import { SongDocument } from "./SongDocument";
-import { Prompt } from "./Prompt";
 import { HTML } from "imperative-html/dist/esm/elements-strict";
+import { Pattern } from "../synth/Pattern";
+import { Synth } from "../synth/synth";
+import { /*EnvelopeType,*/ Config, getArpeggioPitchIndex, InstrumentType } from "../synth/SynthConfig";
 import { ArrayBufferWriter } from "./ArrayBufferWriter";
-import { MidiChunkType, MidiFileFormat, MidiControlEventMessage, MidiEventType, MidiMetaEventMessage, MidiRegisteredParameterNumberMSB, MidiRegisteredParameterNumberLSB, volumeMultToMidiVolume, volumeMultToMidiExpression, defaultMidiPitchBend, defaultMidiExpression } from "./Midi";
+import { ColorConfig } from "./ColorConfig";
+import { EditorConfig, Preset } from "./EditorConfig";
+import { defaultMidiExpression, defaultMidiPitchBend, MidiChunkType, MidiControlEventMessage, MidiEventType, MidiFileFormat, MidiMetaEventMessage, MidiRegisteredParameterNumberLSB, MidiRegisteredParameterNumberMSB, volumeMultToMidiExpression, volumeMultToMidiVolume } from "./Midi";
+import { Prompt } from "./Prompt";
+import { SongDocument } from "./SongDocument";
 
 const { button, div, h2, input, select, option } = HTML;
 
@@ -25,9 +23,9 @@ function save(blob: Blob, name: string): void {
         return;
     }
 
-    const anchor: HTMLAnchorElement = document.createElement("a");
+    const anchor = document.createElement("a");
     if (anchor.download != undefined) {
-        const url: string = URL.createObjectURL(blob);
+        const url = URL.createObjectURL(blob);
         setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
         anchor.href = url;
         anchor.download = name;
@@ -36,7 +34,7 @@ function save(blob: Blob, name: string): void {
         // https://bugs.chromium.org/p/chromium/issues/detail?id=825100
         setTimeout(function () { anchor.dispatchEvent(new MouseEvent("click")); }, 0);
     } else {
-        const url: string = URL.createObjectURL(blob);
+        const url = URL.createObjectURL(blob);
         setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
         if (!window.open(url, "_blank")) window.location.href = url;
     }
@@ -50,13 +48,13 @@ export class ExportPrompt implements Prompt {
     private sampleFrames: number;
     private totalChunks: number;
     private currentChunk: number;
-    private outputStarted: boolean = false;
-    private readonly _fileName: HTMLInputElement = input({ type: "text", style: "width: 10em;", value: Config.jsonFormat + "-Song", maxlength: 250, "autofocus": "autofocus" });
-    private readonly _computedSamplesLabel: HTMLDivElement = div({ style: "width: 10em;" }, new Text("0:00"));
-    private readonly _enableIntro: HTMLInputElement = input({ type: "checkbox" });
-    private readonly _loopDropDown: HTMLInputElement = input({ style: "width: 2em;", type: "number", min: "1", max: "4", step: "1" });
-    private readonly _enableOutro: HTMLInputElement = input({ type: "checkbox" });
-    private readonly _formatSelect: HTMLSelectElement = select({ style: "width: 100%;" },
+    private outputStarted = false;
+    private readonly _fileName = input({ type: "text", style: "width: 10em;", value: Config.jsonFormat + "-Song", maxlength: 250, "autofocus": "autofocus" });
+    private readonly _computedSamplesLabel = div({ style: "width: 10em;" }, new Text("0:00"));
+    private readonly _enableIntro = input({ type: "checkbox" });
+    private readonly _loopDropDown = input({ style: "width: 2em;", type: "number", min: "1", max: "4", step: "1" });
+    private readonly _enableOutro = input({ type: "checkbox" });
+    private readonly _formatSelect = select({ style: "width: 100%;" },
         option({ value: "wav" }, "Export to .wav file."),
         option({ value: "mp3" }, "Export to .mp3 file."),
         //option({ value: "ogg" }, "Export to .ogg file."),
@@ -64,14 +62,14 @@ export class ExportPrompt implements Prompt {
         option({ value: "json" }, "Export to .json file."),
         option({ value: "html" }, "Export to .html file."),
     );
-    private readonly _removeWhitespace: HTMLInputElement = input({ type: "checkbox" });
-    private readonly _removeWhitespaceDiv: HTMLDivElement = div({ style: "vertical-align: middle; align-items: center; justify-content: space-between; margin-bottom: 14px;" },
+    private readonly _removeWhitespace = input({ type: "checkbox" });
+    private readonly _removeWhitespaceDiv = div({ style: "vertical-align: middle; align-items: center; justify-content: space-between; margin-bottom: 14px;" },
     "Remove Whitespace: ", this._removeWhitespace);
-    private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-    private readonly _exportButton: HTMLButtonElement = button({ class: "exportButton", style: "width:45%;" }, "Export");
-    private readonly _outputProgressBar: HTMLDivElement = div({ style: `width: 0%; background: ${ColorConfig.loopAccent}; height: 100%; position: absolute; z-index: 2;` });
-    private readonly _outputProgressLabel: HTMLDivElement = div({ style: `position: relative; top: -1px; z-index: 3;` }, "0%");
-    private readonly _outputProgressContainer: HTMLDivElement = div({ style: `height: 12px; background: ${ColorConfig.uiWidgetBackground}; display: block; position: relative; z-index: 1;` },
+    private readonly _cancelButton = button({ class: "cancelButton" });
+    private readonly _exportButton = button({ class: "exportButton", style: "width:45%;" }, "Export");
+    private readonly _outputProgressBar = div({ style: `width: 0%; background: ${ColorConfig.loopAccent}; height: 100%; position: absolute; z-index: 2;` });
+    private readonly _outputProgressLabel = div({ style: `position: relative; top: -1px; z-index: 3;` }, "0%");
+    private readonly _outputProgressContainer = div({ style: `height: 12px; background: ${ColorConfig.uiWidgetBackground}; display: block; position: relative; z-index: 1;` },
         this._outputProgressBar,
         this._outputProgressLabel,
     );
@@ -87,7 +85,7 @@ export class ExportPrompt implements Prompt {
         0x51, // spiky -> sawtooth wave
     ];
 
-    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 200px;" },
+    readonly container = div({ class: "prompt noSelection", style: "width: 200px;" },
         h2("Export Options"),
         div({ style: "display: flex; flex-direction: row; align-items: center; justify-content: space-between;" },
             "File name:",
@@ -142,7 +140,7 @@ export class ExportPrompt implements Prompt {
             this._formatSelect.value = lastExportFormat;
         }
 
-        const lastExportWhitespace: boolean = window.localStorage.getItem("exportWhitespace") != "false";
+        const lastExportWhitespace = window.localStorage.getItem("exportWhitespace") != "false";
         if (lastExportWhitespace != null) {
             this._removeWhitespace.checked = lastExportWhitespace;
         }
@@ -174,9 +172,9 @@ export class ExportPrompt implements Prompt {
 
     // Could probably be moved to doc or synth. Fine here for now until needed by something else.
     static samplesToTime(_doc: SongDocument, samples: number): string {
-        const rawSeconds: number = Math.round(samples / _doc.synth.samplesPerSecond);
-        const seconds: number = rawSeconds % 60;
-        const minutes: number = Math.floor(rawSeconds / 60);
+        const rawSeconds = Math.round(samples / _doc.synth.samplesPerSecond);
+        const seconds = rawSeconds % 60;
+        const minutes = Math.floor(rawSeconds / 60);
         return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
     }
 
@@ -218,7 +216,7 @@ export class ExportPrompt implements Prompt {
         }
         const deleteChars = /[\+\*\$\?\|\{\}\\\/<>#%!`&'"=:@]/gi;
         if (deleteChars.test(input.value)) {
-            let cursorPos: number = <number>input.selectionStart;
+            let cursorPos = <number>input.selectionStart;
             input.value = input.value.replace(deleteChars, "");
             cursorPos--;
             input.setSelectionRange(cursorPos, cursorPos);
@@ -226,7 +224,7 @@ export class ExportPrompt implements Prompt {
     }
 
     private static _validateNumber(event: Event): void {
-        const input: HTMLInputElement = <HTMLInputElement>event.target;
+        const input = <HTMLInputElement>event.target;
         input.value = Math.floor(Math.max(Number(input.min), Math.min(Number(input.max), Number(input.value)))) + "";
     }
 
@@ -261,7 +259,7 @@ export class ExportPrompt implements Prompt {
     }
 
     private _synthesize(): void {
-        //const timer: number = performance.now();
+        //const timer = performance.now();
 
         // If output was stopped e.g. user clicked the close button, abort.
         if (this.outputStarted == false) {
@@ -269,10 +267,10 @@ export class ExportPrompt implements Prompt {
         }
 
         // Update progress bar UI once per 5 sec of exported data
-        const samplesPerChunk: number = this.synth.samplesPerSecond * 5; //e.g. 44100 * 5
-        const currentFrame: number = this.currentChunk * samplesPerChunk;
+        const samplesPerChunk = this.synth.samplesPerSecond * 5; //e.g. 44100 * 5
+        const currentFrame = this.currentChunk * samplesPerChunk;
 
-        const samplesInChunk: number = Math.min(samplesPerChunk, this.sampleFrames - currentFrame);
+        const samplesInChunk = Math.min(samplesPerChunk, this.sampleFrames - currentFrame);
         const tempSamplesL = new Float32Array(samplesInChunk);
         const tempSamplesR = new Float32Array(samplesInChunk);
 
@@ -332,7 +330,7 @@ export class ExportPrompt implements Prompt {
 
         this.synth.loopRepeatCount = Number(this._loopDropDown.value) - 1;
         if (!this._enableIntro.checked) {
-            for (let introIter: number = 0; introIter < this._doc.song.loopStart; introIter++) {
+            for (let introIter = 0; introIter < this._doc.song.loopStart; introIter++) {
                 this.synth.goToNextBar();
             }
         }
@@ -353,19 +351,19 @@ export class ExportPrompt implements Prompt {
     }
 
     private _exportToWavFinish(): void {
-        const sampleFrames: number = this.recordedSamplesL.length;
-        const sampleRate: number = this.synth.samplesPerSecond;
+        const sampleFrames = this.recordedSamplesL.length;
+        const sampleRate = this.synth.samplesPerSecond;
 
-        const wavChannelCount: number = 2;
-        const bytesPerSample: number = 2;
-        const bitsPerSample: number = 8 * bytesPerSample;
-        const sampleCount: number = wavChannelCount * sampleFrames;
+        const wavChannelCount = 2;
+        const bytesPerSample = 2;
+        const bitsPerSample = 8 * bytesPerSample;
+        const sampleCount = wavChannelCount * sampleFrames;
 
-        const totalFileSize: number = 44 + sampleCount * bytesPerSample;
+        const totalFileSize = 44 + sampleCount * bytesPerSample;
 
-        let index: number = 0;
-        const arrayBuffer: ArrayBuffer = new ArrayBuffer(totalFileSize);
-        const data: DataView = new DataView(arrayBuffer);
+        let index = 0;
+        const arrayBuffer = new ArrayBuffer(totalFileSize);
+        const data = new DataView(arrayBuffer);
         data.setUint32(index, 0x52494646, false); index += 4;
         data.setUint32(index, 36 + sampleCount * bytesPerSample, true); index += 4; // size of remaining file
         data.setUint32(index, 0x57415645, false); index += 4;
@@ -382,10 +380,10 @@ export class ExportPrompt implements Prompt {
 
         if (bytesPerSample > 1) {
             // usually samples are signed. 
-            const range: number = (1 << (bitsPerSample - 1)) - 1;
-            for (let i: number = 0; i < sampleFrames; i++) {
-                let valL: number = Math.floor(Math.max(-1, Math.min(1, this.recordedSamplesL[i])) * range);
-                let valR: number = Math.floor(Math.max(-1, Math.min(1, this.recordedSamplesR[i])) * range);
+            const range = (1 << (bitsPerSample - 1)) - 1;
+            for (let i = 0; i < sampleFrames; i++) {
+                let valL = Math.floor(Math.max(-1, Math.min(1, this.recordedSamplesL[i])) * range);
+                let valR = Math.floor(Math.max(-1, Math.min(1, this.recordedSamplesR[i])) * range);
                 if (bytesPerSample == 2) {
                     data.setInt16(index, valL, true); index += 2;
                     data.setInt16(index, valR, true); index += 2;
@@ -398,15 +396,15 @@ export class ExportPrompt implements Prompt {
             }
         } else {
             // 8 bit samples are a special case: they are unsigned.
-            for (let i: number = 0; i < sampleFrames; i++) {
-                let valL: number = Math.floor(Math.max(-1, Math.min(1, this.recordedSamplesL[i])) * 127 + 128);
-                let valR: number = Math.floor(Math.max(-1, Math.min(1, this.recordedSamplesR[i])) * 127 + 128);
+            for (let i = 0; i < sampleFrames; i++) {
+                let valL = Math.floor(Math.max(-1, Math.min(1, this.recordedSamplesL[i])) * 127 + 128);
+                let valR = Math.floor(Math.max(-1, Math.min(1, this.recordedSamplesR[i])) * 127 + 128);
                 data.setUint8(index, valL > 255 ? 255 : (valL < 0 ? 0 : valL)); index++;
                 data.setUint8(index, valR > 255 ? 255 : (valR < 0 ? 0 : valR)); index++;
             }
         }
 
-        const blob: Blob = new Blob([arrayBuffer], { type: "audio/wav" });
+        const blob = new Blob([arrayBuffer], { type: "audio/wav" });
         save(blob, this._fileName.value.trim() + ".wav");
 
         this._close();
@@ -415,32 +413,32 @@ export class ExportPrompt implements Prompt {
     private _exportToMp3Finish(): void {
         const whenEncoderIsAvailable = (): void => {
 
-            const lamejs: any = (<any>window)["lamejs"];
-            const channelCount: number = 2;
-            const kbps: number = 192;
-            const sampleBlockSize: number = 1152;
-            const mp3encoder: any = new lamejs.Mp3Encoder(channelCount, this.synth.samplesPerSecond, kbps);
+            const lamejs = (<any>window)["lamejs"];
+            const channelCount = 2;
+            const kbps = 192;
+            const sampleBlockSize = 1152;
+            const mp3encoder = new lamejs.Mp3Encoder(channelCount, this.synth.samplesPerSecond, kbps);
             const mp3Data: any[] = [];
 
             const left: Int16Array = new Int16Array(this.recordedSamplesL.length);
             const right: Int16Array = new Int16Array(this.recordedSamplesR.length);
-            const range: number = (1 << 15) - 1;
-            for (let i: number = 0; i < this.recordedSamplesL.length; i++) {
+            const range = (1 << 15) - 1;
+            for (let i = 0; i < this.recordedSamplesL.length; i++) {
                 left[i] = Math.floor(Math.max(-1, Math.min(1, this.recordedSamplesL[i])) * range);
                 right[i] = Math.floor(Math.max(-1, Math.min(1, this.recordedSamplesR[i])) * range);
             }
 
-            for (let i: number = 0; i < left.length; i += sampleBlockSize) {
+            for (let i = 0; i < left.length; i += sampleBlockSize) {
                 const leftChunk: Int16Array = left.subarray(i, i + sampleBlockSize);
                 const rightChunk: Int16Array = right.subarray(i, i + sampleBlockSize);
-                const mp3buf: any = mp3encoder.encodeBuffer(leftChunk, rightChunk);
+                const mp3buf = mp3encoder.encodeBuffer(leftChunk, rightChunk);
                 if (mp3buf.length > 0) mp3Data.push(mp3buf);
             }
 
-            const mp3buf: any = mp3encoder.flush();
+            const mp3buf = mp3encoder.flush();
             if (mp3buf.length > 0) mp3Data.push(mp3buf);
 
-            const blob: Blob = new Blob(mp3Data, { type: "audio/mp3" });
+            const blob = new Blob(mp3Data, { type: "audio/mp3" });
             save(blob, this._fileName.value.trim() + ".mp3");
             this._close();
         }
@@ -456,40 +454,40 @@ export class ExportPrompt implements Prompt {
     }
 
     private _exportToMidi(): void {
-        const song: Song = this._doc.song;
-        const midiTicksPerBeepBoxTick: number = 2;
-        const midiTicksPerBeat: number = midiTicksPerBeepBoxTick * Config.ticksPerPart * Config.partsPerBeat;
-        const midiTicksPerPart: number = midiTicksPerBeepBoxTick * Config.ticksPerPart;
-        const secondsPerMinute: number = 60;
-        const microsecondsPerMinute: number = secondsPerMinute * 1000000;
-        const beatsPerMinute: number = song.getBeatsPerMinute();
-        const microsecondsPerBeat: number = Math.round(microsecondsPerMinute / beatsPerMinute);
-        //const secondsPerMidiTick: number = secondsPerMinute / (midiTicksPerBeat * beatsPerMinute);
-        const midiTicksPerBar: number = midiTicksPerBeat * song.beatsPerBar;
-        const pitchBendRange: number = 24;
-        const defaultNoteVelocity: number = 90;
+        const song = this._doc.song;
+        const midiTicksPerBeepBoxTick = 2;
+        const midiTicksPerBeat = midiTicksPerBeepBoxTick * Config.ticksPerPart * Config.partsPerBeat;
+        const midiTicksPerPart = midiTicksPerBeepBoxTick * Config.ticksPerPart;
+        const secondsPerMinute = 60;
+        const microsecondsPerMinute = secondsPerMinute * 1000000;
+        const beatsPerMinute = song.getBeatsPerMinute();
+        const microsecondsPerBeat = Math.round(microsecondsPerMinute / beatsPerMinute);
+        //const secondsPerMidiTick = secondsPerMinute / (midiTicksPerBeat * beatsPerMinute);
+        const midiTicksPerBar = midiTicksPerBeat * song.beatsPerBar;
+        const pitchBendRange = 24;
+        const defaultNoteVelocity = 90;
 
         const unrolledBars: number[] = [];
         if (this._enableIntro.checked) {
-            for (let bar: number = 0; bar < song.loopStart; bar++) {
+            for (let bar = 0; bar < song.loopStart; bar++) {
                 unrolledBars.push(bar);
             }
         }
-        for (let loopIndex: number = 0; loopIndex < Number(this._loopDropDown.value); loopIndex++) {
-            for (let bar: number = song.loopStart; bar < song.loopStart + song.loopLength; bar++) {
+        for (let loopIndex = 0; loopIndex < Number(this._loopDropDown.value); loopIndex++) {
+            for (let bar = song.loopStart; bar < song.loopStart + song.loopLength; bar++) {
                 unrolledBars.push(bar);
             }
         }
         if (this._enableOutro.checked) {
-            for (let bar: number = song.loopStart + song.loopLength; bar < song.barCount; bar++) {
+            for (let bar = song.loopStart + song.loopLength; bar < song.barCount; bar++) {
                 unrolledBars.push(bar);
             }
         }
 
         const tracks = [{ isMeta: true, channel: -1, midiChannel: -1, isNoise: false, isDrumset: false }];
-        let midiChannelCounter: number = 0;
-        let foundADrumset: boolean = false;
-        for (let channel: number = 0; channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; channel++) {
+        let midiChannelCounter = 0;
+        let foundADrumset = false;
+        for (let channel = 0; channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; channel++) {
             if (!foundADrumset && this._doc.song.channels[channel].instruments[0].type == InstrumentType.drumset) {
                 tracks.push({ isMeta: false, channel: channel, midiChannel: 9, isNoise: true, isDrumset: true });
                 foundADrumset = true; // There can only be one drumset channel, and it's always channel 9 (seen as 10 in most UIs). :/
@@ -500,7 +498,7 @@ export class ExportPrompt implements Prompt {
             }
         }
 
-        const writer: ArrayBufferWriter = new ArrayBufferWriter(1024);
+        const writer = new ArrayBufferWriter(1024);
         writer.writeUint32(MidiChunkType.header);
         writer.writeUint32(6); // length of headers is 6 bytes
         writer.writeUint16(MidiFileFormat.simultaneousTracks);
@@ -513,11 +511,11 @@ export class ExportPrompt implements Prompt {
             const { isMeta, channel, midiChannel, isNoise, isDrumset } = track;
 
             // We're gonna come back here and overwrite this placeholder once we know how many bytes this track is.
-            const trackStartIndex: number = writer.getWriteIndex();
+            const trackStartIndex = writer.getWriteIndex();
             writer.writeUint32(0); // placeholder for track size
 
-            let prevTime: number = 0;
-            let barStartTime: number = 0;
+            let prevTime = 0;
+            let barStartTime = 0;
             const writeEventTime = function (time: number): void {
                 if (time < prevTime) throw new Error("Midi event time cannot go backwards.");
                 writer.writeMidiVariableLength(time - prevTime);
@@ -554,9 +552,9 @@ export class ExportPrompt implements Prompt {
                 writer.writeUint8(24); // MIDI Clocks per metronome tick (should match beats), standard is 24
                 writer.writeUint8(8); // number of 1/32 notes per 24 MIDI Clocks, standard is 8, meaning 24 clocks per "quarter" note.
                 let tempScale = song.scale == Config.scales.dictionary["Custom"].index ? song.scaleCustom : Config.scales[song.scale].flags;
-                const isMinor: boolean = tempScale[3] && !tempScale[4];
-                const key: number = song.key; // C=0, C#=1, counting up to B=11
-                let numSharps: number = key; // For even key values in major scale, number of sharps/flats is same...
+                const isMinor = tempScale[3] && !tempScale[4];
+                const key = song.key; // C=0, C#=1, counting up to B=11
+                let numSharps = key; // For even key values in major scale, number of sharps/flats is same...
                 if ((key & 1) == 1) numSharps += 6; // For odd key values (consider circle of fifths) rotate around the circle... kinda... Look conventional key signatures are just weird, okay?
                 if (isMinor) numSharps += 9; // A minor A scale has zero sharps, shift it appropriately
                 while (numSharps > 6) numSharps -= 12; // Range is (modulo 12) - 5. Midi supports -7 to +7, but I only have 12 options.
@@ -574,7 +572,7 @@ export class ExportPrompt implements Prompt {
                 writer.writeMidi7Bits(MidiMetaEventMessage.marker);
                 writer.writeMidiAscii("Loop Start");
 
-                for (let loopIndex: number = 0; loopIndex < parseInt(this._loopDropDown.value); loopIndex++) {
+                for (let loopIndex = 0; loopIndex < parseInt(this._loopDropDown.value); loopIndex++) {
                     barStartTime += midiTicksPerBar * song.loopLength;
                     writeEventTime(barStartTime);
                     writer.writeUint8(MidiEventType.meta);
@@ -588,7 +586,7 @@ export class ExportPrompt implements Prompt {
             } else {
                 // For remaining tracks, set up the instruments and write the notes:
 
-                let channelName: string = isNoise
+                let channelName = isNoise
                     ? "noise channel " + channel
                     : "pitch channel " + channel;
                 writeEventTime(0);
@@ -604,9 +602,9 @@ export class ExportPrompt implements Prompt {
                 writeEventTime(0); writeControlEvent(MidiControlEventMessage.registeredParameterNumberMSB, MidiRegisteredParameterNumberMSB.reset);
                 writeEventTime(0); writeControlEvent(MidiControlEventMessage.registeredParameterNumberLSB, MidiRegisteredParameterNumberLSB.reset);
 
-                let prevInstrumentIndex: number = -1;
+                let prevInstrumentIndex = -1;
                 function writeInstrumentSettings(instrumentIndex: number): void {
-                    const instrument: Instrument = song.channels[channel].instruments[instrumentIndex];
+                    const instrument = song.channels[channel].instruments[instrumentIndex];
                     const preset: Preset | null = EditorConfig.valueToPreset(instrument.preset);
 
                     if (prevInstrumentIndex != instrumentIndex) {
@@ -617,7 +615,7 @@ export class ExportPrompt implements Prompt {
                         writer.writeMidiAscii("Instrument " + (instrumentIndex + 1));
 
                         if (!isDrumset) {
-                            let instrumentProgram: number = 81; // default to sawtooth wave. 
+                            let instrumentProgram = 81; // default to sawtooth wave. 
 
                             if (preset != null && preset.midiProgram != undefined) {
                                 instrumentProgram = preset.midiProgram;
@@ -654,12 +652,12 @@ export class ExportPrompt implements Prompt {
 
                         // Instrument volume:
                         writeEventTime(barStartTime);
-                        let instrumentVolume: number = volumeMultToMidiVolume(Synth.instrumentVolumeToVolumeMult(instrument.volume));
+                        let instrumentVolume = volumeMultToMidiVolume(Synth.instrumentVolumeToVolumeMult(instrument.volume));
                         writeControlEvent(MidiControlEventMessage.volumeMSB, Math.min(0x7f, Math.round(instrumentVolume)));
 
                         // Instrument pan:
                         //writeEventTime(barStartTime);
-                        //let instrumentPan: number = (instrument.pan / Config.panCenter - 1) * 0x3f + 0x40;
+                        //let instrumentPan = (instrument.pan / Config.panCenter - 1) * 0x3f + 0x40;
                         //writeControlEvent(MidiControlEventMessage.panMSB, Math.min(0x7f, Math.round(instrumentPan)));
                     }
                 }
@@ -669,25 +667,25 @@ export class ExportPrompt implements Prompt {
                     writeInstrumentSettings(0);
                 }
 
-                let prevPitchBend: number = defaultMidiPitchBend;
-                let prevExpression: number = defaultMidiExpression;
-                let shouldResetExpressionAndPitchBend: boolean = false;
-                //let prevTremolo: number = -1;
-                const channelRoot: number = isNoise ? Config.spectrumBasePitch : Config.keys[song.key].basePitch;
-                const intervalScale: number = isNoise ? Config.noiseInterval : 1;
+                let prevPitchBend = defaultMidiPitchBend;
+                let prevExpression = defaultMidiExpression;
+                let shouldResetExpressionAndPitchBend = false;
+                //let prevTremolo = -1;
+                const channelRoot = isNoise ? Config.spectrumBasePitch : Config.keys[song.key].basePitch;
+                const intervalScale = isNoise ? Config.noiseInterval : 1;
 
                 for (const bar of unrolledBars) {
                     const pattern: Pattern | null = song.getPattern(channel, bar);
 
                     if (pattern != null) {
 
-                        const instrumentIndex: number = pattern.instruments[0]; // Don't bother trying to export multiple instruments per pattern to midi, just pick the first one.
-                        const instrument: Instrument = song.channels[channel].instruments[instrumentIndex];
+                        const instrumentIndex = pattern.instruments[0]; // Don't bother trying to export multiple instruments per pattern to midi, just pick the first one.
+                        const instrument = song.channels[channel].instruments[instrumentIndex];
                         const preset: Preset | null = EditorConfig.valueToPreset(instrument.preset);
                         writeInstrumentSettings(instrumentIndex);
 
-                        let usesArpeggio: boolean = instrument.getChord().arpeggiates;
-                        let polyphony: number = usesArpeggio ? 1 : Config.maxChordSize;
+                        let usesArpeggio = instrument.getChord().arpeggiates;
+                        let polyphony = usesArpeggio ? 1 : Config.maxChordSize;
                         if (instrument.getChord().customInterval) {
                             if (instrument.type == InstrumentType.chip || instrument.type == InstrumentType.harmonics) {
                                 polyphony = 2;
@@ -699,27 +697,27 @@ export class ExportPrompt implements Prompt {
                             }
                         }
 
-                        for (let noteIndex: number = 0; noteIndex < pattern.notes.length; noteIndex++) {
-                            const note: Note = pattern.notes[noteIndex];
+                        for (let noteIndex = 0; noteIndex < pattern.notes.length; noteIndex++) {
+                            const note = pattern.notes[noteIndex];
 
-                            const noteStartTime: number = barStartTime + note.start * midiTicksPerPart;
-                            let pinTime: number = noteStartTime;
-                            let pinSize: number = note.pins[0].size;
-                            let pinInterval: number = note.pins[0].interval;
+                            const noteStartTime = barStartTime + note.start * midiTicksPerPart;
+                            let pinTime = noteStartTime;
+                            let pinSize = note.pins[0].size;
+                            let pinInterval = note.pins[0].interval;
                             const prevPitches: number[] = [-1, -1, -1, -1];
                             const nextPitches: number[] = [-1, -1, -1, -1];
-                            const toneCount: number = Math.min(polyphony, note.pitches.length);
-                            const velocity: number = isDrumset ? Math.max(1, Math.round(defaultNoteVelocity * note.pins[0].size / Config.noteSizeMax)) : defaultNoteVelocity;
+                            const toneCount = Math.min(polyphony, note.pitches.length);
+                            const velocity = isDrumset ? Math.max(1, Math.round(defaultNoteVelocity * note.pins[0].size / Config.noteSizeMax)) : defaultNoteVelocity;
 
                             // The maximum midi pitch bend range is +/- 24 semitones from the base pitch. 
                             // To make the most of this, choose a base pitch that is within 24 semitones from as much of the note as possible.
                             // This may involve offsetting this base pitch from BeepBox's note pitch.
-                            let mainInterval: number = note.pickMainInterval();
-                            let pitchOffset: number = mainInterval * intervalScale;
+                            let mainInterval = note.pickMainInterval();
+                            let pitchOffset = mainInterval * intervalScale;
                             if (!isDrumset) {
-                                let maxPitchOffset: number = pitchBendRange;
-                                let minPitchOffset: number = -pitchBendRange;
-                                for (let pinIndex: number = 1; pinIndex < note.pins.length; pinIndex++) {
+                                let maxPitchOffset = pitchBendRange;
+                                let minPitchOffset = -pitchBendRange;
+                                for (let pinIndex = 1; pinIndex < note.pins.length; pinIndex++) {
                                     const interval = note.pins[pinIndex].interval * intervalScale;
                                     maxPitchOffset = Math.min(maxPitchOffset, interval + pitchBendRange);
                                     minPitchOffset = Math.max(minPitchOffset, interval - pitchBendRange);
@@ -727,10 +725,10 @@ export class ExportPrompt implements Prompt {
                                 /*
                                 // I'd like to be able to use pitch bend to implement arpeggio, but the "custom inverval" setting in chip instruments combines arpeggio in one tone with another flat tone, and midi can't selectively apply arpeggio to one out of two simultaneous tones. Also it would be hard to reimport. :/
                                 if (usesArpeggio && note.pitches.length > polyphony) {
-                                    let lowestArpeggioOffset: number = 0;
-                                    let highestArpeggioOffset: number = 0;
-                                    const basePitch: number = note.pitches[toneCount - 1];
-                                    for (let pitchIndex: number = toneCount; pitchIndex < note.pitches.length; pitchIndex++) {
+                                    let lowestArpeggioOffset = 0;
+                                    let highestArpeggioOffset = 0;
+                                    const basePitch = note.pitches[toneCount - 1];
+                                    for (let pitchIndex = toneCount; pitchIndex < note.pitches.length; pitchIndex++) {
                                         lowestArpeggioOffset = Math.min(note.pitches[pitchIndex] - basePitch);
                                         highestArpeggioOffset = Math.max(note.pitches[pitchIndex] - basePitch);
                                     }
@@ -741,22 +739,22 @@ export class ExportPrompt implements Prompt {
                                 pitchOffset = Math.min(maxPitchOffset, Math.max(minPitchOffset, pitchOffset));
                             }
 
-                            for (let pinIndex: number = 1; pinIndex < note.pins.length; pinIndex++) {
-                                const nextPinTime: number = noteStartTime + note.pins[pinIndex].time * midiTicksPerPart;
-                                const nextPinSize: number = note.pins[pinIndex].size;
-                                const nextPinInterval: number = note.pins[pinIndex].interval;
+                            for (let pinIndex = 1; pinIndex < note.pins.length; pinIndex++) {
+                                const nextPinTime = noteStartTime + note.pins[pinIndex].time * midiTicksPerPart;
+                                const nextPinSize = note.pins[pinIndex].size;
+                                const nextPinInterval = note.pins[pinIndex].interval;
 
-                                const length: number = nextPinTime - pinTime;
-                                for (let midiTick: number = 0; midiTick < length; midiTick++) {
-                                    const midiTickTime: number = pinTime + midiTick;
-                                    const linearSize: number = lerp(pinSize, nextPinSize, midiTick / length);
-                                    const linearInterval: number = lerp(pinInterval, nextPinInterval, midiTick / length);
+                                const length = nextPinTime - pinTime;
+                                for (let midiTick = 0; midiTick < length; midiTick++) {
+                                    const midiTickTime = pinTime + midiTick;
+                                    const linearSize = lerp(pinSize, nextPinSize, midiTick / length);
+                                    const linearInterval = lerp(pinInterval, nextPinInterval, midiTick / length);
 
-                                    const interval: number = linearInterval * intervalScale - pitchOffset;
+                                    const interval = linearInterval * intervalScale - pitchOffset;
 
-                                    const pitchBend: number = Math.max(0, Math.min(0x3fff, Math.round(0x2000 * (1.0 + interval / pitchBendRange))));
+                                    const pitchBend = Math.max(0, Math.min(0x3fff, Math.round(0x2000 * (1.0 + interval / pitchBendRange))));
 
-                                    const expression: number = Math.min(0x7f, Math.round(volumeMultToMidiExpression(Synth.noteSizeToVolumeMult(linearSize))));
+                                    const expression = Math.min(0x7f, Math.round(volumeMultToMidiExpression(Synth.noteSizeToVolumeMult(linearSize))));
 
                                     if (pitchBend != prevPitchBend) {
                                         writeEventTime(midiTickTime);
@@ -772,9 +770,9 @@ export class ExportPrompt implements Prompt {
                                         prevExpression = expression;
                                     }
 
-                                    const noteStarting: boolean = midiTickTime == noteStartTime;
-                                    for (let toneIndex: number = 0; toneIndex < toneCount; toneIndex++) {
-                                        let nextPitch: number = note.pitches[toneIndex];
+                                    const noteStarting = midiTickTime == noteStartTime;
+                                    for (let toneIndex = 0; toneIndex < toneCount; toneIndex++) {
+                                        let nextPitch = note.pitches[toneIndex];
                                         if (isDrumset) {
                                             nextPitch += mainInterval;
                                             const drumsetMap: number[] = [
@@ -797,7 +795,7 @@ export class ExportPrompt implements Prompt {
                                             if (usesArpeggio && note.pitches.length > toneIndex + 1 && toneIndex == toneCount - 1) {
                                                 const midiTicksSinceBeat = (midiTickTime - barStartTime) % midiTicksPerBeat;
                                                 const midiTicksPerArpeggio = Config.ticksPerArpeggio * midiTicksPerPart / Config.ticksPerPart;
-                                                const arpeggio: number = Math.floor(midiTicksSinceBeat / midiTicksPerArpeggio);
+                                                const arpeggio = Math.floor(midiTicksSinceBeat / midiTicksPerArpeggio);
                                                 nextPitch = note.pitches[toneIndex + getArpeggioPitchIndex(note.pitches.length - toneIndex, instrument.fastTwoNoteArp, arpeggio)];
                                             }
                                             nextPitch = channelRoot + nextPitch * intervalScale + pitchOffset;
@@ -820,7 +818,7 @@ export class ExportPrompt implements Prompt {
                                         }
                                     }
 
-                                    for (let toneIndex: number = 0; toneIndex < toneCount; toneIndex++) {
+                                    for (let toneIndex = 0; toneIndex < toneCount; toneIndex++) {
                                         if (noteStarting || prevPitches[toneIndex] != nextPitches[toneIndex]) {
                                             writeEventTime(midiTickTime);
                                             writer.writeUint8(MidiEventType.noteOn | midiChannel);
@@ -836,10 +834,10 @@ export class ExportPrompt implements Prompt {
                                 pinInterval = nextPinInterval;
                             }
 
-                            const noteEndTime: number = barStartTime + note.end * midiTicksPerPart;
+                            const noteEndTime = barStartTime + note.end * midiTicksPerPart;
 
                             // End all tones.
-                            for (let toneIndex: number = 0; toneIndex < toneCount; toneIndex++) {
+                            for (let toneIndex = 0; toneIndex < toneCount; toneIndex++) {
                                 // TODO: If the note at the start of the next pattern has
                                 // continuesLastPattern and has the same chord, it ought to extend
                                 // this previous note.
@@ -886,17 +884,17 @@ export class ExportPrompt implements Prompt {
             writer.rewriteUint32(trackStartIndex, writer.getWriteIndex() - trackStartIndex - 4);
         }
 
-        const blob: Blob = new Blob([writer.toCompactArrayBuffer()], { type: "audio/midi" });
+        const blob = new Blob([writer.toCompactArrayBuffer()], { type: "audio/midi" });
         save(blob, this._fileName.value.trim() + ".mid");
 
         this._close();
     }
 
     private _exportToJson(): void {
-        const jsonObject: Object = this._doc.song.toJsonObject(this._enableIntro.checked, Number(this._loopDropDown.value), this._enableOutro.checked);
+        const jsonObject = this._doc.song.toJsonObject(this._enableIntro.checked, Number(this._loopDropDown.value), this._enableOutro.checked);
         let whiteSpaceParam: string | undefined = this._removeWhitespace.checked ? undefined : '\t';
-        const jsonString: string = JSON.stringify(jsonObject, null, whiteSpaceParam);
-        const blob: Blob = new Blob([jsonString], { type: "application/json" });
+        const jsonString = JSON.stringify(jsonObject, null, whiteSpaceParam);
+        const blob = new Blob([jsonString], { type: "application/json" });
         save(blob, this._fileName.value.trim() + ".json");
         this._close();
     }
@@ -928,7 +926,7 @@ You should be redirected to the song at:<br /><br />
 	location.assign(document.querySelector("a#destination").href);
 </script>
 `;
-        const blob: Blob = new Blob([fileContents], { type: "text/html" });
+        const blob = new Blob([fileContents], { type: "text/html" });
         save(blob, this._fileName.value.trim() + ".html");
         this._close();
     }

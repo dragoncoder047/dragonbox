@@ -1,38 +1,37 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
+import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
 import { Config } from "../synth/SynthConfig";
 import { clamp, fadeOutSettingToTicks } from "../synth/utils";
-import { Instrument } from "../synth/Instrument";
-import { SongDocument } from "./SongDocument";
-import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
-import { ColorConfig } from "./ColorConfig";
 import { ChangeSequence, UndoableChange } from "./Change";
 import { ChangeFadeInOut } from "./changes";
+import { ColorConfig } from "./ColorConfig";
+import { SongDocument } from "./SongDocument";
 
 export class FadeInOutEditor {
-    private readonly _editorWidth: number = 120;
-    private readonly _editorHeight: number = 26;
-    private readonly _fadeCurve: SVGPathElement = SVG.path({ fill: ColorConfig.uiWidgetBackground, "pointer-events": "none" });
-    private readonly _dottedLinePath: SVGPathElement = SVG.path({ fill: "none", stroke: "currentColor", "stroke-width": 1, "stroke-dasharray": "3, 2", "pointer-events": "none" });
-    private readonly _controlCurve: SVGPathElement = SVG.path({ fill: "none", stroke: "currentColor", "stroke-width": 2, "pointer-events": "none" });
-    private readonly _svg: SVGSVGElement = SVG.svg({ style: `background-color: ${ColorConfig.editorBackground}; touch-action: none; cursor: crosshair;`, width: "100%", height: "100%", viewBox: "0 0 " + this._editorWidth + " " + this._editorHeight, preserveAspectRatio: "none" },
+    private readonly _editorWidth = 120;
+    private readonly _editorHeight = 26;
+    private readonly _fadeCurve = SVG.path({ fill: ColorConfig.uiWidgetBackground, "pointer-events": "none" });
+    private readonly _dottedLinePath = SVG.path({ fill: "none", stroke: "currentColor", "stroke-width": 1, "stroke-dasharray": "3, 2", "pointer-events": "none" });
+    private readonly _controlCurve = SVG.path({ fill: "none", stroke: "currentColor", "stroke-width": 2, "pointer-events": "none" });
+    private readonly _svg = SVG.svg({ style: `background-color: ${ColorConfig.editorBackground}; touch-action: none; cursor: crosshair;`, width: "100%", height: "100%", viewBox: "0 0 " + this._editorWidth + " " + this._editorHeight, preserveAspectRatio: "none" },
         this._fadeCurve,
         this._dottedLinePath,
         this._controlCurve,
     );
-    readonly container: HTMLElement = HTML.div({ class: "fadeInOut", style: "height: 100%;" }, this._svg);
+    readonly container = HTML.div({ class: "fadeInOut", style: "height: 100%;" }, this._svg);
 
-    private _mouseX: number = 0;
-    private _mouseXStart: number = 0;
-    private _mouseDown: boolean = false;
-    private _mouseDragging: boolean = false;
-    private _draggingFadeIn: boolean = false;
+    private _mouseX = 0;
+    private _mouseXStart = 0;
+    private _mouseDown = false;
+    private _mouseDragging = false;
+    private _draggingFadeIn = false;
     private _dragChange: UndoableChange | null = null;
-    private _renderedFadeIn: number = -1;
-    private _renderedFadeOut: number = -1;
+    private _renderedFadeIn = -1;
+    private _renderedFadeOut = -1;
 
     constructor(private _doc: SongDocument) {
-        const dottedLineX: number = this._fadeOutToX(Config.fadeOutNeutral);
+        const dottedLineX = this._fadeOutToX(Config.fadeOutNeutral);
         this._dottedLinePath.setAttribute("d", `M ${dottedLineX} 0 L ${dottedLineX} ${this._editorHeight}`);
 
         this.container.addEventListener("mousedown", this._whenMousePressed);
@@ -59,14 +58,14 @@ export class FadeInOutEditor {
 
     private _whenMousePressed = (event: MouseEvent): void => {
         event.preventDefault();
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = ((event.clientX || event.pageX) - boundingRect.left);
         this._whenCursorPressed();
     }
 
     private _whenTouchPressed = (event: TouchEvent): void => {
         event.preventDefault();
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.touches[0].clientX - boundingRect.left);
         this._whenCursorPressed();
     }
@@ -76,9 +75,9 @@ export class FadeInOutEditor {
         this._mouseXStart = this._mouseX;
         this._mouseDown = true;
         this._mouseDragging = false;
-        const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-        const fadeInX: number = this._fadeInToX(instrument.fadeIn);
-        const fadeOutX: number = this._fadeOutToX(instrument.fadeOut);
+        const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+        const fadeInX = this._fadeInToX(instrument.fadeIn);
+        const fadeOutX = this._fadeOutToX(instrument.fadeOut);
         this._draggingFadeIn = this._mouseXStart < (fadeInX + fadeOutX) / 2.0;
         this._dragChange = new ChangeSequence();
         this._doc.setProspectiveChange(this._dragChange);
@@ -86,7 +85,7 @@ export class FadeInOutEditor {
 
     private _whenMouseMoved = (event: MouseEvent): void => {
         if (this.container.offsetParent == null) return;
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = ((event.clientX || event.pageX) - boundingRect.left);
         if (isNaN(this._mouseX)) this._mouseX = 0;
         this._whenCursorMoved();
@@ -96,7 +95,7 @@ export class FadeInOutEditor {
         if (this.container.offsetParent == null) return;
         if (!this._mouseDown) return;
         event.preventDefault();
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.touches[0].clientX - boundingRect.left);
         if (isNaN(this._mouseX)) this._mouseX = 0;
         this._whenCursorMoved();
@@ -111,7 +110,7 @@ export class FadeInOutEditor {
         this._dragChange = null;
 
         if (this._mouseDown) {
-            const sequence: ChangeSequence = new ChangeSequence();
+            const sequence = new ChangeSequence();
             this._dragChange = sequence;
             this._doc.setProspectiveChange(this._dragChange);
 
@@ -120,7 +119,7 @@ export class FadeInOutEditor {
             }
 
             if (this._mouseDragging) {
-                const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+                const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
                 if (this._draggingFadeIn) {
                     sequence.append(new ChangeFadeInOut(this._doc, this._xToFadeIn(this._fadeInToX(instrument.fadeIn) + this._mouseX - this._mouseXStart), instrument.fadeOut));
                 } else {
@@ -134,7 +133,7 @@ export class FadeInOutEditor {
         if (this.container.offsetParent == null) return;
         if (this._mouseDown && this._doc.lastChangeWas(this._dragChange) && this._dragChange != null) {
             if (!this._mouseDragging) {
-                const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+                const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
                 if (this._draggingFadeIn) {
                     this._doc.record(new ChangeFadeInOut(this._doc, this._xToFadeIn(this._mouseX), instrument.fadeOut));
                 } else {
@@ -150,18 +149,18 @@ export class FadeInOutEditor {
     }
 
     render(): void {
-        const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+        const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
 
         if (this._renderedFadeIn == instrument.fadeIn && this._renderedFadeOut == instrument.fadeOut) {
             return;
         }
 
-        const fadeInX: number = this._fadeInToX(instrument.fadeIn);
-        const fadeOutX: number = this._fadeOutToX(instrument.fadeOut);
+        const fadeInX = this._fadeInToX(instrument.fadeIn);
+        const fadeOutX = this._fadeOutToX(instrument.fadeOut);
         this._controlCurve.setAttribute("d", `M ${fadeInX} 0 L ${fadeInX} ${this._editorHeight} M ${fadeOutX} 0 L ${fadeOutX} ${this._editorHeight}`);
 
-        const dottedLineX: number = this._fadeOutToX(Config.fadeOutNeutral);
-        let fadePath: string = "";
+        const dottedLineX = this._fadeOutToX(Config.fadeOutNeutral);
+        let fadePath = "";
         fadePath += `M 0 ${this._editorHeight} `;
         fadePath += `L ${fadeInX} 0 `;
         if (fadeOutSettingToTicks(instrument.fadeOut) > 0) {

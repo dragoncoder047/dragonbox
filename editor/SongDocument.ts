@@ -1,20 +1,19 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Config } from "../synth/SynthConfig";
-import { isMobile } from "./EditorConfig";
-import { Synth } from "../synth/synth";
 import { Pattern } from "../synth/Pattern";
-import { Channel } from "../synth/Channel";
 import { Song } from "../synth/Song";
-import { SongRecovery, generateUid, errorAlert } from "./SongRecovery";
-import { ColorConfig } from "./ColorConfig";
-import { Layout } from "./Layout";
-import { SongPerformance } from "./SongPerformance";
-import { Selection } from "./Selection";
-import { Preferences } from "./Preferences";
+import { Synth } from "../synth/synth";
+import { Config } from "../synth/SynthConfig";
 import { Change } from "./Change";
 import { ChangeNotifier } from "./ChangeNotifier";
-import { ChangeSong, setDefaultInstruments, discardInvalidPatternInstruments, ChangeHoldingModRecording } from "./changes";
+import { ChangeHoldingModRecording, ChangeSong, discardInvalidPatternInstruments, setDefaultInstruments } from "./changes";
+import { ColorConfig } from "./ColorConfig";
+import { isMobile } from "./EditorConfig";
+import { Layout } from "./Layout";
+import { Preferences } from "./Preferences";
+import { Selection } from "./Selection";
+import { SongPerformance } from "./SongPerformance";
+import { SongRecovery, errorAlert, generateUid } from "./SongRecovery";
 
 interface HistoryState {
     canUndo: boolean;
@@ -33,41 +32,41 @@ export class SongDocument {
     song: Song;
     synth: Synth;
     performance: SongPerformance;
-    readonly notifier: ChangeNotifier = new ChangeNotifier();
-    readonly selection: Selection = new Selection(this);
-    readonly prefs: Preferences = new Preferences();
-    channel: number = 0;
-    muteEditorChannel: number = 0;
-    bar: number = 0;
+    readonly notifier = new ChangeNotifier();
+    readonly selection = new Selection(this);
+    readonly prefs = new Preferences();
+    channel = 0;
+    muteEditorChannel = 0;
+    bar = 0;
     recalcChannelNames: boolean;
     recalcChannelColors: boolean;
     recalcModChannels: boolean;
     recentPatternInstruments: number[][] = [];
     viewedInstrument: number[] = [];
-    recordingModulators: boolean = false;
+    recordingModulators = false;
     continuingModRecordingChange: ChangeHoldingModRecording | null = null;
 
-    trackVisibleBars: number = 16;
-    trackVisibleChannels: number = 4;
-    barScrollPos: number = 0;
-    channelScrollPos: number = 0;
+    trackVisibleBars = 16;
+    trackVisibleChannels = 4;
+    barScrollPos = 0;
+    channelScrollPos = 0;
     prompt: string | null = null;
     promptEffectIndex: number | null = null;
 
-    addedEffect: boolean = false;
-    addedEnvelope: boolean = false;
-    currentPatternIsDirty: boolean = false;
+    addedEffect = false;
+    addedEnvelope = false;
+    currentPatternIsDirty = false;
     modRecordingHandler: () => void;
 
-    private static readonly _maximumUndoHistory: number = 300;
-    private _recovery: SongRecovery = new SongRecovery();
+    private static readonly _maximumUndoHistory = 300;
+    private _recovery = new SongRecovery();
     private _recoveryUid: string;
     private _recentChange: Change | null = null;
-    private _sequenceNumber: number = 0;
-    private _lastSequenceNumber: number = 0;
-    private _stateShouldBePushed: boolean = false;
-    private _recordedNewSong: boolean = false;
-    _waitingToUpdateState: boolean = false;
+    private _sequenceNumber = 0;
+    private _lastSequenceNumber = 0;
+    private _stateShouldBePushed = false;
+    private _recordedNewSong = false;
+    _waitingToUpdateState = false;
 
     constructor() {
         this.notifier.watch(this._validateDocState);
@@ -81,7 +80,7 @@ export class SongDocument {
             window.sessionStorage.setItem("newestUndoIndex", "0");
         }
 
-        let songString: string = window.location.hash;
+        let songString = window.location.hash;
         if (songString == "") {
             songString = this._getHash();
         }
@@ -111,7 +110,7 @@ export class SongDocument {
 
         this.bar = state.bar | 0;
         this.channel = state.channel | 0;
-        for (let i: number = 0; i <= this.channel; i++) this.viewedInstrument[i] = 0;
+        for (let i = 0; i <= this.channel; i++) this.viewedInstrument[i] = 0;
         this.viewedInstrument[this.channel] = state.instrument | 0;
         this._recoveryUid = state.recoveryUid;
         //this.barScrollPos = Math.max(0, this.bar - (this.trackVisibleBars - 6));
@@ -145,7 +144,7 @@ export class SongDocument {
         if (this.prefs.displayBrowserUrl) {
             return window.history.state;
         } else {
-            const json: any = JSON.parse(window.sessionStorage.getItem(window.sessionStorage.getItem("currentUndoIndex")!)!);
+            const json = JSON.parse(window.sessionStorage.getItem(window.sessionStorage.getItem("currentUndoIndex")!)!);
             return json == null ? null : json.state;
         }
     }
@@ -154,7 +153,7 @@ export class SongDocument {
         if (this.prefs.displayBrowserUrl) {
             return window.location.hash;
         } else {
-            const json: any = JSON.parse(window.sessionStorage.getItem(window.sessionStorage.getItem("currentUndoIndex")!)!);
+            const json = JSON.parse(window.sessionStorage.getItem(window.sessionStorage.getItem("currentUndoIndex")!)!);
             return json == null ? "" : json.hash;
         }
     }
@@ -172,8 +171,8 @@ export class SongDocument {
         if (this.prefs.displayBrowserUrl) {
             window.history.pushState(state, "", "#" + hash);
         } else {
-            let currentIndex: number = Number(window.sessionStorage.getItem("currentUndoIndex"));
-            let oldestIndex: number = Number(window.sessionStorage.getItem("oldestUndoIndex"));
+            let currentIndex = Number(window.sessionStorage.getItem("currentUndoIndex"));
+            let oldestIndex = Number(window.sessionStorage.getItem("oldestUndoIndex"));
             currentIndex = (currentIndex + 1) % SongDocument._maximumUndoHistory;
             window.sessionStorage.setItem("currentUndoIndex", String(currentIndex));
             window.sessionStorage.setItem("newestUndoIndex", String(currentIndex));
@@ -195,8 +194,8 @@ export class SongDocument {
 		if (this.prefs.displayBrowserUrl) {
 			window.history.forward();
 		} else {
-			let currentIndex: number = Number(window.sessionStorage.getItem("currentUndoIndex"));
-			let newestIndex: number = Number(window.sessionStorage.getItem("newestUndoIndex"));
+			let currentIndex = Number(window.sessionStorage.getItem("currentUndoIndex"));
+			let newestIndex = Number(window.sessionStorage.getItem("newestUndoIndex"));
 			if (currentIndex != newestIndex) {
 				currentIndex = (currentIndex + 1) % SongDocument._maximumUndoHistory;
 				window.sessionStorage.setItem("currentUndoIndex", String(currentIndex));
@@ -209,8 +208,8 @@ export class SongDocument {
 		if (this.prefs.displayBrowserUrl) {
 			window.history.back();
 		} else {
-			let currentIndex: number = Number(window.sessionStorage.getItem("currentUndoIndex"));
-			let oldestIndex: number = Number(window.sessionStorage.getItem("oldestUndoIndex"));
+			let currentIndex = Number(window.sessionStorage.getItem("currentUndoIndex"));
+			let oldestIndex = Number(window.sessionStorage.getItem("oldestUndoIndex"));
 			if (currentIndex != oldestIndex) {
 				currentIndex = (currentIndex + SongDocument._maximumUndoHistory - 1) % SongDocument._maximumUndoHistory;
 				window.sessionStorage.setItem("currentUndoIndex", String(currentIndex));
@@ -229,7 +228,7 @@ export class SongDocument {
 			// The user changed the hash directly.
 			this._sequenceNumber++;
 			this._resetSongRecoveryUid();
-			const state: HistoryState = {canUndo: true, sequenceNumber: this._sequenceNumber, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this._recoveryUid, prompt: null, selection: this.selection.toJSON(), promptEffectIndex : this.promptEffectIndex};
+			const state = {canUndo: true, sequenceNumber: this._sequenceNumber, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this._recoveryUid, prompt: null, selection: this.selection.toJSON(), promptEffectIndex : this.promptEffectIndex};
 			try {
 				new ChangeSong(this, this._getHash());
 			} catch (error) {
@@ -289,12 +288,12 @@ export class SongDocument {
     }
 
     private _validateDocState = (): void => {
-        const channelCount: number = this.song.getChannelCount();
-        for (let i: number = this.recentPatternInstruments.length; i < channelCount; i++) {
+        const channelCount = this.song.getChannelCount();
+        for (let i = this.recentPatternInstruments.length; i < channelCount; i++) {
             this.recentPatternInstruments[i] = [0];
         }
         this.recentPatternInstruments.length = channelCount;
-        for (let i: number = 0; i < channelCount; i++) {
+        for (let i = 0; i < channelCount; i++) {
             if (i == this.channel) {
                 if (this.song.patternInstruments) {
                     const pattern: Pattern | null = this.song.getPattern(this.channel, this.bar);
@@ -302,8 +301,8 @@ export class SongDocument {
                         this.recentPatternInstruments[i] = pattern.instruments.concat();
                     }
                 } else {
-                    const channel: Channel = this.song.channels[this.channel];
-                    for (let j: number = 0; j < channel.instruments.length; j++) {
+                    const channel = this.song.channels[this.channel];
+                    for (let j = 0; j < channel.instruments.length; j++) {
                         this.recentPatternInstruments[i][j] = j;
                     }
                     this.recentPatternInstruments[i].length = channel.instruments.length;
@@ -312,11 +311,11 @@ export class SongDocument {
             discardInvalidPatternInstruments(this.recentPatternInstruments[i], this.song, i);
         }
 
-        for (let i: number = this.viewedInstrument.length; i < channelCount; i++) {
+        for (let i = this.viewedInstrument.length; i < channelCount; i++) {
             this.viewedInstrument[i] = 0;
         }
         this.viewedInstrument.length = channelCount;
-        for (let i: number = 0; i < channelCount; i++) {
+        for (let i = 0; i < channelCount; i++) {
             if (this.song.patternInstruments && !this.song.layeredInstruments && i == this.channel) {
                 const pattern: Pattern | null = this.song.getPattern(this.channel, this.bar);
                 if (pattern != null) {
@@ -365,7 +364,7 @@ export class SongDocument {
         } else {
             this._recovery.saveVersion(this._recoveryUid, this.song.title, hash);
         }
-        let state: HistoryState = { canUndo: true, sequenceNumber: this._sequenceNumber, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this._recoveryUid, prompt: this.prompt, selection: this.selection.toJSON(), promptEffectIndex : this.promptEffectIndex };
+        let state = { canUndo: true, sequenceNumber: this._sequenceNumber, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this._recoveryUid, prompt: this.prompt, selection: this.selection.toJSON(), promptEffectIndex : this.promptEffectIndex };
         if (this._stateShouldBePushed) {
             this._pushState(state, hash);
         } else {
@@ -375,7 +374,7 @@ export class SongDocument {
         this._recordedNewSong = false;
     }
 
-    record(change: Change, replace: boolean = false, newSong: boolean = false): void {
+    record(change: Change, replace = false, newSong = false): void {
         if (change.isNoop()) {
             this._recentChange = null;
             if (replace) this._back();
@@ -401,7 +400,7 @@ export class SongDocument {
     openPrompt(prompt: string, effectIndex?: number): void {
         this.prompt = prompt;
         if (effectIndex != undefined) this.promptEffectIndex = effectIndex;
-        const hash: string = this.song.toBase64String();
+        const hash = this.song.toBase64String();
         this._sequenceNumber++;
         const state = { canUndo: true, sequenceNumber: this._sequenceNumber, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this._recoveryUid, prompt: this.prompt, selection: this.selection.toJSON(), promptEffectIndex : this.promptEffectIndex };
         this._pushState(state, hash);
@@ -451,11 +450,11 @@ export class SongDocument {
         return Math.min(1.0, Math.pow(this.prefs.volume / 50.0, 0.5)) * Math.pow(2.0, (this.prefs.volume - 75.0) / 25.0);
     }
 
-    getCurrentPattern(barOffset: number = 0): Pattern | null {
+    getCurrentPattern(barOffset = 0): Pattern | null {
         return this.song.getPattern(this.channel, this.bar + barOffset);
     }
 
-    getCurrentInstrument(barOffset: number = 0): number {
+    getCurrentInstrument(barOffset = 0): number {
         if (barOffset == 0) {
             return this.viewedInstrument[this.channel];
         } else {
@@ -474,9 +473,9 @@ export class SongDocument {
     }
 
     getChannelHeight(): number {
-        const squashed: boolean = this.getMobileLayout() || this.song.getChannelCount() > 4 || (this.song.barCount > this.trackVisibleBars && this.song.getChannelCount() > 3);
+        const squashed = this.getMobileLayout() || this.song.getChannelCount() > 4 || (this.song.barCount > this.trackVisibleBars && this.song.getChannelCount() > 3);
         // TODO: Jummbox widescreen should allow more channels before squashing or megasquashing
-        const megaSquashed: boolean = !this.getMobileLayout() && (((this.prefs.layout != "wide") && this.song.getChannelCount() > 11) || this.song.getChannelCount() > 22);
+        const megaSquashed = !this.getMobileLayout() && (((this.prefs.layout != "wide") && this.song.getChannelCount() > 11) || this.song.getChannelCount() > 22);
         return megaSquashed ? 23 : (squashed ? 27 : 32);
     }
 
@@ -493,7 +492,7 @@ export class SongDocument {
     }
 
     getBaseVisibleOctave(channel: number): number {
-        const visibleOctaveCount: number = this.getVisibleOctaveCount();
+        const visibleOctaveCount = this.getVisibleOctaveCount();
         return Math.max(0, Math.min(Config.pitchOctaves - visibleOctaveCount, Math.ceil(this.song.channels[channel].octave - visibleOctaveCount * 0.5)));
     }
 }

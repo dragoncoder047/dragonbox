@@ -1,24 +1,23 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Config } from "../synth/SynthConfig";
-import { Instrument } from "../synth/Instrument";
 import { HTML } from "imperative-html/dist/esm/elements-strict";
-import { SongDocument } from "./SongDocument";
-import { Prompt } from "./Prompt";
+import { Config } from "../synth/SynthConfig";
 import { ChangeGroup } from "./Change";
 import { ChangeStringSustainType } from "./changes";
+import { Prompt } from "./Prompt";
+import { SongDocument } from "./SongDocument";
 
 const { button, div, h2, p, select, option } = HTML;
 
 export class SustainPrompt implements Prompt {
-    private readonly _typeSelect: HTMLSelectElement = select({ style: "width: 100%;" },
+    private readonly _typeSelect = select({ style: "width: 100%;" },
         option({ value: "acoustic" }, "(A) Acoustic"),
         option({ value: "bright" }, "(B) Bright"),
     );
-    private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-    private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
+    private readonly _cancelButton = button({ class: "cancelButton" });
+    private readonly _okayButton = button({ class: "okayButton", style: "width:45%;" }, "Okay");
 
-    readonly container: HTMLDivElement = div({ class: "prompt", style: "width: 300px;" },
+    readonly container = div({ class: "prompt", style: "width: 300px;" },
         div(
             h2("String Sustain"),
             p("This setting controls how quickly the picked string vibration decays."),
@@ -35,7 +34,7 @@ export class SustainPrompt implements Prompt {
     );
 
     constructor(private _doc: SongDocument) {
-        const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+        const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         this._typeSelect.value = Config.sustainTypeNames[instrument.stringSustainType];
 
         setTimeout(() => this._cancelButton.focus());
@@ -63,7 +62,7 @@ export class SustainPrompt implements Prompt {
 
     private _saveChanges = (): void => {
         if (Config.enableAcousticSustain) {
-            const group: ChangeGroup = new ChangeGroup();
+            const group = new ChangeGroup();
             group.append(new ChangeStringSustainType(this._doc, <any>Config.sustainTypeNames.indexOf(this._typeSelect.value)));
             this._doc.prompt = null;
             this._doc.record(group, true);

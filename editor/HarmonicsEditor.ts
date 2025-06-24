@@ -11,47 +11,47 @@ import { Prompt } from "./Prompt";
 import { SongEditor } from "./SongEditor";
 
 export class HarmonicsEditor {
-    private readonly _editorWidth: number = 120;
-    private readonly _editorHeight: number = 26;
-    private readonly _octaves: SVGSVGElement = SVG.svg({ "pointer-events": "none" });
-    private readonly _fifths: SVGSVGElement = SVG.svg({ "pointer-events": "none" });
-    private readonly _curve: SVGPathElement = SVG.path({ fill: "none", stroke: "currentColor", "stroke-width": 2, "pointer-events": "none" });
+    private readonly _editorWidth = 120;
+    private readonly _editorHeight = 26;
+    private readonly _octaves = SVG.svg({ "pointer-events": "none" });
+    private readonly _fifths = SVG.svg({ "pointer-events": "none" });
+    private readonly _curve = SVG.path({ fill: "none", stroke: "currentColor", "stroke-width": 2, "pointer-events": "none" });
     private readonly _lastControlPoints: SVGRectElement[] = [];
-    private readonly _lastControlPointContainer: SVGSVGElement = SVG.svg({ "pointer-events": "none" });
-    private readonly _svg: SVGSVGElement = SVG.svg({ style: "background-color: ${ColorConfig.editorBackground}; touch-action: none; cursor: crosshair;", width: "100%", height: "100%", viewBox: "0 0 " + this._editorWidth + " " + this._editorHeight, preserveAspectRatio: "none" },
+    private readonly _lastControlPointContainer = SVG.svg({ "pointer-events": "none" });
+    private readonly _svg = SVG.svg({ style: "background-color: ${ColorConfig.editorBackground}; touch-action: none; cursor: crosshair;", width: "100%", height: "100%", viewBox: "0 0 " + this._editorWidth + " " + this._editorHeight, preserveAspectRatio: "none" },
         this._octaves,
         this._fifths,
         this._curve,
         this._lastControlPointContainer,
     );
 
-    readonly container: HTMLElement = HTML.div({ class: "harmonics", style: "height: 100%;" }, this._svg);
+    readonly container = HTML.div({ class: "harmonics", style: "height: 100%;" }, this._svg);
 
-    private _mouseX: number = 0;
-    private _mouseY: number = 0;
-    private _freqPrev: number = 0;
-    private _ampPrev: number = 0;
-    private _mouseDown: boolean = false;
+    private _mouseX = 0;
+    private _mouseY = 0;
+    private _freqPrev = 0;
+    private _ampPrev = 0;
+    private _mouseDown = false;
     private _change: ChangeHarmonics | null = null;
-    private _renderedPath: String = "";
-    private _renderedFifths: boolean = true;
+    private _renderedPath = "";
+    private _renderedFifths = true;
     private instrument: Instrument;
     private readonly _initial: HarmonicsWave;
 
-    private _undoHistoryState: number = 0;
+    private _undoHistoryState = 0;
     private _changeQueue: number[][] = [];
 
-    constructor(private _doc: SongDocument, private _isPrompt: boolean = false) {
+    constructor(private _doc: SongDocument, private _isPrompt = false) {
         this.instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         this._initial = this.instrument.harmonicsWave;
-        for (let i: number = 1; i <= Config.harmonicsControlPoints; i = i * 2) {
+        for (let i = 1; i <= Config.harmonicsControlPoints; i = i * 2) {
             this._octaves.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: (i - 0.5) * (this._editorWidth - 8) / (Config.harmonicsControlPoints - 1) - 1, y: 0, width: 2, height: this._editorHeight }));
         }
-        for (let i: number = 3; i <= Config.harmonicsControlPoints; i = i * 2) {
+        for (let i = 3; i <= Config.harmonicsControlPoints; i = i * 2) {
             this._fifths.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: (i - 0.5) * (this._editorWidth - 8) / (Config.harmonicsControlPoints - 1) - 1, y: 0, width: 2, height: this._editorHeight }));
         }
-        for (let i: number = 0; i < 4; i++) {
-            const rect: SVGRectElement = SVG.rect({ fill: "currentColor", x: (this._editorWidth - i * 2 - 1), y: 0, width: 1, height: this._editorHeight });
+        for (let i = 0; i < 4; i++) {
+            const rect = SVG.rect({ fill: "currentColor", x: (this._editorWidth - i * 2 - 1), y: 0, width: 1, height: this._editorHeight });
             this._lastControlPoints.push(rect);
             this._lastControlPointContainer.appendChild(rect);
         }
@@ -128,7 +128,7 @@ export class HarmonicsEditor {
     private _whenMousePressed = (event: MouseEvent): void => {
         event.preventDefault();
         this._mouseDown = true;
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = ((event.clientX || event.pageX) - boundingRect.left) * this._editorWidth / (boundingRect.right - boundingRect.left);
         this._mouseY = ((event.clientY || event.pageY) - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseX)) this._mouseX = 0;
@@ -142,7 +142,7 @@ export class HarmonicsEditor {
     private _whenTouchPressed = (event: TouchEvent): void => {
         event.preventDefault();
         this._mouseDown = true;
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.touches[0].clientX - boundingRect.left) * this._editorWidth / (boundingRect.right - boundingRect.left);
         this._mouseY = (event.touches[0].clientY - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseX)) this._mouseX = 0;
@@ -155,7 +155,7 @@ export class HarmonicsEditor {
 
     private _whenMouseMoved = (event: MouseEvent): void => {
         if (this.container.offsetParent == null) return;
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = ((event.clientX || event.pageX) - boundingRect.left) * this._editorWidth / (boundingRect.right - boundingRect.left);
         this._mouseY = ((event.clientY || event.pageY) - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseX)) this._mouseX = 0;
@@ -167,7 +167,7 @@ export class HarmonicsEditor {
         if (this.container.offsetParent == null) return;
         if (!this._mouseDown) return;
         event.preventDefault();
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.touches[0].clientX - boundingRect.left) * this._editorWidth / (boundingRect.right - boundingRect.left);
         this._mouseY = (event.touches[0].clientY - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseX)) this._mouseX = 0;
@@ -178,18 +178,18 @@ export class HarmonicsEditor {
 
     private _whenCursorMoved(): void {
         if (this._mouseDown) {
-            const freq: number = this._xToFreq(this._mouseX);
-            const amp: number = this._yToAmp(this._mouseY);
+            const freq = this._xToFreq(this._mouseX);
+            const amp = this._yToAmp(this._mouseY);
 
-            const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-            const harmonicsWave: HarmonicsWave = instrument.harmonicsWave; //(this._harmonicsIndex == null) ? instrument.harmonicsWave : instrument.drumsetSpectrumWaves[this._harmonicsIndex];
+            const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+            const harmonicsWave = instrument.harmonicsWave; //(this._harmonicsIndex == null) ? instrument.harmonicsWave : instrument.drumsetSpectrumWaves[this._harmonicsIndex];
 
             if (freq != this._freqPrev) {
-                const slope: number = (amp - this._ampPrev) / (freq - this._freqPrev);
-                const offset: number = this._ampPrev - this._freqPrev * slope;
-                const lowerFreq: number = Math.ceil(Math.min(this._freqPrev, freq));
-                const upperFreq: number = Math.floor(Math.max(this._freqPrev, freq));
-                for (let i: number = lowerFreq; i <= upperFreq; i++) {
+                const slope = (amp - this._ampPrev) / (freq - this._freqPrev);
+                const offset = this._ampPrev - this._freqPrev * slope;
+                const lowerFreq = Math.ceil(Math.min(this._freqPrev, freq));
+                const upperFreq = Math.floor(Math.max(this._freqPrev, freq));
+                for (let i = lowerFreq; i <= upperFreq; i++) {
                     if (i < 0 || i >= Config.harmonicsControlPoints) continue;
                     harmonicsWave.harmonics[i] = Math.max(0, Math.min(Config.harmonicsMax, Math.round(i * slope + offset)));
                 }
@@ -217,12 +217,12 @@ export class HarmonicsEditor {
     }
 
     getHarmonicsWave(): HarmonicsWave {
-        const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+        const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         return instrument.harmonicsWave;
     }
 
     setHarmonicsWave(harmonics: number[]) {
-        const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+        const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         for (let i = 0; i < Config.harmonicsControlPoints; i++) {
             instrument.harmonicsWave.harmonics[i] = harmonics[i];
         }
@@ -231,35 +231,35 @@ export class HarmonicsEditor {
     }
 
     saveSettings(): ChangeHarmonics {
-        const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+        const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         return new ChangeHarmonics(this._doc, instrument, instrument.harmonicsWave);
     }
 
     resetToInitial() {
-        const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+        const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
         this.setHarmonicsWave(this._initial.harmonics);
         this._doc.record(new ChangeHarmonics(this._doc, instrument, this._initial));
     }
 
     render(): void {
-        const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-        const harmonicsWave: HarmonicsWave = instrument.harmonicsWave; //(this._harmonicsIndex == null) ? instrument.harmonicsWave : instrument.drumsetSpectrumWaves[this._harmonicsIndex];
+        const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+        const harmonicsWave = instrument.harmonicsWave; //(this._harmonicsIndex == null) ? instrument.harmonicsWave : instrument.drumsetSpectrumWaves[this._harmonicsIndex];
         const controlPointToHeight = (point: number): number => {
             return (1 - (point / Config.harmonicsMax)) * this._editorHeight;
         }
 
-        let bottom: string = prettyNumber(this._editorHeight);
-        let path: string = "";
-        for (let i: number = 0; i < Config.harmonicsControlPoints - 1; i++) {
+        let bottom = prettyNumber(this._editorHeight);
+        let path = "";
+        for (let i = 0; i < Config.harmonicsControlPoints - 1; i++) {
             if (harmonicsWave.harmonics[i] == 0) continue;
-            let xPos: string = prettyNumber((i + 0.5) * (this._editorWidth - 8) / (Config.harmonicsControlPoints - 1));
+            let xPos = prettyNumber((i + 0.5) * (this._editorWidth - 8) / (Config.harmonicsControlPoints - 1));
             path += "M " + xPos + " " + bottom + " ";
             path += "L " + xPos + " " + prettyNumber(controlPointToHeight(harmonicsWave.harmonics[i])) + " ";
         }
 
-        const lastHeight: number = controlPointToHeight(harmonicsWave.harmonics[Config.harmonicsControlPoints - 1]);
-        for (let i: number = 0; i < 4; i++) {
-            const rect: SVGRectElement = this._lastControlPoints[i];
+        const lastHeight = controlPointToHeight(harmonicsWave.harmonics[Config.harmonicsControlPoints - 1]);
+        for (let i = 0; i < 4; i++) {
+            const rect = this._lastControlPoints[i];
             rect.setAttribute("y", prettyNumber(lastHeight));
             rect.setAttribute("height", prettyNumber(this._editorHeight - lastHeight));
         }
@@ -277,21 +277,21 @@ export class HarmonicsEditor {
 
 export class HarmonicsEditorPrompt implements Prompt {
 
-    readonly harmonicsEditor: HarmonicsEditor = new HarmonicsEditor(this._doc, true);
+    readonly harmonicsEditor = new HarmonicsEditor(this._doc, true);
 
-    readonly _playButton: HTMLButtonElement = HTML.button({ style: "width: 55%;", type: "button" });
+    readonly _playButton = HTML.button({ style: "width: 55%;", type: "button" });
 
-    private readonly _cancelButton: HTMLButtonElement = HTML.button({ class: "cancelButton" });
-    private readonly _okayButton: HTMLButtonElement = HTML.button({ class: "okayButton", style: "width:45%;" }, "Okay");
+    private readonly _cancelButton = HTML.button({ class: "cancelButton" });
+    private readonly _okayButton = HTML.button({ class: "okayButton", style: "width:45%;" }, "Okay");
 
-    private readonly copyButton: HTMLButtonElement = HTML.button({ style: "width:86px; margin-right: 5px;", class: "copyButton" }, [
+    private readonly copyButton = HTML.button({ style: "width:86px; margin-right: 5px;", class: "copyButton" }, [
         "Copy",
         // Copy icon:
         SVG.svg({ style: "flex-shrink: 0; position: absolute; left: 0; top: 50%; margin-top: -1em; pointer-events: none;", width: "2em", height: "2em", viewBox: "-5 -21 26 26" }, [
             SVG.path({ d: "M 0 -15 L 1 -15 L 1 0 L 13 0 L 13 1 L 0 1 L 0 -15 z M 2 -1 L 2 -17 L 10 -17 L 14 -13 L 14 -1 z M 3 -2 L 13 -2 L 13 -12 L 9 -12 L 9 -16 L 3 -16 z", fill: "currentColor" }),
         ]),
     ]);
-    private readonly pasteButton: HTMLButtonElement = HTML.button({ style: "width:86px;", class: "pasteButton" }, [
+    private readonly pasteButton = HTML.button({ style: "width:86px;", class: "pasteButton" }, [
         "Paste",
         // Paste icon:
         SVG.svg({ style: "flex-shrink: 0; position: absolute; left: 0; top: 50%; margin-top: -1em; pointer-events: none;", width: "2em", height: "2em", viewBox: "0 0 26 26" }, [
@@ -299,8 +299,8 @@ export class HarmonicsEditorPrompt implements Prompt {
                 SVG.path({ d: "M 9 3 L 14 3 L 14 6 L 9 6 L 9 3 z M 16 8 L 20 12 L 16 12 L 16 8 z", fill: "currentColor", }),
         ]),
     ]);
-    private readonly copyPasteContainer: HTMLDivElement = HTML.div({ style: "width: 185px;" }, this.copyButton, this.pasteButton);
-    readonly container: HTMLDivElement = HTML.div({ class: "prompt noSelection", style: "width: 500px;"},
+    private readonly copyPasteContainer = HTML.div({ style: "width: 185px;" }, this.copyButton, this.pasteButton);
+    readonly container = HTML.div({ class: "prompt noSelection", style: "width: 500px;"},
         HTML.h2("Edit Harmonics Instrument"),
                                                          HTML.div({ style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
                                                                   this._playButton,
@@ -366,12 +366,12 @@ export class HarmonicsEditorPrompt implements Prompt {
     }
 
     private _copySettings = (): void => {
-        const harmonicsCopy: HarmonicsWave = this.harmonicsEditor.getHarmonicsWave();
+        const harmonicsCopy = this.harmonicsEditor.getHarmonicsWave();
         window.localStorage.setItem("harmonicsCopy", JSON.stringify(harmonicsCopy.harmonics));
     }
 
     private _pasteSettings = (): void => {
-        const storedHarmonicsWave: any = JSON.parse(String(window.localStorage.getItem("harmonicsCopy")));
+        const storedHarmonicsWave = JSON.parse(String(window.localStorage.getItem("harmonicsCopy")));
         this.harmonicsEditor.setHarmonicsWave(storedHarmonicsWave);
         this.harmonicsEditor.storeChange();
     }

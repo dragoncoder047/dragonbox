@@ -1,7 +1,7 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
 function transfer(source: ArrayBuffer, length: number): ArrayBuffer {
-    const dest: ArrayBuffer = new ArrayBuffer(length);
+    const dest = new ArrayBuffer(length);
     let nextOffset = 0;
     let leftBytes = Math.min(source.byteLength, dest.byteLength);
     const wordSizes = [8, 4, 2, 1];
@@ -35,7 +35,7 @@ function transfer(source: ArrayBuffer, length: number): ArrayBuffer {
 
         const view_source = new ViewClass(source, nextOffset, (leftBytes / wordSize) | 0);
         const view_dest = new ViewClass(dest, nextOffset, (leftBytes / wordSize) | 0);
-        for (let i: number = 0; i < view_dest.length; i++) {
+        for (let i = 0; i < view_dest.length; i++) {
             view_dest[i] = view_source[i];
         }
         return {
@@ -47,8 +47,8 @@ function transfer(source: ArrayBuffer, length: number): ArrayBuffer {
 
 // Note: All methods are big endian.
 export class ArrayBufferWriter {
-    private _writeIndex: number = 0;
-    private _fileSize: number = 0;
+    private _writeIndex = 0;
+    private _fileSize = 0;
     private _arrayBuffer: ArrayBuffer;
     private _data: DataView;
 
@@ -121,10 +121,10 @@ export class ArrayBufferWriter {
     writeMidiVariableLength(value: number): void {
         value = value >>> 0;
         if (value > 0x0fffffff) throw new Error("writeVariableLength value too big.");
-        let startWriting: boolean = false;
-        for (let i: number = 0; i < 4; i++) {
-            const shift: number = 21 - i * 7;
-            const bits: number = (value >>> shift) & 0x7f;
+        let startWriting = false;
+        for (let i = 0; i < 4; i++) {
+            const shift = 21 - i * 7;
+            const bits = (value >>> shift) & 0x7f;
             if (bits != 0 || i == 3) startWriting = true; // skip leading zero bytes, but always write the last byte even if it's zero. 
             if (startWriting) this.writeUint8((i == 3 ? 0x00 : 0x80) | bits);
         }
@@ -132,8 +132,8 @@ export class ArrayBufferWriter {
 
     writeMidiAscii(string: string): void {
         this.writeMidiVariableLength(string.length);
-        for (let i: number = 0; i < string.length; i++) {
-            const charCode: number = string.charCodeAt(i);
+        for (let i = 0; i < string.length; i++) {
+            const charCode = string.charCodeAt(i);
             if (charCode > 0x7f) throw new Error("Trying to write unicode character as ascii.");
             this.writeUint8(charCode); // technically charCodeAt returns 2 byte values, but this string should contain exclusively 1 byte values.
         }

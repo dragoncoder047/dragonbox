@@ -4,14 +4,14 @@ import {Scale, Config} from "../synth/SynthConfig";
 import {ColorConfig} from "../editor/ColorConfig";
 
 export class Preferences {
-	static readonly defaultVisibleOctaves: number = 3;
+	static readonly defaultVisibleOctaves = 3;
 	
 	customTheme: string | null;
 	customTheme2: string | null;
 	autoPlay: boolean;
 	autoFollow: boolean;
 	enableNotePreview: boolean;
-	showFifth: boolean = true;
+	showFifth = true;
 	notesOutsideScale: boolean;
 	defaultScale: number;
 	showLetters: boolean;
@@ -27,8 +27,8 @@ export class Preferences {
 	fixChannelColorOrder: boolean;
 	layout: string;
 	displayBrowserUrl: boolean;
-	volume: number = 75;
-	visibleOctaves: number = Preferences.defaultVisibleOctaves;
+	volume = 75;
+	visibleOctaves = Preferences.defaultVisibleOctaves;
 	pressControlForShortcuts: boolean;
 	keyboardLayout: string;
 	bassOffset: number;

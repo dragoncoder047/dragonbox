@@ -16,21 +16,21 @@ export interface Preset extends BeepBoxOption {
     readonly settings?: any;
 }
 
-export const isMobile: boolean = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|android|ipad|playbook|silk/i.test(navigator.userAgent);
+export const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|android|ipad|playbook|silk/i.test(navigator.userAgent);
 
 export function prettyNumber(value: number): string {
     return value.toFixed(2).replace(/\.?0*$/, "");
 }
 
 export class EditorConfig {
-    static readonly version: string = "v1";
-    static readonly versionDisplayName: string = "DragonBox!";
+    static readonly version = "v1";
+    static readonly versionDisplayName = "DragonBox!";
 
-    static readonly releaseNotesURL: string = "./patch_notes.html";
+    static readonly releaseNotesURL = "./patch_notes.html";
 
-    static readonly isOnMac: boolean = /^Mac/i.test(navigator.platform) || /Mac OS X/i.test(navigator.userAgent) || /^(iPhone|iPad|iPod)/i.test(navigator.platform) || /(iPhone|iPad|iPod)/i.test(navigator.userAgent);
-    static readonly ctrlSymbol: string = EditorConfig.isOnMac ? "⌘" : "Ctrl+";
-    static readonly ctrlName: string = EditorConfig.isOnMac ? "command" : "control";
+    static readonly isOnMac = /^Mac/i.test(navigator.platform) || /Mac OS X/i.test(navigator.userAgent) || /^(iPhone|iPad|iPod)/i.test(navigator.platform) || /(iPhone|iPad|iPod)/i.test(navigator.userAgent);
+    static readonly ctrlSymbol = EditorConfig.isOnMac ? "⌘" : "Ctrl+";
+    static readonly ctrlName = EditorConfig.isOnMac ? "command" : "control";
 
     static customSamples: string[] | null;
 
@@ -415,16 +415,16 @@ export class EditorConfig {
     ]);
 
     static valueToPreset(presetValue: number): Preset | null {
-        const categoryIndex: number = presetValue >> 6;
-        const presetIndex: number = presetValue & 0x3F;
+        const categoryIndex = presetValue >> 6;
+        const presetIndex = presetValue & 0x3F;
         return EditorConfig.presetCategories[categoryIndex]?.presets[presetIndex];
     }
 
     static midiProgramToPresetValue(program: number): number | null {
-        for (let categoryIndex: number = 0; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
-            const category: PresetCategory = EditorConfig.presetCategories[categoryIndex];
-            for (let presetIndex: number = 0; presetIndex < category.presets.length; presetIndex++) {
-                const preset: Preset = category.presets[presetIndex];
+        for (let categoryIndex = 0; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
+            const category = EditorConfig.presetCategories[categoryIndex];
+            for (let presetIndex = 0; presetIndex < category.presets.length; presetIndex++) {
+                const preset = category.presets[presetIndex];
                 if (preset.generalMidi && preset.midiProgram == program) return (categoryIndex << 6) + presetIndex;
             }
         }
@@ -432,10 +432,10 @@ export class EditorConfig {
     }
 
     static nameToPresetValue(presetName: string): number | null {
-        for (let categoryIndex: number = 0; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
-            const category: PresetCategory = EditorConfig.presetCategories[categoryIndex];
-            for (let presetIndex: number = 0; presetIndex < category.presets.length; presetIndex++) {
-                const preset: Preset = category.presets[presetIndex];
+        for (let categoryIndex = 0; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
+            const category = EditorConfig.presetCategories[categoryIndex];
+            for (let presetIndex = 0; presetIndex < category.presets.length; presetIndex++) {
+                const preset = category.presets[presetIndex];
                 if (preset.name == presetName) return (categoryIndex << 6) + presetIndex;
             }
         }

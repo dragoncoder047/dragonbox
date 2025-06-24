@@ -15,11 +15,11 @@ import { ExportPrompt } from "./ExportPrompt";
 import { ChangePreset } from "./changes";
 
 //namespace beepbox {
-// const doc: SongDocument = new SongDocument();//debug only
-// const editor: SongEditor = new SongEditor(doc);//same as above
-const editor: SongEditor = new SongEditor();
+// const doc = new SongDocument();//debug only
+// const editor = new SongEditor(doc);//same as above
+const editor = new SongEditor();
 
-const beepboxEditorContainer: HTMLElement = document.getElementById("beepboxEditorContainer")!;
+const beepboxEditorContainer = document.getElementById("beepboxEditorContainer")!;
 beepboxEditorContainer.appendChild(editor.mainLayer);
 editor.whenUpdated();
 

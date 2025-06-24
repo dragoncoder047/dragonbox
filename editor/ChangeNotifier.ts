@@ -2,7 +2,7 @@
 
 export class ChangeNotifier {
     private _watchers: (() => void)[] = [];
-    private _dirty: boolean = false;
+    private _dirty = false;
 
     watch(watcher: () => void): void {
         if (this._watchers.indexOf(watcher) == -1) {
@@ -11,7 +11,7 @@ export class ChangeNotifier {
     }
 
     unwatch(watcher: () => void): void {
-        const index: number = this._watchers.indexOf(watcher);
+        const index = this._watchers.indexOf(watcher);
         if (index != -1) {
             this._watchers.splice(index, 1);
         }

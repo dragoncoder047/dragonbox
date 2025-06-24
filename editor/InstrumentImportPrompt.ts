@@ -2,24 +2,23 @@
 
 import { SongDocument } from "./SongDocument";
 //import { SongEditor } from "./SongEditor";
-import { Prompt } from "./Prompt";
 import { HTML } from "imperative-html/dist/esm/elements-strict";
 import { Channel } from "../synth/Channel";
-import { Instrument } from "../synth/Instrument";
-import { ChangePasteInstrument, ChangeAppendInstrument, ChangeViewInstrument } from "./changes";
+import { ChangeAppendInstrument, ChangePasteInstrument, ChangeViewInstrument } from "./changes";
+import { Prompt } from "./Prompt";
 
 const { button, div, h2, input, select, option, code } = HTML;
 
 export class InstrumentImportPrompt implements Prompt {
-    private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-    private readonly _importStrategySelect: HTMLSelectElement = select({ style: "width: 100%;" },
+    private readonly _cancelButton = button({ class: "cancelButton" });
+    private readonly _importStrategySelect = select({ style: "width: 100%;" },
         option({ value: "append" }, "Append instruments to the end of the list."),
         option({ value: "replace" }, "Replace only the selected instrument."),
         option({ value: "all" }, "Replace all instruments in the channel."),
     );
-    private readonly _fileInput: HTMLInputElement = input({ type: "file", accept: ".json,application/json" });
+    private readonly _fileInput = input({ type: "file", accept: ".json,application/json" });
 
-    private readonly _strategyInfoText: HTMLDivElement = div({ style: "text-align: left;" },
+    private readonly _strategyInfoText = div({ style: "text-align: left;" },
         "You must enable either ",
         code("Simultaneous instruments per channel"),
         " or ",
@@ -27,7 +26,7 @@ export class InstrumentImportPrompt implements Prompt {
         " to change the import strategy.",
     );
 
-    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 300px;" },
+    readonly container = div({ class: "prompt noSelection", style: "width: 300px;" },
         h2("Import Instrument(s)"),
         this._strategyInfoText,
         div({ style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
@@ -65,12 +64,12 @@ export class InstrumentImportPrompt implements Prompt {
     }
 
     private _whenFileSelected = (): void => {
-        const file: File = this._fileInput.files![0];
+        const file = this._fileInput.files![0];
         if (!file) return;
-        const reader: FileReader = new FileReader()
+        const reader = new FileReader()
         reader.onload = (e) => {
             try {
-                const fileParsed: any = JSON.parse(String(e.target?.result));
+                const fileParsed = JSON.parse(String(e.target?.result));
                 console.log("Processing file:", fileParsed)
                 if (fileParsed.constructor.name == "Array") {
                     if ((this._doc.song.patternInstruments || this._doc.song.layeredInstruments) == false) {
@@ -99,8 +98,8 @@ export class InstrumentImportPrompt implements Prompt {
     }
 
     _import_multiple = (file: any): void => {
-        const channel: Channel = this._doc.song.channels[this._doc.channel];
-        const currentInstrum: Instrument = channel.instruments[this._doc.getCurrentInstrument()];
+        const channel = this._doc.song.channels[this._doc.channel];
+        const currentInstrum = channel.instruments[this._doc.getCurrentInstrument()];
         switch (this._importStrategySelect.value) {
             case "replace":
                 // console.log("multi replace");
@@ -109,7 +108,7 @@ export class InstrumentImportPrompt implements Prompt {
                 const firstInstrum = file[0];
                 this._doc.record(new ChangePasteInstrument(this._doc, currentInstrum, firstInstrum));
                 for (let i = 1; i < file.length; i++) {
-                    const insturm: any = file[i];
+                    const insturm = file[i];
                     if (!this._validate_instrument_limit(channel)) {
                         alert("Max instruments reached! Some instruments were not imported.");
                         break;
@@ -163,8 +162,8 @@ export class InstrumentImportPrompt implements Prompt {
     }
 
     _import_single = (file: any): void => {
-        const channel: Channel = this._doc.song.channels[this._doc.channel];
-        const currentInstrum: Instrument = channel.instruments[this._doc.getCurrentInstrument()];
+        const channel = this._doc.song.channels[this._doc.channel];
+        const currentInstrum = channel.instruments[this._doc.getCurrentInstrument()];
         switch (this._importStrategySelect.value) {
             case "replace":
                 //Replace the current instrument with this one

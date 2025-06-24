@@ -26,8 +26,8 @@ are involved, as well as the current input sample.
 The class FilterCoefficients is defined lower in this file. You can use it to
 set up a first order filter like this:
 
-	const cutoffRadiansPerSample: number = 2 * Math.PI * cutoffHz / sampleRate;
-	const filter: FilterCoefficients = new FilterCoefficients();
+	const cutoffRadiansPerSample = 2 * Math.PI * cutoffHz / sampleRate;
+	const filter = new FilterCoefficients();
 	filter.lowPass1stOrderButterworth(cutoffRadiansPerSample);
 	// output sample coefficients are conventionally called a0, a1, etc. Note
 	// that a[0] is typically normalized to 1.0 and need not be used directly.
@@ -71,8 +71,8 @@ This file also contains a class called FrequencyResponse. You can use it to
 determine how much gain or attenuation a filter would apply to sounds at a
 specific input frequency, as well as the phase offset:
 
-	const inputRadians: number = 2 * Math.PI * cutoffHz / sampleRate;
-	const response: FrequencyResponse = new FrequencyResponse();
+	const inputRadians = 2 * Math.PI * cutoffHz / sampleRate;
+	const response = new FrequencyResponse();
 	response.analyze(filter, inputRadians);
 	const gainResponse = response.magnitude();
 	const phaseResponse = response.angle();
@@ -191,7 +191,7 @@ create extra resonance.
 export class FilterCoefficients {
 	readonly a: number[] = [1.0]; // output coefficients (negated, keep a[0]=1)
 	readonly b: number[] = [1.0]; // input coefficients
-	order: number = 0;
+	order = 0;
 	
 	linearGain0thOrder(linearGain: number): void {
 		//a[0] = 1.0; // a0 should always be normalized to 1.0, no need to assign it directly.
@@ -204,8 +204,8 @@ export class FilterCoefficients {
 		// https://www.researchgate.net/publication/338022014_Digital_Implementation_of_Butterworth_First-Order_Filter_Type_IIR
 		// A butterworth filter is one where the amplitude response is equal to:
 		// 1 / √(1 + (freq / cutoffFreq)^(2 * order))
-		const g: number = 1.0 / Math.tan(cornerRadiansPerSample * 0.5);
-		const a0: number = 1.0 + g;
+		const g = 1.0 / Math.tan(cornerRadiansPerSample * 0.5);
+		const a0 = 1.0 + g;
 		this.a[1] = (1.0 - g) / a0;
 		this.b[1] = this.b[0] = 1 / a0;
 		this.order = 1;
@@ -224,14 +224,14 @@ export class FilterCoefficients {
 		// to the digital nyquist frequency, whereas the matched z-transform
 		// preserves the frequency of the filter response but also adds the
 		// reflected response from above the nyquist frequency.
-		const g: number = 2.0 * Math.sin(cornerRadiansPerSample * 0.5);
+		const g = 2.0 * Math.sin(cornerRadiansPerSample * 0.5);
 		this.a[1] = g - 1.0;
 		this.b[0] = g;
 		this.b[1] = 0.0;
 		/*
 		// Alternatively:
-		const g: number = 1.0 / (2.0 * Math.sin(cornerRadiansPerSample / 2));
-		const a0: number = g;
+		const g = 1.0 / (2.0 * Math.sin(cornerRadiansPerSample / 2));
+		const a0 = g;
 		this.a[1] = (1.0 - g) / a0;
 		this.b[0] = 1.0 / a0;
 		this.b[1] = 0.0 / a0;
@@ -242,8 +242,8 @@ export class FilterCoefficients {
 	highPass1stOrderButterworth(cornerRadiansPerSample: number): void {
 		// First-order Butterworth high-pass filter according to:
 		// https://www.researchgate.net/publication/338022014_Digital_Implementation_of_Butterworth_First-Order_Filter_Type_IIR
-		const g: number = 1.0 / Math.tan(cornerRadiansPerSample * 0.5);
-		const a0: number = 1.0 + g;
+		const g = 1.0 / Math.tan(cornerRadiansPerSample * 0.5);
+		const a0 = 1.0 + g;
 		this.a[1] = (1.0 - g) / a0;
 		this.b[0] = g / a0;
 		this.b[1] = -g / a0;
@@ -254,7 +254,7 @@ export class FilterCoefficients {
 		// The output of this filter is nearly identical to the 1st order
 		// Butterworth high-pass above, except it resonates when the cutoff
 		// appoaches the nyquist.
-		const g: number = 2.0 * Math.sin(cornerRadiansPerSample * 0.5);
+		const g = 2.0 * Math.sin(cornerRadiansPerSample * 0.5);
 		this.a[1] = g - 1.0;
 		this.b[0] = 1.0;
 		this.b[1] = -1.0;
@@ -269,10 +269,10 @@ export class FilterCoefficients {
 		// little bit of trial and error in my attempts to interpret page 53 of
 		// this chapter: http://www.music.mcgill.ca/~ich/classes/FiltersChap2.pdf
 		// Obviously I don't fully understand the bilinear transform yet!
-		const tan: number = Math.tan(cornerRadiansPerSample * 0.5);
-		const sqrtGain: number = Math.sqrt(shelfLinearGain);
-		const g: number = (tan * sqrtGain - 1) / (tan * sqrtGain + 1.0);
-		const a0: number = 1.0;
+		const tan = Math.tan(cornerRadiansPerSample * 0.5);
+		const sqrtGain = Math.sqrt(shelfLinearGain);
+		const g = (tan * sqrtGain - 1) / (tan * sqrtGain + 1.0);
+		const a0 = 1.0;
 		this.a[1] = g / a0;
 		this.b[0] = (1.0 + g + shelfLinearGain * (1.0 - g)) / (2.0 * a0);
 		this.b[1] = (1.0 + g - shelfLinearGain * (1.0 - g)) / (2.0 * a0);
@@ -280,7 +280,7 @@ export class FilterCoefficients {
 	}
 	
 	allPass1stOrderInvertPhaseAbove(cornerRadiansPerSample: number): void {
-		const g: number = (Math.sin(cornerRadiansPerSample) - 1.0) / Math.cos(cornerRadiansPerSample);
+		const g = (Math.sin(cornerRadiansPerSample) - 1.0) / Math.cos(cornerRadiansPerSample);
 		this.a[1] = g;
 		this.b[0] = g;
 		this.b[1] = 1.0;
@@ -291,7 +291,7 @@ export class FilterCoefficients {
 	// I haven't found a practical use for this version of the all pass filter.
 	// It seems to create a weird subharmonic when used in a delay feedback loop.
 	allPass1stOrderInvertPhaseBelow(cornerRadiansPerSample: number): void {
-		const g: number = (Math.sin(cornerRadiansPerSample) - 1.0) / Math.cos(cornerRadiansPerSample);
+		const g = (Math.sin(cornerRadiansPerSample) - 1.0) / Math.cos(cornerRadiansPerSample);
 		this.a[1] = g;
 		this.b[0] = -g;
 		this.b[1] = -1.0;
@@ -303,7 +303,7 @@ export class FilterCoefficients {
 		// Very similar to allPass1stOrderInvertPhaseAbove, but configured
 		// differently and for a different purpose! Useful for interpolating
 		// between samples in a delay line.
-		const g: number = (1.0 - delay) / (1.0 + delay);
+		const g = (1.0 - delay) / (1.0 + delay);
 		this.a[1] = g;
 		this.b[0] = g;
 		this.b[1] = 1.0;
@@ -316,9 +316,9 @@ export class FilterCoefficients {
 		// An interesting property is that if peakLinearGain=1/16 then the
 		// output resembles a first-order lowpass at a cutoff 4 octaves lower,
 		// although it gets distorted near the nyquist.
-		const alpha: number = Math.sin(cornerRadiansPerSample) / (2.0 * peakLinearGain);
-		const cos: number = Math.cos(cornerRadiansPerSample);
-		const a0: number = 1.0 + alpha;
+		const alpha = Math.sin(cornerRadiansPerSample) / (2.0 * peakLinearGain);
+		const cos = Math.cos(cornerRadiansPerSample);
+		const a0 = 1.0 + alpha;
 		this.a[1] = -2.0*cos / a0;
 		this.a[2] = (1 - alpha) / a0;
 		this.b[2] = this.b[0] = (1 - cos) / (2.0*a0);
@@ -333,9 +333,9 @@ export class FilterCoefficients {
 		// above, except it resonates too much when the cutoff appoaches the
 		// nyquist. If the resonance is set to zero and the cutoff is set to
 		// nyquist/3, then the output is the same as the input.
-		const g: number = 2.0 * Math.sin(cornerRadiansPerSample / 2.0);
-		const filterResonance: number = 1.0 - 1.0 / (2.0 * peakLinearGain);
-		const feedback: number = filterResonance + filterResonance / (1.0 - g);
+		const g = 2.0 * Math.sin(cornerRadiansPerSample / 2.0);
+		const filterResonance = 1.0 - 1.0 / (2.0 * peakLinearGain);
+		const feedback = filterResonance + filterResonance / (1.0 - g);
 		this.a[1] = 2.0*g + (g - 1.0) * g*feedback - 2.0;
 		this.a[2] = (g - 1.0) * (g - g*feedback - 1.0);
 		this.b[0] = g*g;
@@ -345,9 +345,9 @@ export class FilterCoefficients {
 	}
 	
 	highPass2ndOrderButterworth(cornerRadiansPerSample: number, peakLinearGain: number): void {
-		const alpha: number = Math.sin(cornerRadiansPerSample) / (2 * peakLinearGain);
-		const cos: number = Math.cos(cornerRadiansPerSample);
-		const a0: number = 1.0 + alpha;
+		const alpha = Math.sin(cornerRadiansPerSample) / (2 * peakLinearGain);
+		const cos = Math.cos(cornerRadiansPerSample);
+		const a0 = 1.0 + alpha;
 		this.a[1] = -2.0*cos / a0;
 		this.a[2] = (1.0 - alpha) / a0;
 		this.b[2] = this.b[0] = (1.0 + cos) / (2.0*a0);
@@ -356,9 +356,9 @@ export class FilterCoefficients {
 	}
 	/*
 	highPass2ndOrderSimplified(cornerRadiansPerSample: number, peakLinearGain: number): void {
-		const g: number = 2.0 * Math.sin(cornerRadiansPerSample * 0.5);
-		const filterResonance: number = 1.0 - 1.0 / (2.0 * peakLinearGain);
-		const feedback: number = filterResonance + filterResonance / (1.0 - g);
+		const g = 2.0 * Math.sin(cornerRadiansPerSample * 0.5);
+		const filterResonance = 1.0 - 1.0 / (2.0 * peakLinearGain);
+		const feedback = filterResonance + filterResonance / (1.0 - g);
 		this.a[1] = 2.0*g + (g - 1.0) * g*feedback - 2.0;
 		this.a[2] = (g - 1.0) * (g - g*feedback - 1.0);
 		this.b[0] = 1.0;
@@ -368,13 +368,13 @@ export class FilterCoefficients {
 	}
 	*/
 	highShelf2ndOrder(cornerRadiansPerSample: number, shelfLinearGain: number, slope: number): void {
-		const A: number = Math.sqrt(shelfLinearGain);
-		const c: number = Math.cos(cornerRadiansPerSample);
-		const Aplus: number = A + 1.0;
-		const Aminus: number = A - 1.0;
-		const alpha: number = Math.sin(cornerRadiansPerSample) * 0.5 * Math.sqrt((Aplus / A) * (1.0 / slope - 1.0) + 2.0);
-		const sqrtA2Alpha: number = 2.0 * Math.sqrt(A) * alpha;
-		const a0: number =   (Aplus  - Aminus * c + sqrtA2Alpha);
+		const A = Math.sqrt(shelfLinearGain);
+		const c = Math.cos(cornerRadiansPerSample);
+		const Aplus = A + 1.0;
+		const Aminus = A - 1.0;
+		const alpha = Math.sin(cornerRadiansPerSample) * 0.5 * Math.sqrt((Aplus / A) * (1.0 / slope - 1.0) + 2.0);
+		const sqrtA2Alpha = 2.0 * Math.sqrt(A) * alpha;
+		const a0 =   (Aplus  - Aminus * c + sqrtA2Alpha);
 		this.a[1] =  2 *     (Aminus - Aplus  * c              ) / a0;
 		this.a[2] =          (Aplus  - Aminus * c - sqrtA2Alpha) / a0;
 		this.b[0] =      A * (Aplus  + Aminus * c + sqrtA2Alpha) / a0;
@@ -384,11 +384,11 @@ export class FilterCoefficients {
 	}
 
 	peak2ndOrder(cornerRadiansPerSample: number, peakLinearGain: number, bandWidthScale: number): void {
-		const sqrtGain: number = Math.sqrt(peakLinearGain);
-		const bandWidth: number = bandWidthScale * cornerRadiansPerSample / (sqrtGain >= 1 ? sqrtGain : 1/sqrtGain);
-		//const bandWidth: number = bandWidthScale * cornerRadiansPerSample / Math.max(sqrtGain, 1.0);
-		const alpha: number = Math.tan(bandWidth * 0.5);
-		const a0: number = 1.0 + alpha / sqrtGain;
+		const sqrtGain = Math.sqrt(peakLinearGain);
+		const bandWidth = bandWidthScale * cornerRadiansPerSample / (sqrtGain >= 1 ? sqrtGain : 1/sqrtGain);
+		//const bandWidth = bandWidthScale * cornerRadiansPerSample / Math.max(sqrtGain, 1.0);
+		const alpha = Math.tan(bandWidth * 0.5);
+		const a0 = 1.0 + alpha / sqrtGain;
 		this.b[0] = (1.0 + alpha * sqrtGain) / a0;
 		this.b[1] = this.a[1] = -2.0 * Math.cos(cornerRadiansPerSample) / a0;
 		this.b[2] = (1.0 - alpha * sqrtGain) / a0;
@@ -401,12 +401,12 @@ export class FilterCoefficients {
 	// It is recommended to apply the 2nd order filters (biquads) in sequence instead.
 	combination(filter1: FilterCoefficients, filter2: FilterCoefficients): void {
 		this.order = filter1.order + filter2.order;
-		for (let i: number = 0; i <= this.order; i++) {
+		for (let i = 0; i <= this.order; i++) {
 			this.a[i] = 0.0;
 			this.b[i] = 0.0;
 		}
-		for (let i: number = 0; i <= filter1.order; i++) {
-			for (let j: number = 0; j <= filter2.order; j++) {
+		for (let i = 0; i <= filter1.order; i++) {
+			for (let j = 0; j <= filter2.order; j++) {
 				this.a[i + j] += filter1.a[i] * filter2.a[j];
 				this.b[i + j] += filter1.b[i] * filter2.b[j];
 			}
@@ -415,7 +415,7 @@ export class FilterCoefficients {
 	
 	scaledDifference(other: FilterCoefficients, scale: number): void {
 		if (other.order != this.order) throw new Error();
-		for (let i: number = 0; i <= this.order; i++) {
+		for (let i = 0; i <= this.order; i++) {
 			this.a[i] = (this.a[i] - other.a[i]) * scale;
 			this.b[i] = (this.b[i] - other.b[i]) * scale;
 		}
@@ -423,7 +423,7 @@ export class FilterCoefficients {
 	
 	copy(other: FilterCoefficients): void {
 		this.order = other.order;
-		for (let i: number = 0; i <= this.order; i++) {
+		for (let i = 0; i <= this.order; i++) {
 			this.a[i] = other.a[i];
 			this.b[i] = other.b[i];
 		}
@@ -432,9 +432,9 @@ export class FilterCoefficients {
 }
 
 export class FrequencyResponse {
-	real: number = 0.0;
-	imag: number = 0.0;
-	denom: number = 1.0;
+	real = 0.0;
+	imag = 0.0;
+	denom = 1.0;
 	
 	analyze(filter: FilterCoefficients, radiansPerSample: number): void {
 		this.analyzeComplex(filter, Math.cos(radiansPerSample), Math.sin(radiansPerSample));
@@ -443,17 +443,17 @@ export class FrequencyResponse {
 	analyzeComplex(filter: FilterCoefficients, real: number, imag: number): void {
 		const a: number[] = filter.a;
 		const b: number[] = filter.b;
-		const realZ1: number = real;
-		const imagZ1: number = -imag;
-		let realNum: number = b[0] + b[1] * realZ1;
-		let imagNum: number = b[1] * imagZ1;
-		let realDenom: number = 1.0 + a[1] * realZ1;
-		let imagDenom: number = a[1] * imagZ1;
-		let realZ: number = realZ1;
-		let imagZ: number = imagZ1;
-		for (let i: number = 2; i <= filter.order; i++) {
-			const realTemp: number = realZ * realZ1 - imagZ * imagZ1;
-			const imagTemp: number = realZ * imagZ1 + imagZ * realZ1;
+		const realZ1 = real;
+		const imagZ1 = -imag;
+		let realNum = b[0] + b[1] * realZ1;
+		let imagNum = b[1] * imagZ1;
+		let realDenom = 1.0 + a[1] * realZ1;
+		let imagDenom = a[1] * imagZ1;
+		let realZ = realZ1;
+		let imagZ = imagZ1;
+		for (let i = 2; i <= filter.order; i++) {
+			const realTemp = realZ * realZ1 - imagZ * imagZ1;
+			const imagTemp = realZ * imagZ1 + imagZ * realZ1;
 			realZ = realTemp;
 			imagZ = imagTemp;
 			realNum += b[i] * realZ;
@@ -476,23 +476,23 @@ export class FrequencyResponse {
 }
 
 export class DynamicBiquadFilter {
-	a1: number = 0.0;
-	a2: number = 0.0;
-	b0: number = 1.0;
-	b1: number = 0.0;
-	b2: number = 0.0;
-	a1Delta: number = 0.0;
-	a2Delta: number = 0.0;
-	b0Delta: number = 0.0;
-	b1Delta: number = 0.0;
-	b2Delta: number = 0.0;
-	output1: number = 0.0;
-	output2: number = 0.0;
+	a1 = 0.0;
+	a2 = 0.0;
+	b0 = 1.0;
+	b1 = 0.0;
+	b2 = 0.0;
+	a1Delta = 0.0;
+	a2Delta = 0.0;
+	b0Delta = 0.0;
+	b1Delta = 0.0;
+	b2Delta = 0.0;
+	output1 = 0.0;
+	output2 = 0.0;
 	
 	// Some filter types are more stable when interpolating between coefficients
 	// if the "b" coefficient interpolation is multiplicative. Don't enable this
 	// for filter types where the "b" coefficients might change sign!
-	useMultiplicativeInputCoefficients: boolean = false;
+	useMultiplicativeInputCoefficients = false;
 	
 	resetOutput(): void {
 		this.output1 = 0.0;

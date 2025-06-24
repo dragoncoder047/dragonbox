@@ -17,32 +17,32 @@ export class CustomFilterPrompt implements Prompt {
 
     filterEditor: FilterEditor;
 
-    filterData: FilterSettings = new FilterSettings;
-    startingFilterData: FilterSettings = new FilterSettings;
+    filterData = new FilterSettings;
+    startingFilterData = new FilterSettings;
 
     private _subfilterIndex = 0;
 
-    readonly _playButton: HTMLButtonElement = button({ style: "width: 55%;", type: "button" });
+    readonly _playButton = button({ style: "width: 55%;", type: "button" });
 
     readonly _filterButtons: HTMLButtonElement[] = [];
 
-    readonly _filterButtonContainer: HTMLDivElement = div({ class: "instrument-bar", style: "justify-content: center;" });
+    readonly _filterButtonContainer = div({ class: "instrument-bar", style: "justify-content: center;" });
 
-    private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-    private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
+    private readonly _cancelButton = button({ class: "cancelButton" });
+    private readonly _okayButton = button({ class: "okayButton", style: "width:45%;" }, "Okay");
 
-    private readonly _filterContainer: HTMLDivElement = div({ style: "width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: center;" });
+    private readonly _filterContainer = div({ style: "width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: center;" });
 
-    private readonly _editorTitle: HTMLDivElement = div({}, h2("Edit Filter"));
+    private readonly _editorTitle = div({}, h2("Edit Filter"));
 
-    private readonly _filterCopyButton: HTMLButtonElement = button({ style: "width:86px; margin-right: 5px;", class: "copyButton" }, [
+    private readonly _filterCopyButton = button({ style: "width:86px; margin-right: 5px;", class: "copyButton" }, [
         "Copy",
         // Copy icon:
         SVG.svg({ style: "flex-shrink: 0; position: absolute; left: 0; top: 50%; margin-top: -1em; pointer-events: none;", width: "2em", height: "2em", viewBox: "-5 -21 26 26" }, [
             SVG.path({ d: "M 0 -15 L 1 -15 L 1 0 L 13 0 L 13 1 L 0 1 L 0 -15 z M 2 -1 L 2 -17 L 10 -17 L 14 -13 L 14 -1 z M 3 -2 L 13 -2 L 13 -12 L 9 -12 L 9 -16 L 3 -16 z", fill: "currentColor" }),
         ]),
     ]);
-    private readonly _filterPasteButton: HTMLButtonElement = button({ style: "width:86px;", class: "pasteButton" }, [
+    private readonly _filterPasteButton = button({ style: "width:86px;", class: "pasteButton" }, [
         "Paste",
         // Paste icon:
         SVG.svg({ style: "flex-shrink: 0; position: absolute; left: 0; top: 50%; margin-top: -1em; pointer-events: none;", width: "2em", height: "2em", viewBox: "0 0 26 26" }, [
@@ -50,11 +50,11 @@ export class CustomFilterPrompt implements Prompt {
             SVG.path({ d: "M 9 3 L 14 3 L 14 6 L 9 6 L 9 3 z M 16 8 L 20 12 L 16 12 L 16 8 z", fill: "currentColor", }),
         ]),
     ]);
-    private readonly _filterCopyPasteContainer: HTMLDivElement = div({ style: "width: 185px;" }, this._filterCopyButton, this._filterPasteButton);
+    private readonly _filterCopyPasteContainer = div({ style: "width: 185px;" }, this._filterCopyButton, this._filterPasteButton);
 
-    private readonly _filterCoordinateText: HTMLDivElement = div({ style: "text-align: left; margin-bottom: 0px; font-size: x-small; height: 1.3em; color: " + ColorConfig.secondaryText + ";" }, p(""));
+    private readonly _filterCoordinateText = div({ style: "text-align: left; margin-bottom: 0px; font-size: x-small; height: 1.3em; color: " + ColorConfig.secondaryText + ";" }, p(""));
 
-    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 600px;" },
+    readonly container = div({ class: "prompt noSelection", style: "width: 600px;" },
         this._editorTitle,
         div({ style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
             this._playButton
@@ -70,7 +70,7 @@ export class CustomFilterPrompt implements Prompt {
 
     // for some reason that is beyond me, the compiler claims that "'_effectIndex' is declared but its value is never read," which makes no sense because it is used on line 82. some1 with better knowledge than me can tell me why this happens... ~ theepie
     // @ts-ignore
-    constructor(private _doc: SongDocument, private _songEditor: SongEditor, private _useNoteFilter: boolean, private forSong: boolean = false, private _effectIndex: number = 0) {
+    constructor(private _doc: SongDocument, private _songEditor: SongEditor, private _useNoteFilter: boolean, private forSong = false, private _effectIndex = 0) {
         this._okayButton.addEventListener("click", this._saveChanges);
         this._cancelButton.addEventListener("click", this._close);
         this._playButton.addEventListener("click", this._togglePlay);
@@ -88,12 +88,12 @@ export class CustomFilterPrompt implements Prompt {
 
         this._editorTitle.children[0].innerHTML = forSong ? "Edit Song EQ Filter" : (_useNoteFilter) ? "Edit Pre EQ" : "Edit Post EQ";
 
-        let newButton: HTMLButtonElement = button({ class: "no-underline", style: "max-width: 5em;" }, "Main");
+        let newButton = button({ class: "no-underline", style: "max-width: 5em;" }, "Main");
         this._filterButtonContainer.appendChild(newButton);
         this._filterButtons.push(newButton);
         newButton.addEventListener("click", () => { this._setSubfilter(0); });
-        for (let i: number = 1; i < Config.filterMorphCount; i++) {
-            let newSubButton: HTMLButtonElement = button({ class: "no-underline", style: "max-width: 2em;" }, "" + i);
+        for (let i = 1; i < Config.filterMorphCount; i++) {
+            let newSubButton = button({ class: "no-underline", style: "max-width: 2em;" }, "" + i);
             this._filterButtons.push(newSubButton);
             this._filterButtonContainer.appendChild(newSubButton);
             newSubButton.addEventListener("click", () => { this._setSubfilter(i); });
@@ -115,7 +115,7 @@ export class CustomFilterPrompt implements Prompt {
         this.filterEditor.render();
     }
 
-    private _setSubfilter = (index: number, useHistory: boolean = true, doSwap: boolean = true): void => {
+    private _setSubfilter = (index: number, useHistory = true, doSwap = true): void => {
         this._filterButtons[this._subfilterIndex].classList.remove("selected-instrument");
         if (doSwap) this.filterEditor.swapToSubfilter(this._subfilterIndex, index, useHistory);
         this._subfilterIndex = index;
@@ -123,7 +123,7 @@ export class CustomFilterPrompt implements Prompt {
     }
 
     private _copyFilterSettings = (): void => {
-        const filterCopy: any = this.forSong
+        const filterCopy = this.forSong
             ? this._doc.song.eqFilter.toJsonObject()
             : this._useNoteFilter
             ? this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()].noteFilter.toJsonObject()
@@ -133,7 +133,7 @@ export class CustomFilterPrompt implements Prompt {
 
     private _pasteFilterSettings = (): void => {
 
-        let filterCopy: FilterSettings = new FilterSettings();
+        let filterCopy = new FilterSettings();
         filterCopy.fromJsonObject(JSON.parse(String(window.localStorage.getItem("filterCopy"))));
         if (filterCopy != null) {
             this.filterEditor.swapToSettings(filterCopy, true);

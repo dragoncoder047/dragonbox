@@ -1,25 +1,25 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { SongDocument } from "./SongDocument";
 import { HTML } from "imperative-html/dist/esm/elements-strict";
-import { ColorConfig } from "./ColorConfig";
-import { ChannelRow } from "./ChannelRow";
-import { InputBox } from "./HTMLWrapper";
-import { ChangeChannelOrder, ChangeChannelName, ChangeRemoveChannel } from "./changes";
 import { Config } from "../synth/SynthConfig";
+import { ChannelRow } from "./ChannelRow";
+import { ColorConfig } from "./ColorConfig";
+import { InputBox } from "./HTMLWrapper";
+import { SongDocument } from "./SongDocument";
 import { SongEditor } from "./SongEditor";
+import { ChangeChannelName, ChangeChannelOrder, ChangeRemoveChannel } from "./changes";
 
 //namespace beepbox {
 export class MuteEditor {
 
-    private _cornerFiller: HTMLDivElement = HTML.div({ style: `background: ${ColorConfig.editorBackground}; position: sticky; bottom: 0; left: 0; width: 32px; height: 30px;` });
+    private _cornerFiller = HTML.div({ style: `background: ${ColorConfig.editorBackground}; position: sticky; bottom: 0; left: 0; width: 32px; height: 30px;` });
 
     private readonly _buttons: HTMLDivElement[] = [];
     private readonly _channelCounts: HTMLDivElement[] = [];
-    private readonly _channelNameDisplay: HTMLDivElement = HTML.div({ style: `background-color: ${ColorConfig.uiWidgetFocus}; white-space:nowrap; display: none; transform:translate(20px); width: auto; pointer-events: none; position: absolute; border-radius: 0.2em; z-index: 2;`, "color": ColorConfig.primaryText }, "");
-    readonly _channelNameInput: InputBox = new InputBox(HTML.input({ style: `color: ${ColorConfig.primaryText}; background-color: ${ColorConfig.uiWidgetFocus}; margin-top: -2px; display: none; width: 6em; position: absolute; border-radius: 0.2em; z-index: 2;`, "color": ColorConfig.primaryText }, ""), this._doc, (oldValue: string, newValue: string) => new ChangeChannelName(this._doc, oldValue, newValue));
+    private readonly _channelNameDisplay = HTML.div({ style: `background-color: ${ColorConfig.uiWidgetFocus}; white-space:nowrap; display: none; transform:translate(20px); width: auto; pointer-events: none; position: absolute; border-radius: 0.2em; z-index: 2;`, "color": ColorConfig.primaryText }, "");
+    readonly _channelNameInput = new InputBox(HTML.input({ style: `color: ${ColorConfig.primaryText}; background-color: ${ColorConfig.uiWidgetFocus}; margin-top: -2px; display: none; width: 6em; position: absolute; border-radius: 0.2em; z-index: 2;`, "color": ColorConfig.primaryText }, ""), this._doc, (oldValue: string, newValue: string) => new ChangeChannelName(this._doc, oldValue, newValue));
 
-    private readonly _channelDropDown: HTMLSelectElement = HTML.select({ style: "width: 0px; left: 19px; height: 19px; position:absolute; opacity:0" },
+    private readonly _channelDropDown = HTML.select({ style: "width: 0px; left: 19px; height: 19px; position:absolute; opacity:0" },
 
         HTML.option({ value: "rename" }, "Rename..."),
         HTML.option({ value: "chnUp" }, "Move Channel Up"),
@@ -30,16 +30,16 @@ export class MuteEditor {
         HTML.option({ value: "chnDelete" }, "Delete This Channel"),
     );
 
-    readonly container: HTMLElement = HTML.div({ class: "muteEditor", style: "position: sticky; padding-top: " + Config.barEditorHeight + "px;" }, this._channelNameDisplay, this._channelNameInput.input, this._channelDropDown);
+    readonly container = HTML.div({ class: "muteEditor", style: "position: sticky; padding-top: " + Config.barEditorHeight + "px;" }, this._channelNameDisplay, this._channelNameInput.input, this._channelDropDown);
 
-    private _editorHeight: number = 128;
-    private _renderedPitchChannels: number = 0;
-    private _renderedNoiseChannels: number = 0;
-    private _renderedChannelHeight: number = -1;
-    private _renderedModChannels: number = 0;
-    private _channelDropDownChannel: number = 0;
-    private _channelDropDownOpen: boolean = false;
-    private _channelDropDownLastState: boolean = false;
+    private _editorHeight = 128;
+    private _renderedPitchChannels = 0;
+    private _renderedNoiseChannels = 0;
+    private _renderedChannelHeight = -1;
+    private _renderedModChannels = 0;
+    private _channelDropDownChannel = 0;
+    private _channelDropDownOpen = false;
+    private _channelDropDownLastState = false;
 
     constructor(private _doc: SongDocument, private _editor: SongEditor) {
         this.container.addEventListener("click", this._onClick);
@@ -159,20 +159,20 @@ export class MuteEditor {
                 break;
             case "chnSolo": {
                 // Check for any channel not matching solo pattern
-                let shouldSolo: boolean = false;
-                for (let channel: number = 0; channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; channel++) {
+                let shouldSolo = false;
+                for (let channel = 0; channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; channel++) {
                     if (this._doc.song.channels[channel].muted == (channel == this._channelDropDownChannel)) {
                         shouldSolo = true;
                         channel = this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount;
                     }
                 }
                 if (shouldSolo) {
-                    for (let channel: number = 0; channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; channel++) {
+                    for (let channel = 0; channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; channel++) {
                         this._doc.song.channels[channel].muted = (channel != this._channelDropDownChannel);
                     }
                 }
                 else {
-                    for (let channel: number = 0; channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; channel++) {
+                    for (let channel = 0; channel < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount; channel++) {
                         this._doc.song.channels[channel].muted = false;
                     }
                 }
@@ -201,7 +201,7 @@ export class MuteEditor {
 
         const index = this._buttons.indexOf(<HTMLDivElement>event.target);
         if (index == -1) return;
-        let xPos: number = event.clientX - this._buttons[0].getBoundingClientRect().left;
+        let xPos = event.clientX - this._buttons[0].getBoundingClientRect().left;
         if (xPos < 21.0) {
             if (event.shiftKey) this._doc.song.channels[index].visible = !this._doc.song.channels[index].visible;
             else this._doc.song.channels[index].muted = !this._doc.song.channels[index].muted;
@@ -222,7 +222,7 @@ export class MuteEditor {
         if (this._channelDropDownOpen && this._channelNameDisplay.style.getPropertyValue("display") == "none" && this._channelNameInput.input.style.getPropertyValue("display") == "none") {
             this._channelDropDownOpen = false;
         }
-        let xPos: number = event.clientX - this._buttons[0].getBoundingClientRect().left;
+        let xPos = event.clientX - this._buttons[0].getBoundingClientRect().left;
         if (xPos >= 21.0) {
             if (!this._channelDropDownOpen) {
                 // Mouse over chn. number
@@ -286,15 +286,15 @@ export class MuteEditor {
 
     render(): void {
         if (!this._doc.prefs.enableChannelMuting) return;
-        let startingChannelCount: number = this._buttons.length;
+        let startingChannelCount = this._buttons.length;
 
         if (this._buttons.length != this._doc.song.getChannelCount()) {
-            for (let y: number = this._buttons.length; y < this._doc.song.getChannelCount(); y++) {
+            for (let y = this._buttons.length; y < this._doc.song.getChannelCount(); y++) {
 
-                const channelCountText: HTMLDivElement = HTML.div({ class: "noSelection muteButtonText", style: "display: table-cell; -webkit-text-stroke: 1.5px; vertical-align: middle; text-align: center; -webkit-user-select: none; -webkit-touch-callout: none; -moz-user-select: none; -ms-user-select: none; user-select: none; pointer-events: none; width: 12px; height: 20px; transform: translate(0px, 1px);" });
-                const muteButton: HTMLDivElement = HTML.div({ class: "mute-button", title: "Mute (M), Mute All (⇧M), Solo (S), Exclude (⇧S)", style: `display: block; pointer-events: none; width: 16px; height: 20px; transform: translate(2px, 1px);` });
+                const channelCountText = HTML.div({ class: "noSelection muteButtonText", style: "display: table-cell; -webkit-text-stroke: 1.5px; vertical-align: middle; text-align: center; -webkit-user-select: none; -webkit-touch-callout: none; -moz-user-select: none; -ms-user-select: none; user-select: none; pointer-events: none; width: 12px; height: 20px; transform: translate(0px, 1px);" });
+                const muteButton = HTML.div({ class: "mute-button", title: "Mute (M), Mute All (⇧M), Solo (S), Exclude (⇧S)", style: `display: block; pointer-events: none; width: 16px; height: 20px; transform: translate(2px, 1px);` });
 
-                const muteContainer: HTMLDivElement = HTML.div({ style: `align-items: center; height: 20px; margin: 0px; display: table; flex-direction: row; justify-content: space-between;` }, [
+                const muteContainer = HTML.div({ style: `align-items: center; height: 20px; margin: 0px; display: table; flex-direction: row; justify-content: space-between;` }, [
                     muteButton,
                     channelCountText,
                 ]);
@@ -303,7 +303,7 @@ export class MuteEditor {
                 this._channelCounts[y] = channelCountText;
             }
 
-            for (let y: number = this._doc.song.getChannelCount(); y < this._buttons.length; y++) {
+            for (let y = this._doc.song.getChannelCount(); y < this._buttons.length; y++) {
                 this.container.removeChild(this._buttons[y]);
             }
 
@@ -312,7 +312,7 @@ export class MuteEditor {
             this.container.appendChild(this._cornerFiller);
         }
 
-        for (let y: number = 0; y < this._doc.song.getChannelCount(); y++) {
+        for (let y = 0; y < this._doc.song.getChannelCount(); y++) {
             if (this._doc.song.channels[y].muted) {
                 this._buttons[y].children[0].classList.add("muted");
 
@@ -356,14 +356,14 @@ export class MuteEditor {
         }
 
         if (this._renderedChannelHeight != ChannelRow.patternHeight || startingChannelCount != this._buttons.length) {
-            for (let y: number = 0; y < this._doc.song.getChannelCount(); y++) {
+            for (let y = 0; y < this._doc.song.getChannelCount(); y++) {
                 this._buttons[y].style.marginTop = ((ChannelRow.patternHeight - 20) / 2) + "px";
                 this._buttons[y].style.marginBottom = ((ChannelRow.patternHeight - 20) / 2) + "px";
             }
         }
 
         if (this._renderedModChannels != this._doc.song.modChannelCount || startingChannelCount != this._buttons.length) {
-            for (let y: number = 0; y < this._doc.song.getChannelCount(); y++) {
+            for (let y = 0; y < this._doc.song.getChannelCount(); y++) {
                 if (y < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount) {
                     this._buttons[y].children[0].classList.remove("modMute");
                 }
@@ -374,19 +374,19 @@ export class MuteEditor {
         }
 
         if (this._renderedModChannels != this._doc.song.modChannelCount || this._renderedPitchChannels != this._doc.song.pitchChannelCount || this._renderedNoiseChannels != this._doc.song.noiseChannelCount) {
-            for (let y: number = 0; y < this._doc.song.getChannelCount(); y++) {
+            for (let y = 0; y < this._doc.song.getChannelCount(); y++) {
                 if (y < this._doc.song.pitchChannelCount) {
-                    let val: number = (y + 1);
+                    let val = (y + 1);
                     this._channelCounts[y].textContent = val + "";
                     this._channelCounts[y].style.fontSize = (val >= 10) ? "xx-small" : "inherit";
                 }
                 else if (y < this._doc.song.pitchChannelCount + this._doc.song.noiseChannelCount) {
-                    let val: number = (y - this._doc.song.pitchChannelCount + 1);
+                    let val = (y - this._doc.song.pitchChannelCount + 1);
                     this._channelCounts[y].textContent = val + "";
                     this._channelCounts[y].style.fontSize = (val >= 10) ? "xx-small" : "inherit";
                 }
                 else {
-                    let val: number = (y - this._doc.song.pitchChannelCount - this._doc.song.noiseChannelCount + 1);
+                    let val = (y - this._doc.song.pitchChannelCount - this._doc.song.noiseChannelCount + 1);
                     this._channelCounts[y].textContent = val + "";
                     this._channelCounts[y].style.fontSize = (val >= 10) ? "xx-small" : "inherit";
                 }

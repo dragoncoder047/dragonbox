@@ -1,22 +1,22 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
 
-import { SongDocument } from "./SongDocument";
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
 import { ColorConfig } from "./ColorConfig";
+import { SongDocument } from "./SongDocument";
 
 export class BarScrollBar {
-    private readonly _editorWidth: number = 512;
-    private readonly _editorHeight: number = 20;
-    private readonly _playhead: SVGRectElement = SVG.rect("rect", { fill: ColorConfig.playhead, x: 0, y: 0, width: 2, height: this._editorHeight });
-    private readonly _notches: SVGSVGElement = SVG.svg({ "pointer-events": "none" });
-    private readonly _handle: SVGRectElement = SVG.rect({ fill: ColorConfig.uiWidgetBackground, x: 0, y: 2, width: 10, height: this._editorHeight - 4 });
-    private readonly _handleHighlight: SVGRectElement = SVG.rect({ fill: "none", stroke: ColorConfig.hoverPreview, "stroke-width": 2, "pointer-events": "none", x: 0, y: 1, width: 10, height: this._editorHeight - 2 });
-    private readonly _leftHighlight: SVGPathElement = SVG.path({ fill: ColorConfig.hoverPreview, "pointer-events": "none" });
-    private readonly _rightHighlight: SVGPathElement = SVG.path({ fill: ColorConfig.hoverPreview, "pointer-events": "none" });
-    private _renderedPlayhead: number = -1;
+    private readonly _editorWidth = 512;
+    private readonly _editorHeight = 20;
+    private readonly _playhead = SVG.rect("rect", { fill: ColorConfig.playhead, x: 0, y: 0, width: 2, height: this._editorHeight });
+    private readonly _notches = SVG.svg({ "pointer-events": "none" });
+    private readonly _handle = SVG.rect({ fill: ColorConfig.uiWidgetBackground, x: 0, y: 2, width: 10, height: this._editorHeight - 4 });
+    private readonly _handleHighlight = SVG.rect({ fill: "none", stroke: ColorConfig.hoverPreview, "stroke-width": 2, "pointer-events": "none", x: 0, y: 1, width: 10, height: this._editorHeight - 2 });
+    private readonly _leftHighlight = SVG.path({ fill: ColorConfig.hoverPreview, "pointer-events": "none" });
+    private readonly _rightHighlight = SVG.path({ fill: ColorConfig.hoverPreview, "pointer-events": "none" });
+    private _renderedPlayhead = -1;
 
-    private readonly _svg: SVGSVGElement = SVG.svg({ style: `background-color: ${ColorConfig.editorBackground}; touch-action: pan-y; position: absolute;`, width: this._editorWidth, height: this._editorHeight },
+    private readonly _svg = SVG.svg({ style: `background-color: ${ColorConfig.editorBackground}; touch-action: pan-y; position: absolute;`, width: this._editorWidth, height: this._editorHeight },
         this._notches,
         this._handle,
         this._handleHighlight,
@@ -25,22 +25,22 @@ export class BarScrollBar {
         this._playhead,
     );
 
-    readonly container: HTMLElement = HTML.div({ class: "barScrollBar", style: "width: 512px; height: 20px; overflow: hidden; position: relative;" }, this._svg);
+    readonly container = HTML.div({ class: "barScrollBar", style: "width: 512px; height: 20px; overflow: hidden; position: relative;" }, this._svg);
 
-    private _mouseX: number = 0;
-    private _mouseDown: boolean = false;
-    private _mouseOver: boolean = false;
-    private _dragging: boolean = false;
+    private _mouseX = 0;
+    private _mouseDown = false;
+    private _mouseOver = false;
+    private _dragging = false;
     private _dragStart: number;
     private _notchSpace: number;
-    private _renderedNotchCount: number = -1;
-    private _renderedScrollBarPos: number = -1;
+    private _renderedNotchCount = -1;
+    private _renderedScrollBarPos = -1;
 
     constructor(private _doc: SongDocument) {
-        const center: number = this._editorHeight * 0.5;
-        const base: number = 20;
-        const tip: number = 9;
-        const arrowHeight: number = 6;
+        const center = this._editorHeight * 0.5;
+        const base = 20;
+        const tip = 9;
+        const arrowHeight = 6;
         this._leftHighlight.setAttribute("d", `M ${tip} ${center} L ${base} ${center + arrowHeight} L ${base} ${center - arrowHeight} z`);
         this._rightHighlight.setAttribute("d", `M ${this._editorWidth - tip} ${center} L ${this._editorWidth - base} ${center + arrowHeight} L ${this._editorWidth - base} ${center - arrowHeight} z`);
 
@@ -64,13 +64,13 @@ export class BarScrollBar {
         }
     }
 
-    private _whenMouseOver = (event: MouseEvent): void => {
+    private _whenMouseOver = (): void => {
         if (this._mouseOver) return;
         this._mouseOver = true;
         this._updatePreview();
     }
 
-    private _whenMouseOut = (event: MouseEvent): void => {
+    private _whenMouseOut = (): void => {
         if (!this._mouseOver) return;
         this._mouseOver = false;
         this._updatePreview();
@@ -79,7 +79,7 @@ export class BarScrollBar {
     private _whenMousePressed = (event: MouseEvent): void => {
         event.preventDefault();
         this._mouseDown = true;
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.clientX || event.pageX) - boundingRect.left;
         //this._mouseY = (event.clientY || event.pageY) - boundingRect.top;
         this._updatePreview();
@@ -92,7 +92,7 @@ export class BarScrollBar {
     private _whenTouchPressed = (event: TouchEvent): void => {
         event.preventDefault();
         this._mouseDown = true;
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = event.touches[0].clientX - boundingRect.left;
         //this._mouseY = event.touches[0].clientY - boundingRect.top;
         this._updatePreview();
@@ -103,7 +103,7 @@ export class BarScrollBar {
     }
 
     private _whenMouseMoved = (event: MouseEvent): void => {
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.clientX || event.pageX) - boundingRect.left;
         //this._mouseY = (event.clientY || event.pageY) - boundingRect.top;
         this._whenCursorMoved();
@@ -112,7 +112,7 @@ export class BarScrollBar {
     private _whenTouchMoved = (event: TouchEvent): void => {
         if (!this._mouseDown) return;
         event.preventDefault();
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = event.touches[0].clientX - boundingRect.left;
         //this._mouseY = event.touches[0].clientY - boundingRect.top;
         this._whenCursorMoved();
@@ -181,10 +181,10 @@ export class BarScrollBar {
     }
 
     private _updatePreview(): void {
-        const showHighlight: boolean = this._mouseOver && !this._mouseDown;
-        let showleftHighlight: boolean = false;
-        let showRightHighlight: boolean = false;
-        let showHandleHighlight: boolean = false;
+        const showHighlight = this._mouseOver && !this._mouseDown;
+        let showleftHighlight = false;
+        let showRightHighlight = false;
+        let showHandleHighlight = false;
 
         if (showHighlight) {
             if (this._mouseX < this._doc.barScrollPos * this._notchSpace) {
@@ -204,14 +204,14 @@ export class BarScrollBar {
     render(): void {
         this._notchSpace = (this._editorWidth - 1) / Math.max(this._doc.trackVisibleBars, this._doc.song.barCount);
 
-        const resized: boolean = this._renderedNotchCount != this._doc.song.barCount;
+        const resized = this._renderedNotchCount != this._doc.song.barCount;
         if (resized) {
             this._renderedNotchCount = this._doc.song.barCount;
 
             while (this._notches.firstChild) this._notches.removeChild(this._notches.firstChild);
 
-            for (let i: number = 0; i <= this._doc.song.barCount; i++) {
-                const lineHeight: number = (i % 16 == 0) ? 0 : ((i % 4 == 0) ? this._editorHeight / 8 : this._editorHeight / 3);
+            for (let i = 0; i <= this._doc.song.barCount; i++) {
+                const lineHeight = (i % 16 == 0) ? 0 : ((i % 4 == 0) ? this._editorHeight / 8 : this._editorHeight / 3);
                 this._notches.appendChild(SVG.rect({ fill: ColorConfig.uiWidgetBackground, x: i * this._notchSpace - 1, y: lineHeight, width: 2, height: this._editorHeight - lineHeight * 2 }));
             }
         }

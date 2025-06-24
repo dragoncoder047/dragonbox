@@ -3,20 +3,19 @@
 import { Config } from "../synth/SynthConfig";
 import { SongDocument } from "./SongDocument";
 // import { SongEditor } from "./SongEditor";
-import { Prompt } from "./Prompt";
 import { HTML } from "imperative-html/dist/esm/elements-strict";
-import { Channel } from "../synth/Channel";
 import { Instrument } from "../synth/Instrument";
+import { Prompt } from "./Prompt";
 
 const { button, div, h2, input, label, br } = HTML;
 export class InstrumentExportPrompt implements Prompt {
-    private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-    private readonly _exportButton: HTMLButtonElement = button({ class: "exportButton", style: "width:45%;" }, "Export");
-    private readonly _exportMultipleBox: HTMLInputElement = input({ style: "width: 3em; margin-left: 1em;", type: "checkbox" });
-    private readonly _channelName: String = this._doc.song.channels[this._doc.channel].name == "" ? Config.jsonFormat + "-Instrument" : this._doc.song.channels[this._doc.channel].name;
-    private readonly _fileName: HTMLInputElement = input({ type: "text", style: "width: 10em;", value: this._channelName, maxlength: 250, "autofocus": "autofocus" });
+    private readonly _cancelButton = button({ class: "cancelButton" });
+    private readonly _exportButton = button({ class: "exportButton", style: "width:45%;" }, "Export");
+    private readonly _exportMultipleBox = input({ style: "width: 3em; margin-left: 1em;", type: "checkbox" });
+    private readonly _channelName = this._doc.song.channels[this._doc.channel].name == "" ? Config.jsonFormat + "-Instrument" : this._doc.song.channels[this._doc.channel].name;
+    private readonly _fileName = input({ type: "text", style: "width: 10em;", value: this._channelName, maxlength: 250, "autofocus": "autofocus" });
 
-    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 200px;" },
+    readonly container = div({ class: "prompt noSelection", style: "width: 200px;" },
         h2("Export Instruments Options"),
         div({ style: "display: flex; flex-direction: row; align-items: center; justify-content: space-between;" },
             "File name:",
@@ -54,7 +53,7 @@ export class InstrumentExportPrompt implements Prompt {
         this._exportMultipleBox.checked ? this._export_multiple() : this._export_single()
     }
     _export_multiple = (): void => {
-        const channel: Channel = this._doc.song.channels[this._doc.channel];
+        const channel = this._doc.song.channels[this._doc.channel];
         const instruments: Instrument[] = channel.instruments.map((instrument) => {
             const instrumentCopy: any = instrument.toJsonObject();
             instrumentCopy["isDrum"] = this._doc.song.getChannelIsNoise(this._doc.channel);
@@ -73,8 +72,8 @@ export class InstrumentExportPrompt implements Prompt {
         this._close();
     }
     _export_single = (): void => {
-        const channel: Channel = this._doc.song.channels[this._doc.channel];
-        const instrument: Instrument = channel.instruments[this._doc.getCurrentInstrument()];
+        const channel = this._doc.song.channels[this._doc.channel];
+        const instrument = channel.instruments[this._doc.getCurrentInstrument()];
         const instrumentCopy: any = instrument.toJsonObject();
         instrumentCopy["isDrum"] = this._doc.song.getChannelIsNoise(this._doc.channel);
 
@@ -103,7 +102,7 @@ export class InstrumentExportPrompt implements Prompt {
         }
         const deleteChars = /[\+\*\$\?\|\{\}\\\/<>#%!`&'"=:@]/gi;
         if (deleteChars.test(input.value)) {
-            let cursorPos: number = <number>input.selectionStart;
+            let cursorPos = <number>input.selectionStart;
             input.value = input.value.replace(deleteChars, "");
             cursorPos--;
             input.setSelectionRange(cursorPos, cursorPos);

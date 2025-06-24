@@ -7,7 +7,7 @@ import { HTML } from "imperative-html/dist/esm/elements-strict";
 
 // Determine if the user's browser/OS adds scrollbars that occupy space.
 // See: https://www.filamentgroup.com/lab/scrollbars/
-const scrollBarTest: HTMLDivElement = document.body.appendChild(HTML.div({ style: "width:30px; height:30px; overflow: auto;" },
+const scrollBarTest = document.body.appendChild(HTML.div({ style: "width:30px; height:30px; overflow: auto;" },
     HTML.div({ style: "width:100%;height:40px" }),
 ));
 if ((<any>scrollBarTest).firstChild.clientWidth < 30) {

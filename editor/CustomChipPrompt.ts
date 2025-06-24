@@ -12,53 +12,53 @@ const { button, div, h2 } = HTML;
 
 export class CustomChipPromptCanvas {
     private readonly _doc: SongDocument;
-    private _mouseX: number = 0;
-    private _mouseY: number = 0;
-    private _lastIndex: number = 0;
-    private _lastAmp: number = 0;
-    private _mouseDown: boolean = false;
+    private _mouseX = 0;
+    private _mouseY = 0;
+    private _lastIndex = 0;
+    private _lastAmp = 0;
+    private _mouseDown = false;
     chipData: Float32Array = new Float32Array(64);
     startingChipData: Float32Array = new Float32Array(64);
-    private _undoHistoryState: number = 0;
+    private _undoHistoryState = 0;
     private _changeQueue: Float32Array[] = [];
-    private readonly _editorWidth: number = 768; // 64*12
-    private readonly _editorHeight: number = 294; // 49*6
-    private readonly _fill: SVGPathElement = SVG.path({ fill: ColorConfig.uiWidgetBackground, "pointer-events": "none" });
-    private readonly _ticks: SVGSVGElement = SVG.svg({ "pointer-events": "none" });
-    private readonly _subticks: SVGSVGElement = SVG.svg({ "pointer-events": "none" });
-    private readonly _blocks: SVGSVGElement = SVG.svg({ "pointer-events": "none" });
-    private readonly _svg: SVGSVGElement = SVG.svg({ style: `background-color: ${ColorConfig.editorBackground}; touch-action: none; overflow: visible;`, width: "100%", height: "100%", viewBox: "0 0 " + this._editorWidth + " " + this._editorHeight, preserveAspectRatio: "none" },
+    private readonly _editorWidth = 768; // 64*12
+    private readonly _editorHeight = 294; // 49*6
+    private readonly _fill = SVG.path({ fill: ColorConfig.uiWidgetBackground, "pointer-events": "none" });
+    private readonly _ticks = SVG.svg({ "pointer-events": "none" });
+    private readonly _subticks = SVG.svg({ "pointer-events": "none" });
+    private readonly _blocks = SVG.svg({ "pointer-events": "none" });
+    private readonly _svg = SVG.svg({ style: `background-color: ${ColorConfig.editorBackground}; touch-action: none; overflow: visible;`, width: "100%", height: "100%", viewBox: "0 0 " + this._editorWidth + " " + this._editorHeight, preserveAspectRatio: "none" },
         this._fill,
         this._ticks,
         this._subticks,
         this._blocks,
     );
 
-    readonly container: HTMLElement = HTML.div({ class: "", style: "height: 294px; width: 768px; padding-bottom: 1.5em;" }, this._svg);
+    readonly container = HTML.div({ class: "", style: "height: 294px; width: 768px; padding-bottom: 1.5em;" }, this._svg);
 
     constructor(doc: SongDocument) {
 
         this._doc = doc;
 
-        for (let i: number = 0; i <= 4; i += 2) {
+        for (let i = 0; i <= 4; i += 2) {
             this._ticks.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: (i * this._editorWidth / 4) - 1, y: 0, width: 2, height: this._editorHeight }));
         }
-        for (let i: number = 1; i <= 8; i++) {
+        for (let i = 1; i <= 8; i++) {
             this._subticks.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: (i * this._editorWidth / 8) - 1, y: 0, width: 1, height: this._editorHeight }));
         }
 
         // Horiz. ticks
         this._ticks.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: 0, y: (this._editorHeight / 2) - 1, width: this._editorWidth, height: 2 }));
-        for (let i: number = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++) {
             this._subticks.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: 0, y: i * 8 * (this._editorHeight / 49), width: this._editorWidth, height: 1 }));
             this._subticks.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: 0, y: this._editorHeight - 1 - i * 8 * (this._editorHeight / 49), width: this._editorWidth, height: 1 }));
         }
 
 
-        let col: string = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel, this._doc.prefs.fixChannelColorOrder).primaryNote;
+        let col = ColorConfig.getChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel, this._doc.prefs.fixChannelColorOrder).primaryNote;
 
-        for (let i: number = 0; i <= 64; i++) {
-            let val: number = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()].customChipWave[i];
+        for (let i = 0; i <= 64; i++) {
+            let val = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()].customChipWave[i];
             this.chipData[i] = val;
             this.startingChipData[i] = val;
             this._blocks.appendChild(SVG.rect({ fill: col, x: (i * this._editorWidth / 64), y: (val + 24) * (this._editorHeight / 49), width: this._editorWidth / 64, height: this._editorHeight / 49 }));
@@ -146,7 +146,7 @@ export class CustomChipPromptCanvas {
     private _whenMousePressed = (event: MouseEvent): void => {
         event.preventDefault();
         this._mouseDown = true;
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = ((event.clientX || event.pageX) - boundingRect.left) * this._editorWidth / (boundingRect.right - boundingRect.left);
         this._mouseY = ((event.clientY || event.pageY) - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseX)) this._mouseX = 0;
@@ -159,7 +159,7 @@ export class CustomChipPromptCanvas {
     private _whenTouchPressed = (event: TouchEvent): void => {
         event.preventDefault();
         this._mouseDown = true;
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.touches[0].clientX - boundingRect.left) * this._editorWidth / (boundingRect.right - boundingRect.left);
         this._mouseY = (event.touches[0].clientY - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseX)) this._mouseX = 0;
@@ -171,7 +171,7 @@ export class CustomChipPromptCanvas {
 
     private _whenMouseMoved = (event: MouseEvent): void => {
         if (this.container.offsetParent == null) return;
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = ((event.clientX || event.pageX) - boundingRect.left) * this._editorWidth / (boundingRect.right - boundingRect.left);
         this._mouseY = ((event.clientY || event.pageY) - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseX)) this._mouseX = 0;
@@ -183,7 +183,7 @@ export class CustomChipPromptCanvas {
         if (this.container.offsetParent == null) return;
         if (!this._mouseDown) return;
         event.preventDefault();
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.touches[0].clientX - boundingRect.left) * this._editorWidth / (boundingRect.right - boundingRect.left);
         this._mouseY = (event.touches[0].clientY - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseX)) this._mouseX = 0;
@@ -193,8 +193,8 @@ export class CustomChipPromptCanvas {
 
     private _whenCursorMoved(): void {
         if (this._mouseDown) {
-            const index: number = Math.min(63, Math.max(0, Math.floor(this._mouseX * 64 / this._editorWidth)));
-            const amp: number = Math.min(48, Math.max(0, Math.floor(this._mouseY * 49 / this._editorHeight)));
+            const index = Math.min(63, Math.max(0, Math.floor(this._mouseX * 64 / this._editorWidth)));
+            const amp = Math.min(48, Math.max(0, Math.floor(this._mouseY * 49 / this._editorHeight)));
 
             // Paint between mouse drag indices unless a click just happened.
             if (this._lastIndex != -1 && this._lastIndex != index) {
@@ -209,7 +209,7 @@ export class CustomChipPromptCanvas {
                     endingAmp = amp;
                 }
                 for (var i = lowest; i <= highest; i++) {
-                    const medAmp: number = Math.round(startingAmp + (endingAmp - startingAmp) * ((i - lowest) / (highest - lowest)));
+                    const medAmp = Math.round(startingAmp + (endingAmp - startingAmp) * ((i - lowest) / (highest - lowest)));
                     this.chipData[i] = medAmp - 24;
                     this._blocks.children[i].setAttribute("y", "" + (medAmp * (this._editorHeight / 49)));
 
@@ -246,21 +246,21 @@ export class CustomChipPromptCanvas {
 
 export class CustomChipPrompt implements Prompt {
 
-    customChipCanvas: CustomChipPromptCanvas = new CustomChipPromptCanvas(this._doc);
+    customChipCanvas = new CustomChipPromptCanvas(this._doc);
 
-    readonly _playButton: HTMLButtonElement = button({ style: "width: 55%;", type: "button" });
+    readonly _playButton = button({ style: "width: 55%;", type: "button" });
 
-    private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-    private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
+    private readonly _cancelButton = button({ class: "cancelButton" });
+    private readonly _okayButton = button({ class: "okayButton", style: "width:45%;" }, "Okay");
 
-    private readonly copyButton: HTMLButtonElement = button({ style: "width:86px; margin-right: 5px;", class: "copyButton" }, [
+    private readonly copyButton = button({ style: "width:86px; margin-right: 5px;", class: "copyButton" }, [
         "Copy",
         // Copy icon:
         SVG.svg({ style: "flex-shrink: 0; position: absolute; left: 0; top: 50%; margin-top: -1em; pointer-events: none;", width: "2em", height: "2em", viewBox: "-5 -21 26 26" }, [
             SVG.path({ d: "M 0 -15 L 1 -15 L 1 0 L 13 0 L 13 1 L 0 1 L 0 -15 z M 2 -1 L 2 -17 L 10 -17 L 14 -13 L 14 -1 z M 3 -2 L 13 -2 L 13 -12 L 9 -12 L 9 -16 L 3 -16 z", fill: "currentColor" }),
         ]),
     ]);
-    private readonly pasteButton: HTMLButtonElement = button({ style: "width:86px;", class: "pasteButton" }, [
+    private readonly pasteButton = button({ style: "width:86px;", class: "pasteButton" }, [
         "Paste",
         // Paste icon:
         SVG.svg({ style: "flex-shrink: 0; position: absolute; left: 0; top: 50%; margin-top: -1em; pointer-events: none;", width: "2em", height: "2em", viewBox: "0 0 26 26" }, [
@@ -268,9 +268,9 @@ export class CustomChipPrompt implements Prompt {
             SVG.path({ d: "M 9 3 L 14 3 L 14 6 L 9 6 L 9 3 z M 16 8 L 20 12 L 16 12 L 16 8 z", fill: "currentColor", }),
         ]),
     ]);
-    private readonly copyPasteContainer: HTMLDivElement = div({ style: "width: 185px;" }, this.copyButton, this.pasteButton);
+    private readonly copyPasteContainer = div({ style: "width: 185px;" }, this.copyButton, this.pasteButton);
 
-    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 600px;" },
+    readonly container = div({ class: "prompt noSelection", style: "width: 600px;" },
         h2("Edit Custom Chip Instrument"),
         div({ style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
             this._playButton,
@@ -339,8 +339,8 @@ export class CustomChipPrompt implements Prompt {
     }
 
     private _pasteSettings = (): void => {
-        const storedChipWave: any = JSON.parse(String(window.localStorage.getItem("chipCopy")));
-        for (let i: number = 0; i < 64; i++) {
+        const storedChipWave = JSON.parse(String(window.localStorage.getItem("chipCopy")));
+        for (let i = 0; i < 64; i++) {
             this.customChipCanvas.chipData[i] = storedChipWave[i];
         }
         this.customChipCanvas._storeChange();

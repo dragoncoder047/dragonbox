@@ -1,23 +1,22 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Config } from "../synth/SynthConfig";
-import { SongDocument } from "./SongDocument";
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
+import { Config } from "../synth/SynthConfig";
 import { ColorConfig } from "./ColorConfig";
-import { Instrument } from "../synth/Instrument";
+import { SongDocument } from "./SongDocument";
 
 export class Piano {
-    private readonly _pianoContainer: HTMLDivElement = HTML.div({ style: "width: 100%; height: 100%; display: flex; flex-direction: column-reverse; align-items: stretch;" });
-    private readonly _drumContainer: HTMLDivElement = HTML.div({ style: "width: 100%; height: 100%; display: flex; flex-direction: column-reverse; align-items: stretch;" });
-    private readonly _modContainer: HTMLDivElement = HTML.div({ style: "width: 100%; height: 100%; display: flex; flex-direction: column-reverse; align-items: stretch;" });
-    private readonly _preview: HTMLDivElement = HTML.div({ style: `width: 100%; height: 40px; border: 2px solid ${ColorConfig.primaryText}; position: absolute; box-sizing: border-box; pointer-events: none;` });
-    readonly container: HTMLDivElement = HTML.div({ style: "width: 32px; height: 100%; overflow: hidden; position: relative; flex-shrink: 0; touch-action: none;" },
+    private readonly _pianoContainer = HTML.div({ style: "width: 100%; height: 100%; display: flex; flex-direction: column-reverse; align-items: stretch;" });
+    private readonly _drumContainer = HTML.div({ style: "width: 100%; height: 100%; display: flex; flex-direction: column-reverse; align-items: stretch;" });
+    private readonly _modContainer = HTML.div({ style: "width: 100%; height: 100%; display: flex; flex-direction: column-reverse; align-items: stretch;" });
+    private readonly _preview = HTML.div({ style: `width: 100%; height: 40px; border: 2px solid ${ColorConfig.primaryText}; position: absolute; box-sizing: border-box; pointer-events: none;` });
+    readonly container = HTML.div({ style: "width: 32px; height: 100%; overflow: hidden; position: relative; flex-shrink: 0; touch-action: none;" },
         this._pianoContainer,
         this._drumContainer,
         this._modContainer,
         this._preview,
     );
-    private readonly _editorHeight: number = 481;
+    private readonly _editorHeight = 481;
     private readonly _pianoKeys: HTMLDivElement[] = [];
     private readonly _pianoLabels: HTMLDivElement[] = [];
     private readonly _modFirstLabels: SVGTextElement[] = [];
@@ -27,17 +26,17 @@ export class Piano {
 
     private _pitchHeight: number;
     private _pitchCount: number;
-    //private _mouseX: number = 0;
-    private _mouseY: number = 0;
-    private _mouseDown: boolean = false;
-    private _mouseOver: boolean = false;
+    //private _mouseX = 0;
+    private _mouseY = 0;
+    private _mouseDown = false;
+    private _mouseOver = false;
     private _cursorPitch: number;
-    private _playedPitch: number = -1;
-    private _renderedScale: number = -1;
-    private _renderedDrums: boolean = false;
-    private _renderedMod: boolean = false;
-    private _renderedKey: number = -1;
-    private _renderedPitchCount: number = -1;
+    private _playedPitch = -1;
+    private _renderedScale = -1;
+    private _renderedDrums = false;
+    private _renderedMod = false;
+    private _renderedKey = -1;
+    private _renderedPitchCount = -1;
     private readonly _renderedLiveInputPitches: number[] = [];
 
 
@@ -48,49 +47,49 @@ export class Piano {
 
     // Bass cutoff pitch is roughly half of the viewed window and below, though on odd-numbered octave counts the lead has priority for the middle octave.
     static getBassCutoffPitch(doc: SongDocument): number {
-        const octaveOffset: number = doc.getBaseVisibleOctave(doc.channel);
+        const octaveOffset = doc.getBaseVisibleOctave(doc.channel);
         return octaveOffset * Config.pitchesPerOctave + Math.floor(doc.getVisiblePitchCount() / (Config.pitchesPerOctave * 2)) * Config.pitchesPerOctave;
     }
 
     constructor(private _doc: SongDocument) {
 
-        for (let i: number = 0; i < Config.drumCount; i++) {
-            const scale: number = (1.0 - (i / Config.drumCount) * 0.35) * 100;
+        for (let i = 0; i < Config.drumCount; i++) {
+            const scale = (1.0 - (i / Config.drumCount) * 0.35) * 100;
             this._drumContainer.appendChild(HTML.div({ class: "drum-button", style: `background-size: ${scale}% ${scale}%;` }));
         }
 
-        for (let i: number = 0; i < Config.modCount; i++) {
+        for (let i = 0; i < Config.modCount; i++) {
 
-            const firstRowText: SVGTextElement = SVG.text({ class: "modulator-label", "text-anchor": "left", fill: ColorConfig.modLabelPrimaryText, style: "font-weight: bold; align-self: flex-start; transform-origin: center; transform: rotate(-90deg) translate(-19px, 39px); font-size: 11px; font-family: sans-serif;" });
-            const secondRowText: SVGTextElement = SVG.text({ class: "modulator-label", "text-anchor": "left", fill: ColorConfig.modLabelPrimaryText, style: "font-weight: bold; align-self: flex-end; transform-origin: center; transform: rotate(-90deg) translate(-26px, 42px); font-size: 11px; font-family: sans-serif;" });
-            const countText: SVGTextElement = SVG.text({ class: "modulator-inverse-label", fill: ColorConfig.modLabelPrimary, style: "font-weight: bold; align-self: flex-start; transform-origin: center; transform: rotate(-90deg) translate(4px, 13px); font-size: 11px; font-family: sans-serif;" });
-            const countRect: SVGRectElement = SVG.rect({ width: "12px", height: "9px", fill: ColorConfig.indicatorPrimary, style: "pointer-events: none; transform: translate(4px, 4px);" });
+            const firstRowText = SVG.text({ class: "modulator-label", "text-anchor": "left", fill: ColorConfig.modLabelPrimaryText, style: "font-weight: bold; align-self: flex-start; transform-origin: center; transform: rotate(-90deg) translate(-19px, 39px); font-size: 11px; font-family: sans-serif;" });
+            const secondRowText = SVG.text({ class: "modulator-label", "text-anchor": "left", fill: ColorConfig.modLabelPrimaryText, style: "font-weight: bold; align-self: flex-end; transform-origin: center; transform: rotate(-90deg) translate(-26px, 42px); font-size: 11px; font-family: sans-serif;" });
+            const countText = SVG.text({ class: "modulator-inverse-label", fill: ColorConfig.modLabelPrimary, style: "font-weight: bold; align-self: flex-start; transform-origin: center; transform: rotate(-90deg) translate(4px, 13px); font-size: 11px; font-family: sans-serif;" });
+            const countRect = SVG.rect({ width: "12px", height: "9px", fill: ColorConfig.indicatorPrimary, style: "pointer-events: none; transform: translate(4px, 4px);" });
 
-            const firstRowSVG: SVGSVGElement = SVG.svg({ viewBox: "0 0 16 66", width: "16px", style: "pointer-events: none; flex-grow: 1;" }, [
+            const firstRowSVG = SVG.svg({ viewBox: "0 0 16 66", width: "16px", style: "pointer-events: none; flex-grow: 1;" }, [
                 firstRowText,
             ]);
-            const countSVG: SVGSVGElement = SVG.svg({ viewBox: "0 0 16 14", width: "16px", style: "pointer-events: none;" }, [
+            const countSVG = SVG.svg({ viewBox: "0 0 16 14", width: "16px", style: "pointer-events: none;" }, [
                 countRect,
                 countText,
             ]);
-            const secondRowSVG: SVGSVGElement = SVG.svg({ viewBox: "0 0 16 80", width: "16px", style: "pointer-events: none;" }, [
+            const secondRowSVG = SVG.svg({ viewBox: "0 0 16 80", width: "16px", style: "pointer-events: none;" }, [
                 secondRowText,
             ]);
 
-            const flexRow1: HTMLDivElement = HTML.div({ style: "display: flex; flex-direction: column; justify-content: space-between; pointer-events: none;" }, [
+            const flexRow1 = HTML.div({ style: "display: flex; flex-direction: column; justify-content: space-between; pointer-events: none;" }, [
                 countSVG,
                 firstRowSVG,
             ]);
-            const flexRow2: HTMLDivElement = HTML.div({ style: "display: flex; flex-direction: column-reverse; justify-content: space-between; pointer-events: none;" }, [
+            const flexRow2 = HTML.div({ style: "display: flex; flex-direction: column-reverse; justify-content: space-between; pointer-events: none;" }, [
                 secondRowSVG,
             ]);
 
-            const flexContainer: HTMLDivElement = HTML.div({ style: "display: flex; flex-direction: row; justify-content: space-between; padding: 0px; width: 32px; height: 100%; overflow: hidden; pointer-events: none;" }, [
+            const flexContainer = HTML.div({ style: "display: flex; flex-direction: row; justify-content: space-between; padding: 0px; width: 32px; height: 100%; overflow: hidden; pointer-events: none;" }, [
                 flexRow1,
                 flexRow2,
             ]);
 
-            const modKey: HTMLDivElement = HTML.div({ class: "modulator-button", style: "background: " + ColorConfig.modLabelPrimary + ";" }, flexContainer);
+            const modKey = HTML.div({ class: "modulator-button", style: "background: " + ColorConfig.modLabelPrimary + ";" }, flexContainer);
             this._modContainer.appendChild(modKey);
             this._modFirstLabels.push(firstRowText);
             this._modSecondLabels.push(secondRowText);
@@ -117,20 +116,20 @@ export class Piano {
 
     private _updateCursorPitch(): void {
         const scale: ReadonlyArray<boolean> = this._doc.song.scale == Config.scales.dictionary["Custom"].index ? this._doc.song.scaleCustom : Config.scales[this._doc.song.scale].flags;
-        const mousePitch: number = Math.max(0, Math.min(this._pitchCount - 1, this._pitchCount - (this._mouseY / this._pitchHeight)));
+        const mousePitch = Math.max(0, Math.min(this._pitchCount - 1, this._pitchCount - (this._mouseY / this._pitchHeight)));
         if (scale[Math.floor(mousePitch) % Config.pitchesPerOctave] || this._doc.song.getChannelIsNoise(this._doc.channel)) {
             this._cursorPitch = Math.floor(mousePitch);
         } else {
-            let topPitch: number = Math.floor(mousePitch) + 1;
-            let bottomPitch: number = Math.floor(mousePitch) - 1;
+            let topPitch = Math.floor(mousePitch) + 1;
+            let bottomPitch = Math.floor(mousePitch) - 1;
             while (!scale[topPitch % Config.pitchesPerOctave]) {
                 topPitch++;
             }
             while (!scale[(bottomPitch) % Config.pitchesPerOctave]) {
                 bottomPitch--;
             }
-            let topRange: number = topPitch;
-            let bottomRange: number = bottomPitch + 1;
+            let topRange = topPitch;
+            let bottomRange = bottomPitch + 1;
             if (topPitch % Config.pitchesPerOctave == 0 || topPitch % Config.pitchesPerOctave == 7) {
                 topRange -= 0.5;
             }
@@ -142,8 +141,8 @@ export class Piano {
     }
 
     private _playLiveInput(): void {
-        const octaveOffset: number = this._doc.getBaseVisibleOctave(this._doc.channel) * Config.pitchesPerOctave;
-        const currentPitch: number = this._cursorPitch + octaveOffset;
+        const octaveOffset = this._doc.getBaseVisibleOctave(this._doc.channel) * Config.pitchesPerOctave;
+        const currentPitch = this._cursorPitch + octaveOffset;
         if (this._playedPitch == currentPitch) return;
         this._doc.performance.removePerformedPitch(this._playedPitch);
         this._playedPitch = currentPitch;
@@ -171,7 +170,7 @@ export class Piano {
         event.preventDefault();
         this._doc.synth.maintainLiveInput();
         this._mouseDown = true;
-        const boundingRect: DOMRect = this.container.getBoundingClientRect();
+        const boundingRect = this.container.getBoundingClientRect();
         //this._mouseX = (event.clientX || event.pageX) - boundingRect.left;
         this._mouseY = ((event.clientY || event.pageY) - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseY)) this._mouseY = 0;
@@ -182,7 +181,7 @@ export class Piano {
 
     private _whenMouseMoved = (event: MouseEvent): void => {
         if (this._mouseDown || this._mouseOver) this._doc.synth.maintainLiveInput();
-        const boundingRect: DOMRect = this.container.getBoundingClientRect();
+        const boundingRect = this.container.getBoundingClientRect();
         //this._mouseX = (event.clientX || event.pageX) - boundingRect.left;
         this._mouseY = ((event.clientY || event.pageY) - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseY)) this._mouseY = 0;
@@ -201,7 +200,7 @@ export class Piano {
         event.preventDefault();
         this._doc.synth.maintainLiveInput();
         this._mouseDown = true;
-        const boundingRect: DOMRect = this.container.getBoundingClientRect();
+        const boundingRect = this.container.getBoundingClientRect();
         //this._mouseX = event.touches[0].clientX - boundingRect.left;
         this._mouseY = (event.touches[0].clientY - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseY)) this._mouseY = 0;
@@ -212,7 +211,7 @@ export class Piano {
     private _whenTouchMoved = (event: TouchEvent): void => {
         event.preventDefault();
         this._doc.synth.maintainLiveInput();
-        const boundingRect: DOMRect = this.container.getBoundingClientRect();
+        const boundingRect = this.container.getBoundingClientRect();
         //this._mouseX = event.touches[0].clientX - boundingRect.left;
         this._mouseY = (event.touches[0].clientY - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseY)) this._mouseY = 0;
@@ -229,19 +228,19 @@ export class Piano {
     private _onAnimationFrame = (): void => {
         window.requestAnimationFrame(this._onAnimationFrame);
 
-        let liveInputChanged: boolean = false;
-        let liveInputPitchCount: number = !this._doc.performance.pitchesAreTemporary() ? this._doc.synth.liveInputPitches.length : 0;
+        let liveInputChanged = false;
+        let liveInputPitchCount = !this._doc.performance.pitchesAreTemporary() ? this._doc.synth.liveInputPitches.length : 0;
         liveInputPitchCount += !this._doc.performance.bassPitchesAreTemporary() ? this._doc.synth.liveBassInputPitches.length : 0;
         if (this._renderedLiveInputPitches.length != liveInputPitchCount) {
             liveInputChanged = true;
         }
-        for (let i: number = 0; i < this._doc.synth.liveInputPitches.length; i++) {
+        for (let i = 0; i < this._doc.synth.liveInputPitches.length; i++) {
             if (this._renderedLiveInputPitches[i] != this._doc.synth.liveInputPitches[i]) {
                 this._renderedLiveInputPitches[i] = this._doc.synth.liveInputPitches[i];
                 liveInputChanged = true;
             }
         }
-        for (let i: number = this._doc.synth.liveInputPitches.length; i < liveInputPitchCount; i++) {
+        for (let i = this._doc.synth.liveInputPitches.length; i < liveInputPitchCount; i++) {
             if (this._renderedLiveInputPitches[i] != this._doc.synth.liveBassInputPitches[i - this._doc.synth.liveInputPitches.length]) {
                 this._renderedLiveInputPitches[i] = this._doc.synth.liveBassInputPitches[i - this._doc.synth.liveInputPitches.length];
                 liveInputChanged = true;
@@ -258,19 +257,19 @@ export class Piano {
         this._preview.style.visibility = (!this._mouseOver || this._mouseDown) ? "hidden" : "visible";
 
         if (this._mouseOver && !this._mouseDown) {
-            const boundingRect: DOMRect = this.container.getBoundingClientRect();
-            const pitchHeight: number = this._pitchHeight / (this._editorHeight / (boundingRect.bottom - boundingRect.top));
+            const boundingRect = this.container.getBoundingClientRect();
+            const pitchHeight = this._pitchHeight / (this._editorHeight / (boundingRect.bottom - boundingRect.top));
 
             this._preview.style.left = "0px";
             this._preview.style.top = pitchHeight * (this._pitchCount - this._cursorPitch - 1) + "px";
             this._preview.style.height = pitchHeight + "px";
         }
 
-        const octaveOffset: number = this._doc.getBaseVisibleOctave(this._doc.channel) * Config.pitchesPerOctave;
-        const container: HTMLDivElement = this._doc.song.getChannelIsNoise(this._doc.channel) ? this._drumContainer : this._pianoContainer;
-        const children: HTMLCollection = container.children;
-        for (let i: number = 0; i < children.length; i++) {
-            const child: Element = children[i];
+        const octaveOffset = this._doc.getBaseVisibleOctave(this._doc.channel) * Config.pitchesPerOctave;
+        const container = this._doc.song.getChannelIsNoise(this._doc.channel) ? this._drumContainer : this._pianoContainer;
+        const children = container.children;
+        for (let i = 0; i < children.length; i++) {
+            const child = children[i];
             if (this._renderedLiveInputPitches.indexOf(i + octaveOffset) == -1) {
                 child.classList.remove("pressed");
             } else {
@@ -280,8 +279,8 @@ export class Piano {
     }
 
     private _documentChanged = (): void => {
-        const isDrum: boolean = this._doc.song.getChannelIsNoise(this._doc.channel);
-        const isMod: boolean = this._doc.song.getChannelIsMod(this._doc.channel);
+        const isDrum = this._doc.song.getChannelIsNoise(this._doc.channel);
+        const isMod = this._doc.song.getChannelIsMod(this._doc.channel);
         this._pitchCount = isMod ? Config.modCount : (isDrum ? Config.drumCount : this._doc.getVisiblePitchCount());
 
         this._pitchHeight = this._editorHeight / this._pitchCount;
@@ -295,7 +294,7 @@ export class Piano {
         this._renderedKey = this._doc.song.key;
         this._renderedDrums = isDrum;
         this._renderedMod = isMod;
-        const instrument: Instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
+        const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
 
         this._pianoContainer.style.display = (isDrum || isMod) ? "none" : "flex";
         this._drumContainer.style.display = isDrum ? "flex" : "none";
@@ -304,9 +303,9 @@ export class Piano {
         if (!isDrum && !isMod) {
             if (this._renderedPitchCount != this._pitchCount) {
                 this._pianoContainer.innerHTML = "";
-                for (let i: number = 0; i < this._pitchCount; i++) {
-                    const pianoLabel: HTMLDivElement = HTML.div({ class: "piano-label", style: "font-weight: bold; -webkit-text-stroke-width: 0; font-size: 11px; font-family: sans-serif; position: absolute; padding-left: 15px; white-space: nowrap;" });
-                    const pianoKey: HTMLDivElement = HTML.div({ class: "piano-button", style: "background: gray;" }, pianoLabel);
+                for (let i = 0; i < this._pitchCount; i++) {
+                    const pianoLabel = HTML.div({ class: "piano-label", style: "font-weight: bold; -webkit-text-stroke-width: 0; font-size: 11px; font-family: sans-serif; position: absolute; padding-left: 15px; white-space: nowrap;" });
+                    const pianoKey = HTML.div({ class: "piano-button", style: "background: gray;" }, pianoLabel);
                     this._pianoContainer.appendChild(pianoKey);
                     this._pianoLabels[i] = pianoLabel;
                     this._pianoKeys[i] = pianoKey;
@@ -316,9 +315,9 @@ export class Piano {
                 this._renderedPitchCount = this._pitchCount;
             }
 
-            for (let j: number = 0; j < this._pitchCount; j++) {
-                const pitchNameIndex: number = (j + Config.keys[this._doc.song.key].basePitch) % Config.pitchesPerOctave;
-                const isWhiteKey: boolean = Config.keys[pitchNameIndex].isWhiteKey;
+            for (let j = 0; j < this._pitchCount; j++) {
+                const pitchNameIndex = (j + Config.keys[this._doc.song.key].basePitch) % Config.pitchesPerOctave;
+                const isWhiteKey = Config.keys[pitchNameIndex].isWhiteKey;
                 this._pianoKeys[j].style.background = isWhiteKey ? ColorConfig.whitePianoKey : ColorConfig.blackPianoKey;
                 let scale = this._doc.song.scale == Config.scales.dictionary["Custom"].index ? this._doc.song.scaleCustom : Config.scales[this._doc.song.scale].flags;
                 if (!scale[j % Config.pitchesPerOctave]) {
@@ -328,7 +327,7 @@ export class Piano {
                     this._pianoKeys[j].classList.remove("disabled");
                     this._pianoLabels[j].style.display = "";
 
-                    const label: HTMLDivElement = this._pianoLabels[j];
+                    const label = this._pianoLabels[j];
 
                     if ((j % 12) == 0) {
                         label.style.transform = "translate(-5px, 0px)";
@@ -354,23 +353,23 @@ export class Piano {
             }
         }
         else if (isMod) {
-            let firstRow: string = "";
-            let secondRow: string = "";
-            let useFirstColor: string = ColorConfig.modLabelPrimaryText;
-            let useSecondColor: string = ColorConfig.modLabelSecondaryText;
-            for (let j: number = 0; j < Config.modCount; j++) {
+            let firstRow = "";
+            let secondRow = "";
+            let useFirstColor = ColorConfig.modLabelPrimaryText;
+            let useSecondColor = ColorConfig.modLabelSecondaryText;
+            for (let j = 0; j < Config.modCount; j++) {
 
-                let usingSecondRow: boolean = true;
-                let usingMod: boolean = true;
-                let instrumentVal: number = instrument.modInstruments[Config.modCount - j - 1][0] + 1; //TODO: something special for when there are multiple channel targets?
-                let channelVal: number = instrument.modChannels[Config.modCount - j - 1][0] + 1;
-                let modulator: number = instrument.modulators[Config.modCount - j - 1];
-                let status: number = 1 + +(channelVal - 1 >= this._doc.song.pitchChannelCount);
+                let usingSecondRow = true;
+                let usingMod = true;
+                let instrumentVal = instrument.modInstruments[Config.modCount - j - 1][0] + 1; //TODO: something special for when there are multiple channel targets?
+                let channelVal = instrument.modChannels[Config.modCount - j - 1][0] + 1;
+                let modulator = instrument.modulators[Config.modCount - j - 1];
+                let status = 1 + +(channelVal - 1 >= this._doc.song.pitchChannelCount);
                 if (instrument.modChannels[Config.modCount - j - 1][0] == -2)
                     status = 0;
                 else if (instrument.modChannels[Config.modCount - j - 1][0] == -1)
                     status = 3;
-                let instrumentsLength: number = this._doc.song.channels[Math.max(0, channelVal - 1)].instruments.length;
+                let instrumentsLength = this._doc.song.channels[Math.max(0, channelVal - 1)].instruments.length;
                 // 0 - none
                 // 1 - pitch
                 // 2 - noise
@@ -436,8 +435,8 @@ export class Piano {
                         }
                         break;
                     case 2:
-                        const absoluteChannelVal: number = instrument.modChannels[Config.modCount - j - 1][0];
-                        const relativeChannelVal: number = absoluteChannelVal - this._doc.song.pitchChannelCount;
+                        const absoluteChannelVal = instrument.modChannels[Config.modCount - j - 1][0];
+                        const relativeChannelVal = absoluteChannelVal - this._doc.song.pitchChannelCount;
 
                         if (this._doc.song.channels[absoluteChannelVal].name == "") {
 
@@ -517,10 +516,10 @@ export class Piano {
                     } 
                 }
 
-                const firstLabel: SVGTextElement = this._modFirstLabels[j];
-                const secondLabel: SVGTextElement = this._modSecondLabels[j];
-                const modCountLabel: SVGTextElement = this._modCountLabels[j];
-                const modCountRect: SVGRectElement = this._modCountRects[j];
+                const firstLabel = this._modFirstLabels[j];
+                const secondLabel = this._modSecondLabels[j];
+                const modCountLabel = this._modCountLabels[j];
+                const modCountRect = this._modCountRects[j];
                 firstLabel.style.fill = useFirstColor;
                 firstLabel.textContent = firstRow;
                 secondLabel.style.fill = useSecondColor;
@@ -530,10 +529,10 @@ export class Piano {
 
                 // Check if text is too long, if name is set
                 if (this._doc.song.channels[Math.max(0, instrument.modChannels[Config.modCount - j - 1][0])].name != "") {
-                    let scaleFactor: string = "1";
-                    let height: number = firstLabel.parentElement!.parentElement!.getBoundingClientRect().height;
-                    let length: number = firstLabel.getComputedTextLength();
-                    let squeeze: number = 0;
+                    let scaleFactor = "1";
+                    let height = firstLabel.parentElement!.parentElement!.getBoundingClientRect().height;
+                    let length = firstLabel.getComputedTextLength();
+                    let squeeze = 0;
                     if (length > height - 8) {
                         scaleFactor = "0.65";
                         squeeze = 2;
@@ -550,7 +549,7 @@ export class Piano {
                     }
                 }
                 else {
-                    let height: number = firstLabel.parentElement!.parentElement!.getBoundingClientRect().height;
+                    let height = firstLabel.parentElement!.parentElement!.getBoundingClientRect().height;
                     firstLabel.style.transform = "rotate(-90deg) translate(" + (-20 - Math.round(Math.max(0, (height - 80) / 2))) + "px, 39px) scale(1, 1)";
                 }
             }
@@ -568,7 +567,7 @@ export class Piano {
         if (Config.keys[pitchNameIndex].isWhiteKey) {
             text = Config.keys[pitchNameIndex].name;
         } else {
-            const shiftDir: number = Config.blackKeyNameParents[scaleIndex % Config.pitchesPerOctave];
+            const shiftDir = Config.blackKeyNameParents[scaleIndex % Config.pitchesPerOctave];
             text = Config.keys[(pitchNameIndex + Config.pitchesPerOctave + shiftDir) % Config.pitchesPerOctave].name;
             if (shiftDir == 1) {
                 text += "♭";

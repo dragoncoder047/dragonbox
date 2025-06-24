@@ -9,21 +9,21 @@ import { SongEditor } from "./SongEditor";
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
 
 export class TrackEditor {
-    readonly _barDropDown: HTMLSelectElement = HTML.select({ style: "width: 32px; height: " + Config.barEditorHeight + "px; top: 0px; position: absolute; opacity: 0" },
+    readonly _barDropDown = HTML.select({ style: "width: 32px; height: " + Config.barEditorHeight + "px; top: 0px; position: absolute; opacity: 0" },
 
         HTML.option({ value: "barBefore" }, "Insert Bar Before"),
         HTML.option({ value: "barAfter" }, "Insert Bar After"),
         HTML.option({ value: "deleteBar" }, "Delete This Bar"),
     );
-    private readonly _channelRowContainer: HTMLElement = HTML.div({ style: `display: flex; flex-direction: column; padding-top: ${Config.barEditorHeight}px` });
-    private readonly _barNumberContainer: SVGGElement = SVG.g();
-    private readonly _playhead: SVGRectElement = SVG.rect({ fill: ColorConfig.playhead, x: 0, y: 0, width: 4, height: 128 });
-    private readonly _boxHighlight: SVGRectElement = SVG.rect({ fill: "none", stroke: ColorConfig.hoverPreview, "stroke-width": 2, "pointer-events": "none", x: 1, y: 1, width: 30, height: 30 });
-    private readonly _upHighlight: SVGPathElement = SVG.path({ fill: ColorConfig.invertedText, stroke: ColorConfig.invertedText, "stroke-width": 1, "pointer-events": "none" });
-    private readonly _downHighlight: SVGPathElement = SVG.path({ fill: ColorConfig.invertedText, stroke: ColorConfig.invertedText, "stroke-width": 1, "pointer-events": "none" });
-    private readonly _barEditorPath: SVGPathElement = SVG.path({ fill: ColorConfig.uiWidgetBackground, stroke: ColorConfig.uiWidgetBackground, "stroke-width": 1, "pointer-events": "none" });
-    private readonly _selectionRect: SVGRectElement = SVG.rect({ class: "dashed-line dash-move", fill: ColorConfig.boxSelectionFill, stroke: ColorConfig.hoverPreview, "stroke-width": 2, "stroke-dasharray": "5, 3", "fill-opacity": "0.4", "pointer-events": "none", visibility: "hidden", x: 1, y: 1, width: 62, height: 62 });
-    private readonly _svg: SVGSVGElement = SVG.svg({ style: `position: absolute; top: 0;` },
+    private readonly _channelRowContainer = HTML.div({ style: `display: flex; flex-direction: column; padding-top: ${Config.barEditorHeight}px` });
+    private readonly _barNumberContainer = SVG.g();
+    private readonly _playhead = SVG.rect({ fill: ColorConfig.playhead, x: 0, y: 0, width: 4, height: 128 });
+    private readonly _boxHighlight = SVG.rect({ fill: "none", stroke: ColorConfig.hoverPreview, "stroke-width": 2, "pointer-events": "none", x: 1, y: 1, width: 30, height: 30 });
+    private readonly _upHighlight = SVG.path({ fill: ColorConfig.invertedText, stroke: ColorConfig.invertedText, "stroke-width": 1, "pointer-events": "none" });
+    private readonly _downHighlight = SVG.path({ fill: ColorConfig.invertedText, stroke: ColorConfig.invertedText, "stroke-width": 1, "pointer-events": "none" });
+    private readonly _barEditorPath = SVG.path({ fill: ColorConfig.uiWidgetBackground, stroke: ColorConfig.uiWidgetBackground, "stroke-width": 1, "pointer-events": "none" });
+    private readonly _selectionRect = SVG.rect({ class: "dashed-line dash-move", fill: ColorConfig.boxSelectionFill, stroke: ColorConfig.hoverPreview, "stroke-width": 2, "stroke-dasharray": "5, 3", "fill-opacity": "0.4", "pointer-events": "none", visibility: "hidden", x: 1, y: 1, width: 62, height: 62 });
+    private readonly _svg = SVG.svg({ style: `position: absolute; top: 0;` },
         this._barEditorPath,
         this._selectionRect,
         this._barNumberContainer,
@@ -32,8 +32,8 @@ export class TrackEditor {
         this._downHighlight,
         this._playhead,
     );
-    private readonly _select: HTMLSelectElement = HTML.select({ class: "trackSelectBox", style: "background: none; border: none; appearance: none; border-radius: initial; box-shadow: none; color: transparent; position: absolute; touch-action: none;" });
-    readonly container: HTMLElement = HTML.div({ class: "noSelection", style: `background-color: ${ColorConfig.editorBackground}; position: relative; overflow: hidden;` },
+    private readonly _select = HTML.select({ class: "trackSelectBox", style: "background: none; border: none; appearance: none; border-radius: initial; box-shadow: none; color: transparent; position: absolute; touch-action: none;" });
+    readonly container = HTML.div({ class: "noSelection", style: `background-color: ${ColorConfig.editorBackground}; position: relative; overflow: hidden;` },
         this._channelRowContainer,
         this._svg,
         this._select,
@@ -41,29 +41,29 @@ export class TrackEditor {
     );
     private readonly _channels: ChannelRow[] = [];
     private readonly _barNumbers: SVGTextElement[] = [];
-    private _mouseX: number = 0;
-    private _mouseY: number = 0;
-    //private _lastScrollTime: number = 0;
-    //private _selecting: boolean = false;
-    //private _selectionStartBar: number = 0;
-    //private _selectionStartChannel: number = 0;
+    private _mouseX = 0;
+    private _mouseY = 0;
+    //private _lastScrollTime = 0;
+    //private _selecting = false;
+    //private _selectionStartBar = 0;
+    //private _selectionStartChannel = 0;
     //private _pattern: Pattern | null = null;
-    private _mouseStartBar: number = 0;
-    private _mouseStartChannel: number = 0;
-    private _mouseBar: number = 0;
-    private _mouseChannel: number = 0;
-    private _mouseOver: boolean = false;
-    private _mousePressed: boolean = false;
+    private _mouseStartBar = 0;
+    private _mouseStartChannel = 0;
+    private _mouseBar = 0;
+    private _mouseChannel = 0;
+    private _mouseOver = false;
+    private _mousePressed = false;
     private _mouseDragging = false;
-    private _barWidth: number = 32;
-    private _renderedBarCount: number = -1;
-    private _renderedEditorWidth: number = -1;
-    private _renderedEditorHeight: number = -1;
-    private _renderedPatternCount: number = 0;
-    private _renderedPlayhead: number = -1;
-    private _touchMode: boolean = isMobile;
-    private _barDropDownBar: number = 0;
-    private _lastScrollTime: number = 0;
+    private _barWidth = 32;
+    private _renderedBarCount = -1;
+    private _renderedEditorWidth = -1;
+    private _renderedEditorHeight = -1;
+    private _renderedPatternCount = 0;
+    private _renderedPlayhead = -1;
+    private _touchMode = isMobile;
+    private _barDropDownBar = 0;
+    private _lastScrollTime = 0;
 
     constructor(private _doc: SongDocument, private _songEditor: SongEditor) {
         window.requestAnimationFrame(this._animatePlayhead);
@@ -79,7 +79,7 @@ export class TrackEditor {
         this._select.addEventListener("touchend", this._whenSelectReleased);
         this._select.addEventListener("touchcancel", this._whenSelectReleased);
 
-        let determinedCursorType: boolean = false;
+        let determinedCursorType = false;
         document.addEventListener("mousedown", () => {
             if (!determinedCursorType) {
                 this._touchMode = false;
@@ -178,7 +178,7 @@ export class TrackEditor {
     }
 
     private _updateSelectPos(event: TouchEvent): void {
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = event.touches[0].clientX - boundingRect.left;
         this._mouseY = event.touches[0].clientY - boundingRect.top;
         if (isNaN(this._mouseX)) this._mouseX = 0;
@@ -222,7 +222,7 @@ export class TrackEditor {
     }
 
     private _updateMousePos(event: MouseEvent): void {
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.clientX || event.pageX) - boundingRect.left;
         this._mouseY = (event.clientY || event.pageY) - boundingRect.top;
         this._mouseBar = Math.floor(Math.min(this._doc.song.barCount - 1, Math.max(0, this._mouseX / this._barWidth)));
@@ -268,8 +268,8 @@ export class TrackEditor {
     private _whenMouseReleased = (event: MouseEvent): void => {
         if (this._mousePressed && !this._mouseDragging) {
             if (this._doc.channel == this._mouseChannel && this._doc.bar == this._mouseBar) {
-                const up: boolean = ((this._mouseY - Config.barEditorHeight) % ChannelRow.patternHeight) < ChannelRow.patternHeight / 2;
-                const patternCount: number = this._doc.song.patternsPerChannel;
+                const up = ((this._mouseY - Config.barEditorHeight) % ChannelRow.patternHeight) < ChannelRow.patternHeight / 2;
+                const patternCount = this._doc.song.patternsPerChannel;
                 this._doc.selection.setPattern((this._doc.song.channels[this._mouseChannel].bars[this._mouseBar] + (up ? 1 : patternCount)) % (patternCount + 1));
             }
         }
@@ -279,21 +279,21 @@ export class TrackEditor {
     }
 
     private _updatePreview(): void {
-        let channel: number = this._mouseChannel;
-        let bar: number = this._mouseBar;
+        let channel = this._mouseChannel;
+        let bar = this._mouseBar;
 
         if (this._touchMode) {
             bar = this._doc.bar;
             channel = this._doc.channel;
         }
 
-        const selected: boolean = (bar == this._doc.bar && channel == this._doc.channel);
-        const overTrackEditor: boolean = (this._mouseY >= Config.barEditorHeight);
+        const selected = (bar == this._doc.bar && channel == this._doc.channel);
+        const overTrackEditor = (this._mouseY >= Config.barEditorHeight);
 
         if (this._mouseDragging && this._mouseStartBar != this._mouseBar) {
 
             // Handle auto-scroll in selection. Only @50ms or slower.
-            var timestamp: number = Date.now();
+            var timestamp = Date.now();
 
             if (timestamp - this._lastScrollTime >= 50) {
 
@@ -328,12 +328,12 @@ export class TrackEditor {
         }
 
         if ((this._mouseOver || this._touchMode) && selected && overTrackEditor) {
-            const up: boolean = ((this._mouseY - Config.barEditorHeight) % ChannelRow.patternHeight) < ChannelRow.patternHeight / 2;
-            const center: number = this._barWidth * (bar + 0.8);
-            const middle: number = Config.barEditorHeight + ChannelRow.patternHeight * (channel + 0.5);
-            const base: number = ChannelRow.patternHeight * 0.1;
-            const tip: number = ChannelRow.patternHeight * 0.4;
-            const width: number = ChannelRow.patternHeight * 0.175;
+            const up = ((this._mouseY - Config.barEditorHeight) % ChannelRow.patternHeight) < ChannelRow.patternHeight / 2;
+            const center = this._barWidth * (bar + 0.8);
+            const middle = Config.barEditorHeight + ChannelRow.patternHeight * (channel + 0.5);
+            const base = ChannelRow.patternHeight * 0.1;
+            const tip = ChannelRow.patternHeight * 0.4;
+            const width = ChannelRow.patternHeight * 0.175;
 
             this._upHighlight.setAttribute("fill", up && !this._touchMode ? ColorConfig.hoverPreview : ColorConfig.invertedText);
             this._downHighlight.setAttribute("fill", !up && !this._touchMode ? ColorConfig.hoverPreview : ColorConfig.invertedText);
@@ -359,25 +359,25 @@ export class TrackEditor {
 
         this._barDropDown.style.left = (this._barWidth * bar) + "px";
 
-        const patternCount: number = this._doc.song.patternsPerChannel + 1;
-        for (let i: number = this._renderedPatternCount; i < patternCount; i++) {
+        const patternCount = this._doc.song.patternsPerChannel + 1;
+        for (let i = this._renderedPatternCount; i < patternCount; i++) {
             this._select.appendChild(HTML.option({ value: i }, i));
         }
-        for (let i: number = patternCount; i < this._renderedPatternCount; i++) {
+        for (let i = patternCount; i < this._renderedPatternCount; i++) {
             this._select.removeChild(<Node>this._select.lastChild);
         }
         this._renderedPatternCount = patternCount;
-        const selectedPattern: number = this._doc.song.channels[this._doc.channel].bars[this._doc.bar];
+        const selectedPattern = this._doc.song.channels[this._doc.channel].bars[this._doc.bar];
         if (this._select.selectedIndex != selectedPattern) this._select.selectedIndex = selectedPattern;
     }
 
     rerenderChannelColors(): void {
-        for (let y: number = 0; y < this._doc.song.getChannelCount(); y++) {
+        for (let y = 0; y < this._doc.song.getChannelCount(); y++) {
             this._channelRowContainer.removeChild(this._channels[y].container);
         }
 
-        for (let y: number = 0; y < this._doc.song.getChannelCount(); y++) {
-            const channelRow: ChannelRow = new ChannelRow(this._doc, y, this._doc.song.channels[y].color);
+        for (let y = 0; y < this._doc.song.getChannelCount(); y++) {
+            const channelRow = new ChannelRow(this._doc, y, this._doc.song.channels[y].color);
             console.log(this._doc.song.channels[y].color)
             this._channels[y] = channelRow;
             this._channelRowContainer.appendChild(channelRow.container);
@@ -386,7 +386,7 @@ export class TrackEditor {
         this._channels.length = this._doc.song.getChannelCount();
         this._mousePressed = false;
 
-        for (let j: number = 0; j < this._doc.song.getChannelCount(); j++) {
+        for (let j = 0; j < this._doc.song.getChannelCount(); j++) {
             this._channels[j].render();
         }
     }
@@ -398,14 +398,14 @@ export class TrackEditor {
         if (this._channels.length != this._doc.song.getChannelCount()) {
 
             // Add new channel boxes if needed
-            for (let y: number = this._channels.length; y < this._doc.song.getChannelCount(); y++) {
-                const channelRow: ChannelRow = new ChannelRow(this._doc, y, this._doc.song.channels[y].color);
+            for (let y = this._channels.length; y < this._doc.song.getChannelCount(); y++) {
+                const channelRow = new ChannelRow(this._doc, y, this._doc.song.channels[y].color);
                 this._channels[y] = channelRow;
                 this._channelRowContainer.appendChild(channelRow.container);
             }
 
             // Remove old channel boxes
-            for (let y: number = this._doc.song.getChannelCount(); y < this._channels.length; y++) {
+            for (let y = this._doc.song.getChannelCount(); y < this._channels.length; y++) {
                 this._channelRowContainer.removeChild(this._channels[y].container);
             }
 
@@ -413,11 +413,11 @@ export class TrackEditor {
             this._mousePressed = false;
         }
 
-        for (let j: number = 0; j < this._doc.song.getChannelCount(); j++) {
+        for (let j = 0; j < this._doc.song.getChannelCount(); j++) {
             this._channels[j].render();
         }
 
-        const editorWidth: number = this._barWidth * this._doc.song.barCount;
+        const editorWidth = this._barWidth * this._doc.song.barCount;
         if (this._renderedEditorWidth != editorWidth) {
             this._renderedEditorWidth = editorWidth;
             this._channelRowContainer.style.width = editorWidth + "px";
@@ -431,7 +431,7 @@ export class TrackEditor {
 
             var pathString = "";
 
-            for (let x: number = 0; x < this._doc.song.barCount; x++) {
+            for (let x = 0; x < this._doc.song.barCount; x++) {
                 var pathLeft = x * this._barWidth + 2;
                 var pathTop = 1;
                 var pathRight = x * this._barWidth + this._barWidth - 2;
@@ -474,7 +474,7 @@ export class TrackEditor {
             this._mousePressed = false;
         }
 
-        const editorHeight: number = this._doc.song.getChannelCount() * ChannelRow.patternHeight;
+        const editorHeight = this._doc.song.getChannelCount() * ChannelRow.patternHeight;
         if (this._renderedEditorHeight != editorHeight) {
             this._renderedEditorHeight = editorHeight;
             this._svg.setAttribute("height", "" + (editorHeight + Config.barEditorHeight));

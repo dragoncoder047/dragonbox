@@ -12,16 +12,16 @@ import { ExportPrompt } from "./ExportPrompt";
 const { button, div, span, h2, input, br, select, option } = HTML;
 
 export class SongDurationPrompt implements Prompt {
-    private readonly _computedSamplesLabel: HTMLDivElement = div({ style: "width: 10em;" }, new Text("0:00"));
-    private readonly _barsStepper: HTMLInputElement = input({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
-    private readonly _positionSelect: HTMLSelectElement = select({ style: "width: 100%;" },
+    private readonly _computedSamplesLabel = div({ style: "width: 10em;" }, new Text("0:00"));
+    private readonly _barsStepper = input({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
+    private readonly _positionSelect = select({ style: "width: 100%;" },
         option({ value: "end" }, "Apply change at end of song."),
         option({ value: "beginning" }, "Apply change at beginning of song."),
     );
-    private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-    private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
+    private readonly _cancelButton = button({ class: "cancelButton" });
+    private readonly _okayButton = button({ class: "okayButton", style: "width:45%;" }, "Okay");
 
-    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 250px;" },
+    readonly container = div({ class: "prompt noSelection", style: "width: 250px;" },
         h2("Song Length"),
         div({ style: "display: flex; flex-direction: row; align-items: center; justify-content: space-between;" },
             "Length:",
@@ -97,7 +97,7 @@ export class SongDurationPrompt implements Prompt {
     }
 
     private static _validateNumber(event: Event): void {
-        const input: HTMLInputElement = <HTMLInputElement>event.target;
+        const input = <HTMLInputElement>event.target;
         input.value = String(SongDurationPrompt._validate(input));
     }
 
@@ -106,7 +106,7 @@ export class SongDurationPrompt implements Prompt {
     }
 
     private _predictFutureLength(): string {
-        const futureDoc: SongDocument = new SongDocument();
+        const futureDoc = new SongDocument();
         futureDoc.synth.song?.fromBase64String(this._doc.synth.song?.toBase64String() ? this._doc.synth.song?.toBase64String() : "");
         new ChangeBarCount(futureDoc, SongDurationPrompt._validate(this._barsStepper), this._positionSelect.value == "beginning");
         return ExportPrompt.samplesToTime(futureDoc, futureDoc.synth.getTotalSamples(true, true, 0));
@@ -114,7 +114,7 @@ export class SongDurationPrompt implements Prompt {
 
     private _saveChanges = (): void => {
         window.localStorage.setItem("barCountPosition", this._positionSelect.value);
-        const group: ChangeGroup = new ChangeGroup();
+        const group = new ChangeGroup();
         group.append(new ChangeBarCount(this._doc, SongDurationPrompt._validate(this._barsStepper), this._positionSelect.value == "beginning"));
         this._doc.prompt = null;
         this._doc.record(group, true);

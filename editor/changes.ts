@@ -1,23 +1,23 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Algorithm, Dictionary, FilterType, SustainType, InstrumentType, MDEffectType, EffectType, AutomationTarget, Config, LFOEnvelopeTypes, RandomEnvelopeTypes } from "../synth/SynthConfig";
-import { Synth } from "../synth/synth";
-import { clamp } from "../synth/utils";
-import { Song } from "../synth/Song";
 import { Channel } from "../synth/Channel";
 import { Effect } from "../synth/Effect";
-import { SpectrumWave, HarmonicsWave, Instrument } from "../synth/Instrument";
-import { NotePin, Note, makeNotePin, Pattern } from "../synth/Pattern";
-import { FilterSettings, FilterControlPoint } from "../synth/Filter";
-import { Preset, PresetCategory, EditorConfig } from "./EditorConfig";
+import { FilterControlPoint, FilterSettings } from "../synth/Filter";
+import { HarmonicsWave, Instrument, SpectrumWave } from "../synth/Instrument";
+import { makeNotePin, Note, NotePin, Pattern } from "../synth/Pattern";
+import { Song } from "../synth/Song";
+import { Config, Dictionary, EffectType, FilterType, InstrumentType, LFOEnvelopeTypes, MDEffectType, RandomEnvelopeTypes, SustainType } from "../synth/SynthConfig";
+import { Synth } from "../synth/synth";
+import { clamp } from "../synth/utils";
 import { Change, ChangeGroup, ChangeSequence, UndoableChange } from "./Change";
-import { SongDocument } from "./SongDocument";
 import { ColorConfig } from "./ColorConfig";
+import { EditorConfig, Preset } from "./EditorConfig";
 import { Slider } from "./HTMLWrapper";
+import { SongDocument } from "./SongDocument";
 
 export function patternsContainSameInstruments(pattern1Instruments: number[], pattern2Instruments: number[]): boolean {
-    const pattern2Has1Instruments: boolean = pattern1Instruments.every(instrument => pattern2Instruments.indexOf(instrument) != -1);
-    const pattern1Has2Instruments: boolean = pattern2Instruments.every(instrument => pattern1Instruments.indexOf(instrument) != -1);
+    const pattern2Has1Instruments = pattern1Instruments.every(instrument => pattern2Instruments.indexOf(instrument) != -1);
+    const pattern1Has2Instruments = pattern2Instruments.every(instrument => pattern1Instruments.indexOf(instrument) != -1);
     return pattern2Has1Instruments && pattern1Has2Instruments && pattern2Instruments.length == pattern1Instruments.length;
 }
 
@@ -25,7 +25,7 @@ export function discardInvalidPatternInstruments(instruments: number[], song: So
     const uniqueInstruments: Set<number> = new Set(instruments);
     instruments.length = 0;
     instruments.push(...uniqueInstruments);
-    for (let i: number = 0; i < instruments.length; i++) {
+    for (let i = 0; i < instruments.length; i++) {
         if (instruments[i] >= song.channels[channelIndex].instruments.length) {
             instruments.splice(i, 1);
             i--;
@@ -43,7 +43,7 @@ export function unionOfUsedNotes(pattern: Pattern, flags: boolean[]): void {
     for (const note of pattern.notes) {
         for (const pitch of note.pitches) {
             for (const pin of note.pins) {
-                const key: number = (pitch + pin.interval) % 12;
+                const key = (pitch + pin.interval) % 12;
                 if (!flags[key]) {
                     flags[key] = true;
                 }
@@ -56,16 +56,16 @@ export function generateScaleMap(oldScaleFlags: ReadonlyArray<boolean>, newScale
     const newScaleFlags: ReadonlyArray<boolean> = newScaleValue == Config.scales["dictionary"]["Custom"].index ? customScaleFlags : Config.scales[newScaleValue].flags;
     const oldScale: number[] = [];
     const newScale: number[] = [];
-    for (let i: number = 0; i < 12; i++) {
+    for (let i = 0; i < 12; i++) {
         if (oldScaleFlags[i]) oldScale.push(i);
         if (newScaleFlags[i]) newScale.push(i);
     }
-    const largerToSmaller: boolean = oldScale.length > newScale.length;
+    const largerToSmaller = oldScale.length > newScale.length;
     const smallerScale: number[] = largerToSmaller ? newScale : oldScale;
     const largerScale: number[] = largerToSmaller ? oldScale : newScale;
 
     const roles: string[] = ["root", "second", "second", "third", "third", "fourth", "tritone", "fifth", "sixth", "sixth", "seventh", "seventh", "root"];
-    let bestScore: number = Number.MAX_SAFE_INTEGER;
+    let bestScore = Number.MAX_SAFE_INTEGER;
     let bestIndexMap: number[] = [];
     const stack: number[][] = [[0]]; // Root always maps to root.
 
@@ -74,8 +74,8 @@ export function generateScaleMap(oldScaleFlags: ReadonlyArray<boolean>, newScale
 
         if (indexMap.length == smallerScale.length) {
             // Score this mapping.
-            let score: number = 0;
-            for (let i: number = 0; i < indexMap.length; i++) {
+            let score = 0;
+            for (let i = 0; i < indexMap.length; i++) {
                 score += Math.abs(smallerScale[i] - largerScale[indexMap[i]]);
                 if (roles[smallerScale[i]] != roles[largerScale[indexMap[i]]]) {
                     // Penalize changing roles.
@@ -88,16 +88,16 @@ export function generateScaleMap(oldScaleFlags: ReadonlyArray<boolean>, newScale
             }
         } else {
             // Recursively choose next indices for mapping.
-            const lowIndex: number = indexMap[indexMap.length - 1] + 1;
-            const highIndex: number = largerScale.length - smallerScale.length + indexMap.length;
-            for (let i: number = lowIndex; i <= highIndex; i++) {
+            const lowIndex = indexMap[indexMap.length - 1] + 1;
+            const highIndex = largerScale.length - smallerScale.length + indexMap.length;
+            for (let i = lowIndex; i <= highIndex; i++) {
                 stack.push(indexMap.concat(i));
             }
         }
     }
 
     const sparsePitchMap: number[][] = [];
-    for (let i: number = 0; i < bestIndexMap.length; i++) {
+    for (let i = 0; i < bestIndexMap.length; i++) {
         const smallerScalePitch = smallerScale[i];
         const largerScalePitch = largerScale[bestIndexMap[i]];
         sparsePitchMap[i] = largerToSmaller
@@ -109,21 +109,21 @@ export function generateScaleMap(oldScaleFlags: ReadonlyArray<boolean>, newScale
     sparsePitchMap.push([12, 12]);
     newScale.push(12);
 
-    let sparseIndex: number = 0;
+    let sparseIndex = 0;
     const fullPitchMap: number[] = [];
-    for (let i: number = 0; i < 12; i++) {
-        const oldLow: number = sparsePitchMap[sparseIndex][0];
-        const newLow: number = sparsePitchMap[sparseIndex][1];
-        const oldHigh: number = sparsePitchMap[sparseIndex + 1][0];
-        const newHigh: number = sparsePitchMap[sparseIndex + 1][1];
+    for (let i = 0; i < 12; i++) {
+        const oldLow = sparsePitchMap[sparseIndex][0];
+        const newLow = sparsePitchMap[sparseIndex][1];
+        const oldHigh = sparsePitchMap[sparseIndex + 1][0];
+        const newHigh = sparsePitchMap[sparseIndex + 1][1];
         if (i == oldHigh - 1) sparseIndex++;
 
-        const transformedPitch: number = (i - oldLow) * (newHigh - newLow) / (oldHigh - oldLow) + newLow;
+        const transformedPitch = (i - oldLow) * (newHigh - newLow) / (oldHigh - oldLow) + newLow;
 
-        let nearestPitch: number = 0;
-        let nearestPitchDistance: number = Number.MAX_SAFE_INTEGER;
+        let nearestPitch = 0;
+        let nearestPitchDistance = Number.MAX_SAFE_INTEGER;
         for (const newPitch of newScale) {
-            let distance: number = Math.abs(newPitch - transformedPitch);
+            let distance = Math.abs(newPitch - transformedPitch);
             if (roles[newPitch] != roles[i]) {
                 // Again, penalize changing roles.
                 distance += 0.1;
@@ -141,7 +141,7 @@ export function generateScaleMap(oldScaleFlags: ReadonlyArray<boolean>, newScale
 }
 
 function removeRedundantPins(pins: NotePin[]): void {
-    for (let i: number = 1; i < pins.length - 1;) {
+    for (let i = 1; i < pins.length - 1;) {
         if (pins[i - 1].interval == pins[i].interval &&
             pins[i].interval == pins[i + 1].interval &&
             pins[i - 1].size == pins[i].size &&
@@ -156,25 +156,25 @@ function removeRedundantPins(pins: NotePin[]): void {
 function projectNoteIntoBar(oldNote: Note, timeOffset: number, noteStartPart: number, noteEndPart: number, newNotes: Note[]): void {
     // Create a new note, and interpret the pitch bend and size events
     // to determine where we need to insert pins to control interval and volume.
-    const newNote: Note = new Note(-1, noteStartPart, noteEndPart, Config.noteSizeMax, false);
+    const newNote = new Note(-1, noteStartPart, noteEndPart, Config.noteSizeMax, false);
     newNote.pins.length = 0;
     newNote.pitches.length = 0;
-    const newNoteLength: number = noteEndPart - noteStartPart;
+    const newNoteLength = noteEndPart - noteStartPart;
 
     for (const pitch of oldNote.pitches) {
         newNote.pitches.push(pitch);
     }
 
-    for (let pinIndex: number = 0; pinIndex < oldNote.pins.length; pinIndex++) {
-        const pin: NotePin = oldNote.pins[pinIndex];
-        const newPinTime: number = pin.time + timeOffset;
+    for (let pinIndex = 0; pinIndex < oldNote.pins.length; pinIndex++) {
+        const pin = oldNote.pins[pinIndex];
+        const newPinTime = pin.time + timeOffset;
         if (newPinTime < 0) {
             if (pinIndex + 1 >= oldNote.pins.length) throw new Error("Error converting pins in note overflow.");
-            const nextPin: NotePin = oldNote.pins[pinIndex + 1];
-            const nextPinTime: number = nextPin.time + timeOffset;
+            const nextPin = oldNote.pins[pinIndex + 1];
+            const nextPinTime = nextPin.time + timeOffset;
             if (nextPinTime > 0) {
                 // Insert an interpolated pin at the start of the new note.
-                const ratio: number = (-newPinTime) / (nextPinTime - newPinTime);
+                const ratio = (-newPinTime) / (nextPinTime - newPinTime);
                 newNote.pins.push(makeNotePin(Math.round(pin.interval + ratio * (nextPin.interval - pin.interval)), 0, Math.round(pin.size + ratio * (nextPin.size - pin.size))));
 
             }
@@ -182,39 +182,39 @@ function projectNoteIntoBar(oldNote: Note, timeOffset: number, noteStartPart: nu
             newNote.pins.push(makeNotePin(pin.interval, newPinTime, pin.size));
         } else {
             if (pinIndex < 1) throw new Error("Error converting pins in note overflow.");
-            const prevPin: NotePin = oldNote.pins[pinIndex - 1];
-            const prevPinTime: number = prevPin.time + timeOffset;
+            const prevPin = oldNote.pins[pinIndex - 1];
+            const prevPinTime = prevPin.time + timeOffset;
             if (prevPinTime < newNoteLength) {
                 // Insert an interpolated pin at the end of the new note.
-                const ratio: number = (newNoteLength - prevPinTime) / (newPinTime - prevPinTime);
+                const ratio = (newNoteLength - prevPinTime) / (newPinTime - prevPinTime);
                 newNote.pins.push(makeNotePin(Math.round(prevPin.interval + ratio * (pin.interval - prevPin.interval)), newNoteLength, Math.round(prevPin.size + ratio * (pin.size - prevPin.size))));
             }
         }
     }
 
     // Fix from Jummbus: Ensure the first pin's interval is zero, adjust pitches and pins to compensate.
-    const offsetInterval: number = newNote.pins[0].interval;
-    for (let pitchIdx: number = 0; pitchIdx < newNote.pitches.length; pitchIdx++) {
+    const offsetInterval = newNote.pins[0].interval;
+    for (let pitchIdx = 0; pitchIdx < newNote.pitches.length; pitchIdx++) {
         newNote.pitches[pitchIdx] += offsetInterval;
     }
-    for (let pinIdx: number = 0; pinIdx < newNote.pins.length; pinIdx++) {
+    for (let pinIdx = 0; pinIdx < newNote.pins.length; pinIdx++) {
         newNote.pins[pinIdx].interval -= offsetInterval;
     }
 
-    let joinedWithPrevNote: boolean = false;
+    let joinedWithPrevNote = false;
     if (newNote.start == 0) {
         newNote.continuesLastPattern = (timeOffset < 0 || oldNote.continuesLastPattern);
     } else {
         newNote.continuesLastPattern = false;
         if (newNotes.length > 0 && oldNote.continuesLastPattern) {
-            const prevNote: Note = newNotes[newNotes.length - 1];
+            const prevNote = newNotes[newNotes.length - 1];
             if (prevNote.end == newNote.start && Synth.adjacentNotesHaveMatchingPitches(prevNote, newNote)) {
                 joinedWithPrevNote = true;
-                const newIntervalOffset: number = prevNote.pins[prevNote.pins.length - 1].interval;
-                const newTimeOffset: number = prevNote.end - prevNote.start;
-                for (let pinIndex: number = 1; pinIndex < newNote.pins.length; pinIndex++) {
-                    const tempPin: NotePin = newNote.pins[pinIndex];
-                    const transformedPin: NotePin = makeNotePin(tempPin.interval + newIntervalOffset, tempPin.time + newTimeOffset, tempPin.size);
+                const newIntervalOffset = prevNote.pins[prevNote.pins.length - 1].interval;
+                const newTimeOffset = prevNote.end - prevNote.start;
+                for (let pinIndex = 1; pinIndex < newNote.pins.length; pinIndex++) {
+                    const tempPin = newNote.pins[pinIndex];
+                    const transformedPin = makeNotePin(tempPin.interval + newIntervalOffset, tempPin.time + newTimeOffset, tempPin.size);
                     prevNote.pins.push(transformedPin);
                     prevNote.end = prevNote.start + transformedPin.time;
                 }
@@ -249,9 +249,9 @@ function sigma(a: number, b: (i: number) => number, c: number): number {
 function randomSineWave(wave: Float32Array): void {
     // Random sine waves refer to stuff similar in shape to sine/curvy waves. Imagine hills.
     let randomRoundWave: Float32Array = new Float32Array(64);
-    let waveLength: number = 64;
+    let waveLength = 64;
     let foundNonZero = false;
-    const roundedWaveType: number = (Math.random() * 2 + 1) | 0;
+    const roundedWaveType = (Math.random() * 2 + 1) | 0;
     if (roundedWaveType == 1 || roundedWaveType == 3) {
         // https://www.desmos.com/calculator/hji1istsat
         // "Phased"
@@ -292,7 +292,7 @@ function randomPulses(wave: Float32Array): void {
     // Random pulses refers to pulse widths. This one chooses two values and alternates between them
     // in a repeated pattern.
     let randomPulse: Float32Array = new Float32Array(64);
-    let waveLength: number = 64;
+    let waveLength = 64;
     let foundNonZero = false;
     // Weird math for building random pulses but this is what we are going with.
     let randomNumber2 = Math.round(Math.random() * 15 + 15);
@@ -322,9 +322,9 @@ function randomChipWave(wave: Float32Array): void {
     // Random chip is meant to mimic chipwaves in how they are made. Picture the shapes
     // of JummBox's chipwaves in the custom chip.
     let randomChip: Float32Array = new Float32Array(64);
-    let waveLength: number = 64;
+    let waveLength = 64;
     let foundNonZero = false;
-    const chipType: number = (Math.random() * 2 + 1) | 0;
+    const chipType = (Math.random() * 2 + 1) | 0;
     if (chipType == 1) {
         // https://www.desmos.com/calculator/udpkkpxqaj
         // "Sawscape"
@@ -365,11 +365,11 @@ function biasedFullyRandom(wave: Float32Array): void {
     // Biased-fully random means that the wave will be completely randomized, but the way it's 
     // randomized will be biased towards a certain point; in this case, that is the center.
     let fullyRandomWave: Float32Array = new Float32Array(64);
-    let waveLength: number = 64;
+    let waveLength = 64;
     let foundNonZero = false;
     // Math for a fully random custom chip but the higher/lower parts 
     // of the waveform (in height) will contain less samples.
-    for (let i: number = 0; i < waveLength; i++) {
+    for (let i = 0; i < waveLength; i++) {
         const v = Math.random() * 2 - 1;
         const bias = 6;
         const biased = v > 0 ? Math.pow(v, bias) : -Math.pow(-v, bias);
@@ -394,9 +394,9 @@ function biasedFullyRandom(wave: Float32Array): void {
 function fullyRandom(wave: Float32Array): void {
     // A completely randomized waveform.
     let fullyRandomWave: Float32Array = new Float32Array(64);
-    let waveLength: number = 64;
+    let waveLength = 64;
     // Randomize whatever is inside of the start-end parameter.
-    for (let i: number = 0; i < waveLength; i++) {
+    for (let i = 0; i < waveLength; i++) {
         fullyRandomWave[i] = clamp(-24, 24 + 1, ((Math.random() * 48) | 0) - 24);
     }
     for (let i = 0; i < waveLength; i++) {
@@ -412,9 +412,9 @@ export class ChangeMoveAndOverflowNotes extends ChangeGroup {
         const noiseChannels: Channel[] = [];
         const modChannels: Channel[] = []
 
-        for (let channelIndex: number = 0; channelIndex < doc.song.getChannelCount(); channelIndex++) {
-            const oldChannel: Channel = doc.song.channels[channelIndex];
-            const newChannel: Channel = new Channel();
+        for (let channelIndex = 0; channelIndex < doc.song.getChannelCount(); channelIndex++) {
+            const oldChannel = doc.song.channels[channelIndex];
+            const newChannel = new Channel();
 
             if (channelIndex < doc.song.pitchChannelCount) {
                 pitchChannels.push(newChannel);
@@ -434,26 +434,26 @@ export class ChangeMoveAndOverflowNotes extends ChangeGroup {
                 newChannel.instruments.push(instrument);
             }
 
-            const oldPartsPerBar: number = Config.partsPerBeat * doc.song.beatsPerBar;
-            const newPartsPerBar: number = Config.partsPerBeat * newBeatsPerBar;
-            let currentBar: number = -1;
+            const oldPartsPerBar = Config.partsPerBeat * doc.song.beatsPerBar;
+            const newPartsPerBar = Config.partsPerBeat * newBeatsPerBar;
+            let currentBar = -1;
             let pattern: Pattern | null = null;
 
-            for (let oldBar: number = 0; oldBar < doc.song.barCount; oldBar++) {
+            for (let oldBar = 0; oldBar < doc.song.barCount; oldBar++) {
                 const oldPattern: Pattern | null = doc.song.getPattern(channelIndex, oldBar);
                 if (oldPattern != null) {
-                    const oldBarStart: number = oldBar * oldPartsPerBar;
+                    const oldBarStart = oldBar * oldPartsPerBar;
                     for (const oldNote of oldPattern.notes) {
 
-                        const absoluteNoteStart: number = oldNote.start + oldBarStart + partsToMove;
-                        const absoluteNoteEnd: number = oldNote.end + oldBarStart + partsToMove;
+                        const absoluteNoteStart = oldNote.start + oldBarStart + partsToMove;
+                        const absoluteNoteEnd = oldNote.end + oldBarStart + partsToMove;
 
-                        const startBar: number = Math.floor(absoluteNoteStart / newPartsPerBar);
-                        const endBar: number = Math.ceil(absoluteNoteEnd / newPartsPerBar);
-                        for (let bar: number = startBar; bar < endBar; bar++) {
-                            const barStartPart: number = bar * newPartsPerBar;
-                            const noteStartPart: number = Math.max(0, absoluteNoteStart - barStartPart);
-                            const noteEndPart: number = Math.min(newPartsPerBar, absoluteNoteEnd - barStartPart);
+                        const startBar = Math.floor(absoluteNoteStart / newPartsPerBar);
+                        const endBar = Math.ceil(absoluteNoteEnd / newPartsPerBar);
+                        for (let bar = startBar; bar < endBar; bar++) {
+                            const barStartPart = bar * newPartsPerBar;
+                            const noteStartPart = Math.max(0, absoluteNoteStart - barStartPart);
+                            const noteEndPart = Math.min(newPartsPerBar, absoluteNoteEnd - barStartPart);
 
                             if (noteStartPart < noteEndPart) {
 
@@ -515,7 +515,7 @@ class ChangePins extends UndoableChange {
     }
 
     protected _finishSetup(continuesLastPattern?: boolean): void {
-        for (let i: number = 0; i < this._newPins.length - 1;) {
+        for (let i = 0; i < this._newPins.length - 1;) {
             if (this._newPins[i].time >= this._newPins[i + 1].time) {
                 this._newPins.splice(i, 1);
             } else {
@@ -525,12 +525,12 @@ class ChangePins extends UndoableChange {
 
         removeRedundantPins(this._newPins);
 
-        const firstInterval: number = this._newPins[0].interval;
-        const firstTime: number = this._newPins[0].time;
-        for (let i: number = 0; i < this._oldPitches.length; i++) {
+        const firstInterval = this._newPins[0].interval;
+        const firstTime = this._newPins[0].time;
+        for (let i = 0; i < this._oldPitches.length; i++) {
             this._newPitches[i] = this._oldPitches[i] + firstInterval;
         }
-        for (let i: number = 0; i < this._newPins.length; i++) {
+        for (let i = 0; i < this._newPins.length; i++) {
             this._newPins[i].interval -= firstInterval;
             this._newPins[i].time -= firstTime;
         }
@@ -570,7 +570,7 @@ class ChangePins extends UndoableChange {
 export class ChangeCustomizeInstrument extends Change {
     constructor(doc: SongDocument) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         if (instrument.preset != instrument.type) {
             instrument.preset = instrument.type;
             doc.notifier.changed();
@@ -583,29 +583,29 @@ export class ChangeCustomWave extends Change {
     constructor(doc: SongDocument, newArray: Float32Array) {
         super();
         const oldArray: Float32Array = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()].customChipWave;
-        var comparisonResult: boolean = true;
-        for (let i: number = 0; i < oldArray.length; i++) {
+        var comparisonResult = true;
+        for (let i = 0; i < oldArray.length; i++) {
             if (oldArray[i] != newArray[i]) {
                 comparisonResult = false;
                 i = oldArray.length;
             }
         }
         if (comparisonResult == false) {
-            let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-            for (let i: number = 0; i < newArray.length; i++) {
+            let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+            for (let i = 0; i < newArray.length; i++) {
                 instrument.customChipWave[i] = newArray[i];
             }
 
-            let sum: number = 0.0;
-            for (let i: number = 0; i < instrument.customChipWave.length; i++) {
+            let sum = 0.0;
+            for (let i = 0; i < instrument.customChipWave.length; i++) {
                 sum += instrument.customChipWave[i];
             }
-            const average: number = sum / instrument.customChipWave.length;
+            const average = sum / instrument.customChipWave.length;
 
             // Perform the integral on the wave. The chipSynth will perform the derivative to get the original wave back but with antialiasing.
-            let cumulative: number = 0;
-            let wavePrev: number = 0;
-            for (let i: number = 0; i < instrument.customChipWave.length; i++) {
+            let cumulative = 0;
+            let wavePrev = 0;
+            for (let i = 0; i < instrument.customChipWave.length; i++) {
                 cumulative += wavePrev;
                 wavePrev = instrument.customChipWave[i] - average;
                 instrument.customChipWaveIntegral[i] = cumulative;
@@ -624,17 +624,17 @@ export class ChangeCustomAlgorythmorFeedback extends Change {
         super();
         if (mode == "algorithm") {
             const oldArray: number[][] = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()].customAlgorithm.modulatedBy;
-            const oldCarriercount: number = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()].customAlgorithm.carrierCount;
-            var comparisonResult: boolean = true;
+            const oldCarriercount = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()].customAlgorithm.carrierCount;
+            var comparisonResult = true;
             if (carry != oldCarriercount) {
                 comparisonResult = false;
             } else {
-                for (let i: number = 0; i < oldArray.length; i++) {
+                for (let i = 0; i < oldArray.length; i++) {
                     if (oldArray[i].length != newArray[i].length) {
                         comparisonResult = false;
                         break;
                     } else {
-                        for (let j: number = 0; j < oldArray[i].length; j++) {
+                        for (let j = 0; j < oldArray[i].length; j++) {
                             if (oldArray[i][j] != newArray[i][j]) {
                                 comparisonResult = false;
                                 break;
@@ -644,7 +644,7 @@ export class ChangeCustomAlgorythmorFeedback extends Change {
                 }
             }
             if (comparisonResult == false) {
-                let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+                let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
 
                 instrument.customAlgorithm.set(carry, newArray);
 
@@ -654,13 +654,13 @@ export class ChangeCustomAlgorythmorFeedback extends Change {
             }
         } else if (mode == "feedback") {
             const oldArray: number[][] = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()].customFeedbackType.indices;
-            var comparisonResult: boolean = true;
-            for (let i: number = 0; i < oldArray.length; i++) {
+            var comparisonResult = true;
+            for (let i = 0; i < oldArray.length; i++) {
                 if (oldArray[i].length != newArray[i].length) {
                     comparisonResult = false;
                     break;
                 } else {
-                    for (let j: number = 0; j < oldArray[i].length; j++) {
+                    for (let j = 0; j < oldArray[i].length; j++) {
                         if (oldArray[i][j] != newArray[i][j]) {
                             comparisonResult = false;
                             break;
@@ -670,7 +670,7 @@ export class ChangeCustomAlgorythmorFeedback extends Change {
             }
 
             if (!comparisonResult) {
-                let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+                let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
 
                 instrument.customFeedbackType.set(newArray);
 
@@ -685,8 +685,8 @@ export class ChangeCustomAlgorythmorFeedback extends Change {
 export class ChangePreset extends Change {
     constructor(doc: SongDocument, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: number = instrument.preset;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.preset;
         if (oldValue != newValue) {
             const preset1: Preset | null = EditorConfig.instrumentToPreset(newValue);
             const preset: Preset | null = preset1 ?? EditorConfig.valueToPreset(newValue);
@@ -698,8 +698,8 @@ export class ChangePreset extends Change {
                     }
                     instrument.clearInvalidEnvelopeTargets();
                 } else if (preset.settings != undefined) {
-                    const tempVolume: number = instrument.volume;
-                    //const usesPanning: boolean = effectsIncludePanning(instrument.effects);
+                    const tempVolume = instrument.volume;
+                    //const usesPanning = effectsIncludePanning(instrument.effects);
                     instrument.fromJsonObject(preset.settings, doc.song.getChannelIsNoise(doc.channel), doc.song.getChannelIsMod(doc.channel), doc.song.rhythm == 0 || doc.song.rhythm == 2, doc.song.rhythm >= 2);
                     instrument.volume = tempVolume;
                     //}
@@ -721,11 +721,11 @@ export class ChangeRandomGeneratedInstrument extends Change {
             readonly weight: number;
         }
         function selectWeightedRandom<T>(entries: ReadonlyArray<ItemWeight<T>>): T {
-            let total: number = 0;
+            let total = 0;
             for (const entry of entries) {
                 total += entry.weight;
             }
-            let random: number = Math.random() * total;
+            let random = Math.random() * total;
             for (const entry of entries) {
                 random -= entry.weight;
                 if (random <= 0.0) return entry.item;
@@ -734,7 +734,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
         }
         function selectCurvedDistribution(min: number, max: number, peak: number, width: number): number {
             const entries: Array<ItemWeight<number>> = [];
-            for (let i: number = min; i <= max; i++) {
+            for (let i = min; i <= max; i++) {
                 entries.push({ item: i, weight: 1.0 / (Math.pow((i - peak) / width, 2.0) + 1.0) });
             }
             return selectWeightedRandom(entries);
@@ -755,7 +755,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
             const usedFreqs: number[] = [];
             for (const potentialPoint of potentialPoints) {
                 if (Math.random() > potentialPoint.chance) continue;
-                const point: FilterControlPoint = new FilterControlPoint();
+                const point = new FilterControlPoint();
                 point.type = potentialPoint.type;
                 point.freq = selectCurvedDistribution(potentialPoint.minFreq, potentialPoint.maxFreq, FilterControlPoint.getRoundedSettingValueFromHz(potentialPoint.centerHz), 1.0 / Config.filterFreqStep);
                 point.gain = selectCurvedDistribution(0, Config.filterGainRange - 1, Config.filterGainCenter + potentialPoint.centerGain, 2.0 / Config.filterGainStep);
@@ -767,14 +767,14 @@ export class ChangeRandomGeneratedInstrument extends Change {
             }
         }
 
-        const isNoise: boolean = doc.song.getChannelIsNoise(doc.channel);
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const isNoise = doc.song.getChannelIsNoise(doc.channel);
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         instrument.effects = [];
         instrument.aliases = false;
         instrument.envelopeCount = 0;
 
-        const midFreq: number = FilterControlPoint.getRoundedSettingValueFromHz(700.0);
-        const maxFreq: number = Config.filterFreqRange - 1;
+        const midFreq = FilterControlPoint.getRoundedSettingValueFromHz(700.0);
+        const maxFreq = Config.filterFreqRange - 1;
         applyFilterPoints(instrument.noteFilter, [
             new PotentialFilterPoint(0.8, FilterType.lowPass, midFreq, maxFreq, 4000.0, -1),
             new PotentialFilterPoint(0.4, FilterType.highPass, 0, midFreq - 1, 250.0, -1),
@@ -785,7 +785,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
         ]);
 
         if (isNoise) {
-            const type: InstrumentType = usesCurrentInstrumentType ? instrument.type :
+            const type = usesCurrentInstrumentType ? instrument.type :
             selectWeightedRandom([
                 { item: InstrumentType.noise, weight: 3 },
                 { item: InstrumentType.spectrum, weight: 3 },
@@ -841,7 +841,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 ])].index;
             }
             if (Math.random() < 0.8) {
-                let newEffect: Effect = instrument.addEffect(EffectType.eqFilter);
+                let newEffect = instrument.addEffect(EffectType.eqFilter);
                 applyFilterPoints(newEffect.eqFilter, [
                     new PotentialFilterPoint(1.0, FilterType.lowPass, midFreq, maxFreq, 8000.0, -1),
                 ]);
@@ -860,26 +860,26 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 30, 30)]);
             }
             if (Math.random() < 0.1) {
-                let newEffect: Effect = instrument.addEffect(EffectType.distortion);
+                let newEffect = instrument.addEffect(EffectType.distortion);
                 newEffect.distortion = selectCurvedDistribution(1, Config.distortionRange - 1, Config.distortionRange - 1, 2);
             }
             if (Math.random() < 0.1) {
-                let newEffect: Effect = instrument.addEffect(EffectType.bitcrusher);
+                let newEffect = instrument.addEffect(EffectType.bitcrusher);
                 newEffect.bitcrusherFreq = selectCurvedDistribution(0, Config.bitcrusherFreqRange - 1, Config.bitcrusherFreqRange >> 1, 2);
                 newEffect.bitcrusherQuantization = selectCurvedDistribution(0, Config.bitcrusherQuantizationRange - 1, Config.bitcrusherQuantizationRange >> 1, 2);
             }
             if (Math.random() < 0.1) {
-                let newEffect: Effect = instrument.addEffect(EffectType.chorus);
+                let newEffect = instrument.addEffect(EffectType.chorus);
                 newEffect.chorus = selectCurvedDistribution(1, Config.chorusRange - 1, Config.chorusRange - 1, 1);
             }
             if (Math.random() < 0.1) {
-                let newEffect: Effect = instrument.addEffect(EffectType.echo);
+                let newEffect = instrument.addEffect(EffectType.echo);
                 newEffect.echoSustain = selectCurvedDistribution(0, Config.echoSustainRange - 1, Config.echoSustainRange >> 1, 2);
                 newEffect.echoDelay = selectCurvedDistribution(0, Config.echoDelayRange - 1, Config.echoDelayRange >> 1, 2);
                 newEffect.echoDelay = selectCurvedDistribution(0, Config.panMax - 1, Config.panMax >> 1, 2);
             }
             if (Math.random() < 0.5) {
-                let newEffect: Effect = instrument.addEffect(EffectType.reverb);
+                let newEffect = instrument.addEffect(EffectType.reverb);
                 newEffect.reverb = selectCurvedDistribution(1, Config.reverbRange - 1, 1, 1);
             }
 
@@ -928,11 +928,11 @@ export class ChangeRandomGeneratedInstrument extends Change {
             }
 
             function normalize(harmonics: number[]): void {
-                let max: number = 0;
+                let max = 0;
                 for (const value of harmonics) {
                     if (value > max) max = value;
                 }
-                for (let i: number = 0; i < harmonics.length; i++) {
+                for (let i = 0; i < harmonics.length; i++) {
                     harmonics[i] = Config.harmonicsMax * harmonics[i] / max;
                 }
             }
@@ -944,13 +944,13 @@ export class ChangeRandomGeneratedInstrument extends Change {
                     const spectrumGenerators: Function[] = [
                         (): number[] => {
                             const spectrum: number[] = [];
-                            for (let i: number = 0; i < Config.spectrumControlPoints; i++) {
+                            for (let i = 0; i < Config.spectrumControlPoints; i++) {
                                 spectrum[i] = (Math.random() < 0.5) ? Math.random() : 0.0;
                             }
                             return spectrum;
                         },
                         (): number[] => {
-                            let current: number = 1.0;
+                            let current = 1.0;
                             const spectrum: number[] = [current];
                             for (let i = 1; i < Config.spectrumControlPoints; i++) {
                                 current *= Math.pow(2, Math.random() - 0.52);
@@ -959,7 +959,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                             return spectrum;
                         },
                         (): number[] => {
-                            let current: number = 1.0;
+                            let current = 1.0;
                             const spectrum: number[] = [current];
                             for (let i = 1; i < Config.spectrumControlPoints; i++) {
                                 current *= Math.pow(2, Math.random() - 0.52);
@@ -971,17 +971,17 @@ export class ChangeRandomGeneratedInstrument extends Change {
                     const generator = spectrumGenerators[(Math.random() * spectrumGenerators.length) | 0];
                     const spectrum: number[] = generator();
                     normalize(spectrum);
-                    for (let i: number = 0; i < Config.spectrumControlPoints; i++) {
+                    for (let i = 0; i < Config.spectrumControlPoints; i++) {
                         instrument.spectrumWave.spectrum[i] = Math.round(spectrum[i]);
                     }
                     instrument.spectrumWave.markCustomWaveDirty();
                 } break;
                 case InstrumentType.drumset: {
-                    for (let i: number = 0; i < Config.drumCount; i++) {
+                    for (let i = 0; i < Config.drumCount; i++) {
                         // Might wanna do this Random*Config.____.length thing for all envelope/unison randomization?
                         instrument.drumsetEnvelopes[i] = Math.floor(Math.random() * Config.envelopes.length);
                         const spectrum: number[] = [];
-                        let randomFactor: number = Math.floor(Math.random() * 3)
+                        let randomFactor = Math.floor(Math.random() * 3)
                         for (let j = 0; j < Config.spectrumControlPoints; j++) {
                             if (randomFactor == 0 || randomFactor == 3) spectrum[j] = Math.pow(Math.random(), 3) * 0.25;
                             else if (randomFactor == 1) spectrum[j] = Math.pow(Math.random(), ((i / 8) + 1));
@@ -989,7 +989,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                             else spectrum[j] = Math.pow(Math.random(), 3) * 0.25;
                         }
                         normalize(spectrum);
-                        for (let j: number = 0; j < Config.spectrumControlPoints; j++) {
+                        for (let j = 0; j < Config.spectrumControlPoints; j++) {
                             instrument.drumsetSpectrumWaves[i].spectrum[j] = Math.round(spectrum[j]);
                         }
                         instrument.drumsetSpectrumWaves[i].markCustomWaveDirty();
@@ -998,7 +998,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 default: throw new Error("Unhandled noise instrument type in random generator.");
             }
         } else {
-            const type: InstrumentType = usesCurrentInstrumentType ? instrument.type :
+            const type = usesCurrentInstrumentType ? instrument.type :
             selectWeightedRandom([
                 { item: InstrumentType.chip, weight: 2 },
                 // { item: InstrumentType.noise, weight: 1 },
@@ -1103,7 +1103,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 ])].index;
             }
             if (Math.random() < 0.1) {
-                let newEffect: Effect = instrument.addEffect(EffectType.distortion);
+                let newEffect = instrument.addEffect(EffectType.distortion);
                 newEffect.distortion = selectCurvedDistribution(1, Config.distortionRange - 1, Config.distortionRange - 1, 2);
                 if (Math.random() < 0.3) {
                     let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1131,14 +1131,14 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 }
             }
             if (instrument.effectsIncludeType(EffectType.distortion) && Math.random() < 0.8) {
-                let newEffect: Effect = instrument.addEffect(EffectType.eqFilter);
+                let newEffect = instrument.addEffect(EffectType.eqFilter);
                 applyFilterPoints(newEffect.eqFilter, [
                     new PotentialFilterPoint(1.0, FilterType.lowPass, midFreq, maxFreq, 2000.0, -1),
                     new PotentialFilterPoint(0.9, FilterType.highPass, 0, midFreq - 1, 500.0, -1),
                     new PotentialFilterPoint(0.4, FilterType.peak, 0, maxFreq, 1400.0, 0),
                 ]);
             } else if (Math.random() < 0.5) {
-                let newEffect: Effect = instrument.addEffect(EffectType.eqFilter);
+                let newEffect = instrument.addEffect(EffectType.eqFilter);
                 applyFilterPoints(newEffect.eqFilter, [
                     new PotentialFilterPoint(1.0, FilterType.lowPass, midFreq, maxFreq, 8000.0, -1),
                 ]);
@@ -1165,7 +1165,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                     selectWeightedRandom([{ item: LFOEnvelopeTypes.sine, weight: 8 }, { item: LFOEnvelopeTypes.triangle, weight: 4 }, { item: LFOEnvelopeTypes.sawtooth, weight: 2 }, { item: LFOEnvelopeTypes.square, weight: 1}]));
             }
             if (Math.random() < 0.1) {
-                let newEffect: Effect = instrument.addEffect(EffectType.bitcrusher);
+                let newEffect = instrument.addEffect(EffectType.bitcrusher);
                 newEffect.bitcrusherFreq = selectCurvedDistribution(0, Config.bitcrusherFreqRange - 1, 0, 2);
                 newEffect.bitcrusherQuantization = selectCurvedDistribution(0, Config.bitcrusherQuantizationRange - 1, Config.bitcrusherQuantizationRange >> 1, 2);
                 let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1215,7 +1215,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                  }
             }
             if (Math.random() < 0.1) {
-                let newEffect: Effect = instrument.addEffect(EffectType.chorus);
+                let newEffect = instrument.addEffect(EffectType.chorus);
                 newEffect.chorus = selectCurvedDistribution(1, Config.chorusRange - 1, Config.chorusRange - 1, 1);
                 if (Math.random() < 0.1) {
                     let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1243,7 +1243,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 }
             }
             if (Math.random() < 0.1) {
-                let newEffect: Effect = instrument.addEffect(EffectType.echo);
+                let newEffect = instrument.addEffect(EffectType.echo);
                 newEffect.echoSustain = selectCurvedDistribution(0, Config.echoSustainRange - 1, Config.echoSustainRange >> 1, 2);
                 newEffect.echoDelay = selectCurvedDistribution(0, Config.echoDelayRange - 1, Config.echoDelayRange >> 1, 2);
                 if (newEffect.echoSustain != 0 || newEffect.echoDelay != 0) {
@@ -1272,7 +1272,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 }
             }
             if (Math.random() < 0.07) {
-                let newEffect: Effect = instrument.addEffect(EffectType.ringModulation);
+                let newEffect = instrument.addEffect(EffectType.ringModulation);
                 newEffect.ringModulation = selectCurvedDistribution(1, Config.ringModRange - 1, Config.ringModRange / 2, Config.ringModRange / 2);
                 newEffect.ringModulationHz = selectCurvedDistribution(1, Config.ringModHzRange - 1, Config.ringModHzRange / 2, Config.ringModHzRange / 2);
                 if (newEffect.ringModulation != 0 || newEffect.ringModulationHz != 0) {
@@ -1330,7 +1330,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 }
             }
             if (Math.random() < 0.5) {
-                let newEffect: Effect = instrument.addEffect(EffectType.reverb);
+                let newEffect = instrument.addEffect(EffectType.reverb);
                 newEffect.reverb = selectCurvedDistribution(1, Config.reverbRange - 1, 1, 1);
                 if (Math.random() < 0.03) {
                     let envelopeLowerBound = selectCurvedDistribution(0, 20, 8, 5) / 10;
@@ -1358,7 +1358,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                 }
             }
             if (Math.random() < 0.1) {
-                let newEffect: Effect = instrument.addEffect(EffectType.granular);
+                let newEffect = instrument.addEffect(EffectType.granular);
                 newEffect.granular = selectCurvedDistribution(1, Config.granularRange - 1, Config.granularRange / 2, Config.granularRange / 3);
                 newEffect.grainAmounts = selectCurvedDistribution(1, Config.grainAmountsMax - 1, Config.grainAmountsMax-2, 3);
                 newEffect.grainSize = selectCurvedDistribution(Config.grainSizeMin / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep, Config.grainSizeMax / Config.grainSizeStep / 2);
@@ -1485,11 +1485,11 @@ export class ChangeRandomGeneratedInstrument extends Change {
                     selectWeightedRandom([{ item: RandomEnvelopeTypes.time, weight: 8 }, { item: RandomEnvelopeTypes.pitch, weight: 2 }]));
             }
             function normalize(harmonics: number[]): void {
-                let max: number = 0;
+                let max = 0;
                 for (const value of harmonics) {
                     if (value > max) max = value;
                 }
-                for (let i: number = 0; i < harmonics.length; i++) {
+                for (let i = 0; i < harmonics.length; i++) {
                     harmonics[i] = Config.harmonicsMax * harmonics[i] / max;
                 }
             }
@@ -1558,14 +1558,14 @@ export class ChangeRandomGeneratedInstrument extends Change {
                     const harmonicGenerators: Function[] = [
                         (): number[] => {
                             const harmonics: number[] = [];
-                            for (let i: number = 0; i < Config.harmonicsControlPoints; i++) {
+                            for (let i = 0; i < Config.harmonicsControlPoints; i++) {
                                 harmonics[i] = (Math.random() < 0.4) ? Math.random() : 0.0;
                             }
                             harmonics[(Math.random() * 8) | 0] = Math.pow(Math.random(), 0.25);
                             return harmonics;
                         },
                         (): number[] => {
-                            let current: number = 1.0;
+                            let current = 1.0;
                             const harmonics: number[] = [current];
                             for (let i = 1; i < Config.harmonicsControlPoints; i++) {
                                 current *= Math.pow(2, Math.random() - 0.55);
@@ -1574,7 +1574,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                             return harmonics;
                         },
                         (): number[] => {
-                            let current: number = 1.0;
+                            let current = 1.0;
                             const harmonics: number[] = [current];
                             for (let i = 1; i < Config.harmonicsControlPoints; i++) {
                                 current *= Math.pow(2, Math.random() - 0.55);
@@ -1586,15 +1586,15 @@ export class ChangeRandomGeneratedInstrument extends Change {
                     const generator = harmonicGenerators[(Math.random() * harmonicGenerators.length) | 0];
                     const harmonics: number[] = generator();
                     normalize(harmonics);
-                    for (let i: number = 0; i < Config.harmonicsControlPoints; i++) {
+                    for (let i = 0; i < Config.harmonicsControlPoints; i++) {
                         instrument.harmonicsWave.harmonics[i] = Math.round(harmonics[i]);
                     }
                     instrument.harmonicsWave.markCustomWaveDirty();
                 } break;
                 case InstrumentType.spectrum: {
                     const spectrum: number[] = [];
-                    for (let i: number = 0; i < Config.spectrumControlPoints; i++) {
-                        const isHarmonic: boolean = i == 0 || i == 7 || i == 11 || i == 14 || i == 16 || i == 18 || i == 21;
+                    for (let i = 0; i < Config.spectrumControlPoints; i++) {
+                        const isHarmonic = i == 0 || i == 7 || i == 11 || i == 14 || i == 16 || i == 18 || i == 21;
                         if (isHarmonic) {
                             spectrum[i] = Math.pow(Math.random(), 0.25);
                         } else {
@@ -1602,7 +1602,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                         }
                     }
                     normalize(spectrum);
-                    for (let i: number = 0; i < Config.spectrumControlPoints; i++) {
+                    for (let i = 0; i < Config.spectrumControlPoints; i++) {
                         instrument.spectrumWave.spectrum[i] = Math.round(spectrum[i]);
                     }
                     instrument.spectrumWave.markCustomWaveDirty();
@@ -1618,8 +1618,8 @@ export class ChangeRandomGeneratedInstrument extends Change {
                         instrument.feedbackType6Op = (Math.random() * (Config.feedbacks6Op.length - 1) + 1) | 0;
                         instrument.customFeedbackType.fromPreset(instrument.feedbackType6Op);
                     }
-                    const algorithm: Algorithm = type == InstrumentType.fm ? Config.algorithms[instrument.algorithm] : Config.algorithms6Op[instrument.algorithm6Op];
-                    for (let i: number = 0; i < algorithm.carrierCount; i++) {
+                    const algorithm = type == InstrumentType.fm ? Config.algorithms[instrument.algorithm] : Config.algorithms6Op[instrument.algorithm6Op];
+                    for (let i = 0; i < algorithm.carrierCount; i++) {
                         instrument.operators[i].frequency = selectCurvedDistribution(0, Config.operatorFrequencies.length - 1, 0, 3);
                         instrument.operators[i].amplitude = selectCurvedDistribution(0, Config.operatorAmplitudeMax, Config.operatorAmplitudeMax - 1, 2);
                         instrument.operators[i].waveform = Config.operatorWaves.dictionary[selectWeightedRandom([
@@ -1647,7 +1647,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                             ]);
                         }
                     }
-                    for (let i: number = algorithm.carrierCount; i < Config.operatorCount + (type == InstrumentType.fm6op ? 2 : 0); i++) {
+                    for (let i = algorithm.carrierCount; i < Config.operatorCount + (type == InstrumentType.fm6op ? 2 : 0); i++) {
                         instrument.operators[i].frequency = selectCurvedDistribution(3, Config.operatorFrequencies.length - 1, 0, 3);
                         instrument.operators[i].amplitude = (Math.pow(Math.random(), 2) * Config.operatorAmplitudeMax) | 0;
                         if (instrument.envelopeCount < Config.maxEnvelopeCount && Math.random() < 0.4) {
@@ -1759,12 +1759,12 @@ export class ChangeRandomGeneratedInstrument extends Change {
                     ]);
                     algorithmFunction(randomGeneratedArray);
 
-                    let sum: number = 0.0;
-                    for (let i: number = 0; i < randomGeneratedArray.length; i++) sum += randomGeneratedArray[i];
-                    const average: number = sum / randomGeneratedArray.length;
-                    let cumulative: number = 0;
-                    let wavePrev: number = 0;
-                    for (let i: number = 0; i < randomGeneratedArray.length; i++) {
+                    let sum = 0.0;
+                    for (let i = 0; i < randomGeneratedArray.length; i++) sum += randomGeneratedArray[i];
+                    const average = sum / randomGeneratedArray.length;
+                    let cumulative = 0;
+                    let wavePrev = 0;
+                    for (let i = 0; i < randomGeneratedArray.length; i++) {
                         cumulative += wavePrev;
                         wavePrev = randomGeneratedArray[i] - average;
                         randomGeneratedArrayIntegral[i] = cumulative;
@@ -1800,8 +1800,8 @@ export class ChangeRandomGeneratedInstrument extends Change {
 export class ChangeTransition extends Change {
     constructor(doc: SongDocument, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: number = instrument.transition;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.transition;
         if (oldValue != newValue) {
             this._didSomething();
             instrument.transition = newValue;
@@ -1814,7 +1814,7 @@ export class ChangeTransition extends Change {
 export class ChangeToggleEffects extends Change {
     constructor(doc: SongDocument, effectType: number, useInstrument: Instrument | null) {
         super();
-        let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         if (useInstrument != null) instrument = useInstrument;
         instrument.addEffect(effectType);
         // Remove AA when distortion is turned off.
@@ -1826,7 +1826,7 @@ export class ChangeToggleEffects extends Change {
 export class ChangeRemoveEffects extends Change {
     constructor(doc: SongDocument, effectIndex: number, useInstrument: Instrument | null) {
         super();
-        let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         if (useInstrument != null) instrument = useInstrument;
         // Remove AA when distortion is turned off.
         if (instrument.effects[effectIndex]!.type == EffectType.distortion) instrument.aliases = false;
@@ -1841,7 +1841,7 @@ export class ChangeRemoveEffects extends Change {
 export class ChangeReorderEffects extends Change {
     constructor(doc: SongDocument, effectIndex: number, moveUp: boolean, useInstrument: Instrument | null) {
         super();
-        let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         if (useInstrument != null) instrument = useInstrument;
         var temp = instrument.effects[effectIndex];
         if (moveUp && effectIndex - 1 >= 0) {
@@ -1861,12 +1861,12 @@ export class ChangeReorderEffects extends Change {
 export class ChangeToggleMDEffects extends Change {
     constructor(doc: SongDocument, toggleFlag: number, useInstrument: Instrument | null) {
         super();
-        let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         if (useInstrument != null)
             instrument = useInstrument;
-        const oldValue: number = instrument.mdeffects;
-        const wasSelected: boolean = ((oldValue & (1 << toggleFlag)) != 0);
-        const newValue: number = wasSelected ? (oldValue & (~(1 << toggleFlag))) : (oldValue | (1 << toggleFlag));
+        const oldValue = instrument.mdeffects;
+        const wasSelected = ((oldValue & (1 << toggleFlag)) != 0);
+        const newValue = wasSelected ? (oldValue & (~(1 << toggleFlag))) : (oldValue | (1 << toggleFlag));
         instrument.mdeffects = newValue;
         if (wasSelected) instrument.clearInvalidEnvelopeTargets();
         this._didSomething();
@@ -1879,8 +1879,8 @@ export class ChangePatternNumbers extends Change {
         super();
         if (value > doc.song.patternsPerChannel) throw new Error("invalid pattern");
 
-        for (let bar: number = startBar; bar < startBar + width; bar++) {
-            for (let channelIndex: number = startChannel; channelIndex < startChannel + height; channelIndex++) {
+        for (let bar = startBar; bar < startBar + width; bar++) {
+            for (let channelIndex = startChannel; channelIndex < startChannel + height; channelIndex++) {
                 if (doc.song.channels[channelIndex].bars[bar] != value) {
                     doc.song.channels[channelIndex].bars[bar] = value;
                     this._didSomething();
@@ -1924,7 +1924,7 @@ export class ChangeBarCount extends Change {
             }
 
             if (atBeginning) {
-                const diff: number = newValue - doc.song.barCount;
+                const diff = newValue - doc.song.barCount;
                 doc.bar = Math.max(0, doc.bar + diff);
                 if (diff < 0 || doc.barScrollPos > 0) {
                     doc.barScrollPos = Math.max(0, doc.barScrollPos + diff);
@@ -1946,7 +1946,7 @@ export class ChangeInsertBars extends Change {
     constructor(doc: SongDocument, start: number, count: number) {
         super();
 
-        const newLength: number = Math.min(Config.barCountMax, doc.song.barCount + count);
+        const newLength = Math.min(Config.barCountMax, doc.song.barCount + count);
         count = newLength - doc.song.barCount;
         if (count == 0) return;
 
@@ -2024,11 +2024,11 @@ export class ChangeChannelOrder extends Change {
 
         // Update mods for each channel
         selectionMax = Math.max(selectionMax, selectionMin);
-        for (let channelIndex: number = doc.song.pitchChannelCount + doc.song.noiseChannelCount; channelIndex < doc.song.getChannelCount(); channelIndex++) {
-            for (let instrumentIdx: number = 0; instrumentIdx < doc.song.channels[channelIndex].instruments.length; instrumentIdx++) {
-                let instrument: Instrument = doc.song.channels[channelIndex].instruments[instrumentIdx];
-                for (let i: number = 0; i < Config.modCount; i++) {
-                    for (let j: number = 0; j < instrument.modChannels[i].length; j++) {
+        for (let channelIndex = doc.song.pitchChannelCount + doc.song.noiseChannelCount; channelIndex < doc.song.getChannelCount(); channelIndex++) {
+            for (let instrumentIdx = 0; instrumentIdx < doc.song.channels[channelIndex].instruments.length; instrumentIdx++) {
+                let instrument = doc.song.channels[channelIndex].instruments[instrumentIdx];
+                for (let i = 0; i < Config.modCount; i++) {
+                    for (let j = 0; j < instrument.modChannels[i].length; j++) {
                         if (instrument.modChannels[i][j] >= selectionMin && instrument.modChannels[i][j] <= selectionMax) {
                             instrument.modChannels[i][j] += offset;
                         }
@@ -2050,7 +2050,7 @@ export class ChangeCustomScale extends Change {
     constructor(doc: SongDocument, flags: boolean[]) {
         super();
 
-        for (let i: number = 0; i < Config.pitchesPerOctave; i++) {
+        for (let i = 0; i < Config.pitchesPerOctave; i++) {
             doc.song.scaleCustom[i] = flags[i];
         }
 
@@ -2066,7 +2066,7 @@ export class ChangeChannelCount extends Change {
             const newChannels: Channel[] = [];
 
             function changeGroup(newCount: number, oldCount: number, newStart: number, oldStart: number, octave: number, isNoise: boolean, isMod: boolean): void {
-                for (let i: number = 0; i < newCount; i++) {
+                for (let i = 0; i < newCount; i++) {
                     const channelIndex = i + newStart;
                     const oldChannel = i + oldStart;
                     if (i < oldCount) {
@@ -2075,8 +2075,8 @@ export class ChangeChannelCount extends Change {
                         newChannels[channelIndex] = new Channel();
                         newChannels[channelIndex].octave = octave;
                         newChannels[channelIndex].color = channelIndex % 60;
-                        for (let j: number = 0; j < Config.instrumentCountMin; j++) {
-                            const instrument: Instrument = new Instrument(isNoise, isMod);
+                        for (let j = 0; j < Config.instrumentCountMin; j++) {
+                            const instrument = new Instrument(isNoise, isMod);
                             if (!isMod) {
                                 instrument.setTypeAndReset(InstrumentType.chip, isNoise, isMod);
                             } else {
@@ -2084,10 +2084,10 @@ export class ChangeChannelCount extends Change {
                             }
                             newChannels[channelIndex].instruments[j] = instrument;
                         }
-                        for (let j: number = 0; j < doc.song.patternsPerChannel; j++) {
+                        for (let j = 0; j < doc.song.patternsPerChannel; j++) {
                             newChannels[channelIndex].patterns[j] = new Pattern();
                         }
-                        for (let j: number = 0; j < doc.song.barCount; j++) {
+                        for (let j = 0; j < doc.song.barCount; j++) {
                             newChannels[channelIndex].bars[j] = 0;
                         }
                     }
@@ -2098,12 +2098,12 @@ export class ChangeChannelCount extends Change {
             changeGroup(newNoiseChannelCount, doc.song.noiseChannelCount, newPitchChannelCount, doc.song.pitchChannelCount, 0, true, false);
             changeGroup(newModChannelCount, doc.song.modChannelCount, newNoiseChannelCount + newPitchChannelCount, doc.song.pitchChannelCount + doc.song.noiseChannelCount, 0, false, true);
 
-            let oldPitchCount: number = doc.song.pitchChannelCount;
+            let oldPitchCount = doc.song.pitchChannelCount;
             doc.song.pitchChannelCount = newPitchChannelCount;
             doc.song.noiseChannelCount = newNoiseChannelCount;
             doc.song.modChannelCount = newModChannelCount;
 
-            for (let channelIndex: number = 0; channelIndex < doc.song.getChannelCount(); channelIndex++) {
+            for (let channelIndex = 0; channelIndex < doc.song.getChannelCount(); channelIndex++) {
                 doc.song.channels[channelIndex] = newChannels[channelIndex];
             }
             doc.song.channels.length = doc.song.getChannelCount();
@@ -2111,13 +2111,13 @@ export class ChangeChannelCount extends Change {
             doc.channel = Math.min(doc.channel, newPitchChannelCount + newNoiseChannelCount + newModChannelCount - 1);
 
             // Determine if any mod instruments now refer to an invalid channel. Unset them if so
-            for (let channelIndex: number = doc.song.pitchChannelCount + doc.song.noiseChannelCount; channelIndex < doc.song.getChannelCount(); channelIndex++) {
-                for (let instrumentIdx: number = 0; instrumentIdx < doc.song.channels[channelIndex].instruments.length; instrumentIdx++) {
-                    let instrument: Instrument = doc.song.channels[channelIndex].instruments[instrumentIdx];
-                    for (let mod: number = 0; mod < Config.modCount; mod++) {
-                        for (let i: number = 0; i < instrument.modChannels[mod].length; i++) {
+            for (let channelIndex = doc.song.pitchChannelCount + doc.song.noiseChannelCount; channelIndex < doc.song.getChannelCount(); channelIndex++) {
+                for (let instrumentIdx = 0; instrumentIdx < doc.song.channels[channelIndex].instruments.length; instrumentIdx++) {
+                    let instrument = doc.song.channels[channelIndex].instruments[instrumentIdx];
+                    for (let mod = 0; mod < Config.modCount; mod++) {
+                        for (let i = 0; i < instrument.modChannels[mod].length; i++) {
 
-                            let modChannel: number = instrument.modChannels[mod][i];
+                            let modChannel = instrument.modChannels[mod][i];
 
                             // Boundary checking
                             if (instrument.modChannels[mod].length == 1 && ((modChannel >= doc.song.pitchChannelCount && modChannel < oldPitchCount) || modChannel >= doc.song.pitchChannelCount + doc.song.noiseChannelCount)) {
@@ -2146,12 +2146,12 @@ export class ChangeChannelCount extends Change {
 export class ChangeAddChannel extends ChangeGroup {
     constructor(doc: SongDocument, index: number, isNoise: boolean, isMod: boolean) {
         super();
-        const newPitchChannelCount: number = doc.song.pitchChannelCount + (isNoise || isMod ? 0 : 1);
-        const newNoiseChannelCount: number = doc.song.noiseChannelCount + (!isNoise || isMod ? 0 : 1);
-        const newModChannelCount: number = doc.song.modChannelCount + (isNoise || !isMod ? 0 : 1);
+        const newPitchChannelCount = doc.song.pitchChannelCount + (isNoise || isMod ? 0 : 1);
+        const newNoiseChannelCount = doc.song.noiseChannelCount + (!isNoise || isMod ? 0 : 1);
+        const newModChannelCount = doc.song.modChannelCount + (isNoise || !isMod ? 0 : 1);
 
         if (newPitchChannelCount <= Config.pitchChannelCountMax && newNoiseChannelCount <= Config.noiseChannelCountMax && newModChannelCount <= Config.modChannelCountMax) {
-            const addedChannelIndex: number = isMod ? doc.song.pitchChannelCount + doc.song.noiseChannelCount + doc.song.modChannelCount : (isNoise ? doc.song.pitchChannelCount + doc.song.noiseChannelCount : doc.song.pitchChannelCount);
+            const addedChannelIndex = isMod ? doc.song.pitchChannelCount + doc.song.noiseChannelCount + doc.song.modChannelCount : (isNoise ? doc.song.pitchChannelCount + doc.song.noiseChannelCount : doc.song.pitchChannelCount);
             this.append(new ChangeChannelCount(doc, newPitchChannelCount, newNoiseChannelCount, newModChannelCount));
             if (addedChannelIndex - 1 >= index) {
                 this.append(new ChangeChannelOrder(doc, index, addedChannelIndex - 1, 1));
@@ -2167,14 +2167,14 @@ export class ChangeRemoveChannel extends ChangeGroup {
     constructor(doc: SongDocument, minIndex: number, maxIndex: number) {
         super();
 
-        const oldMax: number = maxIndex;
+        const oldMax = maxIndex;
 
         // Update modulators - if a higher index was removed, shift down
-        for (let modChannel: number = doc.song.pitchChannelCount + doc.song.noiseChannelCount; modChannel < doc.song.channels.length; modChannel++) {
-            for (let instrumentIndex: number = 0; instrumentIndex < doc.song.channels[modChannel].instruments.length; instrumentIndex++) {
-                const modInstrument: Instrument = doc.song.channels[modChannel].instruments[instrumentIndex];
-                for (let mod: number = 0; mod < Config.modCount; mod++) {
-                    for (let channelIndex: number = 0; channelIndex < modInstrument.modChannels[mod].length; channelIndex++) {
+        for (let modChannel = doc.song.pitchChannelCount + doc.song.noiseChannelCount; modChannel < doc.song.channels.length; modChannel++) {
+            for (let instrumentIndex = 0; instrumentIndex < doc.song.channels[modChannel].instruments.length; instrumentIndex++) {
+                const modInstrument = doc.song.channels[modChannel].instruments[instrumentIndex];
+                for (let mod = 0; mod < Config.modCount; mod++) {
+                    for (let channelIndex = 0; channelIndex < modInstrument.modChannels[mod].length; channelIndex++) {
                         if (modInstrument.modChannels[mod][channelIndex] >= minIndex && modInstrument.modChannels[mod][channelIndex] <= oldMax) {
                             this.append(new ChangeReplaceModChannel(doc, mod, channelIndex, modInstrument));
                         }
@@ -2187,8 +2187,8 @@ export class ChangeRemoveChannel extends ChangeGroup {
         }
 
         while (maxIndex >= minIndex) {
-            const isNoise: boolean = doc.song.getChannelIsNoise(maxIndex);
-            const isMod: boolean = doc.song.getChannelIsMod(maxIndex);
+            const isNoise = doc.song.getChannelIsNoise(maxIndex);
+            const isMod = doc.song.getChannelIsMod(maxIndex);
             doc.song.channels.splice(maxIndex, 1);
             if (isNoise) {
                 doc.song.noiseChannelCount--;
@@ -2218,10 +2218,10 @@ export class ChangeRemoveChannel extends ChangeGroup {
 }
 
 export class ChangeChannelBar extends Change {
-    constructor(doc: SongDocument, newChannel: number, newBar: number, silently: boolean = false) {
+    constructor(doc: SongDocument, newChannel: number, newBar: number, silently = false) {
         super();
-        const oldChannel: number = doc.channel;
-        const oldBar: number = doc.bar;
+        const oldChannel = doc.channel;
+        const oldBar = doc.bar;
         doc.channel = newChannel;
         doc.bar = newBar;
         if (!silently) {
@@ -2243,8 +2243,8 @@ export class ChangeChannelBar extends Change {
 export class ChangeUnison extends Change {
     constructor(doc: SongDocument, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: number = instrument.unison;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.unison;
         if (oldValue != newValue) {
             instrument.unison = newValue;
             instrument.unisonVoices = Config.unisons[instrument.unison].voices;
@@ -2262,8 +2262,8 @@ export class ChangeUnison extends Change {
 export class ChangeUnisonVoices extends Change {
     constructor(doc: SongDocument, oldValue: number, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        let prevUnison: number = instrument.unison;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let prevUnison = instrument.unison;
         if (oldValue != newValue || prevUnison != Config.unisons.length) {
             instrument.unisonVoices = newValue;
             instrument.unison = Config.unisons.length; // Custom
@@ -2277,8 +2277,8 @@ export class ChangeUnisonVoices extends Change {
 export class ChangeUnisonSpread extends Change {
     constructor(doc: SongDocument, oldValue: number, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        let prevUnison: number = instrument.unison;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let prevUnison = instrument.unison;
         if (oldValue != newValue || prevUnison != Config.unisons.length) {
             instrument.unisonSpread = newValue;
             instrument.unison = Config.unisons.length; // Custom
@@ -2292,8 +2292,8 @@ export class ChangeUnisonSpread extends Change {
 export class ChangeUnisonOffset extends Change {
     constructor(doc: SongDocument, oldValue: number, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        let prevUnison: number = instrument.unison;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let prevUnison = instrument.unison;
         if (oldValue != newValue || prevUnison != Config.unisons.length) {
             instrument.unisonOffset = newValue;
             instrument.unison = Config.unisons.length; // Custom
@@ -2307,8 +2307,8 @@ export class ChangeUnisonOffset extends Change {
 export class ChangeUnisonExpression extends Change {
     constructor(doc: SongDocument, oldValue: number, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        let prevUnison: number = instrument.unison;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let prevUnison = instrument.unison;
         if (oldValue != newValue || prevUnison != Config.unisons.length) {
             instrument.unisonExpression = newValue;
             instrument.unison = Config.unisons.length; // Custom
@@ -2322,8 +2322,8 @@ export class ChangeUnisonExpression extends Change {
 export class ChangeUnisonSign extends Change {
     constructor(doc: SongDocument, oldValue: number, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        let prevUnison: number = instrument.unison;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let prevUnison = instrument.unison;
         if (oldValue != newValue || prevUnison != Config.unisons.length) {
             instrument.unisonSign = newValue;
             instrument.unison = Config.unisons.length; // Custom
@@ -2337,8 +2337,8 @@ export class ChangeUnisonSign extends Change {
 export class ChangeChord extends Change {
     constructor(doc: SongDocument, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: number = instrument.chord;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.chord;
         if (oldValue != newValue) {
             this._didSomething();
             instrument.chord = newValue;
@@ -2351,8 +2351,8 @@ export class ChangeChord extends Change {
 export class ChangeVibrato extends Change {
     constructor(doc: SongDocument, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: number = instrument.vibrato;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.vibrato;
         if (oldValue != newValue) {
             instrument.vibrato = newValue;
             instrument.vibratoDepth = Config.vibratos[instrument.vibrato].amplitude;
@@ -2369,8 +2369,8 @@ export class ChangeVibrato extends Change {
 export class ChangeVibratoDepth extends Change {
     constructor(doc: SongDocument, oldValue: number, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        let prevVibrato: number = instrument.vibrato;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let prevVibrato = instrument.vibrato;
         doc.synth.unsetMod(Config.modulators.dictionary["vibrato depth"].index, doc.channel, doc.getCurrentInstrument());
 
         doc.notifier.changed();
@@ -2387,7 +2387,7 @@ export class ChangeVibratoDepth extends Change {
 export class ChangeEnvelopeSpeed extends Change {
     constructor(doc: SongDocument, oldValue: number, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         doc.synth.unsetMod(Config.modulators.dictionary["envelope speed"].index, doc.channel, doc.getCurrentInstrument());
 
         doc.notifier.changed();
@@ -2403,8 +2403,8 @@ export class ChangeEnvelopeSpeed extends Change {
 export class ChangeVibratoSpeed extends Change {
     constructor(doc: SongDocument, oldValue: number, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        let prevVibrato: number = instrument.vibrato;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let prevVibrato = instrument.vibrato;
         doc.synth.unsetMod(Config.modulators.dictionary["vibrato speed"].index, doc.channel, doc.getCurrentInstrument());
 
         doc.notifier.changed();
@@ -2421,8 +2421,8 @@ export class ChangeVibratoSpeed extends Change {
 export class ChangeVibratoDelay extends Change {
     constructor(doc: SongDocument, oldValue: number, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        let prevVibrato: number = instrument.vibrato;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let prevVibrato = instrument.vibrato;
         doc.synth.unsetMod(Config.modulators.dictionary["vibrato delay"].index, doc.channel, doc.getCurrentInstrument());
 
         doc.notifier.changed();
@@ -2439,9 +2439,9 @@ export class ChangeVibratoDelay extends Change {
 export class ChangeVibratoType extends Change {
     constructor(doc: SongDocument, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: number = instrument.vibratoType;
-        let prevVibrato: number = instrument.vibrato;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.vibratoType;
+        let prevVibrato = instrument.vibrato;
 
         doc.notifier.changed();
         if (oldValue != newValue || prevVibrato != Config.vibratos.length) {
@@ -2457,7 +2457,7 @@ export class ChangeVibratoType extends Change {
 export class ChangeArpeggioSpeed extends Change {
     constructor(doc: SongDocument, oldValue: number, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         instrument.arpeggioSpeed = newValue;
         doc.synth.unsetMod(Config.modulators.dictionary["arp speed"].index, doc.channel, doc.getCurrentInstrument());
 
@@ -2472,7 +2472,7 @@ export class ChangeArpeggioSpeed extends Change {
 export class ChangeFastTwoNoteArp extends Change {
     constructor(doc: SongDocument, newValue: boolean) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         const oldValue = instrument.fastTwoNoteArp;
 
         doc.notifier.changed();
@@ -2487,7 +2487,7 @@ export class ChangeFastTwoNoteArp extends Change {
 export class ChangeMonophonicTone extends Change {
     constructor(doc: SongDocument, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         const oldValue = instrument.monoChordTone;
 
         doc.notifier.changed();
@@ -2501,7 +2501,7 @@ export class ChangeMonophonicTone extends Change {
 export class ChangeClicklessTransition extends Change {
     constructor(doc: SongDocument, newValue: boolean) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         const oldValue = instrument.clicklessTransition;
 
         doc.notifier.changed();
@@ -2516,7 +2516,7 @@ export class ChangeClicklessTransition extends Change {
 export class ChangeAliasing extends Change {
     constructor(doc: SongDocument, effect: Effect, newValue: boolean) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         const oldValue = instrument.aliases;
 
         doc.notifier.changed();
@@ -2551,8 +2551,8 @@ export class ChangeHarmonics extends Change {
 export class ChangeDrumsetEnvelope extends Change {
     constructor(doc: SongDocument, drumIndex: number, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: number = instrument.drumsetEnvelopes[drumIndex];
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.drumsetEnvelopes[drumIndex];
         if (oldValue != newValue) {
             instrument.drumsetEnvelopes[drumIndex] = newValue;
             instrument.preset = instrument.type;
@@ -2585,7 +2585,7 @@ class IndexableChange extends ChangeInstrumentSlider {
         this.index = index;
     }
 
-    private index: number = 0;
+    private index = 0;
 
     getIndex(): number {
         return this.index;
@@ -2773,8 +2773,8 @@ export class ChangeStringSustain extends ChangeInstrumentSlider {
 export class ChangeStringSustainType extends Change {
     constructor(doc: SongDocument, newValue: SustainType) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: SustainType = instrument.stringSustainType;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.stringSustainType;
         if (oldValue != newValue) {
             instrument.stringSustainType = newValue;
             instrument.preset = instrument.type;
@@ -2873,7 +2873,7 @@ export class ChangeSongFilterAddPoint extends UndoableChange {
     private _filterSettings: FilterSettings;
     private _point: FilterControlPoint;
     private _index: number;
-    constructor(doc: SongDocument, filterSettings: FilterSettings, point: FilterControlPoint, index: number, deletion: boolean = false) {
+    constructor(doc: SongDocument, filterSettings: FilterSettings, point: FilterControlPoint, index: number, deletion = false) {
             super(deletion);
             this._doc = doc;
             this._filterSettings = filterSettings;
@@ -2916,7 +2916,7 @@ export class ChangeFilterAddPoint extends UndoableChange {
     private _envelopeIndicesAdd: number[] = [];
     private _envelopeTargetsRemove: number[] = [];
     private _envelopeIndicesRemove: number[] = [];
-    constructor(doc: SongDocument, filterSettings: FilterSettings, point: FilterControlPoint, index: number, isNoteFilter: boolean, effectIndex: number, deletion: boolean = false) {
+    constructor(doc: SongDocument, filterSettings: FilterSettings, point: FilterControlPoint, index: number, isNoteFilter: boolean, effectIndex: number, deletion = false) {
         super(deletion);
         this._doc = doc;
         this._instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
@@ -2927,16 +2927,16 @@ export class ChangeFilterAddPoint extends UndoableChange {
         this._point = point;
         this._index = index;
 
-        for (let envelopeIndex: number = 0; envelopeIndex < this._instrument.envelopeCount; envelopeIndex++) {
-            let target: number = this._instrument.envelopes[envelopeIndex].target;
-            let targetIndex: number = this._instrument.envelopes[envelopeIndex].index;
+        for (let envelopeIndex = 0; envelopeIndex < this._instrument.envelopeCount; envelopeIndex++) {
+            let target = this._instrument.envelopes[envelopeIndex].target;
+            let targetIndex = this._instrument.envelopes[envelopeIndex].index;
             this._envelopeTargetsAdd.push(target);
             this._envelopeIndicesAdd.push(targetIndex);
             if (deletion) {
                 // When deleting a filter control point, find all envelopes that targeted that
                 // point and clear them, and all envelopes that targeted later points and
                 // decrement those to keep them in sync with the new list of points.
-                const automationTarget: AutomationTarget = Config.instrumentAutomationTargets[target];
+                const automationTarget = Config.instrumentAutomationTargets[target];
                 if (automationTarget.isFilter && (automationTarget.effect == EffectType.eqFilter) == isNoteFilter) {
                     if (automationTarget.maxCount == Config.filterMaxPoints) {
                         if (targetIndex == index) {
@@ -2966,7 +2966,7 @@ export class ChangeFilterAddPoint extends UndoableChange {
         this._filterSettings.controlPointCount++;
         this._filterSettings.controlPoints.length = this._filterSettings.controlPointCount;
         this._instrument.preset = this._instrumentNextPreset;
-        for (let envelopeIndex: number = 0; envelopeIndex < this._instrument.envelopeCount; envelopeIndex++) {
+        for (let envelopeIndex = 0; envelopeIndex < this._instrument.envelopeCount; envelopeIndex++) {
             this._instrument.envelopes[envelopeIndex].target = this._envelopeTargetsAdd[envelopeIndex];
             this._instrument.envelopes[envelopeIndex].index = this._envelopeIndicesAdd[envelopeIndex];
         }
@@ -2982,7 +2982,7 @@ export class ChangeFilterAddPoint extends UndoableChange {
         this._filterSettings.controlPointCount--;
         this._filterSettings.controlPoints.length = this._filterSettings.controlPointCount;
         this._instrument.preset = this._instrumentPrevPreset;
-        for (let envelopeIndex: number = 0; envelopeIndex < this._instrument.envelopeCount; envelopeIndex++) {
+        for (let envelopeIndex = 0; envelopeIndex < this._instrument.envelopeCount; envelopeIndex++) {
             this._instrument.envelopes[envelopeIndex].target = this._envelopeTargetsRemove[envelopeIndex];
             this._instrument.envelopes[envelopeIndex].index = this._envelopeIndicesRemove[envelopeIndex];
         }
@@ -3254,8 +3254,8 @@ export class ChangeFadeInOut extends UndoableChange {
 export class ChangeAlgorithm extends Change {
     constructor(doc: SongDocument, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: number = instrument.algorithm;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.algorithm;
         if (oldValue != newValue) {
             instrument.algorithm = newValue;
             instrument.preset = instrument.type;
@@ -3268,8 +3268,8 @@ export class ChangeAlgorithm extends Change {
 export class ChangeFeedbackType extends Change {
     constructor(doc: SongDocument, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: number = instrument.feedbackType;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.feedbackType;
         if (oldValue != newValue) {
             instrument.feedbackType = newValue;
             instrument.preset = instrument.type;
@@ -3283,8 +3283,8 @@ export class ChangeFeedbackType extends Change {
 export class Change6OpAlgorithm extends Change {
     constructor(doc: SongDocument, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: number = instrument.algorithm6Op;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.algorithm6Op;
         if (oldValue != newValue) {
             instrument.algorithm6Op = newValue;
             if (newValue != 0) {
@@ -3300,8 +3300,8 @@ export class Change6OpAlgorithm extends Change {
 export class Change6OpFeedbackType extends Change {
     constructor(doc: SongDocument, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: number = instrument.feedbackType6Op;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.feedbackType6Op;
         if (oldValue != newValue) {
             instrument.feedbackType6Op = newValue;
             if (newValue != 0) {
@@ -3317,8 +3317,8 @@ export class Change6OpFeedbackType extends Change {
 export class ChangeOperatorWaveform extends Change {
     constructor(doc: SongDocument, operatorIndex: number, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: number = instrument.operators[operatorIndex].waveform;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.operators[operatorIndex].waveform;
         if (oldValue != newValue) {
             instrument.operators[operatorIndex].waveform = newValue;
             instrument.preset = instrument.type;
@@ -3331,7 +3331,7 @@ export class ChangeOperatorWaveform extends Change {
 export class ChangeOperatorPulseWidth extends Change {
     constructor(doc: SongDocument, operatorIndex: number, oldValue: number, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         instrument.operators[operatorIndex].pulseWidth = newValue;
         doc.notifier.changed();
         if (oldValue != newValue) {
@@ -3344,8 +3344,8 @@ export class ChangeOperatorPulseWidth extends Change {
 export class ChangeOperatorFrequency extends Change {
     constructor(doc: SongDocument, operatorIndex: number, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: number = instrument.operators[operatorIndex].frequency;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.operators[operatorIndex].frequency;
         if (oldValue != newValue) {
             instrument.operators[operatorIndex].frequency = newValue;
             instrument.preset = instrument.type;
@@ -3356,7 +3356,7 @@ export class ChangeOperatorFrequency extends Change {
 }
 
 export class ChangeOperatorAmplitude extends ChangeInstrumentSlider {
-    operatorIndex: number = 0;
+    operatorIndex = 0;
     constructor(doc: SongDocument, operatorIndex: number, oldValue: number, newValue: number) {
         super(doc);
         this.operatorIndex = operatorIndex;
@@ -3382,12 +3382,12 @@ export class ChangeFeedbackAmplitude extends ChangeInstrumentSlider {
 export class ChangeAddChannelInstrument extends Change {
     constructor(doc: SongDocument) {
         super();
-        const channel: Channel = doc.song.channels[doc.channel];
-        const isNoise: boolean = doc.song.getChannelIsNoise(doc.channel);
-        const isMod: boolean = doc.song.getChannelIsMod(doc.channel);
-        const maxInstruments: number = doc.song.getMaxInstrumentsPerChannel();
+        const channel = doc.song.channels[doc.channel];
+        const isNoise = doc.song.getChannelIsNoise(doc.channel);
+        const isMod = doc.song.getChannelIsMod(doc.channel);
+        const maxInstruments = doc.song.getMaxInstrumentsPerChannel();
         if (channel.instruments.length >= maxInstruments) return;
-        const instrument: Instrument = new Instrument(isNoise, isMod);
+        const instrument = new Instrument(isNoise, isMod);
         instrument.setTypeAndReset(InstrumentType.chip, isNoise, isMod);
         channel.instruments.push(instrument);
         if (!isMod) { // Mod channels lose information when changing set instrument
@@ -3395,13 +3395,13 @@ export class ChangeAddChannelInstrument extends Change {
         }
 
         // Determine if any mod instruments were setting 'all' or 'active'. If so, bump indices since there is now a new instrument in the list.
-        for (let channelIndex: number = doc.song.pitchChannelCount + doc.song.noiseChannelCount; channelIndex < doc.song.getChannelCount(); channelIndex++) {
-            for (let instrumentIndex: number = 0; instrumentIndex < doc.song.channels[channelIndex].instruments.length; instrumentIndex++) {
-                for (let mod: number = 0; mod < Config.modCount; mod++) {
+        for (let channelIndex = doc.song.pitchChannelCount + doc.song.noiseChannelCount; channelIndex < doc.song.getChannelCount(); channelIndex++) {
+            for (let instrumentIndex = 0; instrumentIndex < doc.song.channels[channelIndex].instruments.length; instrumentIndex++) {
+                for (let mod = 0; mod < Config.modCount; mod++) {
 
-                    let instrument: Instrument = doc.song.channels[channelIndex].instruments[instrumentIndex];
-                    let modInstrument: number = instrument.modInstruments[mod][0];
-                    let modChannel: number = instrument.modChannels[mod][0];
+                    let instrument = doc.song.channels[channelIndex].instruments[instrumentIndex];
+                    let modInstrument = instrument.modInstruments[mod][0];
+                    let modChannel = instrument.modChannels[mod][0];
 
                     if (modChannel == doc.channel && modInstrument >= doc.song.channels[modChannel].instruments.length - 1) {
                         //BUGFIX FROM JUMMBOX
@@ -3421,13 +3421,13 @@ export class ChangeAddChannelInstrument extends Change {
 export class ChangeRemoveChannelInstrument extends Change {
     constructor(doc: SongDocument) {
         super();
-        const channel: Channel = doc.song.channels[doc.channel];
+        const channel = doc.song.channels[doc.channel];
         if (channel.instruments.length <= Config.instrumentCountMin) return;
-        const removedIndex: number = doc.viewedInstrument[doc.channel];
+        const removedIndex = doc.viewedInstrument[doc.channel];
         channel.instruments.splice(removedIndex, 1);
         if (doc.song.patternInstruments) {
             for (const pattern of channel.patterns) {
-                for (let i: number = 0; i < pattern.instruments.length; i++) {
+                for (let i = 0; i < pattern.instruments.length; i++) {
                     if (pattern.instruments[i] == removedIndex) {
                         pattern.instruments.splice(i, 1);
                         i--;
@@ -3442,17 +3442,17 @@ export class ChangeRemoveChannelInstrument extends Change {
         }
 
         // Determine if any mod instruments now refer to an invalid instrument number. Unset them if so
-        for (let channelIndex: number = doc.song.pitchChannelCount + doc.song.noiseChannelCount; channelIndex < doc.song.getChannelCount(); channelIndex++) {
-            for (let instrumentIdx: number = 0; instrumentIdx < doc.song.channels[channelIndex].instruments.length; instrumentIdx++) {
-                let instrument: Instrument = doc.song.channels[channelIndex].instruments[instrumentIdx]
-                for (let mod: number = 0; mod < Config.modCount; mod++) {
+        for (let channelIndex = doc.song.pitchChannelCount + doc.song.noiseChannelCount; channelIndex < doc.song.getChannelCount(); channelIndex++) {
+            for (let instrumentIdx = 0; instrumentIdx < doc.song.channels[channelIndex].instruments.length; instrumentIdx++) {
+                let instrument = doc.song.channels[channelIndex].instruments[instrumentIdx]
+                for (let mod = 0; mod < Config.modCount; mod++) {
                     let modInstruments: number[] = instrument.modInstruments[mod];
                     let modChannels: number[] = instrument.modChannels[mod];
                     // Boundary checking - check if setting was 'all' or 'active' previously
                     if (modChannels[0] == doc.channel && modInstruments[0] > removedIndex) {
                         instrument.modInstruments[mod][0]--;
                     }
-                    for (let i: number = 0; i < instrument.modChannels[mod].length; i++) {
+                    for (let i = 0; i < instrument.modChannels[mod].length; i++) {
                         if (modChannels[i] == doc.channel && modInstruments[i] == removedIndex) {
                             // Boundary checking - check if setting was set to the last instrument before splice
                             instrument.modInstruments[mod][i] = 0;
@@ -3484,22 +3484,22 @@ export class ChangeViewInstrument extends Change {
 export class ChangeInstrumentsFlags extends Change {
     constructor(doc: SongDocument, newLayeredInstruments: boolean, newPatternInstruments: boolean) {
         super();
-        const oldLayeredInstruments: boolean = doc.song.layeredInstruments;
-        const oldPatternInstruments: boolean = doc.song.patternInstruments;
+        const oldLayeredInstruments = doc.song.layeredInstruments;
+        const oldPatternInstruments = doc.song.patternInstruments;
         if (oldLayeredInstruments == newLayeredInstruments && oldPatternInstruments == newPatternInstruments) return;
         doc.song.layeredInstruments = newLayeredInstruments;
         doc.song.patternInstruments = newPatternInstruments;
 
-        for (let channelIndex: number = 0; channelIndex < doc.song.getChannelCount(); channelIndex++) {
-            const channel: Channel = doc.song.channels[channelIndex];
+        for (let channelIndex = 0; channelIndex < doc.song.getChannelCount(); channelIndex++) {
+            const channel = doc.song.channels[channelIndex];
             if (channel.instruments.length > doc.song.getMaxInstrumentsPerChannel()) {
                 channel.instruments.length = doc.song.getMaxInstrumentsPerChannel();
             }
-            for (let j: number = 0; j < doc.song.patternsPerChannel; j++) {
-                const pattern: Pattern = channel.patterns[j];
+            for (let j = 0; j < doc.song.patternsPerChannel; j++) {
+                const pattern = channel.patterns[j];
                 if (!oldPatternInstruments && newPatternInstruments) {
                     // patternInstruments was enabled, set up pattern instruments as appropriate.
-                    for (let i: number = 0; i < channel.instruments.length; i++) {
+                    for (let i = 0; i < channel.instruments.length; i++) {
                         pattern.instruments[i] = i;
                     }
                     pattern.instruments.length = channel.instruments.length;
@@ -3544,7 +3544,7 @@ export class ChangePitchAdded extends UndoableChange {
     private _note: Note;
     private _pitch: number;
     private _index: number;
-    constructor(doc: SongDocument, note: Note, pitch: number, index: number, deletion: boolean = false) {
+    constructor(doc: SongDocument, note: Note, pitch: number, index: number, deletion = false) {
         super(deletion);
         this._doc = doc;
         this._note = note;
@@ -3594,9 +3594,9 @@ export class ChangePaste extends ChangeGroup {
         this.append(new ChangeNoteTruncate(doc, pattern, selectionStart, selectionEnd, null, true));
 
         // Mods don't follow this sequence, so skipping for now.
-        let noteInsertionIndex: number = 0;
+        let noteInsertionIndex = 0;
         if (!doc.song.getChannelIsMod(doc.channel)) {
-            for (let i: number = 0; i < pattern.notes.length; i++) {
+            for (let i = 0; i < pattern.notes.length; i++) {
                 if (pattern.notes[i].start < selectionStart) {
                     if (pattern.notes[i].end > selectionStart) throw new Error();
 
@@ -3612,10 +3612,10 @@ export class ChangePaste extends ChangeGroup {
 
         while (selectionStart < selectionEnd) {
             for (const noteObject of notes) {
-                const noteStart: number = noteObject["start"] + selectionStart;
-                const noteEnd: number = noteObject["end"] + selectionStart;
+                const noteStart = noteObject["start"] + selectionStart;
+                const noteEnd = noteObject["end"] + selectionStart;
                 if (noteStart >= selectionEnd) break;
-                const note: Note = new Note(noteObject["pitches"][0], noteStart, noteEnd, noteObject["pins"][0]["size"], false);
+                const note = new Note(noteObject["pitches"][0], noteStart, noteEnd, noteObject["pins"][0]["size"], false);
                 note.pitches.length = 0;
                 for (const pitch of noteObject["pitches"]) {
                     note.pitches.push(pitch);
@@ -3655,7 +3655,7 @@ export class ChangePasteInstrument extends ChangeGroup {
 export class ChangeAppendInstrument extends ChangeGroup {
     constructor(doc: SongDocument, channel: Channel, instrument: any) {
         super();
-        let newInstrument: Instrument = new Instrument(instrument["isDrum"], instrument["isMod"])
+        let newInstrument = new Instrument(instrument["isDrum"], instrument["isMod"])
         newInstrument.fromJsonObject(instrument, instrument["isDrum"], instrument["isMod"], false, false);
         channel.instruments.push(newInstrument);
         this._didSomething();
@@ -3679,7 +3679,7 @@ export class ChangeSetPatternInstruments extends Change {
 export class ChangeReplaceModChannel extends Change {
     constructor(doc: SongDocument, mod: number, index: number, useInstrument?: Instrument, offset?: number) {
         super();
-        let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         if (useInstrument != undefined)
             instrument = useInstrument;
 
@@ -3699,17 +3699,17 @@ export class ChangeReplaceModChannel extends Change {
 export class ChangeModChannel extends Change {
     constructor(doc: SongDocument, mod: number, index: number, useInstrument?: Instrument) {
         super();
-        let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         if (useInstrument != undefined)
             instrument = useInstrument;
 
-        let tgtIndex: number = 0;
-        let tgtChannel: number = -5;
-        let tgtInstrument: number = -5;
+        let tgtIndex = 0;
+        let tgtChannel = -5;
+        let tgtInstrument = -5;
 
         //turn selection index into channel + instrument NOTE: this only works for the boxes but this function is called in other places
-        for (let i: number = 0; i < doc.song.pitchChannelCount + doc.song.noiseChannelCount; i++) {
-            for (let j: number = 0; j < doc.song.channels[i].instruments.length; j++) {
+        for (let i = 0; i < doc.song.pitchChannelCount + doc.song.noiseChannelCount; i++) {
+            for (let j = 0; j < doc.song.channels[i].instruments.length; j++) {
                 if(index - 2 == tgtIndex) {
                     tgtChannel = i;
                     tgtInstrument = j;
@@ -3721,10 +3721,10 @@ export class ChangeModChannel extends Change {
             if(tgtIndex == -5) break;
         }
 
-        let toggleFlag: boolean = true;
+        let toggleFlag = true;
 
         if (tgtChannel != -5 && tgtInstrument != -5) {
-            for (let i: number = 0; i < instrument.modChannels[mod].length; i++) {
+            for (let i = 0; i < instrument.modChannels[mod].length; i++) {
                 if (instrument.modChannels[mod][i] == tgtChannel && instrument.modInstruments[mod][i] == tgtInstrument) {
                     instrument.modChannels[mod].splice(i, 1);
                     instrument.modInstruments[mod].splice(i, 1);
@@ -3771,7 +3771,7 @@ export class ChangeModInstrument extends Change { //remove this...?
     constructor(doc: SongDocument, mod: number, tgtInstrument: number) {
         super();
 
-        let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
 
         if (instrument.modInstruments[mod][0] != tgtInstrument) {
             instrument.modInstruments[mod][0] = tgtInstrument;
@@ -3786,10 +3786,10 @@ export class ChangeModSetting extends Change {
     constructor(doc: SongDocument, mod: number, text: string) {
         super();
 
-        let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
 
         // Populate all instruments that could be targeted by this mod setting.
-        let tgtChannel: number = instrument.modChannels[mod][0];
+        let tgtChannel = instrument.modChannels[mod][0];
         let usedInstruments: Instrument[] = [];
         if (tgtChannel >= 0) { // Ignore song/none.
             if (instrument.modInstruments[mod][0] == doc.song.channels[tgtChannel].instruments.length) {
@@ -3799,22 +3799,22 @@ export class ChangeModSetting extends Change {
                 // Active - Populate list of only used instruments
                 let tgtPattern: Pattern | null = doc.song.getPattern(tgtChannel, doc.bar);
                 if (tgtPattern != null) {
-                    for (let i: number = 0; i < tgtPattern.instruments.length; i++) {
+                    for (let i = 0; i < tgtPattern.instruments.length; i++) {
                         usedInstruments.push(doc.song.channels[tgtChannel].instruments[tgtPattern.instruments[i]]);
                     }
                 }
             }
             else {
                 // Single instrument used.
-                for (let i: number = 0; i < instrument.modChannels[mod].length; i++) usedInstruments.push(doc.song.channels[i].instruments[instrument.modInstruments[mod][i]]);
+                for (let i = 0; i < instrument.modChannels[mod].length; i++) usedInstruments.push(doc.song.channels[i].instruments[instrument.modInstruments[mod][i]]);
             }
         }
 
         // Check if a new effect is being added - if so add the proper associated effect to the instrument(s), and truncate "+ " from start of text.
         if (text.startsWith("+ ")) {
             text = text.substr(2);
-            for (let i: number = 0; i < usedInstruments.length; i++) {
-                const tgtInstrument: Instrument = usedInstruments[i];
+            for (let i = 0; i < usedInstruments.length; i++) {
+                const tgtInstrument = usedInstruments[i];
                 if (!(tgtInstrument.effectsIncludeType(Config.modulators.dictionary[text].associatedEffect))) {
                     doc.record(new ChangeToggleEffects(doc, Config.modulators.dictionary[text].associatedEffect, tgtInstrument));
                 }
@@ -3824,23 +3824,23 @@ export class ChangeModSetting extends Change {
             }
         }
 
-        let setting: number = Config.modulators.dictionary[text].index;
+        let setting = Config.modulators.dictionary[text].index;
 
         if (instrument.modulators[mod] != setting) {
 
             instrument.modulators[mod] = setting;
 
             // Go through each pattern where this instrument is set, and clean up any notes that are out of bounds
-            let cap: number = Config.modulators[setting].maxRawVol;
+            let cap = Config.modulators[setting].maxRawVol;
 
-            for (let i: number = 0; i < doc.song.patternsPerChannel; i++) {
-                const pattern: Pattern = doc.song.channels[doc.channel].patterns[i];
+            for (let i = 0; i < doc.song.patternsPerChannel; i++) {
+                const pattern = doc.song.channels[doc.channel].patterns[i];
                 if (pattern.instruments[0] == doc.getCurrentInstrument()) {
-                    for (let j: number = 0; j < pattern.notes.length; j++) {
-                        const note: Note = pattern.notes[j];
+                    for (let j = 0; j < pattern.notes.length; j++) {
+                        const note = pattern.notes[j];
                         if (note.pitches[0] == Config.modCount - mod - 1) {
-                            for (let k: number = 0; k < note.pins.length; k++) {
-                                const pin: NotePin = note.pins[k];
+                            for (let k = 0; k < note.pins.length; k++) {
+                                const pin = note.pins[k];
                                 if (pin.size > cap)
                                     pin.size = cap;
                             }
@@ -3859,23 +3859,23 @@ export class ChangeModFilter extends Change {
     constructor(doc: SongDocument, mod: number, type: number) {
         super();
 
-        let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
 
         if (instrument.modFilterTypes[mod] != type) {
 
             instrument.modFilterTypes[mod] = type;
 
             // Go through each pattern where this instrument is set, and clean up any notes that are out of bounds
-            let cap: number = doc.song.getVolumeCapForSetting(true, instrument.modulators[mod], instrument.modFilterTypes[mod]);
+            let cap = doc.song.getVolumeCapForSetting(true, instrument.modulators[mod], instrument.modFilterTypes[mod]);
 
-            for (let i: number = 0; i < doc.song.patternsPerChannel; i++) {
-                const pattern: Pattern = doc.song.channels[doc.channel].patterns[i];
+            for (let i = 0; i < doc.song.patternsPerChannel; i++) {
+                const pattern = doc.song.channels[doc.channel].patterns[i];
                 if (pattern.instruments[0] == doc.getCurrentInstrument()) {
-                    for (let j: number = 0; j < pattern.notes.length; j++) {
-                        const note: Note = pattern.notes[j];
+                    for (let j = 0; j < pattern.notes.length; j++) {
+                        const note = pattern.notes[j];
                         if (note.pitches[0] == Config.modCount - mod - 1) {
-                            for (let k: number = 0; k < note.pins.length; k++) {
-                                const pin: NotePin = note.pins[k];
+                            for (let k = 0; k < note.pins.length; k++) {
+                                const pin = note.pins[k];
                                 if (pin.size > cap)
                                     pin.size = cap;
                             }
@@ -3894,23 +3894,23 @@ export class ChangeModEnvelope extends Change {
     constructor(doc: SongDocument, mod: number, envelope: number) {
         super();
 
-        let instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
 
         if (instrument.modEnvelopeNumbers[mod] != envelope) {
 
             instrument.modEnvelopeNumbers[mod] = envelope;
 
             // Go through each pattern where this instrument is set, and clean up any notes that are out of bounds
-            let cap: number = doc.song.getVolumeCapForSetting(true, instrument.modulators[mod], instrument.modEnvelopeNumbers[mod]);
+            let cap = doc.song.getVolumeCapForSetting(true, instrument.modulators[mod], instrument.modEnvelopeNumbers[mod]);
 
-            for (let i: number = 0; i < doc.song.patternsPerChannel; i++) {
-                const pattern: Pattern = doc.song.channels[doc.channel].patterns[i];
+            for (let i = 0; i < doc.song.patternsPerChannel; i++) {
+                const pattern = doc.song.channels[doc.channel].patterns[i];
                 if (pattern.instruments[0] == doc.getCurrentInstrument()) {
-                    for (let j: number = 0; j < pattern.notes.length; j++) {
-                        const note: Note = pattern.notes[j];
+                    for (let j = 0; j < pattern.notes.length; j++) {
+                        const note = pattern.notes[j];
                         if (note.pitches[0] == Config.modCount - mod - 1) {
-                            for (let k: number = 0; k < note.pins.length; k++) {
-                                const pin: NotePin = note.pins[k];
+                            for (let k = 0; k < note.pins.length; k++) {
+                                const pin = note.pins[k];
                                 if (pin.size > cap)
                                     pin.size = cap;
                             }
@@ -3929,13 +3929,13 @@ export class ChangePatternsPerChannel extends Change {
     constructor(doc: SongDocument, newValue: number) {
         super();
         if (doc.song.patternsPerChannel != newValue) {
-            for (let i: number = 0; i < doc.song.getChannelCount(); i++) {
+            for (let i = 0; i < doc.song.getChannelCount(); i++) {
                 const channelBars: number[] = doc.song.channels[i].bars;
                 const channelPatterns: Pattern[] = doc.song.channels[i].patterns;
-                for (let j: number = 0; j < channelBars.length; j++) {
+                for (let j = 0; j < channelBars.length; j++) {
                     if (channelBars[j] > newValue) channelBars[j] = 0;
                 }
-                for (let j: number = channelPatterns.length; j < newValue; j++) {
+                for (let j = channelPatterns.length; j < newValue; j++) {
                     channelPatterns[j] = new Pattern();
                 }
                 channelPatterns.length = newValue;
@@ -3960,7 +3960,7 @@ export class ChangeEnsurePatternExists extends UndoableChange {
 
     constructor(doc: SongDocument, channelIndex: number, bar: number) {
         super(false);
-        const song: Song = doc.song;
+        const song = doc.song;
         if (song.channels[channelIndex].bars[bar] != 0) return;
 
         this._doc = doc;
@@ -3975,9 +3975,9 @@ export class ChangeEnsurePatternExists extends UndoableChange {
 
         let firstEmptyUnusedIndex: number | null = null;
         let firstUnusedIndex: number | null = null;
-        for (let patternIndex: number = 1; patternIndex <= song.patternsPerChannel; patternIndex++) {
+        for (let patternIndex = 1; patternIndex <= song.patternsPerChannel; patternIndex++) {
             let used = false;
-            for (let barIndex: number = 0; barIndex < song.barCount; barIndex++) {
+            for (let barIndex = 0; barIndex < song.barCount; barIndex++) {
                 if (song.channels[channelIndex].bars[barIndex] == patternIndex) {
                     used = true;
                     break;
@@ -3987,7 +3987,7 @@ export class ChangeEnsurePatternExists extends UndoableChange {
             if (firstUnusedIndex == null) {
                 firstUnusedIndex = patternIndex;
             }
-            const pattern: Pattern = song.channels[channelIndex].patterns[patternIndex - 1];
+            const pattern = song.channels[channelIndex].patterns[patternIndex - 1];
             if (pattern.notes.length == 0) {
                 firstEmptyUnusedIndex = patternIndex;
                 break;
@@ -4013,14 +4013,14 @@ export class ChangeEnsurePatternExists extends UndoableChange {
     }
 
     protected _doForwards(): void {
-        const song: Song = this._doc.song;
-        for (let j: number = song.patternsPerChannel; j < this._newPatternCount; j++) {
-            for (let i: number = 0; i < song.getChannelCount(); i++) {
+        const song = this._doc.song;
+        for (let j = song.patternsPerChannel; j < this._newPatternCount; j++) {
+            for (let i = 0; i < song.getChannelCount(); i++) {
                 song.channels[i].patterns[j] = new Pattern();
             }
         }
         song.patternsPerChannel = this._newPatternCount;
-        const pattern: Pattern = song.channels[this._channelIndex].patterns[this._patternIndex - 1];
+        const pattern = song.channels[this._channelIndex].patterns[this._patternIndex - 1];
         pattern.notes = [];
         pattern.instruments.length = 0;
         pattern.instruments.push(...this._newPatternInstruments);
@@ -4029,15 +4029,15 @@ export class ChangeEnsurePatternExists extends UndoableChange {
     }
 
     protected _doBackwards(): void {
-        const song: Song = this._doc.song;
-        const pattern: Pattern = song.channels[this._channelIndex].patterns[this._patternIndex - 1];
+        const song = this._doc.song;
+        const pattern = song.channels[this._channelIndex].patterns[this._patternIndex - 1];
         if (this._patternOldNotes != null) pattern.notes = this._patternOldNotes;
         if (this._oldPatternInstruments != null) {
             pattern.instruments.length = 0;
             pattern.instruments.push(...this._oldPatternInstruments);
         }
         song.channels[this._channelIndex].bars[this._bar] = 0;
-        for (let i: number = 0; i < song.getChannelCount(); i++) {
+        for (let i = 0; i < song.getChannelCount(); i++) {
             song.channels[i].patterns.length = this._oldPatternCount;
         }
         song.patternsPerChannel = this._oldPatternCount;
@@ -4050,13 +4050,13 @@ export class ChangePinTime extends ChangePins {
         super(doc, note);
 
         shiftedTime -= this._oldStart;
-        const originalTime: number = this._oldPins[pinIndex].time;
-        const skipStart: number = Math.min(originalTime, shiftedTime);
-        const skipEnd: number = Math.max(originalTime, shiftedTime);
-        let setPin: boolean = false;
-        for (let i: number = 0; i < this._oldPins.length; i++) {
-            const oldPin: NotePin = note.pins[i];
-            const time: number = oldPin.time;
+        const originalTime = this._oldPins[pinIndex].time;
+        const skipStart = Math.min(originalTime, shiftedTime);
+        const skipEnd = Math.max(originalTime, shiftedTime);
+        let setPin = false;
+        for (let i = 0; i < this._oldPins.length; i++) {
+            const oldPin = note.pins[i];
+            const time = oldPin.time;
             if (time < skipStart) {
                 this._newPins.push(makeNotePin(oldPin.interval, time, oldPin.size));
             } else if (time > skipEnd) {
@@ -4085,11 +4085,11 @@ export class ChangePitchBend extends ChangePins {
         bendEnd -= this._oldStart;
         bendTo -= note.pitches[pitchIndex];
 
-        let setStart: boolean = false;
-        let setEnd: boolean = false;
-        let prevInterval: number = 0;
-        let prevSize: number = Config.noteSizeMax;
-        let persist: boolean = true;
+        let setStart = false;
+        let setEnd = false;
+        let prevInterval = 0;
+        let prevSize = Config.noteSizeMax;
+        let persist = true;
         let i: number;
         let direction: number;
         let stop: number;
@@ -4106,8 +4106,8 @@ export class ChangePitchBend extends ChangePins {
             push = (item: NotePin) => { this._newPins.unshift(item); };
         }
         for (; i != stop; i += direction) {
-            const oldPin: NotePin = note.pins[i];
-            const time: number = oldPin.time;
+            const oldPin = note.pins[i];
+            const time = oldPin.time;
             for (; ;) {
                 if (!setStart) {
                     if (time * direction <= bendStart * direction) {
@@ -4154,14 +4154,14 @@ export class ChangePitchBend extends ChangePins {
 export class ChangePatternRhythm extends ChangeSequence {
     constructor(doc: SongDocument, pattern: Pattern) {
         super();
-        const minDivision: number = Config.partsPerBeat / Config.rhythms[doc.song.rhythm].stepsPerBeat;
+        const minDivision = Config.partsPerBeat / Config.rhythms[doc.song.rhythm].stepsPerBeat;
 
         const changeRhythm: (oldTime: number) => number = function (oldTime: number): number {
             let thresholds: number[] | null = Config.rhythms[doc.song.rhythm].roundUpThresholds;
             if (thresholds != null) {
-                const beatStart: number = Math.floor(oldTime / Config.partsPerBeat) * Config.partsPerBeat;
-                const remainder: number = oldTime - beatStart;
-                let newTime: number = beatStart;
+                const beatStart = Math.floor(oldTime / Config.partsPerBeat) * Config.partsPerBeat;
+                const remainder = oldTime - beatStart;
+                let newTime = beatStart;
                 for (const threshold of thresholds) {
                     if (remainder >= threshold) {
                         newTime += minDivision;
@@ -4175,9 +4175,9 @@ export class ChangePatternRhythm extends ChangeSequence {
             }
         };
 
-        let i: number = 0;
+        let i = 0;
         while (i < pattern.notes.length) {
-            const note: Note = pattern.notes[i];
+            const note = pattern.notes[i];
             if (changeRhythm(note.start) >= changeRhythm(note.end)) {
                 this.append(new ChangeNoteAdded(doc, pattern, note, i, true));
             } else {
@@ -4203,25 +4203,25 @@ class ChangeRhythmNote extends ChangePins {
 export class ChangeMoveNotesSideways extends ChangeGroup {
     constructor(doc: SongDocument, beatsToMove: number, strategy: string) {
         super();
-        let partsToMove: number = Math.round((beatsToMove % doc.song.beatsPerBar) * Config.partsPerBeat);
+        let partsToMove = Math.round((beatsToMove % doc.song.beatsPerBar) * Config.partsPerBeat);
         if (partsToMove < 0) partsToMove += doc.song.beatsPerBar * Config.partsPerBeat;
         if (partsToMove == 0.0) return;
 
         switch (strategy) {
             case "wrapAround": {
-                const partsPerBar: number = Config.partsPerBeat * doc.song.beatsPerBar;
+                const partsPerBar = Config.partsPerBeat * doc.song.beatsPerBar;
                 for (const channel of doc.song.channels) {
                     for (const pattern of channel.patterns) {
                         const newNotes: Note[] = [];
 
-                        for (let bar: number = 1; bar >= 0; bar--) {
-                            const barStartPart: number = bar * partsPerBar;
+                        for (let bar = 1; bar >= 0; bar--) {
+                            const barStartPart = bar * partsPerBar;
 
                             for (const oldNote of pattern.notes) {
-                                const absoluteNoteStart: number = oldNote.start + partsToMove;
-                                const absoluteNoteEnd: number = oldNote.end + partsToMove;
-                                const noteStartPart: number = Math.max(0, absoluteNoteStart - barStartPart);
-                                const noteEndPart: number = Math.min(partsPerBar, absoluteNoteEnd - barStartPart);
+                                const absoluteNoteStart = oldNote.start + partsToMove;
+                                const absoluteNoteEnd = oldNote.end + partsToMove;
+                                const noteStartPart = Math.max(0, absoluteNoteStart - barStartPart);
+                                const noteEndPart = Math.min(partsPerBar, absoluteNoteEnd - barStartPart);
 
                                 if (noteStartPart < noteEndPart) {
                                     projectNoteIntoBar(oldNote, absoluteNoteStart - barStartPart - noteStartPart, noteStartPart, noteEndPart, newNotes);
@@ -4234,14 +4234,14 @@ export class ChangeMoveNotesSideways extends ChangeGroup {
                 }
             } break;
             case "overflow": {
-                let originalBarCount: number = doc.song.barCount;
-                let originalLoopStart: number = doc.song.loopStart;
-                let originalLoopLength: number = doc.song.loopLength;
+                let originalBarCount = doc.song.barCount;
+                let originalLoopStart = doc.song.loopStart;
+                let originalLoopLength = doc.song.loopLength;
 
                 this.append(new ChangeMoveAndOverflowNotes(doc, doc.song.beatsPerBar, partsToMove));
 
                 if (beatsToMove < 0) {
-                    let firstBarIsEmpty: boolean = true;
+                    let firstBarIsEmpty = true;
                     for (const channel of doc.song.channels) {
                         if (channel.bars[0] != 0) firstBarIsEmpty = false;
                     }
@@ -4280,9 +4280,9 @@ export class ChangeBeatsPerBar extends ChangeGroup {
             switch (strategy) {
                 case "splice": {
                     if (doc.song.beatsPerBar > newValue) {
-                        const sequence: ChangeSequence = new ChangeSequence();
-                        for (let i: number = 0; i < doc.song.getChannelCount(); i++) {
-                            for (let j: number = 0; j < doc.song.channels[i].patterns.length; j++) {
+                        const sequence = new ChangeSequence();
+                        for (let i = 0; i < doc.song.getChannelCount(); i++) {
+                            for (let j = 0; j < doc.song.channels[i].patterns.length; j++) {
                                 sequence.append(new ChangeNoteTruncate(doc, doc.song.channels[i].patterns[j], newValue * Config.partsPerBeat, doc.song.beatsPerBar * Config.partsPerBeat, null, true));
                             }
                         }
@@ -4292,12 +4292,12 @@ export class ChangeBeatsPerBar extends ChangeGroup {
                     const changeRhythm = function (oldTime: number): number {
                         return Math.round(oldTime * newValue / doc.song.beatsPerBar);
                     };
-                    for (let channelIndex: number = 0; channelIndex < doc.song.getChannelCount(); channelIndex++) {
-                        for (let patternIndex: number = 0; patternIndex < doc.song.channels[channelIndex].patterns.length; patternIndex++) {
-                            const pattern: Pattern = doc.song.channels[channelIndex].patterns[patternIndex];
-                            let noteIndex: number = 0;
+                    for (let channelIndex = 0; channelIndex < doc.song.getChannelCount(); channelIndex++) {
+                        for (let patternIndex = 0; patternIndex < doc.song.channels[channelIndex].patterns.length; patternIndex++) {
+                            const pattern = doc.song.channels[channelIndex].patterns[patternIndex];
+                            let noteIndex = 0;
                             while (noteIndex < pattern.notes.length) {
-                                const note: Note = pattern.notes[noteIndex];
+                                const note = pattern.notes[noteIndex];
                                 if (changeRhythm(note.start) >= changeRhythm(note.end)) {
                                     this.append(new ChangeNoteAdded(doc, pattern, note, noteIndex, true));
                                 } else {
@@ -4338,19 +4338,19 @@ export class ChangeScale extends ChangeGroup {
 export class ChangeDetectKey extends ChangeGroup {
     constructor(doc: SongDocument) {
         super();
-        const song: Song = doc.song;
-        const basePitch: number = Config.keys[song.key].basePitch;
+        const song = doc.song;
+        const basePitch = Config.keys[song.key].basePitch;
         const keyWeights: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        for (let channelIndex: number = 0; channelIndex < song.pitchChannelCount; channelIndex++) {
-            for (let barIndex: number = 0; barIndex < song.barCount; barIndex++) {
+        for (let channelIndex = 0; channelIndex < song.pitchChannelCount; channelIndex++) {
+            for (let barIndex = 0; barIndex < song.barCount; barIndex++) {
                 const pattern: Pattern | null = song.getPattern(channelIndex, barIndex);
                 if (pattern != null) {
                     for (const note of pattern.notes) {
-                        const prevPin: NotePin = note.pins[0];
-                        for (let pinIndex: number = 1; pinIndex < note.pins.length; pinIndex++) {
-                            const nextPin: NotePin = note.pins[pinIndex];
+                        const prevPin = note.pins[0];
+                        for (let pinIndex = 1; pinIndex < note.pins.length; pinIndex++) {
+                            const nextPin = note.pins[pinIndex];
                             if (prevPin.interval == nextPin.interval) {
-                                let weight: number = nextPin.time - prevPin.time;
+                                let weight = nextPin.time - prevPin.time;
                                 weight += Math.max(0, Math.min(Config.partsPerBeat, nextPin.time + note.start) - (prevPin.time + note.start));
                                 weight *= nextPin.size + prevPin.size;
                                 for (const pitch of note.pitches) {
@@ -4364,11 +4364,11 @@ export class ChangeDetectKey extends ChangeGroup {
             }
         }
 
-        let bestKey: number = 0;
-        let bestKeyWeight: number = 0;
-        for (let key: number = 0; key < 12; key++) {
+        let bestKey = 0;
+        let bestKeyWeight = 0;
+        for (let key = 0; key < 12; key++) {
             // Look for the root of the most prominent major or minor chord.
-            const keyWeight: number = keyWeights[key] * (3 * keyWeights[(key + 7) % 12] + keyWeights[(key + 4) % 12] + keyWeights[(key + 3) % 12]);
+            const keyWeight = keyWeights[key] * (3 * keyWeights[(key + 7) % 12] + keyWeights[(key + 4) % 12] + keyWeights[(key + 3) % 12]);
             if (bestKeyWeight < keyWeight) {
                 bestKeyWeight = keyWeight;
                 bestKey = key;
@@ -4376,12 +4376,12 @@ export class ChangeDetectKey extends ChangeGroup {
         }
 
         if (bestKey != song.key) {
-            const diff: number = song.key - bestKey;
-            const absoluteDiff: number = Math.abs(diff);
+            const diff = song.key - bestKey;
+            const absoluteDiff = Math.abs(diff);
 
-            for (let channelIndex: number = 0; channelIndex < song.pitchChannelCount; channelIndex++) {
+            for (let channelIndex = 0; channelIndex < song.pitchChannelCount; channelIndex++) {
                 for (const pattern of song.channels[channelIndex].patterns) {
-                    for (let i: number = 0; i < absoluteDiff; i++) {
+                    for (let i = 0; i < absoluteDiff; i++) {
                         this.append(new ChangeTranspose(doc, channelIndex, pattern, diff > 0, true));
                     }
                 }
@@ -4396,11 +4396,11 @@ export class ChangeDetectKey extends ChangeGroup {
 
 export function pickRandomPresetValue(isNoise: boolean): number {
     const eligiblePresetValues: number[] = [];
-    for (let categoryIndex: number = 0; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
-        const category: PresetCategory = EditorConfig.presetCategories[categoryIndex];
+    for (let categoryIndex = 0; categoryIndex < EditorConfig.presetCategories.length; categoryIndex++) {
+        const category = EditorConfig.presetCategories[categoryIndex];
         if (category.name == "Novelty Presets") continue;
-        for (let presetIndex: number = 0; presetIndex < category.presets.length; presetIndex++) {
-            const preset: Preset = category.presets[presetIndex];
+        for (let presetIndex = 0; presetIndex < category.presets.length; presetIndex++) {
+            const preset = category.presets[presetIndex];
             if (preset.settings != undefined && (preset.isNoise == true) == isNoise) {
                 eligiblePresetValues.push((categoryIndex << 6) + presetIndex);
             }
@@ -4410,17 +4410,17 @@ export function pickRandomPresetValue(isNoise: boolean): number {
 }
 
 export function setDefaultInstruments(song: Song): void {
-    for (let channelIndex: number = 0; channelIndex < song.channels.length; channelIndex++) {
+    for (let channelIndex = 0; channelIndex < song.channels.length; channelIndex++) {
         for (const instrument of song.channels[channelIndex].instruments) {
-            const isNoise: boolean = song.getChannelIsNoise(channelIndex);
-            const isMod: boolean = song.getChannelIsMod(channelIndex);
+            const isNoise = song.getChannelIsNoise(channelIndex);
+            const isMod = song.getChannelIsMod(channelIndex);
             instrument.setTypeAndReset(isMod ? InstrumentType.mod : (isNoise ? InstrumentType.noise : InstrumentType.chip), isNoise, isMod);
         }
     }
 }
 
 export class ChangeSong extends ChangeGroup {
-    constructor(doc: SongDocument, newHash: string, jsonFormat: string = "auto") {
+    constructor(doc: SongDocument, newHash: string, jsonFormat = "auto") {
         super();
         let pitchChannelCount = doc.song.pitchChannelCount;
         let noiseChannelCount = doc.song.noiseChannelCount;
@@ -4436,7 +4436,7 @@ export class ChangeSong extends ChangeGroup {
             setDefaultInstruments(doc.song);
             doc.song.scale = doc.prefs.defaultScale;
 
-            for (let i: number = 0; i <= doc.song.channels.length; i++) {
+            for (let i = 0; i <= doc.song.channels.length; i++) {
                 doc.viewedInstrument[i] = 0;
                 doc.recentPatternInstruments[i] = [0];
             }
@@ -4453,8 +4453,8 @@ export class ChangeSong extends ChangeGroup {
 export class ChangeValidateTrackSelection extends Change {
     constructor(doc: SongDocument) {
         super();
-        const channelIndex: number = Math.min(doc.channel, doc.song.getChannelCount() - 1);
-        const bar: number = Math.max(0, Math.min(doc.song.barCount - 1, doc.bar));
+        const channelIndex = Math.min(doc.channel, doc.song.getChannelCount() - 1);
+        const bar = Math.max(0, Math.min(doc.song.barCount - 1, doc.bar));
         if (doc.channel != channelIndex || doc.bar != bar) {
             doc.bar = bar;
             doc.channel = channelIndex;
@@ -4469,14 +4469,14 @@ export class ChangeReplacePatterns extends ChangeGroup {
     constructor(doc: SongDocument, pitchChannels: Channel[], noiseChannels: Channel[], modChannels: Channel[]) {
         super();
 
-        const song: Song = doc.song;
+        const song = doc.song;
 
         function removeExtraSparseChannels(channels: Channel[], maxLength: number): void {
             while (channels.length > maxLength) {
-                let sparsestIndex: number = channels.length - 1;
-                let mostZeroes: number = 0;
-                for (let channelIndex: number = 0; channelIndex < channels.length - 1; channelIndex++) {
-                    let zeroes: number = 0;
+                let sparsestIndex = channels.length - 1;
+                let mostZeroes = 0;
+                for (let channelIndex = 0; channelIndex < channels.length - 1; channelIndex++) {
+                    let zeroes = 0;
                     for (const bar of channels[channelIndex].bars) {
                         if (bar == 0) zeroes++;
                     }
@@ -4501,8 +4501,8 @@ export class ChangeReplacePatterns extends ChangeGroup {
         song.barCount = 1;
         song.patternsPerChannel = 8;
         const combinedChannels: Channel[] = pitchChannels.concat(noiseChannels.concat(modChannels));
-        for (let channelIndex: number = 0; channelIndex < combinedChannels.length; channelIndex++) {
-            const channel: Channel = combinedChannels[channelIndex];
+        for (let channelIndex = 0; channelIndex < combinedChannels.length; channelIndex++) {
+            const channel = combinedChannels[channelIndex];
             song.barCount = Math.max(song.barCount, channel.bars.length);
             song.patternsPerChannel = Math.max(song.patternsPerChannel, channel.patterns.length);
             song.channels[channelIndex] = channel;
@@ -4514,10 +4514,10 @@ export class ChangeReplacePatterns extends ChangeGroup {
 
         song.barCount = Math.min(Config.barCountMax, song.barCount);
         song.patternsPerChannel = Math.min(Config.barCountMax, song.patternsPerChannel);
-        for (let channelIndex: number = 0; channelIndex < song.channels.length; channelIndex++) {
-            const channel: Channel = song.channels[channelIndex];
+        for (let channelIndex = 0; channelIndex < song.channels.length; channelIndex++) {
+            const channel = song.channels[channelIndex];
 
-            for (let barIndex: number = 0; barIndex < channel.bars.length; barIndex++) {
+            for (let barIndex = 0; barIndex < channel.bars.length; barIndex++) {
                 if (channel.bars[barIndex] > song.patternsPerChannel || channel.bars[barIndex] < 0) {
                     channel.bars[barIndex] = 0;
                 }
@@ -4556,20 +4556,20 @@ export class ChangeReplacePatterns extends ChangeGroup {
 export function comparePatternNotes(a: Note[], b: Note[]): boolean {
     if (a.length != b.length) return false;
 
-    for (let noteIndex: number = 0; noteIndex < a.length; noteIndex++) {
-        const oldNote: Note = a[noteIndex];
-        const newNote: Note = b[noteIndex];
+    for (let noteIndex = 0; noteIndex < a.length; noteIndex++) {
+        const oldNote = a[noteIndex];
+        const newNote = b[noteIndex];
         if (newNote.start != oldNote.start || newNote.end != oldNote.end || newNote.pitches.length != oldNote.pitches.length || newNote.pins.length != oldNote.pins.length) {
             return false;
         }
 
-        for (let pitchIndex: number = 0; pitchIndex < oldNote.pitches.length; pitchIndex++) {
+        for (let pitchIndex = 0; pitchIndex < oldNote.pitches.length; pitchIndex++) {
             if (newNote.pitches[pitchIndex] != oldNote.pitches[pitchIndex]) {
                 return false;
             }
         }
 
-        for (let pinIndex: number = 0; pinIndex < oldNote.pins.length; pinIndex++) {
+        for (let pinIndex = 0; pinIndex < oldNote.pins.length; pinIndex++) {
             if (newNote.pins[pinIndex].interval != oldNote.pins[pinIndex].interval || newNote.pins[pinIndex].time != oldNote.pins[pinIndex].time || newNote.pins[pinIndex].size != oldNote.pins[pinIndex].size) {
                 return false;
             }
@@ -4582,14 +4582,14 @@ export function comparePatternNotes(a: Note[], b: Note[]): boolean {
 export function removeDuplicatePatterns(channels: Channel[]): void {
     for (const channel of channels) {
         const newPatterns: Pattern[] = [];
-        for (let bar: number = 0; bar < channel.bars.length; bar++) {
+        for (let bar = 0; bar < channel.bars.length; bar++) {
             if (channel.bars[bar] == 0) continue;
 
-            const oldPattern: Pattern = channel.patterns[channel.bars[bar] - 1];
+            const oldPattern = channel.patterns[channel.bars[bar] - 1];
 
-            let foundMatchingPattern: boolean = false;
-            for (let newPatternIndex: number = 0; newPatternIndex < newPatterns.length; newPatternIndex++) {
-                const newPattern: Pattern = newPatterns[newPatternIndex];
+            let foundMatchingPattern = false;
+            for (let newPatternIndex = 0; newPatternIndex < newPatterns.length; newPatternIndex++) {
+                const newPattern = newPatterns[newPatternIndex];
 
                 if (!patternsContainSameInstruments(oldPattern.instruments, newPattern.instruments) || newPattern.notes.length != oldPattern.notes.length) {
                     continue;
@@ -4608,7 +4608,7 @@ export function removeDuplicatePatterns(channels: Channel[]): void {
             }
         }
 
-        for (let patternIndex: number = 0; patternIndex < newPatterns.length; patternIndex++) {
+        for (let patternIndex = 0; patternIndex < newPatterns.length; patternIndex++) {
             channel.patterns[patternIndex] = newPatterns[patternIndex];
         }
         channel.patterns.length = newPatterns.length;
@@ -4739,7 +4739,7 @@ export class ChangeNoteAdded extends UndoableChange {
     private _pattern: Pattern;
     private _note: Note;
     private _index: number;
-    constructor(doc: SongDocument, pattern: Pattern, note: Note, index: number, deletion: boolean = false) {
+    constructor(doc: SongDocument, pattern: Pattern, note: Note, index: number, deletion = false) {
         super(deletion);
         this._doc = doc;
         this._pattern = pattern;
@@ -4775,17 +4775,17 @@ export class ChangeNoteStartOffset extends UndoableChange {
 export class ChangeNoteLength extends ChangePins {
     constructor(doc: SongDocument | null, note: Note, truncStart: number, truncEnd: number) {
         super(doc, note);
-        const continuesLastPattern: boolean = ((this._oldStart < 0 || note.continuesLastPattern) && truncStart == 0);
+        const continuesLastPattern = ((this._oldStart < 0 || note.continuesLastPattern) && truncStart == 0);
 
         truncStart -= this._oldStart;
         truncEnd -= this._oldStart;
-        let setStart: boolean = false;
-        let prevSize: number = this._oldPins[0].size;
-        let prevInterval: number = this._oldPins[0].interval;
-        let pushLastPin: boolean = true;
+        let setStart = false;
+        let prevSize = this._oldPins[0].size;
+        let prevInterval = this._oldPins[0].interval;
+        let pushLastPin = true;
         let i: number;
         for (i = 0; i < this._oldPins.length; i++) {
-            const oldPin: NotePin = this._oldPins[i];
+            const oldPin = this._oldPins[i];
             if (oldPin.time < truncStart) {
                 prevSize = oldPin.size;
                 prevInterval = oldPin.interval;
@@ -4815,11 +4815,11 @@ export class ChangeNoteLength extends ChangePins {
 }
 
 export class ChangeNoteTruncate extends ChangeSequence {
-    constructor(doc: SongDocument, pattern: Pattern, start: number, end: number, skipNote: Note | null = null, force: boolean = false) {
+    constructor(doc: SongDocument, pattern: Pattern, start: number, end: number, skipNote: Note | null = null, force = false) {
         super();
-        let i: number = 0;
+        let i = 0;
         while (i < pattern.notes.length) {
-            const note: Note = pattern.notes[i];
+            const note = pattern.notes[i];
             if (note == skipNote && skipNote != null) {
                 i++;
             } else if (note.end <= start) {
@@ -4833,7 +4833,7 @@ export class ChangeNoteTruncate extends ChangeSequence {
                 }
             } else if (note.start < start && note.end > end) {
                 if (!doc.song.getChannelIsMod(doc.channel) || force || (skipNote != null && note.pitches[0] == skipNote.pitches[0])) {
-                    const copy: Note = note.clone();
+                    const copy = note.clone();
                     this.append(new ChangeNoteLength(doc, note, note.start, start));
                     i++;
                     this.append(new ChangeNoteAdded(doc, pattern, copy, i, false));
@@ -4861,18 +4861,18 @@ export class ChangeNoteTruncate extends ChangeSequence {
 class ChangeSplitNotesAtSelection extends ChangeSequence {
     constructor(doc: SongDocument, pattern: Pattern) {
         super();
-        let i: number = 0;
+        let i = 0;
         while (i < pattern.notes.length) {
-            const note: Note = pattern.notes[i];
+            const note = pattern.notes[i];
             if (note.start < doc.selection.patternSelectionStart && doc.selection.patternSelectionStart < note.end) {
-                const copy: Note = note.clone();
+                const copy = note.clone();
                 this.append(new ChangeNoteLength(doc, note, note.start, doc.selection.patternSelectionStart));
                 i++;
                 this.append(new ChangeNoteAdded(doc, pattern, copy, i, false));
                 this.append(new ChangeNoteLength(doc, copy, doc.selection.patternSelectionStart, copy.end));
                 // i++; // The second note might be split again at the end of the selection. Check it again.
             } else if (note.start < doc.selection.patternSelectionEnd && doc.selection.patternSelectionEnd < note.end) {
-                const copy: Note = note.clone();
+                const copy = note.clone();
                 this.append(new ChangeNoteLength(doc, note, note.start, doc.selection.patternSelectionEnd));
                 i++;
                 this.append(new ChangeNoteAdded(doc, pattern, copy, i, false));
@@ -4896,7 +4896,7 @@ class ChangeTransposeNote extends UndoableChange {
     protected _newPins: NotePin[];
     protected _oldPitches: number[];
     protected _newPitches: number[];
-    constructor(doc: SongDocument, channelIndex: number, note: Note, upward: boolean, ignoreScale: boolean = false, octave: boolean = false) {
+    constructor(doc: SongDocument, channelIndex: number, note: Note, upward: boolean, ignoreScale = false, octave = false) {
         super(false);
         this._doc = doc;
         this._note = note;
@@ -4908,16 +4908,16 @@ class ChangeTransposeNote extends UndoableChange {
         // I'm disabling pitch transposing for noise channels to avoid
         // accidentally messing up noise channels when pitch shifting all
         // channels at once.
-        const isNoise: boolean = doc.song.getChannelIsNoise(channelIndex);
+        const isNoise = doc.song.getChannelIsNoise(channelIndex);
         if (isNoise != doc.song.getChannelIsNoise(doc.channel)) return;
 
         // Can't transpose mods
         if (doc.song.getChannelIsMod(doc.channel)) return;
 
-        const maxPitch: number = (isNoise ? Config.drumCount - 1 : Config.maxPitch);
+        const maxPitch = (isNoise ? Config.drumCount - 1 : Config.maxPitch);
 
-        for (let i: number = 0; i < this._oldPitches.length; i++) {
-            let pitch: number = this._oldPitches[i];
+        for (let i = 0; i < this._oldPitches.length; i++) {
+            let pitch = this._oldPitches[i];
             if (octave && !isNoise) {
                 if (upward) {
                     pitch = Math.min(maxPitch, pitch + 12);
@@ -4927,14 +4927,14 @@ class ChangeTransposeNote extends UndoableChange {
             } else {
                 let scale = doc.song.scale == Config.scales.dictionary["Custom"].index ? doc.song.scaleCustom : Config.scales[doc.song.scale].flags;
                 if (upward) {
-                    for (let j: number = pitch + 1; j <= maxPitch; j++) {
+                    for (let j = pitch + 1; j <= maxPitch; j++) {
                         if (isNoise || ignoreScale || scale[j % 12]) {
                             pitch = j;
                             break;
                         }
                     }
                 } else {
-                    for (let j: number = pitch - 1; j >= 0; j--) {
+                    for (let j = pitch - 1; j >= 0; j--) {
                         if (isNoise || ignoreScale || scale[j % 12]) {
                             pitch = j;
                             break;
@@ -4943,8 +4943,8 @@ class ChangeTransposeNote extends UndoableChange {
                 }
             }
 
-            let foundMatch: boolean = false;
-            for (let j: number = 0; j < this._newPitches.length; j++) {
+            let foundMatch = false;
+            for (let j = 0; j < this._newPitches.length; j++) {
                 if (this._newPitches[j] == pitch) {
                     foundMatch = true;
                     break;
@@ -4953,17 +4953,17 @@ class ChangeTransposeNote extends UndoableChange {
             if (!foundMatch) this._newPitches.push(pitch);
         }
 
-        let min: number = 0;
-        let max: number = maxPitch;
+        let min = 0;
+        let max = maxPitch;
 
-        for (let i: number = 1; i < this._newPitches.length; i++) {
-            const diff: number = this._newPitches[0] - this._newPitches[i];
+        for (let i = 1; i < this._newPitches.length; i++) {
+            const diff = this._newPitches[0] - this._newPitches[i];
             if (min < diff) min = diff;
             if (max > diff + maxPitch) max = diff + maxPitch;
         }
 
         for (const oldPin of this._oldPins) {
-            let interval: number = oldPin.interval + this._oldPitches[0];
+            let interval = oldPin.interval + this._oldPitches[0];
 
             if (interval < min) interval = min;
             if (interval > max) interval = max;
@@ -4976,14 +4976,14 @@ class ChangeTransposeNote extends UndoableChange {
             } else {
                 let scale = doc.song.scale == Config.scales.dictionary["Custom"].index ? doc.song.scaleCustom : Config.scales[doc.song.scale].flags;
                 if (upward) {
-                    for (let i: number = interval + 1; i <= max; i++) {
+                    for (let i = interval + 1; i <= max; i++) {
                         if (isNoise || ignoreScale || scale[i % 12]) {
                             interval = i;
                             break;
                         }
                     }
                 } else {
-                    for (let i: number = interval - 1; i >= min; i--) {
+                    for (let i = interval - 1; i >= min; i--) {
                         if (isNoise || ignoreScale || scale[i % 12]) {
                             interval = i;
                             break;
@@ -4997,7 +4997,7 @@ class ChangeTransposeNote extends UndoableChange {
 
         if (this._newPins[0].interval != 0) throw new Error("wrong pin start interval");
 
-        for (let i: number = 1; i < this._newPins.length - 1;) {
+        for (let i = 1; i < this._newPins.length - 1;) {
             if (this._newPins[i - 1].interval == this._newPins[i].interval &&
                 this._newPins[i].interval == this._newPins[i + 1].interval &&
                 this._newPins[i - 1].size == this._newPins[i].size &&
@@ -5026,7 +5026,7 @@ class ChangeTransposeNote extends UndoableChange {
 }
 
 export class ChangeTranspose extends ChangeSequence {
-    constructor(doc: SongDocument, channelIndex: number, pattern: Pattern, upward: boolean, ignoreScale: boolean = false, octave: boolean = false) {
+    constructor(doc: SongDocument, channelIndex: number, pattern: Pattern, upward: boolean, ignoreScale = false, octave = false) {
         super();
         if (doc.selection.patternSelectionActive) {
             this.append(new ChangeSplitNotesAtSelection(doc, pattern));
@@ -5099,10 +5099,10 @@ export class ChangeDragSelectedNotes extends ChangeSequence {
             this.append(new ChangeSplitNotesAtSelection(doc, pattern));
         }
 
-        const oldStart: number = doc.selection.patternSelectionStart;
-        const oldEnd: number = doc.selection.patternSelectionEnd;
-        const newStart: number = Math.max(0, Math.min(doc.song.beatsPerBar * Config.partsPerBeat, oldStart + parts));
-        const newEnd: number = Math.max(0, Math.min(doc.song.beatsPerBar * Config.partsPerBeat, oldEnd + parts));
+        const oldStart = doc.selection.patternSelectionStart;
+        const oldEnd = doc.selection.patternSelectionEnd;
+        const newStart = Math.max(0, Math.min(doc.song.beatsPerBar * Config.partsPerBeat, oldStart + parts));
+        const newEnd = Math.max(0, Math.min(doc.song.beatsPerBar * Config.partsPerBeat, oldEnd + parts));
         if (newStart == newEnd) {
             // Just erase the current contents of the selection:
             this.append(new ChangeNoteTruncate(doc, pattern, oldStart, oldEnd, null, true));
@@ -5116,10 +5116,10 @@ export class ChangeDragSelectedNotes extends ChangeSequence {
 
         this.append(new ChangePatternSelection(doc, newStart, newEnd));
         const draggedNotes = [];
-        let noteInsertionIndex: number = 0;
-        let i: number = 0;
+        let noteInsertionIndex = 0;
+        let i = 0;
         while (i < pattern.notes.length) {
-            const note: Note = pattern.notes[i];
+            const note = pattern.notes[i];
             if (note.end <= oldStart || note.start >= oldEnd) {
                 i++;
                 if (note.end <= newStart) noteInsertionIndex = i;
@@ -5139,7 +5139,7 @@ export class ChangeDragSelectedNotes extends ChangeSequence {
 
             this.append(new ChangeNoteLength(doc, note, Math.max(note.start, newStart), Math.min(newEnd, note.end)));
 
-            for (let i: number = 0; i < Math.abs(transpose); i++) {
+            for (let i = 0; i < Math.abs(transpose); i++) {
                 this.append(new ChangeTransposeNote(doc, channelIndex, note, transpose > 0, doc.prefs.notesOutsideScale));
             }
 
@@ -5163,16 +5163,16 @@ export class ChangeHoldingModRecording extends Change {
 export class ChangeDuplicateSelectedReusedPatterns extends ChangeGroup {
     constructor(doc: SongDocument, barStart: number, barWidth: number, channelStart: number, channelHeight: number, replaceUnused: boolean) {
         super();
-        for (let channelIndex: number = channelStart; channelIndex < channelStart + channelHeight; channelIndex++) {
+        for (let channelIndex = channelStart; channelIndex < channelStart + channelHeight; channelIndex++) {
             const reusablePatterns: Dictionary<number> = {};
 
-            for (let bar: number = barStart; bar < barStart + barWidth; bar++) {
-                const currentPatternIndex: number = doc.song.channels[channelIndex].bars[bar];
+            for (let bar = barStart; bar < barStart + barWidth; bar++) {
+                const currentPatternIndex = doc.song.channels[channelIndex].bars[bar];
                 if (currentPatternIndex == 0) continue;
                 if (reusablePatterns[String(currentPatternIndex)] == undefined) {
                     let isUsedElsewhere = false;
                     // if (replaceUnused) {
-                    //     for (let bar2: number = 0; bar2 < doc.song.barCount; bar2++) {
+                    //     for (let bar2 = 0; bar2 < doc.song.barCount; bar2++) {
                     //         if (bar2 < barStart || bar2 >= barStart + barWidth) {
                     //             if (doc.song.channels[channelIndex].bars[bar2] == currentPatternIndex) {
                     //                 isUsedElsewhere = true;
@@ -5181,7 +5181,7 @@ export class ChangeDuplicateSelectedReusedPatterns extends ChangeGroup {
                     //         }
                     //     }
                     // } else {
-                        for (let bar2: number = 0; bar2 < doc.song.barCount; bar2++) {
+                        for (let bar2 = 0; bar2 < doc.song.barCount; bar2++) {
                             if (bar2 < barStart || bar2 >= barStart + barWidth) {
                                 if (doc.song.channels[channelIndex].bars[bar2] == currentPatternIndex) {
                                     isUsedElsewhere = true;
@@ -5192,7 +5192,7 @@ export class ChangeDuplicateSelectedReusedPatterns extends ChangeGroup {
                     // }
                     if (isUsedElsewhere) {
                         // Need to duplicate the pattern.
-                        const copiedPattern: Pattern = doc.song.getPattern(channelIndex, bar)!;
+                        const copiedPattern = doc.song.getPattern(channelIndex, bar)!;
                         this.append(new ChangePatternNumbers(doc, 0, bar, channelIndex, 1, 1));
                         this.append(new ChangeEnsurePatternExists(doc, channelIndex, bar));
                         const newPattern: Pattern | null = doc.song.getPattern(channelIndex, bar);
@@ -5221,7 +5221,7 @@ export class ChangePatternScale extends Change {
         if (doc.selection.patternSelectionActive) {
             new ChangeSplitNotesAtSelection(doc, pattern);
         }
-        const maxPitch: number = Config.maxPitch;
+        const maxPitch = Config.maxPitch;
         for (const note of pattern.notes) {
             if (doc.selection.patternSelectionActive && (note.end <= doc.selection.patternSelectionStart || note.start >= doc.selection.patternSelectionEnd)) {
                 continue;
@@ -5229,34 +5229,34 @@ export class ChangePatternScale extends Change {
 
             const newPitches: number[] = [];
             const newPins: NotePin[] = [];
-            for (let i: number = 0; i < note.pitches.length; i++) {
-                const pitch: number = note.pitches[i];
-                const transformedPitch: number = scaleMap[pitch % 12] + (pitch - (pitch % 12));
+            for (let i = 0; i < note.pitches.length; i++) {
+                const pitch = note.pitches[i];
+                const transformedPitch = scaleMap[pitch % 12] + (pitch - (pitch % 12));
                 if (newPitches.indexOf(transformedPitch) == -1) {
                     newPitches.push(transformedPitch);
                 }
             }
 
-            let min: number = 0;
-            let max: number = maxPitch;
+            let min = 0;
+            let max = maxPitch;
 
-            for (let i: number = 1; i < newPitches.length; i++) {
-                const diff: number = newPitches[0] - newPitches[i];
+            for (let i = 1; i < newPitches.length; i++) {
+                const diff = newPitches[0] - newPitches[i];
                 if (min < diff) min = diff;
                 if (max > diff + maxPitch) max = diff + maxPitch;
             }
 
             for (const oldPin of note.pins) {
-                let interval: number = oldPin.interval + note.pitches[0];
+                let interval = oldPin.interval + note.pitches[0];
                 if (interval < min) interval = min;
                 if (interval > max) interval = max;
-                const transformedInterval: number = scaleMap[interval % 12] + (interval - (interval % 12));
+                const transformedInterval = scaleMap[interval % 12] + (interval - (interval % 12));
                 newPins.push(makeNotePin(transformedInterval - newPitches[0], oldPin.time, oldPin.size));
             }
 
             if (newPins[0].interval != 0) throw new Error("wrong pin start interval");
 
-            for (let i: number = 1; i < newPins.length - 1;) {
+            for (let i = 1; i < newPins.length - 1;) {
                 if (newPins[i - 1].interval == newPins[i].interval &&
                     newPins[i].interval == newPins[i + 1].interval &&
                     newPins[i - 1].size == newPins[i].size &&
@@ -5365,7 +5365,7 @@ export class ChangeSizeBend extends UndoableChange {
         this._oldPins = note.pins;
         this._newPins = [];
 
-        let inserted: boolean = false;
+        let inserted = false;
 
         for (const pin of note.pins) {
             if (pin.time < bendPart) {
@@ -5410,7 +5410,7 @@ export class ChangeSizeBend extends UndoableChange {
 export class ChangeChipWave extends Change {
     constructor(doc: SongDocument, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         if (instrument.chipWave != newValue) {
             instrument.chipWave = newValue;
             // advloop addition
@@ -5529,7 +5529,7 @@ export class ChangeChipWaveInStereo extends Change {
 export class ChangeNoiseWave extends Change {
     constructor(doc: SongDocument, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         if (instrument.chipNoise != newValue) {
             instrument.chipNoise = newValue;
             instrument.preset = instrument.type;
@@ -5542,7 +5542,7 @@ export class ChangeNoiseWave extends Change {
 export class ChangeAddEnvelope extends Change {
     constructor(doc: SongDocument) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         instrument.addEnvelope(0, 0, 0, true, 0, instrument.isNoiseInstrument ? Config.drumCount : Config.maxPitch, false, 1, 0);
         instrument.preset = instrument.type;
         doc.notifier.changed();
@@ -5553,9 +5553,9 @@ export class ChangeAddEnvelope extends Change {
 export class ChangeRemoveEnvelope extends Change {
     constructor(doc: SongDocument, index: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         instrument.envelopeCount--;
-        for (let i: number = index; i < instrument.envelopeCount; i++) {
+        for (let i = index; i < instrument.envelopeCount; i++) {
             instrument.envelopes[i].target = instrument.envelopes[i + 1].target;
             instrument.envelopes[i].index = instrument.envelopes[i + 1].index;
             instrument.envelopes[i].envelope = instrument.envelopes[i + 1].envelope;
@@ -5580,9 +5580,9 @@ export class ChangeRemoveEnvelope extends Change {
 export class ChangeSetEnvelopeTarget extends Change {
     constructor(doc: SongDocument, envelopeIndex: number, target: number, targetIndex: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldTarget: number = instrument.envelopes[envelopeIndex].target;
-        const oldIndex: number = instrument.envelopes[envelopeIndex].index;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldTarget = instrument.envelopes[envelopeIndex].target;
+        const oldIndex = instrument.envelopes[envelopeIndex].index;
         if (oldTarget != target || oldIndex != targetIndex) {
             instrument.envelopes[envelopeIndex].target = target;
             instrument.envelopes[envelopeIndex].index = targetIndex;
@@ -5596,8 +5596,8 @@ export class ChangeSetEnvelopeTarget extends Change {
 export class ChangeSetEnvelopeType extends Change {
     constructor(doc: SongDocument, envelopeIndex: number, newValue: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: number = instrument.envelopes[envelopeIndex].envelope;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.envelopes[envelopeIndex].envelope;
         if (oldValue != newValue) {
             instrument.envelopes[envelopeIndex].envelope = newValue;
             instrument.preset = instrument.type;
@@ -5610,8 +5610,8 @@ export class ChangeSetEnvelopeType extends Change {
 export class ChangeEnvelopePitchStart extends Change {
     constructor(doc: SongDocument, startNote: number, index: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldStartNote: number = instrument.envelopes[index].pitchEnvelopeStart;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldStartNote = instrument.envelopes[index].pitchEnvelopeStart;
         instrument.envelopes[index].pitchEnvelopeStart = startNote;
         if (oldStartNote != startNote) {
             instrument.preset = instrument.type;
@@ -5624,8 +5624,8 @@ export class ChangeEnvelopePitchStart extends Change {
 export class ChangeEnvelopePitchEnd extends Change {
     constructor(doc: SongDocument, endNote: number, index: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldEndNote: number = instrument.envelopes[index].pitchEnvelopeEnd;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldEndNote = instrument.envelopes[index].pitchEnvelopeEnd;
         instrument.envelopes[index].pitchEnvelopeEnd = endNote;
         if (oldEndNote != endNote) {
             instrument.preset = instrument.type;
@@ -5638,8 +5638,8 @@ export class ChangeEnvelopePitchEnd extends Change {
 export class ChangeEnvelopeInverse extends Change {
     constructor(doc: SongDocument, value: boolean, index: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldValue: boolean = instrument.envelopes[index].inverse;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldValue = instrument.envelopes[index].inverse;
         instrument.envelopes[index].inverse = value;
         if (oldValue != value) {
             instrument.preset = instrument.type;
@@ -5652,7 +5652,7 @@ export class ChangeEnvelopeInverse extends Change {
 export class ChangeDiscreteEnvelope extends Change {
     constructor(doc: SongDocument, newValue: boolean, index: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         const oldValue = instrument.envelopes[index].discrete;
 
         doc.notifier.changed();
@@ -5699,8 +5699,8 @@ export class ChangeEnvelopeUpperBound extends IndexableChange {
 export class ChangeRandomEnvelopeSteps extends Change {
     constructor(doc: SongDocument, steps: number, index: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldSteps: number = instrument.envelopes[index].steps;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldSteps = instrument.envelopes[index].steps;
         steps = steps > Config.randomEnvelopeStepsMax ? Config.randomEnvelopeStepsMax : steps < 1 ? 2 : Math.floor(steps);
         instrument.envelopes[index].steps = steps;
         if (oldSteps != steps) {
@@ -5714,8 +5714,8 @@ export class ChangeRandomEnvelopeSteps extends Change {
 export class ChangeRandomEnvelopeSeed extends Change {
     constructor(doc: SongDocument, seed: number, index: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldSeed: number = instrument.envelopes[index].seed;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldSeed = instrument.envelopes[index].seed;
         seed = seed > Config.randomEnvelopeSeedMax ? Config.randomEnvelopeSeedMax : seed < 1 ? 2 : Math.floor(seed);
         instrument.envelopes[index].seed = seed;
         if (oldSeed != seed) {
@@ -5729,7 +5729,7 @@ export class ChangeRandomEnvelopeSeed extends Change {
 export class PasteEnvelope extends Change {
     constructor(doc: SongDocument, envelope: any, index: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
         instrument.envelopes[index].fromJsonObject(envelope, "slarmoosbox");
         
         
@@ -5742,8 +5742,8 @@ export class PasteEnvelope extends Change {
 export class ChangeSetEnvelopeWaveform extends Change {
     constructor(doc: SongDocument, waveform: any, index: number) {
         super();
-        const instrument: Instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
-        const oldWaveform: number = instrument.envelopes[index].waveform;
+        const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
+        const oldWaveform = instrument.envelopes[index].waveform;
         waveform = parseInt(waveform + ""); //make sure waveform isn't a string
         instrument.envelopes[index].waveform = waveform;
         if (oldWaveform != waveform) {

@@ -47,11 +47,11 @@ export class KeyboardLayout {
 
         if (pitchOffset == null) return null;
 
-        const octaveOffset: number = Math.max(0, doc.song.channels[doc.channel].octave - 1) * Config.pitchesPerOctave;
-        let keyOffset: number = 0; // The basePitch of the song key is implicit.
+        const octaveOffset = Math.max(0, doc.song.channels[doc.channel].octave - 1) * Config.pitchesPerOctave;
+        let keyOffset = 0; // The basePitch of the song key is implicit.
 
         if (forcedKey != null) {
-            const keyBasePitch: number = Config.keys[doc.song.key].basePitch;
+            const keyBasePitch = Config.keys[doc.song.key].basePitch;
             keyOffset = (forcedKey - keyBasePitch + 144) % 12;
         }
 
@@ -61,7 +61,7 @@ export class KeyboardLayout {
         return pitch;
     }
 
-    private _possiblyPlayingPitchesFromKeyboard: boolean = false;
+    private _possiblyPlayingPitchesFromKeyboard = false;
 
     constructor(private _doc: SongDocument) {
         window.addEventListener("blur", this._onWindowBlur);
@@ -149,7 +149,7 @@ export class KeyboardLayout {
 
     handleKey(x: number, y: number, pressed: boolean): void {
 
-        const isDrum: boolean = this._doc.song.getChannelIsNoise(this._doc.channel);
+        const isDrum = this._doc.song.getChannelIsNoise(this._doc.channel);
         if (isDrum) {
             if (x >= 0 && x < Config.drumCount) {
                 if (pressed) {

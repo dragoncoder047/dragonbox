@@ -1,30 +1,30 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Config, LFOEnvelopeTypes, EnvelopeType, Envelope, AutomationTarget } from "./SynthConfig";
+import { Config, EnvelopeType, LFOEnvelopeTypes } from "./SynthConfig";
 import { clamp } from "./utils";
 export class EnvelopeSettings {
-    target: number = 0;
-    index: number = 0;
-    envelope: number = 0;
+    target = 0;
+    index = 0;
+    envelope = 0;
     //slarmoo's box 1.0
     pitchEnvelopeStart: number;
     pitchEnvelopeEnd: number;
     inverse: boolean;
     //midbox
-    perEnvelopeSpeed: number = Config.envelopes[this.envelope].speed;
-    perEnvelopeLowerBound: number = 0;
-    perEnvelopeUpperBound: number = 1;
+    perEnvelopeSpeed = Config.envelopes[this.envelope].speed;
+    perEnvelopeLowerBound = 0;
+    perEnvelopeUpperBound = 1;
     //modulation support
     tempEnvelopeSpeed: number | null = null;
     tempEnvelopeLowerBound: number | null = null;
     tempEnvelopeUpperBound: number | null = null;
     //pseudo random
-    steps: number = 2;
-    seed: number = 2;
+    steps = 2;
+    seed = 2;
     //lfo and random types
-    waveform: number = LFOEnvelopeTypes.sine;
+    waveform = LFOEnvelopeTypes.sine;
     //moved discrete into here
-    discrete: boolean = false;
+    discrete = false;
 
     constructor(public isNoiseEnvelope: boolean) {
         this.reset();
@@ -80,12 +80,12 @@ export class EnvelopeSettings {
     fromJsonObject(envelopeObject: any, format: string): void {
         this.reset();
 
-        let target: AutomationTarget = Config.instrumentAutomationTargets.dictionary[envelopeObject["target"]];
+        let target = Config.instrumentAutomationTargets.dictionary[envelopeObject["target"]];
         if (target == null) target = Config.instrumentAutomationTargets.dictionary["noteVolume"];
         this.target = target.index;
 
-        let envelope: Envelope = Config.envelopes.dictionary["none"];
-        let isTremolo2: Boolean = false;
+        let envelope = Config.envelopes.dictionary["none"];
+        let isTremolo2 = false;
         if (format == "slarmoosbox") {
             if (envelopeObject["envelope"] == "tremolo2") {
                 envelope = Config.newEnvelopes[EnvelopeType.lfo];

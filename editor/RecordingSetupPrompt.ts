@@ -12,11 +12,11 @@ import { Piano } from "./Piano";
 const { button, label, div, p, a, h2, input, select, option } = HTML;
 
 export class RecordingSetupPrompt implements Prompt {
-    private readonly _keyboardMode: HTMLSelectElement = select({ style: "width: 100%;" },
+    private readonly _keyboardMode = select({ style: "width: 100%;" },
         option({ value: "useCapsLockForNotes" }, "simple shortcuts, use caps lock to play notes"),
         option({ value: "pressControlForShortcuts" }, "simple notes, press " + EditorConfig.ctrlName + " for shortcuts"),
     );
-    private readonly _keyboardLayout: HTMLSelectElement = select({ style: "width: 100%;" },
+    private readonly _keyboardLayout = select({ style: "width: 100%;" },
         option({ value: "wickiHayden" }, "Wicki-Hayden"),
         option({ value: "songScale" }, "selected song scale"),
         option({ value: "pianoAtC" }, "piano starting at C :)"),
@@ -24,22 +24,22 @@ export class RecordingSetupPrompt implements Prompt {
         option({ value: "pianoTransposingC" }, "piano transposing C :) to song key"),
         option({ value: "pianoTransposingA" }, "piano transposing A :( to song key"),
     );
-    private readonly _bassOffset: HTMLSelectElement = select({ style: "width: 100%;" },
+    private readonly _bassOffset = select({ style: "width: 100%;" },
         option({ value: "0" }, "disabled"),
         option({ value: "-1" }, "before"),
         option({ value: "1" }, "after"),
     );
-    private readonly _keyboardLayoutPreview: HTMLDivElement = div({ style: "display: grid; row-gap: 4px; margin: 4px auto; font-size: 10px;" });
-    private readonly _enableMidi: HTMLInputElement = input({ style: "width: 2em; margin-left: 1em;", type: "checkbox" });
-    private readonly _showRecordButton: HTMLInputElement = input({ style: "width: 2em; margin-left: 1em;", type: "checkbox" });
-    private readonly _snapRecordedNotesToRhythm: HTMLInputElement = input({ style: "width: 2em; margin-left: 1em;", type: "checkbox" });
-    private readonly _ignorePerformedNotesNotInScale: HTMLInputElement = input({ style: "width: 2em; margin-left: 1em;", type: "checkbox" });
-    private readonly _metronomeCountIn: HTMLInputElement = input({ style: "width: 2em; margin-left: 1em;", type: "checkbox" });
-    private readonly _metronomeWhileRecording: HTMLInputElement = input({ style: "width: 2em; margin-left: 1em;", type: "checkbox" });
+    private readonly _keyboardLayoutPreview = div({ style: "display: grid; row-gap: 4px; margin: 4px auto; font-size: 10px;" });
+    private readonly _enableMidi = input({ style: "width: 2em; margin-left: 1em;", type: "checkbox" });
+    private readonly _showRecordButton = input({ style: "width: 2em; margin-left: 1em;", type: "checkbox" });
+    private readonly _snapRecordedNotesToRhythm = input({ style: "width: 2em; margin-left: 1em;", type: "checkbox" });
+    private readonly _ignorePerformedNotesNotInScale = input({ style: "width: 2em; margin-left: 1em;", type: "checkbox" });
+    private readonly _metronomeCountIn = input({ style: "width: 2em; margin-left: 1em;", type: "checkbox" });
+    private readonly _metronomeWhileRecording = input({ style: "width: 2em; margin-left: 1em;", type: "checkbox" });
 
-    private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
-    private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-    readonly container: HTMLDivElement = div({ class: "prompt noSelection recordingSetupPrompt", style: "width: 600px; text-align: right; max-height: 90%;" },
+    private readonly _okayButton = button({ class: "okayButton", style: "width:45%;" }, "Okay");
+    private readonly _cancelButton = button({ class: "cancelButton" });
+    readonly container = div({ class: "prompt noSelection recordingSetupPrompt", style: "width: 600px; text-align: right; max-height: 90%;" },
         h2({ style: "align-self: center;" }, "Note Recording Setup"),
         div({ style: "display: grid; overflow-y: auto; overflow-x: hidden; flex-shrink: 1;" },
             p("DragonBox can record notes as you perform them. You can start recording by pressing Ctrl+Space (or " + EditorConfig.ctrlSymbol + "P)."),
@@ -153,17 +153,17 @@ export class RecordingSetupPrompt implements Prompt {
         }
         const rowLengths: number[] = [12, 12, 11, 10];
         const scale: ReadonlyArray<boolean> = Config.scales[this._doc.song.scale].flags;
-        for (let rowIndex: number = 0; rowIndex < 4; rowIndex++) {
-            const row: HTMLDivElement = div({ style: "display: flex;" });
+        for (let rowIndex = 0; rowIndex < 4; rowIndex++) {
+            const row = div({ style: "display: flex;" });
             this._keyboardLayoutPreview.appendChild(row);
-            const spacer: HTMLDivElement = div({ style: "width: " + (rowIndex * 12) + "px; height: 20px; flex-shrink: 0;" });
+            const spacer = div({ style: "width: " + (rowIndex * 12) + "px; height: 20px; flex-shrink: 0;" });
             row.appendChild(spacer);
-            for (let colIndex: number = 0; colIndex < rowLengths[rowIndex]; colIndex++) {
-                const key: HTMLDivElement = div({ style: `width: 20px; height: 20px; margin: 0 2px; box-sizing: border-box; flex-shrink: 0; display: flex; justify-content: center; align-items: center;` });
+            for (let colIndex = 0; colIndex < rowLengths[rowIndex]; colIndex++) {
+                const key = div({ style: `width: 20px; height: 20px; margin: 0 2px; box-sizing: border-box; flex-shrink: 0; display: flex; justify-content: center; align-items: center;` });
                 row.appendChild(key);
                 const pitch: number | null = KeyboardLayout.keyPosToPitch(this._doc, colIndex, 3 - rowIndex, this._keyboardLayout.value);
                 if (pitch != null) {
-                    const scalePitch: number = pitch % 12;
+                    const scalePitch = pitch % 12;
                     if (scale[scalePitch]) {
                         if (scalePitch == 0) {
                             key.style.background = ColorConfig.tonic;
@@ -183,7 +183,7 @@ export class RecordingSetupPrompt implements Prompt {
                         key.style.setProperty("filter", "");
                     }
 
-                    const pitchNameIndex: number = (scalePitch + Config.keys[this._doc.song.key].basePitch) % Config.pitchesPerOctave;
+                    const pitchNameIndex = (scalePitch + Config.keys[this._doc.song.key].basePitch) % Config.pitchesPerOctave;
                     key.textContent = Piano.getPitchName(pitchNameIndex, scalePitch, Math.floor(pitch / 12));
                 }
             }

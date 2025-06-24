@@ -10,17 +10,17 @@ import { ExportPrompt } from "./ExportPrompt";
 const { button, div, span, h2, input, br, select, option } = HTML;
 
 export class BeatsPerBarPrompt implements Prompt {
-    private readonly _computedSamplesLabel: HTMLDivElement = div({ style: "width: 10em;" }, new Text("0:00"));
-    private readonly _beatsStepper: HTMLInputElement = input({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
-    private readonly _conversionStrategySelect: HTMLSelectElement = select({ style: "width: 100%;" },
+    private readonly _computedSamplesLabel = div({ style: "width: 10em;" }, new Text("0:00"));
+    private readonly _beatsStepper = input({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
+    private readonly _conversionStrategySelect = select({ style: "width: 100%;" },
         option({ value: "splice" }, "Splice beats at end of bars."),
         option({ value: "stretch" }, "Stretch notes to fit in bars."),
         option({ value: "overflow" }, "Overflow notes across bars."),
     );
-    private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
-    private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
+    private readonly _cancelButton = button({ class: "cancelButton" });
+    private readonly _okayButton = button({ class: "okayButton", style: "width:45%;" }, "Okay");
 
-    readonly container: HTMLDivElement = div({ class: "prompt noSelection", style: "width: 250px;" },
+    readonly container = div({ class: "prompt noSelection", style: "width: 250px;" },
         h2("Beats Per Bar"),
         div({ style: "display: flex; flex-direction: row; align-items: center; justify-content: space-between;" },
             "Length:",
@@ -94,7 +94,7 @@ export class BeatsPerBarPrompt implements Prompt {
     }
 
     private static _validateNumber(event: Event): void {
-        const input: HTMLInputElement = <HTMLInputElement>event.target;
+        const input = <HTMLInputElement>event.target;
         input.value = String(BeatsPerBarPrompt._validate(input));
     }
 
@@ -103,7 +103,7 @@ export class BeatsPerBarPrompt implements Prompt {
     }
 
     private _predictFutureLength(): string {
-        const futureDoc: SongDocument = new SongDocument();
+        const futureDoc = new SongDocument();
         futureDoc.synth.song?.fromBase64String(this._doc.synth.song?.toBase64String() ? this._doc.synth.song?.toBase64String() : "");
         new ChangeBeatsPerBar(futureDoc, BeatsPerBarPrompt._validate(this._beatsStepper), this._conversionStrategySelect.value);
         return ExportPrompt.samplesToTime(futureDoc, futureDoc.synth.getTotalSamples(true, true, 0));

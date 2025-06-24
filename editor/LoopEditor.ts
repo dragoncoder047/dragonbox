@@ -1,9 +1,9 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { SongDocument } from "./SongDocument";
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
-import { ChangeLoop, ChangeChannelBar } from "./changes";
+import { ChangeChannelBar, ChangeLoop } from "./changes";
 import { ColorConfig } from "./ColorConfig";
+import { SongDocument } from "./SongDocument";
 import { TrackEditor } from "./TrackEditor";
 
 interface Cursor {
@@ -17,43 +17,43 @@ interface Endpoints {
 }
 
 export class LoopEditor {
-    private readonly _editorHeight: number = 20;
-    private readonly _startMode: number = 0;
-    private readonly _endMode: number = 1;
-    private readonly _bothMode: number = 2;
-    private readonly _loopMode: number = 3;
-    private _loopAtPointStart: number = -1;
-    private _loopAtPointEnd: number = -1;
+    private readonly _editorHeight = 20;
+    private readonly _startMode = 0;
+    private readonly _endMode = 1;
+    private readonly _bothMode = 2;
+    private readonly _loopMode = 3;
+    private _loopAtPointStart = -1;
+    private _loopAtPointEnd = -1;
 
-    private readonly _loop: SVGPathElement = SVG.path({ fill: "none", stroke: ColorConfig.loopAccent, "stroke-width": 4 });
-    private readonly _barLoop: SVGPathElement = SVG.path({ fill: "none", stroke: ColorConfig.uiWidgetFocus, "stroke-width": 2 });
-    private readonly _highlight: SVGPathElement = SVG.path({ fill: ColorConfig.hoverPreview, "pointer-events": "none" });
+    private readonly _loop = SVG.path({ fill: "none", stroke: ColorConfig.loopAccent, "stroke-width": 4 });
+    private readonly _barLoop = SVG.path({ fill: "none", stroke: ColorConfig.uiWidgetFocus, "stroke-width": 2 });
+    private readonly _highlight = SVG.path({ fill: ColorConfig.hoverPreview, "pointer-events": "none" });
 
-    private readonly _svg: SVGSVGElement = SVG.svg({ style: `touch-action: pan-y; position: absolute;`, height: this._editorHeight },
+    private readonly _svg = SVG.svg({ style: `touch-action: pan-y; position: absolute;`, height: this._editorHeight },
         this._loop,
         this._highlight,
         this._barLoop
     );
 
-    readonly container: HTMLElement = HTML.div({ class: "loopEditor" }, this._svg);
+    readonly container = HTML.div({ class: "loopEditor" }, this._svg);
 
-    private _barWidth: number = 32;
+    private _barWidth = 32;
     private _change: ChangeLoop | null = null;
     private _cursor: Cursor = { startBar: -1, mode: -1 };
-    private _mouseX: number = 0;
-    //private _mouseY: number = 0;
-    private _clientStartX: number = 0;
-    private _clientStartY: number = 0;
-    private _startedScrolling: boolean = false;
-    private _draggingHorizontally: boolean = false;
-    private _mouseDown: boolean = false;
-    private _mouseOver: boolean = false;
-    private _renderedLoopStart: number = -1;
-    private _renderedLoopStop: number = -1;
-    private _renderedBarCount: number = 0;
-    private _renderedBarWidth: number = -1;
-    private _renderedBarLoopStart: number = -1;
-    private _renderedBarLoopEnd: number = -1;
+    private _mouseX = 0;
+    //private _mouseY = 0;
+    private _clientStartX = 0;
+    private _clientStartY = 0;
+    private _startedScrolling = false;
+    private _draggingHorizontally = false;
+    private _mouseDown = false;
+    private _mouseOver = false;
+    private _renderedLoopStart = -1;
+    private _renderedLoopStop = -1;
+    private _renderedBarCount = 0;
+    private _renderedBarWidth = -1;
+    private _renderedBarLoopStart = -1;
+    private _renderedBarLoopEnd = -1;
 
     constructor(private _doc: SongDocument, private _trackEditor: TrackEditor) {
         this._updateCursorStatus();
@@ -73,7 +73,7 @@ export class LoopEditor {
     }
 
     private _updateCursorStatus(): void {
-        const bar: number = this._mouseX / this._barWidth;
+        const bar = this._mouseX / this._barWidth;
         this._cursor.startBar = bar;
 
         if (bar >= this._loopAtPointStart && bar <= this._loopAtPointEnd + 1) {
@@ -91,8 +91,8 @@ export class LoopEditor {
     }
 
     private _findEndPoints(middle: number): Endpoints {
-        let start: number = Math.round(middle - this._doc.song.loopLength / 2);
-        let end: number = start + this._doc.song.loopLength;
+        let start = Math.round(middle - this._doc.song.loopLength / 2);
+        let end = start + this._doc.song.loopLength;
         if (start < 0) {
             end -= start;
             start = 0;
@@ -119,7 +119,7 @@ export class LoopEditor {
     private _whenMousePressed = (event: MouseEvent): void => {
         event.preventDefault();
         this._mouseDown = true;
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.clientX || event.pageX) - boundingRect.left;
         //this._mouseY = (event.clientY || event.pageY) - boundingRect.top;
         this._updateCursorStatus();
@@ -130,7 +130,7 @@ export class LoopEditor {
     private _whenTouchPressed = (event: TouchEvent): void => {
         //event.preventDefault();
         this._mouseDown = true;
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = event.touches[0].clientX - boundingRect.left;
         //this._mouseY = event.touches[0].clientY - boundingRect.top;
         this._updateCursorStatus();
@@ -143,7 +143,7 @@ export class LoopEditor {
     }
 
     private _whenMouseMoved = (event: MouseEvent): void => {
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.clientX || event.pageX) - boundingRect.left;
         //this._mouseY = (event.clientY || event.pageY) - boundingRect.top;
         this._whenCursorMoved();
@@ -151,7 +151,7 @@ export class LoopEditor {
 
     private _whenTouchMoved = (event: TouchEvent): void => {
         if (!this._mouseDown) return;
-        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
+        const boundingRect = this._svg.getBoundingClientRect();
         this._mouseX = event.touches[0].clientX - boundingRect.left;
         //this._mouseY = event.touches[0].clientY - boundingRect.top;
 
@@ -171,14 +171,14 @@ export class LoopEditor {
 
     private _whenCursorMoved(): void {
         if (this._mouseDown) {
-            let oldStart: number = this._doc.song.loopStart;
-            let oldEnd: number = this._doc.song.loopStart + this._doc.song.loopLength;
+            let oldStart = this._doc.song.loopStart;
+            let oldEnd = this._doc.song.loopStart + this._doc.song.loopLength;
             if (this._change != null && this._doc.lastChangeWas(this._change)) {
                 oldStart = this._change.oldStart;
                 oldEnd = oldStart + this._change.oldLength;
             }
 
-            const bar: number = this._mouseX / this._barWidth;
+            const bar = this._mouseX / this._barWidth;
             let start: number;
             let end: number;
             let temp: number;
@@ -209,7 +209,7 @@ export class LoopEditor {
                 }
                 this._change = new ChangeLoop(this._doc, oldStart, oldEnd - oldStart, start, end - start);
             } else if (this._cursor.mode == this._bothMode) {
-                const endPoints: Endpoints = this._findEndPoints(bar);
+                const endPoints = this._findEndPoints(bar);
                 this._change = new ChangeLoop(this._doc, oldStart, oldEnd - oldStart, endPoints.start, endPoints.length);
             }
             else if (this._cursor.mode == this._loopMode) {
@@ -249,20 +249,20 @@ export class LoopEditor {
     }
 
     private _updatePreview(): void {
-        const showHighlight: boolean = this._mouseOver && !this._mouseDown;
+        const showHighlight = this._mouseOver && !this._mouseDown;
         this._highlight.style.visibility = showHighlight ? "visible" : "hidden";
 
         if (showHighlight) {
-            const radius: number = this._editorHeight / 2;
+            const radius = this._editorHeight / 2;
 
-            let highlightStart: number = (this._doc.song.loopStart) * this._barWidth;
-            let highlightStop: number = (this._doc.song.loopStart + this._doc.song.loopLength) * this._barWidth;
+            let highlightStart = (this._doc.song.loopStart) * this._barWidth;
+            let highlightStop = (this._doc.song.loopStart + this._doc.song.loopLength) * this._barWidth;
             if (this._cursor.mode == this._startMode) {
                 highlightStop = (this._doc.song.loopStart) * this._barWidth + radius * 2;
             } else if (this._cursor.mode == this._endMode) {
                 highlightStart = (this._doc.song.loopStart + this._doc.song.loopLength) * this._barWidth - radius * 2;
             } else if (this._cursor.mode == this._bothMode) {
-                const endPoints: Endpoints = this._findEndPoints(this._cursor.startBar);
+                const endPoints = this._findEndPoints(this._cursor.startBar);
                 highlightStart = (endPoints.start) * this._barWidth;
                 highlightStop = (endPoints.start + endPoints.length) * this._barWidth;
             }
@@ -309,9 +309,9 @@ export class LoopEditor {
     private _render(): void {
         this._barWidth = this._doc.getBarWidth();
 
-        const radius: number = this._editorHeight / 2;
-        const loopStart: number = (this._doc.song.loopStart) * this._barWidth;
-        const loopStop: number = (this._doc.song.loopStart + this._doc.song.loopLength) * this._barWidth;
+        const radius = this._editorHeight / 2;
+        const loopStart = (this._doc.song.loopStart) * this._barWidth;
+        const loopStop = (this._doc.song.loopStart + this._doc.song.loopLength) * this._barWidth;
 
         if (this._renderedBarCount != this._doc.song.barCount || this._renderedBarWidth != this._barWidth) {
             this._renderedBarCount = this._doc.song.barCount;

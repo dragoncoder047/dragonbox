@@ -1561,7 +1561,11 @@ export class Song {
         // let fromAbyssBox: boolean;
 
         // Detect variant here. If version doesn't match known variant, assume it is a vanilla string which does not report variant.
-        if (variantTest == 0x74){ //"t"
+        if (variantTest == 0x64) { // "d" = DragonBox is (currently) compatible with Theepbox so copy the settings
+            fromTheepBox = true
+            fromSlarmoosBox = true
+            charIndex++;
+        } else if (variantTest == 0x74){ //"t"
             fromTheepBox = true
             fromSlarmoosBox = true
             charIndex++;

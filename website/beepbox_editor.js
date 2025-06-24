@@ -3412,7 +3412,7 @@ var beepbox = (() => {
     }
   };
 
-  // node_modules/.pnpm/imperative-html@0.1.2/node_modules/imperative-html/dist/esm/elements-base.js
+  // node_modules/imperative-html/dist/esm/elements-base.js
   var __values = function(o) {
     var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
     if (m) return m.call(o);
@@ -3553,7 +3553,7 @@ var beepbox = (() => {
     return fragment;
   }
 
-  // node_modules/.pnpm/imperative-html@0.1.2/node_modules/imperative-html/dist/esm/elements-strict.js
+  // node_modules/imperative-html/dist/esm/elements-strict.js
   var __values2 = function(o) {
     var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
     if (m) return m.call(o);
@@ -15422,7 +15422,11 @@ li.select2-results__option[role=group] > strong:hover {
       let fromUltraBox = false;
       let fromSlarmoosBox = false;
       let fromTheepBox = false;
-      if (variantTest == 116) {
+      if (variantTest == 100) {
+        fromTheepBox = true;
+        fromSlarmoosBox = true;
+        charIndex++;
+      } else if (variantTest == 116) {
         fromTheepBox = true;
         fromSlarmoosBox = true;
         charIndex++;
@@ -19266,7 +19270,7 @@ li.select2-results__option[role=group] > strong:hover {
     }
   };
 
-  // node_modules/.pnpm/js-xxhash@4.0.0/node_modules/js-xxhash/dist/esm/xxHash32.js
+  // node_modules/js-xxhash/dist/esm/xxHash32.js
   var PRIME32_1 = 2654435761;
   var PRIME32_2 = 2246822519;
   var PRIME32_3 = 3266489917;

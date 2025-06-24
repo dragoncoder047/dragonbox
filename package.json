@@ -29,7 +29,7 @@
 		"package-host": "npm run build-offline && npm run build-offline-html && electron-packager ./to_deploy --asar --overwrite",
 		"live-editor:build": "node ./scripts/live_editor.mjs",
 		"live-editor:serve": "python3 -m http.server 8081 -d website",
-        "live-editor": "npm run \"/^live-editor:.*/\"",
+        "live-editor": "pnpm run \"/^live-editor:.*/\"",
         "lint": "tsc"
 	},
 	"repository": {

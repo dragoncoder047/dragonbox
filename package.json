@@ -18,37 +18,33 @@
 	"icon": "path.join(__dirname, 'icon.ico')",
 	"scripts": {
 		"build": "npm run build-synth && npm run build-player && npm run build-editor",
-		"build-synth": "bash ./scripts/compile_beepbox_synth.sh",
-		"build-player": "bash ./scripts/compile_beepbox_player.sh",
-		"build-editor": "bash ./scripts/compile_beepbox_editor.sh",
-		"build-offline": "bash ./scripts/compile_beepbox_offline.sh",
+		"build-synth": "node ./scripts/compile_beepbox_synth.mjs",
+		"build-player": "node ./scripts/compile_beepbox_player.mjs",
+		"build-editor": "node ./scripts/compile_beepbox_editor.mjs",
+		"build-offline": "node ./scripts/compile_beepbox_offline.mjs",
 		"build-offline-html": "bash ./scripts/compile_beepbox_offline_html.sh",
 		"deploy-files": "bash ./scripts/deploy_files.sh",
 		"start": "electron ./to_deploy",
-		"package": "electron-packager ./to_deploy --platform=darwin,linux,win32 --arch=ia32,x64 --asar --overwrite && npm run build-offline-html",
-		"package-host": "electron-packager ./to_deploy DragonBox --asar --overwrite && npm run build-offline-html",
-		"live-editor": "bash ./scripts/live_editor.sh",
-		"live-editor-fast-typeless": "bash ./scripts/live_editor_fast_typeless.sh",
-        "lint": "tsc --noEmit -p scripts/tsconfig_synth_only.json && tsc --noEmit -p scripts/tsconfig_editor.json && tsc --noEmit -p scripts/tsconfig_player.json"
+		"package": "npm run build-offline && npm run build-offline-html && electron-packager ./to_deploy --platform=darwin,linux,win32 --arch=ia32,x64,arm64 --asar --overwrite",
+		"package-host": "npm run build-offline && npm run build-offline-html && electron-packager ./to_deploy --asar --overwrite",
+		"live-editor:build": "node ./scripts/live_editor.mjs",
+		"live-editor:serve": "python3 -m http.server 8081 -d website",
+        "live-editor": "npm run \"/^live-editor:.*/\"",
+        "lint": "tsc"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/dragoncoder047/dragonbox.git"
 	},
 	"devDependencies": {
-		"@rollup/plugin-node-resolve": "^15.3.1",
 		"electron": "^33.4.11",
-		"rollup": "^2.79.2",
-		"rollup-plugin-sourcemaps": "^0.6.3",
-		"terser": "^5.43.1",
-		"typescript": "^5.8.3"
+		"esbuild": "^0.25.0",
+        "typescript": "^5.6.2"
 	},
 	"dependencies": {
 		"@electron/packager": "^18.3.6",
 		"@types/jquery": "^3.5.32",
 		"@types/select2": "^4.0.63",
-		"esbuild": "^0.23.1",
-		"express": "^4.21.2",
 		"imperative-html": "^0.1.2",
 		"js-xxhash": "^4.0.0",
 		"select2": "^4.0.13"

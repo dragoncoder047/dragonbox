@@ -2,20 +2,16 @@
 <html lang="en">
 
     <head>
-        <link rel='shortcut icon' type='image/x-icon' href='./icon.ico' />
+        <link rel='shortcut icon' type='image/png' href='./icon.png' />
         <!-- jQuery and select2 -->
         <script src="jquery-3.4.1.min.js"></script>
         <link href="select2.min.css" rel="stylesheet" />
         <script src="select2.min.js"></script>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Slarmoo's Box</title>
-        <meta name="application-name" content="Slarmoo's Box" />
-        <meta name="apple-mobile-web-app-title" content="Slarmoo's Box">
-        <meta name="description"
-            content="Slarmoo's Box is a mod of Ultrabox that aims to advance Beepbox's capabilities." />
-        <meta name="keywords"
-            content="chiptune, instrumental, music, song, melody, composition, tool, free, online, square wave, NES, NSF, slarmoosbox, ultrabox, beepbox, jummbox, pandorasbox, modbox, sandbox, goldbox, wackybox, todbox, slarmoo, slarmoos" />
+        <title>DragonBox</title>
+        <meta name="application-name" content="DragonBox" />
+        <meta name="apple-mobile-web-app-title" content="DragonBox">
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -23,7 +19,6 @@
         <meta name="msapplication-TileColor" content="#800080" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <meta name="format-detection" content="telephone=no" />
-        <meta property="og:image" content="./icon.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="./icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="./icon.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
@@ -180,12 +175,12 @@
             <section>
 
                 <h1>
-                    <font>Slarmoo's Box</font>
+                    DragonBox
                     <span id="goldboxPlant" style="display: inline; color:#62a13b"></span>
                 </h1>
 
                 <p id="introduction">
-                    This is the offline version of Slarmoo's Box.<br>
+                    This is the offline version of DragonBox.<br>
                     You can load samples by dropping them into the <code>samples</code> folder, and then inputting eg.
                     <code>file:samples/sample1.wav</code>
                     <br>You can also load samples from websites if you're connected to the internet.
@@ -281,7 +276,7 @@
                 // Go ahead and load js beepbox editor interface:
                 var fileref = document.createElement("script");
                 fileref.setAttribute("type", "text/javascript");
-                fileref.setAttribute("src", "foolish_editor.min.js");
+                fileref.setAttribute("src", "beepbox_editor.min.js");
                 document.head.appendChild(fileref);
             } else {
                 document.getElementById("beepboxEditorContainer").innerHTML = "Sorry, DragonBox doesn't support your browser. Try a recent version of Chrome, Firefox, Edge, Safari, or Opera.";

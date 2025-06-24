@@ -1,8 +1,11 @@
 set -e
 
+rm -rf to_deploy
 mkdir to_deploy
 mkdir -p to_deploy/player
 mkdir -p to_deploy/theme_resources
+
+cp package.json to_deploy/
 
 cp website/beepbox_editor.min.js to_deploy/
 # TODO: see if something can be done about the bugs the service worker causes

@@ -119,7 +119,7 @@ export class LoopEditor {
     private _whenMousePressed = (event: MouseEvent): void => {
         event.preventDefault();
         this._mouseDown = true;
-        const boundingRect: ClientRect = this._svg.getBoundingClientRect();
+        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.clientX || event.pageX) - boundingRect.left;
         //this._mouseY = (event.clientY || event.pageY) - boundingRect.top;
         this._updateCursorStatus();
@@ -130,7 +130,7 @@ export class LoopEditor {
     private _whenTouchPressed = (event: TouchEvent): void => {
         //event.preventDefault();
         this._mouseDown = true;
-        const boundingRect: ClientRect = this._svg.getBoundingClientRect();
+        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
         this._mouseX = event.touches[0].clientX - boundingRect.left;
         //this._mouseY = event.touches[0].clientY - boundingRect.top;
         this._updateCursorStatus();
@@ -143,7 +143,7 @@ export class LoopEditor {
     }
 
     private _whenMouseMoved = (event: MouseEvent): void => {
-        const boundingRect: ClientRect = this._svg.getBoundingClientRect();
+        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.clientX || event.pageX) - boundingRect.left;
         //this._mouseY = (event.clientY || event.pageY) - boundingRect.top;
         this._whenCursorMoved();
@@ -151,7 +151,7 @@ export class LoopEditor {
 
     private _whenTouchMoved = (event: TouchEvent): void => {
         if (!this._mouseDown) return;
-        const boundingRect: ClientRect = this._svg.getBoundingClientRect();
+        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
         this._mouseX = event.touches[0].clientX - boundingRect.left;
         //this._mouseY = event.touches[0].clientY - boundingRect.top;
 

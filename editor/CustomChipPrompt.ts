@@ -146,7 +146,7 @@ export class CustomChipPromptCanvas {
     private _whenMousePressed = (event: MouseEvent): void => {
         event.preventDefault();
         this._mouseDown = true;
-        const boundingRect: ClientRect = this._svg.getBoundingClientRect();
+        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
         this._mouseX = ((event.clientX || event.pageX) - boundingRect.left) * this._editorWidth / (boundingRect.right - boundingRect.left);
         this._mouseY = ((event.clientY || event.pageY) - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseX)) this._mouseX = 0;
@@ -159,7 +159,7 @@ export class CustomChipPromptCanvas {
     private _whenTouchPressed = (event: TouchEvent): void => {
         event.preventDefault();
         this._mouseDown = true;
-        const boundingRect: ClientRect = this._svg.getBoundingClientRect();
+        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.touches[0].clientX - boundingRect.left) * this._editorWidth / (boundingRect.right - boundingRect.left);
         this._mouseY = (event.touches[0].clientY - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseX)) this._mouseX = 0;
@@ -171,7 +171,7 @@ export class CustomChipPromptCanvas {
 
     private _whenMouseMoved = (event: MouseEvent): void => {
         if (this.container.offsetParent == null) return;
-        const boundingRect: ClientRect = this._svg.getBoundingClientRect();
+        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
         this._mouseX = ((event.clientX || event.pageX) - boundingRect.left) * this._editorWidth / (boundingRect.right - boundingRect.left);
         this._mouseY = ((event.clientY || event.pageY) - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseX)) this._mouseX = 0;
@@ -183,7 +183,7 @@ export class CustomChipPromptCanvas {
         if (this.container.offsetParent == null) return;
         if (!this._mouseDown) return;
         event.preventDefault();
-        const boundingRect: ClientRect = this._svg.getBoundingClientRect();
+        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.touches[0].clientX - boundingRect.left) * this._editorWidth / (boundingRect.right - boundingRect.left);
         this._mouseY = (event.touches[0].clientY - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseX)) this._mouseX = 0;

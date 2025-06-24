@@ -178,7 +178,7 @@ export class TrackEditor {
     }
 
     private _updateSelectPos(event: TouchEvent): void {
-        const boundingRect: ClientRect = this._svg.getBoundingClientRect();
+        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
         this._mouseX = event.touches[0].clientX - boundingRect.left;
         this._mouseY = event.touches[0].clientY - boundingRect.top;
         if (isNaN(this._mouseX)) this._mouseX = 0;
@@ -222,7 +222,7 @@ export class TrackEditor {
     }
 
     private _updateMousePos(event: MouseEvent): void {
-        const boundingRect: ClientRect = this._svg.getBoundingClientRect();
+        const boundingRect: DOMRect = this._svg.getBoundingClientRect();
         this._mouseX = (event.clientX || event.pageX) - boundingRect.left;
         this._mouseY = (event.clientY || event.pageY) - boundingRect.top;
         this._mouseBar = Math.floor(Math.min(this._doc.song.barCount - 1, Math.max(0, this._mouseX / this._barWidth)));

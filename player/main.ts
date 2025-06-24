@@ -458,7 +458,7 @@ function onTimelineTouchMove(event: TouchEvent): void {
 
 function onTimelineCursorMove(mouseX: number): void {
 	if (draggingPlayhead && synth.song != null) {
-		const boundingRect: ClientRect = visualizationContainer.getBoundingClientRect();
+		const boundingRect: DOMRect = visualizationContainer.getBoundingClientRect();
 		synth.playhead = synth.song.barCount * (mouseX - boundingRect.left) / (boundingRect.right - boundingRect.left);
 		synth.computeLatestModValues();
 		renderPlayhead();
@@ -479,7 +479,7 @@ function renderPlayhead(): void {
 		let pos: number = synth.playhead / synth.song.barCount;
 		playhead.style.left = (timelineWidth * pos) + "px";
 			
-		const boundingRect: ClientRect = visualizationContainer.getBoundingClientRect();
+		const boundingRect: DOMRect = visualizationContainer.getBoundingClientRect();
 		visualizationContainer.scrollLeft = pos * (timelineWidth - boundingRect.width);
 
 		if (notesFlashWhenPlayed) {
@@ -527,7 +527,7 @@ function renderTimeline(): void {
 	timeline.innerHTML = "";
 	if (synth.song == null) return;
 		
-	const boundingRect: ClientRect = visualizationContainer.getBoundingClientRect();
+	const boundingRect: DOMRect = visualizationContainer.getBoundingClientRect();
 		
 	let timelineHeight: number;
 	let windowOctaves: number;

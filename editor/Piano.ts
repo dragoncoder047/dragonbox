@@ -171,7 +171,7 @@ export class Piano {
         event.preventDefault();
         this._doc.synth.maintainLiveInput();
         this._mouseDown = true;
-        const boundingRect: ClientRect = this.container.getBoundingClientRect();
+        const boundingRect: DOMRect = this.container.getBoundingClientRect();
         //this._mouseX = (event.clientX || event.pageX) - boundingRect.left;
         this._mouseY = ((event.clientY || event.pageY) - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseY)) this._mouseY = 0;
@@ -182,7 +182,7 @@ export class Piano {
 
     private _whenMouseMoved = (event: MouseEvent): void => {
         if (this._mouseDown || this._mouseOver) this._doc.synth.maintainLiveInput();
-        const boundingRect: ClientRect = this.container.getBoundingClientRect();
+        const boundingRect: DOMRect = this.container.getBoundingClientRect();
         //this._mouseX = (event.clientX || event.pageX) - boundingRect.left;
         this._mouseY = ((event.clientY || event.pageY) - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseY)) this._mouseY = 0;
@@ -201,7 +201,7 @@ export class Piano {
         event.preventDefault();
         this._doc.synth.maintainLiveInput();
         this._mouseDown = true;
-        const boundingRect: ClientRect = this.container.getBoundingClientRect();
+        const boundingRect: DOMRect = this.container.getBoundingClientRect();
         //this._mouseX = event.touches[0].clientX - boundingRect.left;
         this._mouseY = (event.touches[0].clientY - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseY)) this._mouseY = 0;
@@ -212,7 +212,7 @@ export class Piano {
     private _whenTouchMoved = (event: TouchEvent): void => {
         event.preventDefault();
         this._doc.synth.maintainLiveInput();
-        const boundingRect: ClientRect = this.container.getBoundingClientRect();
+        const boundingRect: DOMRect = this.container.getBoundingClientRect();
         //this._mouseX = event.touches[0].clientX - boundingRect.left;
         this._mouseY = (event.touches[0].clientY - boundingRect.top) * this._editorHeight / (boundingRect.bottom - boundingRect.top);
         if (isNaN(this._mouseY)) this._mouseY = 0;
@@ -258,7 +258,7 @@ export class Piano {
         this._preview.style.visibility = (!this._mouseOver || this._mouseDown) ? "hidden" : "visible";
 
         if (this._mouseOver && !this._mouseDown) {
-            const boundingRect: ClientRect = this.container.getBoundingClientRect();
+            const boundingRect: DOMRect = this.container.getBoundingClientRect();
             const pitchHeight: number = this._pitchHeight / (this._editorHeight / (boundingRect.bottom - boundingRect.top));
 
             this._preview.style.left = "0px";

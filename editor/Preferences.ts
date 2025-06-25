@@ -79,12 +79,12 @@ export class Preferences {
 		this.showOscilloscope = nsLocalStorage_get("showOscilloscope") != "false";
 		this.showSampleLoadingStatus = nsLocalStorage_get("showSampleLoadingStatus") != "false";
 		this.showDescription = nsLocalStorage_get("showDescription") != "false";
-		this.showInstrumentScrollbars = nsLocalStorage_get("showInstrumentScrollbars") == "true";
+		this.showInstrumentScrollbars = nsLocalStorage_get("showInstrumentScrollbars") != "false";
 		this.closePromptByClickoff = nsLocalStorage_get("closePromptByClickoff") == "true";
 		this.frostedGlassBackground = nsLocalStorage_get("frostedGlassBackground") == "true";
 		this.keyboardLayout = nsLocalStorage_get("keyboardLayout") || "pianoAtC";
 		this.bassOffset = (+(<any>nsLocalStorage_get("bassOffset"))) || 0;
-		this.layout = nsLocalStorage_get("layout") || "small+";
+		this.layout = nsLocalStorage_get("layout") || "long";
 		this.colorTheme = nsLocalStorage_get("colorTheme") || ColorConfig.defaultTheme;
 		this.customTheme = nsLocalStorage_get("customTheme");
         this.customTheme2 = nsLocalStorage_get("customTheme2");

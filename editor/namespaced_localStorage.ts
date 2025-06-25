@@ -1,6 +1,5 @@
-import { Config } from "./main";
-
-const localStorage_namespace = Config.jsonFormat;
+// importing Config causes a circular dependency error lol
+const localStorage_namespace = /*Config.jsonFormat*/"DragonBox";
 
 export function nsLocalStorage_save(name: string, data: string) {
     window.localStorage.setItem(`${localStorage_namespace}_${name}`, data);

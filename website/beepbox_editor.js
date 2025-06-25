@@ -38,7 +38,10 @@ var beepbox = (() => {
   });
 
   // editor/namespaced_localStorage.ts
-  var localStorage_namespace = Config.jsonFormat;
+  var localStorage_namespace = (
+    /*Config.jsonFormat*/
+    "DragonBox"
+  );
   function nsLocalStorage_save(name, data) {
     window.localStorage.setItem(`${localStorage_namespace}_${name}`, data);
   }
@@ -34004,12 +34007,12 @@ You should be redirected to the song at:<br /><br />
       this.showOscilloscope = nsLocalStorage_get("showOscilloscope") != "false";
       this.showSampleLoadingStatus = nsLocalStorage_get("showSampleLoadingStatus") != "false";
       this.showDescription = nsLocalStorage_get("showDescription") != "false";
-      this.showInstrumentScrollbars = nsLocalStorage_get("showInstrumentScrollbars") == "true";
+      this.showInstrumentScrollbars = nsLocalStorage_get("showInstrumentScrollbars") != "false";
       this.closePromptByClickoff = nsLocalStorage_get("closePromptByClickoff") == "true";
       this.frostedGlassBackground = nsLocalStorage_get("frostedGlassBackground") == "true";
       this.keyboardLayout = nsLocalStorage_get("keyboardLayout") || "pianoAtC";
       this.bassOffset = +nsLocalStorage_get("bassOffset") || 0;
-      this.layout = nsLocalStorage_get("layout") || "small+";
+      this.layout = nsLocalStorage_get("layout") || "long";
       this.colorTheme = nsLocalStorage_get("colorTheme") || ColorConfig.defaultTheme;
       this.customTheme = nsLocalStorage_get("customTheme");
       this.customTheme2 = nsLocalStorage_get("customTheme2");

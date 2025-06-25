@@ -16,4 +16,4 @@ const filesToCopy = [
     "package.json",
 ];
 
-for (const file of filesToCopy) cp(file, "to_deploy/" + file.split("/").at(-1));
+await Promise.all(filesToCopy.map(file => cp(file, "to_deploy/" + file.split("/").at(-1))));

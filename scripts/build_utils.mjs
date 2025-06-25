@@ -1,5 +1,5 @@
 import { build, context } from "esbuild";
-export { cp } from "node:fs/promises";
+import { cp as copyFile } from "node:fs/promises";
 export { execSync as system } from "child_process";
 export async function doBuildBoth(main, outfile, watch = false) {
 
@@ -22,7 +22,20 @@ export async function doBuildBoth(main, outfile, watch = false) {
     };
 
     if (watch) {
-        await context(opts).then(ctx => ctx.watch());
+        await context({
+            ...opts,
+            plugins: [{
+                name: "logger",
+                setup(build) {
+                    build.onEnd(result => {
+                        if (result.errors.length == 0)
+                            console.error(`rebuilt ${opts.outfile} OK`);
+                        else
+                            console.error(`failed to build ${opts.outfile}`);
+                    });
+                },
+            }]
+        }).then(ctx => ctx.watch());
     } else {
         await build(opts);
         await build({
@@ -32,4 +45,9 @@ export async function doBuildBoth(main, outfile, watch = false) {
         });
     }
 
+}
+
+export async function cp(from, to) {
+    console.log("copying " + from + " to " + to);
+    await copyFile(from, to);
 }

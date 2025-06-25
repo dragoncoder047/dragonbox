@@ -6,8 +6,9 @@ import { EnvelopeComputer } from "./EnvelopeComputer";
 import { inverseRealFourierTransform, scaleElementsByFactor } from "./FFT";
 import { warpInfinityToNyquist } from "./filtering";
 import { HarmonicsWave, Instrument, SpectrumWave } from "./Instrument";
-import { Synth, Tone } from "./synth";
+import { Synth } from "./synth";
 import { Chord, Config, drawNoiseSpectrum, EffectType, EnvelopeComputeIndex, getDrumWave, InstrumentType, performIntegralOld, SustainType, Unison } from "./SynthConfig";
+import { Tone } from "./Tone";
 import { fittingPowerOfTwo } from "./utils";
 
 export class SpectrumWaveState {

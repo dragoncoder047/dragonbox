@@ -1,12 +1,13 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { FilterType, EffectType, EnvelopeComputeIndex, Config, GranularEnvelopeType, calculateRingModHertz } from "./SynthConfig";
+import { Effect } from "./Effect";
+import { FilterControlPoint, FilterSettings } from "./Filter";
 import { DynamicBiquadFilter } from "./filtering";
 import { Instrument } from "./Instrument";
 import { InstrumentState } from "./InstrumentState";
-import { Effect } from "./Effect";
-import { Synth, Tone } from "./synth";
-import { FilterSettings, FilterControlPoint } from "./Filter";
+import { Synth } from "./synth";
+import { Config, EffectType, EnvelopeComputeIndex, FilterType, GranularEnvelopeType, calculateRingModHertz } from "./SynthConfig";
+import { Tone } from "./Tone";
 import { fittingPowerOfTwo } from "./utils";
 
 class Grain {

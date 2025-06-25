@@ -3,8 +3,9 @@
 import { xxHash32 } from "js-xxhash";
 import { Instrument } from "./Instrument";
 import { InstrumentState } from "./InstrumentState";
+import { Synth } from "./synth";
 import { AutomationTarget, Config, Envelope, EnvelopeComputeIndex, EnvelopeType, FilterType, getArpeggioPitchIndex, LFOEnvelopeTypes, RandomEnvelopeTypes } from "./SynthConfig";
-import { Synth, Tone } from "./synth";
+import { Tone } from "./Tone";
 
 export class EnvelopeComputer {
     // "Unscaled" values do not increase with Envelope Speed's timescale factor. Thus they are "real" seconds since the start of the note.

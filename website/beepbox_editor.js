@@ -21285,9 +21285,8 @@ li.select2-results__option[role=group] > strong:hover {
     }
   };
 
-  // synth/synth.ts
-  var epsilon = 1e-24;
-  var Tone4 = class {
+  // synth/Tone.ts
+  var Tone = class {
     instrumentIndex;
     pitches = Array(Config.maxChordSize + 2).fill(0);
     pitchCount = 0;
@@ -21417,6 +21416,9 @@ li.select2-results__option[role=group] > strong:hover {
       this.drumsetPitch = null;
     }
   };
+
+  // synth/synth.ts
+  var epsilon = 1e-24;
   var Synth = class _Synth {
     syncSongState() {
       const channelCount = this.song.getChannelCount();
@@ -22815,7 +22817,7 @@ li.select2-results__option[role=group] > strong:hover {
         tone.freshlyAllocated = true;
         return tone;
       }
-      return new Tone4();
+      return new Tone();
     }
     releaseTone(instrumentState, tone) {
       instrumentState.releasedTones.pushFront(tone);

@@ -740,7 +740,7 @@ export class Song {
                 channel.instruments.length = Config.instrumentCountMin;
 
                 for (let bar = 0; bar < this.barCount; bar++) {
-                    channel.bars[bar] = bar < 16 ? 1 : 0;
+                    channel.bars[bar] = 0;
                 }
                 channel.bars.length = this.barCount;
             }

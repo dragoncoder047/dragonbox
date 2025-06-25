@@ -5,6 +5,7 @@ import { SongDocument } from "./SongDocument";
 import { HTML } from "imperative-html/dist/esm/elements-strict";
 import { Channel } from "../synth/Channel";
 import { ChangeAppendInstrument, ChangePasteInstrument, ChangeViewInstrument } from "./changes";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
 import { Prompt } from "./Prompt";
 
 const { button, div, h2, input, select, option, code } = HTML;
@@ -55,7 +56,7 @@ export class InstrumentImportPrompt implements Prompt {
             this._importStrategySelect.value = "replace";
             this._strategyInfoText.hidden = false;
         } else {
-            const lastStrategy: string | null = window.localStorage.getItem("instrumentImportStrategy");
+            const lastStrategy: string | null = nsLocalStorage_get("instrumentImportStrategy");
             if (lastStrategy != null) this._importStrategySelect.value = lastStrategy;
             this._strategyInfoText.hidden = true;
         }
@@ -103,7 +104,7 @@ export class InstrumentImportPrompt implements Prompt {
         switch (this._importStrategySelect.value) {
             case "replace":
                 // console.log("multi replace");
-                window.localStorage.setItem("instrumentImportStrategy", this._importStrategySelect.value);
+                nsLocalStorage_save("instrumentImportStrategy", this._importStrategySelect.value);
                 //Replace the current instrument with the first one, then add the rest
                 const firstInstrum = file[0];
                 this._doc.record(new ChangePasteInstrument(this._doc, currentInstrum, firstInstrum));
@@ -121,7 +122,7 @@ export class InstrumentImportPrompt implements Prompt {
                 return;
             case "all":
                 // console.log("multi all");
-                window.localStorage.setItem("instrumentImportStrategy", this._importStrategySelect.value);
+                nsLocalStorage_save("instrumentImportStrategy", this._importStrategySelect.value);
                 //Delete all instruments then add these ones
                 channel.instruments.length = 0;
                 for (let insturm of file) {
@@ -137,7 +138,7 @@ export class InstrumentImportPrompt implements Prompt {
                 return;
             default:
                 // console.log("multi append");
-                window.localStorage.setItem("instrumentImportStrategy", this._importStrategySelect.value);
+                nsLocalStorage_save("instrumentImportStrategy", this._importStrategySelect.value);
                 //Add these instruments
                 for (let insturm of file) {
                     if (!this._validate_instrument_limit(channel)) {
@@ -168,7 +169,7 @@ export class InstrumentImportPrompt implements Prompt {
             case "replace":
                 //Replace the current instrument with this one
                 // console.log("single replace");
-                window.localStorage.setItem("instrumentImportStrategy", this._importStrategySelect.value);
+                nsLocalStorage_save("instrumentImportStrategy", this._importStrategySelect.value);
                 this._doc.record(new ChangePasteInstrument(this._doc, currentInstrum, file));
                 this._doc.record(new ChangeViewInstrument(this._doc, this._doc.getCurrentInstrument()))
                 this._doc.prompt = null;
@@ -177,7 +178,7 @@ export class InstrumentImportPrompt implements Prompt {
             case "all":
                 //Delete all instruments then add this one
                 // console.log("single all");
-                window.localStorage.setItem("instrumentImportStrategy", this._importStrategySelect.value);
+                nsLocalStorage_save("instrumentImportStrategy", this._importStrategySelect.value);
                 channel.instruments.length = 1;
                 const firstInstrum = channel.instruments[0];
                 this._doc.record(new ChangePasteInstrument(this._doc, firstInstrum, file));
@@ -189,7 +190,7 @@ export class InstrumentImportPrompt implements Prompt {
                 //Add this instrument
                 if (!this._validate_instrument_limit(channel)) { alert("Max instruments reached! The instrument was not imported."); this._doc.prompt = null; return; }
                 // console.log("single append");
-                window.localStorage.setItem("instrumentImportStrategy", this._importStrategySelect.value);
+                nsLocalStorage_save("instrumentImportStrategy", this._importStrategySelect.value);
                 this._doc.record(new ChangeAppendInstrument(this._doc, channel, file));
                 this._doc.record(new ChangeViewInstrument(this._doc, channel.instruments.length - 1))
                 this._doc.prompt = null;

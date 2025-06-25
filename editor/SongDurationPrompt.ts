@@ -8,6 +8,7 @@ import { ChangeGroup } from "./Change";
 import { ChangeBarCount } from "./changes";
 import { ColorConfig } from "./ColorConfig";
 import { ExportPrompt } from "./ExportPrompt";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
 
 const { button, div, span, h2, input, br, select, option } = HTML;
 
@@ -51,7 +52,7 @@ export class SongDurationPrompt implements Prompt {
         this._barsStepper.min = Config.barCountMin + "";
         this._barsStepper.max = Config.barCountMax + "";
 
-        const lastPosition: string | null = window.localStorage.getItem("barCountPosition");
+        const lastPosition: string | null = nsLocalStorage_get("barCountPosition");
         if (lastPosition != null) {
             this._positionSelect.value = lastPosition;
         }
@@ -113,7 +114,7 @@ export class SongDurationPrompt implements Prompt {
     }
 
     private _saveChanges = (): void => {
-        window.localStorage.setItem("barCountPosition", this._positionSelect.value);
+        nsLocalStorage_save("barCountPosition", this._positionSelect.value);
         const group = new ChangeGroup();
         group.append(new ChangeBarCount(this._doc, SongDurationPrompt._validate(this._barsStepper), this._positionSelect.value == "beginning"));
         this._doc.prompt = null;

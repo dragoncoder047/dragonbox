@@ -8,6 +8,7 @@ import { prettyNumber } from "./EditorConfig";
 import { Slider } from "./HTMLWrapper";
 import { SongDocument } from "./SongDocument";
 import { ChangeDiscreteEnvelope, ChangeEnvelopeInverse, ChangeEnvelopeLowerBound, ChangeEnvelopePitchEnd, ChangeEnvelopePitchStart, ChangeEnvelopeUpperBound, ChangePerEnvelopeSpeed, ChangeRandomEnvelopeSeed, ChangeRandomEnvelopeSteps, ChangeRemoveEnvelope, ChangeSetEnvelopeTarget, ChangeSetEnvelopeType, ChangeSetEnvelopeWaveform, PasteEnvelope, } from "./changes";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
 
 export class EnvelopeEditor {
 	readonly container = HTML.div({ class: "envelopeEditor" });
@@ -130,9 +131,9 @@ export class EnvelopeEditor {
 			this.extraSettingsDropdownGroups[deleteButtonIndex].style.display = "none";
 		} else if (envelopeCopyButtonIndex != -1) {
 			const instrument = this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()];
-			window.localStorage.setItem("envelopeCopy", JSON.stringify(instrument.envelopes[envelopeCopyButtonIndex].toJsonObject()));
+			nsLocalStorage_save("envelopeCopy", JSON.stringify(instrument.envelopes[envelopeCopyButtonIndex].toJsonObject()));
 		} else if (envelopePasteButtonIndex != -1) {
-			const envelopeCopy = window.localStorage.getItem("envelopeCopy");
+			const envelopeCopy = nsLocalStorage_get("envelopeCopy");
 			this._doc.record(new PasteEnvelope(this._doc, JSON.parse(String(envelopeCopy)), envelopePasteButtonIndex));
 		}
 	}

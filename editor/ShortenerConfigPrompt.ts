@@ -1,6 +1,7 @@
 import { HTML } from "imperative-html/dist/esm/elements-strict";
 import { SongDocument } from "./SongDocument";
 import { Prompt } from "./Prompt";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
 
 const { button, div, h2, select, option } = HTML;
 
@@ -25,7 +26,7 @@ export class ShortenerConfigPrompt implements Prompt {
     );
 
     constructor(private _doc: SongDocument) {
-        const lastStrategy: string | null = window.localStorage.getItem("shortenerStrategySelect");
+        const lastStrategy: string | null = nsLocalStorage_get("shortenerStrategySelect");
         if (lastStrategy != null) {
             this._shortenerStrategySelect.value = lastStrategy;
         }
@@ -52,7 +53,7 @@ export class ShortenerConfigPrompt implements Prompt {
     }
 
     private _saveChanges = (): void => {
-        window.localStorage.setItem("shortenerStrategySelect", this._shortenerStrategySelect.value);
+        nsLocalStorage_save("shortenerStrategySelect", this._shortenerStrategySelect.value);
         this._doc.prompt = null;
         this._doc.undo();
     }

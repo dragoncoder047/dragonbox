@@ -20,6 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+import { nsLocalStorage_get } from "../editor/namespaced_localStorage";
+
 export interface Dictionary<T> {
     [K: string]: T;
 }
@@ -442,7 +444,7 @@ export async function startLoadingSample(url: string, chipWaveIndex: number, pre
 }
 
 export function getLocalStorageItem<T>(key: string, defaultValue: T): T | string {
-    let value: T | string | null = localStorage.getItem(key);
+    let value: T | string | null = nsLocalStorage_get(key);
     if (value == null || value === "null" || value === "undefined") {
         value = defaultValue;
     }

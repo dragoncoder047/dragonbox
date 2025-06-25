@@ -8,6 +8,7 @@ import { ArrayBufferWriter } from "./ArrayBufferWriter";
 import { ColorConfig } from "./ColorConfig";
 import { EditorConfig, Preset } from "./EditorConfig";
 import { defaultMidiExpression, defaultMidiPitchBend, MidiChunkType, MidiControlEventMessage, MidiEventType, MidiFileFormat, MidiMetaEventMessage, MidiRegisteredParameterNumberLSB, MidiRegisteredParameterNumberMSB, volumeMultToMidiExpression, volumeMultToMidiVolume } from "./Midi";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
 import { Prompt } from "./Prompt";
 import { SongDocument } from "./SongDocument";
 
@@ -135,12 +136,12 @@ export class ExportPrompt implements Prompt {
             this._enableOutro.disabled = false;
         }
 
-        const lastExportFormat: string | null = window.localStorage.getItem("exportFormat");
+        const lastExportFormat: string | null = nsLocalStorage_get("exportFormat");
         if (lastExportFormat != null) {
             this._formatSelect.value = lastExportFormat;
         }
 
-        const lastExportWhitespace = window.localStorage.getItem("exportWhitespace") != "false";
+        const lastExportWhitespace = nsLocalStorage_get("exportWhitespace") != "false";
         if (lastExportWhitespace != null) {
             this._removeWhitespace.checked = lastExportWhitespace;
         }
@@ -231,8 +232,8 @@ export class ExportPrompt implements Prompt {
     private _export = (): void => {
         if (this.outputStarted == true)
             return;
-        window.localStorage.setItem("exportFormat", this._formatSelect.value);
-        window.localStorage.setItem("exportWhitespace", this._removeWhitespace.value);
+        nsLocalStorage_save("exportFormat", this._formatSelect.value);
+        nsLocalStorage_save("exportWhitespace", this._removeWhitespace.value);
         switch (this._formatSelect.value) {
             case "wav":
                 this.outputStarted = true;

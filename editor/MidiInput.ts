@@ -1,8 +1,9 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
 import { Config } from "../synth/SynthConfig";
-import { SongDocument } from "./SongDocument";
 import { AnalogousDrum, analogousDrumMap, MidiEventType } from "./Midi";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
+import { SongDocument } from "./SongDocument";
 
 declare global {
 	interface Navigator {
@@ -52,7 +53,7 @@ export class MidiInputHandler {
     private _takeMidiHandlerFocus = (event?: Event) => {
         // Record that this browser tab is the one that should handle midi
         // events and any other open tabs should ignore midi events for now.
-        localStorage.setItem("midiHandlerId", id);
+        nsLocalStorage_save("midiHandlerId", id);
     }
 
     private _handleStateChange = (event: MIDIConnectionEvent) => {
@@ -79,7 +80,7 @@ export class MidiInputHandler {
 
     private _onMidiMessage = (event: MIDIMessageEvent) => {
         // Ignore midi events if disabled or a different tab is handling them.
-        if (!this._doc.prefs.enableMidi || localStorage.getItem("midiHandlerId") != id) return;
+        if (!this._doc.prefs.enableMidi || nsLocalStorage_get("midiHandlerId") != id) return;
 
         const isDrum = this._doc.song.getChannelIsNoise(this._doc.channel);
         let [eventType, key, velocity] = event.data;

@@ -3,6 +3,7 @@ import { Prompt } from "./Prompt";
 import { SongDocument } from "./SongDocument";
 
 import { PatternEditor } from "./PatternEditor";
+import { nsLocalStorage_clear, nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
 // import { ColorConfig } from "./ColorConfig";
 
 //namespace beepbox {
@@ -11,7 +12,7 @@ let doReload = false;
 export class CustomThemePrompt implements Prompt {
 	private readonly _fileInput = input({ type: "file", accept: "image/*", text: "choose editor background image"});
 	private readonly _fileInput2 = input({ type: "file", accept: "image/*", text: "choose website background image" });
-	private readonly _colorInput = input({ type: "text", value: localStorage.getItem("customColors") || `:root {
+	private readonly _colorInput = input({ type: "text", value: nsLocalStorage_get("customColors") || `:root {
 	--page-margin: black;
 	--editor-background: black;
 	--hover-preview: white;
@@ -170,7 +171,7 @@ export class CustomThemePrompt implements Prompt {
         ),
         this._cancelButton,
     );
-    // private readonly lastTheme: string | null = window.localStorage.getItem("colorTheme")
+    // private readonly lastTheme: string | null = nsLocalStorage_get("colorTheme")
 
     constructor(private _doc: SongDocument, private _pattern: PatternEditor, private _pattern2: HTMLDivElement, private _pattern3: HTMLElement) {
         this._fileInput.addEventListener("change", this._whenFileSelected);
@@ -197,10 +198,10 @@ export class CustomThemePrompt implements Prompt {
         this._resetButton.removeEventListener("click", this._reset);
     }
     private _reset = (): void => {
-        window.localStorage.removeItem("colorTheme");
-        window.localStorage.removeItem("customTheme");
-        window.localStorage.removeItem("customTheme2");
-        window.localStorage.removeItem("customColors");
+        nsLocalStorage_clear("colorTheme");
+        nsLocalStorage_clear("customTheme");
+        nsLocalStorage_clear("customTheme2");
+        nsLocalStorage_clear("customColors");
         this._pattern._svg.style.backgroundImage = "";
         document.body.style.backgroundImage = "";
         this._pattern2.style.backgroundImage = "";
@@ -213,8 +214,8 @@ export class CustomThemePrompt implements Prompt {
         this._close();
     }
     private _whenColorsChanged = (): void => {
-        localStorage.setItem("customColors", this._colorInput.value);
-        window.localStorage.setItem("colorTheme", "custom");
+        nsLocalStorage_save("customColors", this._colorInput.value);
+        nsLocalStorage_save("colorTheme", "custom");
         this._doc.colorTheme = "custom";
         doReload = true;
     }
@@ -226,8 +227,8 @@ export class CustomThemePrompt implements Prompt {
             //this._doc.prompt = null;
             //this._doc.goBackToStart();
             let base64 = <string>reader.result;
-            window.localStorage.setItem("customTheme", base64);
-            const value = `url("${window.localStorage.getItem('customTheme')}")`
+            nsLocalStorage_save("customTheme", base64);
+            const value = `url("${nsLocalStorage_get('customTheme')}")`
             console.log('setting', value)
             this._pattern._svg.style.backgroundImage = value;
             console.log('done')
@@ -242,8 +243,8 @@ export class CustomThemePrompt implements Prompt {
             //this._doc.prompt = null;
             //this._doc.goBackToStart();
             let base64 = <string>reader.result;
-            window.localStorage.setItem("customTheme2", base64);
-            const value = `url("${window.localStorage.getItem('customTheme2')}")`
+            window.nsLocalStorage_set("customTheme2", base64);
+            const value = `url("${nsLocalStorage_get('customTheme2')}")`
             document.body.style.backgroundImage = `url(${base64})`;
             this._pattern2.style.backgroundImage = value;
             this._pattern3.style.backgroundImage = value;
@@ -252,7 +253,7 @@ export class CustomThemePrompt implements Prompt {
                 secondImage.style.backgroundImage = `url(${base64})`;
             }
             // document.body.style.backgroundImage = `url(${newURL})`;
-            // window.localStorage.setItem("customTheme2", <string>reader.result);
+            // window.nsLocalStorage_set("customTheme2", <string>reader.result);
             // this._doc.record(new ChangeSong(this._doc, <string>reader.result), true, true);
         });
         reader.readAsDataURL(file);

@@ -2,6 +2,7 @@
 
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
 import { ColorConfig } from "../editor/ColorConfig";
+import { nsLocalStorage_get, nsLocalStorage_save } from "../editor/namespaced_localStorage";
 import { oscilloscopeCanvas } from "../global/Oscilloscope";
 import { Channel } from "../synth/Channel";
 import { Instrument } from "../synth/Instrument";
@@ -249,14 +250,14 @@ document.body.appendChild(
 // execution.
 function setLocalStorage(key: string, value: string): void {
 	try {
-		localStorage.setItem(key, value);
+		nsLocalStorage_save(key, value);
 	} catch (error) {
 		// Ignore the error since we can't fix it.
 	}
 }
 function getLocalStorage(key: string): string | null {
 	try {
-		return localStorage.getItem(key);
+		return nsLocalStorage_get(key);
 	} catch (error) {
 		// Ignore the error since we can't fix it.
 		return null;
@@ -732,7 +733,7 @@ function onKeyPressed(event: KeyboardEvent): void {
 function shortenUrl() {
 	hashUpdatedExternally();
 	let shortenerStrategy = "https://tinyurl.com/api-create.php?url=";
-	const localShortenerStrategy: string | null = window.localStorage.getItem("shortenerStrategySelect");
+	const localShortenerStrategy: string | null = nsLocalStorage_get("shortenerStrategySelect");
 
 	// if (localShortenerStrategy == "beepboxnet") shortenerStrategy = "https://www.beepbox.net/api-create.php?url=";
 	if (localShortenerStrategy == "isgd") shortenerStrategy = "https://is.gd/create.php?format=simple&url=";
@@ -742,11 +743,12 @@ function shortenUrl() {
 
 function onCopyClicked(): void {
 	// Set as any to allow compilation without clipboard types (since, uh, I didn't write this bit and don't know the proper types library) -jummbus
-	let nav: any;
-	nav = navigator;
+	// let nav: any;
+	// nav = navigator;
+    // the typescript libraries have navigator.clipboard now lets goooooooooo -dragoncoder047
 
-	if (nav.clipboard && nav.clipboard.writeText) {
-		nav.clipboard.writeText(location.href).catch(() => {
+	if (navigator.clipboard && navigator.clipboard.writeText) {
+		navigator.clipboard.writeText(location.href).catch(() => {
 			window.prompt("Copy to clipboard:", location.href);
 		});
 		return;

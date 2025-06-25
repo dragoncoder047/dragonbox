@@ -1,8 +1,9 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { BeepBoxOption, DictionaryArray, toNameMap, Config } from "../synth/SynthConfig";
-import { Song } from "../synth/Song";
 import { HTML } from "imperative-html/dist/esm/elements-strict";
+import { Song } from "../synth/Song";
+import { BeepBoxOption, Config, DictionaryArray, toNameMap } from "../synth/SynthConfig";
+import { nsLocalStorage_get } from "./namespaced_localStorage";
 
 export interface ChannelColors extends BeepBoxOption {
     readonly secondaryChannel: string;
@@ -14,7 +15,7 @@ export interface ChannelColors extends BeepBoxOption {
 export class ColorConfig {
     static colorLookup: Map<number, ChannelColors> = new Map<number, ChannelColors>();
 	static usesColorFormula = false;
-	static readonly defaultTheme = "modbox classic";
+	static readonly defaultTheme = "dark classic";
     static readonly themes: { [name: string]: string } = {
 	"dark classic": ``,
         "dark competition": `
@@ -5647,7 +5648,7 @@ export class ColorConfig {
 			box-shadow: inset 0 0 2000px rgba(255, 255, 255, .5);
 		}
 	}`,
-	"custom": `${localStorage.getItem("customColors") || `:root {  }`}`,
+	"custom": `${nsLocalStorage_get("customColors") || `:root {  }`}`,
     };
 
     static readonly pageMargin = "var(--page-margin, black)";

@@ -10,6 +10,7 @@ import { prettyNumber } from "./EditorConfig";
 import { Prompt } from "./Prompt";
 import { SongEditor } from "./SongEditor";
 import { ChangeGroup } from "./Change";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
 
 export class SpectrumEditor {
     private readonly _editorWidth = 120;
@@ -447,11 +448,11 @@ export class SpectrumEditorPrompt implements Prompt {
 
     private _copySettings = (): void => {
         const spectrumCopy = this.spectrumEditor.getSpectrumWave();
-        window.localStorage.setItem("spectrumCopy", JSON.stringify(spectrumCopy.spectrum));
+        nsLocalStorage_save("spectrumCopy", JSON.stringify(spectrumCopy.spectrum));
     }
 
     private _pasteSettings = (): void => {
-        const storedSpectrumWave = JSON.parse(String(window.localStorage.getItem("spectrumCopy")));
+        const storedSpectrumWave = JSON.parse(String(nsLocalStorage_get("spectrumCopy")));
         this.spectrumEditor.setSpectrumWave(storedSpectrumWave);
     }
 

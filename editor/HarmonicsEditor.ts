@@ -1,14 +1,15 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Config } from "../synth/SynthConfig";
-import { HarmonicsWave, Instrument } from "../synth/Instrument";
-import { SongDocument } from "./SongDocument";
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
+import { HarmonicsWave, Instrument } from "../synth/Instrument";
+import { Config } from "../synth/SynthConfig";
 import { ColorConfig } from "./ColorConfig";
-import { ChangeHarmonics } from "./changes";
 import { prettyNumber } from "./EditorConfig";
 import { Prompt } from "./Prompt";
+import { SongDocument } from "./SongDocument";
 import { SongEditor } from "./SongEditor";
+import { ChangeHarmonics } from "./changes";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
 
 export class HarmonicsEditor {
     private readonly _editorWidth = 120;
@@ -367,11 +368,11 @@ export class HarmonicsEditorPrompt implements Prompt {
 
     private _copySettings = (): void => {
         const harmonicsCopy = this.harmonicsEditor.getHarmonicsWave();
-        window.localStorage.setItem("harmonicsCopy", JSON.stringify(harmonicsCopy.harmonics));
+        nsLocalStorage_save("harmonicsCopy", JSON.stringify(harmonicsCopy.harmonics));
     }
 
     private _pasteSettings = (): void => {
-        const storedHarmonicsWave = JSON.parse(String(window.localStorage.getItem("harmonicsCopy")));
+        const storedHarmonicsWave = JSON.parse(String(nsLocalStorage_get("harmonicsCopy")));
         this.harmonicsEditor.setHarmonicsWave(storedHarmonicsWave);
         this.harmonicsEditor.storeChange();
     }

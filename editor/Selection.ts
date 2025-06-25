@@ -1,11 +1,12 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Dictionary, Config } from "../synth/SynthConfig";
 import { Note, NotePin, Pattern } from "../synth/Pattern";
-import { SongDocument } from "./SongDocument";
+import { Config, Dictionary } from "../synth/SynthConfig";
 import { ChangeGroup } from "./Change";
 import { ColorConfig } from "./ColorConfig";
-import { ChangeTrackSelection, ChangeChannelBar, ChangeAddChannel, ChangeRemoveChannel, ChangeChannelOrder, ChangeDuplicateSelectedReusedPatterns, ChangeNoteAdded, ChangeNoteTruncate, ChangePatternNumbers, ChangePatternSelection, ChangeInsertBars, ChangeDeleteBars, ChangeEnsurePatternExists, ChangeNoteLength, ChangePaste, ChangeSetPatternInstruments, ChangeViewInstrument, ChangeModChannel, ChangeModInstrument, ChangeModSetting, ChangeModFilter, ChangePatternsPerChannel, ChangePatternRhythm, ChangePatternScale, ChangeTranspose, ChangeRhythm, comparePatternNotes, unionOfUsedNotes, generateScaleMap, discardInvalidPatternInstruments, patternsContainSameInstruments, ChangeModEnvelope } from "./changes";
+import { SongDocument } from "./SongDocument";
+import { ChangeAddChannel, ChangeChannelBar, ChangeChannelOrder, ChangeDeleteBars, ChangeDuplicateSelectedReusedPatterns, ChangeEnsurePatternExists, ChangeInsertBars, ChangeModChannel, ChangeModEnvelope, ChangeModFilter, ChangeModInstrument, ChangeModSetting, ChangeNoteAdded, ChangeNoteLength, ChangeNoteTruncate, ChangePaste, ChangePatternNumbers, ChangePatternRhythm, ChangePatternScale, ChangePatternSelection, ChangePatternsPerChannel, ChangeRemoveChannel, ChangeRhythm, ChangeSetPatternInstruments, ChangeTrackSelection, ChangeTranspose, ChangeViewInstrument, comparePatternNotes, discardInvalidPatternInstruments, generateScaleMap, patternsContainSameInstruments, unionOfUsedNotes } from "./changes";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
 
 interface PatternCopy {
     instruments: number[];
@@ -336,7 +337,7 @@ export class Selection {
             "partDuration": this.patternSelectionActive ? this.patternSelectionEnd - this.patternSelectionStart : this._doc.song.beatsPerBar * Config.partsPerBeat,
             "channels": channels,
         };
-        window.localStorage.setItem("selectionCopy", JSON.stringify(selectionCopy));
+        nsLocalStorage_save("selectionCopy", JSON.stringify(selectionCopy));
         // Clear selection after copy
         new ChangePatternSelection(this._doc, 0, 0);
     }
@@ -412,7 +413,7 @@ export class Selection {
     // also trying to reuse patterns where it makes sense to do so, especially 
     // in the same channel it was copied from.
     pasteNotes(): void {
-        const selectionCopy: SelectionCopy | null = JSON.parse(String(window.localStorage.getItem("selectionCopy")));
+        const selectionCopy: SelectionCopy | null = JSON.parse(String(nsLocalStorage_get("selectionCopy")));
         if (selectionCopy == null) return;
         const channelCopies: ChannelCopy[] = selectionCopy["channels"] || [];
         const copiedPartDuration = selectionCopy["partDuration"] >>> 0;
@@ -605,7 +606,7 @@ export class Selection {
     }
 
     pasteNumbers(): void {
-        const selectionCopy: SelectionCopy | null = JSON.parse(String(window.localStorage.getItem("selectionCopy")));
+        const selectionCopy: SelectionCopy | null = JSON.parse(String(nsLocalStorage_get("selectionCopy")));
         if (selectionCopy == null) return;
         const channelCopies: ChannelCopy[] = selectionCopy["channels"] || [];
 

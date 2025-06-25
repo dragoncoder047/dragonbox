@@ -1,11 +1,12 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Config } from "../synth/SynthConfig";
 import { HTML } from "imperative-html/dist/esm/elements-strict";
-import { SongDocument } from "./SongDocument";
-import { Prompt } from "./Prompt";
+import { Config } from "../synth/SynthConfig";
 import { ChangeBeatsPerBar } from "./changes";
 import { ExportPrompt } from "./ExportPrompt";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
+import { Prompt } from "./Prompt";
+import { SongDocument } from "./SongDocument";
 
 const { button, div, span, h2, input, br, select, option } = HTML;
 
@@ -48,7 +49,7 @@ export class BeatsPerBarPrompt implements Prompt {
         this._beatsStepper.min = Config.beatsPerBarMin + "";
         this._beatsStepper.max = Config.beatsPerBarMax + "";
 
-        const lastStrategy: string | null = window.localStorage.getItem("beatCountStrategy");
+        const lastStrategy: string | null = nsLocalStorage_get("beatCountStrategy");
         if (lastStrategy != null) {
             this._conversionStrategySelect.value = lastStrategy;
         }
@@ -110,7 +111,7 @@ export class BeatsPerBarPrompt implements Prompt {
     }
 
     private _saveChanges = (): void => {
-        window.localStorage.setItem("beatCountStrategy", this._conversionStrategySelect.value);
+        nsLocalStorage_save("beatCountStrategy", this._conversionStrategySelect.value);
         this._doc.prompt = null;
         this._doc.record(new ChangeBeatsPerBar(this._doc, BeatsPerBarPrompt._validate(this._beatsStepper), this._conversionStrategySelect.value), true);
     }

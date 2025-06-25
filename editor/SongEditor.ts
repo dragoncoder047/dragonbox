@@ -39,6 +39,7 @@ import { LoopEditor } from "./LoopEditor";
 import { MidiInputHandler } from "./MidiInput";
 import { MoveNotesSidewaysPrompt } from "./MoveNotesSidewaysPrompt";
 import { MuteEditor } from "./MuteEditor";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
 import { OctaveScrollBar } from "./OctaveScrollBar";
 import { PatternEditor } from "./PatternEditor";
 import { Piano } from "./Piano";
@@ -4978,14 +4979,14 @@ export class SongEditor {
         const instrumentCopy: any = instrument.toJsonObject();
         instrumentCopy["isDrum"] = this._doc.song.getChannelIsNoise(this._doc.channel);
         instrumentCopy["isMod"] = this._doc.song.getChannelIsMod(this._doc.channel);
-        window.localStorage.setItem("instrumentCopy", JSON.stringify(instrumentCopy));
+        nsLocalStorage_save("instrumentCopy", JSON.stringify(instrumentCopy));
         this.refocusStage();
     }
 
     private _pasteInstrument = (): void => {
         const channel = this._doc.song.channels[this._doc.channel];
         const instrument = channel.instruments[this._doc.getCurrentInstrument()];
-        const instrumentCopy = JSON.parse(String(window.localStorage.getItem("instrumentCopy")));
+        const instrumentCopy = JSON.parse(String(nsLocalStorage_get("instrumentCopy")));
         if (instrumentCopy != null && instrumentCopy["isDrum"] == this._doc.song.getChannelIsNoise(this._doc.channel) && instrumentCopy["isMod"] == this._doc.song.getChannelIsMod(this._doc.channel)) {
             this._doc.record(new ChangePasteInstrument(this._doc, instrument, instrumentCopy));
         }
@@ -5346,7 +5347,7 @@ export class SongEditor {
                 break;
             case "shortenUrl":
                 let shortenerStrategy = "https://tinyurl.com/api-create.php?url=";
-                const localShortenerStrategy: string | null = window.localStorage.getItem("shortenerStrategySelect");
+                const localShortenerStrategy: string | null = nsLocalStorage_get("shortenerStrategySelect");
 
                 // if (localShortenerStrategy == "beepboxnet") shortenerStrategy = "https://www.beepbox.net/api-create.php?url=";
                 if (localShortenerStrategy == "isgd") shortenerStrategy = "https://is.gd/create.php?format=simple&url=";

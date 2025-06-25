@@ -1,9 +1,10 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { SongDocument } from "./SongDocument";
-import { RecoveredSong, RecoveredVersion, SongRecovery, versionToKey } from "./SongRecovery";
-import { Prompt } from "./Prompt";
 import { HTML } from "imperative-html/dist/esm/elements-strict";
+import { nsLocalStorage_get } from "./namespaced_localStorage";
+import { Prompt } from "./Prompt";
+import { SongDocument } from "./SongDocument";
+import { RecoveredSong, SongRecovery, versionToKey } from "./SongRecovery";
 
 const { button, div, h2, p, select, option, iframe } = HTML;
 
@@ -38,13 +39,13 @@ export class SongRecoveryPrompt implements Prompt {
 			}
 				
 				const player = iframe({style: "width: 100%; height: 60px; border: none; display: block;"});
-			player.src = "player/" + (OFFLINE ? "index.html" : "") + "#song=" + window.localStorage.getItem(versionToKey(song.versions[0]));
+			player.src = "player/" + (OFFLINE ? "index.html" : "") + "#song=" + nsLocalStorage_get(versionToKey(song.versions[0]));
 				const container = div({style: "margin: 4px 0;"}, div({class: "selectContainer", style: "width: 100%; margin: 2px 0;"}, versionMenu), player);
 			this._songContainer.appendChild(container);
 				
 			versionMenu.addEventListener("change", () => {
 				const version = song.versions[versionMenu.selectedIndex];
-				player.contentWindow!.location.replace("player/" + (OFFLINE ? "index.html" : "") + "#song=" + window.localStorage.getItem(versionToKey(version)));
+				player.contentWindow!.location.replace("player/" + (OFFLINE ? "index.html" : "") + "#song=" + nsLocalStorage_get(versionToKey(version)));
 				player.contentWindow!.dispatchEvent(new Event("hashchange"));
 			});
 		}

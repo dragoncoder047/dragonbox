@@ -1,14 +1,15 @@
 // Copyright (C) 2020 John Nesky, distributed under the MIT license.
 
 import { HTML, SVG } from "imperative-html/dist/esm/elements-strict";
+import { Effect } from "../synth/Effect";
+import { FilterSettings } from "../synth/Filter";
+import { Config } from "../synth/SynthConfig";
+import { ColorConfig } from "./ColorConfig";
+import { FilterEditor } from "./FilterEditor";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
 import { Prompt } from "./Prompt";
 import { SongDocument } from "./SongDocument";
-import { Config } from "../synth/SynthConfig";
-import { Effect } from "../synth/Effect";
-import { FilterEditor } from "./FilterEditor";
 import { SongEditor } from "./SongEditor";
-import { FilterSettings } from "../synth/Filter";
-import { ColorConfig } from "./ColorConfig";
 
 //namespace beepbox {
 const { button, div, h2, p } = HTML;
@@ -128,13 +129,13 @@ export class CustomFilterPrompt implements Prompt {
             : this._useNoteFilter
             ? this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()].noteFilter.toJsonObject()
             : (<Effect>this._doc.song.channels[this._doc.channel].instruments[this._doc.getCurrentInstrument()].effects[0]).eqFilter.toJsonObject();
-        window.localStorage.setItem("filterCopy", JSON.stringify(filterCopy));
+        nsLocalStorage_save("filterCopy", JSON.stringify(filterCopy));
     }
 
     private _pasteFilterSettings = (): void => {
 
         let filterCopy = new FilterSettings();
-        filterCopy.fromJsonObject(JSON.parse(String(window.localStorage.getItem("filterCopy"))));
+        filterCopy.fromJsonObject(JSON.parse(String(nsLocalStorage_get("filterCopy"))));
         if (filterCopy != null) {
             this.filterEditor.swapToSettings(filterCopy, true);
         }

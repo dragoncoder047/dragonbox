@@ -1,9 +1,10 @@
 // Copyright (C) 2020 John Nesky, distributed under the MIT license.
 
 import { HTML } from "imperative-html/dist/esm/elements-strict";
+import { ColorConfig } from "./ColorConfig";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
 import { Prompt } from "./Prompt";
 import { SongDocument } from "./SongDocument";
-import { ColorConfig } from "./ColorConfig";
 
 //namespace beepbox {
 const { button, div, h2, select, option, optgroup } = HTML;
@@ -85,7 +86,7 @@ export class ThemePrompt implements Prompt {
 		),
 		this._cancelButton,
 	);
-	private readonly lastTheme: string | null = window.localStorage.getItem("colorTheme")
+	private readonly lastTheme: string | null = nsLocalStorage_get("colorTheme")
 
 	constructor(private _doc: SongDocument) {
 		if (this.lastTheme != null) {
@@ -119,7 +120,7 @@ export class ThemePrompt implements Prompt {
 	}
 
 	private _saveChanges = (): void => {
-		window.localStorage.setItem("colorTheme", this._themeSelect.value);
+		nsLocalStorage_save("colorTheme", this._themeSelect.value);
 		this._doc.prompt = null;
 		this._doc.prefs.colorTheme = this._themeSelect.value;
 		this._doc.undo();

@@ -7,6 +7,7 @@ import { ChangeGroup } from "./Change";
 import { ChangeEnsurePatternExists, ChangeInsertBars, ChangeNoteAdded, ChangePatternNumbers } from "./changes";
 import { ColorConfig } from "./ColorConfig";
 import { prettyNumber } from "./EditorConfig";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
 import { Prompt } from "./Prompt";
 import { SongDocument } from "./SongDocument";
 
@@ -388,7 +389,7 @@ export class EuclideanRhythmPrompt implements Prompt {
         } else {
             // Otherwise, load up the sequences generated previously. Keeping these
             // is probably a better experience for tweaking purposes.
-            const savedData = JSON.parse(String(window.localStorage.getItem(this._localStorageKey)));
+            const savedData = JSON.parse(String(nsLocalStorage_get(this._localStorageKey)));
             if (savedData != null) {
                 const rawSequences = savedData["sequences"];
                 if (rawSequences != null && Array.isArray(rawSequences)) {
@@ -860,7 +861,7 @@ export class EuclideanRhythmPrompt implements Prompt {
 
         this._doc.record(group, true);
 
-        window.localStorage.setItem(this._localStorageKey, JSON.stringify({
+        nsLocalStorage_save(this._localStorageKey, JSON.stringify({
             "sequences": this._sequences,
             "barAmount": this._barAmount,
         }));

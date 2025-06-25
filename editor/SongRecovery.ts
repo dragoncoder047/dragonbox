@@ -1,7 +1,8 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Dictionary } from "../synth/SynthConfig";
 import { Song } from "../synth/Song";
+import { Dictionary } from "../synth/SynthConfig";
+import { nsLocalStorage_clear, nsLocalStorage_nthKey, nsLocalStorage_numKeys, nsLocalStorage_save } from "./namespaced_localStorage";
 
 
 export interface RecoveredVersion {
@@ -59,8 +60,8 @@ export class SongRecovery {
     static getAllRecoveredSongs(): RecoveredSong[] {
         const songs: RecoveredSong[] = [];
         const songsByUid: Dictionary<RecoveredSong> = {};
-        for (let i = 0; i < localStorage.length; i++) {
-            const itemKey = localStorage.key(i)!;
+        for (let i = 0; i < nsLocalStorage_numKeys(); i++) {
+            const itemKey = nsLocalStorage_nthKey(i)!;
             if (keyIsVersion(itemKey)) {
                 const version = keyToVersion(itemKey);
                 let song: RecoveredSong | undefined = songsByUid[version.uid];
@@ -116,7 +117,7 @@ export class SongRecovery {
             const newVersion = { uid: uid, name: newName, time: newTime, work: newWork };
             const newKey = versionToKey(newVersion);
             versions.unshift(newVersion);
-            localStorage.setItem(newKey, songData);
+            nsLocalStorage_save(newKey, songData);
 
             // Consider deleting an old version to free up space.
             let minSpan = minimumWorkPerSpan; // start out with a gap between versions.
@@ -140,7 +141,7 @@ export class SongRecovery {
                             indexToDiscard = i + 1;
                         }
                     }
-                    localStorage.removeItem(versionToKey(versions[indexToDiscard]));
+                    nsLocalStorage_clear(versionToKey(versions[indexToDiscard]));
                     break;
                 }
                 minSpan *= spanMult;
@@ -166,7 +167,7 @@ export class SongRecovery {
                     }
                 }
                 for (const version of leastImportantSong!.versions) {
-                    localStorage.removeItem(versionToKey(version));
+                    nsLocalStorage_clear(versionToKey(version));
                 }
                 songs.splice(songs.indexOf(leastImportantSong!), 1);
             }

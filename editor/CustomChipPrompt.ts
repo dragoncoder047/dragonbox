@@ -6,6 +6,7 @@ import { SongDocument } from "./SongDocument";
 import { ColorConfig } from "./ColorConfig";
 import { ChangeCustomWave } from "./changes";
 import { SongEditor } from "./SongEditor";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
 
 //namespace beepbox {
 const { button, div, h2 } = HTML;
@@ -335,11 +336,11 @@ export class CustomChipPrompt implements Prompt {
 
     private _copySettings = (): void => {
         const chipCopy: Float32Array = this.customChipCanvas.chipData;
-        window.localStorage.setItem("chipCopy", JSON.stringify(Array.from(chipCopy)));
+        nsLocalStorage_save("chipCopy", JSON.stringify(Array.from(chipCopy)));
     }
 
     private _pasteSettings = (): void => {
-        const storedChipWave = JSON.parse(String(window.localStorage.getItem("chipCopy")));
+        const storedChipWave = JSON.parse(String(nsLocalStorage_get("chipCopy")));
         for (let i = 0; i < 64; i++) {
             this.customChipCanvas.chipData[i] = storedChipWave[i];
         }

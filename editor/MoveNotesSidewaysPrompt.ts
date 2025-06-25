@@ -1,11 +1,12 @@
 // Copyright (c) 2012-2022 John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
-import { Config } from "../synth/SynthConfig";
 import { HTML } from "imperative-html/dist/esm/elements-strict";
-import { SongDocument } from "./SongDocument";
-import { Prompt } from "./Prompt";
+import { Config } from "../synth/SynthConfig";
 import { ChangeMoveNotesSideways } from "./changes";
 import { ColorConfig } from "./ColorConfig";
+import { nsLocalStorage_get, nsLocalStorage_save } from "./namespaced_localStorage";
+import { Prompt } from "./Prompt";
+import { SongDocument } from "./SongDocument";
 
 const { button, div, span, h2, input, br, select, option } = HTML;
 
@@ -41,7 +42,7 @@ export class MoveNotesSidewaysPrompt implements Prompt {
         this._beatsStepper.min = (-this._doc.song.beatsPerBar) + "";
         this._beatsStepper.max = this._doc.song.beatsPerBar + "";
 
-        const lastStrategy: string | null = window.localStorage.getItem("moveNotesSidewaysStrategy");
+        const lastStrategy: string | null = nsLocalStorage_get("moveNotesSidewaysStrategy");
         if (lastStrategy != null) {
             this._conversionStrategySelect.value = lastStrategy;
         }
@@ -81,7 +82,7 @@ export class MoveNotesSidewaysPrompt implements Prompt {
     }
 
     private _saveChanges = (): void => {
-        window.localStorage.setItem("moveNotesSidewaysStrategy", this._conversionStrategySelect.value);
+        nsLocalStorage_save("moveNotesSidewaysStrategy", this._conversionStrategySelect.value);
         this._doc.prompt = null;
         this._doc.record(new ChangeMoveNotesSideways(this._doc, +this._beatsStepper.value, this._conversionStrategySelect.value), true);
     }

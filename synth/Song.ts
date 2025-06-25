@@ -709,9 +709,9 @@ export class Song {
         document.title = this.title + " - " + EditorConfig.versionDisplayName;
 
         if (andResetChannels) {
-            this.pitchChannelCount = 4;
+            this.pitchChannelCount = 3;
             this.noiseChannelCount = 1;
-            this.modChannelCount = 0;
+            this.modChannelCount = 1;
             for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
                 const isNoiseChannel = channelIndex >= this.pitchChannelCount && channelIndex < this.pitchChannelCount + this.noiseChannelCount;
                 const isModChannel = channelIndex >= this.pitchChannelCount + this.noiseChannelCount;

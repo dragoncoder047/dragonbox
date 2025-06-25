@@ -2977,7 +2977,7 @@ var beepbox = (() => {
   }
   var EditorConfig = class _EditorConfig {
     static version = "v1";
-    static versionDisplayName = "DragonBox!";
+    static versionDisplayName = "DragonBox";
     static releaseNotesURL = "./patch_notes.html";
     static isOnMac = /^Mac/i.test(navigator.platform) || /Mac OS X/i.test(navigator.userAgent) || /^(iPhone|iPad|iPod)/i.test(navigator.platform) || /(iPhone|iPad|iPod)/i.test(navigator.userAgent);
     static ctrlSymbol = _EditorConfig.isOnMac ? "\u2318" : "Ctrl+";
@@ -15455,9 +15455,9 @@ li.select2-results__option[role=group] > strong:hover {
       this.title = "Untitled";
       document.title = this.title + " - " + EditorConfig.versionDisplayName;
       if (andResetChannels) {
-        this.pitchChannelCount = 4;
+        this.pitchChannelCount = 3;
         this.noiseChannelCount = 1;
-        this.modChannelCount = 0;
+        this.modChannelCount = 1;
         for (let channelIndex = 0; channelIndex < this.getChannelCount(); channelIndex++) {
           const isNoiseChannel = channelIndex >= this.pitchChannelCount && channelIndex < this.pitchChannelCount + this.noiseChannelCount;
           const isModChannel = channelIndex >= this.pitchChannelCount + this.noiseChannelCount;
@@ -34729,7 +34729,7 @@ li.select2-results__option[role=group] > strong:hover {
   }
   function errorAlert(error) {
     console.warn(error);
-    window.alert(`Whoops, the song data appears to have been corrupted! Please try to recover the last working version of the song from the "Recover Recent Song..." option in BeepBox's "File" menu.`);
+    window.alert(`Whoops, the song data appears to have been corrupted! Please try to recover the last working version of the song from the "Recover Recent Song..." option in DragonBox's "File" menu.`);
   }
   function compareVersions(a4, b) {
     return b.time - a4.time;
@@ -34894,6 +34894,8 @@ li.select2-results__option[role=group] > strong:hover {
         }
       } catch (error) {
         errorAlert(error);
+        this.song ??= new Song();
+        this.song.initToDefault();
       }
       songString = this.song.toBase64String();
       this.synth = new Synth(this.song);

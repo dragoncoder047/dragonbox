@@ -18,7 +18,10 @@ export async function doBuildBoth(main, outfile, watch = false) {
             OFFLINE: "false"
         },
         target: "esnext",
-        mangleProps: /^_.+/
+        mangleProps: /^_.+/,
+        loader: {
+            ".css": "text"
+        }
     };
 
     if (watch) {

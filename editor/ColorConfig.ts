@@ -31,6 +31,7 @@ import harryboxThemeCSS from "../data/themes/harrybox.css";
 import inverseThemeCSS from "../data/themes/inverse.css";
 import jummboxClassicThemeCSS from "../data/themes/jummbox_classic.css";
 import jummboxLightThemeCSS from "../data/themes/jummbox_light.css";
+import lemmboxDarkThemeCSS from "../data/themes/lemmbox_dark.css";
 import lightClassicThemeCSS from "../data/themes/light_classic.css";
 import mainbox1ThemeCSS from "../data/themes/mainbox1.css";
 import microboxThemeCSS from "../data/themes/microbox.css";
@@ -127,6 +128,7 @@ export class ColorConfig {
         "abyssbox light": abyssboxLightThemeCSS,
         "slarmoosbox": slarmoosboxThemeCSS,
         "azur lane": azurLaneThemeCSS,
+        "lemmbox dark": lemmboxDarkThemeCSS,
         "custom": `${nsLocalStorage_get("customColors") || `:root {  }`}`,
     };
 

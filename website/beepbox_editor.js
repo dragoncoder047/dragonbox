@@ -4381,6 +4381,9 @@ div.selectRow span {
   // data/themes/jummbox_light.css
   var jummbox_light_default = ":root {\n    -webkit-text-stroke-width: 0.5px;\n    --page-margin: #cab1d3;\n    --editor-background: #f4f4f4;\n    --hover-preview: #2d26a2;\n    --playhead: rgb(20 25 153 / 90%);\n    --primary-text: #b686c3;\n    --secondary-text: #970f38;\n    --inverted-text: #fefdff;\n    --text-selection: rgb(56 21 8 / 99%);\n    --box-selection-fill: rgb(20 203 160 / 61%);\n    --loop-accent: #09dc0e;\n    --link-accent: #3ee669;\n    --ui-widget-background: #0e0a42;\n    --ui-widget-focus: #380c42;\n    --pitch-background: #8daf96;\n    --tonic: #a16fb1;\n    --fifth-note: #d08c8c;\n    --white-piano-key: #fbffee;\n    --black-piano-key: #c9d8e5;\n    --white-piano-key-text: #101160;\n    --black-piano-key-text: #231b03;\n    --use-color-formula: true;\n    --track-editor-bg-pitch: #34456a;\n    --track-editor-bg-pitch-dim: #88afad;\n    --track-editor-bg-noise: #564566;\n    --track-editor-bg-noise-dim: #aaa;\n    --track-editor-bg-mod: #7f779d;\n    --track-editor-bg-mod-dim: #aaa;\n    --multiplicative-mod-slider: #807caf;\n    --overwriting-mod-slider: #909cdf;\n    --indicator-primary: #ae38ff;\n    --indicator-secondary: #5c8dbb;\n    --select2-opt-group: #581b50;\n    --input-box-outline: #6f7074;\n    --mute-button-normal: #db1e00;\n    --mute-button-mod: #883bf9;\n    --mod-label-primary: #525297;\n    --mod-label-secondary-text: rgb(197 147 245);\n    --mod-label-primary-text: #a3aae9;\n    --pitch-secondary-channel-hue: 26;\n    --pitch-secondary-channel-hue-scale: 214.5;\n    --pitch-secondary-channel-sat: 74.3;\n    --pitch-secondary-channel-sat-scale: -0.1;\n    --pitch-secondary-channel-lum: 55;\n    --pitch-secondary-channel-lum-scale: -0.05;\n    --pitch-primary-channel-hue: 26;\n    --pitch-primary-channel-hue-scale: 214.5;\n    --pitch-primary-channel-sat: 74;\n    --pitch-primary-channel-sat-scale: -0.1;\n    --pitch-primary-channel-lum: 65.5;\n    --pitch-primary-channel-lum-scale: -0.05;\n    --pitch-secondary-note-hue: 26;\n    --pitch-secondary-note-hue-scale: 214.5;\n    --pitch-secondary-note-sat: 74.9;\n    --pitch-secondary-note-sat-scale: -0.1;\n    --pitch-secondary-note-lum: 70;\n    --pitch-secondary-note-lum-scale: -0.05;\n    --pitch-primary-note-hue: 26;\n    --pitch-primary-note-hue-scale: 214.5;\n    --pitch-primary-note-sat: 85;\n    --pitch-primary-note-sat-scale: 0.05;\n    --pitch-primary-note-lum: 64.6;\n    --pitch-primary-note-lum-scale: -0.025;\n    --noise-secondary-channel-hue: 220;\n    --noise-secondary-channel-hue-scale: 2;\n    --noise-secondary-channel-sat: 25;\n    --noise-secondary-channel-sat-scale: 0;\n    --noise-secondary-channel-lum: 62;\n    --noise-secondary-channel-lum-scale: -0.1;\n    --noise-primary-channel-hue: 220;\n    --noise-primary-channel-hue-scale: 2;\n    --noise-primary-channel-sat: 53;\n    --noise-primary-channel-sat-scale: 0;\n    --noise-primary-channel-lum: 53.5;\n    --noise-primary-channel-lum-scale: -0.1;\n    --noise-secondary-note-hue: 220;\n    --noise-secondary-note-hue-scale: 2;\n    --noise-secondary-note-sat: 58.5;\n    --noise-secondary-note-sat-scale: 0;\n    --noise-secondary-note-lum: 85;\n    --noise-secondary-note-lum-scale: -1;\n    --noise-primary-note-hue: 220;\n    --noise-primary-note-hue-scale: 2;\n    --noise-primary-note-sat: 56.5;\n    --noise-primary-note-sat-scale: 0;\n    --noise-primary-note-lum: 54;\n    --noise-primary-note-lum-scale: -1;\n    --mod-secondary-channel-hue: 90;\n    --mod-secondary-channel-hue-scale: 1.5;\n    --mod-secondary-channel-sat: 88;\n    --mod-secondary-channel-sat-scale: 0;\n    --mod-secondary-channel-lum: 60;\n    --mod-secondary-channel-lum-scale: 0;\n    --mod-primary-channel-hue: 90;\n    --mod-primary-channel-hue-scale: 1.5;\n    --mod-primary-channel-sat: 89;\n    --mod-primary-channel-sat-scale: 0;\n    --mod-primary-channel-lum: 65;\n    --mod-primary-channel-lum-scale: 0;\n    --mod-secondary-note-hue: 90;\n    --mod-secondary-note-hue-scale: 1.5;\n    --mod-secondary-note-sat: 79;\n    --mod-secondary-note-sat-scale: 0;\n    --mod-secondary-note-lum: 95;\n    --mod-secondary-note-lum-scale: 0;\n    --mod-primary-note-hue: 90;\n    --mod-primary-note-hue-scale: 1.5;\n    --mod-primary-note-sat: 79;\n    --mod-primary-note-sat-scale: 0;\n    --mod-primary-note-lum: 55;\n    --mod-primary-note-lum-scale: 0;\n    --disabled-note-primary: #868;\n    --disabled-note-secondary: #767;\n}\n\n.beepboxEditor button,\n.beepboxEditor select {\n    background-color: var(--secondary-text);\n}\n\n.select2-selection__rendered {\n    background-color: var(--secondary-text);\n}\n\n.beepboxEditor .piano-button::before {\n    display: none;\n}\n\n.promptContainerBG::before {\n    box-shadow: inset 0 0 2000px rgba(255, 255, 255, .5);\n}";
 
+  // data/themes/lemmbox_dark.css
+  var lemmbox_dark_default = ":root {\r\n    --page-margin: #020009;\r\n    --editor-background: #020009;\r\n    --hover-preview: white;\r\n    --playhead: white;\r\n    --primary-text: white;\r\n    --secondary-text: white;\r\n    --inverted-text: black;\r\n    --text-selection: #c2a855;\r\n    --box-selection-fill: rgba(255, 255, 255, 0.2);\r\n    --loop-accent: #fff570;\r\n    --link-accent: #fff570;\r\n    --ui-widget-background: #191721;\r\n    --ui-widget-focus: #2d293b;\r\n    --pitch-background: #44444A;\r\n    --tonic: #c2a855;\r\n    --fifth-note: #468;\r\n    --third-note: #486;\r\n    --white-piano-key: #bbb;\r\n    --black-piano-key: #444;\r\n    --white-piano-key-text: #131200;\r\n    --black-piano-key-text: #fff;\r\n    --use-color-formula: false;\r\n    --pitch-channel-limit: 10;\r\n    --track-editor-bg-pitch: #444;\r\n    --track-editor-bg-pitch-dim: #333;\r\n    --track-editor-bg-noise: #444;\r\n    --track-editor-bg-noise-dim: #333;\r\n    --track-editor-bg-mod: #234;\r\n    --track-editor-bg-mod-dim: #123;\r\n    --multiplicative-mod-slider: #456;\r\n    --overwriting-mod-slider: #654;\r\n    --indicator-primary: #6a38ff;\r\n    --indicator-secondary: #444;\r\n    --select2-opt-group: #585858;\r\n    --input-box-outline: #403b4f;\r\n    --mute-button-normal: #ffa033;\r\n    --mute-button-mod: #8066cc;\r\n\r\n    --pitch1-secondary-channel: #e64951;\r\n    --pitch1-primary-channel: #f0565e;\r\n    --pitch1-secondary-note: #f34149;\r\n    --pitch1-primary-note: #f99ca9;\r\n\r\n    --pitch2-secondary-channel: #de6f2f;\r\n    --pitch2-primary-channel: #f18e55;\r\n    --pitch2-secondary-note: #ef7d3b;\r\n    --pitch2-primary-note: #f6ad92;\r\n\r\n    --pitch3-secondary-channel: #e1d30e;\r\n    --pitch3-primary-channel: #faec29;\r\n    --pitch3-secondary-note: #d9cd23;\r\n    --pitch3-primary-note: #fff570;\r\n\r\n    --pitch4-secondary-channel: #78c25a;\r\n    --pitch4-primary-channel: #85d947;\r\n    --pitch4-secondary-note: #8de02d;\r\n    --pitch4-primary-note: #bdff70;\r\n\r\n    --pitch5-secondary-channel: #2190eb;\r\n    --pitch5-primary-channel: #45a5f5;\r\n    --pitch5-secondary-note: #399bea;\r\n    --pitch5-primary-note: #70bfff;\r\n\r\n    --pitch6-secondary-channel: #7e3af2;\r\n    --pitch6-primary-channel: #8b4df7;\r\n    --pitch6-secondary-note: #752fed;\r\n    --pitch6-primary-note: #965cfa;\r\n\r\n    --pitch7-secondary-channel: #7e05f7;\r\n    --pitch7-primary-channel: #922df7;\r\n    --pitch7-secondary-note: #7c29cf;\r\n    --pitch7-primary-note: #9443e6;\r\n\r\n    --pitch8-secondary-channel: #94249e;\r\n    --pitch8-primary-channel: #cf2cde;\r\n    --pitch8-secondary-note: #b326bf;\r\n    --pitch8-primary-note: #c53fd1;\r\n\r\n    --pitch9-secondary-channel: #c42f6b;\r\n    --pitch9-primary-channel: #fc5d9d;\r\n    --pitch9-secondary-note: #cf3b77;\r\n    --pitch9-primary-note: #e36f9e;\r\n\r\n    --pitch10-secondary-channel: #d53c5e;\r\n    --pitch10-primary-channel: #f65a7e;\r\n    --pitch10-secondary-note: #e13e60;\r\n    --pitch10-primary-note: #ed8090;\r\n\r\n    --noise1-secondary-channel: #6F6F6F;\r\n    --noise1-primary-channel: #AAAAAA;\r\n    --noise1-secondary-note: #A7A7A7;\r\n    --noise1-primary-note: #E0E0E0;\r\n\r\n    --noise2-secondary-channel: #996633;\r\n    --noise2-primary-channel: #DDAA77;\r\n    --noise2-secondary-note: #CC9966;\r\n    --noise2-primary-note: #F0D0BB;\r\n\r\n    --noise3-secondary-channel: #4A6D8F;\r\n    --noise3-primary-channel: #77AADD;\r\n    --noise3-secondary-note: #6F9FCF;\r\n    --noise3-primary-note: #BBD7FF;\r\n\r\n    --noise4-secondary-channel: #7A4F9A;\r\n    --noise4-primary-channel: #AF82D2;\r\n    --noise4-secondary-note: #9E71C1;\r\n    --noise4-primary-note: #D4C1EA;\r\n\r\n    --noise5-secondary-channel: #607837;\r\n    --noise5-primary-channel: #A2BB77;\r\n    --noise5-secondary-note: #91AA66;\r\n    --noise5-primary-note: #C5E2B2;\r\n\r\n    --mod1-secondary-channel: #339955;\r\n    --mod1-primary-channel: #77fc55;\r\n    --mod1-secondary-note: #77ff8a;\r\n    --mod1-primary-note: #cdffee;\r\n\r\n    --mod2-secondary-channel: #993355;\r\n    --mod2-primary-channel: #f04960;\r\n    --mod2-secondary-note: #f057a0;\r\n    --mod2-primary-note: #ffb8de;\r\n\r\n    --mod3-secondary-channel: #553399;\r\n    --mod3-primary-channel: #8855fc;\r\n    --mod3-secondary-note: #aa64ff;\r\n    --mod3-primary-note: #f8ddff;\r\n\r\n    --mod4-secondary-channel: #a86436;\r\n    --mod4-primary-channel: #c8a825;\r\n    --mod4-secondary-note: #e8ba46;\r\n    --mod4-primary-note: #fff6d3;\r\n\r\n    --mod-label-primary: #999;\r\n    --mod-label-secondary-text: #333;\r\n    --mod-label-primary-text: black;\r\n    --disabled-note-primary: #999;\r\n    --disabled-note-secondary: #666;\r\n\r\n    --pitch1-background: #777;\r\n}";
+
   // data/themes/light_classic.css
   var light_classic_default = ":root {\n    -webkit-text-stroke-width: 0.5px;\n    --page-margin: #685d88;\n    --editor-background: white;\n    --hover-preview: black;\n    --playhead: rgba(0, 0, 0, 0.5);\n    --primary-text: black;\n    --secondary-text: #777;\n    --inverted-text: white;\n    --text-selection: rgba(200, 170, 255, 0.99);\n    --box-selection-fill: rgba(0, 0, 0, 0.1);\n    --loop-accent: #98f;\n    --link-accent: #74f;\n    --ui-widget-background: #ececec;\n    --ui-widget-focus: #eee;\n    --pitch-background: #ececec;\n    --tonic: #f0d6b6;\n    --fifth-note: #bbddf0;\n    --white-piano-key: #eee;\n    --black-piano-key: #666;\n    --track-editor-bg-pitch: #ececec;\n    --track-editor-bg-pitch-dim: #fdfdfd;\n    --track-editor-bg-noise: #ececec;\n    --track-editor-bg-noise-dim: #fdfdfd;\n    --track-editor-bg-mod: #dbecfd;\n    --track-editor-bg-mod-dim: #ecfdff;\n    --multiplicative-mod-slider: #789;\n    --overwriting-mod-slider: #987;\n    --indicator-primary: #98f;\n    --indicator-secondary: #cde;\n    --select2-opt-group: #cecece;\n    --input-box-outline: #ddd;\n    --mute-button-normal: #c0b47f;\n    --mute-button-mod: #bd7fc0;\n    --pitch1-secondary-channel: #6CD9ED;\n    --pitch1-primary-channel: #00A0BD;\n    --pitch1-secondary-note: #34C2DC;\n    --pitch1-primary-note: #00758A;\n    --pitch2-secondary-channel: #E3C941;\n    --pitch2-primary-channel: #B49700;\n    --pitch2-secondary-note: #D1B628;\n    --pitch2-primary-note: #836E00;\n    --pitch3-secondary-channel: #FF9D61;\n    --pitch3-primary-channel: #E14E00;\n    --pitch3-secondary-note: #F67D3C;\n    --pitch3-primary-note: #B64000;\n    --pitch4-secondary-channel: #4BE24B;\n    --pitch4-primary-channel: #00A800;\n    --pitch4-secondary-note: #2DC82D;\n    --pitch4-primary-note: #008000;\n    --pitch5-secondary-channel: #FF90FF;\n    --pitch5-primary-channel: #E12EDF;\n    --pitch5-secondary-note: #EC6EEC;\n    --pitch5-primary-note: #A600A5;\n    --pitch6-secondary-channel: #B5B5FE;\n    --pitch6-primary-channel: #6969FD;\n    --pitch6-secondary-note: #9393FE;\n    --pitch6-primary-note: #4A4AD7;\n    --pitch7-secondary-channel: #C2D848;\n    --pitch7-primary-channel: #8EA800;\n    --pitch7-secondary-note: #B0C82D;\n    --pitch7-primary-note: #6C8000;\n    --pitch8-secondary-channel: #FF90A4;\n    --pitch8-primary-channel: #E12E4D;\n    --pitch8-secondary-note: #EC6E85;\n    --pitch8-primary-note: #A6001D;\n    --pitch9-secondary-channel: #41E3B5;\n    --pitch9-primary-channel: #00B481;\n    --pitch9-secondary-note: #28D1A1;\n    --pitch9-primary-note: #00835E;\n    --pitch10-secondary-channel: #CA77FF;\n    --pitch10-primary-channel: #9609FF;\n    --pitch10-secondary-note: #B54FFF;\n    --pitch10-primary-note: #8400E3;\n    --noise1-secondary-channel: #C1C1C1;\n    --noise1-primary-channel: #898989;\n    --noise1-secondary-note: #ADADAD;\n    --noise1-primary-note: #6C6C6C;\n    --noise2-secondary-channel: #E8BB8C;\n    --noise2-primary-channel: #BD7D3A;\n    --noise2-secondary-note: #D1A374;\n    --noise2-primary-note: #836342;\n    --noise3-secondary-channel: #9BC4EB;\n    --noise3-primary-channel: #4481BE;\n    --noise3-secondary-note: #7CA7D3;\n    --noise3-primary-note: #476685;\n    --noise4-secondary-channel: #C5A5E0;\n    --noise4-primary-channel: #8553AE;\n    --noise4-secondary-note: #B290CC;\n    --noise4-primary-note: #684F7D;\n    --noise5-secondary-channel: #B8CE93;\n    --noise5-primary-channel: #87A74F;\n    --noise5-secondary-note: #ABC183;\n    --noise5-primary-note: #68784C;\n    --mod1-secondary-channel: #339955;\n    --mod1-primary-channel: #77dd55;\n    --mod1-primary-note: #2ad84a;\n    --mod2-primary-note: #ba124a;\n    --mod3-primary-note: #7a1caa;\n    --mod4-primary-note: #a86810;\n    --mod-label-primary: #dddddd;\n    --mod-label-secondary-text: #777;\n    --disabled-note-primary: #666;\n    --disabled-note-secondary: #aaa;\n}\n\n.beepboxEditor button,\n.beepboxEditor select {\n    box-shadow: inset 0 0 0 1px var(--secondary-text);\n}\n\n.select2-selection__rendered {\n    box-shadow: inset 0 0 0 1px var(--secondary-text);\n}\n\n.promptContainerBG::before {\n    box-shadow: inset 0 0 2000px rgba(255, 255, 255, .5);\n}";
 
@@ -4527,6 +4530,7 @@ div.selectRow span {
       "abyssbox light": abyssbox_light_default,
       "slarmoosbox": slarmoosbox_default,
       "azur lane": azur_lane_default,
+      "lemmbox dark": lemmbox_dark_default,
       "custom": `${nsLocalStorage_get("customColors") || `:root {  }`}`
     };
     static pageMargin = "var(--page-margin, black)";
@@ -5021,216 +5025,216 @@ div.selectRow span {
         }
       }
     }
-    static Y = document.head.appendChild(HTML.style({ type: "text/css" }));
+    static Bf = document.head.appendChild(HTML.style({ type: "text/css" }));
     static setTheme(name) {
       let theme = this.themes[name];
-      if (theme == void 0) theme = _ColorConfig.defaultTheme;
-      this.Y.textContent = theme;
+      if (theme == void 0) theme = this.themes[this.defaultTheme];
+      this.Bf.textContent = theme;
       let valuesToAdd = ":root{";
-      if (getComputedStyle(this.Y).getPropertyValue("--oscilloscope-line-L") == "") valuesToAdd += "--oscilloscope-line-L:var(--primary-text,white);";
-      if (getComputedStyle(this.Y).getPropertyValue("--oscilloscope-line-R") == "") valuesToAdd += "--oscilloscope-line-R:var(--text-selection,rgba(119,68,255,0.99));";
-      if (getComputedStyle(this.Y).getPropertyValue("--text-enabled-icon") == "") valuesToAdd += "--text-enabled-icon:\u2713 ;";
-      if (getComputedStyle(this.Y).getPropertyValue("--text-disabled-icon") == "") valuesToAdd += "--text-disabled-icon:\u3000;";
-      if (getComputedStyle(this.Y).getPropertyValue("--text-spacing-icon") == "") valuesToAdd += "--text-spacing-icon:\u3000;";
-      if (getComputedStyle(this.Y).getPropertyValue("--note-flash") == "") valuesToAdd += "--note-flash:#ffffff;";
-      if (getComputedStyle(this.Y).getPropertyValue("--note-flash-secondary") == "") valuesToAdd += "--note-flash-secondary:#ffffff77;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch-channel-limit") == "") valuesToAdd += "--pitch-channel-limit:" + Config.pitchChannelCountMax + ";";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise-channel-limit") == "") valuesToAdd += "--noise-channel-limit:" + Config.noiseChannelCountMax + ";";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod-channel-limit") == "") valuesToAdd += "--mod-channel-limit:" + Config.modChannelCountMax + ";";
-      if (getComputedStyle(this.Y).getPropertyValue("--formula-pitch-channel-limit") == "") valuesToAdd += "--formula-pitch-channel-limit:360;";
-      if (getComputedStyle(this.Y).getPropertyValue("--formula-noise-channel-limit") == "") valuesToAdd += "--formula-noise-channel-limit:360;";
-      if (getComputedStyle(this.Y).getPropertyValue("--formula-mod-channel-limit") == "") valuesToAdd += "--formula-mod-channel-limit:360;";
-      if (getComputedStyle(this.Y).getPropertyValue("--editor-background") == "") valuesToAdd += "--editor-background:black;";
-      if (getComputedStyle(this.Y).getPropertyValue("--ui-widget-background") == "") valuesToAdd += "--ui-widget-background:#444;";
-      if (getComputedStyle(this.Y).getPropertyValue("--loop-accent") == "") valuesToAdd += "--loop-accent:#74f;";
-      if (getComputedStyle(this.Y).getPropertyValue("--box-selection-fill") == "") valuesToAdd += "--box-selection-fill:rgba(255,255,255,0.2);";
-      if (getComputedStyle(this.Y).getPropertyValue("--primary-text") == "") valuesToAdd += "--primary-text:white;";
-      if (getComputedStyle(this.Y).getPropertyValue("--inverted-text") == "") valuesToAdd += "--inverted-text:black;";
-      if (getComputedStyle(this.Y).getPropertyValue("--track-editor-bg-pitch") == "") valuesToAdd += "--track-editor-bg-pitch:#444;";
-      if (getComputedStyle(this.Y).getPropertyValue("--track-editor-bg-pitch-dim") == "") valuesToAdd += "--track-editor-bg-pitch-dim:#333;";
-      if (getComputedStyle(this.Y).getPropertyValue("--track-editor-bg-noise") == "") valuesToAdd += "--track-editor-bg-noise:#444;";
-      if (getComputedStyle(this.Y).getPropertyValue("--track-editor-bg-noise-dim") == "") valuesToAdd += "--track-editor-bg-noise-dim:#333;";
-      if (getComputedStyle(this.Y).getPropertyValue("--track-editor-bg-mod") == "") valuesToAdd += "--track-editor-bg-mod:#234;";
-      if (getComputedStyle(this.Y).getPropertyValue("--track-editor-bg-mod-dim") == "") valuesToAdd += "--track-editor-bg-mod-dim:#123;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mute-button-normal") == "") valuesToAdd += "--mute-button-normal:#ffa033;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mute-button-mod") == "") valuesToAdd += "--mute-button-mod:#9a6bff;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch1-secondary-channel") == "") valuesToAdd += "--pitch1-secondary-channel:#0099A1;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch1-primary-channel") == "") valuesToAdd += "--pitch1-primary-channel:#25F3FF;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch1-secondary-note") == "") valuesToAdd += "--pitch1-secondary-note:#00BDC7;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch1-primary-note") == "") valuesToAdd += "--pitch1-primary-note:#92F9FF;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch2-secondary-channel") == "") valuesToAdd += "--pitch2-secondary-channel:#A1A100;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch2-primary-channel") == "") valuesToAdd += "--pitch2-primary-channel:#FFFF25;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch2-secondary-note") == "") valuesToAdd += "--pitch2-secondary-note:#C7C700;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch2-primary-note") == "") valuesToAdd += "--pitch2-primary-note:#FFFF92;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch3-secondary-channel") == "") valuesToAdd += "--pitch3-secondary-channel:#C75000;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch3-primary-channel") == "") valuesToAdd += "--pitch3-primary-channel:#FF9752;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch3-secondary-note") == "") valuesToAdd += "--pitch3-secondary-note:#FF771C;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch3-primary-note") == "") valuesToAdd += "--pitch3-primary-note:#FFCDAB;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch4-secondary-channel") == "") valuesToAdd += "--pitch4-secondary-channel:#00A100;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch4-primary-channel") == "") valuesToAdd += "--pitch4-primary-channel:#50FF50;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch4-secondary-note") == "") valuesToAdd += "--pitch4-secondary-note:#00C700;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch4-primary-note") == "") valuesToAdd += "--pitch4-primary-note:#A0FFA0;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch5-secondary-channel") == "") valuesToAdd += "--pitch5-secondary-channel:#D020D0;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch5-primary-channel") == "") valuesToAdd += "--pitch5-primary-channel:#FF90FF;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch5-secondary-note") == "") valuesToAdd += "--pitch5-secondary-note:#E040E0;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch5-primary-note") == "") valuesToAdd += "--pitch5-primary-note:#FFC0FF;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch6-secondary-channel") == "") valuesToAdd += "--pitch6-secondary-channel:#7777B0;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch6-primary-channel") == "") valuesToAdd += "--pitch6-primary-channel:#A0A0FF;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch6-secondary-note") == "") valuesToAdd += "--pitch6-secondary-note:#8888D0;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch6-primary-note") == "") valuesToAdd += "--pitch6-primary-note:#D0D0FF;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch7-secondary-channel") == "") valuesToAdd += "--pitch7-secondary-channel:#8AA100;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch7-primary-channel") == "") valuesToAdd += "--pitch7-primary-channel:#DEFF25;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch7-secondary-note") == "") valuesToAdd += "--pitch7-secondary-note:#AAC700;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch7-primary-note") == "") valuesToAdd += "--pitch7-primary-note:#E6FF92;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch8-secondary-channel") == "") valuesToAdd += "--pitch8-secondary-channel:#DF0019;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch8-primary-channel") == "") valuesToAdd += "--pitch8-primary-channel:#FF98A4;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch8-secondary-note") == "") valuesToAdd += "--pitch8-secondary-note:#FF4E63;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch8-primary-note") == "") valuesToAdd += "--pitch8-primary-note:#FFB2BB;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch9-secondary-channel") == "") valuesToAdd += "--pitch9-secondary-channel:#00A170;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch9-primary-channel") == "") valuesToAdd += "--pitch9-primary-channel:#50FFC9;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch9-secondary-note") == "") valuesToAdd += "--pitch9-secondary-note:#00C78A;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch9-primary-note") == "") valuesToAdd += "--pitch9-primary-note:#83FFD9;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch10-secondary-channel") == "") valuesToAdd += "--pitch10-secondary-channel:#A11FFF;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch10-primary-channel") == "") valuesToAdd += "--pitch10-primary-channel:#CE8BFF;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch10-secondary-note") == "") valuesToAdd += "--pitch10-secondary-note:#B757FF;";
-      if (getComputedStyle(this.Y).getPropertyValue("--pitch10-primary-note") == "") valuesToAdd += "--pitch10-primary-note:#DFACFF;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise1-secondary-channel") == "") valuesToAdd += "--noise1-secondary-channel:#6F6F6F;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise1-primary-channel") == "") valuesToAdd += "--noise1-primary-channel:#AAAAAA;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise1-secondary-note") == "") valuesToAdd += "--noise1-secondary-note:#A7A7A7;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise1-primary-note") == "") valuesToAdd += "--noise1-primary-note:#E0E0E0;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise2-secondary-channel") == "") valuesToAdd += "--noise2-secondary-channel:#996633;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise2-primary-channel") == "") valuesToAdd += "--noise2-primary-channel:#DDAA77;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise2-secondary-note") == "") valuesToAdd += "--noise2-secondary-note:#CC9966;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise2-primary-note") == "") valuesToAdd += "--noise2-primary-note:#F0D0BB;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise3-secondary-channel") == "") valuesToAdd += "--noise3-secondary-channel:#4A6D8F;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise3-primary-channel") == "") valuesToAdd += "--noise3-primary-channel:#77AADD;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise3-secondary-note") == "") valuesToAdd += "--noise3-secondary-note:#6F9FCF;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise3-primary-note") == "") valuesToAdd += "--noise3-primary-note:#BBD7FF;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise4-secondary-channel") == "") valuesToAdd += "--noise4-secondary-channel:#7A4F9A;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise4-primary-channel") == "") valuesToAdd += "--noise4-primary-channel:#AF82D2;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise4-secondary-note") == "") valuesToAdd += "--noise4-secondary-note:#9E71C1;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise4-primary-note") == "") valuesToAdd += "--noise4-primary-note:#D4C1EA;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise5-secondary-channel") == "") valuesToAdd += "--noise5-secondary-channel:#607837;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise5-primary-channel") == "") valuesToAdd += "--noise5-primary-channel:#A2BB77;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise5-secondary-note") == "") valuesToAdd += "--noise5-secondary-note:#91AA66;";
-      if (getComputedStyle(this.Y).getPropertyValue("--noise5-primary-note") == "") valuesToAdd += "--noise5-primary-note:#C5E2B2;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod1-secondary-channel") == "") valuesToAdd += "--mod1-secondary-channel:#339955;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod1-primary-channel") == "") valuesToAdd += "--mod1-primary-channel:#77fc55;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod1-secondary-note") == "") valuesToAdd += "--mod1-secondary-note:#77ff8a;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod1-primary-note") == "") valuesToAdd += "--mod1-primary-note:#cdffee;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod2-secondary-channel") == "") valuesToAdd += "--mod2-secondary-channel:#993355;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod2-primary-channel") == "") valuesToAdd += "--mod2-primary-channel:#f04960;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod2-secondary-note") == "") valuesToAdd += "--mod2-secondary-note:#f057a0;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod2-primary-note") == "") valuesToAdd += "--mod2-primary-note:#ffb8de;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod3-secondary-channel") == "") valuesToAdd += "--mod3-secondary-channel:#553399;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod3-primary-channel") == "") valuesToAdd += "--mod3-primary-channel:#8855fc;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod3-secondary-note") == "") valuesToAdd += "--mod3-secondary-note:#aa64ff;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod3-primary-note") == "") valuesToAdd += "--mod3-primary-note:#f8ddff;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod4-secondary-channel") == "") valuesToAdd += "--mod4-secondary-channel:#a86436;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod4-primary-channel") == "") valuesToAdd += "--mod4-primary-channel:#c8a825;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod4-secondary-note") == "") valuesToAdd += "--mod4-secondary-note:#e8ba46;";
-      if (getComputedStyle(this.Y).getPropertyValue("--mod4-primary-note") == "") valuesToAdd += "--mod4-primary-note:#fff6d3;";
+      if (this.getComputed("--oscilloscope-line-L") == "") valuesToAdd += "--oscilloscope-line-L:var(--primary-text,white);";
+      if (this.getComputed("--oscilloscope-line-R") == "") valuesToAdd += "--oscilloscope-line-R:var(--text-selection,rgba(119,68,255,0.99));";
+      if (this.getComputed("--text-enabled-icon") == "") valuesToAdd += "--text-enabled-icon:\u2713 ;";
+      if (this.getComputed("--text-disabled-icon") == "") valuesToAdd += "--text-disabled-icon:\u3000;";
+      if (this.getComputed("--text-spacing-icon") == "") valuesToAdd += "--text-spacing-icon:\u3000;";
+      if (this.getComputed("--note-flash") == "") valuesToAdd += "--note-flash:#ffffff;";
+      if (this.getComputed("--note-flash-secondary") == "") valuesToAdd += "--note-flash-secondary:#ffffff77;";
+      if (this.getComputed("--pitch-channel-limit") == "") valuesToAdd += "--pitch-channel-limit:" + Config.pitchChannelCountMax + ";";
+      if (this.getComputed("--noise-channel-limit") == "") valuesToAdd += "--noise-channel-limit:" + Config.noiseChannelCountMax + ";";
+      if (this.getComputed("--mod-channel-limit") == "") valuesToAdd += "--mod-channel-limit:" + Config.modChannelCountMax + ";";
+      if (this.getComputed("--formula-pitch-channel-limit") == "") valuesToAdd += "--formula-pitch-channel-limit:360;";
+      if (this.getComputed("--formula-noise-channel-limit") == "") valuesToAdd += "--formula-noise-channel-limit:360;";
+      if (this.getComputed("--formula-mod-channel-limit") == "") valuesToAdd += "--formula-mod-channel-limit:360;";
+      if (this.getComputed("--editor-background") == "") valuesToAdd += "--editor-background:black;";
+      if (this.getComputed("--ui-widget-background") == "") valuesToAdd += "--ui-widget-background:#444;";
+      if (this.getComputed("--loop-accent") == "") valuesToAdd += "--loop-accent:#74f;";
+      if (this.getComputed("--box-selection-fill") == "") valuesToAdd += "--box-selection-fill:rgba(255,255,255,0.2);";
+      if (this.getComputed("--primary-text") == "") valuesToAdd += "--primary-text:white;";
+      if (this.getComputed("--inverted-text") == "") valuesToAdd += "--inverted-text:black;";
+      if (this.getComputed("--track-editor-bg-pitch") == "") valuesToAdd += "--track-editor-bg-pitch:#444;";
+      if (this.getComputed("--track-editor-bg-pitch-dim") == "") valuesToAdd += "--track-editor-bg-pitch-dim:#333;";
+      if (this.getComputed("--track-editor-bg-noise") == "") valuesToAdd += "--track-editor-bg-noise:#444;";
+      if (this.getComputed("--track-editor-bg-noise-dim") == "") valuesToAdd += "--track-editor-bg-noise-dim:#333;";
+      if (this.getComputed("--track-editor-bg-mod") == "") valuesToAdd += "--track-editor-bg-mod:#234;";
+      if (this.getComputed("--track-editor-bg-mod-dim") == "") valuesToAdd += "--track-editor-bg-mod-dim:#123;";
+      if (this.getComputed("--mute-button-normal") == "") valuesToAdd += "--mute-button-normal:#ffa033;";
+      if (this.getComputed("--mute-button-mod") == "") valuesToAdd += "--mute-button-mod:#9a6bff;";
+      if (this.getComputed("--pitch1-secondary-channel") == "") valuesToAdd += "--pitch1-secondary-channel:#0099A1;";
+      if (this.getComputed("--pitch1-primary-channel") == "") valuesToAdd += "--pitch1-primary-channel:#25F3FF;";
+      if (this.getComputed("--pitch1-secondary-note") == "") valuesToAdd += "--pitch1-secondary-note:#00BDC7;";
+      if (this.getComputed("--pitch1-primary-note") == "") valuesToAdd += "--pitch1-primary-note:#92F9FF;";
+      if (this.getComputed("--pitch2-secondary-channel") == "") valuesToAdd += "--pitch2-secondary-channel:#A1A100;";
+      if (this.getComputed("--pitch2-primary-channel") == "") valuesToAdd += "--pitch2-primary-channel:#FFFF25;";
+      if (this.getComputed("--pitch2-secondary-note") == "") valuesToAdd += "--pitch2-secondary-note:#C7C700;";
+      if (this.getComputed("--pitch2-primary-note") == "") valuesToAdd += "--pitch2-primary-note:#FFFF92;";
+      if (this.getComputed("--pitch3-secondary-channel") == "") valuesToAdd += "--pitch3-secondary-channel:#C75000;";
+      if (this.getComputed("--pitch3-primary-channel") == "") valuesToAdd += "--pitch3-primary-channel:#FF9752;";
+      if (this.getComputed("--pitch3-secondary-note") == "") valuesToAdd += "--pitch3-secondary-note:#FF771C;";
+      if (this.getComputed("--pitch3-primary-note") == "") valuesToAdd += "--pitch3-primary-note:#FFCDAB;";
+      if (this.getComputed("--pitch4-secondary-channel") == "") valuesToAdd += "--pitch4-secondary-channel:#00A100;";
+      if (this.getComputed("--pitch4-primary-channel") == "") valuesToAdd += "--pitch4-primary-channel:#50FF50;";
+      if (this.getComputed("--pitch4-secondary-note") == "") valuesToAdd += "--pitch4-secondary-note:#00C700;";
+      if (this.getComputed("--pitch4-primary-note") == "") valuesToAdd += "--pitch4-primary-note:#A0FFA0;";
+      if (this.getComputed("--pitch5-secondary-channel") == "") valuesToAdd += "--pitch5-secondary-channel:#D020D0;";
+      if (this.getComputed("--pitch5-primary-channel") == "") valuesToAdd += "--pitch5-primary-channel:#FF90FF;";
+      if (this.getComputed("--pitch5-secondary-note") == "") valuesToAdd += "--pitch5-secondary-note:#E040E0;";
+      if (this.getComputed("--pitch5-primary-note") == "") valuesToAdd += "--pitch5-primary-note:#FFC0FF;";
+      if (this.getComputed("--pitch6-secondary-channel") == "") valuesToAdd += "--pitch6-secondary-channel:#7777B0;";
+      if (this.getComputed("--pitch6-primary-channel") == "") valuesToAdd += "--pitch6-primary-channel:#A0A0FF;";
+      if (this.getComputed("--pitch6-secondary-note") == "") valuesToAdd += "--pitch6-secondary-note:#8888D0;";
+      if (this.getComputed("--pitch6-primary-note") == "") valuesToAdd += "--pitch6-primary-note:#D0D0FF;";
+      if (this.getComputed("--pitch7-secondary-channel") == "") valuesToAdd += "--pitch7-secondary-channel:#8AA100;";
+      if (this.getComputed("--pitch7-primary-channel") == "") valuesToAdd += "--pitch7-primary-channel:#DEFF25;";
+      if (this.getComputed("--pitch7-secondary-note") == "") valuesToAdd += "--pitch7-secondary-note:#AAC700;";
+      if (this.getComputed("--pitch7-primary-note") == "") valuesToAdd += "--pitch7-primary-note:#E6FF92;";
+      if (this.getComputed("--pitch8-secondary-channel") == "") valuesToAdd += "--pitch8-secondary-channel:#DF0019;";
+      if (this.getComputed("--pitch8-primary-channel") == "") valuesToAdd += "--pitch8-primary-channel:#FF98A4;";
+      if (this.getComputed("--pitch8-secondary-note") == "") valuesToAdd += "--pitch8-secondary-note:#FF4E63;";
+      if (this.getComputed("--pitch8-primary-note") == "") valuesToAdd += "--pitch8-primary-note:#FFB2BB;";
+      if (this.getComputed("--pitch9-secondary-channel") == "") valuesToAdd += "--pitch9-secondary-channel:#00A170;";
+      if (this.getComputed("--pitch9-primary-channel") == "") valuesToAdd += "--pitch9-primary-channel:#50FFC9;";
+      if (this.getComputed("--pitch9-secondary-note") == "") valuesToAdd += "--pitch9-secondary-note:#00C78A;";
+      if (this.getComputed("--pitch9-primary-note") == "") valuesToAdd += "--pitch9-primary-note:#83FFD9;";
+      if (this.getComputed("--pitch10-secondary-channel") == "") valuesToAdd += "--pitch10-secondary-channel:#A11FFF;";
+      if (this.getComputed("--pitch10-primary-channel") == "") valuesToAdd += "--pitch10-primary-channel:#CE8BFF;";
+      if (this.getComputed("--pitch10-secondary-note") == "") valuesToAdd += "--pitch10-secondary-note:#B757FF;";
+      if (this.getComputed("--pitch10-primary-note") == "") valuesToAdd += "--pitch10-primary-note:#DFACFF;";
+      if (this.getComputed("--noise1-secondary-channel") == "") valuesToAdd += "--noise1-secondary-channel:#6F6F6F;";
+      if (this.getComputed("--noise1-primary-channel") == "") valuesToAdd += "--noise1-primary-channel:#AAAAAA;";
+      if (this.getComputed("--noise1-secondary-note") == "") valuesToAdd += "--noise1-secondary-note:#A7A7A7;";
+      if (this.getComputed("--noise1-primary-note") == "") valuesToAdd += "--noise1-primary-note:#E0E0E0;";
+      if (this.getComputed("--noise2-secondary-channel") == "") valuesToAdd += "--noise2-secondary-channel:#996633;";
+      if (this.getComputed("--noise2-primary-channel") == "") valuesToAdd += "--noise2-primary-channel:#DDAA77;";
+      if (this.getComputed("--noise2-secondary-note") == "") valuesToAdd += "--noise2-secondary-note:#CC9966;";
+      if (this.getComputed("--noise2-primary-note") == "") valuesToAdd += "--noise2-primary-note:#F0D0BB;";
+      if (this.getComputed("--noise3-secondary-channel") == "") valuesToAdd += "--noise3-secondary-channel:#4A6D8F;";
+      if (this.getComputed("--noise3-primary-channel") == "") valuesToAdd += "--noise3-primary-channel:#77AADD;";
+      if (this.getComputed("--noise3-secondary-note") == "") valuesToAdd += "--noise3-secondary-note:#6F9FCF;";
+      if (this.getComputed("--noise3-primary-note") == "") valuesToAdd += "--noise3-primary-note:#BBD7FF;";
+      if (this.getComputed("--noise4-secondary-channel") == "") valuesToAdd += "--noise4-secondary-channel:#7A4F9A;";
+      if (this.getComputed("--noise4-primary-channel") == "") valuesToAdd += "--noise4-primary-channel:#AF82D2;";
+      if (this.getComputed("--noise4-secondary-note") == "") valuesToAdd += "--noise4-secondary-note:#9E71C1;";
+      if (this.getComputed("--noise4-primary-note") == "") valuesToAdd += "--noise4-primary-note:#D4C1EA;";
+      if (this.getComputed("--noise5-secondary-channel") == "") valuesToAdd += "--noise5-secondary-channel:#607837;";
+      if (this.getComputed("--noise5-primary-channel") == "") valuesToAdd += "--noise5-primary-channel:#A2BB77;";
+      if (this.getComputed("--noise5-secondary-note") == "") valuesToAdd += "--noise5-secondary-note:#91AA66;";
+      if (this.getComputed("--noise5-primary-note") == "") valuesToAdd += "--noise5-primary-note:#C5E2B2;";
+      if (this.getComputed("--mod1-secondary-channel") == "") valuesToAdd += "--mod1-secondary-channel:#339955;";
+      if (this.getComputed("--mod1-primary-channel") == "") valuesToAdd += "--mod1-primary-channel:#77fc55;";
+      if (this.getComputed("--mod1-secondary-note") == "") valuesToAdd += "--mod1-secondary-note:#77ff8a;";
+      if (this.getComputed("--mod1-primary-note") == "") valuesToAdd += "--mod1-primary-note:#cdffee;";
+      if (this.getComputed("--mod2-secondary-channel") == "") valuesToAdd += "--mod2-secondary-channel:#993355;";
+      if (this.getComputed("--mod2-primary-channel") == "") valuesToAdd += "--mod2-primary-channel:#f04960;";
+      if (this.getComputed("--mod2-secondary-note") == "") valuesToAdd += "--mod2-secondary-note:#f057a0;";
+      if (this.getComputed("--mod2-primary-note") == "") valuesToAdd += "--mod2-primary-note:#ffb8de;";
+      if (this.getComputed("--mod3-secondary-channel") == "") valuesToAdd += "--mod3-secondary-channel:#553399;";
+      if (this.getComputed("--mod3-primary-channel") == "") valuesToAdd += "--mod3-primary-channel:#8855fc;";
+      if (this.getComputed("--mod3-secondary-note") == "") valuesToAdd += "--mod3-secondary-note:#aa64ff;";
+      if (this.getComputed("--mod3-primary-note") == "") valuesToAdd += "--mod3-primary-note:#f8ddff;";
+      if (this.getComputed("--mod4-secondary-channel") == "") valuesToAdd += "--mod4-secondary-channel:#a86436;";
+      if (this.getComputed("--mod4-primary-channel") == "") valuesToAdd += "--mod4-primary-channel:#c8a825;";
+      if (this.getComputed("--mod4-secondary-note") == "") valuesToAdd += "--mod4-secondary-note:#e8ba46;";
+      if (this.getComputed("--mod4-primary-note") == "") valuesToAdd += "--mod4-primary-note:#fff6d3;";
       valuesToAdd += "}";
-      this.Y.textContent = valuesToAdd + this.Y.textContent;
+      this.Bf.textContent = valuesToAdd + this.Bf.textContent;
       const themeColor = document.querySelector("meta[name='theme-color']");
       if (themeColor != null) {
         themeColor.setAttribute("content", getComputedStyle(document.documentElement).getPropertyValue("--ui-widget-background"));
       }
       this.resetColors();
-      this.usesColorFormula = getComputedStyle(this.Y).getPropertyValue("--use-color-formula").trim() == "true";
-      this.c_pitchLimit = +getComputedStyle(this.Y).getPropertyValue("--pitch-channel-limit");
-      this.c_noiseLimit = +getComputedStyle(this.Y).getPropertyValue("--noise-channel-limit");
-      this.c_modLimit = +getComputedStyle(this.Y).getPropertyValue("--mod-channel-limit");
-      this.c_colorFormulaPitchLimit = +getComputedStyle(this.Y).getPropertyValue("--formula-pitch-channel-limit");
-      this.c_colorFormulaNoiseLimit = +getComputedStyle(this.Y).getPropertyValue("--formula-noise-channel-limit");
-      this.c_colorFormulaModLimit = +getComputedStyle(this.Y).getPropertyValue("--formula-mod-channel-limit");
-      this.c_invertedText = getComputedStyle(this.Y).getPropertyValue("--inverted-text");
-      this.c_trackEditorBgNoiseDim = getComputedStyle(this.Y).getPropertyValue("--track-editor-bg-noise-dim");
-      this.c_trackEditorBgNoise = getComputedStyle(this.Y).getPropertyValue("--track-editor-bg-noise");
-      this.c_trackEditorBgModDim = getComputedStyle(this.Y).getPropertyValue("--track-editor-bg-mod-dim");
-      this.c_trackEditorBgMod = getComputedStyle(this.Y).getPropertyValue("--track-editor-bg-mod");
-      this.c_trackEditorBgPitchDim = getComputedStyle(this.Y).getPropertyValue("--track-editor-bg-pitch-dim");
-      this.c_trackEditorBgPitch = getComputedStyle(this.Y).getPropertyValue("--track-editor-bg-pitch");
+      this.usesColorFormula = this.getComputed("--use-color-formula").trim() == "true";
+      this.c_pitchLimit = +this.getComputed("--pitch-channel-limit");
+      this.c_noiseLimit = +this.getComputed("--noise-channel-limit");
+      this.c_modLimit = +this.getComputed("--mod-channel-limit");
+      this.c_colorFormulaPitchLimit = +this.getComputed("--formula-pitch-channel-limit");
+      this.c_colorFormulaNoiseLimit = +this.getComputed("--formula-noise-channel-limit");
+      this.c_colorFormulaModLimit = +this.getComputed("--formula-mod-channel-limit");
+      this.c_invertedText = this.getComputed("--inverted-text");
+      this.c_trackEditorBgNoiseDim = this.getComputed("--track-editor-bg-noise-dim");
+      this.c_trackEditorBgNoise = this.getComputed("--track-editor-bg-noise");
+      this.c_trackEditorBgModDim = this.getComputed("--track-editor-bg-mod-dim");
+      this.c_trackEditorBgMod = this.getComputed("--track-editor-bg-mod");
+      this.c_trackEditorBgPitchDim = this.getComputed("--track-editor-bg-pitch-dim");
+      this.c_trackEditorBgPitch = this.getComputed("--track-editor-bg-pitch");
       if (this.usesColorFormula) {
-        this.c_pitchSecondaryChannelHue = +getComputedStyle(this.Y).getPropertyValue("--pitch-secondary-channel-hue");
-        this.c_pitchSecondaryChannelHueScale = +getComputedStyle(this.Y).getPropertyValue("--pitch-secondary-channel-hue-scale");
-        this.c_pitchSecondaryChannelSat = +getComputedStyle(this.Y).getPropertyValue("--pitch-secondary-channel-sat");
-        this.c_pitchSecondaryChannelSatScale = +getComputedStyle(this.Y).getPropertyValue("--pitch-secondary-channel-sat-scale");
-        this.c_pitchSecondaryChannelLum = +getComputedStyle(this.Y).getPropertyValue("--pitch-secondary-channel-lum");
-        this.c_pitchSecondaryChannelLumScale = +getComputedStyle(this.Y).getPropertyValue("--pitch-secondary-channel-lum-scale");
-        this.c_pitchPrimaryChannelHue = +getComputedStyle(this.Y).getPropertyValue("--pitch-primary-channel-hue");
-        this.c_pitchPrimaryChannelHueScale = +getComputedStyle(this.Y).getPropertyValue("--pitch-primary-channel-hue-scale");
-        this.c_pitchPrimaryChannelSat = +getComputedStyle(this.Y).getPropertyValue("--pitch-primary-channel-sat");
-        this.c_pitchPrimaryChannelSatScale = +getComputedStyle(this.Y).getPropertyValue("--pitch-primary-channel-sat-scale");
-        this.c_pitchPrimaryChannelLum = +getComputedStyle(this.Y).getPropertyValue("--pitch-primary-channel-lum");
-        this.c_pitchPrimaryChannelLumScale = +getComputedStyle(this.Y).getPropertyValue("--pitch-primary-channel-lum-scale");
-        this.c_pitchSecondaryNoteHue = +getComputedStyle(this.Y).getPropertyValue("--pitch-secondary-note-hue");
-        this.c_pitchSecondaryNoteHueScale = +getComputedStyle(this.Y).getPropertyValue("--pitch-secondary-note-hue-scale");
-        this.c_pitchSecondaryNoteSat = +getComputedStyle(this.Y).getPropertyValue("--pitch-secondary-note-sat");
-        this.c_pitchSecondaryNoteSatScale = +getComputedStyle(this.Y).getPropertyValue("--pitch-secondary-note-sat-scale");
-        this.c_pitchSecondaryNoteLum = +getComputedStyle(this.Y).getPropertyValue("--pitch-secondary-note-lum");
-        this.c_pitchSecondaryNoteLumScale = +getComputedStyle(this.Y).getPropertyValue("--pitch-secondary-note-lum-scale");
-        this.c_pitchPrimaryNoteHue = +getComputedStyle(this.Y).getPropertyValue("--pitch-primary-note-hue");
-        this.c_pitchPrimaryNoteHueScale = +getComputedStyle(this.Y).getPropertyValue("--pitch-primary-note-hue-scale");
-        this.c_pitchPrimaryNoteSat = +getComputedStyle(this.Y).getPropertyValue("--pitch-primary-note-sat");
-        this.c_pitchPrimaryNoteSatScale = +getComputedStyle(this.Y).getPropertyValue("--pitch-primary-note-sat-scale");
-        this.c_pitchPrimaryNoteLum = +getComputedStyle(this.Y).getPropertyValue("--pitch-primary-note-lum");
-        this.c_pitchPrimaryNoteLumScale = +getComputedStyle(this.Y).getPropertyValue("--pitch-primary-note-lum-scale");
-        this.c_noiseSecondaryChannelHue = +getComputedStyle(this.Y).getPropertyValue("--noise-secondary-channel-hue");
-        this.c_noiseSecondaryChannelHueScale = +getComputedStyle(this.Y).getPropertyValue("--noise-secondary-channel-hue-scale");
-        this.c_noiseSecondaryChannelSat = +getComputedStyle(this.Y).getPropertyValue("--noise-secondary-channel-sat");
-        this.c_noiseSecondaryChannelSatScale = +getComputedStyle(this.Y).getPropertyValue("--noise-secondary-channel-sat-scale");
-        this.c_noiseSecondaryChannelLum = +getComputedStyle(this.Y).getPropertyValue("--noise-secondary-channel-lum");
-        this.c_noiseSecondaryChannelLumScale = +getComputedStyle(this.Y).getPropertyValue("--noise-secondary-channel-lum-scale");
-        this.c_noisePrimaryChannelHue = +getComputedStyle(this.Y).getPropertyValue("--noise-primary-channel-hue");
-        this.c_noisePrimaryChannelHueScale = +getComputedStyle(this.Y).getPropertyValue("--noise-primary-channel-hue-scale");
-        this.c_noisePrimaryChannelSat = +getComputedStyle(this.Y).getPropertyValue("--noise-primary-channel-sat");
-        this.c_noisePrimaryChannelSatScale = +getComputedStyle(this.Y).getPropertyValue("--noise-primary-channel-sat-scale");
-        this.c_noisePrimaryChannelLum = +getComputedStyle(this.Y).getPropertyValue("--noise-primary-channel-lum");
-        this.c_noisePrimaryChannelLumScale = +getComputedStyle(this.Y).getPropertyValue("--noise-primary-channel-lum-scale");
-        this.c_noiseSecondaryNoteHue = +getComputedStyle(this.Y).getPropertyValue("--noise-secondary-note-hue");
-        this.c_noiseSecondaryNoteHueScale = +getComputedStyle(this.Y).getPropertyValue("--noise-secondary-note-hue-scale");
-        this.c_noiseSecondaryNoteSat = +getComputedStyle(this.Y).getPropertyValue("--noise-secondary-note-sat");
-        this.c_noiseSecondaryNoteSatScale = +getComputedStyle(this.Y).getPropertyValue("--noise-secondary-note-sat-scale");
-        this.c_noiseSecondaryNoteLum = +getComputedStyle(this.Y).getPropertyValue("--noise-secondary-note-lum");
-        this.c_noiseSecondaryNoteLumScale = +getComputedStyle(this.Y).getPropertyValue("--noise-secondary-note-lum-scale");
-        this.c_noisePrimaryNoteHue = +getComputedStyle(this.Y).getPropertyValue("--noise-primary-note-hue");
-        this.c_noisePrimaryNoteHueScale = +getComputedStyle(this.Y).getPropertyValue("--noise-primary-note-hue-scale");
-        this.c_noisePrimaryNoteSat = +getComputedStyle(this.Y).getPropertyValue("--noise-primary-note-sat");
-        this.c_noisePrimaryNoteSatScale = +getComputedStyle(this.Y).getPropertyValue("--noise-primary-note-sat-scale");
-        this.c_noisePrimaryNoteLum = +getComputedStyle(this.Y).getPropertyValue("--noise-primary-note-lum");
-        this.c_noisePrimaryNoteLumScale = +getComputedStyle(this.Y).getPropertyValue("--noise-primary-note-lum-scale");
-        this.c_modSecondaryChannelHue = +getComputedStyle(this.Y).getPropertyValue("--mod-secondary-channel-hue");
-        this.c_modSecondaryChannelHueScale = +getComputedStyle(this.Y).getPropertyValue("--mod-secondary-channel-hue-scale");
-        this.c_modSecondaryChannelSat = +getComputedStyle(this.Y).getPropertyValue("--mod-secondary-channel-sat");
-        this.c_modSecondaryChannelSatScale = +getComputedStyle(this.Y).getPropertyValue("--mod-secondary-channel-sat-scale");
-        this.c_modSecondaryChannelLum = +getComputedStyle(this.Y).getPropertyValue("--mod-secondary-channel-lum");
-        this.c_modSecondaryChannelLumScale = +getComputedStyle(this.Y).getPropertyValue("--mod-secondary-channel-lum-scale");
-        this.c_modPrimaryChannelHue = +getComputedStyle(this.Y).getPropertyValue("--mod-primary-channel-hue");
-        this.c_modPrimaryChannelHueScale = +getComputedStyle(this.Y).getPropertyValue("--mod-primary-channel-hue-scale");
-        this.c_modPrimaryChannelSat = +getComputedStyle(this.Y).getPropertyValue("--mod-primary-channel-sat");
-        this.c_modPrimaryChannelSatScale = +getComputedStyle(this.Y).getPropertyValue("--mod-primary-channel-sat-scale");
-        this.c_modPrimaryChannelLum = +getComputedStyle(this.Y).getPropertyValue("--mod-primary-channel-lum");
-        this.c_modPrimaryChannelLumScale = +getComputedStyle(this.Y).getPropertyValue("--mod-primary-channel-lum-scale");
-        this.c_modSecondaryNoteHue = +getComputedStyle(this.Y).getPropertyValue("--mod-secondary-note-hue");
-        this.c_modSecondaryNoteHueScale = +getComputedStyle(this.Y).getPropertyValue("--mod-secondary-note-hue-scale");
-        this.c_modSecondaryNoteSat = +getComputedStyle(this.Y).getPropertyValue("--mod-secondary-note-sat");
-        this.c_modSecondaryNoteSatScale = +getComputedStyle(this.Y).getPropertyValue("--mod-secondary-note-sat-scale");
-        this.c_modSecondaryNoteLum = +getComputedStyle(this.Y).getPropertyValue("--mod-secondary-note-lum");
-        this.c_modSecondaryNoteLumScale = +getComputedStyle(this.Y).getPropertyValue("--mod-secondary-note-lum-scale");
-        this.c_modPrimaryNoteHue = +getComputedStyle(this.Y).getPropertyValue("--mod-primary-note-hue");
-        this.c_modPrimaryNoteHueScale = +getComputedStyle(this.Y).getPropertyValue("--mod-primary-note-hue-scale");
-        this.c_modPrimaryNoteSat = +getComputedStyle(this.Y).getPropertyValue("--mod-primary-note-sat");
-        this.c_modPrimaryNoteSatScale = +getComputedStyle(this.Y).getPropertyValue("--mod-primary-note-sat-scale");
-        this.c_modPrimaryNoteLum = +getComputedStyle(this.Y).getPropertyValue("--mod-primary-note-lum");
-        this.c_modPrimaryNoteLumScale = +getComputedStyle(this.Y).getPropertyValue("--mod-primary-note-lum-scale");
-        if (getComputedStyle(this.Y).getPropertyValue("--formula-pitch-channel-count-override") != "") this.c_pitchChannelCountOverride = +getComputedStyle(this.Y).getPropertyValue("--formula-pitch-channel-count-override");
-        if (getComputedStyle(this.Y).getPropertyValue("--formula-noise-channel-count-override") != "") this.c_noiseChannelCountOverride = +getComputedStyle(this.Y).getPropertyValue("--formula-noise-channel-count-override");
-        if (getComputedStyle(this.Y).getPropertyValue("--formula-mod-channel-count-override") != "") this.c_modChannelCountOverride = +getComputedStyle(this.Y).getPropertyValue("--formula-mod-channel-count-override");
+        this.c_pitchSecondaryChannelHue = +this.getComputed("--pitch-secondary-channel-hue");
+        this.c_pitchSecondaryChannelHueScale = +this.getComputed("--pitch-secondary-channel-hue-scale");
+        this.c_pitchSecondaryChannelSat = +this.getComputed("--pitch-secondary-channel-sat");
+        this.c_pitchSecondaryChannelSatScale = +this.getComputed("--pitch-secondary-channel-sat-scale");
+        this.c_pitchSecondaryChannelLum = +this.getComputed("--pitch-secondary-channel-lum");
+        this.c_pitchSecondaryChannelLumScale = +this.getComputed("--pitch-secondary-channel-lum-scale");
+        this.c_pitchPrimaryChannelHue = +this.getComputed("--pitch-primary-channel-hue");
+        this.c_pitchPrimaryChannelHueScale = +this.getComputed("--pitch-primary-channel-hue-scale");
+        this.c_pitchPrimaryChannelSat = +this.getComputed("--pitch-primary-channel-sat");
+        this.c_pitchPrimaryChannelSatScale = +this.getComputed("--pitch-primary-channel-sat-scale");
+        this.c_pitchPrimaryChannelLum = +this.getComputed("--pitch-primary-channel-lum");
+        this.c_pitchPrimaryChannelLumScale = +this.getComputed("--pitch-primary-channel-lum-scale");
+        this.c_pitchSecondaryNoteHue = +this.getComputed("--pitch-secondary-note-hue");
+        this.c_pitchSecondaryNoteHueScale = +this.getComputed("--pitch-secondary-note-hue-scale");
+        this.c_pitchSecondaryNoteSat = +this.getComputed("--pitch-secondary-note-sat");
+        this.c_pitchSecondaryNoteSatScale = +this.getComputed("--pitch-secondary-note-sat-scale");
+        this.c_pitchSecondaryNoteLum = +this.getComputed("--pitch-secondary-note-lum");
+        this.c_pitchSecondaryNoteLumScale = +this.getComputed("--pitch-secondary-note-lum-scale");
+        this.c_pitchPrimaryNoteHue = +this.getComputed("--pitch-primary-note-hue");
+        this.c_pitchPrimaryNoteHueScale = +this.getComputed("--pitch-primary-note-hue-scale");
+        this.c_pitchPrimaryNoteSat = +this.getComputed("--pitch-primary-note-sat");
+        this.c_pitchPrimaryNoteSatScale = +this.getComputed("--pitch-primary-note-sat-scale");
+        this.c_pitchPrimaryNoteLum = +this.getComputed("--pitch-primary-note-lum");
+        this.c_pitchPrimaryNoteLumScale = +this.getComputed("--pitch-primary-note-lum-scale");
+        this.c_noiseSecondaryChannelHue = +this.getComputed("--noise-secondary-channel-hue");
+        this.c_noiseSecondaryChannelHueScale = +this.getComputed("--noise-secondary-channel-hue-scale");
+        this.c_noiseSecondaryChannelSat = +this.getComputed("--noise-secondary-channel-sat");
+        this.c_noiseSecondaryChannelSatScale = +this.getComputed("--noise-secondary-channel-sat-scale");
+        this.c_noiseSecondaryChannelLum = +this.getComputed("--noise-secondary-channel-lum");
+        this.c_noiseSecondaryChannelLumScale = +this.getComputed("--noise-secondary-channel-lum-scale");
+        this.c_noisePrimaryChannelHue = +this.getComputed("--noise-primary-channel-hue");
+        this.c_noisePrimaryChannelHueScale = +this.getComputed("--noise-primary-channel-hue-scale");
+        this.c_noisePrimaryChannelSat = +this.getComputed("--noise-primary-channel-sat");
+        this.c_noisePrimaryChannelSatScale = +this.getComputed("--noise-primary-channel-sat-scale");
+        this.c_noisePrimaryChannelLum = +this.getComputed("--noise-primary-channel-lum");
+        this.c_noisePrimaryChannelLumScale = +this.getComputed("--noise-primary-channel-lum-scale");
+        this.c_noiseSecondaryNoteHue = +this.getComputed("--noise-secondary-note-hue");
+        this.c_noiseSecondaryNoteHueScale = +this.getComputed("--noise-secondary-note-hue-scale");
+        this.c_noiseSecondaryNoteSat = +this.getComputed("--noise-secondary-note-sat");
+        this.c_noiseSecondaryNoteSatScale = +this.getComputed("--noise-secondary-note-sat-scale");
+        this.c_noiseSecondaryNoteLum = +this.getComputed("--noise-secondary-note-lum");
+        this.c_noiseSecondaryNoteLumScale = +this.getComputed("--noise-secondary-note-lum-scale");
+        this.c_noisePrimaryNoteHue = +this.getComputed("--noise-primary-note-hue");
+        this.c_noisePrimaryNoteHueScale = +this.getComputed("--noise-primary-note-hue-scale");
+        this.c_noisePrimaryNoteSat = +this.getComputed("--noise-primary-note-sat");
+        this.c_noisePrimaryNoteSatScale = +this.getComputed("--noise-primary-note-sat-scale");
+        this.c_noisePrimaryNoteLum = +this.getComputed("--noise-primary-note-lum");
+        this.c_noisePrimaryNoteLumScale = +this.getComputed("--noise-primary-note-lum-scale");
+        this.c_modSecondaryChannelHue = +this.getComputed("--mod-secondary-channel-hue");
+        this.c_modSecondaryChannelHueScale = +this.getComputed("--mod-secondary-channel-hue-scale");
+        this.c_modSecondaryChannelSat = +this.getComputed("--mod-secondary-channel-sat");
+        this.c_modSecondaryChannelSatScale = +this.getComputed("--mod-secondary-channel-sat-scale");
+        this.c_modSecondaryChannelLum = +this.getComputed("--mod-secondary-channel-lum");
+        this.c_modSecondaryChannelLumScale = +this.getComputed("--mod-secondary-channel-lum-scale");
+        this.c_modPrimaryChannelHue = +this.getComputed("--mod-primary-channel-hue");
+        this.c_modPrimaryChannelHueScale = +this.getComputed("--mod-primary-channel-hue-scale");
+        this.c_modPrimaryChannelSat = +this.getComputed("--mod-primary-channel-sat");
+        this.c_modPrimaryChannelSatScale = +this.getComputed("--mod-primary-channel-sat-scale");
+        this.c_modPrimaryChannelLum = +this.getComputed("--mod-primary-channel-lum");
+        this.c_modPrimaryChannelLumScale = +this.getComputed("--mod-primary-channel-lum-scale");
+        this.c_modSecondaryNoteHue = +this.getComputed("--mod-secondary-note-hue");
+        this.c_modSecondaryNoteHueScale = +this.getComputed("--mod-secondary-note-hue-scale");
+        this.c_modSecondaryNoteSat = +this.getComputed("--mod-secondary-note-sat");
+        this.c_modSecondaryNoteSatScale = +this.getComputed("--mod-secondary-note-sat-scale");
+        this.c_modSecondaryNoteLum = +this.getComputed("--mod-secondary-note-lum");
+        this.c_modSecondaryNoteLumScale = +this.getComputed("--mod-secondary-note-lum-scale");
+        this.c_modPrimaryNoteHue = +this.getComputed("--mod-primary-note-hue");
+        this.c_modPrimaryNoteHueScale = +this.getComputed("--mod-primary-note-hue-scale");
+        this.c_modPrimaryNoteSat = +this.getComputed("--mod-primary-note-sat");
+        this.c_modPrimaryNoteSatScale = +this.getComputed("--mod-primary-note-sat-scale");
+        this.c_modPrimaryNoteLum = +this.getComputed("--mod-primary-note-lum");
+        this.c_modPrimaryNoteLumScale = +this.getComputed("--mod-primary-note-lum-scale");
+        if (this.getComputed("--formula-pitch-channel-count-override") != "") this.c_pitchChannelCountOverride = +this.getComputed("--formula-pitch-channel-count-override");
+        if (this.getComputed("--formula-noise-channel-count-override") != "") this.c_noiseChannelCountOverride = +this.getComputed("--formula-noise-channel-count-override");
+        if (this.getComputed("--formula-mod-channel-count-override") != "") this.c_modChannelCountOverride = +this.getComputed("--formula-mod-channel-count-override");
       }
     }
     static getComputed(name) {
-      return getComputedStyle(this.Y).getPropertyValue(name);
+      return getComputedStyle(this.Bf).getPropertyValue(name);
     }
   };
 
@@ -6969,12 +6973,12 @@ li.select2-results__option[role=group] > strong:hover {
   var AddSamplesPrompt = class {
     xk = 64;
     J;
-    va = [];
-    bc = {};
-    fa = button({ class: "cancelButton" });
-    ia = button({ class: "okayButton", style: "width: 45%;" }, "Okay");
+    ua = [];
+    ac = {};
+    ea = button({ class: "cancelButton" });
+    ha = button({ class: "okayButton", style: "width: 45%;" }, "Okay");
     Cg = button({ style: "height: auto; min-height: var(--button-size);" }, "Add sample");
-    ce = div();
+    be = div();
     yk = button({ style: "height: auto; min-height: var(--button-size); margin-left: 0.5em;" }, "Add multiple samples");
     js = div(
       { style: "margin-top: 0.5em;" },
@@ -7062,10 +7066,10 @@ li.select2-results__option[role=group] > strong:hover {
       div(
         { style: "display: flex; flex-direction: column; align-items: center; margin-bottom: 0.5em;" },
         this.ks,
-        div({ style: "width: 100%; max-height: 450px; overflow-y: scroll;" }, this.ce),
+        div({ style: "width: 100%; max-height: 450px; overflow-y: scroll;" }, this.be),
         this.js
       ),
-      div({ style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" }, this.ia)
+      div({ style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" }, this.ha)
     );
     Ck = textarea({
       style: "width: 100%; height: 100%; resize: none; box-sizing: border-box;"
@@ -7087,42 +7091,42 @@ li.select2-results__option[role=group] > strong:hover {
       this.Dg,
       this.Ek,
       this.Bk,
-      this.fa
+      this.ea
     );
     constructor(_doc) {
       this.J = _doc;
       if (EditorConfig.customSamples != null) {
         const parsed = this.yn(EditorConfig.customSamples, false);
-        this.va = parsed.entries;
+        this.ua = parsed.entries;
       }
       this.Cg.addEventListener("click", this.zn);
       this.yk.addEventListener("click", this.An);
       this.Dk.addEventListener("click", this.Bn);
-      this.ia.addEventListener("click", this.la);
-      this.fa.addEventListener("click", this.ga);
+      this.ha.addEventListener("click", this.ka);
+      this.ea.addEventListener("click", this.fa);
       this.zk.addEventListener("click", this.Cn);
       this.Ak.addEventListener("click", this.Dn);
       this.Ii();
-      this.Da(false);
+      this.Ca(false);
     }
     cleanUp = () => {
-      while (this.ce.firstChild !== null) {
-        this.ce.removeChild(this.ce.firstChild);
+      while (this.be.firstChild !== null) {
+        this.be.removeChild(this.be.firstChild);
       }
       this.Cg.removeEventListener("click", this.zn);
       this.yk.removeEventListener("click", this.An);
       this.Dk.removeEventListener("click", this.Bn);
-      this.ia.removeEventListener("click", this.la);
-      this.fa.removeEventListener("click", this.ga);
+      this.ha.removeEventListener("click", this.ka);
+      this.ea.removeEventListener("click", this.fa);
       this.zk.removeEventListener("click", this.Cn);
       this.Ak.removeEventListener("click", this.Dn);
     };
-    ga = () => {
+    fa = () => {
       this.J.prompt = null;
       this.J.undo();
-      this.la();
+      this.ka();
     };
-    la = () => {
+    ka = () => {
       const urlData = this.ls();
       EditorConfig.customSamples = urlData.split("|").filter((x) => x !== "");
       Config.willReloadForCustomSamples = true;
@@ -7132,8 +7136,8 @@ li.select2-results__option[role=group] > strong:hover {
       }, 50);
     };
     zn = (event) => {
-      const entryIndex = this.va.length;
-      this.va.push({
+      const entryIndex = this.ua.length;
+      this.ua.push({
         url: "",
         sampleRate: 44100,
         rootKey: 60,
@@ -7144,9 +7148,9 @@ li.select2-results__option[role=group] > strong:hover {
         chipWaveLoopMode: null,
         chipWavePlayBackwards: false
       });
-      this.bc[entryIndex] = false;
+      this.ac[entryIndex] = false;
       this.Ii();
-      this.Da(true);
+      this.Ca(true);
     };
     An = (event) => {
       this.Dg.style.display = "none";
@@ -7170,36 +7174,36 @@ li.select2-results__option[role=group] > strong:hover {
         false
       );
       const seen = /* @__PURE__ */ new Map();
-      for (const entry of this.va) {
+      for (const entry of this.ua) {
         seen.set(entry.url, true);
       }
       for (const entry of parsed.entries) {
-        if (this.va.length >= this.xk) break;
+        if (this.ua.length >= this.xk) break;
         if (seen.has(entry.url)) continue;
         seen.set(entry.url, true);
-        const entryIndex = this.va.length;
-        this.va.push(entry);
-        this.bc[entryIndex] = false;
+        const entryIndex = this.ua.length;
+        this.ua.push(entry);
+        this.ac[entryIndex] = false;
       }
       this.Ii();
-      this.Da(false);
+      this.Ca(false);
     };
     ms = (event) => {
       const element = event.target;
       const entryIndex = +element.dataset.index;
       if (element.open) {
-        this.bc[entryIndex] = true;
+        this.ac[entryIndex] = true;
       } else {
-        this.bc[entryIndex] = false;
+        this.ac[entryIndex] = false;
       }
     };
     ns = (event) => {
       const element = event.target;
       const entryIndex = +element.dataset.index;
-      this.va[entryIndex].url = element.value;
+      this.ua[entryIndex].url = element.value;
       const sampleNameElement = element.parentNode?.parentNode?.querySelector(".add-sample-prompt-sample-name");
       if (sampleNameElement != null) {
-        const sampleName = this.En(this.va[entryIndex]);
+        const sampleName = this.En(this.ua[entryIndex]);
         sampleNameElement.innerText = sampleName;
         sampleNameElement.title = sampleName;
       }
@@ -7208,16 +7212,16 @@ li.select2-results__option[role=group] > strong:hover {
       const element = event.target;
       const entryIndex = +element.dataset.index;
       const value = clamp(8e3, 96e3 + 1, parseFloatWithDefault(element.value, 44100));
-      this.va[entryIndex].sampleRate = value;
+      this.ua[entryIndex].sampleRate = value;
     };
     ps = (event) => {
       const element = event.target;
       const entryIndex = +element.dataset.index;
       const value = parseFloatWithDefault(element.value, 60);
-      this.va[entryIndex].rootKey = value;
+      this.ua[entryIndex].rootKey = value;
       const rootKeyDisplay = element.parentNode?.parentNode?.querySelector(".add-sample-prompt-root-key-display");
       if (rootKeyDisplay != null) {
-        const noteName = this.Fn(this.va[entryIndex].rootKey);
+        const noteName = this.Fn(this.ua[entryIndex].rootKey);
         if (noteName !== "") {
           rootKeyDisplay.innerText = `(${noteName})`;
         }
@@ -7226,41 +7230,41 @@ li.select2-results__option[role=group] > strong:hover {
     qs = (event) => {
       const element = event.target;
       const entryIndex = +element.dataset.index;
-      this.va[entryIndex].percussion = element.checked ? true : false;
+      this.ua[entryIndex].percussion = element.checked ? true : false;
     };
     rs = (event) => {
       const element = event.target;
       const entryIndex = +element.dataset.index;
       const value = parseIntWithDefault(element.value, null);
-      this.va[entryIndex].chipWaveLoopStart = value;
+      this.ua[entryIndex].chipWaveLoopStart = value;
     };
     ss = (event) => {
       const element = event.target;
       const entryIndex = +element.dataset.index;
       const value = parseIntWithDefault(element.value, null);
-      this.va[entryIndex].chipWaveLoopEnd = value;
+      this.ua[entryIndex].chipWaveLoopEnd = value;
     };
     ts = (event) => {
       const element = event.target;
       const entryIndex = +element.dataset.index;
       const value = parseIntWithDefault(element.value, null);
-      this.va[entryIndex].chipWaveStartOffset = value;
+      this.ua[entryIndex].chipWaveStartOffset = value;
     };
     us = (event) => {
       const element = event.target;
       const entryIndex = +element.dataset.index;
       const newValue = +element.value;
       if (newValue === -1) {
-        this.va[entryIndex].chipWaveLoopMode = null;
+        this.ua[entryIndex].chipWaveLoopMode = null;
       } else {
-        this.va[entryIndex].chipWaveLoopMode = newValue;
+        this.ua[entryIndex].chipWaveLoopMode = newValue;
       }
     };
     vs = (event) => {
       const element = event.target;
       const entryIndex = +element.dataset.index;
       const newValue = element.checked;
-      this.va[entryIndex].chipWavePlayBackwards = newValue;
+      this.ua[entryIndex].chipWavePlayBackwards = newValue;
     };
     // @TODO: This is copy pasted from SongEditor, should probably be moved to
     //        somewhere else that can be imported from both places.
@@ -7285,50 +7289,50 @@ li.select2-results__option[role=group] > strong:hover {
     ws = (event) => {
       const element = event.target;
       const entryIndex = +element.dataset.index;
-      this.Eg(this.Gn(this.va[entryIndex]));
+      this.Eg(this.Gn(this.ua[entryIndex]));
     };
     xs = (event) => {
       const element = event.target;
       const entryIndex = +element.dataset.index;
-      this.bc[entryIndex] = false;
-      this.va.splice(entryIndex, 1);
+      this.ac[entryIndex] = false;
+      this.ua.splice(entryIndex, 1);
       this.Ii();
-      this.Da(false);
+      this.Ca(false);
     };
     ys = (event) => {
       const element = event.target;
       const entryIndex = +element.dataset.index;
       const upEntryIndex = entryIndex - 1;
-      if (this.va.length >= 2 && upEntryIndex >= 0) {
-        const upEntry = this.va[upEntryIndex];
-        const entry = this.va[entryIndex];
-        const upEntryOptionsVisibility = this.bc[upEntryIndex];
-        const entryOptionsVisibility = this.bc[entryIndex];
-        this.va[upEntryIndex] = entry;
-        this.va[entryIndex] = upEntry;
-        this.bc[upEntryIndex] = entryOptionsVisibility;
-        this.bc[entryIndex] = upEntryOptionsVisibility;
-        this.Da(false);
+      if (this.ua.length >= 2 && upEntryIndex >= 0) {
+        const upEntry = this.ua[upEntryIndex];
+        const entry = this.ua[entryIndex];
+        const upEntryOptionsVisibility = this.ac[upEntryIndex];
+        const entryOptionsVisibility = this.ac[entryIndex];
+        this.ua[upEntryIndex] = entry;
+        this.ua[entryIndex] = upEntry;
+        this.ac[upEntryIndex] = entryOptionsVisibility;
+        this.ac[entryIndex] = upEntryOptionsVisibility;
+        this.Ca(false);
       }
     };
     zs = (event) => {
       const element = event.target;
       const entryIndex = +element.dataset.index;
       const downEntryIndex = entryIndex + 1;
-      if (this.va.length >= 2 && downEntryIndex < this.va.length) {
-        const downEntry = this.va[downEntryIndex];
-        const entry = this.va[entryIndex];
-        const downEntryOptionsVisibility = this.bc[downEntryIndex];
-        const entryOptionsVisibility = this.bc[entryIndex];
-        this.va[downEntryIndex] = entry;
-        this.va[entryIndex] = downEntry;
-        this.bc[downEntryIndex] = entryOptionsVisibility;
-        this.bc[entryIndex] = downEntryOptionsVisibility;
-        this.Da(false);
+      if (this.ua.length >= 2 && downEntryIndex < this.ua.length) {
+        const downEntry = this.ua[downEntryIndex];
+        const entry = this.ua[entryIndex];
+        const downEntryOptionsVisibility = this.ac[downEntryIndex];
+        const entryOptionsVisibility = this.ac[entryIndex];
+        this.ua[downEntryIndex] = entry;
+        this.ua[entryIndex] = downEntry;
+        this.ac[downEntryIndex] = entryOptionsVisibility;
+        this.ac[entryIndex] = downEntryOptionsVisibility;
+        this.Ca(false);
       }
     };
     Ii = () => {
-      if (this.va.length >= this.xk) {
+      if (this.ua.length >= this.xk) {
         this.Cg.style.display = "none";
       } else {
         this.Cg.style.display = "";
@@ -7509,7 +7513,7 @@ li.select2-results__option[role=group] > strong:hover {
     };
     ls = () => {
       let output = "";
-      for (const entry of this.va) {
+      for (const entry of this.ua) {
         const url = entry.url.trim();
         if (url === "") continue;
         output += "|" + this.Gn(entry);
@@ -7545,15 +7549,15 @@ li.select2-results__option[role=group] > strong:hover {
       pitch += Math.floor(n / Config.pitchesPerOctave);
       return pitch;
     };
-    Da = (scrollToBottom) => {
-      while (this.ce.firstChild !== null) {
-        this.ce.removeChild(this.ce.firstChild);
+    Ca = (scrollToBottom) => {
+      while (this.be.firstChild !== null) {
+        this.be.removeChild(this.be.firstChild);
       }
-      for (let entryIndex = 0; entryIndex < this.va.length; entryIndex++) {
-        const canMoveUp = this.va.length >= 2 && entryIndex > 0;
-        const canMoveDown = this.va.length >= 2 && entryIndex < this.va.length - 1;
-        const entry = this.va[entryIndex];
-        const optionsVisible = Boolean(this.bc[entryIndex]);
+      for (let entryIndex = 0; entryIndex < this.ua.length; entryIndex++) {
+        const canMoveUp = this.ua.length >= 2 && entryIndex > 0;
+        const canMoveDown = this.ua.length >= 2 && entryIndex < this.ua.length - 1;
+        const entry = this.ua[entryIndex];
+        const optionsVisible = Boolean(this.ac[entryIndex]);
         const urlInput = input({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", value: entry.url });
         const sampleRateStepper = input({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: "" + entry.sampleRate, min: "8000", max: "96000", step: "1" });
         const rootKeyStepper = input({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: "" + entry.rootKey, min: "0", max: Config.maxPitch + Config.pitchesPerOctave, step: "1" });
@@ -7683,8 +7687,8 @@ li.select2-results__option[role=group] > strong:hover {
         if (canMoveDown) {
           moveDownButton.addEventListener("click", this.zs);
         }
-        this.ce.appendChild(entryElement);
-        const thisIsTheLastElement = entryIndex === this.va.length - 1;
+        this.be.appendChild(entryElement);
+        const thisIsTheLastElement = entryIndex === this.ua.length - 1;
         if (scrollToBottom && thisIsTheLastElement) {
           entryElement.scrollIntoView({ "block": "nearest", "inline": "nearest" });
         }
@@ -7696,144 +7700,144 @@ li.select2-results__option[role=group] > strong:hover {
   var BarScrollBar = class {
     constructor(_doc) {
       this.J = _doc;
-      const center = this.ba * 0.5;
+      const center = this.aa * 0.5;
       const base = 20;
       const tip = 9;
       const arrowHeight = 6;
       this.Fk.setAttribute("d", `M ${tip} ${center} L ${base} ${center + arrowHeight} L ${base} ${center - arrowHeight} z`);
-      this.Gk.setAttribute("d", `M ${this.ca - tip} ${center} L ${this.ca - base} ${center + arrowHeight} L ${this.ca - base} ${center - arrowHeight} z`);
-      this.container.addEventListener("mousedown", this.db);
-      document.addEventListener("mousemove", this.Za);
-      document.addEventListener("mouseup", this.xa);
-      this.container.addEventListener("mouseover", this.mc);
-      this.container.addEventListener("mouseout", this.nc);
-      this.container.addEventListener("touchstart", this.pb);
-      this.container.addEventListener("touchmove", this.qb);
-      this.container.addEventListener("touchend", this.xa);
-      this.container.addEventListener("touchcancel", this.xa);
+      this.Gk.setAttribute("d", `M ${this.ba - tip} ${center} L ${this.ba - base} ${center + arrowHeight} L ${this.ba - base} ${center - arrowHeight} z`);
+      this.container.addEventListener("mousedown", this.cb);
+      document.addEventListener("mousemove", this.Ya);
+      document.addEventListener("mouseup", this.wa);
+      this.container.addEventListener("mouseover", this.lc);
+      this.container.addEventListener("mouseout", this.mc);
+      this.container.addEventListener("touchstart", this.ob);
+      this.container.addEventListener("touchmove", this.pb);
+      this.container.addEventListener("touchend", this.wa);
+      this.container.addEventListener("touchcancel", this.wa);
     }
-    ca = 512;
-    ba = 20;
-    Cf = SVG.rect("rect", { fill: ColorConfig.playhead, x: 0, y: 0, width: 2, height: this.ba });
+    ba = 512;
+    aa = 20;
+    Cf = SVG.rect("rect", { fill: ColorConfig.playhead, x: 0, y: 0, width: 2, height: this.aa });
     Fg = SVG.svg({ "pointer-events": "none" });
-    Ge = SVG.rect({ fill: ColorConfig.uiWidgetBackground, x: 0, y: 2, width: 10, height: this.ba - 4 });
-    zd = SVG.rect({ fill: "none", stroke: ColorConfig.hoverPreview, "stroke-width": 2, "pointer-events": "none", x: 0, y: 1, width: 10, height: this.ba - 2 });
+    Fe = SVG.rect({ fill: ColorConfig.uiWidgetBackground, x: 0, y: 2, width: 10, height: this.aa - 4 });
+    yd = SVG.rect({ fill: "none", stroke: ColorConfig.hoverPreview, "stroke-width": 2, "pointer-events": "none", x: 0, y: 1, width: 10, height: this.aa - 2 });
     Fk = SVG.path({ fill: ColorConfig.hoverPreview, "pointer-events": "none" });
     Gk = SVG.path({ fill: ColorConfig.hoverPreview, "pointer-events": "none" });
     Gg = -1;
-    ha = SVG.svg(
-      { style: `background-color: ${ColorConfig.editorBackground}; touch-action: pan-y; position: absolute;`, width: this.ca, height: this.ba },
+    ga = SVG.svg(
+      { style: `background-color: ${ColorConfig.editorBackground}; touch-action: pan-y; position: absolute;`, width: this.ba, height: this.aa },
       this.Fg,
-      this.Ge,
-      this.zd,
+      this.Fe,
+      this.yd,
       this.Fk,
       this.Gk,
       this.Cf
     );
-    container = HTML.div({ class: "barScrollBar", style: "width: 512px; height: 20px; overflow: hidden; position: relative;" }, this.ha);
-    $ = 0;
-    da = false;
-    na = false;
-    Qc = false;
-    Tb;
-    jb;
+    container = HTML.div({ class: "barScrollBar", style: "width: 512px; height: 20px; overflow: hidden; position: relative;" }, this.ga);
+    _ = 0;
+    ca = false;
+    ma = false;
+    Pc = false;
+    Sb;
+    ib;
     Hn = -1;
     In = -1;
     animatePlayhead = () => {
-      const playhead = Math.min(512, Math.max(0, this.jb * this.J.synth.playhead - 2));
+      const playhead = Math.min(512, Math.max(0, this.ib * this.J.synth.playhead - 2));
       if (this.Gg != playhead) {
         this.Gg = playhead;
         this.Cf.setAttribute("x", "" + playhead);
       }
     };
+    lc = () => {
+      if (this.ma) return;
+      this.ma = true;
+      this.qa();
+    };
     mc = () => {
-      if (this.na) return;
-      this.na = true;
-      this.ra();
+      if (!this.ma) return;
+      this.ma = false;
+      this.qa();
     };
-    nc = () => {
-      if (!this.na) return;
-      this.na = false;
-      this.ra();
-    };
-    db = (event) => {
+    cb = (event) => {
       event.preventDefault();
-      this.da = true;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.clientX || event.pageX) - boundingRect.left;
-      this.ra();
-      if (this.$ >= this.J.barScrollPos * this.jb && this.$ <= (this.J.barScrollPos + this.J.trackVisibleBars) * this.jb) {
-        this.Qc = true;
-        this.Tb = this.$;
+      this.ca = true;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.clientX || event.pageX) - boundingRect.left;
+      this.qa();
+      if (this._ >= this.J.barScrollPos * this.ib && this._ <= (this.J.barScrollPos + this.J.trackVisibleBars) * this.ib) {
+        this.Pc = true;
+        this.Sb = this._;
       }
+    };
+    ob = (event) => {
+      event.preventDefault();
+      this.ca = true;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = event.touches[0].clientX - boundingRect.left;
+      this.qa();
+      if (this._ >= this.J.barScrollPos * this.ib && this._ <= (this.J.barScrollPos + this.J.trackVisibleBars) * this.ib) {
+        this.Pc = true;
+        this.Sb = this._;
+      }
+    };
+    Ya = (event) => {
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.clientX || event.pageX) - boundingRect.left;
+      this.xa();
     };
     pb = (event) => {
+      if (!this.ca) return;
       event.preventDefault();
-      this.da = true;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = event.touches[0].clientX - boundingRect.left;
-      this.ra();
-      if (this.$ >= this.J.barScrollPos * this.jb && this.$ <= (this.J.barScrollPos + this.J.trackVisibleBars) * this.jb) {
-        this.Qc = true;
-        this.Tb = this.$;
-      }
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = event.touches[0].clientX - boundingRect.left;
+      this.xa();
     };
-    Za = (event) => {
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.clientX || event.pageX) - boundingRect.left;
-      this.ya();
-    };
-    qb = (event) => {
-      if (!this.da) return;
-      event.preventDefault();
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = event.touches[0].clientX - boundingRect.left;
-      this.ya();
-    };
-    ya() {
-      if (this.Qc) {
-        while (this.$ - this.Tb < -this.jb * 0.5) {
+    xa() {
+      if (this.Pc) {
+        while (this._ - this.Sb < -this.ib * 0.5) {
           if (this.J.barScrollPos > 0) {
             this.J.barScrollPos--;
-            this.Tb -= this.jb;
+            this.Sb -= this.ib;
             this.J.notifier.changed();
           } else {
             break;
           }
         }
-        while (this.$ - this.Tb > this.jb * 0.5) {
+        while (this._ - this.Sb > this.ib * 0.5) {
           if (this.J.barScrollPos < this.J.song.barCount - this.J.trackVisibleBars) {
             this.J.barScrollPos++;
-            this.Tb += this.jb;
+            this.Sb += this.ib;
             this.J.notifier.changed();
           } else {
             break;
           }
         }
       }
-      if (this.na) this.ra();
+      if (this.ma) this.qa();
     }
     changePos(offset) {
       while (Math.abs(offset) >= 1) {
         if (offset < 0) {
           if (this.J.barScrollPos > 0) {
             this.J.barScrollPos--;
-            this.Tb += this.jb;
+            this.Sb += this.ib;
             this.J.notifier.changed();
           }
         } else {
           if (this.J.barScrollPos < this.J.song.barCount - this.J.trackVisibleBars) {
             this.J.barScrollPos++;
-            this.Tb += this.jb;
+            this.Sb += this.ib;
             this.J.notifier.changed();
           }
         }
         offset += offset > 0 ? -1 : 1;
       }
     }
-    xa = (event) => {
-      if (!this.Qc && this.da) {
-        if (this.$ < (this.J.barScrollPos + 8) * this.jb) {
+    wa = (event) => {
+      if (!this.Pc && this.ca) {
+        if (this._ < (this.J.barScrollPos + 8) * this.ib) {
           if (this.J.barScrollPos > 0) this.J.barScrollPos--;
           this.J.notifier.changed();
         } else {
@@ -7841,19 +7845,19 @@ li.select2-results__option[role=group] > strong:hover {
           this.J.notifier.changed();
         }
       }
-      this.da = false;
-      this.Qc = false;
-      this.ra();
+      this.ca = false;
+      this.Pc = false;
+      this.qa();
     };
-    ra() {
-      const showHighlight = this.na && !this.da;
+    qa() {
+      const showHighlight = this.ma && !this.ca;
       let showleftHighlight = false;
       let showRightHighlight = false;
       let showHandleHighlight = false;
       if (showHighlight) {
-        if (this.$ < this.J.barScrollPos * this.jb) {
+        if (this._ < this.J.barScrollPos * this.ib) {
           showleftHighlight = true;
-        } else if (this.$ > (this.J.barScrollPos + this.J.trackVisibleBars) * this.jb) {
+        } else if (this._ > (this.J.barScrollPos + this.J.trackVisibleBars) * this.ib) {
           showRightHighlight = true;
         } else {
           showHandleHighlight = true;
@@ -7861,27 +7865,27 @@ li.select2-results__option[role=group] > strong:hover {
       }
       this.Fk.style.visibility = showleftHighlight ? "visible" : "hidden";
       this.Gk.style.visibility = showRightHighlight ? "visible" : "hidden";
-      this.zd.style.visibility = showHandleHighlight ? "visible" : "hidden";
+      this.yd.style.visibility = showHandleHighlight ? "visible" : "hidden";
     }
     render() {
-      this.jb = (this.ca - 1) / Math.max(this.J.trackVisibleBars, this.J.song.barCount);
+      this.ib = (this.ba - 1) / Math.max(this.J.trackVisibleBars, this.J.song.barCount);
       const resized = this.Hn != this.J.song.barCount;
       if (resized) {
         this.Hn = this.J.song.barCount;
         while (this.Fg.firstChild) this.Fg.removeChild(this.Fg.firstChild);
         for (let i = 0; i <= this.J.song.barCount; i++) {
-          const lineHeight = i % 16 == 0 ? 0 : i % 4 == 0 ? this.ba / 8 : this.ba / 3;
-          this.Fg.appendChild(SVG.rect({ fill: ColorConfig.uiWidgetBackground, x: i * this.jb - 1, y: lineHeight, width: 2, height: this.ba - lineHeight * 2 }));
+          const lineHeight = i % 16 == 0 ? 0 : i % 4 == 0 ? this.aa / 8 : this.aa / 3;
+          this.Fg.appendChild(SVG.rect({ fill: ColorConfig.uiWidgetBackground, x: i * this.ib - 1, y: lineHeight, width: 2, height: this.aa - lineHeight * 2 }));
         }
       }
       if (resized || this.In != this.J.barScrollPos) {
         this.In = this.J.barScrollPos;
-        this.Ge.setAttribute("x", String(this.jb * this.J.barScrollPos));
-        this.Ge.setAttribute("width", String(this.jb * this.J.trackVisibleBars));
-        this.zd.setAttribute("x", String(this.jb * this.J.barScrollPos));
-        this.zd.setAttribute("width", String(this.jb * this.J.trackVisibleBars));
+        this.Fe.setAttribute("x", String(this.ib * this.J.barScrollPos));
+        this.Fe.setAttribute("width", String(this.ib * this.J.trackVisibleBars));
+        this.yd.setAttribute("x", String(this.ib * this.J.barScrollPos));
+        this.yd.setAttribute("width", String(this.ib * this.J.trackVisibleBars));
       }
-      this.ra();
+      this.qa();
     }
   };
 
@@ -10267,60 +10271,60 @@ li.select2-results__option[role=group] > strong:hover {
 
   // synth/Deque.ts
   var Deque = class {
-    Ad = 1;
-    yc = [void 0];
-    Bd = 0;
-    Ub = 0;
-    kb = 0;
+    zd = 1;
+    xc = [void 0];
+    Ad = 0;
+    Tb = 0;
+    jb = 0;
     pushFront(element) {
-      if (this.kb >= this.Ad) this.Jn();
-      this.Ub = this.Ub - 1 & this.Bd;
-      this.yc[this.Ub] = element;
-      this.kb++;
+      if (this.jb >= this.zd) this.Jn();
+      this.Tb = this.Tb - 1 & this.Ad;
+      this.xc[this.Tb] = element;
+      this.jb++;
     }
     pushBack(element) {
-      if (this.kb >= this.Ad) this.Jn();
-      this.yc[this.Ub + this.kb & this.Bd] = element;
-      this.kb++;
+      if (this.jb >= this.zd) this.Jn();
+      this.xc[this.Tb + this.jb & this.Ad] = element;
+      this.jb++;
     }
     popFront() {
-      if (this.kb <= 0) throw new Error("No elements left to pop.");
-      const element = this.yc[this.Ub];
-      this.yc[this.Ub] = void 0;
-      this.Ub = this.Ub + 1 & this.Bd;
-      this.kb--;
+      if (this.jb <= 0) throw new Error("No elements left to pop.");
+      const element = this.xc[this.Tb];
+      this.xc[this.Tb] = void 0;
+      this.Tb = this.Tb + 1 & this.Ad;
+      this.jb--;
       return element;
     }
     popBack() {
-      if (this.kb <= 0) throw new Error("No elements left to pop.");
-      this.kb--;
-      const index = this.Ub + this.kb & this.Bd;
-      const element = this.yc[index];
-      this.yc[index] = void 0;
+      if (this.jb <= 0) throw new Error("No elements left to pop.");
+      this.jb--;
+      const index = this.Tb + this.jb & this.Ad;
+      const element = this.xc[index];
+      this.xc[index] = void 0;
       return element;
     }
     peakFront() {
-      if (this.kb <= 0) throw new Error("No elements left to pop.");
-      return this.yc[this.Ub];
+      if (this.jb <= 0) throw new Error("No elements left to pop.");
+      return this.xc[this.Tb];
     }
     peakBack() {
-      if (this.kb <= 0) throw new Error("No elements left to pop.");
-      return this.yc[this.Ub + this.kb - 1 & this.Bd];
+      if (this.jb <= 0) throw new Error("No elements left to pop.");
+      return this.xc[this.Tb + this.jb - 1 & this.Ad];
     }
     count() {
-      return this.kb;
+      return this.jb;
     }
     set(index, element) {
-      if (index < 0 || index >= this.kb) throw new Error("Invalid index");
-      this.yc[this.Ub + index & this.Bd] = element;
+      if (index < 0 || index >= this.jb) throw new Error("Invalid index");
+      this.xc[this.Tb + index & this.Ad] = element;
     }
     get(index) {
-      if (index < 0 || index >= this.kb) throw new Error("Invalid index");
-      return this.yc[this.Ub + index & this.Bd];
+      if (index < 0 || index >= this.jb) throw new Error("Invalid index");
+      return this.xc[this.Tb + index & this.Ad];
     }
     remove(index) {
-      if (index < 0 || index >= this.kb) throw new Error("Invalid index");
-      if (index <= this.kb >> 1) {
+      if (index < 0 || index >= this.jb) throw new Error("Invalid index");
+      if (index <= this.jb >> 1) {
         while (index > 0) {
           this.set(index, this.get(index - 1));
           index--;
@@ -10328,7 +10332,7 @@ li.select2-results__option[role=group] > strong:hover {
         this.popFront();
       } else {
         index++;
-        while (index < this.kb) {
+        while (index < this.jb) {
           this.set(index - 1, this.get(index));
           index++;
         }
@@ -10336,22 +10340,22 @@ li.select2-results__option[role=group] > strong:hover {
       }
     }
     Jn() {
-      if (this.Ad >= 1073741824)
-        throw new Error(`wtf?? requested more than ${this.Ad} elements in deque`);
-      this.Ad = this.Ad << 1;
-      const oldBuffer = this.yc;
-      const newBuffer = new Array(this.Ad);
-      const size = this.kb | 0;
-      const offset = this.Ub | 0;
+      if (this.zd >= 1073741824)
+        throw new Error(`wtf?? requested more than ${this.zd} elements in deque`);
+      this.zd = this.zd << 1;
+      const oldBuffer = this.xc;
+      const newBuffer = new Array(this.zd);
+      const size = this.jb | 0;
+      const offset = this.Tb | 0;
       for (let i = 0; i < size; i++) {
-        newBuffer[i] = oldBuffer[offset + i & this.Bd];
+        newBuffer[i] = oldBuffer[offset + i & this.Ad];
       }
-      for (let i = size; i < this.Ad; i++) {
+      for (let i = size; i < this.zd; i++) {
         newBuffer[i] = void 0;
       }
-      this.Ub = 0;
-      this.yc = newBuffer;
-      this.Bd = this.Ad - 1;
+      this.Tb = 0;
+      this.xc = newBuffer;
+      this.Ad = this.zd - 1;
     }
   };
 
@@ -12506,24 +12510,24 @@ li.select2-results__option[role=group] > strong:hover {
   var base64IntToCharCode = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 45, 95];
   var base64CharCodeToInt = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 62, 62, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0, 0, 0, 0, 0, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 0, 0, 0, 0, 63, 0, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 0, 0, 0, 0, 0];
   var BitFieldReader = class {
-    _a = [];
-    Qa = 0;
+    Za = [];
+    Pa = 0;
     constructor(source, startIndex, stopIndex) {
       for (let i = startIndex; i < stopIndex; i++) {
         const value = base64CharCodeToInt[source.charCodeAt(i)];
-        this._a.push(value >> 5 & 1);
-        this._a.push(value >> 4 & 1);
-        this._a.push(value >> 3 & 1);
-        this._a.push(value >> 2 & 1);
-        this._a.push(value >> 1 & 1);
-        this._a.push(value & 1);
+        this.Za.push(value >> 5 & 1);
+        this.Za.push(value >> 4 & 1);
+        this.Za.push(value >> 3 & 1);
+        this.Za.push(value >> 2 & 1);
+        this.Za.push(value >> 1 & 1);
+        this.Za.push(value & 1);
       }
     }
     read(bitCount) {
       let result = 0;
       while (bitCount > 0) {
         result = result << 1;
-        result += this._a[this.Qa++];
+        result += this.Za[this.Pa++];
         bitCount--;
       }
       return result;
@@ -12531,13 +12535,13 @@ li.select2-results__option[role=group] > strong:hover {
     readLongTail(minValue, minBits) {
       let result = minValue;
       let numBits = minBits;
-      while (this._a[this.Qa++]) {
+      while (this.Za[this.Pa++]) {
         result += 1 << numBits;
         numBits++;
       }
       while (numBits > 0) {
         numBits--;
-        if (this._a[this.Qa++]) {
+        if (this.Za[this.Pa++]) {
           result += 1 << numBits;
         }
       }
@@ -12561,15 +12565,15 @@ li.select2-results__option[role=group] > strong:hover {
     }
   };
   var BitFieldWriter = class {
-    Oa = 0;
-    _a = [];
+    Na = 0;
+    Za = [];
     clear() {
-      this.Oa = 0;
+      this.Na = 0;
     }
     write(bitCount, value) {
       bitCount--;
       while (bitCount >= 0) {
-        this._a[this.Oa++] = value >>> bitCount & 1;
+        this.Za[this.Na++] = value >>> bitCount & 1;
         bitCount--;
       }
     }
@@ -12578,14 +12582,14 @@ li.select2-results__option[role=group] > strong:hover {
       value -= minValue;
       let numBits = minBits;
       while (value >= 1 << numBits) {
-        this._a[this.Oa++] = 1;
+        this.Za[this.Na++] = 1;
         value -= 1 << numBits;
         numBits++;
       }
-      this._a[this.Oa++] = 0;
+      this.Za[this.Na++] = 0;
       while (numBits > 0) {
         numBits--;
-        this._a[this.Oa++] = value >>> numBits & 1;
+        this.Za[this.Na++] = value >>> numBits & 1;
       }
     }
     writePartDuration(value) {
@@ -12604,19 +12608,19 @@ li.select2-results__option[role=group] > strong:hover {
       }
     }
     concat(other) {
-      for (let i = 0; i < other.Oa; i++) {
-        this._a[this.Oa++] = other._a[i];
+      for (let i = 0; i < other.Na; i++) {
+        this.Za[this.Na++] = other.Za[i];
       }
     }
     encodeBase64(buffer) {
-      for (let i = 0; i < this.Oa; i += 6) {
-        const value = this._a[i] << 5 | this._a[i + 1] << 4 | this._a[i + 2] << 3 | this._a[i + 3] << 2 | this._a[i + 4] << 1 | this._a[i + 5];
+      for (let i = 0; i < this.Na; i += 6) {
+        const value = this.Za[i] << 5 | this.Za[i + 1] << 4 | this.Za[i + 2] << 3 | this.Za[i + 3] << 2 | this.Za[i + 4] << 1 | this.Za[i + 5];
         buffer.push(base64IntToCharCode[value]);
       }
       return buffer;
     }
     lengthBase64() {
-      return Math.ceil(this.Oa / 6);
+      return Math.ceil(this.Na / 6);
     }
   };
   var Song = class _Song {
@@ -22101,7 +22105,7 @@ li.select2-results__option[role=group] > strong:hover {
   // editor/Change.ts
   var Change = class {
     On = true;
-    Z() {
+    Y() {
       this.On = false;
     }
     isNoop() {
@@ -22120,19 +22124,19 @@ li.select2-results__option[role=group] > strong:hover {
     }
     undo() {
       if (this.Jk) {
-        this.$a();
+        this._a();
         this.Ef = true;
       } else {
-        this.Kb();
+        this.Jb();
         this.Ef = false;
       }
     }
     redo() {
       if (this.Jk) {
-        this.Kb();
+        this.Jb();
         this.Ef = false;
       } else {
-        this.$a();
+        this._a();
         this.Ef = true;
       }
     }
@@ -22143,10 +22147,10 @@ li.select2-results__option[role=group] > strong:hover {
     Fv() {
       return this.Ef;
     }
-    $a() {
+    _a() {
       throw new Error("Change.doForwards(): Override me.");
     }
-    Kb() {
+    Jb() {
       throw new Error("Change.doBackwards(): Override me.");
     }
   };
@@ -22156,39 +22160,39 @@ li.select2-results__option[role=group] > strong:hover {
     }
     append(change) {
       if (change.isNoop()) return;
-      this.Z();
+      this.Y();
     }
   };
   var ChangeSequence = class extends UndoableChange {
-    kd;
+    jd;
     Kk;
     constructor(changes) {
       super(false);
       if (changes == void 0) {
-        this.kd = [];
+        this.jd = [];
       } else {
-        this.kd = changes.concat();
+        this.jd = changes.concat();
       }
       this.Kk = false;
     }
     checkFirst() {
-      if (this.kd.length > 0)
-        return this.kd[0];
+      if (this.jd.length > 0)
+        return this.jd[0];
       return null;
     }
     append(change) {
       if (change.isNoop()) return;
-      this.kd[this.kd.length] = change;
-      this.Z();
+      this.jd[this.jd.length] = change;
+      this.Y();
     }
-    $a() {
-      for (let i = 0; i < this.kd.length; i++) {
-        this.kd[i].redo();
+    _a() {
+      for (let i = 0; i < this.jd.length; i++) {
+        this.jd[i].redo();
       }
     }
-    Kb() {
-      for (let i = this.kd.length - 1; i >= 0; i--) {
-        this.kd[i].undo();
+    Jb() {
+      for (let i = this.jd.length - 1; i >= 0; i--) {
+        this.jd[i].undo();
       }
     }
     isCommitted() {
@@ -22590,71 +22594,71 @@ li.select2-results__option[role=group] > strong:hover {
     constructor(_doc, _note) {
       super(false);
       this.J = _doc;
-      this.wa = _note;
-      this.Vb = this.wa.start;
-      this.Ff = this.wa.end;
-      this.Cd = this.wa.start;
-      this.He = this.wa.end;
-      this.ab = this.wa.pins;
-      this.oa = [];
-      this.ld = this.wa.pitches;
-      this.oc = [];
-      this.Pn = this.wa.continuesLastPattern;
-      this.Li = this.wa.continuesLastPattern;
+      this.va = _note;
+      this.Ub = this.va.start;
+      this.Ff = this.va.end;
+      this.Bd = this.va.start;
+      this.Ge = this.va.end;
+      this.$a = this.va.pins;
+      this.na = [];
+      this.kd = this.va.pitches;
+      this.nc = [];
+      this.Pn = this.va.continuesLastPattern;
+      this.Li = this.va.continuesLastPattern;
     }
-    Vb;
-    Cd;
+    Ub;
+    Bd;
     Ff;
-    He;
-    ab;
-    oa;
-    ld;
-    oc;
+    Ge;
+    $a;
+    na;
+    kd;
+    nc;
     Pn;
     Li;
     Mi(continuesLastPattern) {
-      for (let i = 0; i < this.oa.length - 1; ) {
-        if (this.oa[i].time >= this.oa[i + 1].time) {
-          this.oa.splice(i, 1);
+      for (let i = 0; i < this.na.length - 1; ) {
+        if (this.na[i].time >= this.na[i + 1].time) {
+          this.na.splice(i, 1);
         } else {
           i++;
         }
       }
-      removeRedundantPins(this.oa);
-      const firstInterval = this.oa[0].interval;
-      const firstTime = this.oa[0].time;
-      for (let i = 0; i < this.ld.length; i++) {
-        this.oc[i] = this.ld[i] + firstInterval;
+      removeRedundantPins(this.na);
+      const firstInterval = this.na[0].interval;
+      const firstTime = this.na[0].time;
+      for (let i = 0; i < this.kd.length; i++) {
+        this.nc[i] = this.kd[i] + firstInterval;
       }
-      for (let i = 0; i < this.oa.length; i++) {
-        this.oa[i].interval -= firstInterval;
-        this.oa[i].time -= firstTime;
+      for (let i = 0; i < this.na.length; i++) {
+        this.na[i].interval -= firstInterval;
+        this.na[i].time -= firstTime;
       }
-      this.Cd = this.Vb + firstTime;
-      this.He = this.Cd + this.oa[this.oa.length - 1].time;
+      this.Bd = this.Ub + firstTime;
+      this.Ge = this.Bd + this.na[this.na.length - 1].time;
       if (continuesLastPattern != void 0) {
         this.Li = continuesLastPattern;
       }
-      if (this.Cd != 0) {
+      if (this.Bd != 0) {
         this.Li = false;
       }
-      this.$a();
-      this.Z();
+      this._a();
+      this.Y();
     }
-    $a() {
-      this.wa.pins = this.oa;
-      this.wa.pitches = this.oc;
-      this.wa.start = this.Cd;
-      this.wa.end = this.He;
-      this.wa.continuesLastPattern = this.Li;
+    _a() {
+      this.va.pins = this.na;
+      this.va.pitches = this.nc;
+      this.va.start = this.Bd;
+      this.va.end = this.Ge;
+      this.va.continuesLastPattern = this.Li;
       if (this.J != null) this.J.notifier.changed();
     }
-    Kb() {
-      this.wa.pins = this.ab;
-      this.wa.pitches = this.ld;
-      this.wa.start = this.Vb;
-      this.wa.end = this.Ff;
-      this.wa.continuesLastPattern = this.Pn;
+    Jb() {
+      this.va.pins = this.$a;
+      this.va.pitches = this.kd;
+      this.va.start = this.Ub;
+      this.va.end = this.Ff;
+      this.va.continuesLastPattern = this.Pn;
       if (this.J != null) this.J.notifier.changed();
     }
   };
@@ -22689,7 +22693,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.customChipWaveIntegral[64] = 0;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -22722,7 +22726,7 @@ li.select2-results__option[role=group] > strong:hover {
           instrument.customAlgorithm.set(carry, newArray);
           instrument.algorithm6Op = 0;
           doc.notifier.changed();
-          this.Z();
+          this.Y();
         }
       } else if (mode == "feedback") {
         const oldArray = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()].customFeedbackType.indices;
@@ -22745,7 +22749,7 @@ li.select2-results__option[role=group] > strong:hover {
           instrument.customFeedbackType.set(newArray);
           instrument.feedbackType6Op = 0;
           doc.notifier.changed();
-          this.Z();
+          this.Y();
         }
       }
     }
@@ -22773,7 +22777,7 @@ li.select2-results__option[role=group] > strong:hover {
         }
         instrument.preset = newValue;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24067,7 +24071,7 @@ li.select2-results__option[role=group] > strong:hover {
         }
       }
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeTransition = class extends Change {
@@ -24076,7 +24080,7 @@ li.select2-results__option[role=group] > strong:hover {
       const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
       const oldValue = instrument.transition;
       if (oldValue != newValue) {
-        this.Z();
+        this.Y();
         instrument.transition = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
@@ -24089,7 +24093,7 @@ li.select2-results__option[role=group] > strong:hover {
       let instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
       if (useInstrument != null) instrument = useInstrument;
       instrument.addEffect(effectType);
-      this.Z();
+      this.Y();
       doc.notifier.changed();
     }
   };
@@ -24102,7 +24106,7 @@ li.select2-results__option[role=group] > strong:hover {
       instrument.effects.splice(effectIndex, 1);
       instrument.effectCount--;
       instrument.clearInvalidEnvelopeTargets();
-      this.Z();
+      this.Y();
       doc.notifier.changed();
     }
   };
@@ -24120,7 +24124,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.effects[effectIndex + 1] = temp;
       }
       instrument.clearInvalidEnvelopeTargets();
-      this.Z();
+      this.Y();
       doc.notifier.changed();
     }
   };
@@ -24135,7 +24139,7 @@ li.select2-results__option[role=group] > strong:hover {
       const newValue = wasSelected ? oldValue & ~(1 << toggleFlag) : oldValue | 1 << toggleFlag;
       instrument.mdeffects = newValue;
       if (wasSelected) instrument.clearInvalidEnvelopeTargets();
-      this.Z();
+      this.Y();
       doc.notifier.changed();
     }
   };
@@ -24147,7 +24151,7 @@ li.select2-results__option[role=group] > strong:hover {
         for (let channelIndex = startChannel; channelIndex < startChannel + height; channelIndex++) {
           if (doc.song.channels[channelIndex].bars[bar] != value) {
             doc.song.channels[channelIndex].bars[bar] = value;
-            this.Z();
+            this.Y();
           }
         }
       }
@@ -24194,7 +24198,7 @@ li.select2-results__option[role=group] > strong:hover {
         doc.song.loopStart = Math.min(newValue - doc.song.loopLength, doc.song.loopStart);
         doc.song.barCount = newValue;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24218,7 +24222,7 @@ li.select2-results__option[role=group] > strong:hover {
         doc.song.loopLength += count;
       }
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeDeleteBars = class extends Change {
@@ -24238,7 +24242,7 @@ li.select2-results__option[role=group] > strong:hover {
       }
       doc.song.loopLength = Math.max(1, Math.min(doc.song.barCount - doc.song.loopStart, doc.song.loopLength));
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeLimiterSettings = class extends Change {
@@ -24252,7 +24256,7 @@ li.select2-results__option[role=group] > strong:hover {
       doc.song.limitDecay = limitDecay;
       doc.song.masterGain = masterGain;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeChannelOrder = class extends Change {
@@ -24276,7 +24280,7 @@ li.select2-results__option[role=group] > strong:hover {
       }
       doc.recalcChannelColors = true;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeCustomScale = class extends Change {
@@ -24286,7 +24290,7 @@ li.select2-results__option[role=group] > strong:hover {
         doc.song.scaleCustom[i] = flags[i];
       }
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeChannelCount = class extends Change {
@@ -24353,7 +24357,7 @@ li.select2-results__option[role=group] > strong:hover {
         doc.notifier.changed();
         ColorConfig.resetColors();
         doc.recalcChannelColors = true;
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24413,7 +24417,7 @@ li.select2-results__option[role=group] > strong:hover {
       doc.recalcChannelNames = true;
       this.append(new ChangeChannelBar(doc, Math.max(0, minIndex - 1), doc.bar));
       doc.synth.computeLatestModValues();
-      this.Z();
+      this.Y();
       doc.notifier.changed();
     }
   };
@@ -24434,7 +24438,7 @@ li.select2-results__option[role=group] > strong:hover {
       }
       doc.notifier.changed();
       if (oldChannel != newChannel || oldBar != newBar) {
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24452,7 +24456,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.unisonSign = Config.unisons[instrument.unison].sign;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24466,7 +24470,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.unison = Config.unisons.length;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24480,7 +24484,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.unison = Config.unisons.length;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24494,7 +24498,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.unison = Config.unisons.length;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24508,7 +24512,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.unison = Config.unisons.length;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24522,7 +24526,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.unison = Config.unisons.length;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24532,7 +24536,7 @@ li.select2-results__option[role=group] > strong:hover {
       const instrument = doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()];
       const oldValue = instrument.chord;
       if (oldValue != newValue) {
-        this.Z();
+        this.Y();
         instrument.chord = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
@@ -24552,7 +24556,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.vibratoType = Config.vibratos[instrument.vibrato].type;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24568,7 +24572,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.vibrato = Config.vibratos.length;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24582,7 +24586,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.envelopeSpeed = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24598,7 +24602,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.vibrato = Config.vibratos.length;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24614,7 +24618,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.vibrato = Config.vibratos.length;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24630,7 +24634,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.vibrato = Config.vibratos.length;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24643,7 +24647,7 @@ li.select2-results__option[role=group] > strong:hover {
       doc.notifier.changed();
       if (oldValue != newValue) {
         instrument.preset = instrument.type;
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24656,7 +24660,7 @@ li.select2-results__option[role=group] > strong:hover {
       if (oldValue != newValue) {
         instrument.fastTwoNoteArp = newValue;
         instrument.preset = instrument.type;
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24668,7 +24672,7 @@ li.select2-results__option[role=group] > strong:hover {
       doc.notifier.changed();
       if (oldValue != newValue) {
         instrument.monoChordTone = newValue;
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24681,7 +24685,7 @@ li.select2-results__option[role=group] > strong:hover {
       if (oldValue != newValue) {
         instrument.clicklessTransition = newValue;
         instrument.preset = instrument.type;
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24694,7 +24698,7 @@ li.select2-results__option[role=group] > strong:hover {
       if (oldValue != newValue) {
         instrument.aliases = newValue;
         instrument.preset = instrument.type;
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24704,7 +24708,7 @@ li.select2-results__option[role=group] > strong:hover {
       spectrumWave.markCustomWaveDirty();
       instrument.preset = instrument.type;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeHarmonics = class extends Change {
@@ -24713,7 +24717,7 @@ li.select2-results__option[role=group] > strong:hover {
       harmonicsWave.markCustomWaveDirty();
       instrument.preset = instrument.type;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeDrumsetEnvelope = class extends Change {
@@ -24725,7 +24729,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.drumsetEnvelopes[drumIndex] = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24733,12 +24737,12 @@ li.select2-results__option[role=group] > strong:hover {
     constructor(_doc) {
       super();
       this.J = _doc;
-      this.ea = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
+      this.da = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
     }
-    ea;
+    da;
     commit() {
       if (!this.isNoop()) {
-        this.ea.preset = this.ea.type;
+        this.da.preset = this.da.type;
         this.J.notifier.changed();
       }
     }
@@ -24756,63 +24760,63 @@ li.select2-results__option[role=group] > strong:hover {
   var ChangePulseWidth = class extends ChangeInstrumentSlider {
     constructor(doc, oldValue, newValue) {
       super(doc);
-      this.ea.pulseWidth = newValue;
+      this.da.pulseWidth = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["pulse width"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeDecimalOffset = class extends ChangeInstrumentSlider {
     constructor(doc, oldValue, newValue) {
       super(doc);
-      this.ea.decimalOffset = newValue;
+      this.da.decimalOffset = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["decimal offset"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeSupersawDynamism = class extends ChangeInstrumentSlider {
     constructor(doc, oldValue, newValue) {
       super(doc);
-      this.ea.supersawDynamism = newValue;
+      this.da.supersawDynamism = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["dynamism"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeSupersawSpread = class extends ChangeInstrumentSlider {
     constructor(doc, oldValue, newValue) {
       super(doc);
-      this.ea.supersawSpread = newValue;
+      this.da.supersawSpread = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["spread"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeSupersawShape = class extends ChangeInstrumentSlider {
     constructor(doc, oldValue, newValue) {
       super(doc);
-      this.ea.supersawShape = newValue;
+      this.da.supersawShape = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["saw shape"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangePitchShift = class extends ChangeInstrumentSlider {
     constructor(doc, oldValue, newValue) {
       super(doc);
-      this.ea.pitchShift = newValue;
+      this.da.pitchShift = newValue;
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeDetune = class extends ChangeInstrumentSlider {
     constructor(doc, oldValue, newValue) {
       super(doc);
-      this.ea.detune = newValue + Config.detuneCenter;
+      this.da.detune = newValue + Config.detuneCenter;
       doc.notifier.changed();
       doc.synth.unsetMod(Config.modulators.dictionary["detune"].index, doc.channel, doc.getCurrentInstrument());
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeRingMod = class extends ChangeInstrumentSlider {
@@ -24821,7 +24825,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.ringModulation = newValue;
       doc.notifier.changed();
       doc.synth.unsetMod(Config.modulators.dictionary["ring modulation"].index, doc.channel, doc.getCurrentInstrument());
-      this.Z();
+      this.Y();
     }
   };
   var ChangeRingModHz = class extends ChangeInstrumentSlider {
@@ -24830,7 +24834,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.ringModulationHz = newValue;
       doc.notifier.changed();
       doc.synth.unsetMod(Config.modulators.dictionary["ring mod hertz"].index, doc.channel, doc.getCurrentInstrument());
-      this.Z();
+      this.Y();
     }
   };
   var ChangeRingModChipWave = class extends Change {
@@ -24839,7 +24843,7 @@ li.select2-results__option[role=group] > strong:hover {
       if (effect.ringModWaveformIndex != newValue) {
         effect.ringModWaveformIndex = newValue;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24849,7 +24853,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.granular = newValue;
       doc.notifier.changed();
       doc.synth.unsetMod(Config.modulators.dictionary["granular"].index, doc.channel, doc.getCurrentInstrument());
-      this.Z();
+      this.Y();
     }
   };
   var ChangeGrainSize = class extends ChangeInstrumentSlider {
@@ -24858,7 +24862,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.grainSize = newValue;
       doc.notifier.changed();
       doc.synth.unsetMod(Config.modulators.dictionary["grain size"].index, doc.channel, doc.getCurrentInstrument());
-      this.Z();
+      this.Y();
     }
   };
   var ChangeGrainAmounts = class extends ChangeInstrumentSlider {
@@ -24866,7 +24870,7 @@ li.select2-results__option[role=group] > strong:hover {
       super(doc);
       effect.grainAmounts = newValue;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeGrainRange = class extends ChangeInstrumentSlider {
@@ -24874,7 +24878,7 @@ li.select2-results__option[role=group] > strong:hover {
       super(doc);
       effect.grainRange = newValue;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeDistortion = class extends ChangeInstrumentSlider {
@@ -24883,7 +24887,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.distortion = newValue;
       doc.notifier.changed();
       doc.synth.unsetMod(Config.modulators.dictionary["distortion"].index, doc.channel, doc.getCurrentInstrument());
-      this.Z();
+      this.Y();
     }
   };
   var ChangeBitcrusherFreq = class extends ChangeInstrumentSlider {
@@ -24892,7 +24896,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.bitcrusherFreq = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["bit crush"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeBitcrusherQuantization = class extends ChangeInstrumentSlider {
@@ -24901,16 +24905,16 @@ li.select2-results__option[role=group] > strong:hover {
       doc.synth.unsetMod(Config.modulators.dictionary["freq crush"].index, doc.channel, doc.getCurrentInstrument());
       effect.bitcrusherQuantization = newValue;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeStringSustain = class extends ChangeInstrumentSlider {
     constructor(doc, oldValue, newValue) {
       super(doc);
-      this.ea.stringSustain = newValue;
+      this.da.stringSustain = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["sustain"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeStringSustainType = class extends Change {
@@ -24922,7 +24926,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.stringSustainType = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -24942,7 +24946,7 @@ li.select2-results__option[role=group] > strong:hover {
       instrument.clearInvalidEnvelopeTargets();
       instrument.preset = instrument.type;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeNoteFilterType = class extends Change {
@@ -24961,7 +24965,7 @@ li.select2-results__option[role=group] > strong:hover {
       instrument.clearInvalidEnvelopeTargets();
       instrument.preset = instrument.type;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeEQFilterSimpleCut = class extends ChangeInstrumentSlider {
@@ -24970,7 +24974,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.eqFilterSimpleCut = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["post eq cut"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeEQFilterSimplePeak = class extends ChangeInstrumentSlider {
@@ -24979,53 +24983,53 @@ li.select2-results__option[role=group] > strong:hover {
       effect.eqFilterSimplePeak = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["post eq peak"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeNoteFilterSimpleCut = class extends ChangeInstrumentSlider {
     constructor(doc, oldValue, newValue) {
       super(doc);
-      this.ea.noteFilterSimpleCut = newValue;
+      this.da.noteFilterSimpleCut = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["pre eq cut"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeNoteFilterSimplePeak = class extends ChangeInstrumentSlider {
     constructor(doc, oldValue, newValue) {
       super(doc);
-      this.ea.noteFilterSimplePeak = newValue;
+      this.da.noteFilterSimplePeak = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["pre eq peak"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeSongFilterAddPoint = class extends UndoableChange {
     J;
-    za;
-    eb;
-    Oa;
+    ya;
+    db;
+    Na;
     constructor(doc, filterSettings, point, index, deletion = false) {
       super(deletion);
       this.J = doc;
-      this.za = filterSettings;
-      this.eb = point;
-      this.Oa = index;
-      this.Z();
+      this.ya = filterSettings;
+      this.db = point;
+      this.Na = index;
+      this.Y();
       this.redo();
     }
-    $a() {
-      this.za.controlPoints.splice(this.Oa, 0, this.eb);
-      this.za.controlPointCount++;
-      this.za.controlPoints.length = this.za.controlPointCount;
+    _a() {
+      this.ya.controlPoints.splice(this.Na, 0, this.db);
+      this.ya.controlPointCount++;
+      this.ya.controlPoints.length = this.ya.controlPointCount;
       this.J.song.tmpEqFilterStart = this.J.song.eqFilter;
       this.J.song.tmpEqFilterEnd = null;
       this.J.notifier.changed();
     }
-    Kb() {
-      this.za.controlPoints.splice(this.Oa, 1);
-      this.za.controlPointCount--;
-      this.za.controlPoints.length = this.za.controlPointCount;
+    Jb() {
+      this.ya.controlPoints.splice(this.Na, 1);
+      this.ya.controlPointCount--;
+      this.ya.controlPoints.length = this.ya.controlPointCount;
       this.J.song.tmpEqFilterStart = this.J.song.eqFilter;
       this.J.song.tmpEqFilterEnd = null;
       this.J.notifier.changed();
@@ -25033,13 +25037,13 @@ li.select2-results__option[role=group] > strong:hover {
   };
   var ChangeFilterAddPoint = class extends UndoableChange {
     J;
-    ea;
-    rb;
+    da;
+    qb;
+    Qc;
     Rc;
-    Sc;
-    za;
-    eb;
-    Oa;
+    ya;
+    db;
+    Na;
     Qn = [];
     Rn = [];
     Sn = [];
@@ -25047,16 +25051,16 @@ li.select2-results__option[role=group] > strong:hover {
     constructor(doc, filterSettings, point, index, isNoteFilter, effectIndex, deletion = false) {
       super(deletion);
       this.J = doc;
-      this.ea = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-      this.rb = this.ea.effects[effectIndex];
-      this.Sc = deletion ? this.ea.preset : this.ea.type;
-      this.Rc = deletion ? this.ea.type : this.ea.preset;
-      this.za = filterSettings;
-      this.eb = point;
-      this.Oa = index;
-      for (let envelopeIndex = 0; envelopeIndex < this.ea.envelopeCount; envelopeIndex++) {
-        let target = this.ea.envelopes[envelopeIndex].target;
-        let targetIndex = this.ea.envelopes[envelopeIndex].index;
+      this.da = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
+      this.qb = this.da.effects[effectIndex];
+      this.Rc = deletion ? this.da.preset : this.da.type;
+      this.Qc = deletion ? this.da.type : this.da.preset;
+      this.ya = filterSettings;
+      this.db = point;
+      this.Na = index;
+      for (let envelopeIndex = 0; envelopeIndex < this.da.envelopeCount; envelopeIndex++) {
+        let target = this.da.envelopes[envelopeIndex].target;
+        let targetIndex = this.da.envelopes[envelopeIndex].index;
         this.Qn.push(target);
         this.Rn.push(targetIndex);
         if (deletion) {
@@ -25080,37 +25084,37 @@ li.select2-results__option[role=group] > strong:hover {
         this.Sn.push(target);
         this.Tn.push(targetIndex);
       }
-      this.Z();
+      this.Y();
       this.redo();
     }
-    $a() {
-      this.za.controlPoints.splice(this.Oa, 0, this.eb);
-      this.za.controlPointCount++;
-      this.za.controlPoints.length = this.za.controlPointCount;
-      this.ea.preset = this.Sc;
-      for (let envelopeIndex = 0; envelopeIndex < this.ea.envelopeCount; envelopeIndex++) {
-        this.ea.envelopes[envelopeIndex].target = this.Qn[envelopeIndex];
-        this.ea.envelopes[envelopeIndex].index = this.Rn[envelopeIndex];
+    _a() {
+      this.ya.controlPoints.splice(this.Na, 0, this.db);
+      this.ya.controlPointCount++;
+      this.ya.controlPoints.length = this.ya.controlPointCount;
+      this.da.preset = this.Rc;
+      for (let envelopeIndex = 0; envelopeIndex < this.da.envelopeCount; envelopeIndex++) {
+        this.da.envelopes[envelopeIndex].target = this.Qn[envelopeIndex];
+        this.da.envelopes[envelopeIndex].index = this.Rn[envelopeIndex];
       }
-      this.rb.tmpEqFilterStart = this.rb.eqFilter;
-      this.rb.tmpEqFilterEnd = null;
-      this.ea.tmpNoteFilterStart = this.ea.noteFilter;
-      this.ea.tmpNoteFilterEnd = null;
+      this.qb.tmpEqFilterStart = this.qb.eqFilter;
+      this.qb.tmpEqFilterEnd = null;
+      this.da.tmpNoteFilterStart = this.da.noteFilter;
+      this.da.tmpNoteFilterEnd = null;
       this.J.notifier.changed();
     }
-    Kb() {
-      this.za.controlPoints.splice(this.Oa, 1);
-      this.za.controlPointCount--;
-      this.za.controlPoints.length = this.za.controlPointCount;
-      this.ea.preset = this.Rc;
-      for (let envelopeIndex = 0; envelopeIndex < this.ea.envelopeCount; envelopeIndex++) {
-        this.ea.envelopes[envelopeIndex].target = this.Sn[envelopeIndex];
-        this.ea.envelopes[envelopeIndex].index = this.Tn[envelopeIndex];
+    Jb() {
+      this.ya.controlPoints.splice(this.Na, 1);
+      this.ya.controlPointCount--;
+      this.ya.controlPoints.length = this.ya.controlPointCount;
+      this.da.preset = this.Qc;
+      for (let envelopeIndex = 0; envelopeIndex < this.da.envelopeCount; envelopeIndex++) {
+        this.da.envelopes[envelopeIndex].target = this.Sn[envelopeIndex];
+        this.da.envelopes[envelopeIndex].index = this.Tn[envelopeIndex];
       }
-      this.rb.tmpEqFilterStart = this.rb.eqFilter;
-      this.rb.tmpEqFilterEnd = null;
-      this.ea.tmpNoteFilterStart = this.ea.noteFilter;
-      this.ea.tmpNoteFilterEnd = null;
+      this.qb.tmpEqFilterStart = this.qb.eqFilter;
+      this.qb.tmpEqFilterEnd = null;
+      this.da.tmpNoteFilterStart = this.da.noteFilter;
+      this.da.tmpNoteFilterEnd = null;
       this.J.notifier.changed();
     }
   };
@@ -25126,122 +25130,122 @@ li.select2-results__option[role=group] > strong:hover {
   };
   var ChangeSongFilterMovePoint = class extends UndoableChange {
     J;
-    eb;
+    db;
+    He;
     Ie;
     Je;
     Ke;
-    Le;
     pointIndex;
     pointType;
     constructor(doc, point, oldFreq, newFreq, oldGain, newGain, pointIndex) {
       super(false);
       this.J = doc;
-      this.eb = point;
-      this.Ie = oldFreq;
-      this.Je = newFreq;
-      this.Ke = oldGain;
-      this.Le = newGain;
+      this.db = point;
+      this.He = oldFreq;
+      this.Ie = newFreq;
+      this.Je = oldGain;
+      this.Ke = newGain;
       this.pointIndex = pointIndex;
       this.pointType = point.type;
-      this.Z();
+      this.Y();
       this.redo();
     }
     getMoveData(beforeChange) {
       if (beforeChange) {
-        return new FilterMoveData(this.eb, this.Ie, this.Ke);
+        return new FilterMoveData(this.db, this.He, this.Je);
       }
-      return new FilterMoveData(this.eb, this.Je, this.Le);
+      return new FilterMoveData(this.db, this.Ie, this.Ke);
     }
-    $a() {
-      this.eb.freq = this.Je;
-      this.eb.gain = this.Le;
+    _a() {
+      this.db.freq = this.Ie;
+      this.db.gain = this.Ke;
       this.J.notifier.changed();
     }
-    Kb() {
-      this.eb.freq = this.Ie;
-      this.eb.gain = this.Ke;
+    Jb() {
+      this.db.freq = this.He;
+      this.db.gain = this.Je;
       this.J.notifier.changed();
     }
   };
   var ChangeFilterMovePoint = class extends UndoableChange {
     J;
-    ea;
+    da;
+    Qc;
     Rc;
-    Sc;
-    eb;
+    db;
+    He;
     Ie;
     Je;
     Ke;
-    Le;
     useNoteFilter;
     pointIndex;
     pointType;
     constructor(doc, point, oldFreq, newFreq, oldGain, newGain, useNoteFilter, effectIndex, pointIndex) {
       super(false);
       this.J = doc;
-      this.ea = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-      this.Sc = this.ea.type;
-      this.Rc = this.ea.preset;
-      this.eb = point;
-      this.Ie = oldFreq;
-      this.Je = newFreq;
-      this.Ke = oldGain;
-      this.Le = newGain;
+      this.da = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
+      this.Rc = this.da.type;
+      this.Qc = this.da.preset;
+      this.db = point;
+      this.He = oldFreq;
+      this.Ie = newFreq;
+      this.Je = oldGain;
+      this.Ke = newGain;
       this.useNoteFilter = useNoteFilter;
       this.pointIndex = pointIndex;
       this.pointType = point.type;
-      this.Z();
+      this.Y();
       this.redo();
     }
     getMoveData(beforeChange) {
       if (beforeChange) {
-        return new FilterMoveData(this.eb, this.Ie, this.Ke);
+        return new FilterMoveData(this.db, this.He, this.Je);
       }
-      return new FilterMoveData(this.eb, this.Je, this.Le);
+      return new FilterMoveData(this.db, this.Ie, this.Ke);
     }
-    $a() {
-      this.eb.freq = this.Je;
-      this.eb.gain = this.Le;
-      this.ea.preset = this.Sc;
+    _a() {
+      this.db.freq = this.Ie;
+      this.db.gain = this.Ke;
+      this.da.preset = this.Rc;
       this.J.notifier.changed();
     }
-    Kb() {
-      this.eb.freq = this.Ie;
-      this.eb.gain = this.Ke;
-      this.ea.preset = this.Rc;
+    Jb() {
+      this.db.freq = this.He;
+      this.db.gain = this.Je;
+      this.da.preset = this.Qc;
       this.J.notifier.changed();
     }
   };
   var ChangeSongFilterSettings = class extends UndoableChange {
     J;
-    za;
-    Ka;
-    Dd;
+    ya;
+    Ja;
+    Cd;
     Gf;
     constructor(doc, settings, oldSettings, subFilters = null, oldSubFilters = null) {
       super(false);
       this.J = doc;
       this.Gf = oldSettings;
-      this.za = settings;
+      this.ya = settings;
       if (subFilters != null && oldSubFilters != null) {
-        this.Ka = subFilters;
-        this.Dd = oldSubFilters;
+        this.Ja = subFilters;
+        this.Cd = oldSubFilters;
       }
-      this.Z();
+      this.Y();
       this.redo();
     }
-    $a() {
-      this.J.song.eqFilter = this.za;
-      if (this.Ka != null)
-        this.J.song.eqSubFilters = this.Ka;
+    _a() {
+      this.J.song.eqFilter = this.ya;
+      if (this.Ja != null)
+        this.J.song.eqSubFilters = this.Ja;
       this.J.song.tmpEqFilterStart = this.J.song.eqFilter;
       this.J.song.tmpEqFilterEnd = null;
       this.J.notifier.changed();
     }
-    Kb() {
+    Jb() {
       this.J.song.eqFilter = this.Gf;
-      if (this.Dd != null)
-        this.J.song.eqSubFilters = this.Dd;
+      if (this.Cd != null)
+        this.J.song.eqSubFilters = this.Cd;
       this.J.song.tmpEqFilterStart = this.J.song.eqFilter;
       this.J.song.tmpEqFilterEnd = null;
       this.J.notifier.changed();
@@ -25249,75 +25253,75 @@ li.select2-results__option[role=group] > strong:hover {
   };
   var ChangeFilterSettings = class extends UndoableChange {
     J;
-    ea;
-    rb;
+    da;
+    qb;
+    Qc;
     Rc;
-    Sc;
-    za;
-    Ka;
-    Dd;
+    ya;
+    Ja;
+    Cd;
     Gf;
-    fb;
+    eb;
     constructor(doc, settings, oldSettings, useNoteFilter, effectIndex, subFilters = null, oldSubFilters = null) {
       super(false);
       this.J = doc;
-      this.ea = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-      this.rb = this.ea.effects[effectIndex];
-      this.Sc = this.ea.type;
-      this.Rc = this.ea.preset;
+      this.da = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
+      this.qb = this.da.effects[effectIndex];
+      this.Rc = this.da.type;
+      this.Qc = this.da.preset;
       this.Gf = oldSettings;
-      this.fb = useNoteFilter;
-      this.za = settings;
+      this.eb = useNoteFilter;
+      this.ya = settings;
       if (subFilters != null && oldSubFilters != null) {
-        this.Ka = subFilters;
-        this.Dd = oldSubFilters;
+        this.Ja = subFilters;
+        this.Cd = oldSubFilters;
       }
-      this.ea.clearInvalidEnvelopeTargets();
-      this.Z();
+      this.da.clearInvalidEnvelopeTargets();
+      this.Y();
       this.redo();
     }
-    $a() {
-      if (this.fb) {
-        this.ea.noteFilter = this.za;
-        if (this.Ka != null)
-          this.ea.noteSubFilters = this.Ka;
-        this.ea.tmpNoteFilterStart = this.ea.noteFilter;
-        this.ea.tmpNoteFilterEnd = null;
+    _a() {
+      if (this.eb) {
+        this.da.noteFilter = this.ya;
+        if (this.Ja != null)
+          this.da.noteSubFilters = this.Ja;
+        this.da.tmpNoteFilterStart = this.da.noteFilter;
+        this.da.tmpNoteFilterEnd = null;
       } else {
-        this.rb.eqFilter = this.za;
-        if (this.Ka != null)
-          this.rb.eqSubFilters = this.Ka;
-        this.rb.tmpEqFilterStart = this.rb.eqFilter;
-        this.rb.tmpEqFilterEnd = null;
+        this.qb.eqFilter = this.ya;
+        if (this.Ja != null)
+          this.qb.eqSubFilters = this.Ja;
+        this.qb.tmpEqFilterStart = this.qb.eqFilter;
+        this.qb.tmpEqFilterEnd = null;
       }
-      this.ea.preset = this.Sc;
-      this.ea.clearInvalidEnvelopeTargets();
+      this.da.preset = this.Rc;
+      this.da.clearInvalidEnvelopeTargets();
       this.J.notifier.changed();
     }
-    Kb() {
-      if (this.fb) {
-        this.ea.noteFilter = this.Gf;
-        if (this.Dd != null)
-          this.ea.noteSubFilters = this.Dd;
-        this.ea.tmpNoteFilterStart = this.ea.noteFilter;
-        this.ea.tmpNoteFilterEnd = null;
+    Jb() {
+      if (this.eb) {
+        this.da.noteFilter = this.Gf;
+        if (this.Cd != null)
+          this.da.noteSubFilters = this.Cd;
+        this.da.tmpNoteFilterStart = this.da.noteFilter;
+        this.da.tmpNoteFilterEnd = null;
       } else {
-        this.rb.eqFilter = this.Gf;
-        if (this.Dd != null)
-          this.rb.eqSubFilters = this.Dd;
-        this.rb.tmpEqFilterStart = this.rb.eqFilter;
-        this.rb.tmpEqFilterEnd = null;
+        this.qb.eqFilter = this.Gf;
+        if (this.Cd != null)
+          this.qb.eqSubFilters = this.Cd;
+        this.qb.tmpEqFilterStart = this.qb.eqFilter;
+        this.qb.tmpEqFilterEnd = null;
       }
-      this.ea.preset = this.Rc;
-      this.ea.clearInvalidEnvelopeTargets();
+      this.da.preset = this.Qc;
+      this.da.clearInvalidEnvelopeTargets();
       this.J.notifier.changed();
     }
   };
   var ChangeFadeInOut = class extends UndoableChange {
     J;
-    ea;
+    da;
+    Qc;
     Rc;
-    Sc;
     Un;
     Vn;
     Wn;
@@ -25325,26 +25329,26 @@ li.select2-results__option[role=group] > strong:hover {
     constructor(doc, fadeIn, fadeOut) {
       super(false);
       this.J = doc;
-      this.ea = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-      this.Sc = this.ea.type;
-      this.Rc = this.ea.preset;
-      this.Un = this.ea.fadeIn;
-      this.Vn = this.ea.fadeOut;
+      this.da = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
+      this.Rc = this.da.type;
+      this.Qc = this.da.preset;
+      this.Un = this.da.fadeIn;
+      this.Vn = this.da.fadeOut;
       this.Wn = fadeIn;
       this.Xn = fadeOut;
-      this.Z();
+      this.Y();
       this.redo();
     }
-    $a() {
-      this.ea.fadeIn = this.Wn;
-      this.ea.fadeOut = this.Xn;
-      this.ea.preset = this.Sc;
+    _a() {
+      this.da.fadeIn = this.Wn;
+      this.da.fadeOut = this.Xn;
+      this.da.preset = this.Rc;
       this.J.notifier.changed();
     }
-    Kb() {
-      this.ea.fadeIn = this.Un;
-      this.ea.fadeOut = this.Vn;
-      this.ea.preset = this.Rc;
+    Jb() {
+      this.da.fadeIn = this.Un;
+      this.da.fadeOut = this.Vn;
+      this.da.preset = this.Qc;
       this.J.notifier.changed();
     }
   };
@@ -25357,7 +25361,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.algorithm = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -25370,7 +25374,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.feedbackType = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -25386,7 +25390,7 @@ li.select2-results__option[role=group] > strong:hover {
         }
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -25402,7 +25406,7 @@ li.select2-results__option[role=group] > strong:hover {
         }
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -25415,7 +25419,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.operators[operatorIndex].waveform = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -25427,7 +25431,7 @@ li.select2-results__option[role=group] > strong:hover {
       doc.notifier.changed();
       if (oldValue != newValue) {
         instrument.preset = instrument.type;
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -25440,7 +25444,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.operators[operatorIndex].frequency = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -25449,17 +25453,17 @@ li.select2-results__option[role=group] > strong:hover {
     constructor(doc, operatorIndex, oldValue, newValue) {
       super(doc);
       this.operatorIndex = operatorIndex;
-      this.ea.operators[operatorIndex].amplitude = newValue;
+      this.da.operators[operatorIndex].amplitude = newValue;
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeFeedbackAmplitude = class extends ChangeInstrumentSlider {
     constructor(doc, oldValue, newValue) {
       super(doc);
-      this.ea.feedbackAmplitude = newValue;
+      this.da.feedbackAmplitude = newValue;
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeAddChannelInstrument = class extends Change {
@@ -25490,7 +25494,7 @@ li.select2-results__option[role=group] > strong:hover {
       }
       doc.synth.computeLatestModValues();
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeRemoveChannelInstrument = class extends Change {
@@ -25534,7 +25538,7 @@ li.select2-results__option[role=group] > strong:hover {
         }
       }
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeViewInstrument = class extends Change {
@@ -25545,7 +25549,7 @@ li.select2-results__option[role=group] > strong:hover {
         if (doc.channel >= doc.song.pitchChannelCount + doc.song.noiseChannelCount)
           doc.recentPatternInstruments[doc.channel] = [index];
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -25574,7 +25578,7 @@ li.select2-results__option[role=group] > strong:hover {
         }
       }
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeKey = class extends Change {
@@ -25583,7 +25587,7 @@ li.select2-results__option[role=group] > strong:hover {
       if (doc.song.key != newValue) {
         doc.song.key = newValue;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -25599,30 +25603,30 @@ li.select2-results__option[role=group] > strong:hover {
       this.J.song.loopLength = this.newLength;
       this.J.notifier.changed();
       if (this.oldStart != this.newStart || this.oldLength != this.newLength) {
-        this.Z();
+        this.Y();
       }
     }
   };
   var ChangePitchAdded = class extends UndoableChange {
     J;
-    wa;
+    va;
     Yn;
-    Oa;
+    Na;
     constructor(doc, note, pitch, index, deletion = false) {
       super(deletion);
       this.J = doc;
-      this.wa = note;
+      this.va = note;
       this.Yn = pitch;
-      this.Oa = index;
-      this.Z();
+      this.Na = index;
+      this.Y();
       this.redo();
     }
-    $a() {
-      this.wa.pitches.splice(this.Oa, 0, this.Yn);
+    _a() {
+      this.va.pitches.splice(this.Na, 0, this.Yn);
       this.J.notifier.changed();
     }
-    Kb() {
-      this.wa.pitches.splice(this.Oa, 1);
+    Jb() {
+      this.va.pitches.splice(this.Na, 1);
       this.J.notifier.changed();
     }
   };
@@ -25632,7 +25636,7 @@ li.select2-results__option[role=group] > strong:hover {
       this.oldValue = oldValue;
       doc.song.channels[doc.channel].octave = newValue;
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeRhythm = class extends ChangeGroup {
@@ -25641,7 +25645,7 @@ li.select2-results__option[role=group] > strong:hover {
       if (doc.song.rhythm != newValue) {
         doc.song.rhythm = newValue;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -25688,7 +25692,7 @@ li.select2-results__option[role=group] > strong:hover {
         return a4.start == b.start ? a4.pitches[0] - b.pitches[0] : a4.start - b.start;
       });
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangePasteInstrument = class extends ChangeGroup {
@@ -25696,7 +25700,7 @@ li.select2-results__option[role=group] > strong:hover {
       super();
       instrument.fromJsonObject(instrumentCopy, instrumentCopy["isDrum"], instrumentCopy["isMod"], false, false);
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeAppendInstrument = class extends ChangeGroup {
@@ -25705,7 +25709,7 @@ li.select2-results__option[role=group] > strong:hover {
       let newInstrument = new Instrument(instrument["isDrum"], instrument["isMod"]);
       newInstrument.fromJsonObject(instrument, instrument["isDrum"], instrument["isMod"], false, false);
       channel.instruments.push(newInstrument);
-      this.Z();
+      this.Y();
       doc.notifier.changed();
     }
   };
@@ -25716,7 +25720,7 @@ li.select2-results__option[role=group] > strong:hover {
         pattern.instruments.length = 0;
         pattern.instruments.push(...instruments);
         discardInvalidPatternInstruments(pattern.instruments, doc.song, channelIndex);
-        this.Z();
+        this.Y();
         doc.notifier.changed();
       }
     }
@@ -25733,7 +25737,7 @@ li.select2-results__option[role=group] > strong:hover {
       } else instrument.modChannels[mod2][index] += offset;
       doc.recalcModChannels = true;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeModChannel = class extends Change {
@@ -25791,7 +25795,7 @@ li.select2-results__option[role=group] > strong:hover {
       }
       doc.recalcModChannels = true;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeModInstrument = class extends Change {
@@ -25802,7 +25806,7 @@ li.select2-results__option[role=group] > strong:hover {
       if (instrument.modInstruments[mod2][0] != tgtInstrument) {
         instrument.modInstruments[mod2][0] = tgtInstrument;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -25858,7 +25862,7 @@ li.select2-results__option[role=group] > strong:hover {
           }
         }
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -25885,7 +25889,7 @@ li.select2-results__option[role=group] > strong:hover {
           }
         }
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -25912,7 +25916,7 @@ li.select2-results__option[role=group] > strong:hover {
           }
         }
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -25933,7 +25937,7 @@ li.select2-results__option[role=group] > strong:hover {
         }
         doc.song.patternsPerChannel = newValue;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -25993,10 +25997,10 @@ li.select2-results__option[role=group] > strong:hover {
       } else {
         throw new Error();
       }
-      this.Z();
-      this.$a();
+      this.Y();
+      this._a();
     }
-    $a() {
+    _a() {
       const song = this.J.song;
       for (let j = song.patternsPerChannel; j < this.Ni; j++) {
         for (let i = 0; i < song.getChannelCount(); i++) {
@@ -26011,7 +26015,7 @@ li.select2-results__option[role=group] > strong:hover {
       song.channels[this.Jg].bars[this.Lk] = this.Hf;
       this.J.notifier.changed();
     }
-    Kb() {
+    Jb() {
       const song = this.J.song;
       const pattern = song.channels[this.Jg].patterns[this.Hf - 1];
       if (this.Mk != null) pattern.notes = this.Mk;
@@ -26030,28 +26034,28 @@ li.select2-results__option[role=group] > strong:hover {
   var ChangePinTime = class extends ChangePins {
     constructor(doc, note, pinIndex, shiftedTime, continuesLastPattern) {
       super(doc, note);
-      shiftedTime -= this.Vb;
-      const originalTime = this.ab[pinIndex].time;
+      shiftedTime -= this.Ub;
+      const originalTime = this.$a[pinIndex].time;
       const skipStart = Math.min(originalTime, shiftedTime);
       const skipEnd = Math.max(originalTime, shiftedTime);
       let setPin = false;
-      for (let i = 0; i < this.ab.length; i++) {
+      for (let i = 0; i < this.$a.length; i++) {
         const oldPin = note.pins[i];
         const time = oldPin.time;
         if (time < skipStart) {
-          this.oa.push(makeNotePin(oldPin.interval, time, oldPin.size));
+          this.na.push(makeNotePin(oldPin.interval, time, oldPin.size));
         } else if (time > skipEnd) {
           if (!setPin) {
-            if (this.oa.length > 0) continuesLastPattern = note.continuesLastPattern;
-            this.oa.push(makeNotePin(this.ab[pinIndex].interval, shiftedTime, this.ab[pinIndex].size));
+            if (this.na.length > 0) continuesLastPattern = note.continuesLastPattern;
+            this.na.push(makeNotePin(this.$a[pinIndex].interval, shiftedTime, this.$a[pinIndex].size));
             setPin = true;
           }
-          this.oa.push(makeNotePin(oldPin.interval, time, oldPin.size));
+          this.na.push(makeNotePin(oldPin.interval, time, oldPin.size));
         }
       }
       if (!setPin) {
         continuesLastPattern = note.continuesLastPattern;
-        this.oa.push(makeNotePin(this.ab[pinIndex].interval, shiftedTime, this.ab[pinIndex].size));
+        this.na.push(makeNotePin(this.$a[pinIndex].interval, shiftedTime, this.$a[pinIndex].size));
       }
       this.Mi(continuesLastPattern);
     }
@@ -26059,8 +26063,8 @@ li.select2-results__option[role=group] > strong:hover {
   var ChangePitchBend = class extends ChangePins {
     constructor(doc, note, bendStart, bendEnd, bendTo, pitchIndex) {
       super(doc, note);
-      bendStart -= this.Vb;
-      bendEnd -= this.Vb;
+      bendStart -= this.Ub;
+      bendEnd -= this.Ub;
       bendTo -= note.pitches[pitchIndex];
       let setStart = false;
       let setEnd = false;
@@ -26076,14 +26080,14 @@ li.select2-results__option[role=group] > strong:hover {
         direction = 1;
         stop = note.pins.length;
         push = (item) => {
-          this.oa.push(item);
+          this.na.push(item);
         };
       } else {
         i = note.pins.length - 1;
         direction = -1;
         stop = -1;
         push = (item) => {
-          this.oa.unshift(item);
+          this.na.unshift(item);
         };
       }
       for (; i != stop; i += direction) {
@@ -26167,8 +26171,8 @@ li.select2-results__option[role=group] > strong:hover {
   var ChangeRhythmNote = class extends ChangePins {
     constructor(doc, note, changeRhythm) {
       super(doc, note);
-      for (const oldPin of this.ab) {
-        this.oa.push(makeNotePin(oldPin.interval, changeRhythm(oldPin.time + this.Vb) - this.Vb, oldPin.size));
+      for (const oldPin of this.$a) {
+        this.na.push(makeNotePin(oldPin.interval, changeRhythm(oldPin.time + this.Ub) - this.Ub, oldPin.size));
       }
       this.Mi();
     }
@@ -26239,7 +26243,7 @@ li.select2-results__option[role=group] > strong:hover {
           throw new Error("Unrecognized beats-per-bar conversion strategy.");
       }
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeBeatsPerBar = class extends ChangeGroup {
@@ -26294,7 +26298,7 @@ li.select2-results__option[role=group] > strong:hover {
         }
         doc.song.beatsPerBar = newValue;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -26304,7 +26308,7 @@ li.select2-results__option[role=group] > strong:hover {
       if (doc.song.scale != newValue) {
         doc.song.scale = newValue;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -26357,7 +26361,7 @@ li.select2-results__option[role=group] > strong:hover {
         }
         song.key = bestKey;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -26410,7 +26414,7 @@ li.select2-results__option[role=group] > strong:hover {
       }
       doc.synth.computeLatestModValues();
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeValidateTrackSelection = class extends Change {
@@ -26421,7 +26425,7 @@ li.select2-results__option[role=group] > strong:hover {
       if (doc.channel != channelIndex || doc.bar != bar) {
         doc.bar = bar;
         doc.channel = channelIndex;
-        this.Z();
+        this.Y();
       }
       doc.selection.scrollToSelectedPattern();
       doc.notifier.changed();
@@ -26495,7 +26499,7 @@ li.select2-results__option[role=group] > strong:hover {
       song.loopLength = Math.min(song.barCount - song.loopStart, song.loopLength);
       this.append(new ChangeValidateTrackSelection(doc));
       doc.notifier.changed();
-      this.Z();
+      this.Y();
       ColorConfig.resetColors();
       doc.recalcChannelColors = true;
     }
@@ -26555,7 +26559,7 @@ li.select2-results__option[role=group] > strong:hover {
       super();
       doc.song.octave = Math.max(Config.octaveMin, Math.min(Config.octaveMax, Math.round(newValue)));
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeTempo = class extends Change {
@@ -26564,7 +26568,7 @@ li.select2-results__option[role=group] > strong:hover {
       doc.song.tempo = Math.max(Config.tempoMin, Math.min(Config.tempoMax, Math.round(newValue)));
       doc.synth.unsetMod(Config.modulators.dictionary["tempo"].index);
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeEchoDelay = class extends ChangeInstrumentSlider {
@@ -26573,7 +26577,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.echoDelay = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["echo delay"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeEchoSustain = class extends ChangeInstrumentSlider {
@@ -26582,7 +26586,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.echoSustain = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["echo"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeEchoPingPong = class extends ChangeInstrumentSlider {
@@ -26591,7 +26595,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.echoPingPong = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["echo ping pong"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeFlanger = class extends ChangeInstrumentSlider {
@@ -26600,7 +26604,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.flanger = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["flanger"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeFlangerSpeed = class extends ChangeInstrumentSlider {
@@ -26609,7 +26613,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.flangerSpeed = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["flanger speed"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeFlangerDepth = class extends ChangeInstrumentSlider {
@@ -26618,7 +26622,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.flangerDepth = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["flanger depth"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeFlangerFeedback = class extends ChangeInstrumentSlider {
@@ -26627,7 +26631,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.flangerFeedback = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["flanger feedback"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeChorus = class extends ChangeInstrumentSlider {
@@ -26636,7 +26640,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.chorus = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["chorus"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeReverb = class extends ChangeInstrumentSlider {
@@ -26645,66 +26649,66 @@ li.select2-results__option[role=group] > strong:hover {
       effect.reverb = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["reverb"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeNoteAdded = class extends UndoableChange {
     J;
-    sa;
-    wa;
-    Oa;
+    ra;
+    va;
+    Na;
     constructor(doc, pattern, note, index, deletion = false) {
       super(deletion);
       this.J = doc;
-      this.sa = pattern;
-      this.wa = note;
-      this.Oa = index;
-      this.Z();
+      this.ra = pattern;
+      this.va = note;
+      this.Na = index;
+      this.Y();
       this.redo();
     }
-    $a() {
-      this.sa.notes.splice(this.Oa, 0, this.wa);
+    _a() {
+      this.ra.notes.splice(this.Na, 0, this.va);
       this.J.notifier.changed();
     }
-    Kb() {
-      this.sa.notes.splice(this.Oa, 1);
+    Jb() {
+      this.ra.notes.splice(this.Na, 1);
       this.J.notifier.changed();
     }
   };
   var ChangeNoteStartOffset = class extends UndoableChange {
     J;
-    wa;
+    va;
     constructor(doc, pattern, startOffset, note) {
       super(false);
-      this.wa = note;
-      this.wa.chipWaveStartOffset = startOffset;
-      this.Z();
+      this.va = note;
+      this.va.chipWaveStartOffset = startOffset;
+      this.Y();
       this.J.notifier.changed();
     }
   };
   var ChangeNoteLength = class extends ChangePins {
     constructor(doc, note, truncStart, truncEnd) {
       super(doc, note);
-      const continuesLastPattern = (this.Vb < 0 || note.continuesLastPattern) && truncStart == 0;
-      truncStart -= this.Vb;
-      truncEnd -= this.Vb;
+      const continuesLastPattern = (this.Ub < 0 || note.continuesLastPattern) && truncStart == 0;
+      truncStart -= this.Ub;
+      truncEnd -= this.Ub;
       let setStart = false;
-      let prevSize = this.ab[0].size;
-      let prevInterval = this.ab[0].interval;
+      let prevSize = this.$a[0].size;
+      let prevInterval = this.$a[0].interval;
       let pushLastPin = true;
       let i;
-      for (i = 0; i < this.ab.length; i++) {
-        const oldPin = this.ab[i];
+      for (i = 0; i < this.$a.length; i++) {
+        const oldPin = this.$a[i];
         if (oldPin.time < truncStart) {
           prevSize = oldPin.size;
           prevInterval = oldPin.interval;
         } else {
           if (oldPin.time > truncStart && !setStart) {
-            this.oa.push(makeNotePin(prevInterval, truncStart, prevSize));
+            this.na.push(makeNotePin(prevInterval, truncStart, prevSize));
             setStart = true;
           }
           if (oldPin.time <= truncEnd) {
-            this.oa.push(makeNotePin(oldPin.interval, oldPin.time, oldPin.size));
+            this.na.push(makeNotePin(oldPin.interval, oldPin.time, oldPin.size));
             if (oldPin.time == truncEnd) {
               pushLastPin = false;
               break;
@@ -26714,7 +26718,7 @@ li.select2-results__option[role=group] > strong:hover {
           }
         }
       }
-      if (pushLastPin) this.oa.push(makeNotePin(this.ab[i].interval, truncEnd, this.ab[i].size));
+      if (pushLastPin) this.na.push(makeNotePin(this.$a[i].interval, truncEnd, this.$a[i].size));
       this.Mi(continuesLastPattern);
     }
   };
@@ -26787,29 +26791,29 @@ li.select2-results__option[role=group] > strong:hover {
   };
   var ChangeTransposeNote = class extends UndoableChange {
     J;
-    wa;
-    Vb;
-    Cd;
+    va;
+    Ub;
+    Bd;
     Ff;
-    He;
-    ab;
-    oa;
-    ld;
-    oc;
+    Ge;
+    $a;
+    na;
+    kd;
+    nc;
     constructor(doc, channelIndex, note, upward, ignoreScale = false, octave = false) {
       super(false);
       this.J = doc;
-      this.wa = note;
-      this.ab = note.pins;
-      this.oa = [];
-      this.ld = note.pitches;
-      this.oc = [];
+      this.va = note;
+      this.$a = note.pins;
+      this.na = [];
+      this.kd = note.pitches;
+      this.nc = [];
       const isNoise = doc.song.getChannelIsNoise(channelIndex);
       if (isNoise != doc.song.getChannelIsNoise(doc.channel)) return;
       if (doc.song.getChannelIsMod(doc.channel)) return;
       const maxPitch = isNoise ? Config.drumCount - 1 : Config.maxPitch;
-      for (let i = 0; i < this.ld.length; i++) {
-        let pitch = this.ld[i];
+      for (let i = 0; i < this.kd.length; i++) {
+        let pitch = this.kd[i];
         if (octave && !isNoise) {
           if (upward) {
             pitch = Math.min(maxPitch, pitch + 12);
@@ -26835,23 +26839,23 @@ li.select2-results__option[role=group] > strong:hover {
           }
         }
         let foundMatch = false;
-        for (let j = 0; j < this.oc.length; j++) {
-          if (this.oc[j] == pitch) {
+        for (let j = 0; j < this.nc.length; j++) {
+          if (this.nc[j] == pitch) {
             foundMatch = true;
             break;
           }
         }
-        if (!foundMatch) this.oc.push(pitch);
+        if (!foundMatch) this.nc.push(pitch);
       }
       let min = 0;
       let max = maxPitch;
-      for (let i = 1; i < this.oc.length; i++) {
-        const diff = this.oc[0] - this.oc[i];
+      for (let i = 1; i < this.nc.length; i++) {
+        const diff = this.nc[0] - this.nc[i];
         if (min < diff) min = diff;
         if (max > diff + maxPitch) max = diff + maxPitch;
       }
-      for (const oldPin of this.ab) {
-        let interval = oldPin.interval + this.ld[0];
+      for (const oldPin of this.$a) {
+        let interval = oldPin.interval + this.kd[0];
         if (interval < min) interval = min;
         if (interval > max) interval = max;
         if (octave && !isNoise) {
@@ -26878,28 +26882,28 @@ li.select2-results__option[role=group] > strong:hover {
             }
           }
         }
-        interval -= this.oc[0];
-        this.oa.push(makeNotePin(interval, oldPin.time, oldPin.size));
+        interval -= this.nc[0];
+        this.na.push(makeNotePin(interval, oldPin.time, oldPin.size));
       }
-      if (this.oa[0].interval != 0) throw new Error("wrong pin start interval");
-      for (let i = 1; i < this.oa.length - 1; ) {
-        if (this.oa[i - 1].interval == this.oa[i].interval && this.oa[i].interval == this.oa[i + 1].interval && this.oa[i - 1].size == this.oa[i].size && this.oa[i].size == this.oa[i + 1].size) {
-          this.oa.splice(i, 1);
+      if (this.na[0].interval != 0) throw new Error("wrong pin start interval");
+      for (let i = 1; i < this.na.length - 1; ) {
+        if (this.na[i - 1].interval == this.na[i].interval && this.na[i].interval == this.na[i + 1].interval && this.na[i - 1].size == this.na[i].size && this.na[i].size == this.na[i + 1].size) {
+          this.na.splice(i, 1);
         } else {
           i++;
         }
       }
-      this.$a();
-      this.Z();
+      this._a();
+      this.Y();
     }
-    $a() {
-      this.wa.pins = this.oa;
-      this.wa.pitches = this.oc;
+    _a() {
+      this.va.pins = this.na;
+      this.va.pitches = this.nc;
       this.J.notifier.changed();
     }
-    Kb() {
-      this.wa.pins = this.ab;
-      this.wa.pitches = this.ld;
+    Jb() {
+      this.va.pins = this.$a;
+      this.va.pitches = this.kd;
       this.J.notifier.changed();
     }
   };
@@ -26925,37 +26929,37 @@ li.select2-results__option[role=group] > strong:hover {
       doc.selection.boxSelectionY0 = newY0;
       doc.selection.boxSelectionY1 = newY1;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangePatternSelection = class extends UndoableChange {
     J;
-    Vb;
+    Ub;
     Ff;
     Zn;
-    Cd;
-    He;
+    Bd;
+    Ge;
     _n;
     constructor(doc, newStart, newEnd) {
       super(false);
       this.J = doc;
-      this.Vb = doc.selection.patternSelectionStart;
+      this.Ub = doc.selection.patternSelectionStart;
       this.Ff = doc.selection.patternSelectionEnd;
       this.Zn = doc.selection.patternSelectionActive;
-      this.Cd = newStart;
-      this.He = newEnd;
+      this.Bd = newStart;
+      this.Ge = newEnd;
       this._n = newStart < newEnd;
-      this.$a();
-      this.Z();
+      this._a();
+      this.Y();
     }
-    $a() {
-      this.J.selection.patternSelectionStart = this.Cd;
-      this.J.selection.patternSelectionEnd = this.He;
+    _a() {
+      this.J.selection.patternSelectionStart = this.Bd;
+      this.J.selection.patternSelectionEnd = this.Ge;
       this.J.selection.patternSelectionActive = this._n;
       this.J.notifier.changed();
     }
-    Kb() {
-      this.J.selection.patternSelectionStart = this.Vb;
+    Jb() {
+      this.J.selection.patternSelectionStart = this.Ub;
       this.J.selection.patternSelectionEnd = this.Ff;
       this.J.selection.patternSelectionActive = this.Zn;
       this.J.notifier.changed();
@@ -27015,7 +27019,7 @@ li.select2-results__option[role=group] > strong:hover {
       this.storedChange = storedChange;
       this.storedValues = storedValues;
       this.storedSlider = slider;
-      this.Z();
+      this.Y();
     }
   };
   var ChangeDuplicateSelectedReusedPatterns = class extends ChangeGroup {
@@ -27100,7 +27104,7 @@ li.select2-results__option[role=group] > strong:hover {
         note.pitches = newPitches;
         note.pins = newPins;
       }
-      this.Z();
+      this.Y();
       doc.notifier.changed();
     }
   };
@@ -27109,7 +27113,7 @@ li.select2-results__option[role=group] > strong:hover {
       super();
       doc.song.channels[doc.channel].instruments[doc.getCurrentInstrument()].volume = newValue;
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeSongTitle = class extends Change {
@@ -27121,7 +27125,7 @@ li.select2-results__option[role=group] > strong:hover {
       doc.song.title = newValue;
       document.title = newValue + " - " + EditorConfig.versionDisplayName;
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeChannelName = class extends Change {
@@ -27133,7 +27137,7 @@ li.select2-results__option[role=group] > strong:hover {
       doc.song.channels[doc.muteEditorChannel].name = newValue;
       doc.recalcChannelNames = true;
       doc.notifier.changed();
-      if (oldValue != newValue) this.Z();
+      if (oldValue != newValue) this.Y();
     }
   };
   var ChangeGain = class extends Change {
@@ -27142,7 +27146,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.gain = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["gain"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangePan = class extends Change {
@@ -27151,7 +27155,7 @@ li.select2-results__option[role=group] > strong:hover {
       effect.pan = newValue;
       doc.synth.unsetMod(Config.modulators.dictionary["pan"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangePanDelay = class extends Change {
@@ -27159,7 +27163,7 @@ li.select2-results__option[role=group] > strong:hover {
       super();
       effect.panDelay = newValue;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangePanMode = class extends Change {
@@ -27167,53 +27171,53 @@ li.select2-results__option[role=group] > strong:hover {
       super();
       effect.panMode = newValue;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeSizeBend = class extends UndoableChange {
     J;
-    wa;
-    ab;
-    oa;
+    va;
+    $a;
+    na;
     constructor(doc, note, bendPart, bendSize, bendInterval, uniformSize) {
       super(false);
       this.J = doc;
-      this.wa = note;
-      this.ab = note.pins;
-      this.oa = [];
+      this.va = note;
+      this.$a = note.pins;
+      this.na = [];
       let inserted = false;
       for (const pin of note.pins) {
         if (pin.time < bendPart) {
           if (uniformSize) {
-            this.oa.push(makeNotePin(pin.interval, pin.time, bendSize));
+            this.na.push(makeNotePin(pin.interval, pin.time, bendSize));
           } else {
-            this.oa.push(pin);
+            this.na.push(pin);
           }
         } else if (pin.time == bendPart) {
-          this.oa.push(makeNotePin(bendInterval, bendPart, bendSize));
+          this.na.push(makeNotePin(bendInterval, bendPart, bendSize));
           inserted = true;
         } else {
           if (!uniformSize && !inserted) {
-            this.oa.push(makeNotePin(bendInterval, bendPart, bendSize));
+            this.na.push(makeNotePin(bendInterval, bendPart, bendSize));
             inserted = true;
           }
           if (uniformSize) {
-            this.oa.push(makeNotePin(pin.interval, pin.time, bendSize));
+            this.na.push(makeNotePin(pin.interval, pin.time, bendSize));
           } else {
-            this.oa.push(pin);
+            this.na.push(pin);
           }
         }
       }
-      removeRedundantPins(this.oa);
-      this.$a();
-      this.Z();
+      removeRedundantPins(this.na);
+      this._a();
+      this.Y();
     }
-    $a() {
-      this.wa.pins = this.oa;
+    _a() {
+      this.va.pins = this.na;
       this.J.notifier.changed();
     }
-    Kb() {
-      this.wa.pins = this.ab;
+    Jb() {
+      this.va.pins = this.$a;
       this.J.notifier.changed();
     }
   };
@@ -27231,7 +27235,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.chipWaveStartOffset = 0;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27248,7 +27252,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.chipWaveStartOffset = 0;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27261,7 +27265,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.chipWaveLoopMode = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27274,7 +27278,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.chipWaveLoopStart = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27288,7 +27292,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.chipWaveLoopStart = Math.max(0, Math.min(newValue - 1, instrument.chipWaveLoopStart));
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27301,7 +27305,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.chipWaveStartOffset = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27314,7 +27318,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.chipWavePlayBackwards = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27326,7 +27330,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.chipWaveInStereo = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27338,7 +27342,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.chipNoise = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27349,7 +27353,7 @@ li.select2-results__option[role=group] > strong:hover {
       instrument.addEnvelope(0, 0, 0, true, 0, instrument.isNoiseInstrument ? Config.drumCount : Config.maxPitch, false, 1, 0);
       instrument.preset = instrument.type;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeRemoveEnvelope = class extends Change {
@@ -27374,7 +27378,7 @@ li.select2-results__option[role=group] > strong:hover {
       }
       instrument.preset = instrument.type;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeSetEnvelopeTarget = class extends Change {
@@ -27388,7 +27392,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.envelopes[envelopeIndex].index = targetIndex;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27401,7 +27405,7 @@ li.select2-results__option[role=group] > strong:hover {
         instrument.envelopes[envelopeIndex].envelope = newValue;
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27414,7 +27418,7 @@ li.select2-results__option[role=group] > strong:hover {
       if (oldStartNote != startNote) {
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27427,7 +27431,7 @@ li.select2-results__option[role=group] > strong:hover {
       if (oldEndNote != endNote) {
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27440,7 +27444,7 @@ li.select2-results__option[role=group] > strong:hover {
       if (oldValue != value) {
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27453,37 +27457,37 @@ li.select2-results__option[role=group] > strong:hover {
       if (oldValue != newValue) {
         instrument.envelopes[index].discrete = newValue;
         instrument.preset = instrument.type;
-        this.Z();
+        this.Y();
       }
     }
   };
   var ChangePerEnvelopeSpeed = class extends IndexableChange {
     constructor(doc, oldSpeed, speed, index) {
       super(index, doc);
-      this.ea.envelopes[index].perEnvelopeSpeed = speed;
+      this.da.envelopes[index].perEnvelopeSpeed = speed;
       doc.synth.unsetMod(Config.modulators.dictionary["individual envelope speed"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      if (oldSpeed != speed) this.Z();
+      if (oldSpeed != speed) this.Y();
     }
   };
   var ChangeEnvelopeLowerBound = class extends IndexableChange {
     constructor(doc, oldBound, bound, index) {
       super(index, doc);
       bound = bound > Config.perEnvelopeBoundMax ? Config.perEnvelopeBoundMax : bound < Config.perEnvelopeBoundMin ? Config.perEnvelopeBoundMin : Math.round(bound * 10) != bound * 10 ? Config.perEnvelopeBoundMin : bound;
-      this.ea.envelopes[index].perEnvelopeLowerBound = bound;
+      this.da.envelopes[index].perEnvelopeLowerBound = bound;
       doc.synth.unsetMod(Config.modulators.dictionary["individual envelope lower bound"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      if (oldBound != bound) this.Z();
+      if (oldBound != bound) this.Y();
     }
   };
   var ChangeEnvelopeUpperBound = class extends IndexableChange {
     constructor(doc, oldBound, bound, index) {
       super(index, doc);
       bound = bound > Config.perEnvelopeBoundMax ? Config.perEnvelopeBoundMax : bound < Config.perEnvelopeBoundMin ? Config.perEnvelopeBoundMin : Math.round(bound * 10) != bound * 10 ? Config.perEnvelopeBoundMin : bound;
-      this.ea.envelopes[index].perEnvelopeUpperBound = bound;
+      this.da.envelopes[index].perEnvelopeUpperBound = bound;
       doc.synth.unsetMod(Config.modulators.dictionary["individual envelope upper bound"].index, doc.channel, doc.getCurrentInstrument());
       doc.notifier.changed();
-      if (oldBound != bound) this.Z();
+      if (oldBound != bound) this.Y();
     }
   };
   var ChangeRandomEnvelopeSteps = class extends Change {
@@ -27496,7 +27500,7 @@ li.select2-results__option[role=group] > strong:hover {
       if (oldSteps != steps) {
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27509,7 +27513,7 @@ li.select2-results__option[role=group] > strong:hover {
       instrument.envelopes[index].seed = seed;
       if (oldSeed != seed) {
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27520,7 +27524,7 @@ li.select2-results__option[role=group] > strong:hover {
       instrument.envelopes[index].fromJsonObject(envelope, "slarmoosbox");
       instrument.preset = instrument.type;
       doc.notifier.changed();
-      this.Z();
+      this.Y();
     }
   };
   var ChangeSetEnvelopeWaveform = class extends Change {
@@ -27533,7 +27537,7 @@ li.select2-results__option[role=group] > strong:hover {
       if (oldWaveform != waveform) {
         instrument.preset = instrument.type;
         doc.notifier.changed();
-        this.Z();
+        this.Y();
       }
     }
   };
@@ -27583,65 +27587,65 @@ li.select2-results__option[role=group] > strong:hover {
     }
   }
   var ArrayBufferWriter = class {
-    Wb = 0;
-    md = 0;
-    de;
-    Ia;
+    Vb = 0;
+    ld = 0;
+    ce;
+    Ha;
     constructor(initialCapacity) {
-      this.de = new ArrayBuffer(initialCapacity);
-      this.Ia = new DataView(this.de);
+      this.ce = new ArrayBuffer(initialCapacity);
+      this.Ha = new DataView(this.ce);
     }
     If(numBytes) {
-      this.md += numBytes;
-      if (this.md > this.de.byteLength) {
-        this.de = transfer(this.de, Math.max(this.de.byteLength * 2, this.md));
-        this.Ia = new DataView(this.de);
+      this.ld += numBytes;
+      if (this.ld > this.ce.byteLength) {
+        this.ce = transfer(this.ce, Math.max(this.ce.byteLength * 2, this.ld));
+        this.Ha = new DataView(this.ce);
       }
     }
     getWriteIndex() {
-      return this.Wb;
+      return this.Vb;
     }
     rewriteUint32(index, value) {
-      this.Ia.setUint32(index, value >>> 0, false);
+      this.Ha.setUint32(index, value >>> 0, false);
     }
     writeUint32(value) {
       value = value >>> 0;
       this.If(4);
-      this.Ia.setUint32(this.Wb, value, false);
-      this.Wb = this.md;
+      this.Ha.setUint32(this.Vb, value, false);
+      this.Vb = this.ld;
     }
     writeUint24(value) {
       value = value >>> 0;
       this.If(3);
-      this.Ia.setUint8(this.Wb, value >> 16 & 255);
-      this.Ia.setUint8(this.Wb + 1, value >> 8 & 255);
-      this.Ia.setUint8(this.Wb + 2, value & 255);
-      this.Wb = this.md;
+      this.Ha.setUint8(this.Vb, value >> 16 & 255);
+      this.Ha.setUint8(this.Vb + 1, value >> 8 & 255);
+      this.Ha.setUint8(this.Vb + 2, value & 255);
+      this.Vb = this.ld;
     }
     writeUint16(value) {
       value = value >>> 0;
       this.If(2);
-      this.Ia.setUint16(this.Wb, value, false);
-      this.Wb = this.md;
+      this.Ha.setUint16(this.Vb, value, false);
+      this.Vb = this.ld;
     }
     writeUint8(value) {
       value = value >>> 0;
       this.If(1);
-      this.Ia.setUint8(this.Wb, value);
-      this.Wb = this.md;
+      this.Ha.setUint8(this.Vb, value);
+      this.Vb = this.ld;
     }
     writeInt8(value) {
       value = value | 0;
       this.If(1);
-      this.Ia.setInt8(this.Wb, value);
-      this.Wb = this.md;
+      this.Ha.setInt8(this.Vb, value);
+      this.Vb = this.ld;
     }
     writeMidi7Bits(value) {
       value = value >>> 0;
       if (value >= 128) throw new Error("7 bit value contained 8th bit!");
       this.If(1);
-      this.Ia.setUint8(this.Wb, value);
-      this.Wb = this.md;
+      this.Ha.setUint8(this.Vb, value);
+      this.Vb = this.ld;
     }
     writeMidiVariableLength(value) {
       value = value >>> 0;
@@ -27663,7 +27667,7 @@ li.select2-results__option[role=group] > strong:hover {
       }
     }
     toCompactArrayBuffer() {
-      return transfer(this.de, this.md);
+      return transfer(this.ce, this.ld);
     }
   };
 
@@ -27793,60 +27797,60 @@ li.select2-results__option[role=group] > strong:hover {
   var ExportPrompt = class _ExportPrompt {
     constructor(_doc) {
       this.J = _doc;
-      this.cc.value = "1";
+      this.bc.value = "1";
       if (this.J.song.loopStart == 0) {
-        this.Yb.checked = false;
-        this.Yb.disabled = true;
+        this.Xb.checked = false;
+        this.Xb.disabled = true;
       } else {
-        this.Yb.checked = true;
-        this.Yb.disabled = false;
+        this.Xb.checked = true;
+        this.Xb.disabled = false;
       }
       if (this.J.song.loopStart + this.J.song.loopLength == this.J.song.barCount) {
-        this.dc.checked = false;
-        this.dc.disabled = true;
+        this.cc.checked = false;
+        this.cc.disabled = true;
       } else {
-        this.dc.checked = true;
-        this.dc.disabled = false;
+        this.cc.checked = true;
+        this.cc.disabled = false;
       }
       const lastExportFormat = nsLocalStorage_get("exportFormat");
       if (lastExportFormat != null) {
-        this.Me.value = lastExportFormat;
+        this.Le.value = lastExportFormat;
       }
       const lastExportWhitespace = nsLocalStorage_get("exportWhitespace") != "false";
       if (lastExportWhitespace != null) {
         this.Pi.checked = lastExportWhitespace;
       }
-      if (this.Me.value == "json") {
+      if (this.Le.value == "json") {
         this.Kg.style.display = "block";
       } else {
         this.Kg.style.display = "none";
       }
-      this.sb.select();
-      setTimeout(() => this.sb.focus());
-      this.sb.addEventListener("input", _ExportPrompt.Jf);
-      this.cc.addEventListener("blur", _ExportPrompt.lb);
-      this.Ne.addEventListener("click", this.Qk);
-      this.fa.addEventListener("click", this.ga);
-      this.dc.addEventListener("click", () => {
-        this.Xb.firstChild.textContent = _ExportPrompt.samplesToTime(this.J, this.J.synth.getTotalSamples(this.Yb.checked, this.dc.checked, +this.cc.value - 1));
+      this.rb.select();
+      setTimeout(() => this.rb.focus());
+      this.rb.addEventListener("input", _ExportPrompt.Jf);
+      this.bc.addEventListener("blur", _ExportPrompt.kb);
+      this.Me.addEventListener("click", this.Qk);
+      this.ea.addEventListener("click", this.fa);
+      this.cc.addEventListener("click", () => {
+        this.Wb.firstChild.textContent = _ExportPrompt.samplesToTime(this.J, this.J.synth.getTotalSamples(this.Xb.checked, this.cc.checked, +this.bc.value - 1));
       });
-      this.Yb.addEventListener("click", () => {
-        this.Xb.firstChild.textContent = _ExportPrompt.samplesToTime(this.J, this.J.synth.getTotalSamples(this.Yb.checked, this.dc.checked, +this.cc.value - 1));
+      this.Xb.addEventListener("click", () => {
+        this.Wb.firstChild.textContent = _ExportPrompt.samplesToTime(this.J, this.J.synth.getTotalSamples(this.Xb.checked, this.cc.checked, +this.bc.value - 1));
       });
-      this.cc.addEventListener("change", () => {
-        this.Xb.firstChild.textContent = _ExportPrompt.samplesToTime(this.J, this.J.synth.getTotalSamples(this.Yb.checked, this.dc.checked, +this.cc.value - 1));
+      this.bc.addEventListener("change", () => {
+        this.Wb.firstChild.textContent = _ExportPrompt.samplesToTime(this.J, this.J.synth.getTotalSamples(this.Xb.checked, this.cc.checked, +this.bc.value - 1));
       });
-      this.Me.addEventListener("change", () => {
-        if (this.Me.value == "json") {
+      this.Le.addEventListener("change", () => {
+        if (this.Le.value == "json") {
           this.Kg.style.display = "block";
         } else {
           this.Kg.style.display = "none";
         }
       });
-      this.container.addEventListener("keydown", this.qa);
-      this.sb.value = _doc.song.title;
-      _ExportPrompt.Jf(null, this.sb);
-      this.Xb.firstChild.textContent = _ExportPrompt.samplesToTime(this.J, this.J.synth.getTotalSamples(this.Yb.checked, this.dc.checked, +this.cc.value - 1));
+      this.container.addEventListener("keydown", this.pa);
+      this.rb.value = _doc.song.title;
+      _ExportPrompt.Jf(null, this.rb);
+      this.Wb.firstChild.textContent = _ExportPrompt.samplesToTime(this.J, this.J.synth.getTotalSamples(this.Xb.checked, this.cc.checked, +this.bc.value - 1));
     }
     synth;
     thenExportTo;
@@ -27856,12 +27860,12 @@ li.select2-results__option[role=group] > strong:hover {
     totalChunks;
     currentChunk;
     outputStarted = false;
-    sb = input2({ type: "text", style: "width: 10em;", value: Config.jsonFormat + "-Song", maxlength: 250, "autofocus": "autofocus" });
-    Xb = div2({ style: "width: 10em;" }, new Text("0:00"));
-    Yb = input2({ type: "checkbox" });
-    cc = input2({ style: "width: 2em;", type: "number", min: "1", max: "4", step: "1" });
-    dc = input2({ type: "checkbox" });
-    Me = select2(
+    rb = input2({ type: "text", style: "width: 10em;", value: Config.jsonFormat + "-Song", maxlength: 250, "autofocus": "autofocus" });
+    Wb = div2({ style: "width: 10em;" }, new Text("0:00"));
+    Xb = input2({ type: "checkbox" });
+    bc = input2({ style: "width: 2em;", type: "number", min: "1", max: "4", step: "1" });
+    cc = input2({ type: "checkbox" });
+    Le = select2(
       { style: "width: 100%;" },
       option2({ value: "wav" }, "Export to .wav file."),
       option2({ value: "mp3" }, "Export to .mp3 file."),
@@ -27876,8 +27880,8 @@ li.select2-results__option[role=group] > strong:hover {
       "Remove Whitespace: ",
       this.Pi
     );
-    fa = button2({ class: "cancelButton" });
-    Ne = button2({ class: "exportButton", style: "width:45%;" }, "Export");
+    ea = button2({ class: "cancelButton" });
+    Me = button2({ class: "exportButton", style: "width:45%;" }, "Export");
     Pk = div2({ style: `width: 0%; background: ${ColorConfig.loopAccent}; height: 100%; position: absolute; z-index: 2;` });
     Qi = div2({ style: `position: relative; top: -1px; z-index: 3;` }, "0%");
     Ns = div2(
@@ -27911,12 +27915,12 @@ li.select2-results__option[role=group] > strong:hover {
       div2(
         { style: "display: flex; flex-direction: row; align-items: center; justify-content: space-between;" },
         "File name:",
-        this.sb
+        this.rb
       ),
       div2(
         { style: "display: flex; flex-direction: row; align-items: center; justify-content: space-between;" },
         "Length:",
-        this.Xb
+        this.Wb
       ),
       div2(
         { style: "display: table; width: 100%;" },
@@ -27928,20 +27932,20 @@ li.select2-results__option[role=group] > strong:hover {
         ),
         div2(
           { style: "display: table-row;" },
-          div2({ style: "display: table-cell; vertical-align: middle;" }, this.Yb),
-          div2({ style: "display: table-cell; vertical-align: middle;" }, this.cc),
-          div2({ style: "display: table-cell; vertical-align: middle;" }, this.dc)
+          div2({ style: "display: table-cell; vertical-align: middle;" }, this.Xb),
+          div2({ style: "display: table-cell; vertical-align: middle;" }, this.bc),
+          div2({ style: "display: table-cell; vertical-align: middle;" }, this.cc)
         )
       ),
-      div2({ class: "selectContainer", style: "width: 100%;" }, this.Me),
+      div2({ class: "selectContainer", style: "width: 100%;" }, this.Le),
       this.Kg,
       div2({ style: "text-align: left;" }, "Exporting can be slow. Reloading the page or clicking the X will cancel it. Please be patient."),
       this.Ns,
       div2(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.Ne
+        this.Me
       ),
-      this.fa
+      this.ea
     );
     // Could probably be moved to doc or synth. Fine here for now until needed by something else.
     static samplesToTime(_doc, samples) {
@@ -27950,23 +27954,23 @@ li.select2-results__option[role=group] > strong:hover {
       const minutes = Math.floor(rawSeconds / 60);
       return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
     }
-    ga = () => {
+    fa = () => {
       if (this.synth != null)
         this.synth.renderingSong = false;
       this.outputStarted = false;
       this.J.undo();
     };
     changeFileName(newValue) {
-      this.sb.value = newValue;
+      this.rb.value = newValue;
     }
     cleanUp = () => {
-      this.sb.removeEventListener("input", _ExportPrompt.Jf);
-      this.cc.removeEventListener("blur", _ExportPrompt.lb);
-      this.Ne.removeEventListener("click", this.Qk);
-      this.fa.removeEventListener("click", this.ga);
-      this.container.removeEventListener("keydown", this.qa);
+      this.rb.removeEventListener("input", _ExportPrompt.Jf);
+      this.bc.removeEventListener("blur", _ExportPrompt.kb);
+      this.Me.removeEventListener("click", this.Qk);
+      this.ea.removeEventListener("click", this.fa);
+      this.container.removeEventListener("keydown", this.pa);
     };
-    qa = (event) => {
+    pa = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
         this.Qk();
       }
@@ -27988,16 +27992,16 @@ li.select2-results__option[role=group] > strong:hover {
         input19.setSelectionRange(cursorPos, cursorPos);
       }
     }
-    static lb(event) {
+    static kb(event) {
       const input19 = event.target;
       input19.value = Math.floor(Math.max(Number(input19.min), Math.min(Number(input19.max), Number(input19.value)))) + "";
     }
     Qk = () => {
       if (this.outputStarted == true)
         return;
-      nsLocalStorage_save("exportFormat", this.Me.value);
+      nsLocalStorage_save("exportFormat", this.Le.value);
       nsLocalStorage_save("exportWhitespace", this.Pi.value);
-      switch (this.Me.value) {
+      switch (this.Le.value) {
         case "wav":
           this.outputStarted = true;
           this.$n("wav");
@@ -28066,8 +28070,8 @@ li.select2-results__option[role=group] > strong:hover {
       }
       this.Pk.style.setProperty("width", "0%");
       this.Qi.innerText = "0%";
-      this.synth.loopRepeatCount = Number(this.cc.value) - 1;
-      if (!this.Yb.checked) {
+      this.synth.loopRepeatCount = Number(this.bc.value) - 1;
+      if (!this.Xb.checked) {
         for (let introIter = 0; introIter < this.J.song.loopStart; introIter++) {
           this.synth.goToNextBar();
         }
@@ -28075,7 +28079,7 @@ li.select2-results__option[role=group] > strong:hover {
       this.synth.initModFilters(this.J.song);
       this.synth.computeLatestModValues();
       this.synth.warmUpSynthesizer(this.J.song);
-      this.sampleFrames = this.synth.getTotalSamples(this.Yb.checked, this.dc.checked, this.synth.loopRepeatCount);
+      this.sampleFrames = this.synth.getTotalSamples(this.Xb.checked, this.cc.checked, this.synth.loopRepeatCount);
       this.totalChunks = Math.ceil(this.sampleFrames / (this.synth.samplesPerSecond * 5));
       this.recordedSamplesL = new Float32Array(this.sampleFrames);
       this.recordedSamplesR = new Float32Array(this.sampleFrames);
@@ -28150,8 +28154,8 @@ li.select2-results__option[role=group] > strong:hover {
         }
       }
       const blob = new Blob([arrayBuffer], { type: "audio/wav" });
-      save(blob, this.sb.value.trim() + ".wav");
-      this.ga();
+      save(blob, this.rb.value.trim() + ".wav");
+      this.fa();
     }
     Ss() {
       const whenEncoderIsAvailable = () => {
@@ -28177,8 +28181,8 @@ li.select2-results__option[role=group] > strong:hover {
         const mp3buf = mp3encoder.flush();
         if (mp3buf.length > 0) mp3Data.push(mp3buf);
         const blob = new Blob(mp3Data, { type: "audio/mp3" });
-        save(blob, this.sb.value.trim() + ".mp3");
-        this.ga();
+        save(blob, this.rb.value.trim() + ".mp3");
+        this.fa();
       };
       if ("lamejs" in window) {
         whenEncoderIsAvailable();
@@ -28202,17 +28206,17 @@ li.select2-results__option[role=group] > strong:hover {
       const pitchBendRange = 24;
       const defaultNoteVelocity = 90;
       const unrolledBars = [];
-      if (this.Yb.checked) {
+      if (this.Xb.checked) {
         for (let bar = 0; bar < song.loopStart; bar++) {
           unrolledBars.push(bar);
         }
       }
-      for (let loopIndex = 0; loopIndex < Number(this.cc.value); loopIndex++) {
+      for (let loopIndex = 0; loopIndex < Number(this.bc.value); loopIndex++) {
         for (let bar = song.loopStart; bar < song.loopStart + song.loopLength; bar++) {
           unrolledBars.push(bar);
         }
       }
-      if (this.dc.checked) {
+      if (this.cc.checked) {
         for (let bar = song.loopStart + song.loopLength; bar < song.barCount; bar++) {
           unrolledBars.push(bar);
         }
@@ -28285,19 +28289,19 @@ li.select2-results__option[role=group] > strong:hover {
           writer.writeMidiVariableLength(2);
           writer.writeInt8(numSharps);
           writer.writeUint8(isMinor ? 1 : 0);
-          if (this.Yb.checked) barStartTime += midiTicksPerBar * song.loopStart;
+          if (this.Xb.checked) barStartTime += midiTicksPerBar * song.loopStart;
           writeEventTime(barStartTime);
           writer.writeUint8(255 /* meta */);
           writer.writeMidi7Bits(6 /* marker */);
           writer.writeMidiAscii("Loop Start");
-          for (let loopIndex = 0; loopIndex < parseInt(this.cc.value); loopIndex++) {
+          for (let loopIndex = 0; loopIndex < parseInt(this.bc.value); loopIndex++) {
             barStartTime += midiTicksPerBar * song.loopLength;
             writeEventTime(barStartTime);
             writer.writeUint8(255 /* meta */);
             writer.writeMidi7Bits(6 /* marker */);
-            writer.writeMidiAscii(loopIndex < Number(this.cc.value) - 1 ? "Loop Repeat" : "Loop End");
+            writer.writeMidiAscii(loopIndex < Number(this.bc.value) - 1 ? "Loop Repeat" : "Loop End");
           }
-          if (this.dc.checked) barStartTime += midiTicksPerBar * (song.barCount - song.loopStart - song.loopLength);
+          if (this.cc.checked) barStartTime += midiTicksPerBar * (song.barCount - song.loopStart - song.loopLength);
           if (barStartTime != midiTicksPerBar * unrolledBars.length) throw new Error("Miscalculated number of bars.");
         } else {
           let writeInstrumentSettings = function(instrumentIndex) {
@@ -28543,16 +28547,16 @@ li.select2-results__option[role=group] > strong:hover {
         writer.rewriteUint32(trackStartIndex, writer.getWriteIndex() - trackStartIndex - 4);
       }
       const blob = new Blob([writer.toCompactArrayBuffer()], { type: "audio/midi" });
-      save(blob, this.sb.value.trim() + ".mid");
-      this.ga();
+      save(blob, this.rb.value.trim() + ".mid");
+      this.fa();
     }
     Ps() {
-      const jsonObject = this.J.song.toJsonObject(this.Yb.checked, Number(this.cc.value), this.dc.checked);
+      const jsonObject = this.J.song.toJsonObject(this.Xb.checked, Number(this.bc.value), this.cc.checked);
       let whiteSpaceParam = this.Pi.checked ? void 0 : "	";
       const jsonString = JSON.stringify(jsonObject, null, whiteSpaceParam);
       const blob = new Blob([jsonString], { type: "application/json" });
-      save(blob, this.sb.value.trim() + ".json");
-      this.ga();
+      save(blob, this.rb.value.trim() + ".json");
+      this.fa();
     }
     Qs() {
       const fileContents = `<!DOCTYPE html><meta charset="utf-8">
@@ -28581,8 +28585,8 @@ You should be redirected to the song at:<br /><br />
 <\/script>
 `;
       const blob = new Blob([fileContents], { type: "text/html" });
-      save(blob, this.sb.value.trim() + ".html");
-      this.ga();
+      save(blob, this.rb.value.trim() + ".html");
+      this.fa();
     }
   };
 
@@ -29169,9 +29173,9 @@ You should be redirected to the song at:<br /><br />
 			}
 		`
     };
-    static Y = document.head.appendChild(HTML.style({ type: "text/css" }));
+    static Bf = document.head.appendChild(HTML.style({ type: "text/css" }));
     static setLayout(layout) {
-      this.Y.textContent = this.Ts[layout];
+      this.Bf.textContent = this.Ts[layout];
     }
   };
 
@@ -29326,8 +29330,8 @@ You should be redirected to the song at:<br /><br />
     patternSelectionEnd = 0;
     patternSelectionActive = false;
     Mg = null;
-    Oe = null;
-    pc = null;
+    Ne = null;
+    oc = null;
     Ng = null;
     toJSON() {
       return {
@@ -29381,9 +29385,9 @@ You should be redirected to the song at:<br /><br />
     }
     setChannelBar(channelIndex, bar) {
       if (channelIndex == this.J.channel && bar == this.J.bar) return;
-      const canReplaceLastChange = this.J.lastChangeWas(this.Oe);
-      this.Oe = new ChangeGroup();
-      this.Oe.append(new ChangeChannelBar(this.J, channelIndex, bar));
+      const canReplaceLastChange = this.J.lastChangeWas(this.Ne);
+      this.Ne = new ChangeGroup();
+      this.Ne.append(new ChangeChannelBar(this.J, channelIndex, bar));
       const pattern = this.J.getCurrentPattern(0);
       if (pattern != null) {
         if (pattern.instruments.indexOf(this.J.viewedInstrument[this.J.channel]) < 0) {
@@ -29391,7 +29395,7 @@ You should be redirected to the song at:<br /><br />
         }
       }
       if (!this.J.hasRedoHistory()) {
-        this.J.record(this.Oe, canReplaceLastChange);
+        this.J.record(this.Ne, canReplaceLastChange);
       }
       this.selectionUpdated();
     }
@@ -29481,8 +29485,8 @@ You should be redirected to the song at:<br /><br />
         if (this.boxSelectionActive) {
           group.append(new ChangeDuplicateSelectedReusedPatterns(this.J, this.boxSelectionBar, this.boxSelectionWidth, this.boxSelectionChannel, this.boxSelectionHeight, false));
         }
-        for (const channelIndex of this.zc()) {
-          for (const pattern of this.Pe(channelIndex)) {
+        for (const channelIndex of this.yc()) {
+          for (const pattern of this.Oe(channelIndex)) {
             group.append(new ChangeNoteTruncate(this.J, pattern, this.J.selection.patternSelectionStart, this.J.selection.patternSelectionEnd));
           }
         }
@@ -29500,7 +29504,7 @@ You should be redirected to the song at:<br /><br />
       this.boxSelectionY0 = this.boxSelectionY1 = this.J.channel;
       ColorConfig.resetColors();
     }
-    *zc() {
+    *yc() {
       for (let channelIndex = this.boxSelectionChannel; channelIndex < this.boxSelectionChannel + this.boxSelectionHeight; channelIndex++) {
         yield channelIndex;
       }
@@ -29510,7 +29514,7 @@ You should be redirected to the song at:<br /><br />
         yield bar;
       }
     }
-    *Pe(channelIndex) {
+    *Oe(channelIndex) {
       const handledPatterns = {};
       for (const bar of this.bo()) {
         const currentPatternIndex = this.J.song.channels[channelIndex].bars[bar];
@@ -29537,7 +29541,7 @@ You should be redirected to the song at:<br /><br />
     }
     copy() {
       const channels = [];
-      for (const channelIndex of this.zc()) {
+      for (const channelIndex of this.yc()) {
         const patterns = {};
         const bars = [];
         for (const bar of this.bo()) {
@@ -29857,13 +29861,13 @@ You should be redirected to the song at:<br /><br />
         }
       } else {
         let anyUnmuted = false;
-        for (const channelIndex of this.zc()) {
+        for (const channelIndex of this.yc()) {
           if (!this.J.song.channels[channelIndex].muted) {
             anyUnmuted = true;
             break;
           }
         }
-        for (const channelIndex of this.zc()) {
+        for (const channelIndex of this.yc()) {
           this.J.song.channels[channelIndex].muted = anyUnmuted;
         }
       }
@@ -29883,13 +29887,13 @@ You should be redirected to the song at:<br /><br />
         }
       } else {
         let anyInvisible = false;
-        for (const channelIndex of this.zc()) {
+        for (const channelIndex of this.yc()) {
           if (!this.J.song.channels[channelIndex].visible) {
             anyInvisible = true;
             break;
           }
         }
-        for (const channelIndex of this.zc()) {
+        for (const channelIndex of this.yc()) {
           this.J.song.channels[channelIndex].visible = anyInvisible;
         }
       }
@@ -29971,8 +29975,8 @@ You should be redirected to the song at:<br /><br />
       if (this.boxSelectionActive) {
         group.append(new ChangeDuplicateSelectedReusedPatterns(this.J, this.boxSelectionBar, this.boxSelectionWidth, this.boxSelectionChannel, this.boxSelectionHeight, false));
       }
-      for (const channelIndex of this.zc()) {
-        for (const pattern of this.Pe(channelIndex)) {
+      for (const channelIndex of this.yc()) {
+        for (const pattern of this.Oe(channelIndex)) {
           group.append(new ChangePatternRhythm(this.J, pattern));
         }
       }
@@ -29984,16 +29988,16 @@ You should be redirected to the song at:<br /><br />
         group.append(new ChangeDuplicateSelectedReusedPatterns(this.J, this.boxSelectionBar, this.boxSelectionWidth, this.boxSelectionChannel, this.boxSelectionHeight, false));
       }
       const scaleFlags = [true, false, false, false, false, false, false, false, false, false, false, false];
-      for (const channelIndex of this.zc()) {
+      for (const channelIndex of this.yc()) {
         if (this.J.song.getChannelIsNoise(channelIndex) || this.J.song.getChannelIsMod(channelIndex)) continue;
-        for (const pattern of this.Pe(channelIndex)) {
+        for (const pattern of this.Oe(channelIndex)) {
           unionOfUsedNotes(pattern, scaleFlags);
         }
       }
       const scaleMap = generateScaleMap(scaleFlags, this.J.song.scale, this.J.song.scaleCustom);
-      for (const channelIndex of this.zc()) {
+      for (const channelIndex of this.yc()) {
         if (this.J.song.getChannelIsNoise(channelIndex) || this.J.song.getChannelIsMod(channelIndex)) continue;
-        for (const pattern of this.Pe(channelIndex)) {
+        for (const pattern of this.Oe(channelIndex)) {
           group.append(new ChangePatternScale(this.J, pattern, scaleMap));
         }
       }
@@ -30001,9 +30005,9 @@ You should be redirected to the song at:<br /><br />
     }
     setTrackSelection(newX0, newX1, newY0, newY1) {
       const canReplaceLastChange = true;
-      this.Oe = new ChangeGroup();
-      this.Oe.append(new ChangeTrackSelection(this.J, newX0, newX1, newY0, newY1));
-      this.J.record(this.Oe, canReplaceLastChange);
+      this.Ne = new ChangeGroup();
+      this.Ne.append(new ChangeTrackSelection(this.J, newX0, newX1, newY0, newY1));
+      this.J.record(this.Ne, canReplaceLastChange);
     }
     transpose(upward, octave) {
       const canReplaceLastChange = this.J.lastChangeWas(this.Mg);
@@ -30011,10 +30015,10 @@ You should be redirected to the song at:<br /><br />
       if (this.boxSelectionActive) {
         this.Mg.append(new ChangeDuplicateSelectedReusedPatterns(this.J, this.boxSelectionBar, this.boxSelectionWidth, this.boxSelectionChannel, this.boxSelectionHeight, false));
       }
-      for (const channelIndex of this.zc()) {
+      for (const channelIndex of this.yc()) {
         if (channelIndex >= this.J.song.pitchChannelCount + this.J.song.noiseChannelCount)
           continue;
-        for (const pattern of this.Pe(channelIndex)) {
+        for (const pattern of this.Oe(channelIndex)) {
           this.Mg.append(new ChangeTranspose(this.J, channelIndex, pattern, upward, this.J.prefs.notesOutsideScale, octave));
         }
       }
@@ -30054,8 +30058,8 @@ You should be redirected to the song at:<br /><br />
     selectInstrument(instrument) {
       if (this.J.viewedInstrument[this.J.channel] == instrument) {
         if (this.J.song.layeredInstruments && this.J.song.patternInstruments && this.J.channel < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount) {
-          const canReplaceLastChange = this.J.lastChangeWas(this.pc);
-          this.pc = new ChangeGroup();
+          const canReplaceLastChange = this.J.lastChangeWas(this.oc);
+          this.oc = new ChangeGroup();
           const instruments = this.J.recentPatternInstruments[this.J.channel];
           this.J.notifier.changed();
           if (instruments.indexOf(instrument) == -1) {
@@ -30069,33 +30073,33 @@ You should be redirected to the song at:<br /><br />
             if (instruments.length == 0) instruments[0] = 0;
           }
           if (this.boxSelectionActive) {
-            this.pc.append(new ChangeDuplicateSelectedReusedPatterns(this.J, this.boxSelectionBar, this.boxSelectionWidth, this.boxSelectionChannel, this.boxSelectionHeight, false));
+            this.oc.append(new ChangeDuplicateSelectedReusedPatterns(this.J, this.boxSelectionBar, this.boxSelectionWidth, this.boxSelectionChannel, this.boxSelectionHeight, false));
           }
-          for (const channelIndex of this.zc()) {
-            for (const pattern of this.Pe(channelIndex)) {
-              this.pc.append(new ChangeSetPatternInstruments(this.J, channelIndex, instruments, pattern));
+          for (const channelIndex of this.yc()) {
+            for (const pattern of this.Oe(channelIndex)) {
+              this.oc.append(new ChangeSetPatternInstruments(this.J, channelIndex, instruments, pattern));
             }
           }
-          if (!this.pc.isNoop())
-            this.J.record(this.pc, canReplaceLastChange);
+          if (!this.oc.isNoop())
+            this.J.record(this.oc, canReplaceLastChange);
         }
       } else {
-        const canReplaceLastChange = this.J.lastChangeWas(this.pc);
-        this.pc = new ChangeGroup();
-        this.pc.append(new ChangeViewInstrument(this.J, instrument));
+        const canReplaceLastChange = this.J.lastChangeWas(this.oc);
+        this.oc = new ChangeGroup();
+        this.oc.append(new ChangeViewInstrument(this.J, instrument));
         if (!(this.J.song.layeredInstruments && this.J.channel < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount) && this.J.song.patternInstruments) {
           if (this.boxSelectionActive) {
-            this.pc.append(new ChangeDuplicateSelectedReusedPatterns(this.J, this.boxSelectionBar, this.boxSelectionWidth, this.boxSelectionChannel, this.boxSelectionHeight, false));
+            this.oc.append(new ChangeDuplicateSelectedReusedPatterns(this.J, this.boxSelectionBar, this.boxSelectionWidth, this.boxSelectionChannel, this.boxSelectionHeight, false));
           }
           const instruments = [instrument];
-          for (const channelIndex of this.zc()) {
-            for (const pattern of this.Pe(channelIndex)) {
-              this.pc.append(new ChangeSetPatternInstruments(this.J, channelIndex, instruments, pattern));
+          for (const channelIndex of this.yc()) {
+            for (const pattern of this.Oe(channelIndex)) {
+              this.oc.append(new ChangeSetPatternInstruments(this.J, channelIndex, instruments, pattern));
             }
           }
-          this.J.record(this.pc, canReplaceLastChange);
+          this.J.record(this.oc, canReplaceLastChange);
         } else if (!this.J.hasRedoHistory()) {
-          this.J.record(this.pc, canReplaceLastChange);
+          this.J.record(this.oc, canReplaceLastChange);
         }
       }
     }
@@ -30146,17 +30150,17 @@ You should be redirected to the song at:<br /><br />
         this.go.push(countText);
         this.ho.push(countRect);
       }
-      this.container.addEventListener("mousedown", this.db);
-      document.addEventListener("mousemove", this.Za);
+      this.container.addEventListener("mousedown", this.cb);
+      document.addEventListener("mousemove", this.Ya);
       document.addEventListener("mouseup", this.Yk);
-      this.container.addEventListener("mouseover", this.mc);
-      this.container.addEventListener("mouseout", this.nc);
-      this.container.addEventListener("touchstart", this.pb);
-      this.container.addEventListener("touchmove", this.qb);
+      this.container.addEventListener("mouseover", this.lc);
+      this.container.addEventListener("mouseout", this.mc);
+      this.container.addEventListener("touchstart", this.ob);
+      this.container.addEventListener("touchmove", this.pb);
       this.container.addEventListener("touchend", this.Tg);
       this.container.addEventListener("touchcancel", this.Tg);
-      this.J.notifier.watch(this.Tc);
-      this.Tc();
+      this.J.notifier.watch(this.Sc);
+      this.Sc();
       window.requestAnimationFrame(this.Ug);
     }
     Og = HTML.div({ style: "width: 100%; height: 100%; display: flex; flex-direction: column-reverse; align-items: stretch;" });
@@ -30170,30 +30174,30 @@ You should be redirected to the song at:<br /><br />
       this.Vk,
       this.Pg
     );
-    ba = 481;
+    aa = 481;
     Qg = [];
     Rg = [];
     eo = [];
     fo = [];
     go = [];
     ho = [];
-    Ha;
-    mb;
+    Ga;
+    lb;
     //private _mouseX = 0;
-    aa = 0;
-    da = false;
-    na = false;
+    $ = 0;
+    ca = false;
+    ma = false;
     Si;
     Sg = -1;
     Wk = -1;
+    de = false;
     ee = false;
-    fe = false;
     io = -1;
     Xk = -1;
-    Qe = [];
+    Pe = [];
     forceRender() {
       this.Wk = -1;
-      this.Tc();
+      this.Sc();
     }
     // Bass cutoff pitch is roughly half of the viewed window and below, though on odd-numbered octave counts the lead has priority for the middle octave.
     static getBassCutoffPitch(doc) {
@@ -30202,7 +30206,7 @@ You should be redirected to the song at:<br /><br />
     }
     Vg() {
       const scale = this.J.song.scale == Config.scales.dictionary["Custom"].index ? this.J.song.scaleCustom : Config.scales[this.J.song.scale].flags;
-      const mousePitch = Math.max(0, Math.min(this.mb - 1, this.mb - this.aa / this.Ha));
+      const mousePitch = Math.max(0, Math.min(this.lb - 1, this.lb - this.$ / this.Ga));
       if (scale[Math.floor(mousePitch) % Config.pitchesPerOctave] || this.J.song.getChannelIsNoise(this.J.channel)) {
         this.Si = Math.floor(mousePitch);
       } else {
@@ -30237,63 +30241,63 @@ You should be redirected to the song at:<br /><br />
       this.J.performance.removePerformedPitch(this.Sg);
       this.Sg = -1;
     }
+    lc = (event) => {
+      if (this.ma) return;
+      this.ma = true;
+      this.qa();
+    };
     mc = (event) => {
-      if (this.na) return;
-      this.na = true;
-      this.ra();
+      if (!this.ma) return;
+      this.ma = false;
+      this.qa();
     };
-    nc = (event) => {
-      if (!this.na) return;
-      this.na = false;
-      this.ra();
-    };
-    db = (event) => {
+    cb = (event) => {
       event.preventDefault();
       this.J.synth.maintainLiveInput();
-      this.da = true;
+      this.ca = true;
       const boundingRect = this.container.getBoundingClientRect();
-      this.aa = ((event.clientY || event.pageY) - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.aa)) this.aa = 0;
+      this.$ = ((event.clientY || event.pageY) - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this.$)) this.$ = 0;
       this.Vg();
       this.Wg();
-      this.ra();
+      this.qa();
     };
-    Za = (event) => {
-      if (this.da || this.na) this.J.synth.maintainLiveInput();
+    Ya = (event) => {
+      if (this.ca || this.ma) this.J.synth.maintainLiveInput();
       const boundingRect = this.container.getBoundingClientRect();
-      this.aa = ((event.clientY || event.pageY) - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.aa)) this.aa = 0;
+      this.$ = ((event.clientY || event.pageY) - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this.$)) this.$ = 0;
       this.Vg();
-      if (this.da) this.Wg();
-      this.ra();
+      if (this.ca) this.Wg();
+      this.qa();
     };
     Yk = (event) => {
-      if (this.da) this.jo();
-      this.da = false;
-      this.ra();
+      if (this.ca) this.jo();
+      this.ca = false;
+      this.qa();
+    };
+    ob = (event) => {
+      event.preventDefault();
+      this.J.synth.maintainLiveInput();
+      this.ca = true;
+      const boundingRect = this.container.getBoundingClientRect();
+      this.$ = (event.touches[0].clientY - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this.$)) this.$ = 0;
+      this.Vg();
+      this.Wg();
     };
     pb = (event) => {
       event.preventDefault();
       this.J.synth.maintainLiveInput();
-      this.da = true;
       const boundingRect = this.container.getBoundingClientRect();
-      this.aa = (event.touches[0].clientY - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.aa)) this.aa = 0;
+      this.$ = (event.touches[0].clientY - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this.$)) this.$ = 0;
       this.Vg();
-      this.Wg();
-    };
-    qb = (event) => {
-      event.preventDefault();
-      this.J.synth.maintainLiveInput();
-      const boundingRect = this.container.getBoundingClientRect();
-      this.aa = (event.touches[0].clientY - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.aa)) this.aa = 0;
-      this.Vg();
-      if (this.da) this.Wg();
+      if (this.ca) this.Wg();
     };
     Tg = (event) => {
       event.preventDefault();
-      this.da = false;
+      this.ca = false;
       this.jo();
     };
     Ug = () => {
@@ -30301,33 +30305,33 @@ You should be redirected to the song at:<br /><br />
       let liveInputChanged = false;
       let liveInputPitchCount = !this.J.performance.pitchesAreTemporary() ? this.J.synth.liveInputPitches.length : 0;
       liveInputPitchCount += !this.J.performance.bassPitchesAreTemporary() ? this.J.synth.liveBassInputPitches.length : 0;
-      if (this.Qe.length != liveInputPitchCount) {
+      if (this.Pe.length != liveInputPitchCount) {
         liveInputChanged = true;
       }
       for (let i = 0; i < this.J.synth.liveInputPitches.length; i++) {
-        if (this.Qe[i] != this.J.synth.liveInputPitches[i]) {
-          this.Qe[i] = this.J.synth.liveInputPitches[i];
+        if (this.Pe[i] != this.J.synth.liveInputPitches[i]) {
+          this.Pe[i] = this.J.synth.liveInputPitches[i];
           liveInputChanged = true;
         }
       }
       for (let i = this.J.synth.liveInputPitches.length; i < liveInputPitchCount; i++) {
-        if (this.Qe[i] != this.J.synth.liveBassInputPitches[i - this.J.synth.liveInputPitches.length]) {
-          this.Qe[i] = this.J.synth.liveBassInputPitches[i - this.J.synth.liveInputPitches.length];
+        if (this.Pe[i] != this.J.synth.liveBassInputPitches[i - this.J.synth.liveInputPitches.length]) {
+          this.Pe[i] = this.J.synth.liveBassInputPitches[i - this.J.synth.liveInputPitches.length];
           liveInputChanged = true;
         }
       }
-      this.Qe.length = liveInputPitchCount;
+      this.Pe.length = liveInputPitchCount;
       if (liveInputChanged) {
-        this.ra();
+        this.qa();
       }
     };
-    ra() {
-      this.Pg.style.visibility = !this.na || this.da ? "hidden" : "visible";
-      if (this.na && !this.da) {
+    qa() {
+      this.Pg.style.visibility = !this.ma || this.ca ? "hidden" : "visible";
+      if (this.ma && !this.ca) {
         const boundingRect = this.container.getBoundingClientRect();
-        const pitchHeight = this.Ha / (this.ba / (boundingRect.bottom - boundingRect.top));
+        const pitchHeight = this.Ga / (this.aa / (boundingRect.bottom - boundingRect.top));
         this.Pg.style.left = "0px";
-        this.Pg.style.top = pitchHeight * (this.mb - this.Si - 1) + "px";
+        this.Pg.style.top = pitchHeight * (this.lb - this.Si - 1) + "px";
         this.Pg.style.height = pitchHeight + "px";
       }
       const octaveOffset = this.J.getBaseVisibleOctave(this.J.channel) * Config.pitchesPerOctave;
@@ -30335,45 +30339,45 @@ You should be redirected to the song at:<br /><br />
       const children = container.children;
       for (let i = 0; i < children.length; i++) {
         const child = children[i];
-        if (this.Qe.indexOf(i + octaveOffset) == -1) {
+        if (this.Pe.indexOf(i + octaveOffset) == -1) {
           child.classList.remove("pressed");
         } else {
           child.classList.add("pressed");
         }
       }
     }
-    Tc = () => {
+    Sc = () => {
       const isDrum = this.J.song.getChannelIsNoise(this.J.channel);
       const isMod = this.J.song.getChannelIsMod(this.J.channel);
-      this.mb = isMod ? Config.modCount : isDrum ? Config.drumCount : this.J.getVisiblePitchCount();
-      this.Ha = this.ba / this.mb;
+      this.lb = isMod ? Config.modCount : isDrum ? Config.drumCount : this.J.getVisiblePitchCount();
+      this.Ga = this.aa / this.lb;
       this.Vg();
-      if (this.da) this.Wg();
+      if (this.ca) this.Wg();
       if (!this.J.prefs.showLetters) return;
-      if (this.Wk == this.J.song.scale && this.J.song.scale != Config.scales.dictionary["Custom"].index && this.io == this.J.song.key && this.ee == isDrum && this.fe == isMod && this.Xk == this.mb) return;
+      if (this.Wk == this.J.song.scale && this.J.song.scale != Config.scales.dictionary["Custom"].index && this.io == this.J.song.key && this.de == isDrum && this.ee == isMod && this.Xk == this.lb) return;
       this.Wk = this.J.song.scale;
       this.io = this.J.song.key;
-      this.ee = isDrum;
-      this.fe = isMod;
+      this.de = isDrum;
+      this.ee = isMod;
       const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
       this.Og.style.display = isDrum || isMod ? "none" : "flex";
       this.Ri.style.display = isDrum ? "flex" : "none";
       this.Vk.style.display = isMod ? "flex" : "none";
       if (!isDrum && !isMod) {
-        if (this.Xk != this.mb) {
+        if (this.Xk != this.lb) {
           this.Og.innerHTML = "";
-          for (let i = 0; i < this.mb; i++) {
+          for (let i = 0; i < this.lb; i++) {
             const pianoLabel = HTML.div({ class: "piano-label", style: "font-weight: bold; -webkit-text-stroke-width: 0; font-size: 11px; font-family: sans-serif; position: absolute; padding-left: 15px; white-space: nowrap;" });
             const pianoKey = HTML.div({ class: "piano-button", style: "background: gray;" }, pianoLabel);
             this.Og.appendChild(pianoKey);
             this.Rg[i] = pianoLabel;
             this.Qg[i] = pianoKey;
           }
-          this.Rg.length = this.mb;
-          this.Qg.length = this.mb;
-          this.Xk = this.mb;
+          this.Rg.length = this.lb;
+          this.Qg.length = this.lb;
+          this.Xk = this.lb;
         }
-        for (let j = 0; j < this.mb; j++) {
+        for (let j = 0; j < this.lb; j++) {
           const pitchNameIndex = (j + Config.keys[this.J.song.key].basePitch) % Config.pitchesPerOctave;
           const isWhiteKey = Config.keys[pitchNameIndex].isWhiteKey;
           this.Qg[j].style.background = isWhiteKey ? ColorConfig.whitePianoKey : ColorConfig.blackPianoKey;
@@ -30555,7 +30559,7 @@ You should be redirected to the song at:<br /><br />
           }
         }
       }
-      this.ra();
+      this.qa();
     };
     static getPitchName(pitchNameIndex, scaleIndex, baseVisibleOctave) {
       let text;
@@ -30581,8 +30585,8 @@ You should be redirected to the song at:<br /><br />
   var SongPerformance = class {
     constructor(_doc) {
       this.J = _doc;
-      this.J.notifier.watch(this.Tc);
-      this.Tc();
+      this.J.notifier.watch(this.Sc);
+      this.Sc();
       window.requestAnimationFrame(this.Ug);
     }
     ko = false;
@@ -30590,20 +30594,20 @@ You should be redirected to the song at:<br /><br />
     mo = -1;
     Kf = false;
     Lf = false;
-    Uc = [];
+    Tc = [];
     // Pitches that are rapidly added then removed within a minimum rhythm duration wouldn't get recorded until I explicitly track recently added notes and check if any are no longer held.
-    Ed = [];
+    Dd = [];
     // Pitches that are rapidly added then removed within a minimum rhythm duration wouldn't get recorded until I explicitly track recently added notes and check if any are no longer held.
     no = -1;
+    fe = -1;
     ge = -1;
-    he = -1;
+    he = null;
     ie = null;
-    je = null;
+    Ed = false;
     Fd = false;
-    Gd = false;
-    tb = null;
-    Db = null;
-    gb = null;
+    sb = null;
+    Cb = null;
+    fb = null;
     play() {
       this.J.synth.play();
       this.J.synth.enableMetronome = false;
@@ -30613,16 +30617,16 @@ You should be redirected to the song at:<br /><br />
     pause() {
       this.clearAllPitches();
       this.clearAllBassPitches();
-      if (this.gb != null) {
+      if (this.fb != null) {
         if (this.J.song.barCount > this.no && !this.Zk()) {
           new ChangeDeleteBars(this.J, this.J.song.barCount - 1, 1);
           new ChangeChannelBar(this.J, this.J.channel, this.J.song.barCount - 1);
         }
-        if (!this.gb.isNoop()) {
-          this.J.record(this.gb);
-          this.gb = null;
+        if (!this.fb.isNoop()) {
+          this.J.record(this.fb);
+          this.fb = null;
         }
-        this.tb = null;
+        this.sb = null;
       }
       this.J.synth.pause();
       this.J.synth.resetEffects();
@@ -30652,21 +30656,21 @@ You should be redirected to the song at:<br /><br />
       this.J.synth.startRecording();
       this.J.synth.maintainLiveInput();
       this.no = this.J.song.barCount;
+      this.fe = this.Ti();
       this.ge = this.Ti();
-      this.he = this.Ti();
+      this.he = null;
       this.ie = null;
-      this.je = null;
+      this.Ed = false;
       this.Fd = false;
-      this.Gd = false;
-      this.tb = null;
-      this.Db = null;
-      this.Uc.length = 0;
-      this.Ed.length = 0;
-      this.gb = new ChangeGroup();
-      this.J.setProspectiveChange(this.gb);
+      this.sb = null;
+      this.Cb = null;
+      this.Tc.length = 0;
+      this.Dd.length = 0;
+      this.fb = new ChangeGroup();
+      this.J.setProspectiveChange(this.fb);
     }
     abortRecording() {
-      this.gb = null;
+      this.fb = null;
       this.pause();
     }
     pitchesAreTemporary() {
@@ -30680,7 +30684,7 @@ You should be redirected to the song at:<br /><br />
         return this.J.channel;
       return Math.max(0, Math.min(this.J.song.pitchChannelCount - 1, this.J.channel + this.J.prefs.bassOffset));
     }
-    Re() {
+    Qe() {
       if (this.J.prefs.snapRecordedNotesToRhythm) {
         return Config.partsPerBeat / Config.rhythms[this.J.song.rhythm].stepsPerBeat;
       } else {
@@ -30690,7 +30694,7 @@ You should be redirected to the song at:<br /><br />
     Ti() {
       const currentPart = this.J.synth.playhead * this.J.song.beatsPerBar * Config.partsPerBeat;
       if (this.J.prefs.snapRecordedNotesToRhythm) {
-        const minDivision = this.Re();
+        const minDivision = this.Qe();
         return Math.round(currentPart / minDivision) * minDivision;
       }
       return Math.round(currentPart);
@@ -30713,79 +30717,79 @@ You should be redirected to the song at:<br /><br />
     };
     // Returns true if the full interface needs to be rerendered.
     Xg() {
-      if (this.gb == null) return false;
-      if (!this.J.lastChangeWas(this.gb)) {
+      if (this.fb == null) return false;
+      if (!this.J.lastChangeWas(this.fb)) {
         this.abortRecording();
         return false;
       }
       if (this.J.synth.countInMetronome) {
-        this.Uc.length = 0;
-        this.Fd = false;
+        this.Tc.length = 0;
+        this.Ed = false;
         return false;
       }
       const partsPerBar = this.J.song.beatsPerBar * Config.partsPerBeat;
-      const oldPart = this.ge % partsPerBar;
-      const oldBar = Math.floor(this.ge / partsPerBar);
-      const oldPlayheadPart = this.ge;
-      this.ge = this.Ti();
-      const newPart = this.ge % partsPerBar;
-      const newBar = Math.floor(this.ge / partsPerBar);
+      const oldPart = this.fe % partsPerBar;
+      const oldBar = Math.floor(this.fe / partsPerBar);
+      const oldPlayheadPart = this.fe;
+      this.fe = this.Ti();
+      const newPart = this.fe % partsPerBar;
+      const newBar = Math.floor(this.fe / partsPerBar);
       if (oldPart == newPart && oldBar == newBar) return false;
-      if (this.ge < oldPlayheadPart) {
-        this.tb = null;
-        this.ie = null;
+      if (this.fe < oldPlayheadPart) {
+        this.sb = null;
+        this.he = null;
         return false;
       }
       let dirty = false;
       for (let bar = oldBar; bar <= newBar; bar++) {
         if (bar != oldBar) {
-          this.ie = null;
+          this.he = null;
         }
         const startPart = bar == oldBar ? oldPart : 0;
         const endPart = bar == newBar ? newPart : partsPerBar;
         if (startPart == endPart) break;
-        if (this.tb != null && !this.Fd && startPart > 0 && this.J.synth.liveInputPitches.length > 0) {
-          this.gb.append(new ChangePinTime(this.J, this.tb, 1, endPart, this.tb.continuesLastPattern));
+        if (this.sb != null && !this.Ed && startPart > 0 && this.J.synth.liveInputPitches.length > 0) {
+          this.fb.append(new ChangePinTime(this.J, this.sb, 1, endPart, this.sb.continuesLastPattern));
           this.J.currentPatternIsDirty = true;
         } else {
-          if (this.tb != null) {
-            this.tb = null;
+          if (this.sb != null) {
+            this.sb = null;
           }
           let noteStartPart = startPart;
           let noteEndPart = endPart;
           while (noteStartPart < endPart) {
             let addedAlreadyReleasedPitch = false;
-            if (this.Uc.length > 0 || this.J.synth.liveInputPitches.length > 0) {
-              if (this.ie == null) {
-                this.J.selection.erasePatternInBar(this.gb, this.J.synth.liveInputChannel, bar);
-                this.gb.append(new ChangeEnsurePatternExists(this.J, this.J.synth.liveInputChannel, bar));
-                this.ie = this.J.song.getPattern(this.J.synth.liveInputChannel, bar);
+            if (this.Tc.length > 0 || this.J.synth.liveInputPitches.length > 0) {
+              if (this.he == null) {
+                this.J.selection.erasePatternInBar(this.fb, this.J.synth.liveInputChannel, bar);
+                this.fb.append(new ChangeEnsurePatternExists(this.J, this.J.synth.liveInputChannel, bar));
+                this.he = this.J.song.getPattern(this.J.synth.liveInputChannel, bar);
               }
-              if (this.ie == null) throw new Error();
-              this.tb = new Note(-1, noteStartPart, noteEndPart, Config.noteSizeMax, this.J.song.getChannelIsNoise(this.J.synth.liveInputChannel));
-              this.tb.continuesLastPattern = noteStartPart == 0 && !this.Fd;
-              this.tb.pitches.length = 0;
-              while (this.Uc.length > 0) {
-                if (this.tb.pitches.length >= Config.maxChordSize) break;
-                const recentPitch = this.Uc.shift();
+              if (this.he == null) throw new Error();
+              this.sb = new Note(-1, noteStartPart, noteEndPart, Config.noteSizeMax, this.J.song.getChannelIsNoise(this.J.synth.liveInputChannel));
+              this.sb.continuesLastPattern = noteStartPart == 0 && !this.Ed;
+              this.sb.pitches.length = 0;
+              while (this.Tc.length > 0) {
+                if (this.sb.pitches.length >= Config.maxChordSize) break;
+                const recentPitch = this.Tc.shift();
                 if (this.J.synth.liveInputPitches.indexOf(recentPitch) == -1) {
-                  this.tb.pitches.push(recentPitch);
+                  this.sb.pitches.push(recentPitch);
                   addedAlreadyReleasedPitch = true;
                 }
               }
               for (let i = 0; i < this.J.synth.liveInputPitches.length; i++) {
-                if (this.tb.pitches.length >= Config.maxChordSize) break;
-                this.tb.pitches.push(this.J.synth.liveInputPitches[i]);
+                if (this.sb.pitches.length >= Config.maxChordSize) break;
+                this.sb.pitches.push(this.J.synth.liveInputPitches[i]);
               }
-              this.gb.append(new ChangeNoteAdded(this.J, this.ie, this.tb, this.ie.notes.length));
+              this.fb.append(new ChangeNoteAdded(this.J, this.he, this.sb, this.he.notes.length));
               if (addedAlreadyReleasedPitch) {
-                noteEndPart = noteStartPart + this.Re();
-                new ChangeNoteLength(this.J, this.tb, this.tb.start, noteEndPart);
-                this.tb = null;
+                noteEndPart = noteStartPart + this.Qe();
+                new ChangeNoteLength(this.J, this.sb, this.sb.start, noteEndPart);
+                this.sb = null;
               }
               dirty = true;
             }
-            this.Fd = addedAlreadyReleasedPitch;
+            this.Ed = addedAlreadyReleasedPitch;
             noteStartPart = noteEndPart;
             noteEndPart = endPart;
           }
@@ -30802,79 +30806,79 @@ You should be redirected to the song at:<br /><br />
     }
     // Returns true if the full interface needs to be rerendered.
     Yg() {
-      if (this.gb == null) return false;
-      if (!this.J.lastChangeWas(this.gb)) {
+      if (this.fb == null) return false;
+      if (!this.J.lastChangeWas(this.fb)) {
         this.abortRecording();
         return false;
       }
       if (this.J.synth.countInMetronome) {
-        this.Ed.length = 0;
-        this.Gd = false;
+        this.Dd.length = 0;
+        this.Fd = false;
         return false;
       }
       const partsPerBar = this.J.song.beatsPerBar * Config.partsPerBeat;
-      const oldPart = this.he % partsPerBar;
-      const oldBar = Math.floor(this.he / partsPerBar);
-      const oldPlayheadPart = this.he;
-      this.he = this.Ti();
-      const newPart = this.he % partsPerBar;
-      const newBar = Math.floor(this.he / partsPerBar);
+      const oldPart = this.ge % partsPerBar;
+      const oldBar = Math.floor(this.ge / partsPerBar);
+      const oldPlayheadPart = this.ge;
+      this.ge = this.Ti();
+      const newPart = this.ge % partsPerBar;
+      const newBar = Math.floor(this.ge / partsPerBar);
       if (oldPart == newPart && oldBar == newBar) return false;
-      if (this.he < oldPlayheadPart) {
-        this.Db = null;
-        this.je = null;
+      if (this.ge < oldPlayheadPart) {
+        this.Cb = null;
+        this.ie = null;
         return false;
       }
       let dirty = false;
       for (let bar = oldBar; bar <= newBar; bar++) {
         if (bar != oldBar) {
-          this.je = null;
+          this.ie = null;
         }
         const startPart = bar == oldBar ? oldPart : 0;
         const endPart = bar == newBar ? newPart : partsPerBar;
         if (startPart == endPart) break;
-        if (this.Db != null && !this.Gd && startPart > 0 && this.J.synth.liveBassInputPitches.length > 0) {
-          this.gb.append(new ChangePinTime(this.J, this.Db, 1, endPart, this.Db.continuesLastPattern));
+        if (this.Cb != null && !this.Fd && startPart > 0 && this.J.synth.liveBassInputPitches.length > 0) {
+          this.fb.append(new ChangePinTime(this.J, this.Cb, 1, endPart, this.Cb.continuesLastPattern));
           this.J.currentPatternIsDirty = true;
         } else {
-          if (this.Db != null) {
-            this.Db = null;
+          if (this.Cb != null) {
+            this.Cb = null;
           }
           let noteStartPart = startPart;
           let noteEndPart = endPart;
           while (noteStartPart < endPart) {
             let addedAlreadyReleasedPitch = false;
-            if (this.Ed.length > 0 || this.J.synth.liveBassInputPitches.length > 0) {
-              if (this.je == null) {
-                this.J.selection.erasePatternInBar(this.gb, this.J.synth.liveBassInputChannel, bar);
-                this.gb.append(new ChangeEnsurePatternExists(this.J, this.J.synth.liveBassInputChannel, bar));
-                this.je = this.J.song.getPattern(this.J.synth.liveBassInputChannel, bar);
+            if (this.Dd.length > 0 || this.J.synth.liveBassInputPitches.length > 0) {
+              if (this.ie == null) {
+                this.J.selection.erasePatternInBar(this.fb, this.J.synth.liveBassInputChannel, bar);
+                this.fb.append(new ChangeEnsurePatternExists(this.J, this.J.synth.liveBassInputChannel, bar));
+                this.ie = this.J.song.getPattern(this.J.synth.liveBassInputChannel, bar);
               }
-              if (this.je == null) throw new Error();
-              this.Db = new Note(-1, noteStartPart, noteEndPart, Config.noteSizeMax, this.J.song.getChannelIsNoise(this.J.synth.liveBassInputChannel));
-              this.Db.continuesLastPattern = noteStartPart == 0 && !this.Gd;
-              this.Db.pitches.length = 0;
-              while (this.Ed.length > 0) {
-                if (this.Db.pitches.length >= Config.maxChordSize) break;
-                const recentPitch = this.Ed.shift();
+              if (this.ie == null) throw new Error();
+              this.Cb = new Note(-1, noteStartPart, noteEndPart, Config.noteSizeMax, this.J.song.getChannelIsNoise(this.J.synth.liveBassInputChannel));
+              this.Cb.continuesLastPattern = noteStartPart == 0 && !this.Fd;
+              this.Cb.pitches.length = 0;
+              while (this.Dd.length > 0) {
+                if (this.Cb.pitches.length >= Config.maxChordSize) break;
+                const recentPitch = this.Dd.shift();
                 if (this.J.synth.liveBassInputPitches.indexOf(recentPitch) == -1) {
-                  this.Db.pitches.push(recentPitch);
+                  this.Cb.pitches.push(recentPitch);
                   addedAlreadyReleasedPitch = true;
                 }
               }
               for (let i = 0; i < this.J.synth.liveBassInputPitches.length; i++) {
-                if (this.Db.pitches.length >= Config.maxChordSize) break;
-                this.Db.pitches.push(this.J.synth.liveBassInputPitches[i]);
+                if (this.Cb.pitches.length >= Config.maxChordSize) break;
+                this.Cb.pitches.push(this.J.synth.liveBassInputPitches[i]);
               }
-              this.gb.append(new ChangeNoteAdded(this.J, this.je, this.Db, this.je.notes.length));
+              this.fb.append(new ChangeNoteAdded(this.J, this.ie, this.Cb, this.ie.notes.length));
               if (addedAlreadyReleasedPitch) {
-                noteEndPart = noteStartPart + this.Re();
-                new ChangeNoteLength(this.J, this.Db, this.Db.start, noteEndPart);
-                this.Db = null;
+                noteEndPart = noteStartPart + this.Qe();
+                new ChangeNoteLength(this.J, this.Cb, this.Cb.start, noteEndPart);
+                this.Cb = null;
               }
               dirty = true;
             }
-            this.Gd = addedAlreadyReleasedPitch;
+            this.Fd = addedAlreadyReleasedPitch;
             noteStartPart = noteEndPart;
             noteEndPart = endPart;
           }
@@ -30898,7 +30902,7 @@ You should be redirected to the song at:<br /><br />
       this.J.synth.liveInputDuration = duration;
       this.J.synth.liveInputStarted = true;
       this.Kf = true;
-      this.Fd = true;
+      this.Ed = true;
     }
     setTemporaryBassPitches(pitches, duration) {
       this.Yg();
@@ -30909,7 +30913,7 @@ You should be redirected to the song at:<br /><br />
       this.J.synth.liveBassInputDuration = duration;
       this.J.synth.liveBassInputStarted = true;
       this.Lf = true;
-      this.Gd = true;
+      this.Fd = true;
     }
     addPerformedPitch(pitch) {
       this.J.synth.maintainLiveInput();
@@ -30924,19 +30928,19 @@ You should be redirected to the song at:<br /><br />
         }
         if (this.J.synth.liveInputPitches.indexOf(pitch) == -1) {
           this.J.synth.liveInputPitches.push(pitch);
-          this.Fd = true;
+          this.Ed = true;
           while (this.J.synth.liveInputPitches.length > Config.maxChordSize) {
             this.J.synth.liveInputPitches.shift();
           }
           this.J.synth.liveInputDuration = Number.MAX_SAFE_INTEGER;
-          if (this.gb != null) {
-            const recentIndex = this.Uc.indexOf(pitch);
+          if (this.fb != null) {
+            const recentIndex = this.Tc.indexOf(pitch);
             if (recentIndex != -1) {
-              this.Uc.splice(recentIndex, 1);
+              this.Tc.splice(recentIndex, 1);
             }
-            this.Uc.push(pitch);
-            while (this.Uc.length > Config.maxChordSize * 4) {
-              this.Uc.shift();
+            this.Tc.push(pitch);
+            while (this.Tc.length > Config.maxChordSize * 4) {
+              this.Tc.shift();
             }
           }
         }
@@ -30951,19 +30955,19 @@ You should be redirected to the song at:<br /><br />
         }
         if (this.J.synth.liveBassInputPitches.indexOf(pitch) == -1) {
           this.J.synth.liveBassInputPitches.push(pitch);
-          this.Gd = true;
+          this.Fd = true;
           while (this.J.synth.liveBassInputPitches.length > Config.maxChordSize) {
             this.J.synth.liveBassInputPitches.shift();
           }
           this.J.synth.liveBassInputDuration = Number.MAX_SAFE_INTEGER;
-          if (this.gb != null) {
-            const recentIndex = this.Uc.indexOf(pitch);
+          if (this.fb != null) {
+            const recentIndex = this.Tc.indexOf(pitch);
             if (recentIndex != -1) {
-              this.Ed.splice(recentIndex, 1);
+              this.Dd.splice(recentIndex, 1);
             }
-            this.Ed.push(pitch);
-            while (this.Ed.length > Config.maxChordSize * 4) {
-              this.Ed.shift();
+            this.Dd.push(pitch);
+            while (this.Dd.length > Config.maxChordSize * 4) {
+              this.Dd.shift();
             }
           }
         }
@@ -30975,7 +30979,7 @@ You should be redirected to the song at:<br /><br />
         for (let i = 0; i < this.J.synth.liveInputPitches.length; i++) {
           if (this.J.synth.liveInputPitches[i] == pitch) {
             this.J.synth.liveInputPitches.splice(i, 1);
-            this.Fd = true;
+            this.Ed = true;
             i--;
           }
         }
@@ -30984,7 +30988,7 @@ You should be redirected to the song at:<br /><br />
         for (let i = 0; i < this.J.synth.liveBassInputPitches.length; i++) {
           if (this.J.synth.liveBassInputPitches[i] == pitch) {
             this.J.synth.liveBassInputPitches.splice(i, 1);
-            this.Gd = true;
+            this.Fd = true;
             i--;
           }
         }
@@ -30993,14 +30997,14 @@ You should be redirected to the song at:<br /><br />
     clearAllPitches() {
       this.Xg();
       this.J.synth.liveInputPitches.length = 0;
-      this.Fd = true;
+      this.Ed = true;
     }
     clearAllBassPitches() {
       this.Yg();
       this.J.synth.liveBassInputPitches.length = 0;
-      this.Gd = true;
+      this.Fd = true;
     }
-    Tc = () => {
+    Sc = () => {
       const isDrum = this.J.song.getChannelIsNoise(this.J.channel);
       const octave = this.J.song.channels[this.J.channel].octave;
       if (this.J.synth.liveInputChannel != this.J.channel || this.J.synth.liveBassInputChannel != this.Ui() || this.ko != isDrum || this.lo != octave || this.mo != this.J.song.key) {
@@ -31176,9 +31180,9 @@ You should be redirected to the song at:<br /><br />
     modRecordingHandler;
     static Zg = 300;
     Vs = new SongRecovery();
-    Se;
+    Re;
     Mf = null;
-    Hd = 0;
+    Gd = 0;
     po = 0;
     _g = false;
     Vi = false;
@@ -31223,7 +31227,7 @@ You should be redirected to the song at:<br /><br />
       this.channel = state.channel | 0;
       for (let i = 0; i <= this.channel; i++) this.viewedInstrument[i] = 0;
       this.viewedInstrument[this.channel] = state.instrument | 0;
-      this.Se = state.recoveryUid;
+      this.Re = state.recoveryUid;
       this.prompt = state.prompt;
       this.selection.fromJSON(state.selection);
       this.selection.scrollToSelectedPattern();
@@ -31285,7 +31289,7 @@ You should be redirected to the song at:<br /><br />
       this.po = state.sequenceNumber;
     }
     hasRedoHistory() {
-      return this.po > this.Hd;
+      return this.po > this.Gd;
     }
     Ys() {
       if (this.prefs.displayBrowserUrl) {
@@ -31318,9 +31322,9 @@ You should be redirected to the song at:<br /><br />
         this.performance.abortRecording();
       }
       if (window.history.state == null && window.location.hash != "") {
-        this.Hd++;
+        this.Gd++;
         this.to();
-        const state2 = { canUndo: true, sequenceNumber: this.Hd, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this.Se, prompt: null, selection: this.selection.toJSON(), promptEffectIndex: this.promptEffectIndex };
+        const state2 = { canUndo: true, sequenceNumber: this.Gd, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this.Re, prompt: null, selection: this.selection.toJSON(), promptEffectIndex: this.promptEffectIndex };
         try {
           new ChangeSong(this, this.$k());
         } catch (error) {
@@ -31340,18 +31344,18 @@ You should be redirected to the song at:<br /><br />
       }
       const state = this.Wi();
       if (state == null) throw new Error("History state is null.");
-      if (state.sequenceNumber == this.Hd) return;
+      if (state.sequenceNumber == this.Gd) return;
       this.bar = state.bar;
       this.channel = state.channel;
       this.viewedInstrument[this.channel] = state.instrument;
-      this.Hd = state.sequenceNumber;
+      this.Gd = state.sequenceNumber;
       this.prompt = state.prompt;
       try {
         new ChangeSong(this, this.$k());
       } catch (error) {
         errorAlert(error);
       }
-      this.Se = state.recoveryUid;
+      this.Re = state.recoveryUid;
       this.selection.fromJSON(state.selection);
       this.forgetLastChange();
       this.notifier.notifyWatchers();
@@ -31421,13 +31425,13 @@ You should be redirected to the song at:<br /><br />
         errorAlert(error);
         return;
       }
-      if (this._g) this.Hd++;
+      if (this._g) this.Gd++;
       if (this.Vi) {
         this.to();
       } else {
-        this.Vs.saveVersion(this.Se, this.song.title, hash);
+        this.Vs.saveVersion(this.Re, this.song.title, hash);
       }
-      let state = { canUndo: true, sequenceNumber: this.Hd, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this.Se, prompt: this.prompt, selection: this.selection.toJSON(), promptEffectIndex: this.promptEffectIndex };
+      let state = { canUndo: true, sequenceNumber: this.Gd, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this.Re, prompt: this.prompt, selection: this.selection.toJSON(), promptEffectIndex: this.promptEffectIndex };
       if (this._g) {
         this.al(state, hash);
       } else {
@@ -31452,14 +31456,14 @@ You should be redirected to the song at:<br /><br />
       }
     }
     to() {
-      this.Se = generateUid();
+      this.Re = generateUid();
     }
     openPrompt(prompt, effectIndex) {
       this.prompt = prompt;
       if (effectIndex != void 0) this.promptEffectIndex = effectIndex;
       const hash = this.song.toBase64String();
-      this.Hd++;
-      const state = { canUndo: true, sequenceNumber: this.Hd, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this.Se, prompt: this.prompt, selection: this.selection.toJSON(), promptEffectIndex: this.promptEffectIndex };
+      this.Gd++;
+      const state = { canUndo: true, sequenceNumber: this.Gd, bar: this.bar, channel: this.channel, instrument: this.viewedInstrument[this.channel], recoveryUid: this.Re, prompt: this.prompt, selection: this.selection.toJSON(), promptEffectIndex: this.promptEffectIndex };
       this.al(state, hash);
     }
     undo() {
@@ -31539,45 +31543,45 @@ You should be redirected to the song at:<br /><br />
   var BeatsPerBarPrompt = class _BeatsPerBarPrompt {
     constructor(_doc) {
       this.J = _doc;
-      this.bb.value = this.J.song.beatsPerBar + "";
-      this.bb.min = Config.beatsPerBarMin + "";
-      this.bb.max = Config.beatsPerBarMax + "";
+      this.ab.value = this.J.song.beatsPerBar + "";
+      this.ab.min = Config.beatsPerBarMin + "";
+      this.ab.max = Config.beatsPerBarMax + "";
       const lastStrategy = nsLocalStorage_get("beatCountStrategy");
       if (lastStrategy != null) {
-        this.Vc.value = lastStrategy;
+        this.Uc.value = lastStrategy;
       }
-      this.bb.select();
-      setTimeout(() => this.bb.focus());
-      this.ia.addEventListener("click", this.la);
-      this.fa.addEventListener("click", this.ga);
-      this.bb.addEventListener("keypress", _BeatsPerBarPrompt.ec);
-      this.bb.addEventListener("blur", _BeatsPerBarPrompt.lb);
-      this.container.addEventListener("keydown", this.qa);
-      this.bb.addEventListener("input", () => {
-        this.Xb.firstChild.textContent = this.$g();
+      this.ab.select();
+      setTimeout(() => this.ab.focus());
+      this.ha.addEventListener("click", this.ka);
+      this.ea.addEventListener("click", this.fa);
+      this.ab.addEventListener("keypress", _BeatsPerBarPrompt.dc);
+      this.ab.addEventListener("blur", _BeatsPerBarPrompt.kb);
+      this.container.addEventListener("keydown", this.pa);
+      this.ab.addEventListener("input", () => {
+        this.Wb.firstChild.textContent = this.$g();
       });
-      this.Vc.addEventListener("change", () => {
-        this.Xb.firstChild.textContent = this.$g();
+      this.Uc.addEventListener("change", () => {
+        this.Wb.firstChild.textContent = this.$g();
       });
-      this.Xb.firstChild.textContent = ExportPrompt.samplesToTime(this.J, this.J.synth.getTotalSamples(true, true, 0));
+      this.Wb.firstChild.textContent = ExportPrompt.samplesToTime(this.J, this.J.synth.getTotalSamples(true, true, 0));
     }
-    Xb = div3({ style: "width: 10em;" }, new Text("0:00"));
-    bb = input3({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
-    Vc = select3(
+    Wb = div3({ style: "width: 10em;" }, new Text("0:00"));
+    ab = input3({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
+    Uc = select3(
       { style: "width: 100%;" },
       option3({ value: "splice" }, "Splice beats at end of bars."),
       option3({ value: "stretch" }, "Stretch notes to fit in bars."),
       option3({ value: "overflow" }, "Overflow notes across bars.")
     );
-    fa = button3({ class: "cancelButton" });
-    ia = button3({ class: "okayButton", style: "width:45%;" }, "Okay");
+    ea = button3({ class: "cancelButton" });
+    ha = button3({ class: "okayButton", style: "width:45%;" }, "Okay");
     container = div3(
       { class: "prompt noSelection", style: "width: 250px;" },
       h23("Beats Per Bar"),
       div3(
         { style: "display: flex; flex-direction: row; align-items: center; justify-content: space-between;" },
         "Length:",
-        this.Xb
+        this.Wb
       ),
       div3(
         { style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
@@ -31587,34 +31591,34 @@ You should be redirected to the song at:<br /><br />
           br(),
           span2({ style: "font-size: smaller; color: ${ColorConfig.secondaryText};" }, "(Multiples of 3 or 4 are recommended)")
         ),
-        this.bb
+        this.ab
       ),
       div3(
         { style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
-        div3({ class: "selectContainer", style: "width: 100%;" }, this.Vc)
+        div3({ class: "selectContainer", style: "width: 100%;" }, this.Uc)
       ),
       div3(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.ia
+        this.ha
       ),
-      this.fa
+      this.ea
     );
-    ga = () => {
+    fa = () => {
       this.J.undo();
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.la);
-      this.fa.removeEventListener("click", this.ga);
-      this.bb.removeEventListener("keypress", _BeatsPerBarPrompt.ec);
-      this.bb.removeEventListener("blur", _BeatsPerBarPrompt.lb);
-      this.container.removeEventListener("keydown", this.qa);
+      this.ha.removeEventListener("click", this.ka);
+      this.ea.removeEventListener("click", this.fa);
+      this.ab.removeEventListener("keypress", _BeatsPerBarPrompt.dc);
+      this.ab.removeEventListener("blur", _BeatsPerBarPrompt.kb);
+      this.container.removeEventListener("keydown", this.pa);
     };
-    qa = (event) => {
+    pa = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.la();
+        this.ka();
       }
     };
-    static ec(event) {
+    static dc(event) {
       const charCode = event.which ? event.which : event.keyCode;
       if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
         event.preventDefault();
@@ -31622,31 +31626,31 @@ You should be redirected to the song at:<br /><br />
       }
       return false;
     }
-    static lb(event) {
+    static kb(event) {
       const input19 = event.target;
-      input19.value = String(_BeatsPerBarPrompt.qc(input19));
+      input19.value = String(_BeatsPerBarPrompt.pc(input19));
     }
-    static qc(input19) {
+    static pc(input19) {
       return Math.floor(Math.max(Number(input19.min), Math.min(Number(input19.max), Number(input19.value))));
     }
     $g() {
       const futureDoc = new SongDocument();
       futureDoc.synth.song?.fromBase64String(this.J.synth.song?.toBase64String() ? this.J.synth.song?.toBase64String() : "");
-      new ChangeBeatsPerBar(futureDoc, _BeatsPerBarPrompt.qc(this.bb), this.Vc.value);
+      new ChangeBeatsPerBar(futureDoc, _BeatsPerBarPrompt.pc(this.ab), this.Uc.value);
       return ExportPrompt.samplesToTime(futureDoc, futureDoc.synth.getTotalSamples(true, true, 0));
     }
-    la = () => {
-      nsLocalStorage_save("beatCountStrategy", this.Vc.value);
+    ka = () => {
+      nsLocalStorage_save("beatCountStrategy", this.Uc.value);
       this.J.prompt = null;
-      this.J.record(new ChangeBeatsPerBar(this.J, _BeatsPerBarPrompt.qc(this.bb), this.Vc.value), true);
+      this.J.record(new ChangeBeatsPerBar(this.J, _BeatsPerBarPrompt.pc(this.ab), this.Uc.value), true);
     };
   };
 
   // editor/ChannelRow.ts
   var Box = class {
     uo = document.createTextNode("");
-    Qb = HTML.div({ class: "channelBoxLabel" }, this.uo);
-    container = HTML.div({ class: "channelBox", style: `margin: 1px; height: ${ChannelRow.patternHeight - 2}px;` }, this.Qb);
+    Pb = HTML.div({ class: "channelBoxLabel" }, this.uo);
+    container = HTML.div({ class: "channelBox", style: `margin: 1px; height: ${ChannelRow.patternHeight - 2}px;` }, this.Pb);
     vo = -1;
     wo = "?";
     xo = "?";
@@ -31655,7 +31659,7 @@ You should be redirected to the song at:<br /><br />
     Ao = "?";
     constructor(channel, color) {
       this.container.style.background = ColorConfig.uiWidgetBackground;
-      this.Qb.style.color = color;
+      this.Pb.style.color = color;
     }
     setWidth(width) {
       this.container.style.width = width - 2 + "px";
@@ -31666,18 +31670,18 @@ You should be redirected to the song at:<br /><br />
     setIndex(index, selected, dim, color, isNoise, isMod) {
       if (this.vo != index) {
         if (index >= 100) {
-          this.Qb.setAttribute("font-size", "16");
-          this.Qb.style.setProperty("transform", "translate(0px, -1.5px)");
+          this.Pb.setAttribute("font-size", "16");
+          this.Pb.style.setProperty("transform", "translate(0px, -1.5px)");
         } else {
-          this.Qb.setAttribute("font-size", "20");
-          this.Qb.style.setProperty("transform", "translate(0px, 0px)");
+          this.Pb.setAttribute("font-size", "20");
+          this.Pb.style.setProperty("transform", "translate(0px, 0px)");
         }
         this.vo = index;
         this.uo.data = String(index);
       }
       let useColor = selected ? ColorConfig.c_invertedText : color;
       if (this.wo != useColor) {
-        this.Qb.style.color = useColor;
+        this.Pb.style.color = useColor;
         this.wo = useColor;
       }
       if (!selected) {
@@ -31724,40 +31728,40 @@ You should be redirected to the song at:<br /><br />
     static patternHeight = 28;
     ah = -1;
     Bo = -1;
-    Ac = [];
+    zc = [];
     container = HTML.div({ class: "channelRow" });
     render() {
       _ChannelRow.patternHeight = this.J.getChannelHeight();
       const barWidth = this.J.getBarWidth();
-      if (this.Ac.length != this.J.song.barCount) {
-        for (let x = this.Ac.length; x < this.J.song.barCount; x++) {
+      if (this.zc.length != this.J.song.barCount) {
+        for (let x = this.zc.length; x < this.J.song.barCount; x++) {
           const box = new Box(this.index, ColorConfig.getChannelColor(this.J.song, this.color, this.index, this.J.prefs.fixChannelColorOrder).secondaryChannel);
           box.setWidth(barWidth);
           this.container.appendChild(box.container);
-          this.Ac[x] = box;
+          this.zc[x] = box;
         }
-        for (let x = this.J.song.barCount; x < this.Ac.length; x++) {
-          this.container.removeChild(this.Ac[x].container);
+        for (let x = this.J.song.barCount; x < this.zc.length; x++) {
+          this.container.removeChild(this.zc[x].container);
         }
-        this.Ac.length = this.J.song.barCount;
+        this.zc.length = this.J.song.barCount;
       }
       if (this.ah != barWidth) {
         this.ah = barWidth;
-        for (let x = 0; x < this.Ac.length; x++) {
-          this.Ac[x].setWidth(barWidth);
+        for (let x = 0; x < this.zc.length; x++) {
+          this.zc[x].setWidth(barWidth);
         }
       }
       if (this.Bo != _ChannelRow.patternHeight) {
         this.Bo = _ChannelRow.patternHeight;
-        for (let x = 0; x < this.Ac.length; x++) {
-          this.Ac[x].setHeight(_ChannelRow.patternHeight);
+        for (let x = 0; x < this.zc.length; x++) {
+          this.zc[x].setHeight(_ChannelRow.patternHeight);
         }
       }
-      for (let i = 0; i < this.Ac.length; i++) {
+      for (let i = 0; i < this.zc.length; i++) {
         const pattern = this.J.song.getPattern(this.index, i);
         const selected = i == this.J.bar && this.index == this.J.channel;
         const dim = pattern == null || pattern.notes.length == 0;
-        const box = this.Ac[i];
+        const box = this.zc[i];
         if (i < this.J.song.barCount) {
           const colors = ColorConfig.getChannelColor(this.J.song, this.color, this.index, this.J.prefs.fixChannelColorOrder);
           box.setIndex(
@@ -31791,64 +31795,64 @@ You should be redirected to the song at:<br /><br />
   var ChannelSettingsPrompt = class _ChannelSettingsPrompt {
     constructor(_doc) {
       this.J = _doc;
-      this.Id.value = this.J.song.patternsPerChannel + "";
-      this.Id.min = "1";
-      this.Id.max = Config.barCountMax + "";
-      this.Wc.value = this.J.song.pitchChannelCount + "";
-      this.Wc.min = Config.pitchChannelCountMin + "";
-      this.Wc.max = Config.pitchChannelCountMax + "";
-      this.Jd.value = this.J.song.noiseChannelCount + "";
-      this.Jd.min = Config.noiseChannelCountMin + "";
-      this.Jd.max = Config.noiseChannelCountMax + "";
-      this.Kd.value = this.J.song.modChannelCount + "";
-      this.Kd.min = Config.modChannelCountMin + "";
-      this.Kd.max = Config.modChannelCountMax + "";
+      this.Hd.value = this.J.song.patternsPerChannel + "";
+      this.Hd.min = "1";
+      this.Hd.max = Config.barCountMax + "";
+      this.Vc.value = this.J.song.pitchChannelCount + "";
+      this.Vc.min = Config.pitchChannelCountMin + "";
+      this.Vc.max = Config.pitchChannelCountMax + "";
+      this.Id.value = this.J.song.noiseChannelCount + "";
+      this.Id.min = Config.noiseChannelCountMin + "";
+      this.Id.max = Config.noiseChannelCountMax + "";
+      this.Jd.value = this.J.song.modChannelCount + "";
+      this.Jd.min = Config.modChannelCountMin + "";
+      this.Jd.max = Config.modChannelCountMax + "";
       this.bl.checked = this.J.song.layeredInstruments;
       this.cl.checked = this.J.song.patternInstruments;
-      this.Wc.select();
-      setTimeout(() => this.Wc.focus());
-      this.ia.addEventListener("click", this.la);
-      this.fa.addEventListener("click", this.ga);
-      this.Id.addEventListener("keypress", _ChannelSettingsPrompt.ec);
-      this.Wc.addEventListener("keypress", _ChannelSettingsPrompt.ec);
-      this.Jd.addEventListener("keypress", _ChannelSettingsPrompt.ec);
-      this.Kd.addEventListener("keypress", _ChannelSettingsPrompt.ec);
-      this.Id.addEventListener("blur", this.lb);
-      this.Wc.addEventListener("blur", this.lb);
-      this.Jd.addEventListener("blur", this.lb);
-      this.Kd.addEventListener("blur", this.lb);
-      this.container.addEventListener("keydown", this.qa);
+      this.Vc.select();
+      setTimeout(() => this.Vc.focus());
+      this.ha.addEventListener("click", this.ka);
+      this.ea.addEventListener("click", this.fa);
+      this.Hd.addEventListener("keypress", _ChannelSettingsPrompt.dc);
+      this.Vc.addEventListener("keypress", _ChannelSettingsPrompt.dc);
+      this.Id.addEventListener("keypress", _ChannelSettingsPrompt.dc);
+      this.Jd.addEventListener("keypress", _ChannelSettingsPrompt.dc);
+      this.Hd.addEventListener("blur", this.kb);
+      this.Vc.addEventListener("blur", this.kb);
+      this.Id.addEventListener("blur", this.kb);
+      this.Jd.addEventListener("blur", this.kb);
+      this.container.addEventListener("keydown", this.pa);
     }
+    Hd = input4({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
+    Vc = input4({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
     Id = input4({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
-    Wc = input4({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
     Jd = input4({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
-    Kd = input4({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
     bl = input4({ style: "width: 3em; margin-left: 1em;", type: "checkbox" });
     cl = input4({ style: "width: 3em; margin-left: 1em;", type: "checkbox" });
-    fa = button4({ class: "cancelButton" });
-    ia = button4({ class: "okayButton", style: "width:45%;" }, "Okay");
+    ea = button4({ class: "cancelButton" });
+    ha = button4({ class: "okayButton", style: "width:45%;" }, "Okay");
     container = div4(
       { class: "prompt noSelection", style: "width: 250px; text-align: right;" },
       h24("Channel Settings"),
       label(
         { style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
         "Pitch channels:",
-        this.Wc
+        this.Vc
       ),
       label(
         { style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
         "Drum channels:",
-        this.Jd
+        this.Id
       ),
       div4(
         { style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
         "Mod channels:",
-        this.Kd
+        this.Jd
       ),
       label(
         { style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
         "Available patterns per channel:",
-        this.Id
+        this.Hd
       ),
       label(
         { style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
@@ -31866,32 +31870,32 @@ You should be redirected to the song at:<br /><br />
       ),
       div4(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.ia
+        this.ha
       ),
-      this.fa
+      this.ea
     );
-    ga = () => {
+    fa = () => {
       this.J.undo();
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.la);
-      this.fa.removeEventListener("click", this.ga);
-      this.Id.removeEventListener("keypress", _ChannelSettingsPrompt.ec);
-      this.Wc.removeEventListener("keypress", _ChannelSettingsPrompt.ec);
-      this.Jd.removeEventListener("keypress", _ChannelSettingsPrompt.ec);
-      this.Kd.removeEventListener("keypress", _ChannelSettingsPrompt.ec);
-      this.Id.removeEventListener("blur", this.lb);
-      this.Wc.removeEventListener("blur", this.lb);
-      this.Jd.removeEventListener("blur", this.lb);
-      this.Kd.removeEventListener("blur", this.lb);
-      this.container.removeEventListener("keydown", this.qa);
+      this.ha.removeEventListener("click", this.ka);
+      this.ea.removeEventListener("click", this.fa);
+      this.Hd.removeEventListener("keypress", _ChannelSettingsPrompt.dc);
+      this.Vc.removeEventListener("keypress", _ChannelSettingsPrompt.dc);
+      this.Id.removeEventListener("keypress", _ChannelSettingsPrompt.dc);
+      this.Jd.removeEventListener("keypress", _ChannelSettingsPrompt.dc);
+      this.Hd.removeEventListener("blur", this.kb);
+      this.Vc.removeEventListener("blur", this.kb);
+      this.Id.removeEventListener("blur", this.kb);
+      this.Jd.removeEventListener("blur", this.kb);
+      this.container.removeEventListener("keydown", this.pa);
     };
-    qa = (event) => {
+    pa = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.la();
+        this.ka();
       }
     };
-    static ec(event) {
+    static dc(event) {
       const charCode = event.which ? event.which : event.keyCode;
       if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
         event.preventDefault();
@@ -31899,18 +31903,18 @@ You should be redirected to the song at:<br /><br />
       }
       return false;
     }
-    lb = (event) => {
+    kb = (event) => {
       const input19 = event.target;
-      input19.value = String(_ChannelSettingsPrompt.qc(input19));
+      input19.value = String(_ChannelSettingsPrompt.pc(input19));
     };
-    static qc(input19) {
+    static pc(input19) {
       return Math.floor(Math.max(Number(input19.min), Math.min(Number(input19.max), Number(input19.value))));
     }
-    la = () => {
+    ka = () => {
       const group = new ChangeGroup();
       group.append(new ChangeInstrumentsFlags(this.J, this.bl.checked, this.cl.checked));
-      group.append(new ChangePatternsPerChannel(this.J, _ChannelSettingsPrompt.qc(this.Id)));
-      group.append(new ChangeChannelCount(this.J, _ChannelSettingsPrompt.qc(this.Wc), _ChannelSettingsPrompt.qc(this.Jd), _ChannelSettingsPrompt.qc(this.Kd)));
+      group.append(new ChangePatternsPerChannel(this.J, _ChannelSettingsPrompt.pc(this.Hd)));
+      group.append(new ChangeChannelCount(this.J, _ChannelSettingsPrompt.pc(this.Vc), _ChannelSettingsPrompt.pc(this.Id), _ChannelSettingsPrompt.pc(this.Jd)));
       this.J.prompt = null;
       this.J.record(group, true);
     };
@@ -31920,98 +31924,98 @@ You should be redirected to the song at:<br /><br />
   var { button: button5, div: div5, h2: h25 } = HTML;
   var CustomChipPromptCanvas = class {
     J;
+    _ = 0;
     $ = 0;
-    aa = 0;
-    ke = 0;
+    je = 0;
     dl = 0;
-    da = false;
+    ca = false;
     chipData = new Float32Array(64);
     startingChipData = new Float32Array(64);
-    Fa = 0;
-    Ba = [];
-    ca = 768;
+    Ea = 0;
+    Aa = [];
+    ba = 768;
     // 64*12
-    ba = 294;
+    aa = 294;
     // 49*6
-    Te = SVG.path({ fill: ColorConfig.uiWidgetBackground, "pointer-events": "none" });
+    Se = SVG.path({ fill: ColorConfig.uiWidgetBackground, "pointer-events": "none" });
     Nf = SVG.svg({ "pointer-events": "none" });
-    Ue = SVG.svg({ "pointer-events": "none" });
+    Te = SVG.svg({ "pointer-events": "none" });
     bh = SVG.svg({ "pointer-events": "none" });
-    ha = SVG.svg(
-      { style: `background-color: ${ColorConfig.editorBackground}; touch-action: none; overflow: visible;`, width: "100%", height: "100%", viewBox: "0 0 " + this.ca + " " + this.ba, preserveAspectRatio: "none" },
-      this.Te,
+    ga = SVG.svg(
+      { style: `background-color: ${ColorConfig.editorBackground}; touch-action: none; overflow: visible;`, width: "100%", height: "100%", viewBox: "0 0 " + this.ba + " " + this.aa, preserveAspectRatio: "none" },
+      this.Se,
       this.Nf,
-      this.Ue,
+      this.Te,
       this.bh
     );
-    container = HTML.div({ class: "", style: "height: 294px; width: 768px; padding-bottom: 1.5em;" }, this.ha);
+    container = HTML.div({ class: "", style: "height: 294px; width: 768px; padding-bottom: 1.5em;" }, this.ga);
     constructor(doc) {
       this.J = doc;
       for (let i = 0; i <= 4; i += 2) {
-        this.Nf.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: i * this.ca / 4 - 1, y: 0, width: 2, height: this.ba }));
+        this.Nf.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: i * this.ba / 4 - 1, y: 0, width: 2, height: this.aa }));
       }
       for (let i = 1; i <= 8; i++) {
-        this.Ue.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: i * this.ca / 8 - 1, y: 0, width: 1, height: this.ba }));
+        this.Te.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: i * this.ba / 8 - 1, y: 0, width: 1, height: this.aa }));
       }
-      this.Nf.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: 0, y: this.ba / 2 - 1, width: this.ca, height: 2 }));
+      this.Nf.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: 0, y: this.aa / 2 - 1, width: this.ba, height: 2 }));
       for (let i = 0; i < 3; i++) {
-        this.Ue.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: 0, y: i * 8 * (this.ba / 49), width: this.ca, height: 1 }));
-        this.Ue.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: 0, y: this.ba - 1 - i * 8 * (this.ba / 49), width: this.ca, height: 1 }));
+        this.Te.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: 0, y: i * 8 * (this.aa / 49), width: this.ba, height: 1 }));
+        this.Te.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: 0, y: this.aa - 1 - i * 8 * (this.aa / 49), width: this.ba, height: 1 }));
       }
       let col = ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder).primaryNote;
       for (let i = 0; i <= 64; i++) {
         let val = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()].customChipWave[i];
         this.chipData[i] = val;
         this.startingChipData[i] = val;
-        this.bh.appendChild(SVG.rect({ fill: col, x: i * this.ca / 64, y: (val + 24) * (this.ba / 49), width: this.ca / 64, height: this.ba / 49 }));
+        this.bh.appendChild(SVG.rect({ fill: col, x: i * this.ba / 64, y: (val + 24) * (this.aa / 49), width: this.ba / 64, height: this.aa / 49 }));
       }
       this.el();
-      this.container.addEventListener("mousedown", this.db);
-      document.addEventListener("mousemove", this.Za);
-      document.addEventListener("mouseup", this.xa);
-      this.container.addEventListener("touchstart", this.pb);
-      this.container.addEventListener("touchmove", this.qb);
-      this.container.addEventListener("touchend", this.xa);
-      this.container.addEventListener("touchcancel", this.xa);
-      this.ha.addEventListener("keydown", this.qa);
-      this.container.addEventListener("keydown", this.qa);
+      this.container.addEventListener("mousedown", this.cb);
+      document.addEventListener("mousemove", this.Ya);
+      document.addEventListener("mouseup", this.wa);
+      this.container.addEventListener("touchstart", this.ob);
+      this.container.addEventListener("touchmove", this.pb);
+      this.container.addEventListener("touchend", this.wa);
+      this.container.addEventListener("touchcancel", this.wa);
+      this.ga.addEventListener("keydown", this.pa);
+      this.container.addEventListener("keydown", this.pa);
     }
     el = () => {
       var sameCheck = true;
-      if (this.Ba.length > 0) {
+      if (this.Aa.length > 0) {
         for (var i = 0; i < 64; i++) {
-          if (this.Ba[this.Fa][i] != this.chipData[i]) {
+          if (this.Aa[this.Ea][i] != this.chipData[i]) {
             sameCheck = false;
             i = 64;
           }
         }
       }
-      if (sameCheck == false || this.Ba.length == 0) {
-        this.Ba.splice(0, this.Fa);
-        this.Fa = 0;
-        this.Ba.unshift(this.chipData.slice());
-        if (this.Ba.length > 32) {
-          this.Ba.pop();
+      if (sameCheck == false || this.Aa.length == 0) {
+        this.Aa.splice(0, this.Ea);
+        this.Ea = 0;
+        this.Aa.unshift(this.chipData.slice());
+        if (this.Aa.length > 32) {
+          this.Aa.pop();
         }
       }
     };
     undo = () => {
-      if (this.Fa < this.Ba.length - 1) {
-        this.Fa++;
-        this.chipData = this.Ba[this.Fa].slice();
+      if (this.Ea < this.Aa.length - 1) {
+        this.Ea++;
+        this.chipData = this.Aa[this.Ea].slice();
         new ChangeCustomWave(this.J, this.chipData);
         this.render();
       }
     };
     redo = () => {
-      if (this.Fa > 0) {
-        this.Fa--;
-        this.chipData = this.Ba[this.Fa].slice();
+      if (this.Ea > 0) {
+        this.Ea--;
+        this.chipData = this.Aa[this.Ea].slice();
         new ChangeCustomWave(this.J, this.chipData);
         this.render();
       }
     };
-    qa = (event) => {
+    pa = (event) => {
       if (event.keyCode == 90) {
         this.undo();
         event.stopPropagation();
@@ -32020,59 +32024,59 @@ You should be redirected to the song at:<br /><br />
         event.stopPropagation();
       }
     };
-    db = (event) => {
+    cb = (event) => {
       event.preventDefault();
-      this.da = true;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = ((event.clientX || event.pageX) - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = ((event.clientY || event.pageY) - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
+      this.ca = true;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = ((event.clientX || event.pageX) - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = ((event.clientY || event.pageY) - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
       if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.ke = -1;
-      this.ya();
+      this.je = -1;
+      this.xa();
+    };
+    ob = (event) => {
+      event.preventDefault();
+      this.ca = true;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.touches[0].clientX - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = (event.touches[0].clientY - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
+      if (isNaN(this.$)) this.$ = 0;
+      this.je = -1;
+      this.xa();
+    };
+    Ya = (event) => {
+      if (this.container.offsetParent == null) return;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = ((event.clientX || event.pageX) - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = ((event.clientY || event.pageY) - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
+      if (isNaN(this.$)) this.$ = 0;
+      this.xa();
     };
     pb = (event) => {
-      event.preventDefault();
-      this.da = true;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.touches[0].clientX - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = (event.touches[0].clientY - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.ke = -1;
-      this.ya();
-    };
-    Za = (event) => {
       if (this.container.offsetParent == null) return;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = ((event.clientX || event.pageX) - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = ((event.clientY || event.pageY) - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.ya();
-    };
-    qb = (event) => {
-      if (this.container.offsetParent == null) return;
-      if (!this.da) return;
+      if (!this.ca) return;
       event.preventDefault();
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.touches[0].clientX - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = (event.touches[0].clientY - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.touches[0].clientX - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = (event.touches[0].clientY - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
       if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.ya();
+      this.xa();
     };
-    ya() {
-      if (this.da) {
-        const index = Math.min(63, Math.max(0, Math.floor(this.$ * 64 / this.ca)));
-        const amp = Math.min(48, Math.max(0, Math.floor(this.aa * 49 / this.ba)));
-        if (this.ke != -1 && this.ke != index) {
+    xa() {
+      if (this.ca) {
+        const index = Math.min(63, Math.max(0, Math.floor(this._ * 64 / this.ba)));
+        const amp = Math.min(48, Math.max(0, Math.floor(this.$ * 49 / this.aa)));
+        if (this.je != -1 && this.je != index) {
           var lowest = index;
-          var highest = this.ke;
+          var highest = this.je;
           var startingAmp = amp;
           var endingAmp = this.dl;
-          if (this.ke < index) {
-            lowest = this.ke;
+          if (this.je < index) {
+            lowest = this.je;
             highest = index;
             startingAmp = this.dl;
             endingAmp = amp;
@@ -32080,45 +32084,45 @@ You should be redirected to the song at:<br /><br />
           for (var i = lowest; i <= highest; i++) {
             const medAmp = Math.round(startingAmp + (endingAmp - startingAmp) * ((i - lowest) / (highest - lowest)));
             this.chipData[i] = medAmp - 24;
-            this.bh.children[i].setAttribute("y", "" + medAmp * (this.ba / 49));
+            this.bh.children[i].setAttribute("y", "" + medAmp * (this.aa / 49));
           }
         } else {
           this.chipData[index] = amp - 24;
-          this.bh.children[index].setAttribute("y", "" + amp * (this.ba / 49));
+          this.bh.children[index].setAttribute("y", "" + amp * (this.aa / 49));
         }
         new ChangeCustomWave(this.J, this.chipData);
-        this.ke = index;
+        this.je = index;
         this.dl = amp;
       }
     }
-    xa = (event) => {
+    wa = (event) => {
       this.el();
-      this.da = false;
+      this.ca = false;
     };
     render() {
       for (var i = 0; i < 64; i++) {
-        this.bh.children[i].setAttribute("y", "" + (this.chipData[i] + 24) * (this.ba / 49));
+        this.bh.children[i].setAttribute("y", "" + (this.chipData[i] + 24) * (this.aa / 49));
       }
     }
   };
   var CustomChipPrompt = class {
     constructor(_doc, _songEditor) {
       this.J = _doc;
-      this.Eb = _songEditor;
-      this.ia.addEventListener("click", this.la);
-      this.fa.addEventListener("click", this.ga);
+      this.Db = _songEditor;
+      this.ha.addEventListener("click", this.ka);
+      this.ea.addEventListener("click", this.fa);
       this.container.addEventListener("keydown", this.whenKeyPressed);
       this.copyButton.addEventListener("click", this.ch);
       this.pasteButton.addEventListener("click", this.dh);
-      this.ja.addEventListener("click", this.ub);
+      this.ia.addEventListener("click", this.tb);
       this.updatePlayButton();
-      setTimeout(() => this.ja.focus());
+      setTimeout(() => this.ia.focus());
       this.customChipCanvas.render();
     }
     customChipCanvas = new CustomChipPromptCanvas(this.J);
-    ja = button5({ style: "width: 55%;", type: "button" });
-    fa = button5({ class: "cancelButton" });
-    ia = button5({ class: "okayButton", style: "width:45%;" }, "Okay");
+    ia = button5({ style: "width: 55%;", type: "button" });
+    ea = button5({ class: "cancelButton" });
+    ha = button5({ class: "okayButton", style: "width:45%;" }, "Okay");
     copyButton = button5({ style: "width:86px; margin-right: 5px;", class: "copyButton" }, [
       "Copy",
       // Copy icon:
@@ -32140,7 +32144,7 @@ You should be redirected to the song at:<br /><br />
       h25("Edit Custom Chip Instrument"),
       div5(
         { style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
-        this.ja
+        this.ia
       ),
       div5(
         { style: "display: flex; flex-direction: row; align-items: center; justify-content: center;" },
@@ -32148,37 +32152,37 @@ You should be redirected to the song at:<br /><br />
       ),
       div5(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.ia,
+        this.ha,
         this.copyPasteContainer
       ),
-      this.fa
+      this.ea
     );
-    ub = () => {
-      this.Eb.togglePlay();
+    tb = () => {
+      this.Db.togglePlay();
       this.updatePlayButton();
     };
     updatePlayButton() {
       if (this.J.synth.playing) {
-        this.ja.classList.remove("playButton");
-        this.ja.classList.add("pauseButton");
-        this.ja.title = "Pause (Space)";
-        this.ja.innerText = "Pause";
+        this.ia.classList.remove("playButton");
+        this.ia.classList.add("pauseButton");
+        this.ia.title = "Pause (Space)";
+        this.ia.innerText = "Pause";
       } else {
-        this.ja.classList.remove("pauseButton");
-        this.ja.classList.add("playButton");
-        this.ja.title = "Play (Space)";
-        this.ja.innerText = "Play";
+        this.ia.classList.remove("pauseButton");
+        this.ia.classList.add("playButton");
+        this.ia.title = "Play (Space)";
+        this.ia.innerText = "Play";
       }
     }
-    ga = () => {
+    fa = () => {
       this.J.prompt = null;
       this.J.undo();
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.la);
-      this.fa.removeEventListener("click", this.ga);
+      this.ha.removeEventListener("click", this.ka);
+      this.ea.removeEventListener("click", this.fa);
       this.container.removeEventListener("keydown", this.whenKeyPressed);
-      this.ja.removeEventListener("click", this.ub);
+      this.ia.removeEventListener("click", this.tb);
     };
     ch = () => {
       const chipCopy = this.customChipCanvas.chipData;
@@ -32194,9 +32198,9 @@ You should be redirected to the song at:<br /><br />
     };
     whenKeyPressed = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.la();
+        this.ka();
       } else if (event.keyCode == 32) {
-        this.ub();
+        this.tb();
         event.preventDefault();
       } else if (event.keyCode == 90) {
         this.customChipCanvas.undo();
@@ -32210,7 +32214,7 @@ You should be redirected to the song at:<br /><br />
         this.J.synth.goToNextBar();
       }
     };
-    la = () => {
+    ka = () => {
       this.J.prompt = null;
       new ChangeCustomWave(this.J, this.customChipCanvas.startingChipData);
       this.J.record(new ChangeCustomWave(this.J, this.customChipCanvas.chipData), true);
@@ -32221,131 +32225,131 @@ You should be redirected to the song at:<br /><br />
   var FilterEditor = class _FilterEditor {
     constructor(_doc, useNoteFilter = false, larger = false, forSong = false, effectIndex = 0) {
       this.J = _doc;
-      this.fb = useNoteFilter;
-      this.gc = effectIndex;
-      this.hc = larger;
-      this.Rb = forSong;
-      if (this.hc) {
-        this.container.addEventListener("keydown", this.qa);
-        this.ca = 1200;
-        this.ba = 260;
+      this.eb = useNoteFilter;
+      this.fc = effectIndex;
+      this.gc = larger;
+      this.Qb = forSong;
+      if (this.gc) {
+        this.container.addEventListener("keydown", this.pa);
+        this.ba = 1200;
+        this.aa = 260;
         this.Do = 14;
-        this.ha.setAttribute("viewBox", "0 -20 " + this.ca + " " + (this.ba + 30));
-        this.Qb.style.setProperty("font-size", "16px");
-        this.Qb.style.setProperty("position", "");
-        this.Qb.style.setProperty("bottom", "-16px");
-        this.Qb.style.setProperty("min-height", "1em");
-        this.le.style.setProperty("stroke-width", "3");
-        this.le.style.setProperty("stroke-dasharray", "6, 4");
-        this.le.setAttribute("color", ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder).primaryNote);
+        this.ga.setAttribute("viewBox", "0 -20 " + this.ba + " " + (this.aa + 30));
+        this.Pb.style.setProperty("font-size", "16px");
+        this.Pb.style.setProperty("position", "");
+        this.Pb.style.setProperty("bottom", "-16px");
+        this.Pb.style.setProperty("min-height", "1em");
+        this.ke.style.setProperty("stroke-width", "3");
+        this.ke.style.setProperty("stroke-dasharray", "6, 4");
+        this.ke.setAttribute("color", ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder).primaryNote);
         this.container.style.setProperty("width", "85%");
-        this.Xc.setAttribute("r", "20");
+        this.Wc.setAttribute("r", "20");
         this.Of.setAttribute("fill", ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder).primaryNote);
         for (let i = 0; i < Config.filterMaxPoints; i++) {
-          this.fc[i] = SVG.text();
-          this.fc[i].setAttribute("fill", ColorConfig.invertedText);
-          this.fc[i].setAttribute("text-anchor", "start");
-          this.fc[i].setAttribute("dominant-baseline", "central");
-          this.fc[i].setAttribute("pointer-events", "none");
-          this.fc[i].setAttribute("font-weight", "bolder");
-          this.fc[i].textContent = "" + (i + 1);
-          this.fc[i].style.setProperty("display", "none");
-          this.fc[i].style.setProperty("font-size", "24px");
-          this.ha.appendChild(this.fc[i]);
+          this.ec[i] = SVG.text();
+          this.ec[i].setAttribute("fill", ColorConfig.invertedText);
+          this.ec[i].setAttribute("text-anchor", "start");
+          this.ec[i].setAttribute("dominant-baseline", "central");
+          this.ec[i].setAttribute("pointer-events", "none");
+          this.ec[i].setAttribute("font-weight", "bolder");
+          this.ec[i].textContent = "" + (i + 1);
+          this.ec[i].style.setProperty("display", "none");
+          this.ec[i].style.setProperty("font-size", "24px");
+          this.ga.appendChild(this.ec[i]);
         }
         let filterSettings;
         const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
         const effect = instrument.effects[effectIndex];
-        if (this.Rb) {
+        if (this.Qb) {
           filterSettings = this.J.song.eqFilter;
         } else {
-          filterSettings = this.fb ? instrument.noteFilter : effect.eqFilter;
+          filterSettings = this.eb ? instrument.noteFilter : effect.eqFilter;
         }
         this.selfUndoSettings.push(JSON.stringify(filterSettings.toJsonObject()));
-        this.Ka[0] = filterSettings;
+        this.Ja[0] = filterSettings;
         for (let i = 1; i < Config.filterMorphCount; i++) {
-          if (this.Rb) {
+          if (this.Qb) {
             const subFilter = this.J.song.eqSubFilters[i];
             if (subFilter != null) {
               let parsedFilter = new FilterSettings();
               parsedFilter.fromJsonObject(subFilter.toJsonObject());
-              this.Ka[i] = parsedFilter;
+              this.Ja[i] = parsedFilter;
             }
           } else {
-            const subFilter = this.fb ? instrument.noteSubFilters[i] : effect.eqSubFilters[i];
+            const subFilter = this.eb ? instrument.noteSubFilters[i] : effect.eqSubFilters[i];
             if (subFilter != null) {
               let parsedFilter = new FilterSettings();
               parsedFilter.fromJsonObject(subFilter.toJsonObject());
-              this.Ka[i] = parsedFilter;
+              this.Ja[i] = parsedFilter;
             }
           }
         }
       }
-      this.container.addEventListener("mousedown", this.db);
-      this.container.addEventListener("mouseover", this.mc);
-      this.container.addEventListener("mouseout", this.nc);
-      document.addEventListener("mousemove", this.Za);
-      document.addEventListener("mouseup", this.xa);
-      this.container.addEventListener("touchstart", this.pb);
-      this.container.addEventListener("touchmove", this.qb);
-      this.container.addEventListener("touchend", this.xa);
-      this.container.addEventListener("touchcancel", this.xa);
+      this.container.addEventListener("mousedown", this.cb);
+      this.container.addEventListener("mouseover", this.lc);
+      this.container.addEventListener("mouseout", this.mc);
+      document.addEventListener("mousemove", this.Ya);
+      document.addEventListener("mouseup", this.wa);
+      this.container.addEventListener("touchstart", this.ob);
+      this.container.addEventListener("touchmove", this.pb);
+      this.container.addEventListener("touchend", this.wa);
+      this.container.addEventListener("touchcancel", this.wa);
     }
-    ca = 120;
-    ba = 26;
+    ba = 120;
+    aa = 26;
     Co = SVG.path({ fill: ColorConfig.uiWidgetBackground, "pointer-events": "none" });
     //private readonly _octaves = SVG.svg({"pointer-events": "none", overflow: "visible"});
-    fc = [];
-    Ka = [];
-    Bc = false;
+    ec = [];
+    Ja = [];
+    Ac = false;
     Of = SVG.path({ fill: "currentColor", "pointer-events": "none" });
-    le = SVG.path({ fill: "none", stroke: "currentColor", "stroke-width": 1, "stroke-dasharray": "3, 2", "pointer-events": "none" });
-    Xc = SVG.circle({ fill: "white", stroke: "none", "pointer-events": "none", r: 4 });
-    ha = SVG.svg(
-      { style: `background-color: ${ColorConfig.editorBackground}; touch-action: none;`, width: "100%", height: "100%", viewBox: "0 0 " + this.ca + " " + this.ba, preserveAspectRatio: "none" },
+    ke = SVG.path({ fill: "none", stroke: "currentColor", "stroke-width": 1, "stroke-dasharray": "3, 2", "pointer-events": "none" });
+    Wc = SVG.circle({ fill: "white", stroke: "none", "pointer-events": "none", r: 4 });
+    ga = SVG.svg(
+      { style: `background-color: ${ColorConfig.editorBackground}; touch-action: none;`, width: "100%", height: "100%", viewBox: "0 0 " + this.ba + " " + this.aa, preserveAspectRatio: "none" },
       this.Co,
       //this._octaves,
-      this.le,
-      this.Xc,
+      this.ke,
+      this.Wc,
       this.Of
     );
     selfUndoSettings = [];
     selfUndoHistoryPos = 0;
-    Qb = HTML.div({ style: "position: absolute; bottom: 0; left: 2px; font-size: 8px; line-height: 1; pointer-events: none;" });
+    Pb = HTML.div({ style: "position: absolute; bottom: 0; left: 2px; font-size: 8px; line-height: 1; pointer-events: none;" });
     coordText = null;
     container = HTML.div(
       { class: "filterEditor", style: "height: 100%; position: relative;" },
-      this.ha,
-      this.Qb
+      this.ga,
+      this.Pb
     );
     Do = 2;
-    fb = false;
-    gc = 0;
-    hc = false;
-    Yc = false;
+    eb = false;
+    fc = 0;
+    gc = false;
+    Xc = false;
+    _ = 0;
     $ = 0;
-    aa = 0;
-    na = false;
-    da = false;
-    Ca = false;
-    Ve = false;
+    ma = false;
+    ca = false;
+    Ba = false;
+    Ue = false;
     eh = false;
     fh = 2 /* peak */;
-    Ra = 0;
+    Qa = 0;
     Eo = 0;
     Fo = 0;
-    ka = null;
-    me = 0;
-    za;
-    ta;
+    ja = null;
+    le = 0;
+    ya;
+    sa;
     Go = -1;
     Ho = -1;
     Io = -1;
     Jo = -1;
     Ko = -1;
     //private _renderedKey = -1;
-    Rb = false;
-    qa = (event) => {
+    Qb = false;
+    pa = (event) => {
       if (event.keyCode == 90) {
         this.undo();
         event.stopPropagation();
@@ -32355,96 +32359,96 @@ You should be redirected to the song at:<br /><br />
         event.stopPropagation();
       }
     };
-    Cc(x) {
-      return Config.filterFreqRange * x / this.ca - 0.5;
+    Bc(x) {
+      return Config.filterFreqRange * x / this.ba - 0.5;
     }
     fl(freq) {
-      return this.ca * (freq + 0.5) / Config.filterFreqRange;
+      return this.ba * (freq + 0.5) / Config.filterFreqRange;
     }
     Zi(y) {
-      return (Config.filterGainRange - 1) * (1 - (y - 0.5) / (this.ba - 1));
+      return (Config.filterGainRange - 1) * (1 - (y - 0.5) / (this.aa - 1));
     }
     gl(gain) {
-      return (this.ba - 1) * (1 - gain / (Config.filterGainRange - 1)) + 0.5;
+      return (this.aa - 1) * (1 - gain / (Config.filterGainRange - 1)) + 0.5;
     }
-    mc = (event) => {
-      this.na = true;
-      if (!this.hc)
+    lc = (event) => {
+      this.ma = true;
+      if (!this.gc)
         this.Of.style.setProperty("fill", "currentColor");
     };
-    nc = (event) => {
-      this.na = false;
+    mc = (event) => {
+      this.ma = false;
       this.gh();
       if (this.coordText != null) {
         this.coordText.innerText = "";
       }
     };
-    db = (event) => {
+    cb = (event) => {
       event.preventDefault();
-      this.Yc = false;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = ((event.clientX || event.pageX) - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = ((event.clientY || event.pageY) - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
+      this.Xc = false;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = ((event.clientX || event.pageX) - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = ((event.clientY || event.pageY) - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
       if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.Ld();
+      this.Kd();
+    };
+    ob = (event) => {
+      event.preventDefault();
+      this.Xc = true;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.touches[0].clientX - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = (event.touches[0].clientY - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
+      if (isNaN(this.$)) this.$ = 0;
+      this.Kd();
+    };
+    Ya = (event) => {
+      if (this.container.offsetParent == null) return;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = ((event.clientX || event.pageX) - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = ((event.clientY || event.pageY) - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
+      if (isNaN(this.$)) this.$ = 0;
+      if (!this.ca) this.hh();
+      this.xa();
     };
     pb = (event) => {
-      event.preventDefault();
-      this.Yc = true;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.touches[0].clientX - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = (event.touches[0].clientY - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.Ld();
-    };
-    Za = (event) => {
       if (this.container.offsetParent == null) return;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = ((event.clientX || event.pageX) - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = ((event.clientY || event.pageY) - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
+      if (this.ca) event.preventDefault();
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.touches[0].clientX - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = (event.touches[0].clientY - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
       if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      if (!this.da) this.hh();
-      this.ya();
+      if (!this.ca) this.hh();
+      this.xa();
     };
-    qb = (event) => {
-      if (this.container.offsetParent == null) return;
-      if (this.da) event.preventDefault();
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.touches[0].clientX - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = (event.touches[0].clientY - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      if (!this.da) this.hh();
-      this.ya();
-    };
-    Ld() {
-      this.da = true;
+    Kd() {
+      this.ca = true;
       const sequence = new ChangeSequence();
-      this.ka = sequence;
-      this.J.setProspectiveChange(this.ka);
+      this.ja = sequence;
+      this.J.setProspectiveChange(this.ja);
       this.hh();
-      this.ya();
+      this.xa();
     }
     hh() {
-      this.Eo = this.Cc(this.$);
-      this.Fo = this.Zi(this.aa);
-      this.Ve = true;
-      this.Ra = -1;
+      this.Eo = this.Bc(this._);
+      this.Fo = this.Zi(this.$);
+      this.Ue = true;
+      this.Qa = -1;
       let nearestDistance = Number.POSITIVE_INFINITY;
-      for (let i = 0; i < this.ta.controlPointCount; i++) {
-        const point = this.ta.controlPoints[i];
-        const distance = Math.sqrt(Math.pow(this.fl(point.freq) - this.$, 2) + Math.pow(this.gl(point.gain) - this.aa, 2));
-        if ((distance <= 13 * (1 + +this.hc) || this.ta.controlPointCount >= Config.filterMaxPoints) && distance < nearestDistance) {
+      for (let i = 0; i < this.sa.controlPointCount; i++) {
+        const point = this.sa.controlPoints[i];
+        const distance = Math.sqrt(Math.pow(this.fl(point.freq) - this._, 2) + Math.pow(this.gl(point.gain) - this.$, 2));
+        if ((distance <= 13 * (1 + +this.gc) || this.sa.controlPointCount >= Config.filterMaxPoints) && distance < nearestDistance) {
           nearestDistance = distance;
-          this.Ra = i;
-          this.Ve = false;
+          this.Qa = i;
+          this.Ue = false;
         }
       }
-      if (this.Ve) {
-        const ratio = this.$ / this.ca;
+      if (this.Ue) {
+        const ratio = this._ / this.ba;
         if (ratio < 0.2) {
           this.fh = 1 /* highPass */;
         } else if (ratio < 0.8) {
@@ -32454,76 +32458,76 @@ You should be redirected to the song at:<br /><br />
         }
       }
     }
-    ya() {
-      if (this.Bc) {
-        if (this.Rb) {
-          this.ta = this.hl(this.J.song);
+    xa() {
+      if (this.Ac) {
+        if (this.Qb) {
+          this.sa = this.hl(this.J.song);
         } else {
           const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-          const effect = instrument.effects[this.gc];
-          this.ta = this.il(instrument, effect);
+          const effect = instrument.effects[this.fc];
+          this.sa = this.il(instrument, effect);
         }
-        if (this.ka != null) {
-          if (this.ka instanceof ChangeSequence && this.ka.checkFirst() instanceof ChangeFilterMovePoint) {
-            const data = this.ka.checkFirst().getMoveData(true);
-            const newPoint = this.ta.controlPoints[this.Ra];
+        if (this.ja != null) {
+          if (this.ja instanceof ChangeSequence && this.ja.checkFirst() instanceof ChangeFilterMovePoint) {
+            const data = this.ja.checkFirst().getMoveData(true);
+            const newPoint = this.sa.controlPoints[this.Qa];
             if (newPoint == null || newPoint.type != data.point.type) {
-              this.ka = null;
-              this.Bc = false;
-              this.da = false;
+              this.ja = null;
+              this.Ac = false;
+              this.ca = false;
             } else {
               newPoint.freq = data.freq;
               newPoint.gain = data.gain;
             }
-          } else if (this.Rb && this.ka instanceof ChangeSequence && this.ka.checkFirst() instanceof ChangeSongFilterMovePoint) {
-            const data = this.ka.checkFirst().getMoveData(true);
-            const newPoint = this.ta.controlPoints[this.Ra];
+          } else if (this.Qb && this.ja instanceof ChangeSequence && this.ja.checkFirst() instanceof ChangeSongFilterMovePoint) {
+            const data = this.ja.checkFirst().getMoveData(true);
+            const newPoint = this.sa.controlPoints[this.Qa];
             if (newPoint == null || newPoint.type != data.point.type) {
-              this.ka = null;
-              this.Bc = false;
-              this.da = false;
+              this.ja = null;
+              this.Ac = false;
+              this.ca = false;
             } else {
               newPoint.freq = data.freq;
               newPoint.gain = data.gain;
             }
           } else {
-            this.ka = null;
-            this.Bc = false;
-            this.da = false;
+            this.ja = null;
+            this.Ac = false;
+            this.ca = false;
           }
         }
       }
-      if (this.ka != null && (this.J.lastChangeWas(this.ka) || this.Bc)) {
-        this.ka.undo();
+      if (this.ja != null && (this.J.lastChangeWas(this.ja) || this.Ac)) {
+        this.ja.undo();
       } else {
-        this.da = false;
+        this.ca = false;
       }
-      this.ka = null;
+      this.ja = null;
       this.eh = false;
-      if (this.coordText != null && !this.da) {
-        let gain = Math.round(this.Zi(this.aa));
-        let freq = Math.round(this.Cc(this.$));
+      if (this.coordText != null && !this.ca) {
+        let gain = Math.round(this.Zi(this.$));
+        let freq = Math.round(this.Bc(this._));
         if (freq >= 0 && freq < Config.filterFreqRange && gain >= 0 && gain < Config.filterGainRange)
           this.coordText.innerText = "(" + freq + ", " + gain + ")";
         else
           this.coordText.innerText = "";
       }
-      if (this.da) {
+      if (this.ca) {
         const sequence = new ChangeSequence();
-        this.ka = sequence;
-        this.J.setProspectiveChange(this.ka);
-        if (this.Ve) {
-          const gain = Math.max(0, Math.min(Config.filterGainRange - 1, Math.round(this.Zi(this.aa))));
-          const freq = this.Lo(this.ta, this.Cc(this.$), -1);
+        this.ja = sequence;
+        this.J.setProspectiveChange(this.ja);
+        if (this.Ue) {
+          const gain = Math.max(0, Math.min(Config.filterGainRange - 1, Math.round(this.Zi(this.$))));
+          const freq = this.Lo(this.sa, this.Bc(this._), -1);
           if (freq >= 0 && freq < Config.filterFreqRange) {
             const point = new FilterControlPoint();
             point.type = this.fh;
             point.freq = freq;
             point.gain = gain;
-            if (this.Rb) {
-              sequence.append(new ChangeSongFilterAddPoint(this.J, this.ta, point, this.ta.controlPointCount));
+            if (this.Qb) {
+              sequence.append(new ChangeSongFilterAddPoint(this.J, this.sa, point, this.sa.controlPointCount));
             } else {
-              sequence.append(new ChangeFilterAddPoint(this.J, this.ta, point, this.ta.controlPointCount, this.fb, this.gc));
+              sequence.append(new ChangeFilterAddPoint(this.J, this.sa, point, this.sa.controlPointCount, this.eb, this.fc));
             }
             if (this.coordText != null) {
               this.coordText.innerText = "(" + freq + ", " + gain + ")";
@@ -32531,96 +32535,96 @@ You should be redirected to the song at:<br /><br />
           } else {
             this.eh = true;
           }
-        } else if (this.Ra >= this.ta.controlPointCount || this.Ra == -1) {
-          this.ka = null;
-          this.da = false;
+        } else if (this.Qa >= this.sa.controlPointCount || this.Qa == -1) {
+          this.ja = null;
+          this.ca = false;
         } else {
-          const freqDelta = this.Cc(this.$) - this.Eo;
-          const gainDelta = this.Zi(this.aa) - this.Fo;
-          let point = this.ta.controlPoints[this.Ra];
+          const freqDelta = this.Bc(this._) - this.Eo;
+          const gainDelta = this.Zi(this.$) - this.Fo;
+          let point = this.sa.controlPoints[this.Qa];
           const gain = Math.max(0, Math.min(Config.filterGainRange - 1, Math.round(point.gain + gainDelta)));
-          const freq = this.Lo(this.ta, point.freq + freqDelta, this.Ra);
+          const freq = this.Lo(this.sa, point.freq + freqDelta, this.Qa);
           if (Math.round(freqDelta) != 0 || Math.round(gainDelta) != 0 || freq != point.freq || gain != point.gain) {
-            this.Ca = true;
+            this.Ba = true;
           }
           if (freq >= 0 && freq < Config.filterFreqRange) {
-            if (this.Rb) {
-              sequence.append(new ChangeSongFilterMovePoint(this.J, point, point.freq, freq, point.gain, gain, this.Ra));
+            if (this.Qb) {
+              sequence.append(new ChangeSongFilterMovePoint(this.J, point, point.freq, freq, point.gain, gain, this.Qa));
             } else {
-              sequence.append(new ChangeFilterMovePoint(this.J, point, point.freq, freq, point.gain, gain, this.fb, this.gc, this.Ra));
+              sequence.append(new ChangeFilterMovePoint(this.J, point, point.freq, freq, point.gain, gain, this.eb, this.fc, this.Qa));
             }
             if (this.coordText != null) {
               this.coordText.innerText = "(" + freq + ", " + gain + ")";
-              if (!this.Bc) {
-                if (this.Rb) {
+              if (!this.Ac) {
+                if (this.Qb) {
                   this.J.song.tmpEqFilterStart = this.J.song.eqFilter;
                   this.J.song.tmpEqFilterEnd = null;
                 } else {
                   const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
                   instrument.tmpNoteFilterStart = instrument.noteFilter;
                   instrument.tmpNoteFilterEnd = null;
-                  let effect = instrument.effects[this.gc];
+                  let effect = instrument.effects[this.fc];
                   effect.tmpEqFilterStart = effect.eqFilter;
                   effect.tmpEqFilterEnd = null;
                 }
               }
             }
           } else {
-            if (this.Rb) {
-              sequence.append(new ChangeSongFilterAddPoint(this.J, this.ta, point, this.Ra, true));
+            if (this.Qb) {
+              sequence.append(new ChangeSongFilterAddPoint(this.J, this.sa, point, this.Qa, true));
             } else {
-              sequence.append(new ChangeFilterAddPoint(this.J, this.ta, point, this.Ra, this.fb, this.gc, true));
+              sequence.append(new ChangeFilterAddPoint(this.J, this.sa, point, this.Qa, this.eb, this.fc, true));
             }
             this.eh = true;
           }
         }
       }
-      if (this.da || this.na) {
+      if (this.ca || this.ma) {
         this.gh();
       }
     }
-    xa = (event) => {
-      if (this.Bc) {
-        if (this.Rb) {
-          this.ta = this.hl(this.J.song);
+    wa = (event) => {
+      if (this.Ac) {
+        if (this.Qb) {
+          this.sa = this.hl(this.J.song);
         } else {
           const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-          const effect = instrument.effects[this.gc];
-          this.ta = this.il(instrument, effect);
+          const effect = instrument.effects[this.fc];
+          this.sa = this.il(instrument, effect);
         }
       }
       if (this.container.offsetParent == null) return;
-      if (this.da && (this.J.lastChangeWas(this.ka) || this.Bc) && this.ka != null) {
-        if (!this.Ve && !this.Ca && !this.Yc) {
-          if (this.Ra < this.ta.controlPointCount && this.Ra != -1) {
-            const point = this.ta.controlPoints[this.Ra];
-            if (this.Rb) {
-              let change = new ChangeSongFilterAddPoint(this.J, this.ta, point, this.Ra, true);
-              if (!this.hc) {
+      if (this.ca && (this.J.lastChangeWas(this.ja) || this.Ac) && this.ja != null) {
+        if (!this.Ue && !this.Ba && !this.Xc) {
+          if (this.Qa < this.sa.controlPointCount && this.Qa != -1) {
+            const point = this.sa.controlPoints[this.Qa];
+            if (this.Qb) {
+              let change = new ChangeSongFilterAddPoint(this.J, this.sa, point, this.Qa, true);
+              if (!this.gc) {
                 this.J.record(change);
               }
             } else {
-              let change = new ChangeFilterAddPoint(this.J, this.ta, point, this.Ra, this.fb, this.gc, true);
-              if (!this.hc) {
+              let change = new ChangeFilterAddPoint(this.J, this.sa, point, this.Qa, this.eb, this.fc, true);
+              if (!this.gc) {
                 this.J.record(change);
               }
             }
           }
-        } else if (!this.hc) {
-          this.J.record(this.ka);
+        } else if (!this.gc) {
+          this.J.record(this.ja);
         }
         this.gh();
-        if (this.hc) {
+        if (this.gc) {
           this.selfUndoSettings.length = this.selfUndoHistoryPos + 1;
-          this.selfUndoSettings.push(JSON.stringify(this.za.toJsonObject()));
+          this.selfUndoSettings.push(JSON.stringify(this.ya.toJsonObject()));
           this.selfUndoHistoryPos++;
         }
       }
-      this.ka = null;
-      this.Ca = false;
+      this.ja = null;
+      this.Ba = false;
       this.eh = false;
-      this.da = false;
-      this.Bc = false;
+      this.ca = false;
+      this.Ac = false;
       this.hh();
     };
     Lo(filterSettings, targetFreq, ignoreIndex) {
@@ -32648,57 +32652,57 @@ You should be redirected to the song at:<br /><br />
       return `M ${cx - radius} ${cy} a ${radius} ${radius} 0 1 ${reverse ? 1 : 0} ${radius * 2} 0 a ${radius} ${radius} 0 1 ${reverse ? 1 : 0} ${-radius * 2} 0 `;
     }
     gh() {
-      this.Xc.style.display = "none";
-      this.Qb.textContent = "";
+      this.Wc.style.display = "none";
+      this.Pb.textContent = "";
       let controlPointPath = "";
       let dottedLinePath = "";
-      for (let i = 0; i < this.ta.controlPointCount; i++) {
-        const point = this.ta.controlPoints[i];
+      for (let i = 0; i < this.sa.controlPointCount; i++) {
+        const point = this.sa.controlPoints[i];
         const pointX = this.fl(point.freq);
         const pointY = this.gl(point.gain);
         controlPointPath += _FilterEditor._s(pointX, pointY, this.Do);
         if (point.type == 1 /* highPass */) {
           dottedLinePath += "M 0 " + pointY + " L " + pointX + " " + pointY + " ";
         } else if (point.type == 0 /* lowPass */) {
-          dottedLinePath += "M " + this.ca + " " + pointY + " L " + pointX + " " + pointY + " ";
+          dottedLinePath += "M " + this.ba + " " + pointY + " L " + pointX + " " + pointY + " ";
         }
-        if (this.Ra == i && this.na && !this.da) {
-          this.Xc.setAttribute("cx", String(pointX));
-          this.Xc.setAttribute("cy", String(pointY));
-          this.Xc.style.display = "";
+        if (this.Qa == i && this.ma && !this.ca) {
+          this.Wc.setAttribute("cx", String(pointX));
+          this.Wc.setAttribute("cy", String(pointY));
+          this.Wc.style.display = "";
           if (this.coordText != null) {
             this.coordText.innerText = "(" + point.freq + ", " + point.gain + ")";
           }
         }
-        if ((this.Ra == i || this.Ve && this.da && i == this.ta.controlPointCount - 1) && (this.na || this.da) && !this.eh) {
-          this.Qb.textContent = i + 1 + ": " + Config.filterTypeNames[point.type] + (this.hc ? " @" + prettyNumber(point.getHz()) + "Hz" : "");
+        if ((this.Qa == i || this.Ue && this.ca && i == this.sa.controlPointCount - 1) && (this.ma || this.ca) && !this.eh) {
+          this.Pb.textContent = i + 1 + ": " + Config.filterTypeNames[point.type] + (this.gc ? " @" + prettyNumber(point.getHz()) + "Hz" : "");
         }
-        if (this.hc) {
-          this.fc[i].style.setProperty("display", "");
-          this.fc[i].setAttribute("x", "" + (pointX - 7));
-          this.fc[i].setAttribute("y", "" + (pointY + 2));
+        if (this.gc) {
+          this.ec[i].style.setProperty("display", "");
+          this.ec[i].setAttribute("x", "" + (pointX - 7));
+          this.ec[i].setAttribute("y", "" + (pointY + 2));
         }
       }
       this.Of.setAttribute("d", controlPointPath);
-      this.le.setAttribute("d", dottedLinePath);
-      if (this.Ve && !this.da && this.na) {
-        this.Qb.textContent = "+ " + Config.filterTypeNames[this.fh];
+      this.ke.setAttribute("d", dottedLinePath);
+      if (this.Ue && !this.ca && this.ma) {
+        this.Pb.textContent = "+ " + Config.filterTypeNames[this.fh];
       }
-      if (this.hc) {
-        for (let i = this.ta.controlPointCount; i < Config.filterMaxPoints; i++) {
-          this.fc[i].style.setProperty("display", "none");
+      if (this.gc) {
+        for (let i = this.sa.controlPointCount; i < Config.filterMaxPoints; i++) {
+          this.ec[i].style.setProperty("display", "none");
         }
       }
       const standardSampleRate = 44800;
       const filters = [];
-      for (let i = 0; i < this.ta.controlPointCount; i++) {
-        const point = this.ta.controlPoints[i];
+      for (let i = 0; i < this.sa.controlPointCount; i++) {
+        const point = this.sa.controlPoints[i];
         const filter = new FilterCoefficients();
         point.toCoefficients(filter, standardSampleRate);
         filters.push(filter);
       }
       const response = new FrequencyResponse();
-      let responsePath = "M 0 " + this.ba + " ";
+      let responsePath = "M 0 " + this.aa + " ";
       for (let i = -1; i <= Config.filterFreqRange; i++) {
         const hz = FilterControlPoint.getHzFromSettingValue(i);
         const cornerRadiansPerSample = 2 * Math.PI * hz / standardSampleRate;
@@ -32714,38 +32718,38 @@ You should be redirected to the song at:<br /><br />
         const x = this.fl(i);
         responsePath += "L " + prettyNumber(x) + " " + prettyNumber(y) + " ";
       }
-      responsePath += "L " + this.ca + " " + this.ba + " L 0 " + this.ba + " z ";
+      responsePath += "L " + this.ba + " " + this.aa + " L 0 " + this.aa + " z ";
       this.Co.setAttribute("d", responsePath);
     }
     // Swap to new filter settings all at once.
     swapToSettings(settings, useHistory = false) {
-      if (this.Rb) {
-        new ChangeSongFilterSettings(this.J, settings, this.za, this.Ka, this.J.song.eqSubFilters);
+      if (this.Qb) {
+        new ChangeSongFilterSettings(this.J, settings, this.ya, this.Ja, this.J.song.eqSubFilters);
       } else {
         const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-        const effect = instrument.effects[this.gc];
-        new ChangeFilterSettings(this.J, settings, this.za, this.fb, this.gc, this.Ka, this.fb ? instrument.noteSubFilters : effect.eqSubFilters);
+        const effect = instrument.effects[this.fc];
+        new ChangeFilterSettings(this.J, settings, this.ya, this.eb, this.fc, this.Ja, this.eb ? instrument.noteSubFilters : effect.eqSubFilters);
       }
-      this.za = settings;
-      this.Ka[this.me] = settings;
-      if (useHistory && this.hc) {
+      this.ya = settings;
+      this.Ja[this.le] = settings;
+      if (useHistory && this.gc) {
         this.selfUndoSettings.length = this.selfUndoHistoryPos + 1;
-        this.selfUndoSettings.push(JSON.stringify(this.za.toJsonObject()));
+        this.selfUndoSettings.push(JSON.stringify(this.ya.toJsonObject()));
         this.selfUndoHistoryPos++;
       }
-      this.ta = this.za;
+      this.sa = this.ya;
       this.gh();
     }
     // Save settings on prompt close (record a change from first settings to newest)
     saveSettings() {
       let firstFilter = new FilterSettings();
       firstFilter.fromJsonObject(JSON.parse(String(this.selfUndoSettings[0])));
-      if (this.Rb) {
-        this.J.record(new ChangeSongFilterSettings(this.J, this.Ka[0], firstFilter, this.Ka, this.J.song.eqSubFilters), true);
+      if (this.Qb) {
+        this.J.record(new ChangeSongFilterSettings(this.J, this.Ja[0], firstFilter, this.Ja, this.J.song.eqSubFilters), true);
       } else {
         const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-        const effect = instrument.effects[this.gc];
-        this.J.record(new ChangeFilterSettings(this.J, this.Ka[0], firstFilter, this.fb, this.gc, this.Ka, this.fb ? instrument.noteSubFilters : effect.eqSubFilters), true);
+        const effect = instrument.effects[this.fc];
+        this.J.record(new ChangeFilterSettings(this.J, this.Ja[0], firstFilter, this.eb, this.fc, this.Ja, this.eb ? instrument.noteSubFilters : effect.eqSubFilters), true);
       }
     }
     // Self-undo history management
@@ -32756,7 +32760,7 @@ You should be redirected to the song at:<br /><br />
         if (this.selfUndoSettings[this.selfUndoHistoryPos + 1] != null && this.selfUndoSettings[this.selfUndoHistoryPos + 1].startsWith("jmp")) {
           let str = this.selfUndoSettings[this.selfUndoHistoryPos + 1];
           let jumpIndex = +str.substring(3, str.indexOf("|"));
-          this.swapToSubfilter(this.me, jumpIndex);
+          this.swapToSubfilter(this.le, jumpIndex);
           return jumpIndex;
         } else if (this.selfUndoSettings[this.selfUndoHistoryPos].startsWith("jmp")) {
           let savedFilter = new FilterSettings();
@@ -32778,7 +32782,7 @@ You should be redirected to the song at:<br /><br />
         if (this.selfUndoSettings[this.selfUndoHistoryPos].startsWith("jmp")) {
           let str = this.selfUndoSettings[this.selfUndoHistoryPos];
           let jumpIndex = +str.substring(str.indexOf("|") + 1, str.indexOf(":"));
-          this.swapToSubfilter(this.me, jumpIndex, false);
+          this.swapToSubfilter(this.le, jumpIndex, false);
           return jumpIndex;
         } else {
           let savedFilter = new FilterSettings();
@@ -32793,32 +32797,32 @@ You should be redirected to the song at:<br /><br />
       this.undo();
     }
     swapSubfilterIndices(newIndex) {
-      if (this.Ra == -1)
+      if (this.Qa == -1)
         return;
-      if (newIndex >= this.ta.controlPointCount)
+      if (newIndex >= this.sa.controlPointCount)
         return;
-      let tmp = this.ta.controlPoints[this.Ra];
-      this.ta.controlPoints[this.Ra] = this.ta.controlPoints[newIndex];
-      this.ta.controlPoints[newIndex] = tmp;
+      let tmp = this.sa.controlPoints[this.Qa];
+      this.sa.controlPoints[this.Qa] = this.sa.controlPoints[newIndex];
+      this.sa.controlPoints[newIndex] = tmp;
       this.render();
     }
     swapToSubfilter(oldIndex, newIndex, useHistory = false) {
       if (oldIndex != newIndex) {
         let currFilter = new FilterSettings();
-        currFilter.fromJsonObject(this.za.toJsonObject());
-        this.Ka[oldIndex] = currFilter;
-        if (this.Ka[newIndex] == void 0) {
+        currFilter.fromJsonObject(this.ya.toJsonObject());
+        this.Ja[oldIndex] = currFilter;
+        if (this.Ja[newIndex] == void 0) {
           let parsedFilter = new FilterSettings();
-          parsedFilter.fromJsonObject(this.Ka[0].toJsonObject());
-          this.Ka[newIndex] = parsedFilter;
+          parsedFilter.fromJsonObject(this.Ja[0].toJsonObject());
+          this.Ja[newIndex] = parsedFilter;
         }
         if (useHistory) {
           this.selfUndoSettings.length = this.selfUndoHistoryPos + 1;
-          this.selfUndoSettings.push("jmp" + oldIndex + "|" + newIndex + ":" + JSON.stringify(this.Ka[newIndex].toJsonObject()));
+          this.selfUndoSettings.push("jmp" + oldIndex + "|" + newIndex + ":" + JSON.stringify(this.Ja[newIndex].toJsonObject()));
           this.selfUndoHistoryPos++;
         }
-        this.me = newIndex;
-        this.swapToSettings(this.Ka[newIndex], false);
+        this.le = newIndex;
+        this.swapToSettings(this.Ja[newIndex], false);
       }
     }
     hl(song) {
@@ -32827,46 +32831,46 @@ You should be redirected to the song at:<br /><br />
       return targetSettings;
     }
     il(instrument, effect) {
-      let targetSettings = this.fb ? instrument.tmpNoteFilterStart : effect.tmpEqFilterStart;
-      if (targetSettings == null) targetSettings = this.fb ? instrument.noteFilter : effect.eqFilter;
+      let targetSettings = this.eb ? instrument.tmpNoteFilterStart : effect.tmpEqFilterStart;
+      if (targetSettings == null) targetSettings = this.eb ? instrument.noteFilter : effect.eqFilter;
       return targetSettings;
     }
     render(activeMods = false, forceModRender = false) {
-      this.Bc = forceModRender && this.da;
+      this.Ac = forceModRender && this.ca;
       const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-      const effect = instrument.effects[this.gc];
-      if (this.Rb || this.fb || effect != void 0) {
-        const filterSettings = this.Rb ? this.J.song.eqFilter : this.fb ? instrument.noteFilter : effect.eqFilter;
-        let displayMods = activeMods && !this.hc && (forceModRender || !this.na && !this.Ca && !this.da) && this.J.synth.playing;
+      const effect = instrument.effects[this.fc];
+      if (this.Qb || this.eb || effect != void 0) {
+        const filterSettings = this.Qb ? this.J.song.eqFilter : this.eb ? instrument.noteFilter : effect.eqFilter;
+        let displayMods = activeMods && !this.gc && (forceModRender || !this.ma && !this.Ba && !this.ca) && this.J.synth.playing;
         if (displayMods)
           this.Of.style.setProperty("fill", `${ColorConfig.overwritingModSlider}`);
-        else if (!this.hc)
+        else if (!this.gc)
           this.Of.style.setProperty("fill", "currentColor");
-        if (this.ta != filterSettings && !this.Bc) {
-          this.ka = null;
-          this.da = false;
+        if (this.sa != filterSettings && !this.Ac) {
+          this.ja = null;
+          this.ca = false;
         }
-        this.za = filterSettings;
+        this.ya = filterSettings;
         if (displayMods) {
-          this.ta = this.Rb ? this.hl(this.J.song) : this.il(instrument, effect);
-          if (this.Bc)
-            this.ya();
+          this.sa = this.Qb ? this.hl(this.J.song) : this.il(instrument, effect);
+          if (this.Ac)
+            this.xa();
         } else {
-          this.ta = filterSettings;
+          this.sa = filterSettings;
         }
-        if (!this.da) this.hh();
+        if (!this.ca) this.hh();
         let pointTypes = 0;
         let pointFreqs = 0;
         let pointGains = 0;
-        for (let i = 0; i < this.ta.controlPointCount; i++) {
-          const point = this.ta.controlPoints[i];
+        for (let i = 0; i < this.sa.controlPointCount; i++) {
+          const point = this.sa.controlPoints[i];
           pointTypes = pointTypes * 3 /* length */ + point.type;
           pointFreqs = pointFreqs * Config.filterFreqRange + point.freq;
           pointGains = pointGains * Config.filterGainRange + point.gain;
         }
-        if (this.Go != this.Ra || this.Ho != this.ta.controlPointCount || this.Io != pointTypes || this.Jo != pointFreqs || this.Ko != pointGains) {
-          this.Go = this.Ra;
-          this.Ho = this.ta.controlPointCount;
+        if (this.Go != this.Qa || this.Ho != this.sa.controlPointCount || this.Io != pointTypes || this.Jo != pointFreqs || this.Ko != pointGains) {
+          this.Go = this.Qa;
+          this.Ho = this.sa.controlPointCount;
           this.Io = pointTypes;
           this.Jo = pointFreqs;
           this.Ko = pointGains;
@@ -32883,13 +32887,13 @@ You should be redirected to the song at:<br /><br />
     // @ts-ignore
     constructor(_doc, _songEditor, _useNoteFilter, forSong = false, _effectIndex = 0) {
       this.J = _doc;
-      this.Eb = _songEditor;
-      this.fb = _useNoteFilter;
+      this.Db = _songEditor;
+      this.eb = _useNoteFilter;
       this.forSong = forSong;
-      this.gc = _effectIndex;
-      this.ia.addEventListener("click", this.la);
-      this.fa.addEventListener("click", this.ga);
-      this.ja.addEventListener("click", this.ub);
+      this.fc = _effectIndex;
+      this.ha.addEventListener("click", this.ka);
+      this.ea.addEventListener("click", this.fa);
+      this.ia.addEventListener("click", this.tb);
       this.No.addEventListener("click", this.at);
       this.Oo.addEventListener("click", this.bt);
       this.updatePlayButton();
@@ -32900,7 +32904,7 @@ You should be redirected to the song at:<br /><br />
       this.filterEditor.coordText = this.Po;
       this.Mo.children[0].innerHTML = forSong ? "Edit Song EQ Filter" : _useNoteFilter ? "Edit Pre EQ" : "Edit Post EQ";
       let newButton = button6({ class: "no-underline", style: "max-width: 5em;" }, "Main");
-      this.We.appendChild(newButton);
+      this.Ve.appendChild(newButton);
       this.Pf.push(newButton);
       newButton.addEventListener("click", () => {
         this.ih(0);
@@ -32908,32 +32912,32 @@ You should be redirected to the song at:<br /><br />
       for (let i = 1; i < Config.filterMorphCount; i++) {
         let newSubButton = button6({ class: "no-underline", style: "max-width: 2em;" }, "" + i);
         this.Pf.push(newSubButton);
-        this.We.appendChild(newSubButton);
+        this.Ve.appendChild(newSubButton);
         newSubButton.addEventListener("click", () => {
           this.ih(i);
         });
       }
       this.Pf[Config.filterMorphCount - 1].classList.add("last-button");
       this.Pf[0].classList.add("selected-instrument");
-      this.We.style.setProperty("--text-color-lit", colors.primaryNote);
-      this.We.style.setProperty("--text-color-dim", colors.secondaryNote);
-      this.We.style.setProperty("--background-color-lit", colors.primaryChannel);
-      this.We.style.setProperty("--background-color-dim", colors.secondaryChannel);
-      this.jl.addEventListener("keydown", this.qa);
-      this.filterEditor.container.addEventListener("keydown", this.qa);
-      this.container.addEventListener("keydown", this.qa);
-      setTimeout(() => this.ja.focus());
+      this.Ve.style.setProperty("--text-color-lit", colors.primaryNote);
+      this.Ve.style.setProperty("--text-color-dim", colors.secondaryNote);
+      this.Ve.style.setProperty("--background-color-lit", colors.primaryChannel);
+      this.Ve.style.setProperty("--background-color-dim", colors.secondaryChannel);
+      this.jl.addEventListener("keydown", this.pa);
+      this.filterEditor.container.addEventListener("keydown", this.pa);
+      this.container.addEventListener("keydown", this.pa);
+      setTimeout(() => this.ia.focus());
       this.filterEditor.render();
     }
     filterEditor;
     filterData = new FilterSettings();
     startingFilterData = new FilterSettings();
-    me = 0;
-    ja = button6({ style: "width: 55%;", type: "button" });
+    le = 0;
+    ia = button6({ style: "width: 55%;", type: "button" });
     Pf = [];
-    We = div6({ class: "instrument-bar", style: "justify-content: center;" });
-    fa = button6({ class: "cancelButton" });
-    ia = button6({ class: "okayButton", style: "width:45%;" }, "Okay");
+    Ve = div6({ class: "instrument-bar", style: "justify-content: center;" });
+    ea = button6({ class: "cancelButton" });
+    ha = button6({ class: "okayButton", style: "width:45%;" }, "Okay");
     jl = div6({ style: "width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: center;" });
     Mo = div6({}, h26("Edit Filter"));
     No = button6({ style: "width:86px; margin-right: 5px;", class: "copyButton" }, [
@@ -32958,25 +32962,25 @@ You should be redirected to the song at:<br /><br />
       this.Mo,
       div6(
         { style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
-        this.ja
+        this.ia
       ),
-      this.We,
+      this.Ve,
       this.jl,
       div6(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.ia,
+        this.ha,
         this.$s
       ),
-      this.fa
+      this.ea
     );
     ih = (index, useHistory = true, doSwap = true) => {
-      this.Pf[this.me].classList.remove("selected-instrument");
-      if (doSwap) this.filterEditor.swapToSubfilter(this.me, index, useHistory);
-      this.me = index;
+      this.Pf[this.le].classList.remove("selected-instrument");
+      if (doSwap) this.filterEditor.swapToSubfilter(this.le, index, useHistory);
+      this.le = index;
       this.Pf[index].classList.add("selected-instrument");
     };
     at = () => {
-      const filterCopy = this.forSong ? this.J.song.eqFilter.toJsonObject() : this.fb ? this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()].noteFilter.toJsonObject() : this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()].effects[0].eqFilter.toJsonObject();
+      const filterCopy = this.forSong ? this.J.song.eqFilter.toJsonObject() : this.eb ? this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()].noteFilter.toJsonObject() : this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()].effects[0].eqFilter.toJsonObject();
       nsLocalStorage_save("filterCopy", JSON.stringify(filterCopy));
     };
     bt = () => {
@@ -32986,7 +32990,7 @@ You should be redirected to the song at:<br /><br />
         this.filterEditor.swapToSettings(filterCopy, true);
       }
     };
-    qa = (event) => {
+    pa = (event) => {
       if (event.keyCode == 90) {
         let newIdx = this.filterEditor.undo();
         if (newIdx >= 0) {
@@ -33008,39 +33012,39 @@ You should be redirected to the song at:<br /><br />
         }
       }
     };
-    ub = () => {
-      this.Eb.togglePlay();
+    tb = () => {
+      this.Db.togglePlay();
       this.updatePlayButton();
     };
     updatePlayButton() {
       if (this.J.synth.playing) {
-        this.ja.classList.remove("playButton");
-        this.ja.classList.add("pauseButton");
-        this.ja.title = "Pause (Space)";
-        this.ja.innerText = "Pause";
+        this.ia.classList.remove("playButton");
+        this.ia.classList.add("pauseButton");
+        this.ia.title = "Pause (Space)";
+        this.ia.innerText = "Pause";
       } else {
-        this.ja.classList.remove("pauseButton");
-        this.ja.classList.add("playButton");
-        this.ja.title = "Play (Space)";
-        this.ja.innerText = "Play";
+        this.ia.classList.remove("pauseButton");
+        this.ia.classList.add("playButton");
+        this.ia.title = "Play (Space)";
+        this.ia.innerText = "Play";
       }
     }
-    ga = () => {
+    fa = () => {
       this.J.prompt = null;
       this.filterEditor.resetToInitial();
       this.J.undo();
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.la);
-      this.fa.removeEventListener("click", this.ga);
+      this.ha.removeEventListener("click", this.ka);
+      this.ea.removeEventListener("click", this.fa);
       this.container.removeEventListener("keydown", this.whenKeyPressed);
-      this.ja.removeEventListener("click", this.ub);
+      this.ia.removeEventListener("click", this.tb);
     };
     whenKeyPressed = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.la();
+        this.ka();
       } else if (event.keyCode == 32) {
-        this.ub();
+        this.tb();
         event.preventDefault();
       } else if (event.keyCode == 90) {
         this.filterEditor.undo();
@@ -33058,7 +33062,7 @@ You should be redirected to the song at:<br /><br />
         }
       }
     };
-    la = () => {
+    ka = () => {
       this.J.prompt = null;
       this.filterEditor.saveSettings();
     };
@@ -33081,8 +33085,8 @@ You should be redirected to the song at:<br /><br />
         scaleHolder.appendChild(this.Qo[i]);
         console.log("new!");
       }
-      this.ia.addEventListener("click", this.la);
-      this.fa.addEventListener("click", this.ga);
+      this.ha.addEventListener("click", this.ka);
+      this.ea.addEventListener("click", this.fa);
       this.container = div7(
         { class: "prompt noSelection", style: "width: 250px;" },
         h27("Custom Scale"),
@@ -33093,32 +33097,32 @@ You should be redirected to the song at:<br /><br />
         ),
         div7(
           { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-          this.ia
+          this.ha
         ),
-        this.fa
+        this.ea
       );
       this.container.addEventListener("keydown", this.whenKeyPressed);
     }
     _i = [];
     $i = [];
     Qo = [];
-    fa = button7({ class: "cancelButton" });
-    ia = button7({ class: "okayButton", style: "width:45%;" }, "Okay");
+    ea = button7({ class: "cancelButton" });
+    ha = button7({ class: "okayButton", style: "width:45%;" }, "Okay");
     container;
-    ga = () => {
+    fa = () => {
       this.J.undo();
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.la);
-      this.fa.removeEventListener("click", this.ga);
+      this.ha.removeEventListener("click", this.ka);
+      this.ea.removeEventListener("click", this.fa);
       this.container.removeEventListener("keydown", this.whenKeyPressed);
     };
     whenKeyPressed = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.la();
+        this.ka();
       }
     };
-    la = () => {
+    ka = () => {
       for (var i = 1; i < this.$i.length; i++) {
         this._i[i] = this.$i[i].checked;
       }
@@ -33134,17 +33138,17 @@ You should be redirected to the song at:<br /><br />
     // private readonly lastTheme: string | null = nsLocalStorage_get("colorTheme")
     constructor(_doc, _pattern, _pattern2, _pattern3) {
       this.J = _doc;
-      this.sa = _pattern;
+      this.ra = _pattern;
       this.So = _pattern2;
       this.To = _pattern3;
-      this.Fb.addEventListener("change", this.Ye);
+      this.Eb.addEventListener("change", this.Xe);
       this.kl.addEventListener("change", this.ct);
       this.ll.addEventListener("change", this.dt);
-      this.ia.addEventListener("click", this.ga);
-      this.fa.addEventListener("click", this.ga);
-      this.Xe.addEventListener("click", this.Ro);
+      this.ha.addEventListener("click", this.fa);
+      this.ea.addEventListener("click", this.fa);
+      this.We.addEventListener("click", this.Ro);
     }
-    Fb = input6({ type: "file", accept: "image/*", text: "choose editor background image" });
+    Eb = input6({ type: "file", accept: "image/*", text: "choose editor background image" });
     kl = input6({ type: "file", accept: "image/*", text: "choose website background image" });
     ll = input6({ type: "text", value: nsLocalStorage_get("customColors") || `:root {
 	--page-margin: black;
@@ -33263,9 +33267,9 @@ You should be redirected to the song at:<br /><br />
 	--mod-label-primary-text:   black;
 	--disabled-note-primary:    #999;
 	--disabled-note-secondary:  #666; }` });
-    fa = button8({ class: "cancelButton" });
-    ia = button8({ class: "okayButton", style: "width:45%;" }, "Okay");
-    Xe = button8({ style: "height: auto; min-height: var(--button-size);" }, "Reset to defaults");
+    ea = button8({ class: "cancelButton" });
+    ha = button8({ class: "okayButton", style: "width:45%;" }, "Okay");
+    We = button8({ style: "height: auto; min-height: var(--button-size);" }, "Reset to defaults");
     container = div8(
       { class: "prompt noSelection", style: "width: 300px;" },
       h28("Import"),
@@ -33290,7 +33294,7 @@ You should be redirected to the song at:<br /><br />
       p3(
         { style: "text-align: left; margin: 0;" },
         "Editor Background Image:",
-        this.Fb
+        this.Eb
       ),
       p3(
         { style: "text-align: left; margin: 0.5em 0;" },
@@ -33305,15 +33309,15 @@ You should be redirected to the song at:<br /><br />
       this.ll,
       div8(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.Xe
+        this.We
       ),
       div8(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.ia
+        this.ha
       ),
-      this.fa
+      this.ea
     );
-    ga = () => {
+    fa = () => {
       this.J.prompt = null;
       this.J.undo();
       if (doReload) {
@@ -33323,16 +33327,16 @@ You should be redirected to the song at:<br /><br />
       }
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.ga);
-      this.fa.removeEventListener("click", this.ga);
-      this.Xe.removeEventListener("click", this.Ro);
+      this.ha.removeEventListener("click", this.fa);
+      this.ea.removeEventListener("click", this.fa);
+      this.We.removeEventListener("click", this.Ro);
     };
     Ro = () => {
       nsLocalStorage_clear("colorTheme");
       nsLocalStorage_clear("customTheme");
       nsLocalStorage_clear("customTheme2");
       nsLocalStorage_clear("customColors");
-      this.sa.ha.style.backgroundImage = "";
+      this.ra.ga.style.backgroundImage = "";
       document.body.style.backgroundImage = "";
       this.So.style.backgroundImage = "";
       this.To.style.backgroundImage = "";
@@ -33341,7 +33345,7 @@ You should be redirected to the song at:<br /><br />
         secondImage.style.backgroundImage = "";
       }
       doReload = true;
-      this.ga();
+      this.fa();
     };
     dt = () => {
       nsLocalStorage_save("customColors", this.ll.value);
@@ -33349,8 +33353,8 @@ You should be redirected to the song at:<br /><br />
       this.J.colorTheme = "custom";
       doReload = true;
     };
-    Ye = () => {
-      const file = this.Fb.files[0];
+    Xe = () => {
+      const file = this.Eb.files[0];
       if (!file) return;
       const reader = new FileReader();
       reader.addEventListener("load", (event) => {
@@ -33358,7 +33362,7 @@ You should be redirected to the song at:<br /><br />
         nsLocalStorage_save("customTheme", base64);
         const value = `url("${nsLocalStorage_get("customTheme")}")`;
         console.log("setting", value);
-        this.sa.ha.style.backgroundImage = value;
+        this.ra.ga.style.backgroundImage = value;
         console.log("done");
       });
       reader.readAsDataURL(file);
@@ -33397,63 +33401,63 @@ You should be redirected to the song at:<br /><br />
     constructor(input19, _doc, _getChange) {
       this.input = input19;
       this.J = _doc;
-      this.Md = _getChange;
-      input19.addEventListener("input", this.vb);
-      input19.addEventListener("change", this.Ze);
+      this.Ld = _getChange;
+      input19.addEventListener("input", this.ub);
+      input19.addEventListener("change", this.Ye);
     }
-    ma = null;
-    nb = "";
+    la = null;
+    mb = "";
     Qf = "";
     updateValue(value) {
-      this.nb = value;
+      this.mb = value;
       this.input.value = String(value);
     }
-    vb = () => {
-      const continuingProspectiveChange = this.J.lastChangeWas(this.ma);
-      if (!continuingProspectiveChange) this.Qf = this.nb;
-      this.ma = this.Md(this.Qf, this.input.value);
-      this.J.setProspectiveChange(this.ma);
+    ub = () => {
+      const continuingProspectiveChange = this.J.lastChangeWas(this.la);
+      if (!continuingProspectiveChange) this.Qf = this.mb;
+      this.la = this.Ld(this.Qf, this.input.value);
+      this.J.setProspectiveChange(this.la);
     };
-    Ze = () => {
-      this.J.record(this.ma);
-      this.ma = null;
+    Ye = () => {
+      this.J.record(this.la);
+      this.la = null;
     };
   };
   var Slider = class {
     constructor(input19, _doc, _getChange, midTick) {
       this.input = input19;
       this.J = _doc;
-      this.Md = _getChange;
+      this.Ld = _getChange;
       this.container = midTick ? span3({ class: "midTick", style: "position: sticky; width: 61.5%;" }, input19) : span3({ style: "position: sticky;" }, input19);
-      input19.addEventListener("input", this.vb);
-      input19.addEventListener("change", this.Ze);
+      input19.addEventListener("input", this.ub);
+      input19.addEventListener("change", this.Ye);
     }
-    ma = null;
-    nb = 0;
+    la = null;
+    mb = 0;
     Qf = 0;
     container;
     updateValue(value) {
-      this.nb = value;
+      this.mb = value;
       this.input.value = String(value);
     }
-    vb = () => {
-      const continuingProspectiveChange = this.J.lastChangeWas(this.ma);
-      if (!continuingProspectiveChange) this.Qf = this.nb;
-      if (this.Md != null) {
-        this.ma = this.Md(this.Qf, parseFloat(this.input.value));
-        this.J.setProspectiveChange(this.ma);
+    ub = () => {
+      const continuingProspectiveChange = this.J.lastChangeWas(this.la);
+      if (!continuingProspectiveChange) this.Qf = this.mb;
+      if (this.Ld != null) {
+        this.la = this.Ld(this.Qf, parseFloat(this.input.value));
+        this.J.setProspectiveChange(this.la);
       }
     };
     getValueBeforeProspectiveChange() {
       return this.Qf;
     }
     getValue() {
-      return this.nb;
+      return this.mb;
     }
-    Ze = () => {
-      if (this.Md != null) {
-        this.J.record(this.ma);
-        this.ma = null;
+    Ye = () => {
+      if (this.Ld != null) {
+        this.J.record(this.la);
+        this.la = null;
       }
     };
   };
@@ -33477,7 +33481,7 @@ You should be redirected to the song at:<br /><br />
   var EffectEditor = class {
     constructor(_doc, _openPrompt) {
       this.J = _doc;
-      this._ = _openPrompt;
+      this.Z = _openPrompt;
       this.container.addEventListener("change", this.ml);
       this.container.addEventListener("click", this.jh);
       this.container.addEventListener("input", this.nl);
@@ -33524,7 +33528,7 @@ You should be redirected to the song at:<br /><br />
     //public readonly grainRangeNums: HTMLParagraphElement[] = [];
     //public readonly grainSizeNums: HTMLParagraphElement[] = [];
     echoDelayNums = [];
-    wb = null;
+    vb = null;
     Uo = null;
     ml = (event) => {
       const ringModWaveSelectIndex = this.ringModWaveSelects.indexOf(event.target);
@@ -33540,9 +33544,9 @@ You should be redirected to the song at:<br /><br />
       } else if (aliasingBoxIndex != -1) {
         let effect = instrument.effects[aliasingBoxIndex];
         this.J.record(new ChangeAliasing(this.J, effect, this.aliasingBoxes[aliasingBoxIndex].checked));
-      } else if (this.wb != null) {
-        this.J.record(this.wb);
-        this.wb = null;
+      } else if (this.vb != null) {
+        this.J.record(this.vb);
+        this.vb = null;
       }
     };
     jh = (event) => {
@@ -33634,7 +33638,7 @@ You should be redirected to the song at:<br /><br />
           const eqFilterEditor = new FilterEditor(this.J, false, false, false, effectIndex);
           const eqFilterSimpleCutSlider = new Slider(HTML.input({ value: effect.eqFilterSimpleCut, type: "range", min: 0, max: Config.filterSimpleCutRange - 1, step: 1, style: "margin: 0;" }), this.J, (oldValue, newValue) => new ChangeEQFilterSimpleCut(this.J, effect, newValue), false);
           const eqFilterSimplePeakSlider = new Slider(HTML.input({ value: effect.eqFilterSimplePeak, type: "range", min: 0, max: Config.filterSimplePeakRange - 1, step: 1, style: "margin: 0;" }), this.J, (oldValue, newValue) => new ChangeEQFilterSimplePeak(this.J, effect, newValue), false);
-          const eqFilterZoom = HTML.button({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px; text-align: center; font-size: smaller;", onclick: () => this._("customEQFilterSettings", effectIndex) }, "+");
+          const eqFilterZoom = HTML.button({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px; text-align: center; font-size: smaller;", onclick: () => this.Z("customEQFilterSettings", effectIndex) }, "+");
           setSelectedValue(ringModWaveSelect, effect.ringModWaveformIndex);
           setSelectedValue(panModeSelect, effect.panMode);
           panSliderInputBox.value = effect.pan + "";
@@ -33645,44 +33649,44 @@ You should be redirected to the song at:<br /><br />
           ringModHzNum.innerHTML = calculateRingModHertz(effect.ringModulationHz / (Config.ringModHzRange - 1)) + " Hz";
           echoDelayNum.innerHTML = Math.round((effect.echoDelay + 1) * Config.echoDelayStepTicks / (Config.ticksPerPart * Config.partsPerBeat) * 1e3) / 1e3 + " beat(s)";
           const effectButtonsRow = HTML.div({ class: "selectRow", style: `padding-left: 12.5%; max-width: 75%; height: 80%; padding-top: 0.2em;` }, effectButtonsText, moveupButton, movedownButton, minimizeButton, deleteButton);
-          const chorusRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("chorus") }, "Chorus:"), chorusSlider.container);
-          const reverbRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("reverb") }, "Reverb:"), reverbSlider.container);
-          const flangerRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("flanger") }, "Flanger:"), flangerSlider.container);
-          const flangerSpeedRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("flangerSpeed") }, "Speed:"), flangerSpeedSlider.container);
-          const flangerDepthRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("flangerDepth") }, "Depth:"), flangerDepthSlider.container);
-          const flangerFeedbackRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("flangerFeedback") }, "Feedback:"), flangerFeedbackSlider.container);
-          const ringModWaveRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("ringModHz") }, "Wave:"), HTML.div({ class: "selectContainer" }, ringModWaveSelect));
-          const ringModRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("ringMod") }, "Ring Mod:"), ringModSlider.container);
-          const ringModHzRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("ringModHz") }, "Hertz:"), HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, ringModHzNum), ringModHzSlider.container);
-          const granularRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("granular") }, "Granular:"), granularSlider.container);
+          const chorusRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("chorus") }, "Chorus:"), chorusSlider.container);
+          const reverbRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("reverb") }, "Reverb:"), reverbSlider.container);
+          const flangerRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("flanger") }, "Flanger:"), flangerSlider.container);
+          const flangerSpeedRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("flangerSpeed") }, "Speed:"), flangerSpeedSlider.container);
+          const flangerDepthRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("flangerDepth") }, "Depth:"), flangerDepthSlider.container);
+          const flangerFeedbackRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("flangerFeedback") }, "Feedback:"), flangerFeedbackSlider.container);
+          const ringModWaveRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("ringModHz") }, "Wave:"), HTML.div({ class: "selectContainer" }, ringModWaveSelect));
+          const ringModRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("ringMod") }, "Ring Mod:"), ringModSlider.container);
+          const ringModHzRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("ringModHz") }, "Hertz:"), HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, ringModHzNum), ringModHzSlider.container);
+          const granularRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("granular") }, "Granular:"), granularSlider.container);
           const grainSizeRow = HTML.div(
             { class: "selectRow", style: "display: none;" },
-            HTML.span({ class: "tip", onclick: () => this._("grainSize") }, "Grain Size:"),
+            HTML.span({ class: "tip", onclick: () => this.Z("grainSize") }, "Grain Size:"),
             /*HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, grainSizeNum),*/
             grainSizeSlider.container
           );
-          const grainAmountsRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("grainAmounts") }, "Grain Amount:"), grainAmountsSlider.container);
+          const grainAmountsRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("grainAmounts") }, "Grain Amount:"), grainAmountsSlider.container);
           const grainRangeRow = HTML.div(
             { class: "selectRow", style: "display: none;" },
-            HTML.span({ class: "tip", onclick: () => this._("grainRange") }, "Grain Range:"),
+            HTML.span({ class: "tip", onclick: () => this.Z("grainRange") }, "Grain Range:"),
             /*HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, grainRangeNum),*/
             grainRangeSlider.container
           );
-          const echoSustainRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("echo") }, "Echo:"), echoSustainSlider.container);
-          const echoDelayRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("echoDelay") }, "Echo Delay:"), HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, echoDelayNum), echoDelaySlider.container);
-          const echoPingPongRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("echoDelay") }, "Ping Pong:"), echoPingPongSlider.container);
-          const gainRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.div({}, HTML.span({ class: "tip", tabindex: "0", style: "height:1em; font-size: smaller;", onclick: () => this._("gain") }, "Gain: "), HTML.div({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, gainSliderInputBox)), gainSlider.container);
-          const panRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.div({}, HTML.span({ class: "tip", tabindex: "0", style: "height:1em; font-size: smaller;", onclick: () => this._("pan") }, "Pan: "), HTML.div({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, panSliderInputBox)), panSlider.container);
-          const panDelayRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("panDelay") }, "Pan Delay:"), panDelaySlider.container);
-          const panModeRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("panMode") }, "Pan Mode:"), HTML.div({ class: "selectContainer" }, panModeSelect));
-          const distortionRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("distortion") }, "Distortion:"), distortionSlider.container);
-          const aliasingRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("aliasing") }, "Aliasing:"), aliasingBox);
-          const bitcrusherQuantizationRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("bitcrusherQuantization") }, "Bit Crush:"), bitcrusherQuantizationSlider.container);
-          const bitcrusherFreqRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("bitcrusherFreq") }, "Freq Crush:"), bitcrusherFreqSlider.container);
-          const eqFilterButtonsRow = HTML.div({ class: "selectRow", style: "display: none; padding-top: 4px; margin-bottom: 0px;" }, HTML.span({ style: "font-size: x-small;", class: "tip", onclick: () => this._("filterType") }, "Post EQ Type:"), HTML.div({ class: "instrument-bar" }, eqFilterSimpleButton, eqFilterAdvancedButton));
-          const eqFilterEditorRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("eqFilter") }, "Post EQ:"), eqFilterZoom, eqFilterEditor.container);
-          const eqFilterSimpleCutRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("filterCutoff") }, "Filter Cut:"), eqFilterSimpleCutSlider.container);
-          const eqFilterSimplePeakRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this._("filterPeak") }, "Filter Peak:"), eqFilterSimplePeakSlider.container);
+          const echoSustainRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("echo") }, "Echo:"), echoSustainSlider.container);
+          const echoDelayRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("echoDelay") }, "Echo Delay:"), HTML.div({ style: `color: ${ColorConfig.secondaryText}; ` }, echoDelayNum), echoDelaySlider.container);
+          const echoPingPongRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("echoDelay") }, "Ping Pong:"), echoPingPongSlider.container);
+          const gainRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.div({}, HTML.span({ class: "tip", tabindex: "0", style: "height:1em; font-size: smaller;", onclick: () => this.Z("gain") }, "Gain: "), HTML.div({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, gainSliderInputBox)), gainSlider.container);
+          const panRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.div({}, HTML.span({ class: "tip", tabindex: "0", style: "height:1em; font-size: smaller;", onclick: () => this.Z("pan") }, "Pan: "), HTML.div({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, panSliderInputBox)), panSlider.container);
+          const panDelayRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("panDelay") }, "Pan Delay:"), panDelaySlider.container);
+          const panModeRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("panMode") }, "Pan Mode:"), HTML.div({ class: "selectContainer" }, panModeSelect));
+          const distortionRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("distortion") }, "Distortion:"), distortionSlider.container);
+          const aliasingRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("aliasing") }, "Aliasing:"), aliasingBox);
+          const bitcrusherQuantizationRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("bitcrusherQuantization") }, "Bit Crush:"), bitcrusherQuantizationSlider.container);
+          const bitcrusherFreqRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("bitcrusherFreq") }, "Freq Crush:"), bitcrusherFreqSlider.container);
+          const eqFilterButtonsRow = HTML.div({ class: "selectRow", style: "display: none; padding-top: 4px; margin-bottom: 0px;" }, HTML.span({ style: "font-size: x-small;", class: "tip", onclick: () => this.Z("filterType") }, "Post EQ Type:"), HTML.div({ class: "instrument-bar" }, eqFilterSimpleButton, eqFilterAdvancedButton));
+          const eqFilterEditorRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("eqFilter") }, "Post EQ:"), eqFilterZoom, eqFilterEditor.container);
+          const eqFilterSimpleCutRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("filterCutoff") }, "Filter Cut:"), eqFilterSimpleCutSlider.container);
+          const eqFilterSimplePeakRow = HTML.div({ class: "selectRow", style: "display: none;" }, HTML.span({ class: "tip", onclick: () => this.Z("filterPeak") }, "Filter Peak:"), eqFilterSimplePeakSlider.container);
           if (this.renderEffectRows[effectIndex] == null) this.renderEffectRows[effectIndex] = true;
           if (this.renderEffectRows[effectIndex]) {
             if (effect.type == 0 /* reverb */) {
@@ -33859,7 +33863,7 @@ You should be redirected to the song at:<br /><br />
     constructor(_doc, _extraSettingsDropdown, _openPrompt) {
       this.J = _doc;
       this.ft = _extraSettingsDropdown;
-      this._ = _openPrompt;
+      this.Z = _openPrompt;
       this.container.addEventListener("change", this.ml);
       this.container.addEventListener("click", this.jh);
       this.container.addEventListener("input", this.nl);
@@ -33913,7 +33917,7 @@ You should be redirected to the song at:<br /><br />
     oh = [];
     ol = [];
     bp = 0;
-    wb = null;
+    vb = null;
     ml = (event) => {
       const targetSelectIndex = this.kh.indexOf(event.target);
       const envelopeSelectIndex = this.lh.indexOf(event.target);
@@ -33952,9 +33956,9 @@ You should be redirected to the song at:<br /><br />
       } else if (discreterIndex != -1) {
         this.J.record(new ChangeDiscreteEnvelope(this.J, this.nh[discreterIndex].checked, discreterIndex));
       } else if (startBoxIndex != -1 || endBoxIndex != -1 || startSliderIndex != -1 || endSliderIndex != -1 || lowerBoundBoxIndex != -1 || upperBoundBoxIndex != -1 || randomStepsBoxIndex != -1 || randomSeedBoxIndex != -1 || randomStepsSliderIndex != -1 || randomSeedSliderIndex != -1 || LFOStepsBoxIndex != -1 || LFOStepsSliderIndex != -1) {
-        if (this.wb != null) {
-          this.J.record(this.wb);
-          this.wb = null;
+        if (this.vb != null) {
+          this.J.record(this.vb);
+          this.vb = null;
         }
       }
     };
@@ -33988,29 +33992,29 @@ You should be redirected to the song at:<br /><br />
       const LFOStepsSliderIndex = this.oh.indexOf(event.target);
       const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
       if (startBoxIndex != -1) {
-        this.wb = new ChangeEnvelopePitchStart(this.J, parseInt(this.pitchStartBoxes[startBoxIndex].value), startBoxIndex);
+        this.vb = new ChangeEnvelopePitchStart(this.J, parseInt(this.pitchStartBoxes[startBoxIndex].value), startBoxIndex);
       } else if (endBoxIndex != -1) {
-        this.wb = new ChangeEnvelopePitchEnd(this.J, parseInt(this.pitchEndBoxes[endBoxIndex].value), endBoxIndex);
+        this.vb = new ChangeEnvelopePitchEnd(this.J, parseInt(this.pitchEndBoxes[endBoxIndex].value), endBoxIndex);
       } else if (startSliderIndex != -1) {
-        this.wb = new ChangeEnvelopePitchStart(this.J, parseInt(this.Sf[startSliderIndex].value), startSliderIndex);
+        this.vb = new ChangeEnvelopePitchStart(this.J, parseInt(this.Sf[startSliderIndex].value), startSliderIndex);
       } else if (endSliderIndex != -1) {
-        this.wb = new ChangeEnvelopePitchEnd(this.J, parseInt(this.Tf[endSliderIndex].value), endSliderIndex);
+        this.vb = new ChangeEnvelopePitchEnd(this.J, parseInt(this.Tf[endSliderIndex].value), endSliderIndex);
       } else if (lowerBoundBoxIndex != -1) {
-        this.wb = new ChangeEnvelopeLowerBound(this.J, instrument.envelopes[lowerBoundBoxIndex].perEnvelopeLowerBound, parseFloat(this.perEnvelopeLowerBoundBoxes[lowerBoundBoxIndex].value), lowerBoundBoxIndex);
+        this.vb = new ChangeEnvelopeLowerBound(this.J, instrument.envelopes[lowerBoundBoxIndex].perEnvelopeLowerBound, parseFloat(this.perEnvelopeLowerBoundBoxes[lowerBoundBoxIndex].value), lowerBoundBoxIndex);
       } else if (upperBoundBoxIndex != -1) {
-        this.wb = new ChangeEnvelopeUpperBound(this.J, instrument.envelopes[upperBoundBoxIndex].perEnvelopeUpperBound, parseFloat(this.perEnvelopeUpperBoundBoxes[upperBoundBoxIndex].value), upperBoundBoxIndex);
+        this.vb = new ChangeEnvelopeUpperBound(this.J, instrument.envelopes[upperBoundBoxIndex].perEnvelopeUpperBound, parseFloat(this.perEnvelopeUpperBoundBoxes[upperBoundBoxIndex].value), upperBoundBoxIndex);
       } else if (randomStepsBoxIndex != -1) {
-        this.wb = new ChangeRandomEnvelopeSteps(this.J, parseFloat(this.randomStepsBoxes[randomStepsBoxIndex].value), randomStepsBoxIndex);
+        this.vb = new ChangeRandomEnvelopeSteps(this.J, parseFloat(this.randomStepsBoxes[randomStepsBoxIndex].value), randomStepsBoxIndex);
       } else if (randomSeedBoxIndex != -1) {
-        this.wb = new ChangeRandomEnvelopeSeed(this.J, parseFloat(this.randomSeedBoxes[randomSeedBoxIndex].value), randomSeedBoxIndex);
+        this.vb = new ChangeRandomEnvelopeSeed(this.J, parseFloat(this.randomSeedBoxes[randomSeedBoxIndex].value), randomSeedBoxIndex);
       } else if (randomStepsSliderIndex != -1) {
-        this.wb = new ChangeRandomEnvelopeSteps(this.J, parseFloat(this.Uf[randomStepsSliderIndex].value), randomStepsSliderIndex);
+        this.vb = new ChangeRandomEnvelopeSteps(this.J, parseFloat(this.Uf[randomStepsSliderIndex].value), randomStepsSliderIndex);
       } else if (randomSeedSliderIndex != -1) {
-        this.wb = new ChangeRandomEnvelopeSeed(this.J, parseFloat(this.Vf[randomSeedSliderIndex].value), randomSeedSliderIndex);
+        this.vb = new ChangeRandomEnvelopeSeed(this.J, parseFloat(this.Vf[randomSeedSliderIndex].value), randomSeedSliderIndex);
       } else if (LFOStepsBoxIndex != -1) {
-        this.wb = new ChangeRandomEnvelopeSteps(this.J, parseFloat(this.LFOStepsBoxes[LFOStepsBoxIndex].value), LFOStepsBoxIndex);
+        this.vb = new ChangeRandomEnvelopeSteps(this.J, parseFloat(this.LFOStepsBoxes[LFOStepsBoxIndex].value), LFOStepsBoxIndex);
       } else if (LFOStepsSliderIndex != -1) {
-        this.wb = new ChangeRandomEnvelopeSteps(this.J, parseFloat(this.oh[LFOStepsSliderIndex].value), LFOStepsSliderIndex);
+        this.vb = new ChangeRandomEnvelopeSteps(this.J, parseFloat(this.oh[LFOStepsSliderIndex].value), LFOStepsSliderIndex);
       }
     };
     cp(target, index) {
@@ -34207,8 +34211,8 @@ You should be redirected to the song at:<br /><br />
         const pitchStartNoteBox = HTML.input({ value: instrument.envelopes[envelopeIndex].pitchEnvelopeStart ? instrument.envelopes[envelopeIndex].pitchEnvelopeStart : 0, style: "width: 4em; font-size: 80%; ", id: "startNoteBox", type: "number", step: "1", min: "0", max: instrument.isNoiseInstrument ? Config.drumCount - 1 : Config.maxPitch });
         const pitchEndNoteSlider = HTML.input({ value: instrument.envelopes[envelopeIndex].pitchEnvelopeEnd ? instrument.envelopes[envelopeIndex].pitchEnvelopeEnd : instrument.isNoiseInstrument ? Config.drumCount - 1 : Config.maxPitch, style: "width: 113px; margin-left: 0px;", type: "range", min: "0", max: instrument.isNoiseInstrument ? Config.drumCount - 1 : Config.maxPitch, step: "1" });
         const pitchEndNoteBox = HTML.input({ value: instrument.envelopes[envelopeIndex].pitchEnvelopeEnd ? instrument.envelopes[envelopeIndex].pitchEnvelopeEnd : instrument.isNoiseInstrument ? Config.drumCount - 1 : Config.maxPitch, style: "width: 4em; font-size: 80%; ", id: "endNoteBox", type: "number", step: "1", min: "0", max: instrument.isNoiseInstrument ? Config.drumCount - 1 : Config.maxPitch });
-        const pitchStartNoteDisplay = HTML.span({ class: "tip", style: `width:68px; flex:1; height:1em; font-size: smaller;`, onclick: () => this._("pitchRange") }, "Start " + this.cj(parseInt(pitchStartNoteBox.value), instrument.isNoiseInstrument) + ": ");
-        const pitchEndNoteDisplay = HTML.span({ class: "tip", style: `width:68px; flex:1; height:1em; font-size: smaller;`, onclick: () => this._("pitchRange") }, "End " + this.cj(parseInt(pitchEndNoteBox.value), instrument.isNoiseInstrument) + ": ");
+        const pitchStartNoteDisplay = HTML.span({ class: "tip", style: `width:68px; flex:1; height:1em; font-size: smaller;`, onclick: () => this.Z("pitchRange") }, "Start " + this.cj(parseInt(pitchStartNoteBox.value), instrument.isNoiseInstrument) + ": ");
+        const pitchEndNoteDisplay = HTML.span({ class: "tip", style: `width:68px; flex:1; height:1em; font-size: smaller;`, onclick: () => this.Z("pitchRange") }, "End " + this.cj(parseInt(pitchEndNoteBox.value), instrument.isNoiseInstrument) + ": ");
         const pitchStartBoxWrapper = HTML.div({ style: "flex: 1; display: flex; flex-direction: column; align-items: center;" }, pitchStartNoteDisplay, pitchStartNoteBox);
         const pitchEndBoxWrapper = HTML.div({ style: "flex: 1; display: flex; flex-direction: column; align-items: center;" }, pitchEndNoteDisplay, pitchEndNoteBox);
         const pitchStartNoteWrapper = HTML.div({ style: "margin-top: 3px; flex:1; display:flex; flex-direction: row; align-items:center; justify-content:right;" }, pitchStartBoxWrapper, pitchStartNoteSlider);
@@ -34219,8 +34223,8 @@ You should be redirected to the song at:<br /><br />
         const randomStepsSlider = HTML.input({ value: instrument.envelopes[envelopeIndex].steps, type: "range", min: 1, max: Config.randomEnvelopeStepsMax, step: 1, style: "width: 113px; margin-left: 0px;" });
         const randomSeedBox = HTML.input({ value: instrument.envelopes[envelopeIndex].seed, type: "number", min: 1, max: Config.randomEnvelopeSeedMax, step: 1, style: "width: 4em; font-size: 80%; " });
         const randomSeedSlider = HTML.input({ value: instrument.envelopes[envelopeIndex].seed, type: "range", min: 1, max: Config.randomEnvelopeSeedMax, step: 1, style: "width: 113px; margin-left: 0px;" });
-        const randomStepsBoxWrapper = HTML.div({ style: "flex: 1; display: flex; flex-direction: column; align-items: center;" }, HTML.span({ class: "tip", style: `width:68px; flex:1; height:1em; font-size: smaller;`, onclick: () => this._("randomSteps") }, "Steps: "), randomStepsBox);
-        const randomSeedBoxWrapper = HTML.div({ style: "flex: 1; display: flex; flex-direction: column; align-items: center;" }, HTML.span({ class: "tip", style: `width:68px; flex:1; height:1em; font-size: smaller;`, onclick: () => this._("randomSeed") }, "Seed: "), randomSeedBox);
+        const randomStepsBoxWrapper = HTML.div({ style: "flex: 1; display: flex; flex-direction: column; align-items: center;" }, HTML.span({ class: "tip", style: `width:68px; flex:1; height:1em; font-size: smaller;`, onclick: () => this.Z("randomSteps") }, "Steps: "), randomStepsBox);
+        const randomSeedBoxWrapper = HTML.div({ style: "flex: 1; display: flex; flex-direction: column; align-items: center;" }, HTML.span({ class: "tip", style: `width:68px; flex:1; height:1em; font-size: smaller;`, onclick: () => this.Z("randomSeed") }, "Seed: "), randomSeedBox);
         const randomStepsWrapper = HTML.div({ style: "margin-top: 3px; flex:1; display:flex; flex-direction: row; align-items:center; justify-content:right;" }, randomStepsBoxWrapper, randomStepsSlider);
         const randomSeedWrapper = HTML.div({ style: "margin-top: 3px; flex:1; display:flex; flex-direction: row; align-items:center; justify-content:right;" }, randomSeedBoxWrapper, randomSeedSlider);
         const randomTypeSelect = HTML.select({ style: "width: 115px;" });
@@ -34228,36 +34232,36 @@ You should be redirected to the song at:<br /><br />
         for (let waveform = 0; waveform < 4 /* length */; waveform++) {
           randomTypeSelect.appendChild(HTML.option({ value: waveform }, randomNames[waveform]));
         }
-        const randomTypeSelectWrapper = HTML.div({ class: "editor-controls selectContainer", style: "margin-top: 3px; flex:1; display:flex; flex-direction: row; align-items:center; justify-content:right;" }, HTML.span({ style: "font-size: smaller; margin-right: 35px;", class: "tip", onclick: () => this._("randomEnvelopeType") }, "Type: "), randomTypeSelect);
+        const randomTypeSelectWrapper = HTML.div({ class: "editor-controls selectContainer", style: "margin-top: 3px; flex:1; display:flex; flex-direction: row; align-items:center; justify-content:right;" }, HTML.span({ style: "font-size: smaller; margin-right: 35px;", class: "tip", onclick: () => this.Z("randomEnvelopeType") }, "Type: "), randomTypeSelect);
         const extraRandomSettingsGroup = HTML.div({ class: "editor-controls", style: "flex-direction:column; align-items:center;" }, randomTypeSelectWrapper, randomStepsWrapper, randomSeedWrapper);
         extraRandomSettingsGroup.style.display = "none";
         const waveformSelect = HTML.select({ style: "width: 115px;" });
         const LFOStepsBox = HTML.input({ value: instrument.envelopes[envelopeIndex].steps, type: "number", min: 1, max: Config.randomEnvelopeStepsMax, step: 1, style: "width: 4em; font-size: 80%; " });
         const LFOStepsSlider = HTML.input({ value: instrument.envelopes[envelopeIndex].steps, type: "range", min: 1, max: Config.randomEnvelopeStepsMax, step: 1, style: "width: 113px; margin-left: 0px;" });
-        const LFOStepsBoxWrapper = HTML.div({ style: "flex: 1; display: flex; flex-direction: column; align-items: center;" }, HTML.span({ class: "tip", style: `width:68px; flex:1; height:1em; font-size: smaller;`, onclick: () => this._("randomSteps") }, "Steps: "), LFOStepsBox);
+        const LFOStepsBoxWrapper = HTML.div({ style: "flex: 1; display: flex; flex-direction: column; align-items: center;" }, HTML.span({ class: "tip", style: `width:68px; flex:1; height:1em; font-size: smaller;`, onclick: () => this.Z("randomSteps") }, "Steps: "), LFOStepsBox);
         const LFOStepsWrapper = HTML.div({ style: "margin-top: 3px; flex:1; display:flex; flex-direction: row; align-items:center; justify-content:right;" }, LFOStepsBoxWrapper, LFOStepsSlider);
         const wavenames = ["sine", "square", "triangle", "sawtooth", "trapezoid", "stepped saw", "stepped tri"];
         for (let waveform = 0; waveform < 7 /* length */; waveform++) {
           waveformSelect.appendChild(HTML.option({ value: waveform }, wavenames[waveform]));
         }
-        const waveformWrapper = HTML.div({ class: "editor-controls selectContainer", style: "margin-top: 3px; flex:1; display:flex; flex-direction: row; align-items:center; justify-content:right;" }, HTML.span({ style: "font-size: smaller; margin-right: 10px;", class: "tip", onclick: () => this._("lfoEnvelopeWaveform") }, "Waveform: "), waveformSelect);
+        const waveformWrapper = HTML.div({ class: "editor-controls selectContainer", style: "margin-top: 3px; flex:1; display:flex; flex-direction: row; align-items:center; justify-content:right;" }, HTML.span({ style: "font-size: smaller; margin-right: 10px;", class: "tip", onclick: () => this.Z("lfoEnvelopeWaveform") }, "Waveform: "), waveformSelect);
         const extraLFOSettingsGroup = HTML.div({ class: "editor-controls", style: "margin-top: 3px; flex:1; display:flex; flex-direction: column; align-items:center; justify-content:right;" }, waveformWrapper, LFOStepsWrapper);
         extraLFOSettingsGroup.style.display = "none";
         const perEnvelopeSpeedSlider = new Slider(HTML.input({ oninput: () => this.updateSpeedDisplay(envelopeIndex), style: "margin: 0; width: 113px", type: "range", min: 0, max: Config.perEnvelopeSpeedIndices.length - 1, value: _EnvelopeEditor.convertIndexSpeed(instrument.envelopes[envelopeIndex].perEnvelopeSpeed, "index"), step: "1" }), this.J, (oldSpeed, newSpeed) => new ChangePerEnvelopeSpeed(this.J, _EnvelopeEditor.convertIndexSpeed(oldSpeed, "speed"), _EnvelopeEditor.convertIndexSpeed(newSpeed, "speed"), envelopeIndex), false);
-        const perEnvelopeSpeedDisplay = HTML.span({ class: "tip", style: `width:58px; flex:1; height:1em; font-size: smaller; margin-left: 10px;`, onclick: () => this._("perEnvelopeSpeed") }, "Spd: x" + prettyNumber(_EnvelopeEditor.convertIndexSpeed(perEnvelopeSpeedSlider.getValueBeforeProspectiveChange(), "speed")));
+        const perEnvelopeSpeedDisplay = HTML.span({ class: "tip", style: `width:58px; flex:1; height:1em; font-size: smaller; margin-left: 10px;`, onclick: () => this.Z("perEnvelopeSpeed") }, "Spd: x" + prettyNumber(_EnvelopeEditor.convertIndexSpeed(perEnvelopeSpeedSlider.getValueBeforeProspectiveChange(), "speed")));
         const perEnvelopeSpeedWrapper = HTML.div({ style: "margin-top: 3px; flex:1; display:flex; flex-direction: row; align-items:center; justify-content:right;" }, perEnvelopeSpeedDisplay, perEnvelopeSpeedSlider.container);
         const perEnvelopeSpeedGroup = HTML.div({ class: "editor-controls", style: "flex-direction:column; align-items:center;" }, perEnvelopeSpeedWrapper);
         const lowerBoundBox = HTML.input({ value: instrument.envelopes[envelopeIndex].perEnvelopeLowerBound, type: "number", min: Config.perEnvelopeBoundMin, max: Config.perEnvelopeBoundMax, step: 0.1, style: "width: 4em; font-size: 80%; " });
         const lowerBoundSlider = new Slider(HTML.input({ value: instrument.envelopes[envelopeIndex].perEnvelopeLowerBound, type: "range", min: Config.perEnvelopeBoundMin, max: Config.perEnvelopeBoundMax, step: 0.1, style: "width: 113px; margin-left: 0px;" }), this.J, (oldBound, newBound) => new ChangeEnvelopeLowerBound(this.J, oldBound, newBound, envelopeIndex), false);
         const upperBoundBox = HTML.input({ value: instrument.envelopes[envelopeIndex].perEnvelopeUpperBound, type: "number", min: Config.perEnvelopeBoundMin, max: Config.perEnvelopeBoundMax, step: 0.1, style: "width: 4em; font-size: 80%; " });
         const upperBoundSlider = new Slider(HTML.input({ value: instrument.envelopes[envelopeIndex].perEnvelopeUpperBound, type: "range", min: Config.perEnvelopeBoundMin, max: Config.perEnvelopeBoundMax, step: 0.1, style: "width: 113px; margin-left: 0px;" }), this.J, (oldBound, newBound) => new ChangeEnvelopeUpperBound(this.J, oldBound, newBound, envelopeIndex), false);
-        const lowerBoundBoxWrapper = HTML.div({ style: "flex: 1; display: flex; flex-direction: column; align-items: center;" }, HTML.span({ class: "tip", style: `width:68px; flex:1; height:1em; font-size: smaller;`, onclick: () => this._("envelopeRange") }, "Lwr bnd: "), lowerBoundBox);
-        const upperBoundBoxWrapper = HTML.div({ style: "flex: 1; display: flex; flex-direction: column; align-items: center;" }, HTML.span({ class: "tip", style: `width:68px; flex:1; height:1em; font-size: smaller;`, onclick: () => this._("envelopeRange") }, "Upr bnd: "), upperBoundBox);
+        const lowerBoundBoxWrapper = HTML.div({ style: "flex: 1; display: flex; flex-direction: column; align-items: center;" }, HTML.span({ class: "tip", style: `width:68px; flex:1; height:1em; font-size: smaller;`, onclick: () => this.Z("envelopeRange") }, "Lwr bnd: "), lowerBoundBox);
+        const upperBoundBoxWrapper = HTML.div({ style: "flex: 1; display: flex; flex-direction: column; align-items: center;" }, HTML.span({ class: "tip", style: `width:68px; flex:1; height:1em; font-size: smaller;`, onclick: () => this.Z("envelopeRange") }, "Upr bnd: "), upperBoundBox);
         const lowerBoundWrapper = HTML.div({ style: "margin-top: 3px; flex:1; display:flex; flex-direction: row; align-items:center; justify-content:right;" }, lowerBoundBoxWrapper, lowerBoundSlider.container);
         const upperBoundWrapper = HTML.div({ style: "margin-top: 3px; flex:1; display:flex; flex-direction: row; align-items:center; justify-content:right;" }, upperBoundBoxWrapper, upperBoundSlider.container);
         const invertBox = HTML.input({ "checked": instrument.envelopes[envelopeIndex].inverse, type: "checkbox", style: "width: 1em; padding: 0.5em;", id: "invertBox" });
         const discreteEnvelopeBox = HTML.input({ "checked": instrument.envelopes[envelopeIndex].discrete, type: "checkbox", style: "width: 1em; padding: 0.5em;" });
-        const checkboxWrapper = HTML.div({ style: "margin: 0.1em; align-items:center; justify-content:right;" }, HTML.span({ class: "tip", onclick: () => this._("envelopeInvert") }, "\u2023 Invert: "), invertBox, HTML.span({ class: "tip", style: "margin-left:4px;", onclick: () => this._("discreteEnvelope") }, "\u2023 Discrete:"), discreteEnvelopeBox);
+        const checkboxWrapper = HTML.div({ style: "margin: 0.1em; align-items:center; justify-content:right;" }, HTML.span({ class: "tip", onclick: () => this.Z("envelopeInvert") }, "\u2023 Invert: "), invertBox, HTML.span({ class: "tip", style: "margin-left:4px;", onclick: () => this.Z("discreteEnvelope") }, "\u2023 Discrete:"), discreteEnvelopeBox);
         const envelopeCopyButton = HTML.button({ style: "margin-left:0px; max-width:86px; width: 86px; height: 26px; padding-left: 22px", class: "copyButton", title: "Copy Envelope" }, [
           "Copy Env",
           // Copy icon:
@@ -34440,38 +34444,38 @@ You should be redirected to the song at:<br /><br />
   var EuclideanRhythmPrompt = class {
     constructor(_doc) {
       this.J = _doc;
-      this.Zb = this.J.bar;
-      this.Gb = this.Zb;
-      this.Wf = Config.barCountMax - this.Zb;
-      this.pe.max = this.Wf + "";
-      this.Nd = this.J.song.pitchChannelCount + this.J.song.noiseChannelCount - 1;
-      this.$e.max = this.Nd + 1 + "";
-      const defaultSteps = Math.max(this.dj, Math.min(this.nd, this.J.song.beatsPerBar));
+      this.Yb = this.J.bar;
+      this.Fb = this.Yb;
+      this.Wf = Config.barCountMax - this.Yb;
+      this.oe.max = this.Wf + "";
+      this.Md = this.J.song.pitchChannelCount + this.J.song.noiseChannelCount - 1;
+      this._e.max = this.Md + 1 + "";
+      const defaultSteps = Math.max(this.dj, Math.min(this.md, this.J.song.beatsPerBar));
       const defaultPulses = Math.max(0, Math.min(defaultSteps, 5));
-      this.ua = [{
+      this.ta = [{
         steps: defaultSteps,
         pulses: defaultPulses,
         rotation: 0,
         stepSizeNumerator: 1,
         stepSizeDenominator: 4,
-        channel: Math.max(0, Math.min(this.Nd, this.J.channel)),
+        channel: Math.max(0, Math.min(this.Md, this.J.channel)),
         pitch: 0,
         invert: false,
         generateFadingNotes: false
       }];
       if (this.J.selection.boxSelectionActive) {
-        this.Zb = this.J.selection.boxSelectionBar;
-        this.Gb = this.Zb;
-        this.Lb = Math.max(1, Math.min(this.Wf, this.J.selection.boxSelectionWidth));
-        this.ua[0].channel = Math.max(0, Math.min(this.Nd, this.J.selection.boxSelectionChannel));
+        this.Yb = this.J.selection.boxSelectionBar;
+        this.Fb = this.Yb;
+        this.Kb = Math.max(1, Math.min(this.Wf, this.J.selection.boxSelectionWidth));
+        this.ta[0].channel = Math.max(0, Math.min(this.Md, this.J.selection.boxSelectionChannel));
         for (let i = 1; i < this.J.selection.boxSelectionHeight; i++) {
-          this.ua.push({
+          this.ta.push({
             steps: defaultSteps,
             pulses: defaultPulses,
             rotation: 0,
             stepSizeNumerator: 1,
             stepSizeDenominator: 4,
-            channel: Math.max(0, Math.min(this.Nd, this.J.selection.boxSelectionChannel + i)),
+            channel: Math.max(0, Math.min(this.Md, this.J.selection.boxSelectionChannel + i)),
             pitch: 0,
             invert: false,
             generateFadingNotes: false
@@ -34485,76 +34489,76 @@ You should be redirected to the song at:<br /><br />
             let parsedSequences = [];
             for (let rawSequence of rawSequences) {
               parsedSequences.push({
-                steps: Math.max(this.dj, Math.min(this.nd, rawSequence["steps"] ?? this.J.song.beatsPerBar)),
-                pulses: Math.max(0, Math.min(this.nd, rawSequence["pulses"] ?? 5)),
-                rotation: Math.max(0, Math.min(this.nd, rawSequence["rotation"] ?? 0)),
+                steps: Math.max(this.dj, Math.min(this.md, rawSequence["steps"] ?? this.J.song.beatsPerBar)),
+                pulses: Math.max(0, Math.min(this.md, rawSequence["pulses"] ?? 5)),
+                rotation: Math.max(0, Math.min(this.md, rawSequence["rotation"] ?? 0)),
                 stepSizeNumerator: Math.max(1, Math.min(Config.partsPerBeat, rawSequence["stepSizeNumerator"] ?? 1)),
                 stepSizeDenominator: Math.max(1, Math.min(Config.partsPerBeat, rawSequence["stepSizeDenominator"] ?? 4)),
-                channel: Math.max(0, Math.min(this.Nd, rawSequence["channel"])),
+                channel: Math.max(0, Math.min(this.Md, rawSequence["channel"])),
                 pitch: rawSequence["pitch"] ?? 0,
                 invert: rawSequence["invert"] ?? false,
                 generateFadingNotes: rawSequence["generateFadingNotes"] ?? false
               });
             }
-            this.ua = parsedSequences;
-            if (this.ua.length === 1) {
-              const sequence = this.ua[this.Ga];
-              const channel = Math.max(0, Math.min(this.Nd, this.J.channel));
+            this.ta = parsedSequences;
+            if (this.ta.length === 1) {
+              const sequence = this.ta[this.Fa];
+              const channel = Math.max(0, Math.min(this.Md, this.J.channel));
               sequence.channel = channel;
               const maxPitch = this.J.song.getChannelIsNoise(channel) ? Config.drumCount - 1 : Config.maxPitch;
               sequence.pitch = Math.max(0, Math.min(maxPitch, sequence.pitch));
             }
           }
-          this.Lb = Math.max(1, Math.min(this.Wf, savedData["barAmount"] ?? this.Lb));
+          this.Kb = Math.max(1, Math.min(this.Wf, savedData["barAmount"] ?? this.Kb));
         }
       }
       this.it();
-      this.ia.addEventListener("click", this.la);
-      this.fa.addEventListener("click", this.ga);
-      this.container.addEventListener("keydown", this.qa);
-      this.oe.addEventListener("click", this.lp);
+      this.ha.addEventListener("click", this.ka);
+      this.ea.addEventListener("click", this.fa);
+      this.container.addEventListener("keydown", this.pa);
+      this.ne.addEventListener("click", this.lp);
       this.wl.addEventListener("click", this.mp);
       this.xl.addEventListener("click", this.np);
       this.yl.addEventListener("click", this.op);
       this.zl.addEventListener("click", this.pp);
       this.Yf.addEventListener("change", this.qp);
-      this.od.addEventListener("change", this.rp);
+      this.nd.addEventListener("change", this.rp);
       this.Zf.addEventListener("change", this.sp);
       this._f.addEventListener("change", this.fj);
       this.$f.addEventListener("change", this.fj);
-      this.$e.addEventListener("change", this.tp);
-      this.pd.addEventListener("change", this.up);
-      this.pe.addEventListener("change", this.vp);
+      this._e.addEventListener("change", this.tp);
+      this.od.addEventListener("change", this.up);
+      this.oe.addEventListener("change", this.vp);
       this.qh.addEventListener("change", this.wp);
       this.ph.addEventListener("change", this.xp);
       this.Al.addEventListener("click", this.yp);
       this.jt();
-      this.Da();
+      this.Ca();
     }
     dj = 2;
-    nd = 64;
+    md = 64;
     pl = 14;
-    Nd = Config.pitchChannelCountMax + Config.noiseChannelCountMax - 1;
+    Md = Config.pitchChannelCountMax + Config.noiseChannelCountMax - 1;
     // Inclusive.
     dp = "euclidGenMemory";
-    ua;
-    _e;
-    Ga = 0;
+    ta;
+    Ze;
+    Fa = 0;
     ql = 0;
     ej = -1;
-    Zb = 0;
-    Lb = 1;
+    Yb = 0;
+    Kb = 1;
     Wf = Config.barCountMax;
-    Gb = 0;
+    Fb = 0;
     rl = 400;
     sl = 10;
-    ne = 100;
+    me = 100;
     tl = 100;
-    gt = this.ne / this.nd;
-    ep = this.ne / 16;
-    ht = this.ne / this.nd;
-    fp = this.ne / 2 - this.ep - this.ht;
-    Zc = [];
+    gt = this.me / this.md;
+    ep = this.me / 16;
+    ht = this.me / this.md;
+    fp = this.me / 2 - this.ep - this.ht;
+    Yc = [];
     Xf = button9(
       { class: "no-underline", style: "flex-grow: 0; flex-basis: 30px;" },
       // Based on `--close-symbol`.
@@ -34571,7 +34575,7 @@ You should be redirected to the song at:<br /><br />
         SVG.path({ d: "M -8 -1 L -1 -1 L -1 -8 L 1 -8 L 1 -1 L 8 -1 L 8 1 L 1 1 L 1 8 L -1 8 L -1 1 L -8 1 z", fill: ColorConfig.primaryText })
       )
     );
-    oe = div9(
+    ne = div9(
       { class: "instrument-bar", style: "justify-content: center; width: 100%;" },
       this.Xf,
       this.vl
@@ -34611,28 +34615,28 @@ You should be redirected to the song at:<br /><br />
         SVG.path({ d: "M -6 -6 L -6 6 L 3 0 z", fill: ColorConfig.primaryText })
       )
     );
-    jp = SVG.circle({ cx: this.ne / 2, cy: this.tl / 2, r: this.fp, stroke: ColorConfig.primaryText, "stroke-width": "0.5", fill: "none" });
+    jp = SVG.circle({ cx: this.me / 2, cy: this.tl / 2, r: this.fp, stroke: ColorConfig.primaryText, "stroke-width": "0.5", fill: "none" });
     kp = SVG.svg({ "pointer-events": "none" });
-    Yf = input7({ style: "width: 3em; margin-left: 1em;", type: "number", min: this.dj, max: this.nd, value: "8", step: "1" });
-    od = input7({ style: "width: 3em; margin-left: 1em;", type: "number", min: "0", max: "8", value: "5", step: "1" });
-    Zf = input7({ style: "width: 3em; margin-left: 1em;", type: "number", min: "0", max: this.nd, value: "0", step: "1" });
+    Yf = input7({ style: "width: 3em; margin-left: 1em;", type: "number", min: this.dj, max: this.md, value: "8", step: "1" });
+    nd = input7({ style: "width: 3em; margin-left: 1em;", type: "number", min: "0", max: "8", value: "5", step: "1" });
+    Zf = input7({ style: "width: 3em; margin-left: 1em;", type: "number", min: "0", max: this.md, value: "0", step: "1" });
     _f = input7({ style: "width: 3em; margin-left: 1em;", type: "number", min: "1", max: Config.partsPerBeat, value: "1", step: "1" });
     $f = input7({ style: "width: 3em; margin-left: 1em;", type: "number", min: "1", max: Config.partsPerBeat, value: "4", step: "1" });
     // Keep in mind this counts from 1 (to match the rest of the UI).
-    $e = input7({ style: "width: 3em; margin-left: 1em;", type: "number", min: "1", max: this.Nd + 1, value: "1", step: "1" });
-    pd = input7({ style: "width: 3em; margin-left: 1em;", type: "number", min: "0", max: Config.maxPitch, value: "0", step: "1" });
-    pe = input7({ style: "width: 3em; margin-left: 1em;", type: "number", min: "1", max: Config.barCountMax, value: "1", step: "1" });
+    _e = input7({ style: "width: 3em; margin-left: 1em;", type: "number", min: "1", max: this.Md + 1, value: "1", step: "1" });
+    od = input7({ style: "width: 3em; margin-left: 1em;", type: "number", min: "0", max: Config.maxPitch, value: "0", step: "1" });
+    oe = input7({ style: "width: 3em; margin-left: 1em;", type: "number", min: "1", max: Config.barCountMax, value: "1", step: "1" });
     Al = button9({ style: "height: auto; min-height: var(--button-size); margin-left: 1em;" }, "Extend until loop");
     ph = input7({ type: "checkbox", style: "width: 1em; padding: 0; margin-left: 1em;" });
     qh = input7({ type: "checkbox", style: "width: 1em; padding: 0; margin-left: 1em;" });
-    ia = button9({ class: "okayButton", style: "width: 45%;" }, "Okay");
-    fa = button9({ class: "cancelButton" });
+    ha = button9({ class: "okayButton", style: "width: 45%;" }, "Okay");
+    ea = button9({ class: "cancelButton" });
     container = div9(
       { class: "prompt noSelection", style: "width: 600px;" },
       h29("Generate Euclidean Rhythm"),
       div9(
         { style: "display: flex; flex-direction: row; align-items: center;" },
-        this.oe
+        this.ne
       ),
       div9(
         { style: "display: flex; flex-direction: row; align-items: center; justify-content: space-between;" },
@@ -34661,7 +34665,7 @@ You should be redirected to the song at:<br /><br />
         div9(
           { style: "max-width: 150px; height: 100%;" },
           SVG.svg(
-            { "pointer-events": "none", width: "100%", height: "100%", style: "touch-action: none; overflow: hidden; margin-right: 1.5em; max-width: 150px; height: 100%;", viewBox: `0 0 ${this.ne} ${this.tl}`, preserveAspectRatio: "none" },
+            { "pointer-events": "none", width: "100%", height: "100%", style: "touch-action: none; overflow: hidden; margin-right: 1.5em; max-width: 150px; height: 100%;", viewBox: `0 0 ${this.me} ${this.tl}`, preserveAspectRatio: "none" },
             this.jp,
             this.kp
           )
@@ -34684,7 +34688,7 @@ You should be redirected to the song at:<br /><br />
                 { style: `text-align: right; flex-grow: 1; color: ${ColorConfig.primaryText};` },
                 "Pulses"
               ),
-              this.od
+              this.nd
             ),
             div9(
               { style: "display: flex; flex-direction: row; align-items: center; height: 3em; justify-content: flex-end; margin-top: 0.5em;" },
@@ -34715,7 +34719,7 @@ You should be redirected to the song at:<br /><br />
                 { style: `text-align: right; flex-grow: 1; color: ${ColorConfig.primaryText};` },
                 "Channel"
               ),
-              this.$e
+              this._e
             ),
             div9(
               { style: "display: flex; flex-direction: row; align-items: center; height: 3em; justify-content: flex-end; margin-top: 0.5em;" },
@@ -34723,7 +34727,7 @@ You should be redirected to the song at:<br /><br />
                 { style: `text-align: right; flex-grow: 1; color: ${ColorConfig.primaryText};` },
                 "Pitch"
               ),
-              this.pd
+              this.od
             )
           )
         )
@@ -34747,50 +34751,50 @@ You should be redirected to the song at:<br /><br />
           { style: `text-align: right; color: ${ColorConfig.primaryText};` },
           "Length (in bars)"
         ),
-        this.pe,
+        this.oe,
         this.Al
       ),
       div9(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.ia
+        this.ha
       ),
-      this.fa
+      this.ea
     );
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.la);
-      this.fa.removeEventListener("click", this.ga);
-      this.container.removeEventListener("keydown", this.qa);
-      this.oe.removeEventListener("click", this.lp);
+      this.ha.removeEventListener("click", this.ka);
+      this.ea.removeEventListener("click", this.fa);
+      this.container.removeEventListener("keydown", this.pa);
+      this.ne.removeEventListener("click", this.lp);
       this.wl.removeEventListener("click", this.mp);
       this.xl.removeEventListener("click", this.np);
       this.yl.removeEventListener("click", this.op);
       this.zl.removeEventListener("click", this.pp);
       this.Yf.removeEventListener("change", this.qp);
-      this.od.removeEventListener("change", this.rp);
+      this.nd.removeEventListener("change", this.rp);
       this.Zf.removeEventListener("change", this.sp);
       this._f.removeEventListener("change", this.fj);
       this.$f.removeEventListener("change", this.fj);
-      this.$e.removeEventListener("change", this.tp);
-      this.pd.removeEventListener("change", this.up);
-      this.pe.removeEventListener("change", this.vp);
+      this._e.removeEventListener("change", this.tp);
+      this.od.removeEventListener("change", this.up);
+      this.oe.removeEventListener("change", this.vp);
       this.qh.removeEventListener("change", this.wp);
       this.ph.removeEventListener("change", this.xp);
       this.Al.removeEventListener("click", this.yp);
     };
-    ga = () => {
+    fa = () => {
       this.J.undo();
     };
-    la = () => {
+    ka = () => {
       this.J.prompt = null;
       const group = new ChangeGroup();
       const beatsPerBar = this.J.song.beatsPerBar;
       const partsPerBeat = Config.partsPerBeat;
       const partsPerBar = partsPerBeat * beatsPerBar;
-      const firstBar = this.Zb;
-      const lastBar = firstBar + this.Lb;
+      const firstBar = this.Yb;
+      const lastBar = firstBar + this.Kb;
       if (lastBar > this.J.song.barCount) {
         const existing = this.J.song.barCount - firstBar;
-        const remaining = this.Lb - existing;
+        const remaining = this.Kb - existing;
         group.append(new ChangeInsertBars(this.J, this.J.song.barCount, remaining));
       }
       let allNewNotesByChannel = /* @__PURE__ */ new Map();
@@ -34798,9 +34802,9 @@ You should be redirected to the song at:<br /><br />
       for (let bar = firstBar; bar < lastBar; bar++) {
         const relativeBar = bar - firstBar;
         const partOffset = relativeBar * partsPerBar;
-        for (let sequenceIndex = 0; sequenceIndex < this.ua.length; sequenceIndex++) {
-          const sequence = this.ua[sequenceIndex];
-          const generatedSequence = this._e[sequenceIndex];
+        for (let sequenceIndex = 0; sequenceIndex < this.ta.length; sequenceIndex++) {
+          const sequence = this.ta[sequenceIndex];
+          const generatedSequence = this.Ze[sequenceIndex];
           const hasGeneratedSequence = generatedSequence.length > 0;
           if (!hasGeneratedSequence) {
             continue;
@@ -34820,9 +34824,9 @@ You should be redirected to the song at:<br /><br />
           let resultingChannel = allNewNotesByChannel.get(channelIndex);
           if (resultingChannel == void 0) {
             resultingChannel = [];
-            for (let i = 0; i < this.Lb; i++) {
+            for (let i = 0; i < this.Kb; i++) {
               const newResultingBar = [];
-              for (let j = 0; j < this.ua.length; j++) {
+              for (let j = 0; j < this.ta.length; j++) {
                 const newResultingSequence = [];
                 newResultingBar.push(newResultingSequence);
               }
@@ -35078,37 +35082,37 @@ You should be redirected to the song at:<br /><br />
       }
       this.J.record(group, true);
       nsLocalStorage_save(this.dp, JSON.stringify({
-        "sequences": this.ua,
-        "barAmount": this.Lb
+        "sequences": this.ta,
+        "barAmount": this.Kb
       }));
     };
     it = () => {
-      this._e = [];
-      for (let i = 0; i < this.ua.length; i++) {
-        this._e.push([]);
+      this.Ze = [];
+      for (let i = 0; i < this.ta.length; i++) {
+        this.Ze.push([]);
         this.zp(i);
       }
     };
     zp = (index) => {
-      const sequence = this.ua[index];
-      this._e[index] = generateEuclideanRhythm(
+      const sequence = this.ta[index];
+      this.Ze[index] = generateEuclideanRhythm(
         sequence.steps,
         sequence.pulses,
         sequence.rotation
       );
     };
     gj = () => {
-      this.zp(this.Ga);
+      this.zp(this.Fa);
     };
-    qa = (event) => {
+    pa = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.la();
+        this.ka();
       }
     };
     lp = (event) => {
       if (event.target == this.vl) {
-        const currentSequence = this.ua[this.Ga];
-        this.ua.push({
+        const currentSequence = this.ta[this.Fa];
+        this.ta.push({
           steps: currentSequence.steps,
           pulses: currentSequence.pulses,
           rotation: currentSequence.rotation,
@@ -35119,78 +35123,78 @@ You should be redirected to the song at:<br /><br />
           invert: currentSequence.invert,
           generateFadingNotes: currentSequence.generateFadingNotes
         });
-        this.Ga = this.ua.length - 1;
+        this.Fa = this.ta.length - 1;
         this.gj();
         this.hj();
         this.rh();
         this.sh();
-        this.Da();
+        this.Ca();
       } else if (event.target == this.Xf) {
-        this.ua.splice(this.Ga, 1);
-        this._e.splice(this.Ga, 1);
-        this.Ga = Math.max(0, Math.min(this.ua.length - 1, this.Ga));
+        this.ta.splice(this.Fa, 1);
+        this.Ze.splice(this.Fa, 1);
+        this.Fa = Math.max(0, Math.min(this.ta.length - 1, this.Fa));
         this.hj();
         this.rh();
         this.sh();
-        this.Da();
+        this.Ca();
       } else {
-        const index = this.Zc.indexOf(event.target);
+        const index = this.Yc.indexOf(event.target);
         if (index != -1) {
-          this.Ga = index;
+          this.Fa = index;
           this.hj();
           this.rh();
           this.sh();
-          this.Da();
+          this.Ca();
         }
       }
     };
     mp = (event) => {
-      this.Gb = this.Zb;
-      this.qd();
-      this.qe();
+      this.Fb = this.Yb;
+      this.pd();
+      this.pe();
     };
     np = (event) => {
-      this.Gb = this.Gb - 1;
-      if (this.Gb < this.Zb) {
-        this.Gb += this.Lb;
+      this.Fb = this.Fb - 1;
+      if (this.Fb < this.Yb) {
+        this.Fb += this.Kb;
       }
-      this.qd();
-      this.qe();
+      this.pd();
+      this.pe();
     };
     op = (event) => {
-      this.Gb = this.Gb + 1;
-      const lastBar = this.Zb + this.Lb;
-      if (this.Gb >= lastBar) {
-        this.Gb -= this.Lb;
+      this.Fb = this.Fb + 1;
+      const lastBar = this.Yb + this.Kb;
+      if (this.Fb >= lastBar) {
+        this.Fb -= this.Kb;
       }
-      this.qd();
-      this.qe();
+      this.pd();
+      this.pe();
     };
     pp = (event) => {
-      const firstBar = this.Zb;
-      const lastBar = firstBar + this.Lb;
-      this.Gb = lastBar - 1;
-      this.qd();
-      this.qe();
+      const firstBar = this.Yb;
+      const lastBar = firstBar + this.Kb;
+      this.Fb = lastBar - 1;
+      this.pd();
+      this.pe();
     };
     wp = (event) => {
-      const sequence = this.ua[this.Ga];
+      const sequence = this.ta[this.Fa];
       const invert = this.qh.checked;
       sequence.invert = invert;
       this.Ap();
-      this.qd();
+      this.pd();
     };
     xp = (event) => {
-      const sequence = this.ua[this.Ga];
+      const sequence = this.ta[this.Fa];
       const generateFadingNotes = this.ph.checked;
       sequence.generateFadingNotes = generateFadingNotes;
-      this.qd();
+      this.pd();
     };
     yp = (event) => {
       const beatsPerBar = this.J.song.beatsPerBar;
       const beatsPerBarFraction = [beatsPerBar, 1];
       const barAmountFraction = fractionDiv(
-        this.ua.reduce((acc, seq) => {
+        this.ta.reduce((acc, seq) => {
           const steps = [seq.steps, 1];
           const stepSize = fraction(seq.stepSizeNumerator, seq.stepSizeDenominator);
           const total = fractionMul(steps, stepSize);
@@ -35199,74 +35203,74 @@ You should be redirected to the song at:<br /><br />
         beatsPerBarFraction
       );
       const barAmount = barAmountFraction[0];
-      this.Lb = Math.max(1, Math.min(this.Wf, barAmount));
-      const firstBar = this.Zb;
-      const lastBar = this.Zb + this.Lb;
-      this.Gb = Math.max(firstBar, Math.min(lastBar - 1, this.Gb));
-      this.pe.value = this.Lb + "";
-      this.qd();
-      this.qe();
+      this.Kb = Math.max(1, Math.min(this.Wf, barAmount));
+      const firstBar = this.Yb;
+      const lastBar = this.Yb + this.Kb;
+      this.Fb = Math.max(firstBar, Math.min(lastBar - 1, this.Fb));
+      this.oe.value = this.Kb + "";
+      this.pd();
+      this.pe();
     };
     qp = (event) => {
-      const steps = Math.max(this.dj, Math.min(this.nd, +this.Yf.value));
-      const sequence = this.ua[this.Ga];
+      const steps = Math.max(this.dj, Math.min(this.md, +this.Yf.value));
+      const sequence = this.ta[this.Fa];
       sequence.steps = steps;
       this.Yf.value = steps + "";
       this.rh();
       this.gj();
-      this.Da();
+      this.Ca();
     };
     rp = (event) => {
-      const sequence = this.ua[this.Ga];
-      const pulses = Math.max(0, Math.min(sequence.steps, +this.od.value));
+      const sequence = this.ta[this.Fa];
+      const pulses = Math.max(0, Math.min(sequence.steps, +this.nd.value));
       sequence.pulses = pulses;
-      this.od.value = pulses + "";
+      this.nd.value = pulses + "";
       this.gj();
-      this.Da();
+      this.Ca();
     };
     sp = (event) => {
-      const rotation = Math.max(0, Math.min(this.nd, +this.Zf.value));
-      const sequence = this.ua[this.Ga];
+      const rotation = Math.max(0, Math.min(this.md, +this.Zf.value));
+      const sequence = this.ta[this.Fa];
       sequence.rotation = rotation;
       this.Zf.value = rotation + "";
       this.gj();
-      this.Da();
+      this.Ca();
     };
     fj = (event) => {
       const numerator = Math.max(1, Math.min(Config.partsPerBeat, +this._f.value));
       const denominator = Math.max(1, Math.min(Config.partsPerBeat, +this.$f.value));
-      const sequence = this.ua[this.Ga];
+      const sequence = this.ta[this.Fa];
       sequence.stepSizeNumerator = numerator;
       sequence.stepSizeDenominator = denominator;
       this._f.value = numerator + "";
       this.$f.value = denominator + "";
-      this.qd();
+      this.pd();
     };
     up = (event) => {
-      const sequence = this.ua[this.Ga];
+      const sequence = this.ta[this.Fa];
       const maxPitch = this.J.song.getChannelIsNoise(sequence.channel) ? Config.drumCount - 1 : Config.maxPitch;
-      const pitch = Math.max(0, Math.min(maxPitch, +this.pd.value));
+      const pitch = Math.max(0, Math.min(maxPitch, +this.od.value));
       sequence.pitch = pitch;
-      this.pd.value = pitch + "";
-      this.qe();
+      this.od.value = pitch + "";
+      this.pe();
     };
     tp = (event) => {
-      const channel = Math.max(0, Math.min(this.Nd, +this.$e.value - 1));
-      const sequence = this.ua[this.Ga];
+      const channel = Math.max(0, Math.min(this.Md, +this._e.value - 1));
+      const sequence = this.ta[this.Fa];
       sequence.channel = channel;
-      this.$e.value = channel + 1 + "";
+      this._e.value = channel + 1 + "";
       this.sh();
-      this.Da();
+      this.Ca();
     };
     vp = (event) => {
-      const barAmount = Math.max(1, Math.min(this.Wf, +this.pe.value));
-      this.Lb = barAmount;
-      const firstBar = this.Zb;
-      const lastBar = this.Zb + this.Lb;
-      this.Gb = Math.max(firstBar, Math.min(lastBar - 1, this.Gb));
-      this.pe.value = barAmount + "";
-      this.qd();
-      this.qe();
+      const barAmount = Math.max(1, Math.min(this.Wf, +this.oe.value));
+      this.Kb = barAmount;
+      const firstBar = this.Yb;
+      const lastBar = this.Yb + this.Kb;
+      this.Fb = Math.max(firstBar, Math.min(lastBar - 1, this.Fb));
+      this.oe.value = barAmount + "";
+      this.pd();
+      this.pe();
     };
     jt = () => {
       const beatsPerBar = this.J.song.beatsPerBar;
@@ -35294,90 +35298,90 @@ You should be redirected to the song at:<br /><br />
       this.rh();
     };
     hj = () => {
-      const sequence = this.ua[this.Ga];
+      const sequence = this.ta[this.Fa];
       this.Yf.value = sequence.steps + "";
-      this.od.value = sequence.pulses + "";
+      this.nd.value = sequence.pulses + "";
       this.Zf.value = sequence.rotation + "";
       this._f.value = sequence.stepSizeNumerator + "";
       this.$f.value = sequence.stepSizeDenominator + "";
-      this.$e.value = sequence.channel + 1 + "";
-      this.pd.value = sequence.pitch + "";
+      this._e.value = sequence.channel + 1 + "";
+      this.od.value = sequence.pitch + "";
       this.qh.checked = sequence.invert;
       this.ph.checked = sequence.generateFadingNotes;
-      this.pe.value = this.Lb + "";
+      this.oe.value = this.Kb + "";
     };
     sh = () => {
-      const sequence = this.ua[this.Ga];
+      const sequence = this.ta[this.Fa];
       const channel = sequence.channel;
       const maxPitch = this.J.song.getChannelIsNoise(channel) ? Config.drumCount - 1 : Config.maxPitch;
-      this.pd.value = Math.max(0, Math.min(maxPitch, +this.pd.value)) + "";
-      this.pd.max = maxPitch + "";
-      sequence.pitch = +this.pd.value;
+      this.od.value = Math.max(0, Math.min(maxPitch, +this.od.value)) + "";
+      this.od.max = maxPitch + "";
+      sequence.pitch = +this.od.value;
     };
     rh = () => {
-      const sequence = this.ua[this.Ga];
+      const sequence = this.ta[this.Fa];
       const steps = sequence.steps;
-      this.od.value = Math.max(0, Math.min(steps, +this.od.value)) + "";
-      this.od.max = steps + "";
-      sequence.pulses = +this.od.value;
+      this.nd.value = Math.max(0, Math.min(steps, +this.nd.value)) + "";
+      this.nd.max = steps + "";
+      sequence.pulses = +this.nd.value;
     };
-    Da = () => {
+    Ca = () => {
       this.Ap();
-      this.qd();
-      this.qe();
+      this.pd();
+      this.pe();
       this.kt();
     };
     kt = () => {
-      const container = this.oe;
-      while (this.Zc.length < this.ua.length) {
+      const container = this.ne;
+      while (this.Yc.length < this.ta.length) {
         const sequenceButton = button9(
           { class: "no-underline" },
-          this.Zc.length + 1 + ""
+          this.Yc.length + 1 + ""
         );
-        this.Zc.push(sequenceButton);
+        this.Yc.push(sequenceButton);
         container.insertBefore(sequenceButton, this.Xf);
       }
-      for (let i = this.ql; i < this.ua.length; i++) {
-        const sequenceButton = this.Zc[i];
+      for (let i = this.ql; i < this.ta.length; i++) {
+        const sequenceButton = this.Yc[i];
         sequenceButton.style.display = "";
       }
-      for (let i = this.ua.length; i < this.ql; i++) {
-        this.Zc[i].style.display = "none";
+      for (let i = this.ta.length; i < this.ql; i++) {
+        this.Yc[i].style.display = "none";
       }
-      this.ql = this.ua.length;
-      while (this.Zc.length > this.pl) {
-        container.removeChild(this.Zc.pop());
+      this.ql = this.ta.length;
+      while (this.Yc.length > this.pl) {
+        container.removeChild(this.Yc.pop());
       }
-      this.Xf.style.display = this.ua.length > 1 ? "" : "none";
-      this.vl.style.display = this.ua.length < this.pl ? "" : "none";
-      if (this.ua.length < this.pl) {
+      this.Xf.style.display = this.ta.length > 1 ? "" : "none";
+      this.vl.style.display = this.ta.length < this.pl ? "" : "none";
+      if (this.ta.length < this.pl) {
         this.Xf.classList.remove("last-button");
       } else {
         this.Xf.classList.add("last-button");
       }
-      if (this.ej != this.Ga) {
-        const oldButton = this.Zc[this.ej];
+      if (this.ej != this.Fa) {
+        const oldButton = this.Yc[this.ej];
         if (oldButton != null) oldButton.classList.remove("selected-instrument");
-        const newButton = this.Zc[this.Ga];
+        const newButton = this.Yc[this.Fa];
         newButton.classList.add("selected-instrument");
-        this.ej = this.Ga;
+        this.ej = this.Fa;
       }
-      for (let sequence = 0; sequence < this.ua.length; sequence++) {
-        const sequenceButton = this.Zc[sequence];
+      for (let sequence = 0; sequence < this.ta.length; sequence++) {
+        const sequenceButton = this.Yc[sequence];
         if (sequence === this.ej) {
           sequenceButton.style.color = "";
         } else {
           sequenceButton.style.color = ColorConfig.primaryText;
         }
       }
-      const colors = ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.ua[this.Ga].channel].color, this.ua[this.Ga].channel, this.J.prefs.fixChannelColorOrder);
-      this.oe.style.setProperty("--text-color-lit", colors.primaryNote);
-      this.oe.style.setProperty("--text-color-dim", colors.secondaryNote);
-      this.oe.style.setProperty("--background-color-lit", colors.primaryChannel);
-      this.oe.style.setProperty("--background-color-dim", colors.secondaryChannel);
+      const colors = ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.ta[this.Fa].channel].color, this.ta[this.Fa].channel, this.J.prefs.fixChannelColorOrder);
+      this.ne.style.setProperty("--text-color-lit", colors.primaryNote);
+      this.ne.style.setProperty("--text-color-dim", colors.secondaryNote);
+      this.ne.style.setProperty("--background-color-lit", colors.primaryChannel);
+      this.ne.style.setProperty("--background-color-dim", colors.secondaryChannel);
     };
-    qe = () => {
-      const sequence = this.ua[this.Ga];
+    pe = () => {
+      const sequence = this.ta[this.Fa];
       const sequencePitch = sequence.pitch;
       const pitchNameIndex = (sequencePitch + Config.keys[this.J.song.key].basePitch) % Config.pitchesPerOctave;
       let pitch = "";
@@ -35393,13 +35397,13 @@ You should be redirected to the song at:<br /><br />
         }
       }
       pitch += Math.floor(sequencePitch / Config.pitchesPerOctave);
-      this.ip.innerText = `Bar ${this.Gb + 1}, ${pitch}`;
+      this.ip.innerText = `Bar ${this.Fb + 1}, ${pitch}`;
     };
     Ap = () => {
-      const sequence = this.ua[this.Ga];
+      const sequence = this.ta[this.Fa];
       const steps = sequence.steps;
       const channelIndex = sequence.channel;
-      const generatedSequence = this._e[this.Ga];
+      const generatedSequence = this.Ze[this.Fa];
       const hasGeneratedSequence = generatedSequence.length > 0;
       const invert = sequence.invert;
       const on = invert ? 0 : 1;
@@ -35410,10 +35414,10 @@ You should be redirected to the song at:<br /><br />
       while (container.firstChild !== null) {
         container.removeChild(container.firstChild);
       }
-      const centerX = this.ne / 2;
+      const centerX = this.me / 2;
       const centerY = this.tl / 2;
       const clockRadius = this.fp;
-      const clockPointRadius = Math.max(this.gt, Math.min(this.ep, this.ne / steps));
+      const clockPointRadius = Math.max(this.gt, Math.min(this.ep, this.me / steps));
       for (let step = 0; step < steps; step++) {
         const angle = step / steps * Math.PI * 2 - Math.PI / 2;
         const x = centerX + Math.cos(angle) * clockRadius;
@@ -35430,15 +35434,15 @@ You should be redirected to the song at:<br /><br />
         container.appendChild(clockPoint);
       }
     };
-    qd = () => {
+    pd = () => {
       const beatsPerBar = this.J.song.beatsPerBar;
       const partsPerBeat = Config.partsPerBeat;
       const partsPerBar = partsPerBeat * beatsPerBar;
-      const sequence = this.ua[this.Ga];
+      const sequence = this.ta[this.Fa];
       const steps = sequence.steps;
       const channelIndex = sequence.channel;
       const stepSize = sequence.stepSizeNumerator / sequence.stepSizeDenominator;
-      const generatedSequence = this._e[this.Ga];
+      const generatedSequence = this.Ze[this.Fa];
       const hasGeneratedSequence = generatedSequence.length > 0;
       const invert = sequence.invert;
       const on = invert ? 0 : 1;
@@ -35446,7 +35450,7 @@ You should be redirected to the song at:<br /><br />
       const channelColors = ColorConfig.getChannelColor(this.J.song, this.J.song.channels[channelIndex].color, channelIndex, this.J.prefs.fixChannelColorOrder);
       const color = channelColors.primaryNote;
       const secondaryColor = channelColors.secondaryNote;
-      const bar = this.Gb - this.Zb;
+      const bar = this.Fb - this.Yb;
       const partOffset = bar * partsPerBar;
       const container = this.hp;
       while (container.firstChild !== null) {
@@ -35552,128 +35556,128 @@ You should be redirected to the song at:<br /><br />
     constructor(_doc) {
       this.J = _doc;
       const dottedLineX = this.th(Config.fadeOutNeutral);
-      this.le.setAttribute("d", `M ${dottedLineX} 0 L ${dottedLineX} ${this.ba}`);
-      this.container.addEventListener("mousedown", this.db);
-      document.addEventListener("mousemove", this.Za);
-      document.addEventListener("mouseup", this.xa);
-      this.container.addEventListener("touchstart", this.pb);
-      this.container.addEventListener("touchmove", this.qb);
-      this.container.addEventListener("touchend", this.xa);
-      this.container.addEventListener("touchcancel", this.xa);
+      this.ke.setAttribute("d", `M ${dottedLineX} 0 L ${dottedLineX} ${this.aa}`);
+      this.container.addEventListener("mousedown", this.cb);
+      document.addEventListener("mousemove", this.Ya);
+      document.addEventListener("mouseup", this.wa);
+      this.container.addEventListener("touchstart", this.ob);
+      this.container.addEventListener("touchmove", this.pb);
+      this.container.addEventListener("touchend", this.wa);
+      this.container.addEventListener("touchcancel", this.wa);
     }
-    ca = 120;
-    ba = 26;
+    ba = 120;
+    aa = 26;
     Bp = SVG.path({ fill: ColorConfig.uiWidgetBackground, "pointer-events": "none" });
-    le = SVG.path({ fill: "none", stroke: "currentColor", "stroke-width": 1, "stroke-dasharray": "3, 2", "pointer-events": "none" });
+    ke = SVG.path({ fill: "none", stroke: "currentColor", "stroke-width": 1, "stroke-dasharray": "3, 2", "pointer-events": "none" });
     Cp = SVG.path({ fill: "none", stroke: "currentColor", "stroke-width": 2, "pointer-events": "none" });
-    ha = SVG.svg(
-      { style: `background-color: ${ColorConfig.editorBackground}; touch-action: none; cursor: crosshair;`, width: "100%", height: "100%", viewBox: "0 0 " + this.ca + " " + this.ba, preserveAspectRatio: "none" },
+    ga = SVG.svg(
+      { style: `background-color: ${ColorConfig.editorBackground}; touch-action: none; cursor: crosshair;`, width: "100%", height: "100%", viewBox: "0 0 " + this.ba + " " + this.aa, preserveAspectRatio: "none" },
       this.Bp,
-      this.le,
+      this.ke,
       this.Cp
     );
-    container = HTML.div({ class: "fadeInOut", style: "height: 100%;" }, this.ha);
-    $ = 0;
-    rc = 0;
-    da = false;
-    Ca = false;
+    container = HTML.div({ class: "fadeInOut", style: "height: 100%;" }, this.ga);
+    _ = 0;
+    qc = 0;
+    ca = false;
+    Ba = false;
     Bl = false;
-    ka = null;
+    ja = null;
     lt = -1;
     mt = -1;
     Cl(fadeIn) {
-      return 1 + (this.ca - 2) * 0.4 * fadeIn / (Config.fadeInRange - 1);
+      return 1 + (this.ba - 2) * 0.4 * fadeIn / (Config.fadeInRange - 1);
     }
     Dp(x) {
-      return clamp(0, Config.fadeInRange, Math.round((x - 1) * (Config.fadeInRange - 1) / (0.4 * this.ca - 2)));
+      return clamp(0, Config.fadeInRange, Math.round((x - 1) * (Config.fadeInRange - 1) / (0.4 * this.ba - 2)));
     }
     th(fadeOut) {
-      return 1 + (this.ca - 2) * (0.5 + 0.5 * fadeOut / (Config.fadeOutTicks.length - 1));
+      return 1 + (this.ba - 2) * (0.5 + 0.5 * fadeOut / (Config.fadeOutTicks.length - 1));
     }
     Ep(x) {
-      return clamp(0, Config.fadeOutTicks.length, Math.round((Config.fadeOutTicks.length - 1) * ((x - 1) / (this.ca - 2) - 0.5) / 0.5));
+      return clamp(0, Config.fadeOutTicks.length, Math.round((Config.fadeOutTicks.length - 1) * ((x - 1) / (this.ba - 2) - 0.5) / 0.5));
     }
-    db = (event) => {
+    cb = (event) => {
       event.preventDefault();
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.clientX || event.pageX) - boundingRect.left;
-      this.Ld();
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.clientX || event.pageX) - boundingRect.left;
+      this.Kd();
     };
-    pb = (event) => {
+    ob = (event) => {
       event.preventDefault();
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = event.touches[0].clientX - boundingRect.left;
-      this.Ld();
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = event.touches[0].clientX - boundingRect.left;
+      this.Kd();
     };
-    Ld() {
-      if (isNaN(this.$)) this.$ = 0;
-      this.rc = this.$;
-      this.da = true;
-      this.Ca = false;
+    Kd() {
+      if (isNaN(this._)) this._ = 0;
+      this.qc = this._;
+      this.ca = true;
+      this.Ba = false;
       const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
       const fadeInX = this.Cl(instrument.fadeIn);
       const fadeOutX = this.th(instrument.fadeOut);
-      this.Bl = this.rc < (fadeInX + fadeOutX) / 2;
-      this.ka = new ChangeSequence();
-      this.J.setProspectiveChange(this.ka);
+      this.Bl = this.qc < (fadeInX + fadeOutX) / 2;
+      this.ja = new ChangeSequence();
+      this.J.setProspectiveChange(this.ja);
     }
-    Za = (event) => {
+    Ya = (event) => {
       if (this.container.offsetParent == null) return;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.clientX || event.pageX) - boundingRect.left;
-      if (isNaN(this.$)) this.$ = 0;
-      this.ya();
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.clientX || event.pageX) - boundingRect.left;
+      if (isNaN(this._)) this._ = 0;
+      this.xa();
     };
-    qb = (event) => {
+    pb = (event) => {
       if (this.container.offsetParent == null) return;
-      if (!this.da) return;
+      if (!this.ca) return;
       event.preventDefault();
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = event.touches[0].clientX - boundingRect.left;
-      if (isNaN(this.$)) this.$ = 0;
-      this.ya();
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = event.touches[0].clientX - boundingRect.left;
+      if (isNaN(this._)) this._ = 0;
+      this.xa();
     };
-    ya() {
-      if (this.ka != null && this.J.lastChangeWas(this.ka)) {
-        this.ka.undo();
+    xa() {
+      if (this.ja != null && this.J.lastChangeWas(this.ja)) {
+        this.ja.undo();
       } else {
-        this.da = false;
+        this.ca = false;
       }
-      this.ka = null;
-      if (this.da) {
+      this.ja = null;
+      if (this.ca) {
         const sequence = new ChangeSequence();
-        this.ka = sequence;
-        this.J.setProspectiveChange(this.ka);
-        if (Math.abs(this.$ - this.rc) > 4) {
-          this.Ca = true;
+        this.ja = sequence;
+        this.J.setProspectiveChange(this.ja);
+        if (Math.abs(this._ - this.qc) > 4) {
+          this.Ba = true;
         }
-        if (this.Ca) {
+        if (this.Ba) {
           const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
           if (this.Bl) {
-            sequence.append(new ChangeFadeInOut(this.J, this.Dp(this.Cl(instrument.fadeIn) + this.$ - this.rc), instrument.fadeOut));
+            sequence.append(new ChangeFadeInOut(this.J, this.Dp(this.Cl(instrument.fadeIn) + this._ - this.qc), instrument.fadeOut));
           } else {
-            sequence.append(new ChangeFadeInOut(this.J, instrument.fadeIn, this.Ep(this.th(instrument.fadeOut) + this.$ - this.rc)));
+            sequence.append(new ChangeFadeInOut(this.J, instrument.fadeIn, this.Ep(this.th(instrument.fadeOut) + this._ - this.qc)));
           }
         }
       }
     }
-    xa = (event) => {
+    wa = (event) => {
       if (this.container.offsetParent == null) return;
-      if (this.da && this.J.lastChangeWas(this.ka) && this.ka != null) {
-        if (!this.Ca) {
+      if (this.ca && this.J.lastChangeWas(this.ja) && this.ja != null) {
+        if (!this.Ba) {
           const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
           if (this.Bl) {
-            this.J.record(new ChangeFadeInOut(this.J, this.Dp(this.$), instrument.fadeOut));
+            this.J.record(new ChangeFadeInOut(this.J, this.Dp(this._), instrument.fadeOut));
           } else {
-            this.J.record(new ChangeFadeInOut(this.J, instrument.fadeIn, this.Ep(this.$)));
+            this.J.record(new ChangeFadeInOut(this.J, instrument.fadeIn, this.Ep(this._)));
           }
         } else {
-          this.J.record(this.ka);
+          this.J.record(this.ja);
         }
       }
-      this.ka = null;
-      this.Ca = false;
-      this.da = false;
+      this.ja = null;
+      this.Ba = false;
+      this.ca = false;
     };
     render() {
       const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
@@ -35682,17 +35686,17 @@ You should be redirected to the song at:<br /><br />
       }
       const fadeInX = this.Cl(instrument.fadeIn);
       const fadeOutX = this.th(instrument.fadeOut);
-      this.Cp.setAttribute("d", `M ${fadeInX} 0 L ${fadeInX} ${this.ba} M ${fadeOutX} 0 L ${fadeOutX} ${this.ba}`);
+      this.Cp.setAttribute("d", `M ${fadeInX} 0 L ${fadeInX} ${this.aa} M ${fadeOutX} 0 L ${fadeOutX} ${this.aa}`);
       const dottedLineX = this.th(Config.fadeOutNeutral);
       let fadePath = "";
-      fadePath += `M 0 ${this.ba} `;
+      fadePath += `M 0 ${this.aa} `;
       fadePath += `L ${fadeInX} 0 `;
       if (fadeOutSettingToTicks(instrument.fadeOut) > 0) {
         fadePath += `L ${dottedLineX} 0 `;
-        fadePath += `L ${fadeOutX} ${this.ba} `;
+        fadePath += `L ${fadeOutX} ${this.aa} `;
       } else {
         fadePath += `L ${fadeOutX} 0 `;
-        fadePath += `L ${dottedLineX} ${this.ba} `;
+        fadePath += `L ${dottedLineX} ${this.aa} `;
       }
       fadePath += "z";
       this.Bp.setAttribute("d", fadePath);
@@ -35707,168 +35711,168 @@ You should be redirected to the song at:<br /><br />
       this.instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
       this.xh = this.instrument.harmonicsWave;
       for (let i = 1; i <= Config.harmonicsControlPoints; i = i * 2) {
-        this.uh.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: (i - 0.5) * (this.ca - 8) / (Config.harmonicsControlPoints - 1) - 1, y: 0, width: 2, height: this.ba }));
+        this.uh.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: (i - 0.5) * (this.ba - 8) / (Config.harmonicsControlPoints - 1) - 1, y: 0, width: 2, height: this.aa }));
       }
       for (let i = 3; i <= Config.harmonicsControlPoints; i = i * 2) {
-        this.af.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: (i - 0.5) * (this.ca - 8) / (Config.harmonicsControlPoints - 1) - 1, y: 0, width: 2, height: this.ba }));
+        this.$e.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: (i - 0.5) * (this.ba - 8) / (Config.harmonicsControlPoints - 1) - 1, y: 0, width: 2, height: this.aa }));
       }
       for (let i = 0; i < 4; i++) {
-        const rect = SVG.rect({ fill: "currentColor", x: this.ca - i * 2 - 1, y: 0, width: 1, height: this.ba });
+        const rect = SVG.rect({ fill: "currentColor", x: this.ba - i * 2 - 1, y: 0, width: 1, height: this.aa });
         this.Fp.push(rect);
         this.Gp.appendChild(rect);
       }
       this.storeChange();
-      this.container.addEventListener("mousedown", this.db);
-      document.addEventListener("mousemove", this.Za);
-      document.addEventListener("mouseup", this.xa);
-      this.container.addEventListener("touchstart", this.pb);
-      this.container.addEventListener("touchmove", this.qb);
-      this.container.addEventListener("touchend", this.xa);
-      this.container.addEventListener("touchcancel", this.xa);
+      this.container.addEventListener("mousedown", this.cb);
+      document.addEventListener("mousemove", this.Ya);
+      document.addEventListener("mouseup", this.wa);
+      this.container.addEventListener("touchstart", this.ob);
+      this.container.addEventListener("touchmove", this.pb);
+      this.container.addEventListener("touchend", this.wa);
+      this.container.addEventListener("touchcancel", this.wa);
     }
-    ca = 120;
-    ba = 26;
+    ba = 120;
+    aa = 26;
     uh = SVG.svg({ "pointer-events": "none" });
-    af = SVG.svg({ "pointer-events": "none" });
+    $e = SVG.svg({ "pointer-events": "none" });
     vh = SVG.path({ fill: "none", stroke: "currentColor", "stroke-width": 2, "pointer-events": "none" });
     Fp = [];
     Gp = SVG.svg({ "pointer-events": "none" });
-    ha = SVG.svg(
-      { style: "background-color: ${ColorConfig.editorBackground}; touch-action: none; cursor: crosshair;", width: "100%", height: "100%", viewBox: "0 0 " + this.ca + " " + this.ba, preserveAspectRatio: "none" },
+    ga = SVG.svg(
+      { style: "background-color: ${ColorConfig.editorBackground}; touch-action: none; cursor: crosshair;", width: "100%", height: "100%", viewBox: "0 0 " + this.ba + " " + this.aa, preserveAspectRatio: "none" },
       this.uh,
-      this.af,
+      this.$e,
       this.vh,
       this.Gp
     );
-    container = HTML.div({ class: "harmonics", style: "height: 100%;" }, this.ha);
+    container = HTML.div({ class: "harmonics", style: "height: 100%;" }, this.ga);
+    _ = 0;
     $ = 0;
-    aa = 0;
-    Mb = 0;
-    _c = 0;
-    da = false;
-    ma = null;
+    Lb = 0;
+    Zc = 0;
+    ca = false;
+    la = null;
     wh = "";
-    re = true;
+    qe = true;
     instrument;
     xh;
-    Fa = 0;
-    Ba = [];
+    Ea = 0;
+    Aa = [];
     storeChange = () => {
       var sameCheck = true;
-      if (this.Ba.length > 0) {
+      if (this.Aa.length > 0) {
         for (var i = 0; i < Config.harmonicsControlPoints; i++) {
-          if (this.Ba[this.Fa][i] != this.instrument.harmonicsWave.harmonics[i]) {
+          if (this.Aa[this.Ea][i] != this.instrument.harmonicsWave.harmonics[i]) {
             sameCheck = false;
             i = Config.harmonicsControlPoints;
           }
         }
       }
-      if (sameCheck == false || this.Ba.length == 0) {
-        this.Ba.splice(0, this.Fa);
-        this.Fa = 0;
-        this.Ba.unshift(this.instrument.harmonicsWave.harmonics.slice());
-        if (this.Ba.length > 32) {
-          this.Ba.pop();
+      if (sameCheck == false || this.Aa.length == 0) {
+        this.Aa.splice(0, this.Ea);
+        this.Ea = 0;
+        this.Aa.unshift(this.instrument.harmonicsWave.harmonics.slice());
+        if (this.Aa.length > 32) {
+          this.Aa.pop();
         }
       }
     };
     undo = () => {
-      if (this.Fa < this.Ba.length - 1) {
-        this.Fa++;
-        const harmonics = this.Ba[this.Fa].slice();
+      if (this.Ea < this.Aa.length - 1) {
+        this.Ea++;
+        const harmonics = this.Aa[this.Ea].slice();
         this.setHarmonicsWave(harmonics);
       }
     };
     redo = () => {
-      if (this.Fa > 0) {
-        this.Fa--;
-        const harmonics = this.Ba[this.Fa].slice();
+      if (this.Ea > 0) {
+        this.Ea--;
+        const harmonics = this.Aa[this.Ea].slice();
         this.setHarmonicsWave(harmonics);
       }
     };
-    Cc(x) {
-      return (Config.harmonicsControlPoints - 1) * x / (this.ca - 8) - 0.5;
+    Bc(x) {
+      return (Config.harmonicsControlPoints - 1) * x / (this.ba - 8) - 0.5;
     }
-    bf(y) {
-      return Config.harmonicsMax * (1 - y / this.ba);
+    af(y) {
+      return Config.harmonicsMax * (1 - y / this.aa);
     }
-    db = (event) => {
+    cb = (event) => {
       event.preventDefault();
-      this.da = true;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = ((event.clientX || event.pageX) - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = ((event.clientY || event.pageY) - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
+      this.ca = true;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = ((event.clientX || event.pageX) - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = ((event.clientY || event.pageY) - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
       if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.Mb = this.Cc(this.$);
-      this._c = this.bf(this.aa);
-      this.ya();
+      this.Lb = this.Bc(this._);
+      this.Zc = this.af(this.$);
+      this.xa();
+    };
+    ob = (event) => {
+      event.preventDefault();
+      this.ca = true;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.touches[0].clientX - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = (event.touches[0].clientY - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
+      if (isNaN(this.$)) this.$ = 0;
+      this.Lb = this.Bc(this._);
+      this.Zc = this.af(this.$);
+      this.xa();
+    };
+    Ya = (event) => {
+      if (this.container.offsetParent == null) return;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = ((event.clientX || event.pageX) - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = ((event.clientY || event.pageY) - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
+      if (isNaN(this.$)) this.$ = 0;
+      this.xa();
     };
     pb = (event) => {
-      event.preventDefault();
-      this.da = true;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.touches[0].clientX - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = (event.touches[0].clientY - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.Mb = this.Cc(this.$);
-      this._c = this.bf(this.aa);
-      this.ya();
-    };
-    Za = (event) => {
       if (this.container.offsetParent == null) return;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = ((event.clientX || event.pageX) - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = ((event.clientY || event.pageY) - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.ya();
-    };
-    qb = (event) => {
-      if (this.container.offsetParent == null) return;
-      if (!this.da) return;
+      if (!this.ca) return;
       event.preventDefault();
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.touches[0].clientX - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = (event.touches[0].clientY - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.touches[0].clientX - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = (event.touches[0].clientY - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
       if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.ya();
+      this.xa();
       this.render();
     };
-    ya() {
-      if (this.da) {
-        const freq = this.Cc(this.$);
-        const amp = this.bf(this.aa);
+    xa() {
+      if (this.ca) {
+        const freq = this.Bc(this._);
+        const amp = this.af(this.$);
         const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
         const harmonicsWave = instrument.harmonicsWave;
-        if (freq != this.Mb) {
-          const slope = (amp - this._c) / (freq - this.Mb);
-          const offset = this._c - this.Mb * slope;
-          const lowerFreq = Math.ceil(Math.min(this.Mb, freq));
-          const upperFreq = Math.floor(Math.max(this.Mb, freq));
+        if (freq != this.Lb) {
+          const slope = (amp - this.Zc) / (freq - this.Lb);
+          const offset = this.Zc - this.Lb * slope;
+          const lowerFreq = Math.ceil(Math.min(this.Lb, freq));
+          const upperFreq = Math.floor(Math.max(this.Lb, freq));
           for (let i = lowerFreq; i <= upperFreq; i++) {
             if (i < 0 || i >= Config.harmonicsControlPoints) continue;
             harmonicsWave.harmonics[i] = Math.max(0, Math.min(Config.harmonicsMax, Math.round(i * slope + offset)));
           }
         }
         harmonicsWave.harmonics[Math.max(0, Math.min(Config.harmonicsControlPoints - 1, Math.round(freq)))] = Math.max(0, Math.min(Config.harmonicsMax, Math.round(amp)));
-        this.Mb = freq;
-        this._c = amp;
-        this.ma = new ChangeHarmonics(this.J, instrument, harmonicsWave);
-        this.J.setProspectiveChange(this.ma);
+        this.Lb = freq;
+        this.Zc = amp;
+        this.la = new ChangeHarmonics(this.J, instrument, harmonicsWave);
+        this.J.setProspectiveChange(this.la);
       }
     }
-    xa = (event) => {
-      if (this.da) {
+    wa = (event) => {
+      if (this.ca) {
         if (!this.Dl) {
-          this.J.record(this.ma);
+          this.J.record(this.la);
         }
         this.storeChange();
-        this.ma = null;
+        this.la = null;
       }
-      this.da = false;
+      this.ca = false;
     };
     getHarmonicsWave() {
       const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
@@ -35895,13 +35899,13 @@ You should be redirected to the song at:<br /><br />
       const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
       const harmonicsWave = instrument.harmonicsWave;
       const controlPointToHeight = (point) => {
-        return (1 - point / Config.harmonicsMax) * this.ba;
+        return (1 - point / Config.harmonicsMax) * this.aa;
       };
-      let bottom = prettyNumber(this.ba);
+      let bottom = prettyNumber(this.aa);
       let path = "";
       for (let i = 0; i < Config.harmonicsControlPoints - 1; i++) {
         if (harmonicsWave.harmonics[i] == 0) continue;
-        let xPos = prettyNumber((i + 0.5) * (this.ca - 8) / (Config.harmonicsControlPoints - 1));
+        let xPos = prettyNumber((i + 0.5) * (this.ba - 8) / (Config.harmonicsControlPoints - 1));
         path += "M " + xPos + " " + bottom + " ";
         path += "L " + xPos + " " + prettyNumber(controlPointToHeight(harmonicsWave.harmonics[i])) + " ";
       }
@@ -35909,40 +35913,40 @@ You should be redirected to the song at:<br /><br />
       for (let i = 0; i < 4; i++) {
         const rect = this.Fp[i];
         rect.setAttribute("y", prettyNumber(lastHeight));
-        rect.setAttribute("height", prettyNumber(this.ba - lastHeight));
+        rect.setAttribute("height", prettyNumber(this.aa - lastHeight));
       }
       if (this.wh != path) {
         this.wh = path;
         this.vh.setAttribute("d", path);
       }
-      if (this.re != this.J.prefs.showFifth) {
-        this.re = this.J.prefs.showFifth;
-        this.af.style.display = this.J.prefs.showFifth ? "" : "none";
+      if (this.qe != this.J.prefs.showFifth) {
+        this.qe = this.J.prefs.showFifth;
+        this.$e.style.display = this.J.prefs.showFifth ? "" : "none";
       }
     }
   };
   var HarmonicsEditorPrompt = class {
     constructor(_doc, _songEditor) {
       this.J = _doc;
-      this.Eb = _songEditor;
-      this.ia.addEventListener("click", this.la);
-      this.fa.addEventListener("click", this.ga);
+      this.Db = _songEditor;
+      this.ha.addEventListener("click", this.ka);
+      this.ea.addEventListener("click", this.fa);
       this.container.addEventListener("keydown", this.whenKeyPressed);
       this.copyButton.addEventListener("click", this.ch);
       this.pasteButton.addEventListener("click", this.dh);
-      this.ja.addEventListener("click", this.ub);
+      this.ia.addEventListener("click", this.tb);
       this.harmonicsEditor.container.addEventListener("mousemove", () => this.harmonicsEditor.render());
       this.harmonicsEditor.container.addEventListener("mousedown", () => this.harmonicsEditor.render());
       this.container.addEventListener("mousemove", () => this.harmonicsEditor.render());
       this.container.addEventListener("mousedown", () => this.harmonicsEditor.render());
       this.updatePlayButton();
-      setTimeout(() => this.ja.focus());
+      setTimeout(() => this.ia.focus());
       this.harmonicsEditor.render();
     }
     harmonicsEditor = new HarmonicsEditor(this.J, true);
-    ja = HTML.button({ style: "width: 55%;", type: "button" });
-    fa = HTML.button({ class: "cancelButton" });
-    ia = HTML.button({ class: "okayButton", style: "width:45%;" }, "Okay");
+    ia = HTML.button({ style: "width: 55%;", type: "button" });
+    ea = HTML.button({ class: "cancelButton" });
+    ha = HTML.button({ class: "okayButton", style: "width:45%;" }, "Okay");
     copyButton = HTML.button({ style: "width:86px; margin-right: 5px;", class: "copyButton" }, [
       "Copy",
       // Copy icon:
@@ -35964,7 +35968,7 @@ You should be redirected to the song at:<br /><br />
       HTML.h2("Edit Harmonics Instrument"),
       HTML.div(
         { style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
-        this.ja
+        this.ia
       ),
       HTML.div(
         { style: "display: flex; flex-direction: row; align-items: center; justify-content: center;" },
@@ -35972,38 +35976,38 @@ You should be redirected to the song at:<br /><br />
       ),
       HTML.div(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.ia,
+        this.ha,
         this.copyPasteContainer
       ),
-      this.fa
+      this.ea
     );
-    ub = () => {
-      this.Eb.togglePlay();
+    tb = () => {
+      this.Db.togglePlay();
       this.updatePlayButton();
     };
     updatePlayButton() {
       if (this.J.synth.playing) {
-        this.ja.classList.remove("playButton");
-        this.ja.classList.add("pauseButton");
-        this.ja.title = "Pause (Space)";
-        this.ja.innerText = "Pause";
+        this.ia.classList.remove("playButton");
+        this.ia.classList.add("pauseButton");
+        this.ia.title = "Pause (Space)";
+        this.ia.innerText = "Pause";
       } else {
-        this.ja.classList.remove("pauseButton");
-        this.ja.classList.add("playButton");
-        this.ja.title = "Play (Space)";
-        this.ja.innerText = "Play";
+        this.ia.classList.remove("pauseButton");
+        this.ia.classList.add("playButton");
+        this.ia.title = "Play (Space)";
+        this.ia.innerText = "Play";
       }
     }
-    ga = () => {
+    fa = () => {
       this.J.prompt = null;
       this.J.undo();
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.la);
-      this.fa.removeEventListener("click", this.ga);
+      this.ha.removeEventListener("click", this.ka);
+      this.ea.removeEventListener("click", this.fa);
       this.container.removeEventListener("keydown", this.whenKeyPressed);
       this.harmonicsEditor.container.removeEventListener("mousemove", () => this.harmonicsEditor.render());
-      this.ja.removeEventListener("click", this.ub);
+      this.ia.removeEventListener("click", this.tb);
     };
     ch = () => {
       const harmonicsCopy = this.harmonicsEditor.getHarmonicsWave();
@@ -36016,9 +36020,9 @@ You should be redirected to the song at:<br /><br />
     };
     whenKeyPressed = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.la();
+        this.ka();
       } else if (event.keyCode == 32) {
-        this.ub();
+        this.tb();
         event.preventDefault();
       } else if (event.keyCode == 90) {
         this.harmonicsEditor.undo();
@@ -36032,7 +36036,7 @@ You should be redirected to the song at:<br /><br />
         this.J.synth.goToNextBar();
       }
     };
-    la = () => {
+    ka = () => {
       this.J.prompt = null;
       this.J.record(this.harmonicsEditor.saveSettings(), true);
       this.J.prompt = null;
@@ -36041,48 +36045,48 @@ You should be redirected to the song at:<br /><br />
 
   // editor/ArrayBufferReader.ts
   var ArrayBufferReader = class _ArrayBufferReader {
-    Qa = 0;
-    Ia;
+    Pa = 0;
+    Ha;
     constructor(data) {
-      this.Ia = data;
+      this.Ha = data;
     }
     getReadIndex() {
-      return this.Qa;
+      return this.Pa;
     }
     readUint32() {
-      if (this.Qa + 4 > this.Ia.byteLength) throw new Error("Reading past the end of the buffer.");
-      const result = this.Ia.getUint32(this.Qa, false);
-      this.Qa += 4;
+      if (this.Pa + 4 > this.Ha.byteLength) throw new Error("Reading past the end of the buffer.");
+      const result = this.Ha.getUint32(this.Pa, false);
+      this.Pa += 4;
       return result;
     }
     readUint24() {
       return this.readUint8() << 16 | this.readUint8() << 8 | this.readUint8();
     }
     readUint16() {
-      if (this.Qa + 2 > this.Ia.byteLength) throw new Error("Reading past the end of the buffer.");
-      const result = this.Ia.getUint16(this.Qa, false);
-      this.Qa += 2;
+      if (this.Pa + 2 > this.Ha.byteLength) throw new Error("Reading past the end of the buffer.");
+      const result = this.Ha.getUint16(this.Pa, false);
+      this.Pa += 2;
       return result;
     }
     readUint8() {
-      if (this.Qa + 1 > this.Ia.byteLength) throw new Error("Reading past the end of the buffer.");
-      const result = this.Ia.getUint8(this.Qa);
-      this.Qa++;
+      if (this.Pa + 1 > this.Ha.byteLength) throw new Error("Reading past the end of the buffer.");
+      const result = this.Ha.getUint8(this.Pa);
+      this.Pa++;
       return result;
     }
     readInt8() {
-      if (this.Qa + 1 > this.Ia.byteLength) throw new Error("Reading past the end of the buffer.");
-      const result = this.Ia.getInt8(this.Qa);
-      this.Qa++;
+      if (this.Pa + 1 > this.Ha.byteLength) throw new Error("Reading past the end of the buffer.");
+      const result = this.Ha.getInt8(this.Pa);
+      this.Pa++;
       return result;
     }
     peakUint8() {
-      if (this.Qa + 1 > this.Ia.byteLength) throw new Error("Reading past the end of the buffer.");
-      return this.Ia.getUint8(this.Qa);
+      if (this.Pa + 1 > this.Ha.byteLength) throw new Error("Reading past the end of the buffer.");
+      return this.Ha.getUint8(this.Pa);
     }
     readMidi7Bits() {
       const result = this.readUint8();
-      if (result >= 128) console.log("7 bit value contained 8th bit! value " + result + ", index " + this.Qa);
+      if (result >= 128) console.log("7 bit value contained 8th bit! value " + result + ", index " + this.Pa);
       return result & 127;
     }
     readMidiVariableLength() {
@@ -36099,14 +36103,14 @@ You should be redirected to the song at:<br /><br />
       return result;
     }
     skipBytes(length) {
-      this.Qa += length;
+      this.Pa += length;
     }
     hasMore() {
-      return this.Ia.byteLength > this.Qa;
+      return this.Ha.byteLength > this.Pa;
     }
     getReaderForNextBytes(length) {
-      if (this.Qa + length > this.Ia.byteLength) throw new Error("Reading past the end of the buffer.");
-      const result = new _ArrayBufferReader(new DataView(this.Ia.buffer, this.Ia.byteOffset + this.Qa, length));
+      if (this.Pa + length > this.Ha.byteLength) throw new Error("Reading past the end of the buffer.");
+      const result = new _ArrayBufferReader(new DataView(this.Ha.buffer, this.Ha.byteOffset + this.Pa, length));
       this.skipBytes(length);
       return result;
     }
@@ -36117,13 +36121,13 @@ You should be redirected to the song at:<br /><br />
   var ImportPrompt = class {
     constructor(_doc) {
       this.J = _doc;
-      this.Fb.select();
-      setTimeout(() => this.Fb.focus());
-      this.Fb.addEventListener("change", this.Ye);
-      this.fa.addEventListener("click", this.ga);
+      this.Eb.select();
+      setTimeout(() => this.Eb.focus());
+      this.Eb.addEventListener("change", this.Xe);
+      this.ea.addEventListener("click", this.fa);
     }
-    Fb = input8({ type: "file", accept: ".json,application/json,.mid,.midi,audio/midi,audio/x-midi" });
-    fa = button10({ class: "cancelButton" });
+    Eb = input8({ type: "file", accept: ".json,application/json,.mid,.midi,audio/midi,audio/x-midi" });
+    ea = button10({ class: "cancelButton" });
     Hp = select4(
       { style: "width: 100%;" },
       option4({ value: "auto" }, "Auto-detect mode (for json)"),
@@ -36151,18 +36155,18 @@ You should be redirected to the song at:<br /><br />
         "BeepBox can also (crudely) import .mid files. There are many tools available for creating .mid files. Shorter and simpler songs are more likely to work well."
       ),
       this.Hp,
-      this.Fb,
-      this.fa
+      this.Eb,
+      this.ea
     );
-    ga = () => {
+    fa = () => {
       this.J.undo();
     };
     cleanUp = () => {
-      this.Fb.removeEventListener("change", this.Ye);
-      this.fa.removeEventListener("click", this.ga);
+      this.Eb.removeEventListener("change", this.Xe);
+      this.ea.removeEventListener("click", this.fa);
     };
-    Ye = () => {
-      const file = this.Fb.files[0];
+    Xe = () => {
+      const file = this.Eb.files[0];
       if (!file) return;
       const extension = file.name.slice((file.name.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase();
       if (extension == "json") {
@@ -36183,7 +36187,7 @@ You should be redirected to the song at:<br /><br />
         reader.readAsArrayBuffer(file);
       } else {
         console.error("Unrecognized file extension.");
-        this.ga();
+        this.fa();
       }
     };
     nt(buffer) {
@@ -36215,7 +36219,7 @@ You should be redirected to the song at:<br /><br />
       }
       if (headerReader == null) {
         console.error("No header chunk found in this MIDI file.");
-        this.ga();
+        this.fa();
         return;
       }
       const fileFormat = headerReader.readUint16();
@@ -36407,14 +36411,14 @@ You should be redirected to the song at:<br /><br />
                     track.reader.skipBytes(length);
                   } else {
                     console.error("Unrecognized event status: " + eventStatus);
-                    this.ga();
+                    this.fa();
                     return;
                   }
                 }
                 break;
               default: {
                 console.error("Unrecognized event type: " + eventType);
-                this.ga();
+                this.fa();
                 return;
               }
             }
@@ -36884,7 +36888,7 @@ You should be redirected to the song at:<br /><br />
           this.append(new ChangeReplacePatterns(doc, pitchChannels, noiseChannels, modChannels));
           song.loopStart = 0;
           song.loopLength = song.barCount;
-          this.Z();
+          this.Y();
           doc.notifier.changed();
         }
       }
@@ -36900,22 +36904,22 @@ You should be redirected to the song at:<br /><br />
   var InstrumentExportPrompt = class _InstrumentExportPrompt {
     constructor(_doc) {
       this.J = _doc;
-      this.fa.addEventListener("click", this.ga);
-      this.Ne.addEventListener("click", this.Jp);
-      this.sb.addEventListener("input", _InstrumentExportPrompt.Jf);
+      this.ea.addEventListener("click", this.fa);
+      this.Me.addEventListener("click", this.Jp);
+      this.rb.addEventListener("input", _InstrumentExportPrompt.Jf);
     }
-    fa = button11({ class: "cancelButton" });
-    Ne = button11({ class: "exportButton", style: "width:45%;" }, "Export");
+    ea = button11({ class: "cancelButton" });
+    Me = button11({ class: "exportButton", style: "width:45%;" }, "Export");
     Ip = input9({ style: "width: 3em; margin-left: 1em;", type: "checkbox" });
     ot = this.J.song.channels[this.J.channel].name == "" ? Config.jsonFormat + "-Instrument" : this.J.song.channels[this.J.channel].name;
-    sb = input9({ type: "text", style: "width: 10em;", value: this.ot, maxlength: 250, "autofocus": "autofocus" });
+    rb = input9({ type: "text", style: "width: 10em;", value: this.ot, maxlength: 250, "autofocus": "autofocus" });
     container = div11(
       { class: "prompt noSelection", style: "width: 200px;" },
       h211("Export Instruments Options"),
       div11(
         { style: "display: flex; flex-direction: row; align-items: center; justify-content: space-between;" },
         "File name:",
-        this.sb
+        this.rb
       ),
       label2(
         { style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
@@ -36926,17 +36930,17 @@ You should be redirected to the song at:<br /><br />
       ),
       div11(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.Ne
+        this.Me
       ),
-      this.fa
+      this.ea
     );
-    ga = () => {
+    fa = () => {
       this.J.undo();
     };
     cleanUp = () => {
-      this.fa.removeEventListener("click", this.ga);
-      this.Ne.removeEventListener("click", this.Jp);
-      this.sb.removeEventListener("input", _InstrumentExportPrompt.Jf);
+      this.ea.removeEventListener("click", this.fa);
+      this.Me.removeEventListener("click", this.Jp);
+      this.rb.removeEventListener("input", _InstrumentExportPrompt.Jf);
     };
     Jp = () => {
       this.Ip.checked ? this.pt() : this.qt();
@@ -36951,11 +36955,11 @@ You should be redirected to the song at:<br /><br />
       const jsonBlob = new Blob([JSON.stringify(instruments)], { type: "application/json" });
       const downloadLink = document.createElement("a");
       downloadLink.href = URL.createObjectURL(jsonBlob);
-      downloadLink.download = this.sb.value + ".json";
+      downloadLink.download = this.rb.value + ".json";
       document.body.appendChild(downloadLink);
       downloadLink.click();
       document.body.removeChild(downloadLink);
-      this.ga();
+      this.fa();
     };
     qt = () => {
       const channel = this.J.song.channels[this.J.channel];
@@ -36965,11 +36969,11 @@ You should be redirected to the song at:<br /><br />
       const jsonBlob = new Blob([JSON.stringify(instrumentCopy)], { type: "application/json" });
       const downloadLink = document.createElement("a");
       downloadLink.href = URL.createObjectURL(jsonBlob);
-      downloadLink.download = this.sb.value + ".json";
+      downloadLink.download = this.rb.value + ".json";
       document.body.appendChild(downloadLink);
       downloadLink.click();
       document.body.removeChild(downloadLink);
-      this.ga();
+      this.fa();
     };
     static Jf(event, use) {
       let input19;
@@ -36996,25 +37000,25 @@ You should be redirected to the song at:<br /><br />
     constructor(_doc) {
       this.J = _doc;
       if ((_doc.song.patternInstruments || _doc.song.layeredInstruments) == false) {
-        this.Dc.disabled = true;
-        this.Dc.value = "replace";
+        this.Cc.disabled = true;
+        this.Cc.value = "replace";
         this.El.hidden = false;
       } else {
         const lastStrategy = nsLocalStorage_get("instrumentImportStrategy");
-        if (lastStrategy != null) this.Dc.value = lastStrategy;
+        if (lastStrategy != null) this.Cc.value = lastStrategy;
         this.El.hidden = true;
       }
-      this.Fb.addEventListener("change", this.Ye);
-      this.fa.addEventListener("click", this.ga);
+      this.Eb.addEventListener("change", this.Xe);
+      this.ea.addEventListener("click", this.fa);
     }
-    fa = button12({ class: "cancelButton" });
-    Dc = select5(
+    ea = button12({ class: "cancelButton" });
+    Cc = select5(
       { style: "width: 100%;" },
       option5({ value: "append" }, "Append instruments to the end of the list."),
       option5({ value: "replace" }, "Replace only the selected instrument."),
       option5({ value: "all" }, "Replace all instruments in the channel.")
     );
-    Fb = input10({ type: "file", accept: ".json,application/json" });
+    Eb = input10({ type: "file", accept: ".json,application/json" });
     El = div12(
       { style: "text-align: left;" },
       "You must enable either ",
@@ -37029,10 +37033,10 @@ You should be redirected to the song at:<br /><br />
       this.El,
       div12(
         { style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
-        div12({ class: "selectContainer", style: "width: 100%;" }, this.Dc)
+        div12({ class: "selectContainer", style: "width: 100%;" }, this.Cc)
       ),
-      this.Fb,
-      this.fa
+      this.Eb,
+      this.ea
       //If file has 1 instrument, and no checkboxes are selected, add all the instrument to the end
       //If file has multiple instruments, and no checkboxes are selected, add all the instruments to the end
       //If file has 1 instrument, and checkbox 1 is selected, clear all current isntruments and add the file instrument
@@ -37042,8 +37046,8 @@ You should be redirected to the song at:<br /><br />
       //importing a multi instrument with no multi instrument settings turned on will alert an a warning and not import the instrument
       //checkbox 1 and 2 will always be grayed out if multi instruments arent enabled.
     );
-    Ye = () => {
-      const file = this.Fb.files[0];
+    Xe = () => {
+      const file = this.Eb.files[0];
       if (!file) return;
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -37066,19 +37070,19 @@ You should be redirected to the song at:<br /><br />
       };
       reader.readAsText(file);
     };
-    ga = () => {
+    fa = () => {
       this.J.undo();
     };
     cleanUp = () => {
-      this.Fb.removeEventListener("change", this.Ye);
-      this.fa.removeEventListener("click", this.ga);
+      this.Eb.removeEventListener("change", this.Xe);
+      this.ea.removeEventListener("click", this.fa);
     };
     rt = (file) => {
       const channel = this.J.song.channels[this.J.channel];
       const currentInstrum = channel.instruments[this.J.getCurrentInstrument()];
-      switch (this.Dc.value) {
+      switch (this.Cc.value) {
         case "replace":
-          nsLocalStorage_save("instrumentImportStrategy", this.Dc.value);
+          nsLocalStorage_save("instrumentImportStrategy", this.Cc.value);
           const firstInstrum = file[0];
           this.J.record(new ChangePasteInstrument(this.J, currentInstrum, firstInstrum));
           for (let i = 1; i < file.length; i++) {
@@ -37094,7 +37098,7 @@ You should be redirected to the song at:<br /><br />
           this.J.notifier.changed();
           return;
         case "all":
-          nsLocalStorage_save("instrumentImportStrategy", this.Dc.value);
+          nsLocalStorage_save("instrumentImportStrategy", this.Cc.value);
           channel.instruments.length = 0;
           for (let insturm of file) {
             if (!this.ij(channel)) {
@@ -37108,7 +37112,7 @@ You should be redirected to the song at:<br /><br />
           this.J.notifier.changed();
           return;
         default:
-          nsLocalStorage_save("instrumentImportStrategy", this.Dc.value);
+          nsLocalStorage_save("instrumentImportStrategy", this.Cc.value);
           for (let insturm of file) {
             if (!this.ij(channel)) {
               alert("Max instruments reached! Some instruments were not imported.");
@@ -37131,16 +37135,16 @@ You should be redirected to the song at:<br /><br />
     st = (file) => {
       const channel = this.J.song.channels[this.J.channel];
       const currentInstrum = channel.instruments[this.J.getCurrentInstrument()];
-      switch (this.Dc.value) {
+      switch (this.Cc.value) {
         case "replace":
-          nsLocalStorage_save("instrumentImportStrategy", this.Dc.value);
+          nsLocalStorage_save("instrumentImportStrategy", this.Cc.value);
           this.J.record(new ChangePasteInstrument(this.J, currentInstrum, file));
           this.J.record(new ChangeViewInstrument(this.J, this.J.getCurrentInstrument()));
           this.J.prompt = null;
           this.J.notifier.changed();
           return;
         case "all":
-          nsLocalStorage_save("instrumentImportStrategy", this.Dc.value);
+          nsLocalStorage_save("instrumentImportStrategy", this.Cc.value);
           channel.instruments.length = 1;
           const firstInstrum = channel.instruments[0];
           this.J.record(new ChangePasteInstrument(this.J, firstInstrum, file));
@@ -37154,7 +37158,7 @@ You should be redirected to the song at:<br /><br />
             this.J.prompt = null;
             return;
           }
-          nsLocalStorage_save("instrumentImportStrategy", this.Dc.value);
+          nsLocalStorage_save("instrumentImportStrategy", this.Cc.value);
           this.J.record(new ChangeAppendInstrument(this.J, channel, file));
           this.J.record(new ChangeViewInstrument(this.J, channel.instruments.length - 1));
           this.J.prompt = null;
@@ -37427,16 +37431,16 @@ You should be redirected to the song at:<br /><br />
   var LayoutPrompt = class {
     constructor(_doc) {
       this.J = _doc;
-      this.Fb.select();
-      setTimeout(() => this.Fb.focus());
-      this.ia.addEventListener("click", this.cf);
-      this.fa.addEventListener("click", this.ga);
-      this.container.addEventListener("keydown", this.qa);
+      this.Eb.select();
+      setTimeout(() => this.Eb.focus());
+      this.ha.addEventListener("click", this.bf);
+      this.ea.addEventListener("click", this.fa);
+      this.container.addEventListener("keydown", this.pa);
       this.Fl.elements["layout"].value = this.J.prefs.layout;
     }
-    Fb = input11({ type: "file", accept: ".json,application/json,.mid,.midi,audio/midi,audio/x-midi" });
-    ia = button13({ class: "okayButton", style: "width:45%;" }, "Okay");
-    fa = button13({ class: "cancelButton" });
+    Eb = input11({ type: "file", accept: ".json,application/json,.mid,.midi,audio/midi,audio/x-midi" });
+    ha = button13({ class: "okayButton", style: "width:45%;" }, "Okay");
+    ea = button13({ class: "cancelButton" });
     Fl = form(
       { style: "display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;" },
       label3(
@@ -37546,41 +37550,41 @@ You should be redirected to the song at:<br /><br />
       this.Fl,
       div13(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.ia
+        this.ha
       ),
-      this.fa
+      this.ea
     );
-    ga = () => {
+    fa = () => {
       this.J.undo();
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.cf);
-      this.fa.removeEventListener("click", this.ga);
-      this.container.removeEventListener("keydown", this.qa);
+      this.ha.removeEventListener("click", this.bf);
+      this.ea.removeEventListener("click", this.fa);
+      this.container.removeEventListener("keydown", this.pa);
     };
-    qa = (event) => {
+    pa = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.cf();
+        this.bf();
       }
     };
-    cf = () => {
+    bf = () => {
       this.J.prefs.layout = this.Fl.elements["layout"].value;
       this.J.prefs.save();
       Layout.setLayout(this.J.prefs.layout);
-      this.ga();
+      this.fa();
     };
   };
 
   // editor/LimiterPrompt.ts
   var { button: button14, div: div14, h2: h214, input: input12 } = HTML;
   var LimiterCanvas = class {
-    ca = 200;
+    ba = 200;
     // 112
-    ba = 52;
+    aa = 52;
     // 26
-    Te = SVG.path({ fill: ColorConfig.uiWidgetBackground, "pointer-events": "none" });
+    Se = SVG.path({ fill: ColorConfig.uiWidgetBackground, "pointer-events": "none" });
     Nf = SVG.svg({ "pointer-events": "none" });
-    Ue = SVG.svg({ "pointer-events": "none" });
+    Te = SVG.svg({ "pointer-events": "none" });
     Mp = SVG.path({ fill: "none", stroke: ColorConfig.textSelection, "stroke-width": 2, "pointer-events": "none" });
     Gl = SVG.circle({ fill: ColorConfig.textSelection, stroke: "none", r: "3" });
     Np = SVG.path({ fill: "none", stroke: ColorConfig.primaryText, "stroke-width": 2, "pointer-events": "none" });
@@ -37604,12 +37608,12 @@ You should be redirected to the song at:<br /><br />
     Kl = SVG.stop({ "stop-color": "red", offset: "50%" });
     Ll = SVG.linearGradient({ id: "volumeGrad", gradientUnits: "userSpaceOnUse" }, this.Il, this.Jl, this.Kl);
     kj = SVG.defs({}, this.Ll);
-    ha = SVG.svg(
-      { style: `background-color: ${ColorConfig.editorBackground}; touch-action: none; overflow: visible;`, width: "100%", height: "100%", viewBox: "0 0 " + this.ca + " " + this.ba, preserveAspectRatio: "none" },
+    ga = SVG.svg(
+      { style: `background-color: ${ColorConfig.editorBackground}; touch-action: none; overflow: visible;`, width: "100%", height: "100%", viewBox: "0 0 " + this.ba + " " + this.aa, preserveAspectRatio: "none" },
       this.kj,
-      this.Te,
+      this.Se,
       this.Nf,
-      this.Ue,
+      this.Te,
       this.Mp,
       this.Np,
       this.Op,
@@ -37629,26 +37633,26 @@ You should be redirected to the song at:<br /><br />
       this.Qp,
       this.Sp
     );
-    container = HTML.div({ class: "", style: "height: 4em; width: 80%; padding-bottom: 1.5em;" }, this.ha);
+    container = HTML.div({ class: "", style: "height: 4em; width: 80%; padding-bottom: 1.5em;" }, this.ga);
     yh;
     constructor(lim) {
       for (let i = 0; i <= 2; i++) {
-        this.Nf.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: i * this.ca / 2 - 1, y: 0, width: 2, height: this.ba }));
+        this.Nf.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: i * this.ba / 2 - 1, y: 0, width: 2, height: this.aa }));
       }
       for (let i = 1; i <= 3; i += 2) {
-        this.Ue.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: i * this.ca / 4 - 1, y: 0, width: 1, height: this.ba }));
+        this.Te.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: i * this.ba / 4 - 1, y: 0, width: 1, height: this.aa }));
       }
       this.yh = lim;
     }
     animateVolume(inVolumeCap, historicInCap, outVolumeCap, historicOutCap) {
-      this.Pp.setAttribute("width", "" + Math.min(this.ca, inVolumeCap * (this.ca / 2)));
-      this.Qp.setAttribute("x", "" + Math.min(this.ca, historicInCap * (this.ca / 2)));
-      this.Rp.setAttribute("width", "" + Math.min(this.ca, outVolumeCap * (this.ca / 2)));
-      this.Sp.setAttribute("x", "" + Math.min(this.ca, historicOutCap * (this.ca / 2)));
+      this.Pp.setAttribute("width", "" + Math.min(this.ba, inVolumeCap * (this.ba / 2)));
+      this.Qp.setAttribute("x", "" + Math.min(this.ba, historicInCap * (this.ba / 2)));
+      this.Rp.setAttribute("width", "" + Math.min(this.ba, outVolumeCap * (this.ba / 2)));
+      this.Sp.setAttribute("x", "" + Math.min(this.ba, historicOutCap * (this.ba / 2)));
     }
     render() {
       const controlPointToHeight = (point) => {
-        return Math.max(0, (1 - point / 5) * (this.ba - 1) + 1);
+        return Math.max(0, (1 - point / 5) * (this.aa - 1) + 1);
       };
       let lastValue = 0;
       let currentSubpathIdx = 0;
@@ -37674,15 +37678,15 @@ You should be redirected to the song at:<br /><br />
         }
         if (currentSubpathIdx > lastSubpathIdx) {
           if (lastSubpathIdx >= 0) {
-            subPaths[lastSubpathIdx] += "L " + prettyNumber(i * this.ca / 64) + " " + prettyNumber(controlPointToHeight(nextValue)) + " ";
+            subPaths[lastSubpathIdx] += "L " + prettyNumber(i * this.ba / 64) + " " + prettyNumber(controlPointToHeight(nextValue)) + " ";
           }
-          subPaths[currentSubpathIdx] += "M " + prettyNumber(i * this.ca / 64) + " " + prettyNumber(controlPointToHeight(nextValue)) + " ";
+          subPaths[currentSubpathIdx] += "M " + prettyNumber(i * this.ba / 64) + " " + prettyNumber(controlPointToHeight(nextValue)) + " ";
           if (currentSubpathIdx == 1 || lastSubpathIdx == 0 && currentSubpathIdx == 2) {
-            this.Gl.setAttribute("cx", prettyNumber(i * this.ca / 64));
+            this.Gl.setAttribute("cx", prettyNumber(i * this.ba / 64));
             this.Gl.setAttribute("cy", prettyNumber(controlPointToHeight(nextValue)));
           }
           if (currentSubpathIdx == 2) {
-            this.Hl.setAttribute("cx", prettyNumber(i * this.ca / 64));
+            this.Hl.setAttribute("cx", prettyNumber(i * this.ba / 64));
             this.Hl.setAttribute("cy", prettyNumber(controlPointToHeight(nextValue)));
           }
           lastSubpathIdx = currentSubpathIdx;
@@ -37694,8 +37698,8 @@ You should be redirected to the song at:<br /><br />
           path += "M ";
           subPaths[currentSubpathIdx] += "M ";
         }
-        path += prettyNumber(i * this.ca / 64) + " " + prettyNumber(controlPointToHeight(nextValue)) + " ";
-        subPaths[currentSubpathIdx] += prettyNumber(i * this.ca / 64) + " " + prettyNumber(controlPointToHeight(nextValue)) + " ";
+        path += prettyNumber(i * this.ba / 64) + " " + prettyNumber(controlPointToHeight(nextValue)) + " ";
+        subPaths[currentSubpathIdx] += prettyNumber(i * this.ba / 64) + " " + prettyNumber(controlPointToHeight(nextValue)) + " ";
         lastValue = nextValue;
         if (currentSubpathIdx == 0 && i >= compressorThreshold * 32 - 2) {
           currentSubpathIdx++;
@@ -37706,22 +37710,22 @@ You should be redirected to the song at:<br /><br />
       }
       const lastHeight = controlPointToHeight(lastValue);
       if (lastValue > 0) {
-        path += "L " + (this.ca - 1) + " " + prettyNumber(lastHeight) + " ";
-        subPaths[currentSubpathIdx] += "L " + (this.ca - 1) + " " + prettyNumber(lastHeight) + " ";
+        path += "L " + (this.ba - 1) + " " + prettyNumber(lastHeight) + " ";
+        subPaths[currentSubpathIdx] += "L " + (this.ba - 1) + " " + prettyNumber(lastHeight) + " ";
       }
       this.Mp.setAttribute("d", subPaths[0]);
       this.Np.setAttribute("d", subPaths[1]);
       this.Op.setAttribute("d", subPaths[2]);
-      this.Te.setAttribute("d", path + "L " + this.ca + " " + prettyNumber(lastHeight) + " L " + this.ca + " " + prettyNumber(this.ba) + " L 0 " + prettyNumber(this.ba) + " z ");
+      this.Se.setAttribute("d", path + "L " + this.ba + " " + prettyNumber(lastHeight) + " L " + this.ba + " " + prettyNumber(this.aa) + " L 0 " + prettyNumber(this.aa) + " z ");
     }
   };
   var LimiterPrompt = class {
     constructor(_doc, _songEditor) {
       this.J = _doc;
-      this.Eb = _songEditor;
-      this.ia.addEventListener("click", this.la);
-      this.Xe.addEventListener("click", this.Tp);
-      this.fa.addEventListener("click", this.ga);
+      this.Db = _songEditor;
+      this.ha.addEventListener("click", this.ka);
+      this.We.addEventListener("click", this.Tp);
+      this.ea.addEventListener("click", this.fa);
       this.container.addEventListener("keydown", this.whenKeyPressed);
       this.limitRatioSlider.value = "" + (this.J.song.limitRatio < 1 ? this.J.song.limitRatio * 10 : 9 + this.J.song.limitRatio);
       this.compressionRatioSlider.value = "" + (this.J.song.compressionRatio < 1 ? this.J.song.compressionRatio * 10 : 10 + (this.J.song.compressionRatio - 1) * 60);
@@ -37737,21 +37741,21 @@ You should be redirected to the song at:<br /><br />
       this.startingLimitDecay = +this.limitDecaySlider.value;
       this.startingLimitRise = +this.limitRiseSlider.value;
       this.startingMasterGain = +this.masterGainSlider.value;
-      this.limitDecaySlider.addEventListener("input", this.vb);
-      this.limitRiseSlider.addEventListener("input", this.vb);
-      this.limitRatioSlider.addEventListener("input", this.vb);
+      this.limitDecaySlider.addEventListener("input", this.ub);
+      this.limitRiseSlider.addEventListener("input", this.ub);
+      this.limitRatioSlider.addEventListener("input", this.ub);
       this.limitThresholdSlider.addEventListener("input", this.lj);
-      this.compressionRatioSlider.addEventListener("input", this.vb);
-      this.compressionThresholdSlider.addEventListener("input", this.vb);
-      this.masterGainSlider.addEventListener("input", this.vb);
-      this.ja.addEventListener("click", this.ub);
+      this.compressionRatioSlider.addEventListener("input", this.ub);
+      this.compressionThresholdSlider.addEventListener("input", this.ub);
+      this.masterGainSlider.addEventListener("input", this.ub);
+      this.ia.addEventListener("click", this.tb);
       window.requestAnimationFrame(this.mj);
       this.updatePlayButton();
-      setTimeout(() => this.ja.focus());
+      setTimeout(() => this.ia.focus());
       this.limiterCanvas.render();
     }
     limiterCanvas = new LimiterCanvas(this);
-    ja = button14({ style: "width: 55%;", type: "button" });
+    ia = button14({ style: "width: 55%;", type: "button" });
     limitDecaySlider = input12({ title: "limit decay", style: `width: 5em; flex-grow: 1; margin: 0;`, type: "range", min: "1", max: "30", value: "4", step: "1" });
     limitRiseSlider = input12({ title: "limit rise", style: `width: 5em; flex-grow: 1; margin: 0;`, type: "range", min: "2000", max: "10000", value: "4000", step: "250" });
     compressionThresholdSlider = input12({ title: "compressor threshold", style: `width: 100%; flex-grow: 1; margin: 0;`, type: "range", min: "0", max: "1.1", value: "1", step: "0.05" });
@@ -37770,15 +37774,15 @@ You should be redirected to the song at:<br /><br />
     inVolumeHistoricCap = 0;
     outVolumeHistoricTimer = 0;
     outVolumeHistoricCap = 0;
-    fa = button14({ class: "cancelButton" });
-    ia = button14({ class: "okayButton", style: "width:45%;" }, "Okay");
-    Xe = button14({ style: "width:45%;" }, "Reset");
+    ea = button14({ class: "cancelButton" });
+    ha = button14({ class: "okayButton", style: "width:45%;" }, "Okay");
+    We = button14({ style: "width:45%;" }, "Reset");
     container = div14(
       { class: "prompt noSelection", style: "width: 250px;" },
       h214("Limiter Options"),
       div14(
         { style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
-        this.ja
+        this.ia
       ),
       div14(
         { style: "display: flex; flex-direction: row; align-items: center; justify-content: center;" },
@@ -37855,10 +37859,10 @@ You should be redirected to the song at:<br /><br />
       ),
       div14(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.ia,
-        this.Xe
+        this.ha,
+        this.We
       ),
-      this.fa
+      this.ea
     );
     mj = () => {
       this.inVolumeHistoricTimer--;
@@ -37880,24 +37884,24 @@ You should be redirected to the song at:<br /><br />
       this.limiterCanvas.animateVolume(this.J.song.inVolumeCap, this.inVolumeHistoricCap, this.J.song.outVolumeCap, this.outVolumeHistoricCap);
       window.requestAnimationFrame(this.mj);
     };
-    ub = () => {
-      this.Eb.togglePlay();
+    tb = () => {
+      this.Db.togglePlay();
       this.updatePlayButton();
     };
     updatePlayButton() {
       if (this.J.synth.playing) {
-        this.ja.classList.remove("playButton");
-        this.ja.classList.add("pauseButton");
-        this.ja.title = "Pause (Space)";
-        this.ja.innerText = "Pause";
+        this.ia.classList.remove("playButton");
+        this.ia.classList.add("pauseButton");
+        this.ia.title = "Pause (Space)";
+        this.ia.innerText = "Pause";
       } else {
-        this.ja.classList.remove("pauseButton");
-        this.ja.classList.add("playButton");
-        this.ja.title = "Play (Space)";
-        this.ja.innerText = "Play";
+        this.ia.classList.remove("pauseButton");
+        this.ia.classList.add("playButton");
+        this.ia.title = "Play (Space)";
+        this.ia.innerText = "Play";
       }
     }
-    vb = () => {
+    ub = () => {
       if (+this.limitThresholdSlider.value < +this.compressionThresholdSlider.value) {
         this.limitThresholdSlider.removeEventListener("input", this.lj);
         this.limitThresholdSlider.value = this.compressionThresholdSlider.value;
@@ -37909,14 +37913,14 @@ You should be redirected to the song at:<br /><br />
     // Same as above, but for conflicts between limiter threshold and compressor threshold, favor the limiter
     lj = () => {
       if (+this.limitThresholdSlider.value < +this.compressionThresholdSlider.value) {
-        this.compressionThresholdSlider.removeEventListener("input", this.vb);
+        this.compressionThresholdSlider.removeEventListener("input", this.ub);
         this.compressionThresholdSlider.value = this.limitThresholdSlider.value;
-        this.compressionThresholdSlider.addEventListener("input", this.vb);
+        this.compressionThresholdSlider.addEventListener("input", this.ub);
       }
       this.limiterCanvas.render();
       this.nj();
     };
-    ga = () => {
+    fa = () => {
       this.limitRatioSlider.value = "" + this.startingLimitRatio;
       this.compressionRatioSlider.value = "" + this.startingCompressionRatio;
       this.limitThresholdSlider.value = "" + this.startingLimitThreshold;
@@ -37928,25 +37932,25 @@ You should be redirected to the song at:<br /><br />
       this.J.prompt = null;
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.la);
-      this.Xe.removeEventListener("click", this.Tp);
-      this.fa.removeEventListener("click", this.ga);
+      this.ha.removeEventListener("click", this.ka);
+      this.We.removeEventListener("click", this.Tp);
+      this.ea.removeEventListener("click", this.fa);
       this.container.removeEventListener("keydown", this.whenKeyPressed);
-      this.limitDecaySlider.removeEventListener("input", this.vb);
-      this.limitRiseSlider.removeEventListener("input", this.vb);
+      this.limitDecaySlider.removeEventListener("input", this.ub);
+      this.limitRiseSlider.removeEventListener("input", this.ub);
       this.limitThresholdSlider.removeEventListener("input", this.lj);
-      this.limitRatioSlider.removeEventListener("input", this.vb);
-      this.compressionRatioSlider.removeEventListener("input", this.vb);
-      this.compressionThresholdSlider.removeEventListener("input", this.vb);
-      this.masterGainSlider.removeEventListener("input", this.vb);
-      this.ja.removeEventListener("click", this.ub);
+      this.limitRatioSlider.removeEventListener("input", this.ub);
+      this.compressionRatioSlider.removeEventListener("input", this.ub);
+      this.compressionThresholdSlider.removeEventListener("input", this.ub);
+      this.masterGainSlider.removeEventListener("input", this.ub);
+      this.ia.removeEventListener("click", this.tb);
     };
     whenKeyPressed = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.la();
+        this.ka();
       }
       if (event.keyCode == 32) {
-        this.ub();
+        this.tb();
         event.preventDefault();
       }
     };
@@ -37959,7 +37963,7 @@ You should be redirected to the song at:<br /><br />
         this.compressionRatioSlider.value = "10";
         this.compressionThresholdSlider.value = "1";
         this.masterGainSlider.value = "1";
-        this.vb();
+        this.ub();
       }
     };
     nj = () => {
@@ -37974,7 +37978,7 @@ You should be redirected to the song at:<br /><br />
         +this.masterGainSlider.value
       ), true);
     };
-    la = () => {
+    ka = () => {
       this.nj();
       this.J.prompt = null;
     };
@@ -37984,21 +37988,21 @@ You should be redirected to the song at:<br /><br />
   var LoopEditor = class {
     constructor(_doc, _trackEditor) {
       this.J = _doc;
-      this.Pd = _trackEditor;
-      this.$c();
-      this.Da();
-      this.J.notifier.watch(this.Tc);
-      this.container.addEventListener("mousedown", this.db);
-      document.addEventListener("mousemove", this.Za);
-      document.addEventListener("mouseup", this.xa);
-      this.container.addEventListener("mouseover", this.mc);
-      this.container.addEventListener("mouseout", this.nc);
-      this.container.addEventListener("touchstart", this.pb);
-      this.container.addEventListener("touchmove", this.qb);
+      this.Od = _trackEditor;
+      this._c();
+      this.Ca();
+      this.J.notifier.watch(this.Sc);
+      this.container.addEventListener("mousedown", this.cb);
+      document.addEventListener("mousemove", this.Ya);
+      document.addEventListener("mouseup", this.wa);
+      this.container.addEventListener("mouseover", this.lc);
+      this.container.addEventListener("mouseout", this.mc);
+      this.container.addEventListener("touchstart", this.ob);
+      this.container.addEventListener("touchmove", this.pb);
       this.container.addEventListener("touchend", this.Tg);
       this.container.addEventListener("touchcancel", this.Tg);
     }
-    ba = 20;
+    aa = 20;
     Ml = 0;
     Nl = 1;
     Ol = 2;
@@ -38007,33 +38011,33 @@ You should be redirected to the song at:<br /><br />
     pj = -1;
     Up = SVG.path({ fill: "none", stroke: ColorConfig.loopAccent, "stroke-width": 4 });
     Ql = SVG.path({ fill: "none", stroke: ColorConfig.uiWidgetFocus, "stroke-width": 2 });
-    Xc = SVG.path({ fill: ColorConfig.hoverPreview, "pointer-events": "none" });
-    ha = SVG.svg(
-      { style: `touch-action: pan-y; position: absolute;`, height: this.ba },
+    Wc = SVG.path({ fill: ColorConfig.hoverPreview, "pointer-events": "none" });
+    ga = SVG.svg(
+      { style: `touch-action: pan-y; position: absolute;`, height: this.aa },
       this.Up,
-      this.Xc,
+      this.Wc,
       this.Ql
     );
-    container = HTML.div({ class: "loopEditor" }, this.ha);
-    pa = 32;
-    ma = null;
+    container = HTML.div({ class: "loopEditor" }, this.ga);
+    oa = 32;
+    la = null;
     K = { startBar: -1, mode: -1 };
-    $ = 0;
+    _ = 0;
     //private _mouseY = 0;
     Vp = 0;
     Wp = 0;
     qj = false;
     rj = false;
-    da = false;
-    na = false;
+    ca = false;
+    ma = false;
     Xp = -1;
     Yp = -1;
-    Od = 0;
+    Nd = 0;
     ah = -1;
     Zp = -1;
     _p = -1;
-    $c() {
-      const bar = this.$ / this.pa;
+    _c() {
+      const bar = this._ / this.oa;
       this.K.startBar = bar;
       if (bar >= this.oj && bar <= this.pj + 1) {
         this.K.mode = this.Pl;
@@ -38060,45 +38064,45 @@ You should be redirected to the song at:<br /><br />
       }
       return { start, length: end - start };
     }
+    lc = (event) => {
+      if (this.ma) return;
+      this.ma = true;
+      this.qa();
+    };
     mc = (event) => {
-      if (this.na) return;
-      this.na = true;
-      this.ra();
+      if (!this.ma) return;
+      this.ma = false;
+      this.qa();
     };
-    nc = (event) => {
-      if (!this.na) return;
-      this.na = false;
-      this.ra();
-    };
-    db = (event) => {
+    cb = (event) => {
       event.preventDefault();
-      this.da = true;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.clientX || event.pageX) - boundingRect.left;
-      this.$c();
-      this.ra();
-      this.Za(event);
+      this.ca = true;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.clientX || event.pageX) - boundingRect.left;
+      this._c();
+      this.qa();
+      this.Ya(event);
     };
-    pb = (event) => {
-      this.da = true;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = event.touches[0].clientX - boundingRect.left;
-      this.$c();
-      this.ra();
+    ob = (event) => {
+      this.ca = true;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = event.touches[0].clientX - boundingRect.left;
+      this._c();
+      this.qa();
       this.Vp = event.touches[0].clientX;
       this.Wp = event.touches[0].clientY;
       this.rj = false;
       this.qj = false;
     };
-    Za = (event) => {
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.clientX || event.pageX) - boundingRect.left;
-      this.ya();
+    Ya = (event) => {
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.clientX || event.pageX) - boundingRect.left;
+      this.xa();
     };
-    qb = (event) => {
-      if (!this.da) return;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = event.touches[0].clientX - boundingRect.left;
+    pb = (event) => {
+      if (!this.ca) return;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = event.touches[0].clientX - boundingRect.left;
       if (!this.rj && !this.qj) {
         if (Math.abs(event.touches[0].clientY - this.Wp) > 10) {
           this.qj = true;
@@ -38107,19 +38111,19 @@ You should be redirected to the song at:<br /><br />
         }
       }
       if (this.rj) {
-        this.ya();
+        this.xa();
         event.preventDefault();
       }
     };
-    ya() {
-      if (this.da) {
+    xa() {
+      if (this.ca) {
         let oldStart = this.J.song.loopStart;
         let oldEnd = this.J.song.loopStart + this.J.song.loopLength;
-        if (this.ma != null && this.J.lastChangeWas(this.ma)) {
-          oldStart = this.ma.oldStart;
-          oldEnd = oldStart + this.ma.oldLength;
+        if (this.la != null && this.J.lastChangeWas(this.la)) {
+          oldStart = this.la.oldStart;
+          oldEnd = oldStart + this.la.oldLength;
         }
-        const bar = this.$ / this.pa;
+        const bar = this._ / this.oa;
         let start;
         let end;
         let temp;
@@ -38135,7 +38139,7 @@ You should be redirected to the song at:<br /><br />
             start = end;
             end = temp;
           }
-          this.ma = new ChangeLoop(this.J, oldStart, oldEnd - oldStart, start, end - start);
+          this.la = new ChangeLoop(this.J, oldStart, oldEnd - oldStart, start, end - start);
         } else if (this.K.mode == this.Nl) {
           start = oldStart;
           end = oldEnd + Math.round(bar - this.K.startBar);
@@ -38148,10 +38152,10 @@ You should be redirected to the song at:<br /><br />
             start = end;
             end = temp;
           }
-          this.ma = new ChangeLoop(this.J, oldStart, oldEnd - oldStart, start, end - start);
+          this.la = new ChangeLoop(this.J, oldStart, oldEnd - oldStart, start, end - start);
         } else if (this.K.mode == this.Ol) {
           const endPoints = this.$p(bar);
-          this.ma = new ChangeLoop(this.J, oldStart, oldEnd - oldStart, endPoints.start, endPoints.length);
+          this.la = new ChangeLoop(this.J, oldStart, oldEnd - oldStart, endPoints.start, endPoints.length);
         } else if (this.K.mode == this.Pl) {
           this.J.synth.loopBarStart = -1;
           this.J.synth.loopBarEnd = -1;
@@ -38161,91 +38165,91 @@ You should be redirected to the song at:<br /><br />
         if (this.J.prefs.autoFollow) {
           new ChangeChannelBar(this.J, this.J.channel, Math.floor(this.J.synth.playhead), true);
         }
-        this.J.setProspectiveChange(this.ma);
+        this.J.setProspectiveChange(this.la);
       } else {
-        this.$c();
-        this.ra();
+        this._c();
+        this.qa();
       }
     }
     Tg = (event) => {
       event.preventDefault();
       if (!this.qj) {
-        this.ya();
-        this.na = false;
-        this.xa(event);
-        this.ra();
+        this.xa();
+        this.ma = false;
+        this.wa(event);
+        this.qa();
       }
-      this.da = false;
+      this.ca = false;
     };
-    xa = (event) => {
-      if (this.ma != null) this.J.record(this.ma);
-      this.ma = null;
-      this.da = false;
-      this.$c();
-      this.Da();
+    wa = (event) => {
+      if (this.la != null) this.J.record(this.la);
+      this.la = null;
+      this.ca = false;
+      this._c();
+      this.Ca();
     };
-    ra() {
-      const showHighlight = this.na && !this.da;
-      this.Xc.style.visibility = showHighlight ? "visible" : "hidden";
+    qa() {
+      const showHighlight = this.ma && !this.ca;
+      this.Wc.style.visibility = showHighlight ? "visible" : "hidden";
       if (showHighlight) {
-        const radius = this.ba / 2;
-        let highlightStart = this.J.song.loopStart * this.pa;
-        let highlightStop = (this.J.song.loopStart + this.J.song.loopLength) * this.pa;
+        const radius = this.aa / 2;
+        let highlightStart = this.J.song.loopStart * this.oa;
+        let highlightStop = (this.J.song.loopStart + this.J.song.loopLength) * this.oa;
         if (this.K.mode == this.Ml) {
-          highlightStop = this.J.song.loopStart * this.pa + radius * 2;
+          highlightStop = this.J.song.loopStart * this.oa + radius * 2;
         } else if (this.K.mode == this.Nl) {
-          highlightStart = (this.J.song.loopStart + this.J.song.loopLength) * this.pa - radius * 2;
+          highlightStart = (this.J.song.loopStart + this.J.song.loopLength) * this.oa - radius * 2;
         } else if (this.K.mode == this.Ol) {
           const endPoints = this.$p(this.K.startBar);
-          highlightStart = endPoints.start * this.pa;
-          highlightStop = (endPoints.start + endPoints.length) * this.pa;
+          highlightStart = endPoints.start * this.oa;
+          highlightStop = (endPoints.start + endPoints.length) * this.oa;
         }
         if (this.K.mode == this.Pl) {
-          const barLoopStart = (this.oj + 0.5) * this.pa;
-          const barLoopEnd = (this.pj + 0.5) * this.pa;
-          this.Xc.setAttribute(
+          const barLoopStart = (this.oj + 0.5) * this.oa;
+          const barLoopEnd = (this.pj + 0.5) * this.oa;
+          this.Wc.setAttribute(
             "d",
             `M ${barLoopStart} ${radius * 1.7} L ${barLoopStart - radius * 1.5} ${radius}L ${barLoopStart} ${radius * 0.3}L ${barLoopEnd} ${radius * 0.3}L ${barLoopEnd + radius * 1.5} ${radius}L ${barLoopEnd} ${radius * 1.7}z`
           );
         } else {
-          this.Xc.setAttribute(
+          this.Wc.setAttribute(
             "d",
-            `M ${highlightStart + radius} ${4} L ${highlightStop - radius} ${4} A ${radius - 4} ${radius - 4} ${0} ${0} ${1} ${highlightStop - radius} ${this.ba - 4} L ${highlightStart + radius} ${this.ba - 4} A ${radius - 4} ${radius - 4} ${0} ${0} ${1} ${highlightStart + radius} ${4} z`
+            `M ${highlightStart + radius} ${4} L ${highlightStop - radius} ${4} A ${radius - 4} ${radius - 4} ${0} ${0} ${1} ${highlightStop - radius} ${this.aa - 4} L ${highlightStart + radius} ${this.aa - 4} A ${radius - 4} ${radius - 4} ${0} ${0} ${1} ${highlightStart + radius} ${4} z`
           );
         }
       }
     }
-    Tc = () => {
-      this.Da();
+    Sc = () => {
+      this.Ca();
     };
     setLoopAt(startBar, endBar) {
       this.oj = startBar;
       this.pj = endBar;
-      this.Pd.render();
-      this.Da();
+      this.Od.render();
+      this.Ca();
     }
-    Da() {
-      this.pa = this.J.getBarWidth();
-      const radius = this.ba / 2;
-      const loopStart = this.J.song.loopStart * this.pa;
-      const loopStop = (this.J.song.loopStart + this.J.song.loopLength) * this.pa;
-      if (this.Od != this.J.song.barCount || this.ah != this.pa) {
-        this.Od = this.J.song.barCount;
-        this.ah = this.pa;
-        const editorWidth = this.pa * this.J.song.barCount;
+    Ca() {
+      this.oa = this.J.getBarWidth();
+      const radius = this.aa / 2;
+      const loopStart = this.J.song.loopStart * this.oa;
+      const loopStop = (this.J.song.loopStart + this.J.song.loopLength) * this.oa;
+      if (this.Nd != this.J.song.barCount || this.ah != this.oa) {
+        this.Nd = this.J.song.barCount;
+        this.ah = this.oa;
+        const editorWidth = this.oa * this.J.song.barCount;
         this.container.style.width = editorWidth + "px";
-        this.ha.setAttribute("width", editorWidth + "");
+        this.ga.setAttribute("width", editorWidth + "");
       }
       if (this.Xp != loopStart || this.Yp != loopStop) {
         this.Xp = loopStart;
         this.Yp = loopStop;
         this.Up.setAttribute(
           "d",
-          `M ${loopStart + radius} ${2} L ${loopStop - radius} ${2} A ${radius - 2} ${radius - 2} ${0} ${0} ${1} ${loopStop - radius} ${this.ba - 2} L ${loopStart + radius} ${this.ba - 2} A ${radius - 2} ${radius - 2} ${0} ${0} ${1} ${loopStart + radius} ${2} z`
+          `M ${loopStart + radius} ${2} L ${loopStop - radius} ${2} A ${radius - 2} ${radius - 2} ${0} ${0} ${1} ${loopStop - radius} ${this.aa - 2} L ${loopStart + radius} ${this.aa - 2} A ${radius - 2} ${radius - 2} ${0} ${0} ${1} ${loopStart + radius} ${2} z`
         );
       }
-      const barLoopStart = (this.oj + 0.5) * this.pa;
-      const barLoopEnd = (this.pj + 0.5) * this.pa;
+      const barLoopStart = (this.oj + 0.5) * this.oa;
+      const barLoopEnd = (this.pj + 0.5) * this.oa;
       if (this.Zp != barLoopStart || this._p != barLoopEnd) {
         if (barLoopStart < 0 || barLoopEnd < 0) {
           this.Ql.setAttribute("d", "");
@@ -38258,7 +38262,7 @@ You should be redirected to the song at:<br /><br />
         this.Zp = barLoopStart;
         this._p = barLoopEnd;
       }
-      this.ra();
+      this.qa();
     }
   };
 
@@ -38338,27 +38342,27 @@ You should be redirected to the song at:<br /><br />
   var MoveNotesSidewaysPrompt = class _MoveNotesSidewaysPrompt {
     constructor(_doc) {
       this.J = _doc;
-      this.bb.min = -this.J.song.beatsPerBar + "";
-      this.bb.max = this.J.song.beatsPerBar + "";
+      this.ab.min = -this.J.song.beatsPerBar + "";
+      this.ab.max = this.J.song.beatsPerBar + "";
       const lastStrategy = nsLocalStorage_get("moveNotesSidewaysStrategy");
       if (lastStrategy != null) {
-        this.Vc.value = lastStrategy;
+        this.Uc.value = lastStrategy;
       }
-      this.bb.select();
-      setTimeout(() => this.bb.focus(), 100);
-      this.ia.addEventListener("click", this.la);
-      this.fa.addEventListener("click", this.ga);
-      this.bb.addEventListener("blur", _MoveNotesSidewaysPrompt.lb);
-      this.container.addEventListener("keydown", this.qa);
+      this.ab.select();
+      setTimeout(() => this.ab.focus(), 100);
+      this.ha.addEventListener("click", this.ka);
+      this.ea.addEventListener("click", this.fa);
+      this.ab.addEventListener("blur", _MoveNotesSidewaysPrompt.kb);
+      this.container.addEventListener("keydown", this.pa);
     }
-    bb = input13({ style: "width: 3em; margin-left: 1em;", type: "number", step: "0.01", value: "0" });
-    Vc = select6(
+    ab = input13({ style: "width: 3em; margin-left: 1em;", type: "number", step: "0.01", value: "0" });
+    Uc = select6(
       { style: "width: 100%;" },
       option6({ value: "overflow" }, "Overflow notes across bars."),
       option6({ value: "wrapAround" }, "Wrap notes around within bars.")
     );
-    fa = button15({ class: "cancelButton" });
-    ia = button15({ class: "okayButton", style: "width:45%;" }, "Okay");
+    ea = button15({ class: "cancelButton" });
+    ha = button15({ class: "okayButton", style: "width:45%;" }, "Okay");
     container = div15(
       { class: "prompt noSelection", style: "width: 250px;" },
       h215("Move Notes Sideways"),
@@ -38370,43 +38374,43 @@ You should be redirected to the song at:<br /><br />
           br4(),
           span4({ style: `font-size: smaller; color: ${ColorConfig.secondaryText};` }, "(Negative is left, positive is right)")
         ),
-        this.bb
+        this.ab
       ),
       div15(
         { style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
-        div15({ class: "selectContainer", style: "width: 100%;" }, this.Vc)
+        div15({ class: "selectContainer", style: "width: 100%;" }, this.Uc)
       ),
       div15(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.ia
+        this.ha
       ),
-      this.fa
+      this.ea
     );
-    ga = () => {
+    fa = () => {
       this.J.undo();
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.la);
-      this.fa.removeEventListener("click", this.ga);
-      this.bb.removeEventListener("blur", _MoveNotesSidewaysPrompt.lb);
-      this.container.removeEventListener("keydown", this.qa);
+      this.ha.removeEventListener("click", this.ka);
+      this.ea.removeEventListener("click", this.fa);
+      this.ab.removeEventListener("blur", _MoveNotesSidewaysPrompt.kb);
+      this.container.removeEventListener("keydown", this.pa);
     };
-    qa = (event) => {
+    pa = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.la();
+        this.ka();
       }
     };
-    static lb(event) {
+    static kb(event) {
       const input19 = event.target;
       let value = +input19.value;
       value = Math.round(value * Config.partsPerBeat) / Config.partsPerBeat;
       value = Math.round(value * 100) / 100;
       input19.value = Math.max(+input19.min, Math.min(+input19.max, value)) + "";
     }
-    la = () => {
-      nsLocalStorage_save("moveNotesSidewaysStrategy", this.Vc.value);
+    ka = () => {
+      nsLocalStorage_save("moveNotesSidewaysStrategy", this.Uc.value);
       this.J.prompt = null;
-      this.J.record(new ChangeMoveNotesSideways(this.J, +this.bb.value, this.Vc.value), true);
+      this.J.record(new ChangeMoveNotesSideways(this.J, +this.ab.value, this.Uc.value), true);
     };
   };
 
@@ -38416,24 +38420,24 @@ You should be redirected to the song at:<br /><br />
       this.J = _doc;
       this.Mt = _editor;
       this.container.addEventListener("click", this.jh);
-      this.container.addEventListener("mousemove", this.df);
+      this.container.addEventListener("mousemove", this.cf);
       this.container.addEventListener("mouseleave", this.Gt);
-      this.Ea.selectedIndex = -1;
-      this.Ea.addEventListener("change", this.Ht);
-      this.Ea.addEventListener("mousedown", this.gq);
-      this.Ea.addEventListener("blur", this.It);
-      this.Ea.addEventListener("click", this.Jt);
-      this.Hb.input.addEventListener("change", this.hq);
-      this.Hb.input.addEventListener("blur", this.hq);
-      this.Hb.input.addEventListener("mousedown", this.Kt);
-      this.Hb.input.addEventListener("input", this.Lt);
+      this.Da.selectedIndex = -1;
+      this.Da.addEventListener("change", this.Ht);
+      this.Da.addEventListener("mousedown", this.gq);
+      this.Da.addEventListener("blur", this.It);
+      this.Da.addEventListener("click", this.Jt);
+      this.Gb.input.addEventListener("change", this.hq);
+      this.Gb.input.addEventListener("blur", this.hq);
+      this.Gb.input.addEventListener("mousedown", this.Kt);
+      this.Gb.input.addEventListener("input", this.Lt);
     }
     Ft = HTML.div({ style: `background: ${ColorConfig.editorBackground}; position: sticky; bottom: 0; left: 0; width: 32px; height: 30px;` });
-    hb = [];
-    xb = [];
-    La = HTML.div({ style: `background-color: ${ColorConfig.uiWidgetFocus}; white-space:nowrap; display: none; transform:translate(20px); width: auto; pointer-events: none; position: absolute; border-radius: 0.2em; z-index: 2;`, "color": ColorConfig.primaryText }, "");
-    Hb = new InputBox(HTML.input({ style: `color: ${ColorConfig.primaryText}; background-color: ${ColorConfig.uiWidgetFocus}; margin-top: -2px; display: none; width: 6em; position: absolute; border-radius: 0.2em; z-index: 2;`, "color": ColorConfig.primaryText }, ""), this.J, (oldValue, newValue) => new ChangeChannelName(this.J, oldValue, newValue));
-    Ea = HTML.select(
+    gb = [];
+    wb = [];
+    Ka = HTML.div({ style: `background-color: ${ColorConfig.uiWidgetFocus}; white-space:nowrap; display: none; transform:translate(20px); width: auto; pointer-events: none; position: absolute; border-radius: 0.2em; z-index: 2;`, "color": ColorConfig.primaryText }, "");
+    Gb = new InputBox(HTML.input({ style: `color: ${ColorConfig.primaryText}; background-color: ${ColorConfig.uiWidgetFocus}; margin-top: -2px; display: none; width: 6em; position: absolute; border-radius: 0.2em; z-index: 2;`, "color": ColorConfig.primaryText }, ""), this.J, (oldValue, newValue) => new ChangeChannelName(this.J, oldValue, newValue));
+    Da = HTML.select(
       { style: "width: 0px; left: 19px; height: 19px; position:absolute; opacity:0" },
       HTML.option({ value: "rename" }, "Rename..."),
       HTML.option({ value: "chnUp" }, "Move Channel Up"),
@@ -38443,99 +38447,99 @@ You should be redirected to the song at:<br /><br />
       HTML.option({ value: "chnInsert" }, "Insert Channel Below"),
       HTML.option({ value: "chnDelete" }, "Delete This Channel")
     );
-    container = HTML.div({ class: "muteEditor", style: "position: sticky; padding-top: " + Config.barEditorHeight + "px;" }, this.La, this.Hb.input, this.Ea);
-    ba = 128;
+    container = HTML.div({ class: "muteEditor", style: "position: sticky; padding-top: " + Config.barEditorHeight + "px;" }, this.Ka, this.Gb.input, this.Da);
+    aa = 128;
     dq = 0;
     eq = 0;
     Rl = -1;
     Sl = 0;
-    Sa = 0;
-    Ec = false;
+    Ra = 0;
+    Dc = false;
     fq = false;
     Lt = () => {
-      let newValue = this.Hb.input.value;
+      let newValue = this.Gb.input.value;
       if (newValue.length > 15) {
-        this.Hb.input.value = newValue.substring(0, 15);
+        this.Gb.input.value = newValue.substring(0, 15);
       }
     };
     Kt = (event) => {
       event.stopPropagation();
     };
     hq = () => {
-      this.Hb.input.style.setProperty("display", "none");
-      this.La.style.setProperty("display", "none");
+      this.Gb.input.style.setProperty("display", "none");
+      this.Ka.style.setProperty("display", "none");
     };
     Jt = (event) => {
-      this.Ec = !this.fq;
+      this.Dc = !this.fq;
       this.gq(event);
     };
     It = () => {
-      this.Ec = false;
-      this.La.style.setProperty("display", "none");
+      this.Dc = false;
+      this.Ka.style.setProperty("display", "none");
     };
     gq = (event) => {
-      this.fq = this.Ec;
-      this.Sa = Math.floor(Math.min(this.hb.length, Math.max(0, parseInt(this.Ea.style.getPropertyValue("top")) / ChannelRow.patternHeight)));
-      this.J.muteEditorChannel = this.Sa;
-      this.La.style.setProperty("display", "");
-      if (this.Sa < this.J.song.pitchChannelCount && this.J.song.pitchChannelCount == Config.pitchChannelCountMax || this.Sa >= this.J.song.pitchChannelCount && this.Sa < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount && this.J.song.noiseChannelCount == Config.noiseChannelCountMax || this.Sa >= this.J.song.pitchChannelCount + this.J.song.noiseChannelCount && this.J.song.modChannelCount == Config.modChannelCountMax) {
-        this.Ea.options[5].disabled = true;
+      this.fq = this.Dc;
+      this.Ra = Math.floor(Math.min(this.gb.length, Math.max(0, parseInt(this.Da.style.getPropertyValue("top")) / ChannelRow.patternHeight)));
+      this.J.muteEditorChannel = this.Ra;
+      this.Ka.style.setProperty("display", "");
+      if (this.Ra < this.J.song.pitchChannelCount && this.J.song.pitchChannelCount == Config.pitchChannelCountMax || this.Ra >= this.J.song.pitchChannelCount && this.Ra < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount && this.J.song.noiseChannelCount == Config.noiseChannelCountMax || this.Ra >= this.J.song.pitchChannelCount + this.J.song.noiseChannelCount && this.J.song.modChannelCount == Config.modChannelCountMax) {
+        this.Da.options[5].disabled = true;
       } else {
-        this.Ea.options[5].disabled = false;
+        this.Da.options[5].disabled = false;
       }
-      if (this.Sa == 0 || this.Sa == this.J.song.pitchChannelCount || this.Sa == this.J.song.pitchChannelCount + this.J.song.noiseChannelCount) {
-        this.Ea.options[1].disabled = true;
+      if (this.Ra == 0 || this.Ra == this.J.song.pitchChannelCount || this.Ra == this.J.song.pitchChannelCount + this.J.song.noiseChannelCount) {
+        this.Da.options[1].disabled = true;
       } else {
-        this.Ea.options[1].disabled = false;
+        this.Da.options[1].disabled = false;
       }
-      if (this.Sa == this.J.song.pitchChannelCount - 1 || this.Sa == this.J.song.pitchChannelCount + this.J.song.noiseChannelCount - 1 || this.Sa == this.J.song.getChannelCount() - 1) {
-        this.Ea.options[2].disabled = true;
+      if (this.Ra == this.J.song.pitchChannelCount - 1 || this.Ra == this.J.song.pitchChannelCount + this.J.song.noiseChannelCount - 1 || this.Ra == this.J.song.getChannelCount() - 1) {
+        this.Da.options[2].disabled = true;
       } else {
-        this.Ea.options[2].disabled = false;
+        this.Da.options[2].disabled = false;
       }
-      if (this.J.song.pitchChannelCount == 1 && this.Sa == 0) {
-        this.Ea.options[6].disabled = true;
+      if (this.J.song.pitchChannelCount == 1 && this.Ra == 0) {
+        this.Da.options[6].disabled = true;
       } else {
-        this.Ea.options[6].disabled = false;
+        this.Da.options[6].disabled = false;
       }
     };
     Ht = (event) => {
-      this.La.style.setProperty("display", "none");
-      this.Ea.style.setProperty("display", "none");
-      this.Ec = false;
+      this.Ka.style.setProperty("display", "none");
+      this.Da.style.setProperty("display", "none");
+      this.Dc = false;
       event.stopPropagation();
-      switch (this.Ea.value) {
+      switch (this.Da.value) {
         case "rename":
-          this.Hb.input.style.setProperty("display", "");
-          this.Hb.input.style.setProperty("transform", this.La.style.getPropertyValue("transform"));
-          if (this.La.textContent != null) {
-            this.Hb.input.value = this.La.textContent;
+          this.Gb.input.style.setProperty("display", "");
+          this.Gb.input.style.setProperty("transform", this.Ka.style.getPropertyValue("transform"));
+          if (this.Ka.textContent != null) {
+            this.Gb.input.value = this.Ka.textContent;
           } else {
-            this.Hb.input.value = "";
+            this.Gb.input.value = "";
           }
-          this.Hb.input.select();
+          this.Gb.input.select();
           break;
         case "chnUp":
-          this.J.record(new ChangeChannelOrder(this.J, this.Sa, this.Sa, -1));
+          this.J.record(new ChangeChannelOrder(this.J, this.Ra, this.Ra, -1));
           break;
         case "chnDown":
-          this.J.record(new ChangeChannelOrder(this.J, this.Sa, this.Sa, 1));
+          this.J.record(new ChangeChannelOrder(this.J, this.Ra, this.Ra, 1));
           break;
         case "chnMute":
-          this.J.song.channels[this.Sa].muted = !this.J.song.channels[this.Sa].muted;
+          this.J.song.channels[this.Ra].muted = !this.J.song.channels[this.Ra].muted;
           this.render();
           break;
         case "chnSolo": {
           let shouldSolo = false;
           for (let channel = 0; channel < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount; channel++) {
-            if (this.J.song.channels[channel].muted == (channel == this.Sa)) {
+            if (this.J.song.channels[channel].muted == (channel == this.Ra)) {
               shouldSolo = true;
               channel = this.J.song.pitchChannelCount + this.J.song.noiseChannelCount;
             }
           }
           if (shouldSolo) {
             for (let channel = 0; channel < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount; channel++) {
-              this.J.song.channels[channel].muted = channel != this.Sa;
+              this.J.song.channels[channel].muted = channel != this.Ra;
             }
           } else {
             for (let channel = 0; channel < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount; channel++) {
@@ -38546,88 +38550,88 @@ You should be redirected to the song at:<br /><br />
           break;
         }
         case "chnInsert": {
-          this.J.channel = this.Sa;
+          this.J.channel = this.Ra;
           this.J.selection.resetBoxSelection();
           this.J.selection.insertChannel();
           break;
         }
         case "chnDelete": {
-          this.J.record(new ChangeRemoveChannel(this.J, this.Sa, this.Sa));
+          this.J.record(new ChangeRemoveChannel(this.J, this.Ra, this.Ra));
           break;
         }
       }
-      if (this.Ea.value != "rename")
+      if (this.Da.value != "rename")
         this.Mt.refocusStage();
-      this.Ea.selectedIndex = -1;
+      this.Da.selectedIndex = -1;
     };
     jh = (event) => {
-      const index = this.hb.indexOf(event.target);
+      const index = this.gb.indexOf(event.target);
       if (index == -1) return;
-      let xPos = event.clientX - this.hb[0].getBoundingClientRect().left;
+      let xPos = event.clientX - this.gb[0].getBoundingClientRect().left;
       if (xPos < 21) {
         if (event.shiftKey) this.J.song.channels[index].visible = !this.J.song.channels[index].visible;
         else this.J.song.channels[index].muted = !this.J.song.channels[index].muted;
       }
       this.J.notifier.changed();
     };
-    df = (event) => {
-      const index = this.hb.indexOf(event.target);
+    cf = (event) => {
+      const index = this.gb.indexOf(event.target);
       if (index == -1) {
-        if (!this.Ec && event.target != this.La && event.target != this.Ea) {
-          this.La.style.setProperty("display", "none");
-          this.Ea.style.setProperty("display", "none");
-          this.Ea.style.setProperty("width", "0px");
+        if (!this.Dc && event.target != this.Ka && event.target != this.Da) {
+          this.Ka.style.setProperty("display", "none");
+          this.Da.style.setProperty("display", "none");
+          this.Da.style.setProperty("width", "0px");
         }
         return;
       }
-      if (this.Ec && this.La.style.getPropertyValue("display") == "none" && this.Hb.input.style.getPropertyValue("display") == "none") {
-        this.Ec = false;
+      if (this.Dc && this.Ka.style.getPropertyValue("display") == "none" && this.Gb.input.style.getPropertyValue("display") == "none") {
+        this.Dc = false;
       }
-      let xPos = event.clientX - this.hb[0].getBoundingClientRect().left;
+      let xPos = event.clientX - this.gb[0].getBoundingClientRect().left;
       if (xPos >= 21) {
-        if (!this.Ec) {
-          this.Ea.style.setProperty("display", "");
+        if (!this.Dc) {
+          this.Da.style.setProperty("display", "");
           var height = ChannelRow.patternHeight;
-          this.La.style.setProperty("transform", "translate(20px, " + (height / 4 + height * index) + "px)");
+          this.Ka.style.setProperty("transform", "translate(20px, " + (height / 4 + height * index) + "px)");
           if (this.J.song.channels[index].name != "") {
-            this.La.textContent = this.J.song.channels[index].name;
-            this.La.style.setProperty("display", "");
+            this.Ka.textContent = this.J.song.channels[index].name;
+            this.Ka.style.setProperty("display", "");
           } else {
             if (index < this.J.song.pitchChannelCount) {
-              this.La.textContent = "Pitch " + (index + 1);
+              this.Ka.textContent = "Pitch " + (index + 1);
             } else if (index < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount) {
-              this.La.textContent = "Noise " + (index - this.J.song.pitchChannelCount + 1);
+              this.Ka.textContent = "Noise " + (index - this.J.song.pitchChannelCount + 1);
             } else {
-              this.La.textContent = "Mod " + (index - this.J.song.pitchChannelCount - this.J.song.noiseChannelCount + 1);
+              this.Ka.textContent = "Mod " + (index - this.J.song.pitchChannelCount - this.J.song.noiseChannelCount + 1);
             }
-            this.La.style.setProperty("display", "none");
+            this.Ka.style.setProperty("display", "none");
           }
-          this.Ea.style.top = Config.barEditorHeight + 2 + index * ChannelRow.patternHeight + "px";
-          this.Ea.style.setProperty("width", "15px");
+          this.Da.style.top = Config.barEditorHeight + 2 + index * ChannelRow.patternHeight + "px";
+          this.Da.style.setProperty("width", "15px");
         }
       } else {
-        if (!this.Ec) {
-          this.La.style.setProperty("display", "none");
-          this.Ea.style.setProperty("display", "none");
-          this.Ea.style.setProperty("width", "0px");
+        if (!this.Dc) {
+          this.Ka.style.setProperty("display", "none");
+          this.Da.style.setProperty("display", "none");
+          this.Da.style.setProperty("width", "0px");
         }
       }
     };
     Gt = (event) => {
-      if (!this.Ec) {
-        this.La.style.setProperty("display", "none");
-        this.Ea.style.setProperty("width", "0px");
+      if (!this.Dc) {
+        this.Ka.style.setProperty("display", "none");
+        this.Da.style.setProperty("width", "0px");
       }
     };
     onKeyUp(event) {
       switch (event.keyCode) {
         case 27:
-          this.Ec = false;
-          this.La.style.setProperty("display", "none");
+          this.Dc = false;
+          this.Ka.style.setProperty("display", "none");
           break;
         case 13:
-          this.Ec = false;
-          this.La.style.setProperty("display", "none");
+          this.Dc = false;
+          this.Ka.style.setProperty("display", "none");
           break;
         default:
           break;
@@ -38635,9 +38639,9 @@ You should be redirected to the song at:<br /><br />
     }
     render() {
       if (!this.J.prefs.enableChannelMuting) return;
-      let startingChannelCount = this.hb.length;
-      if (this.hb.length != this.J.song.getChannelCount()) {
-        for (let y = this.hb.length; y < this.J.song.getChannelCount(); y++) {
+      let startingChannelCount = this.gb.length;
+      if (this.gb.length != this.J.song.getChannelCount()) {
+        for (let y = this.gb.length; y < this.J.song.getChannelCount(); y++) {
           const channelCountText = HTML.div({ class: "noSelection muteButtonText", style: "display: table-cell; -webkit-text-stroke: 1.5px; vertical-align: middle; text-align: center; -webkit-user-select: none; -webkit-touch-callout: none; -moz-user-select: none; -ms-user-select: none; user-select: none; pointer-events: none; width: 12px; height: 20px; transform: translate(0px, 1px);" });
           const muteButton = HTML.div({ class: "mute-button", title: "Mute (M), Mute All (\u21E7M), Solo (S), Exclude (\u21E7S)", style: `display: block; pointer-events: none; width: 16px; height: 20px; transform: translate(2px, 1px);` });
           const muteContainer = HTML.div({ style: `align-items: center; height: 20px; margin: 0px; display: table; flex-direction: row; justify-content: space-between;` }, [
@@ -38645,64 +38649,64 @@ You should be redirected to the song at:<br /><br />
             channelCountText
           ]);
           this.container.appendChild(muteContainer);
-          this.hb[y] = muteContainer;
-          this.xb[y] = channelCountText;
+          this.gb[y] = muteContainer;
+          this.wb[y] = channelCountText;
         }
-        for (let y = this.J.song.getChannelCount(); y < this.hb.length; y++) {
-          this.container.removeChild(this.hb[y]);
+        for (let y = this.J.song.getChannelCount(); y < this.gb.length; y++) {
+          this.container.removeChild(this.gb[y]);
         }
-        this.hb.length = this.J.song.getChannelCount();
+        this.gb.length = this.J.song.getChannelCount();
         this.container.appendChild(this.Ft);
       }
       for (let y = 0; y < this.J.song.getChannelCount(); y++) {
         if (this.J.song.channels[y].muted) {
-          this.hb[y].children[0].classList.add("muted");
+          this.gb[y].children[0].classList.add("muted");
           if (this.J.song.channels[y].visible) {
             if (y < this.J.song.pitchChannelCount)
-              this.xb[y].style.color = ColorConfig.trackEditorBgPitch;
+              this.wb[y].style.color = ColorConfig.trackEditorBgPitch;
             else if (y < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount)
-              this.xb[y].style.color = ColorConfig.trackEditorBgNoise;
+              this.wb[y].style.color = ColorConfig.trackEditorBgNoise;
             else
-              this.xb[y].style.color = ColorConfig.trackEditorBgMod;
+              this.wb[y].style.color = ColorConfig.trackEditorBgMod;
           } else {
             if (y < this.J.song.pitchChannelCount)
-              this.xb[y].style.color = ColorConfig.trackEditorBgPitchDim;
+              this.wb[y].style.color = ColorConfig.trackEditorBgPitchDim;
             else if (y < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount)
-              this.xb[y].style.color = ColorConfig.trackEditorBgNoiseDim;
+              this.wb[y].style.color = ColorConfig.trackEditorBgNoiseDim;
             else
-              this.xb[y].style.color = ColorConfig.trackEditorBgModDim;
+              this.wb[y].style.color = ColorConfig.trackEditorBgModDim;
           }
         } else {
-          this.hb[y].children[0].classList.remove("muted");
+          this.gb[y].children[0].classList.remove("muted");
           if (this.J.song.channels[y].visible) {
             if (y < this.J.song.pitchChannelCount)
-              this.xb[y].style.color = ColorConfig.trackEditorBgPitch;
+              this.wb[y].style.color = ColorConfig.trackEditorBgPitch;
             else if (y < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount)
-              this.xb[y].style.color = ColorConfig.trackEditorBgNoise;
+              this.wb[y].style.color = ColorConfig.trackEditorBgNoise;
             else
-              this.xb[y].style.color = ColorConfig.trackEditorBgMod;
+              this.wb[y].style.color = ColorConfig.trackEditorBgMod;
           } else {
             if (y < this.J.song.pitchChannelCount)
-              this.xb[y].style.color = ColorConfig.trackEditorBgPitchDim;
+              this.wb[y].style.color = ColorConfig.trackEditorBgPitchDim;
             else if (y < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount)
-              this.xb[y].style.color = ColorConfig.trackEditorBgNoiseDim;
+              this.wb[y].style.color = ColorConfig.trackEditorBgNoiseDim;
             else
-              this.xb[y].style.color = ColorConfig.trackEditorBgModDim;
+              this.wb[y].style.color = ColorConfig.trackEditorBgModDim;
           }
         }
       }
-      if (this.Rl != ChannelRow.patternHeight || startingChannelCount != this.hb.length) {
+      if (this.Rl != ChannelRow.patternHeight || startingChannelCount != this.gb.length) {
         for (let y = 0; y < this.J.song.getChannelCount(); y++) {
-          this.hb[y].style.marginTop = (ChannelRow.patternHeight - 20) / 2 + "px";
-          this.hb[y].style.marginBottom = (ChannelRow.patternHeight - 20) / 2 + "px";
+          this.gb[y].style.marginTop = (ChannelRow.patternHeight - 20) / 2 + "px";
+          this.gb[y].style.marginBottom = (ChannelRow.patternHeight - 20) / 2 + "px";
         }
       }
-      if (this.Sl != this.J.song.modChannelCount || startingChannelCount != this.hb.length) {
+      if (this.Sl != this.J.song.modChannelCount || startingChannelCount != this.gb.length) {
         for (let y = 0; y < this.J.song.getChannelCount(); y++) {
           if (y < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount) {
-            this.hb[y].children[0].classList.remove("modMute");
+            this.gb[y].children[0].classList.remove("modMute");
           } else {
-            this.hb[y].children[0].classList.add("modMute");
+            this.gb[y].children[0].classList.add("modMute");
           }
         }
       }
@@ -38710,39 +38714,39 @@ You should be redirected to the song at:<br /><br />
         for (let y = 0; y < this.J.song.getChannelCount(); y++) {
           if (y < this.J.song.pitchChannelCount) {
             let val = y + 1;
-            this.xb[y].textContent = val + "";
-            this.xb[y].style.fontSize = val >= 10 ? "xx-small" : "inherit";
+            this.wb[y].textContent = val + "";
+            this.wb[y].style.fontSize = val >= 10 ? "xx-small" : "inherit";
           } else if (y < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount) {
             let val = y - this.J.song.pitchChannelCount + 1;
-            this.xb[y].textContent = val + "";
-            this.xb[y].style.fontSize = val >= 10 ? "xx-small" : "inherit";
+            this.wb[y].textContent = val + "";
+            this.wb[y].style.fontSize = val >= 10 ? "xx-small" : "inherit";
           } else {
             let val = y - this.J.song.pitchChannelCount - this.J.song.noiseChannelCount + 1;
-            this.xb[y].textContent = val + "";
-            this.xb[y].style.fontSize = val >= 10 ? "xx-small" : "inherit";
+            this.wb[y].textContent = val + "";
+            this.wb[y].style.fontSize = val >= 10 ? "xx-small" : "inherit";
           }
         }
         this.dq = this.J.song.pitchChannelCount;
         this.eq = this.J.song.noiseChannelCount;
         this.Sl = this.J.song.modChannelCount;
       }
-      if (startingChannelCount != this.hb.length || this.Rl != ChannelRow.patternHeight) {
+      if (startingChannelCount != this.gb.length || this.Rl != ChannelRow.patternHeight) {
         this.Rl = ChannelRow.patternHeight;
-        this.ba = Config.barEditorHeight + this.J.song.getChannelCount() * ChannelRow.patternHeight;
-        this.La.style.setProperty("display", "none");
-        this.container.style.height = this.ba + 16 + "px";
+        this.aa = Config.barEditorHeight + this.J.song.getChannelCount() * ChannelRow.patternHeight;
+        this.Ka.style.setProperty("display", "none");
+        this.container.style.height = this.aa + 16 + "px";
         if (ChannelRow.patternHeight < 27) {
-          this.La.style.setProperty("margin-top", "-2px");
-          this.Ea.style.setProperty("margin-top", "-4px");
-          this.Hb.input.style.setProperty("margin-top", "-4px");
+          this.Ka.style.setProperty("margin-top", "-2px");
+          this.Da.style.setProperty("margin-top", "-4px");
+          this.Gb.input.style.setProperty("margin-top", "-4px");
         } else if (ChannelRow.patternHeight < 30) {
-          this.La.style.setProperty("margin-top", "-1px");
-          this.Ea.style.setProperty("margin-top", "-3px");
-          this.Hb.input.style.setProperty("margin-top", "-3px");
+          this.Ka.style.setProperty("margin-top", "-1px");
+          this.Da.style.setProperty("margin-top", "-3px");
+          this.Gb.input.style.setProperty("margin-top", "-3px");
         } else {
-          this.La.style.setProperty("margin-top", "0px");
-          this.Ea.style.setProperty("margin-top", "0px");
-          this.Hb.input.style.setProperty("margin-top", "-2px");
+          this.Ka.style.setProperty("margin-top", "0px");
+          this.Da.style.setProperty("margin-top", "0px");
+          this.Gb.input.style.setProperty("margin-top", "-2px");
         }
       }
     }
@@ -38752,196 +38756,196 @@ You should be redirected to the song at:<br /><br />
   var OctaveScrollBar = class {
     constructor(_doc, _piano) {
       this.J = _doc;
-      this.rd = _piano;
-      this.J.notifier.watch(this.Tc);
-      this.Tc();
-      this.ha.appendChild(this.Ge);
+      this.qd = _piano;
+      this.J.notifier.watch(this.Sc);
+      this.Sc();
+      this.ga.appendChild(this.Fe);
       for (let i = 0; i <= this.iq; i++) {
-        this.ha.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: 0, y: i * this.ef, width: this.ca, height: this.Tl }));
+        this.ga.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: 0, y: i * this.df, width: this.ba, height: this.Tl }));
       }
-      this.ha.appendChild(this.zd);
-      this.ha.appendChild(this.Qd);
-      this.ha.appendChild(this.Rd);
-      const center = this.ca * 0.5;
+      this.ga.appendChild(this.yd);
+      this.ga.appendChild(this.Pd);
+      this.ga.appendChild(this.Qd);
+      const center = this.ba * 0.5;
       const base = 20;
       const tip = 9;
       const arrowWidth = 6;
-      this.Qd.setAttribute("d", `M ${center} ${tip} L ${center + arrowWidth} ${base} L ${center - arrowWidth} ${base} z`);
-      this.Rd.setAttribute("d", `M ${center} ${this.ba - tip} L ${center + arrowWidth} ${this.ba - base} L ${center - arrowWidth} ${this.ba - base} z`);
-      this.container.addEventListener("mousedown", this.db);
-      document.addEventListener("mousemove", this.Za);
-      document.addEventListener("mouseup", this.xa);
-      this.container.addEventListener("mouseover", this.mc);
-      this.container.addEventListener("mouseout", this.nc);
-      this.container.addEventListener("touchstart", this.pb);
-      this.container.addEventListener("touchmove", this.qb);
-      this.container.addEventListener("touchend", this.xa);
-      this.container.addEventListener("touchcancel", this.xa);
+      this.Pd.setAttribute("d", `M ${center} ${tip} L ${center + arrowWidth} ${base} L ${center - arrowWidth} ${base} z`);
+      this.Qd.setAttribute("d", `M ${center} ${this.aa - tip} L ${center + arrowWidth} ${this.aa - base} L ${center - arrowWidth} ${this.aa - base} z`);
+      this.container.addEventListener("mousedown", this.cb);
+      document.addEventListener("mousemove", this.Ya);
+      document.addEventListener("mouseup", this.wa);
+      this.container.addEventListener("mouseover", this.lc);
+      this.container.addEventListener("mouseout", this.mc);
+      this.container.addEventListener("touchstart", this.ob);
+      this.container.addEventListener("touchmove", this.pb);
+      this.container.addEventListener("touchend", this.wa);
+      this.container.addEventListener("touchcancel", this.wa);
     }
-    ca = 20;
-    ba = 481;
+    ba = 20;
+    aa = 481;
     Tl = 4;
     iq = Config.pitchOctaves;
-    ef = (this.ba - this.Tl) / this.iq;
-    Ge = SVG.rect({ fill: ColorConfig.uiWidgetBackground, x: 2, y: 0, width: this.ca - 4 });
-    zd = SVG.rect({ fill: "none", stroke: ColorConfig.hoverPreview, "stroke-width": 2, "pointer-events": "none", x: 1, y: 0, width: this.ca - 2 });
+    df = (this.aa - this.Tl) / this.iq;
+    Fe = SVG.rect({ fill: ColorConfig.uiWidgetBackground, x: 2, y: 0, width: this.ba - 4 });
+    yd = SVG.rect({ fill: "none", stroke: ColorConfig.hoverPreview, "stroke-width": 2, "pointer-events": "none", x: 1, y: 0, width: this.ba - 2 });
+    Pd = SVG.path({ fill: ColorConfig.hoverPreview, "pointer-events": "none" });
     Qd = SVG.path({ fill: ColorConfig.hoverPreview, "pointer-events": "none" });
-    Rd = SVG.path({ fill: ColorConfig.hoverPreview, "pointer-events": "none" });
-    ha = SVG.svg({ style: "background-color: ${ColorConfig.editorBackground}; touch-action: pan-x; position: absolute;", width: this.ca, height: "100%", viewBox: "0 0 20 " + this.ba, preserveAspectRatio: "none" });
-    container = HTML.div({ id: "octaveScrollBarContainer", style: "width: 20px; height: 100%; overflow: hidden; position: relative; flex-shrink: 0;" }, this.ha);
+    ga = SVG.svg({ style: "background-color: ${ColorConfig.editorBackground}; touch-action: pan-x; position: absolute;", width: this.ba, height: "100%", viewBox: "0 0 20 " + this.aa, preserveAspectRatio: "none" });
+    container = HTML.div({ id: "octaveScrollBarContainer", style: "width: 20px; height: 100%; overflow: hidden; position: relative; flex-shrink: 0;" }, this.ga);
     //private _mouseX = 0;
-    aa = 0;
-    da = false;
-    na = false;
-    Qc = false;
-    Tb;
-    Fc;
-    Sd;
+    $ = 0;
+    ca = false;
+    ma = false;
+    Pc = false;
+    Sb;
+    Ec;
+    Rd;
     jq = -1;
     kq = -1;
-    ma = null;
+    la = null;
+    lc = (event) => {
+      if (this.ma) return;
+      this.ma = true;
+      this.qa();
+    };
     mc = (event) => {
-      if (this.na) return;
-      this.na = true;
-      this.ra();
+      if (!this.ma) return;
+      this.ma = false;
+      this.qa();
     };
-    nc = (event) => {
-      if (!this.na) return;
-      this.na = false;
-      this.ra();
-    };
-    db = (event) => {
+    cb = (event) => {
       event.preventDefault();
-      this.da = true;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.aa = ((event.clientY || event.pageY) - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.aa)) this.aa = 0;
+      this.ca = true;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this.$ = ((event.clientY || event.pageY) - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this.$)) this.$ = 0;
       if (this.J.song.getChannelIsNoise(this.J.channel) || this.J.song.getChannelIsMod(this.J.channel)) return;
-      this.ra();
-      if (this.aa >= this.Fc - this.Sd && this.aa <= this.Fc) {
-        this.Qc = true;
-        this.ma = null;
-        this.Tb = this.aa;
+      this.qa();
+      if (this.$ >= this.Ec - this.Rd && this.$ <= this.Ec) {
+        this.Pc = true;
+        this.la = null;
+        this.Sb = this.$;
       }
+    };
+    ob = (event) => {
+      event.preventDefault();
+      this.ca = true;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this.$ = (event.touches[0].clientY - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this.$)) this.$ = 0;
+      if (this.J.song.getChannelIsNoise(this.J.channel) || this.J.song.getChannelIsMod(this.J.channel)) return;
+      this.qa();
+      if (this.$ >= this.Ec - this.Rd && this.$ <= this.Ec) {
+        this.Pc = true;
+        this.la = null;
+        this.Sb = this.$;
+      }
+    };
+    Ya = (event) => {
+      const boundingRect = this.ga.getBoundingClientRect();
+      this.$ = ((event.clientY || event.pageY) - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this.$)) this.$ = 0;
+      this.xa();
     };
     pb = (event) => {
+      if (!this.ca) return;
       event.preventDefault();
-      this.da = true;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.aa = (event.touches[0].clientY - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.aa)) this.aa = 0;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this.$ = (event.touches[0].clientY - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this.$)) this.$ = 0;
+      this.xa();
+    };
+    xa() {
       if (this.J.song.getChannelIsNoise(this.J.channel) || this.J.song.getChannelIsMod(this.J.channel)) return;
-      this.ra();
-      if (this.aa >= this.Fc - this.Sd && this.aa <= this.Fc) {
-        this.Qc = true;
-        this.ma = null;
-        this.Tb = this.aa;
-      }
-    };
-    Za = (event) => {
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.aa = ((event.clientY || event.pageY) - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.aa)) this.aa = 0;
-      this.ya();
-    };
-    qb = (event) => {
-      if (!this.da) return;
-      event.preventDefault();
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.aa = (event.touches[0].clientY - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.aa)) this.aa = 0;
-      this.ya();
-    };
-    ya() {
-      if (this.J.song.getChannelIsNoise(this.J.channel) || this.J.song.getChannelIsMod(this.J.channel)) return;
-      if (this.Qc) {
+      if (this.Pc) {
         const visibleOctaveCount = this.J.getVisibleOctaveCount();
         const scrollableOctaves = Config.pitchOctaves - visibleOctaveCount;
-        const continuingProspectiveChange = this.J.lastChangeWas(this.ma);
-        const oldValue = continuingProspectiveChange ? this.ma.oldValue : this.J.song.channels[this.J.channel].octave;
+        const continuingProspectiveChange = this.J.lastChangeWas(this.la);
+        const oldValue = continuingProspectiveChange ? this.la.oldValue : this.J.song.channels[this.J.channel].octave;
         const currentOctave = this.J.getBaseVisibleOctave(this.J.channel);
         let octave = currentOctave;
-        while (this.aa - this.Tb < -this.ef * 0.5) {
+        while (this.$ - this.Sb < -this.df * 0.5) {
           if (octave < scrollableOctaves) {
             octave++;
-            this.Tb -= this.ef;
+            this.Sb -= this.df;
           } else {
             break;
           }
         }
-        while (this.aa - this.Tb > this.ef * 0.5) {
+        while (this.$ - this.Sb > this.df * 0.5) {
           if (octave > 0) {
             octave--;
-            this.Tb += this.ef;
+            this.Sb += this.df;
           } else {
             break;
           }
         }
-        this.ma = new ChangeOctave(this.J, oldValue, Math.floor(octave + visibleOctaveCount * 0.5));
-        this.J.setProspectiveChange(this.ma);
+        this.la = new ChangeOctave(this.J, oldValue, Math.floor(octave + visibleOctaveCount * 0.5));
+        this.J.setProspectiveChange(this.la);
       }
-      if (this.na) this.ra();
+      if (this.ma) this.qa();
     }
-    xa = (event) => {
-      if (!this.J.song.getChannelIsNoise(this.J.channel) && !this.J.song.getChannelIsMod(this.J.channel) && this.da) {
-        if (this.Qc) {
-          if (this.ma != null) this.J.record(this.ma);
+    wa = (event) => {
+      if (!this.J.song.getChannelIsNoise(this.J.channel) && !this.J.song.getChannelIsMod(this.J.channel) && this.ca) {
+        if (this.Pc) {
+          if (this.la != null) this.J.record(this.la);
         } else {
           const visibleOctaveCount = this.J.getVisibleOctaveCount();
           const scrollableOctaves = Config.pitchOctaves - visibleOctaveCount;
-          const canReplaceLastChange = this.J.lastChangeWas(this.ma);
-          const oldValue = canReplaceLastChange ? this.ma.oldValue : this.J.song.channels[this.J.channel].octave;
+          const canReplaceLastChange = this.J.lastChangeWas(this.la);
+          const oldValue = canReplaceLastChange ? this.la.oldValue : this.J.song.channels[this.J.channel].octave;
           const currentOctave = this.J.getBaseVisibleOctave(this.J.channel);
-          if (this.aa < this.Fc - this.Sd * 0.5) {
+          if (this.$ < this.Ec - this.Rd * 0.5) {
             if (currentOctave < scrollableOctaves) {
-              this.ma = new ChangeOctave(this.J, oldValue, Math.floor(currentOctave + 1 + visibleOctaveCount * 0.5));
-              this.J.record(this.ma, canReplaceLastChange);
+              this.la = new ChangeOctave(this.J, oldValue, Math.floor(currentOctave + 1 + visibleOctaveCount * 0.5));
+              this.J.record(this.la, canReplaceLastChange);
             }
           } else {
             if (currentOctave > 0) {
-              this.ma = new ChangeOctave(this.J, oldValue, Math.floor(currentOctave - 1 + visibleOctaveCount * 0.5));
-              this.J.record(this.ma, canReplaceLastChange);
+              this.la = new ChangeOctave(this.J, oldValue, Math.floor(currentOctave - 1 + visibleOctaveCount * 0.5));
+              this.J.record(this.la, canReplaceLastChange);
             }
           }
         }
       }
-      this.da = false;
-      this.Qc = false;
-      this.ra();
+      this.ca = false;
+      this.Pc = false;
+      this.qa();
     };
-    ra() {
-      const showHighlight = this.na && !this.da;
+    qa() {
+      const showHighlight = this.ma && !this.ca;
       let showUpHighlight = false;
       let showDownHighlight = false;
       let showHandleHighlight = false;
       if (showHighlight) {
-        if (this.aa < this.Fc - this.Sd) {
+        if (this.$ < this.Ec - this.Rd) {
           showUpHighlight = true;
-        } else if (this.aa > this.Fc) {
+        } else if (this.$ > this.Ec) {
           showDownHighlight = true;
         } else {
           showHandleHighlight = true;
         }
       }
-      this.Qd.style.visibility = showUpHighlight ? "inherit" : "hidden";
-      this.Rd.style.visibility = showDownHighlight ? "inherit" : "hidden";
-      this.zd.style.visibility = showHandleHighlight ? "inherit" : "hidden";
+      this.Pd.style.visibility = showUpHighlight ? "inherit" : "hidden";
+      this.Qd.style.visibility = showDownHighlight ? "inherit" : "hidden";
+      this.yd.style.visibility = showHandleHighlight ? "inherit" : "hidden";
     }
-    Tc = () => {
-      this.Fc = this.ba - this.ef * this.J.getBaseVisibleOctave(this.J.channel);
-      this.ha.style.visibility = this.J.song.getChannelIsNoise(this.J.channel) || this.J.song.getChannelIsMod(this.J.channel) ? "hidden" : "visible";
+    Sc = () => {
+      this.Ec = this.aa - this.df * this.J.getBaseVisibleOctave(this.J.channel);
+      this.ga.style.visibility = this.J.song.getChannelIsNoise(this.J.channel) || this.J.song.getChannelIsMod(this.J.channel) ? "hidden" : "visible";
       const visibleOctaveCount = this.J.getVisibleOctaveCount();
-      if (this.jq != this.Fc || this.kq != visibleOctaveCount) {
-        this.jq = this.Fc;
+      if (this.jq != this.Ec || this.kq != visibleOctaveCount) {
+        this.jq = this.Ec;
         this.kq = visibleOctaveCount;
-        this.Sd = this.ef * visibleOctaveCount + this.Tl;
-        this.Ge.setAttribute("height", String(this.Sd));
-        this.zd.setAttribute("height", String(this.Sd));
-        this.Ge.setAttribute("y", String(this.Fc - this.Sd));
-        this.zd.setAttribute("y", String(this.Fc - this.Sd));
-        this.rd.forceRender();
+        this.Rd = this.df * visibleOctaveCount + this.Tl;
+        this.Fe.setAttribute("height", String(this.Rd));
+        this.yd.setAttribute("height", String(this.Rd));
+        this.Fe.setAttribute("y", String(this.Ec - this.Rd));
+        this.yd.setAttribute("y", String(this.Ec - this.Rd));
+        this.qd.forceRender();
       }
-      this.ra();
+      this.qa();
     };
   };
 
@@ -38971,30 +38975,30 @@ You should be redirected to the song at:<br /><br />
     constructor(_doc, _interactive, _barOffset) {
       this.J = _doc;
       this.vj = _interactive;
-      this.Ja = _barOffset;
-      this.zh = SVG.pattern({ id: "patternEditorNoteBackground" + this.Ja, x: "0", y: "0", patternUnits: "userSpaceOnUse" });
-      this.Ah = SVG.pattern({ id: "patternEditorDrumBackground" + this.Ja, x: "0", y: "0", patternUnits: "userSpaceOnUse" });
-      this.ag = SVG.pattern({ id: "patternEditorModBackground" + this.Ja, x: "0", y: "0", patternUnits: "userSpaceOnUse" });
-      this.ff = SVG.rect({ x: "0", y: "0", "pointer-events": "none", fill: "url(#patternEditorNoteBackground" + this.Ja + ")" });
-      this.Gc = SVG.svg();
-      this.gf = SVG.rect({ x: "0", y: "0", width: "4", fill: ColorConfig.playhead, "pointer-events": "none" });
-      this.Ib = SVG.rect({ class: "dashed-line dash-move", fill: ColorConfig.boxSelectionFill, stroke: ColorConfig.hoverPreview, "stroke-width": 2, "stroke-dasharray": "5, 3", "fill-opacity": "0.4", "pointer-events": "none", visibility: "hidden" });
-      this.ad = SVG.path({ fill: "none", stroke: ColorConfig.hoverPreview, "stroke-width": "2", "pointer-events": "none" });
+      this.Ia = _barOffset;
+      this.zh = SVG.pattern({ id: "patternEditorNoteBackground" + this.Ia, x: "0", y: "0", patternUnits: "userSpaceOnUse" });
+      this.Ah = SVG.pattern({ id: "patternEditorDrumBackground" + this.Ia, x: "0", y: "0", patternUnits: "userSpaceOnUse" });
+      this.ag = SVG.pattern({ id: "patternEditorModBackground" + this.Ia, x: "0", y: "0", patternUnits: "userSpaceOnUse" });
+      this.ef = SVG.rect({ x: "0", y: "0", "pointer-events": "none", fill: "url(#patternEditorNoteBackground" + this.Ia + ")" });
+      this.Fc = SVG.svg();
+      this.ff = SVG.rect({ x: "0", y: "0", width: "4", fill: ColorConfig.playhead, "pointer-events": "none" });
+      this.Hb = SVG.rect({ class: "dashed-line dash-move", fill: ColorConfig.boxSelectionFill, stroke: ColorConfig.hoverPreview, "stroke-width": 2, "stroke-dasharray": "5, 3", "fill-opacity": "0.4", "pointer-events": "none", visibility: "hidden" });
+      this.$c = SVG.path({ fill: "none", stroke: ColorConfig.hoverPreview, "stroke-width": "2", "pointer-events": "none" });
       this.modDragValueLabel = HTML.div({ width: "90", "text-anchor": "start", contenteditable: "true", style: "display: flex, justify-content: center; align-items:center; position:absolute; pointer-events: none;", "dominant-baseline": "central", "tabindex": "-1" });
-      this.ha = SVG.svg(
+      this.ga = SVG.svg(
         { id: "firstImage", style: `background-image: url(${getLocalStorageItem("customTheme", "")}); background-repeat: no-repeat; background-size: 100% 100%; background-color: ${ColorConfig.editorBackground}; touch-action: none; position: absolute;`, width: "100%", height: "100%" },
         SVG.defs(
           this.zh,
           this.Ah,
           this.ag
         ),
-        this.ff,
-        this.Ib,
-        this.Gc,
-        this.ad,
-        this.gf
+        this.ef,
+        this.Hb,
+        this.Fc,
+        this.$c,
+        this.ff
       );
-      this.container = HTML.div({ style: "height: 100%; overflow:hidden; position: relative; flex-grow: 1;" }, this.ha, this.modDragValueLabel);
+      this.container = HTML.div({ style: "height: 100%; overflow:hidden; position: relative; flex-grow: 1;" }, this.ga, this.modDragValueLabel);
       for (let i = 0; i < Config.pitchesPerOctave; i++) {
         const rectangle = SVG.rect();
         rectangle.setAttribute("x", "1");
@@ -39009,22 +39013,22 @@ You should be redirected to the song at:<br /><br />
       this.tj.setAttribute("fill", ColorConfig.pitchBackground);
       this.ag.appendChild(this.tj);
       if (this.vj) {
-        this.$c();
-        this.ra();
+        this._c();
+        this.qa();
         window.requestAnimationFrame(this.Fh);
-        this.ha.addEventListener("mousedown", this.db);
-        document.addEventListener("mousemove", this.Za);
-        document.addEventListener("mouseup", this.xa);
-        this.ha.addEventListener("mouseover", this.mc);
-        this.ha.addEventListener("mouseout", this.nc);
-        this.ha.addEventListener("touchstart", this.pb);
-        this.ha.addEventListener("touchmove", this.qb);
-        this.ha.addEventListener("touchend", this.xa);
-        this.ha.addEventListener("touchcancel", this.xa);
+        this.ga.addEventListener("mousedown", this.cb);
+        document.addEventListener("mousemove", this.Ya);
+        document.addEventListener("mouseup", this.wa);
+        this.ga.addEventListener("mouseover", this.lc);
+        this.ga.addEventListener("mouseout", this.mc);
+        this.ga.addEventListener("touchstart", this.ob);
+        this.ga.addEventListener("touchmove", this.pb);
+        this.ga.addEventListener("touchend", this.wa);
+        this.ga.addEventListener("touchcancel", this.wa);
         this.modDragValueLabel.addEventListener("input", this.Ot);
       } else {
-        this.gf.style.display = "none";
-        this.ha.appendChild(SVG.rect({ x: 0, y: 0, width: 1e4, height: 1e4, fill: ColorConfig.editorBackground, style: "opacity: 0.5;" }));
+        this.ff.style.display = "none";
+        this.ga.appendChild(SVG.rect({ x: 0, y: 0, width: 1e4, height: 1e4, fill: ColorConfig.editorBackground, style: "opacity: 0.5;" }));
       }
       this.resetCopiedPins();
     }
@@ -39036,71 +39040,71 @@ You should be redirected to the song at:<br /><br />
     zh;
     Ah;
     ag;
+    ef;
+    Fc;
     ff;
-    Gc;
-    gf;
-    Ib;
-    ad;
+    Hb;
+    $c;
     modDragValueLabel;
-    ha;
+    ga;
     container;
     Nt = 34;
     sj = [];
     bg = SVG.rect();
     tj = SVG.rect();
-    ca;
-    sd = 0;
+    ba;
+    rd = 0;
     cg = 0;
     Ul = 0;
     editingModLabel = false;
     uj = 0;
-    se;
+    re;
     Bh;
     Vl;
     Ch = 0;
     lq = 6;
-    ba;
-    Aa;
-    Ha = -1;
-    sc;
-    mb;
+    aa;
+    za;
+    Ga = -1;
+    rc;
+    lb;
+    _ = 0;
     $ = 0;
-    aa = 0;
-    da = false;
-    na = false;
-    Ca = false;
-    hf = false;
+    ca = false;
+    ma = false;
+    Ba = false;
+    gf = false;
     dg = false;
-    te = [];
-    Nb;
-    rc = 0;
+    se = [];
+    Mb;
+    qc = 0;
     eg = 0;
     mq = 0;
-    Va = false;
-    yb = false;
+    Ua = false;
+    xb = false;
     Dh = false;
     fg = false;
     gg = false;
     hg = false;
     ig = 0;
-    jf = 0;
-    Ob = 0;
+    hf = 0;
+    Nb = 0;
     jg = false;
-    ka = null;
+    ja = null;
     Wl = null;
     Xl = false;
     K = new PatternCursor();
-    Td = [];
-    sa = null;
+    Sd = [];
+    ra = null;
     Eh = 0;
-    Jb = 0;
+    Ib = 0;
     nq = -1;
     oq = -1;
     pq = -1;
     qq = -1;
-    re = false;
+    qe = false;
+    de = false;
     ee = false;
-    fe = false;
     rq = -1;
     sq = -1;
     tq = -1;
@@ -39123,16 +39127,16 @@ You should be redirected to the song at:<br /><br />
         if (label5.innerText != presValue + "")
           label5.innerText = presValue + "";
         let xOffset = +(presValue >= 10) + +(presValue >= 100) + +(presValue < 0) + +(presValue <= -10);
-        this.sd = +prettyNumber(Math.max(Math.min(this.ca - 10 - xOffset * 8, this.Aa * (this.Bh.start + this.se.time) - 4 - xOffset * 4), 2));
-        this.modDragValueLabel.style.setProperty("left", "" + this.sd + "px");
+        this.rd = +prettyNumber(Math.max(Math.min(this.ba - 10 - xOffset * 8, this.za * (this.Bh.start + this.re.time) - 4 - xOffset * 4), 2));
+        this.modDragValueLabel.style.setProperty("left", "" + this.rd + "px");
         const sequence = new ChangeSequence();
-        this.ka = sequence;
-        this.J.setProspectiveChange(this.ka);
-        sequence.append(new ChangeSizeBend(this.J, this.Bh, this.se.time, presValue - Config.modulators[this.Vl].convertRealFactor, this.se.interval, this.shiftMode));
+        this.ja = sequence;
+        this.J.setProspectiveChange(this.ja);
+        sequence.append(new ChangeSizeBend(this.J, this.Bh, this.re.time, presValue - Config.modulators[this.Vl].convertRealFactor, this.re.interval, this.shiftMode));
       }
     };
     wq() {
-      if (this.controlMode && this.hf)
+      if (this.controlMode && this.gf)
         return Config.partsPerBeat;
       const rhythmStepsPerBeat = Config.rhythms[this.J.song.rhythm].stepsPerBeat;
       if (rhythmStepsPerBeat % 4 == 0) {
@@ -39144,20 +39148,20 @@ You should be redirected to the song at:<br /><br />
       }
       return Config.partsPerBeat;
     }
-    Re() {
-      if (this.controlMode && this.hf)
+    Qe() {
+      if (this.controlMode && this.gf)
         return 1;
       return Config.partsPerBeat / Config.rhythms[this.J.song.rhythm].stepsPerBeat;
     }
     Pt(input19) {
-      const minDivision = this.Re();
+      const minDivision = this.Qe();
       return Math.floor(input19 / minDivision) * minDivision;
     }
-    $c() {
+    _c() {
       this.K = new PatternCursor();
-      if (this.$ < 0 || this.$ > this.ca || this.aa < 0 || this.aa > this.ba || this.Ha <= 0) return;
-      const minDivision = this.Re();
-      this.K.exactPart = this.$ / this.Aa;
+      if (this._ < 0 || this._ > this.ba || this.$ < 0 || this.$ > this.aa || this.Ga <= 0) return;
+      const minDivision = this.Qe();
+      this.K.exactPart = this._ / this.za;
       this.K.part = Math.floor(
         Math.max(
           0,
@@ -39165,11 +39169,11 @@ You should be redirected to the song at:<br /><br />
         ) / minDivision
       ) * minDivision;
       let foundNote = false;
-      if (this.sa != null) {
-        for (const note of this.sa.notes) {
+      if (this.ra != null) {
+        for (const note of this.ra.notes) {
           if (note.end <= this.K.exactPart) {
             if (this.J.song.getChannelIsMod(this.J.channel)) {
-              if (note.pitches[0] == Math.floor(this.Gh(this.aa))) {
+              if (note.pitches[0] == Math.floor(this.Gh(this.$))) {
                 this.K.prevNote = note;
               }
               if (!foundNote)
@@ -39180,7 +39184,7 @@ You should be redirected to the song at:<br /><br />
             }
           } else if (note.start <= this.K.exactPart && note.end > this.K.exactPart) {
             if (this.J.song.getChannelIsMod(this.J.channel)) {
-              if (note.pitches[0] == Math.floor(this.Gh(this.aa))) {
+              if (note.pitches[0] == Math.floor(this.Gh(this.$))) {
                 this.K.curNote = note;
                 foundNote = true;
               } else if (!foundNote || this.K.curNote != null && note.start < this.K.curNote.start)
@@ -39190,7 +39194,7 @@ You should be redirected to the song at:<br /><br />
             }
           } else if (note.start > this.K.exactPart) {
             if (this.J.song.getChannelIsMod(this.J.channel)) {
-              if (note.pitches[0] == Math.floor(this.Gh(this.aa))) {
+              if (note.pitches[0] == Math.floor(this.Gh(this.$))) {
                 this.K.nextNote = note;
                 break;
               }
@@ -39201,7 +39205,7 @@ You should be redirected to the song at:<br /><br />
           }
         }
         if (this.J.song.getChannelIsMod(this.J.channel) && !this.editingModLabel) {
-          if (this.sa.notes[this.K.curIndex] != null && this.K.curNote != null) {
+          if (this.ra.notes[this.K.curIndex] != null && this.K.curNote != null) {
             let pinIdx = 0;
             while (this.K.curNote.start + this.K.curNote.pins[pinIdx].time < this.K.exactPart && pinIdx < this.K.curNote.pins.length) {
               pinIdx++;
@@ -39214,19 +39218,19 @@ You should be redirected to the song at:<br /><br />
             this.modDragValueLabel.style.setProperty("color", "#666688");
             this.modDragValueLabel.style.setProperty("display", "");
             const mod2 = Math.max(0, Config.modCount - 1 - this.K.curNote.pitches[0]);
-            let setting = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument(this.Ja)].modulators[mod2];
+            let setting = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument(this.Ia)].modulators[mod2];
             let presValue = this.K.curNote.pins[pinIdx].size + Config.modulators[setting].convertRealFactor;
             let xOffset = +(presValue >= 10) + +(presValue >= 100) + +(presValue < 0) + +(presValue <= -10);
             this.Ul = 8 + xOffset * 8;
-            this.sd = +prettyNumber(Math.max(Math.min(this.ca - 10 - xOffset * 8, this.Aa * (this.K.curNote.start + this.K.curNote.pins[pinIdx].time) - 4 - xOffset * 4), 2));
-            this.cg = +prettyNumber(this.zb(this.K.curNote.pitches[0] - this.Jb) - 17 - (this.Ha - this.sc) / 2);
+            this.rd = +prettyNumber(Math.max(Math.min(this.ba - 10 - xOffset * 8, this.za * (this.K.curNote.start + this.K.curNote.pins[pinIdx].time) - 4 - xOffset * 4), 2));
+            this.cg = +prettyNumber(this.yb(this.K.curNote.pitches[0] - this.Ib) - 17 - (this.Ga - this.rc) / 2);
             this.uj = this.K.curNote.pins[pinIdx].size;
             this.Bh = this.K.curNote;
-            this.se = this.K.curNote.pins[pinIdx];
+            this.re = this.K.curNote.pins[pinIdx];
             this.Ch = Config.modulators[setting].convertRealFactor;
-            this.lq = Config.modulators[setting].convertRealFactor + this.J.song.getVolumeCapForSetting(true, setting, this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument(this.Ja)].modFilterTypes[mod2]);
+            this.lq = Config.modulators[setting].convertRealFactor + this.J.song.getVolumeCapForSetting(true, setting, this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument(this.Ia)].modFilterTypes[mod2]);
             this.Vl = setting;
-            this.modDragValueLabel.style.setProperty("left", "" + this.sd + "px");
+            this.modDragValueLabel.style.setProperty("left", "" + this.rd + "px");
             this.modDragValueLabel.style.setProperty("top", "" + this.cg + "px");
             this.modDragValueLabel.textContent = "" + presValue;
           } else {
@@ -39244,7 +39248,7 @@ You should be redirected to the song at:<br /><br />
         this.modDragValueLabel.style.setProperty("pointer-events", "none");
         this.modDragValueLabel.setAttribute("contenteditable", "false");
       }
-      let mousePitch = this.Gh(this.aa);
+      let mousePitch = this.Gh(this.$);
       if (this.K.curNote != null) {
         this.K.start = this.K.curNote.start;
         this.K.end = this.K.curNote.end;
@@ -39256,11 +39260,11 @@ You should be redirected to the song at:<br /><br />
         for (let j = 1; j < this.K.curNote.pins.length; j++) {
           prevPin = nextPin;
           nextPin = this.K.curNote.pins[j];
-          const leftSide = this.Aa * (this.K.curNote.start + prevPin.time);
-          const rightSide = this.Aa * (this.K.curNote.start + nextPin.time);
-          if (this.$ > rightSide) continue;
-          if (this.$ < leftSide) throw new Error();
-          const intervalRatio = (this.$ - leftSide) / (rightSide - leftSide);
+          const leftSide = this.za * (this.K.curNote.start + prevPin.time);
+          const rightSide = this.za * (this.K.curNote.start + nextPin.time);
+          if (this._ > rightSide) continue;
+          if (this._ < leftSide) throw new Error();
+          const intervalRatio = (this._ - leftSide) / (rightSide - leftSide);
           const arc = Math.sqrt(1 / Math.sqrt(4) - Math.pow(intervalRatio - 0.5, 2)) - 0.5;
           const bendHeight = Math.abs(nextPin.interval - prevPin.interval);
           interval = prevPin.interval * (1 - intervalRatio) + nextPin.interval * intervalRatio;
@@ -39273,7 +39277,7 @@ You should be redirected to the song at:<br /><br />
         for (const pin of this.K.curNote.pins) {
           if (minInterval > pin.interval) minInterval = pin.interval;
           if (maxInterval < pin.interval) maxInterval = pin.interval;
-          const pinDistance = Math.abs(this.K.curNote.start + pin.time - this.$ / this.Aa);
+          const pinDistance = Math.abs(this.K.curNote.start + pin.time - this._ / this.za);
           if (bestDistance > pinDistance) {
             bestDistance = pinDistance;
             this.K.nearPinIndex = this.K.curNote.pins.indexOf(pin);
@@ -39298,7 +39302,7 @@ You should be redirected to the song at:<br /><br />
         }
       } else {
         this.K.pitch = this.Hh(mousePitch, 0, this.wj());
-        const defaultLength = this.Nb[this.Nb.length - 1].time;
+        const defaultLength = this.Mb[this.Mb.length - 1].time;
         const fullBeats = Math.floor(this.K.part / Config.partsPerBeat);
         const maxDivision = this.wq();
         const modMouse = this.K.part % Config.partsPerBeat;
@@ -39342,16 +39346,16 @@ You should be redirected to the song at:<br /><br />
           }
         }
         if (this.K.end - this.K.start == defaultLength) {
-          if (this.te.length > this.J.channel) {
-            this.Nb = this.te[this.J.channel];
-            this.K.pins = this.Nb;
+          if (this.se.length > this.J.channel) {
+            this.Mb = this.se[this.J.channel];
+            this.K.pins = this.Mb;
           } else {
             const cap = this.J.song.getVolumeCap(false);
             this.K.pins = [makeNotePin(0, 0, cap), makeNotePin(0, maxDivision, cap)];
           }
         } else {
           this.K.pins = [];
-          for (const oldPin of this.Nb) {
+          for (const oldPin of this.Mb) {
             if (oldPin.time <= this.K.end - this.K.start) {
               this.K.pins.push(makeNotePin(0, oldPin.time, oldPin.size));
               if (oldPin.time == this.K.end - this.K.start) break;
@@ -39363,12 +39367,12 @@ You should be redirected to the song at:<br /><br />
         }
         if (this.J.song.getChannelIsMod(this.J.channel)) {
           this.K.pitch = Math.max(0, Math.min(Config.modCount - 1, this.K.pitch));
-          if (this.Td != null && this.Td[this.J.channel] != null) {
+          if (this.Sd != null && this.Sd[this.J.channel] != null) {
             for (let pin = 0; pin < this.K.pins.length; pin++) {
-              this.K.pins[pin].size = this.Td[this.J.channel][pin];
+              this.K.pins[pin].size = this.Sd[this.J.channel][pin];
             }
           }
-          let maxHeight = this.J.song.getVolumeCap(this.J.song.getChannelIsMod(this.J.channel), this.J.channel, this.J.getCurrentInstrument(this.Ja), this.K.pitch);
+          let maxHeight = this.J.song.getVolumeCap(this.J.song.getChannelIsMod(this.J.channel), this.J.channel, this.J.getCurrentInstrument(this.Ia), this.K.pitch);
           let maxFoundHeight = 0;
           for (const pin of this.K.pins) {
             if (pin.size > maxFoundHeight) {
@@ -39394,7 +39398,7 @@ You should be redirected to the song at:<br /><br />
       return this.K.valid && this.J.selection.patternSelectionActive && this.K.pitchIndex == -1 && this.J.selection.patternSelectionEnd - 1.25 <= this.K.exactPart && this.K.exactPart <= this.J.selection.patternSelectionEnd + 3;
     }
     Gh(pixelY) {
-      return Math.max(0, Math.min(this.mb - 1, this.mb - pixelY / this.Ha)) + this.Jb;
+      return Math.max(0, Math.min(this.lb - 1, this.lb - pixelY / this.Ga)) + this.Ib;
     }
     Hh(guess, min, max) {
       if (guess < min) guess = min;
@@ -39432,26 +39436,26 @@ You should be redirected to the song at:<br /><br />
       }
     }
     kg(note) {
-      this.Nb = [];
+      this.Mb = [];
       for (const oldPin of note.pins) {
-        this.Nb.push(makeNotePin(0, oldPin.time, oldPin.size));
+        this.Mb.push(makeNotePin(0, oldPin.time, oldPin.size));
       }
-      for (let i = 1; i < this.Nb.length - 1; ) {
-        if (this.Nb[i - 1].size == this.Nb[i].size && this.Nb[i].size == this.Nb[i + 1].size) {
-          this.Nb.splice(i, 1);
+      for (let i = 1; i < this.Mb.length - 1; ) {
+        if (this.Mb[i - 1].size == this.Mb[i].size && this.Mb[i].size == this.Mb[i + 1].size) {
+          this.Mb.splice(i, 1);
         } else {
           i++;
         }
       }
-      this.te[this.J.channel] = this.Nb;
-      this.Td[this.J.channel] = [];
-      for (let pin = 0; pin < this.Nb.length; pin++) {
-        this.Td[this.J.channel].push(this.Nb[pin].size);
+      this.se[this.J.channel] = this.Mb;
+      this.Sd[this.J.channel] = [];
+      for (let pin = 0; pin < this.Mb.length; pin++) {
+        this.Sd[this.J.channel].push(this.Mb[pin].size);
       }
     }
     movePlayheadToMouse() {
-      if (this.na) {
-        this.J.synth.playhead = this.J.bar + this.Ja + this.$ / this.ca;
+      if (this.ma) {
+        this.J.synth.playhead = this.J.bar + this.Ia + this._ / this.ba;
         return true;
       }
       return false;
@@ -39459,33 +39463,33 @@ You should be redirected to the song at:<br /><br />
     resetCopiedPins = () => {
       const maxDivision = this.wq();
       let cap = this.J.song.getVolumeCap(false);
-      this.te.length = this.J.song.getChannelCount();
-      this.Td.length = this.J.song.getChannelCount();
+      this.se.length = this.J.song.getChannelCount();
+      this.Sd.length = this.J.song.getChannelCount();
       for (let i = 0; i < this.J.song.pitchChannelCount; i++) {
-        this.te[i] = [makeNotePin(0, 0, cap), makeNotePin(0, maxDivision, cap)];
-        this.Td[i] = [cap, cap];
+        this.se[i] = [makeNotePin(0, 0, cap), makeNotePin(0, maxDivision, cap)];
+        this.Sd[i] = [cap, cap];
       }
       for (let i = this.J.song.pitchChannelCount; i < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount; i++) {
-        this.te[i] = [makeNotePin(0, 0, cap), makeNotePin(0, maxDivision, 0)];
-        this.Td[i] = [cap, 0];
+        this.se[i] = [makeNotePin(0, 0, cap), makeNotePin(0, maxDivision, 0)];
+        this.Sd[i] = [cap, 0];
       }
       for (let i = this.J.song.pitchChannelCount + this.J.song.noiseChannelCount; i < this.J.song.getChannelCount(); i++) {
-        this.te[i] = [makeNotePin(0, 0, cap), makeNotePin(0, maxDivision, 0)];
-        this.Td[i] = [cap, 0];
+        this.se[i] = [makeNotePin(0, 0, cap), makeNotePin(0, maxDivision, 0)];
+        this.Sd[i] = [cap, 0];
       }
     };
     Fh = (timestamp) => {
-      if (this.dg && !this.shiftMode && !this.Ca && this.da && performance.now() > this.mq + 1e3 && this.K.valid && this.J.lastChangeWas(this.ka)) {
-        this.ka.undo();
-        this.Va = true;
+      if (this.dg && !this.shiftMode && !this.Ba && this.ca && performance.now() > this.mq + 1e3 && this.K.valid && this.J.lastChangeWas(this.ja)) {
+        this.ja.undo();
+        this.Ua = true;
         this.Dh = false;
-        this.Ld();
+        this.Kd();
         this.J.notifier.notifyWatchers();
       }
       const playheadBar = Math.floor(this.J.synth.playhead);
-      const noteFlashElements = this.Gc.querySelectorAll(".note-flash");
-      if (this.J.synth.playing && (this.sa != null && this.J.song.getPattern(this.J.channel, Math.floor(this.J.synth.playhead)) == this.sa || Math.floor(this.J.synth.playhead) == this.J.bar + this.Ja)) {
-        this.gf.setAttribute("visibility", "visible");
+      const noteFlashElements = this.Fc.querySelectorAll(".note-flash");
+      if (this.J.synth.playing && (this.ra != null && this.J.song.getPattern(this.J.channel, Math.floor(this.J.synth.playhead)) == this.ra || Math.floor(this.J.synth.playhead) == this.J.bar + this.Ia)) {
+        this.ff.setAttribute("visibility", "visible");
         const modPlayhead = this.J.synth.playhead - playheadBar;
         for (var i = 0; i < noteFlashElements.length; i++) {
           var element = noteFlashElements[i];
@@ -39503,9 +39507,9 @@ You should be redirected to the song at:<br /><br />
         } else {
           this.Eh += (modPlayhead - this.Eh) * 0.2;
         }
-        this.gf.setAttribute("x", "" + prettyNumber(this.Eh * this.ca - 2));
+        this.ff.setAttribute("x", "" + prettyNumber(this.Eh * this.ba - 2));
       } else {
-        this.gf.setAttribute("visibility", "hidden");
+        this.ff.setAttribute("visibility", "hidden");
         for (var i = 0; i < noteFlashElements.length; i++) {
           var element = noteFlashElements[i];
           element.style.opacity = "0";
@@ -39521,41 +39525,41 @@ You should be redirected to the song at:<br /><br />
       }
       window.requestAnimationFrame(this.Fh);
     };
+    lc = (event) => {
+      if (this.ma) return;
+      this.ma = true;
+      this.dg = false;
+    };
     mc = (event) => {
-      if (this.na) return;
-      this.na = true;
-      this.dg = false;
+      if (!this.ma) return;
+      this.ma = false;
     };
-    nc = (event) => {
-      if (!this.na) return;
-      this.na = false;
-    };
-    db = (event) => {
+    cb = (event) => {
       event.preventDefault();
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = ((event.clientX || event.pageX) - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = ((event.clientY || event.pageY) - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = ((event.clientX || event.pageX) - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = ((event.clientY || event.pageY) - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
       if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
       this.dg = false;
-      this.Va = event.shiftKey;
-      this.yb = event.altKey;
+      this.Ua = event.shiftKey;
+      this.xb = event.altKey;
       this.Dh = false;
-      this.Ld();
+      this.Kd();
     };
-    pb = (event) => {
+    ob = (event) => {
       event.preventDefault();
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.touches[0].clientX - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = (event.touches[0].clientY - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.touches[0].clientX - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = (event.touches[0].clientY - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
       if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
       this.dg = true;
-      this.Va = event.shiftKey;
-      this.yb = event.altKey;
+      this.Ua = event.shiftKey;
+      this.xb = event.altKey;
       this.Dh = false;
       this.mq = performance.now();
-      this.Ld();
+      this.Kd();
     };
     // For a given change type, check the modulator channels for a matching mod to the changed parameter. If it exists, add a pin onto the latest note, or make a new note if enough time elapsed since the last pin. 
     setModSettingsForChange(change, songEditor) {
@@ -40396,28 +40400,28 @@ You should be redirected to the song at:<br /><br />
             sel.removeAllRanges();
         }
         if (discardChanges) {
-          this.se.size = this.uj;
+          this.re.size = this.uj;
           let presValue = this.uj + Config.modulators[this.Vl].convertRealFactor;
           let xOffset = +(presValue >= 10) + +(presValue >= 100) + +(presValue < 0) + +(presValue <= -10);
-          this.sd = +prettyNumber(Math.max(Math.min(this.ca - 10 - xOffset * 8, this.Aa * (this.Bh.start + this.se.time) - 4 - xOffset * 4), 2));
-          this.modDragValueLabel.style.setProperty("left", "" + this.sd + "px");
+          this.rd = +prettyNumber(Math.max(Math.min(this.ba - 10 - xOffset * 8, this.za * (this.Bh.start + this.re.time) - 4 - xOffset * 4), 2));
+          this.modDragValueLabel.style.setProperty("left", "" + this.rd + "px");
           const sequence = new ChangeSequence();
-          this.ka = sequence;
-          this.J.setProspectiveChange(this.ka);
-          sequence.append(new ChangeSizeBend(this.J, this.Bh, this.se.time, this.uj, this.se.interval, this.shiftMode));
-          this.ka = null;
+          this.ja = sequence;
+          this.J.setProspectiveChange(this.ja);
+          sequence.append(new ChangeSizeBend(this.J, this.Bh, this.re.time, this.uj, this.re.interval, this.shiftMode));
+          this.ja = null;
         }
-        const continuousState = this.J.lastChangeWas(this.ka);
+        const continuousState = this.J.lastChangeWas(this.ja);
         if (continuousState) {
-          if (this.ka != null) {
-            this.J.record(this.ka);
-            this.ka = null;
+          if (this.ja != null) {
+            this.J.record(this.ja);
+            this.ja = null;
           }
         }
       }
     }
-    Ld() {
-      if (this.J.song.getChannelIsMod(this.J.channel) && this.modDragValueLabel.style.getPropertyValue("display") != "none" && this.$ > +this.sd - 6 && this.$ < +this.sd + this.Ul + 6 && this.aa > +this.cg - 8 && this.aa < +this.cg + 11) {
+    Kd() {
+      if (this.J.song.getChannelIsMod(this.J.channel) && this.modDragValueLabel.style.getPropertyValue("display") != "none" && this._ > +this.rd - 6 && this._ < +this.rd + this.Ul + 6 && this.$ > +this.cg - 8 && this.$ < +this.cg + 11) {
         this.modDragValueLabel.style.setProperty("pointer-events", "fill");
         this.modDragValueLabel.setAttribute("contenteditable", "true");
         if (window.getSelection) {
@@ -40432,20 +40436,20 @@ You should be redirected to the song at:<br /><br />
       } else {
         this.stopEditingModLabel(false);
         if (this.J.prefs.enableNotePreview) this.J.synth.maintainLiveInput();
-        this.da = true;
-        this.rc = this.$;
-        this.eg = this.aa;
-        this.$c();
-        this.ra();
+        this.ca = true;
+        this.qc = this._;
+        this.eg = this.$;
+        this._c();
+        this.qa();
         const sequence = new ChangeSequence();
-        this.ka = sequence;
+        this.ja = sequence;
         this.Xl = this.J.lastChangeWas(this.Wl);
-        this.J.setProspectiveChange(this.ka);
+        this.J.setProspectiveChange(this.ja);
         if (this.xq()) {
           this.fg = true;
         } else if (this.yq()) {
           this.gg = true;
-        } else if (this.Va) {
+        } else if (this.Ua) {
           if (this.J.selection.patternSelectionActive && this.K.pitchIndex == -1 || this.Yl()) {
             sequence.append(new ChangePatternSelection(this.J, 0, 0));
           } else {
@@ -40467,7 +40471,7 @@ You should be redirected to the song at:<br /><br />
             note.pins.push(makeNotePin(0, oldPin.time, oldPin.size));
           }
           sequence.append(new ChangeEnsurePatternExists(this.J, this.J.channel, this.J.bar));
-          const pattern = this.J.getCurrentPattern(this.Ja);
+          const pattern = this.J.getCurrentPattern(this.Ia);
           if (pattern == null) throw new Error();
           sequence.append(new ChangeNoteAdded(this.J, pattern, note, this.K.curIndex));
           if (this.J.prefs.enableNotePreview && !this.J.synth.playing) {
@@ -40478,48 +40482,48 @@ You should be redirected to the song at:<br /><br />
         this.Ih();
       }
     }
-    Za = (event) => {
+    Ya = (event) => {
       this.controlMode = event.ctrlKey;
       this.shiftMode = event.shiftKey;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = ((event.clientX || event.pageX) - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = ((event.clientY || event.pageY) - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = ((event.clientX || event.pageX) - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = ((event.clientY || event.pageY) - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
       if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
       this.dg = false;
-      this.ya();
+      this.xa();
     };
-    qb = (event) => {
-      if (!this.da) return;
+    pb = (event) => {
+      if (!this.ca) return;
       event.preventDefault();
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.touches[0].clientX - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = (event.touches[0].clientY - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.touches[0].clientX - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = (event.touches[0].clientY - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
       if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.ya();
+      this.xa();
     };
-    ya() {
-      if (this.J.prefs.enableNotePreview && this.na) this.J.synth.maintainLiveInput();
-      const continuousState = this.J.lastChangeWas(this.ka);
-      if (!this.Ca && this.da && this.K.valid && continuousState) {
-        const dx = this.$ - this.rc;
-        const dy = this.aa - this.eg;
+    xa() {
+      if (this.J.prefs.enableNotePreview && this.ma) this.J.synth.maintainLiveInput();
+      const continuousState = this.J.lastChangeWas(this.ja);
+      if (!this.Ba && this.ca && this.K.valid && continuousState) {
+        const dx = this._ - this.qc;
+        const dy = this.$ - this.eg;
         if (Math.sqrt(dx * dx + dy * dy) > 5) {
-          this.Ca = true;
-          this.hf = Math.abs(dx) >= Math.abs(dy);
+          this.Ba = true;
+          this.gf = Math.abs(dx) >= Math.abs(dy);
         }
       }
-      if (this.Va && this.hf && Math.abs(this.rc - this.$) > 5) {
+      if (this.Ua && this.gf && Math.abs(this.qc - this._) > 5) {
         this.Dh = true;
       }
-      if (this.Ca && this.da && this.K.valid && continuousState) {
-        this.ka.undo();
+      if (this.Ba && this.ca && this.K.valid && continuousState) {
+        this.ja.undo();
         const sequence = new ChangeSequence();
-        this.ka = sequence;
-        this.J.setProspectiveChange(this.ka);
-        const minDivision = this.Re();
-        const currentPart = this.Pt(this.$ / this.Aa);
+        this.ja = sequence;
+        this.J.setProspectiveChange(this.ja);
+        const minDivision = this.Qe();
+        const currentPart = this.Pt(this._ / this.za);
         if (this.fg) {
           sequence.append(new ChangePatternSelection(this.J, Math.max(0, Math.min(this.J.song.beatsPerBar * Config.partsPerBeat, currentPart)), this.J.selection.patternSelectionEnd));
           this.Ih();
@@ -40527,21 +40531,21 @@ You should be redirected to the song at:<br /><br />
           sequence.append(new ChangePatternSelection(this.J, this.J.selection.patternSelectionStart, Math.max(0, Math.min(this.J.song.beatsPerBar * Config.partsPerBeat, currentPart))));
           this.Ih();
         } else if (this.hg) {
-          const pattern = this.J.getCurrentPattern(this.Ja);
-          if (this.Ca && pattern != null) {
-            this.ka.undo();
+          const pattern = this.J.getCurrentPattern(this.Ia);
+          if (this.Ba && pattern != null) {
+            this.ja.undo();
             const sequence2 = new ChangeSequence();
-            this.ka = sequence2;
-            this.J.setProspectiveChange(this.ka);
+            this.ja = sequence2;
+            this.J.setProspectiveChange(this.ja);
             let scale = this.J.song.scale == Config.scales.dictionary["Custom"].index ? this.J.song.scaleCustom : Config.scales[this.J.song.scale].flags;
             const notesInScale = scale.filter((x) => x).length;
             const pitchRatio = this.J.song.getChannelIsNoise(this.J.channel) ? 1 : 12 / notesInScale;
-            const draggedParts = Math.round((this.$ - this.rc) / (this.Aa * minDivision)) * minDivision;
-            const draggedTranspose = Math.round((this.eg - this.aa) / (this.Ha * pitchRatio));
+            const draggedParts = Math.round((this._ - this.qc) / (this.za * minDivision)) * minDivision;
+            const draggedTranspose = Math.round((this.eg - this.$) / (this.Ga * pitchRatio));
             sequence2.append(new ChangeDragSelectedNotes(this.J, this.J.channel, pattern, draggedParts, draggedTranspose));
           }
-        } else if (this.Va && this.Dh) {
-          if (this.Ca) {
+        } else if (this.Ua && this.Dh) {
+          if (this.Ba) {
             let start = Math.max(0, Math.min((this.J.song.beatsPerBar - 1) * Config.partsPerBeat, Math.floor(this.K.exactPart / Config.partsPerBeat) * Config.partsPerBeat));
             let end = start + Config.partsPerBeat;
             if (this.K.curNote != null) {
@@ -40550,7 +40554,7 @@ You should be redirected to the song at:<br /><br />
             }
             if (currentPart < start) {
               start = 0;
-              const pattern = this.J.getCurrentPattern(this.Ja);
+              const pattern = this.J.getCurrentPattern(this.Ia);
               if (pattern != null) {
                 for (let i = 0; i < pattern.notes.length; i++) {
                   if (pattern.notes[i].start <= currentPart) {
@@ -40570,7 +40574,7 @@ You should be redirected to the song at:<br /><br />
             }
             if (currentPart > end) {
               end = Config.partsPerBeat * this.J.song.beatsPerBar;
-              const pattern = this.J.getCurrentPattern(this.Ja);
+              const pattern = this.J.getCurrentPattern(this.Ia);
               if (pattern != null) {
                 for (let i = 0; i < pattern.notes.length; i++) {
                   if (pattern.notes[i].start >= currentPart) {
@@ -40654,7 +40658,7 @@ You should be redirected to the song at:<br /><br />
             if (end > this.J.song.beatsPerBar * Config.partsPerBeat) end = this.J.song.beatsPerBar * Config.partsPerBeat;
             if (start < end) {
               sequence.append(new ChangeEnsurePatternExists(this.J, this.J.channel, this.J.bar));
-              const pattern = this.J.getCurrentPattern(this.Ja);
+              const pattern = this.J.getCurrentPattern(this.Ia);
               if (pattern == null) throw new Error();
               sequence.append(new ChangeNoteTruncate(this.J, pattern, start, end, new Note(this.K.pitch, 0, 0, 0)));
               let i;
@@ -40665,76 +40669,76 @@ You should be redirected to the song at:<br /><br />
                 this.K.pitch,
                 start,
                 end,
-                this.J.song.getNewNoteVolume(this.J.song.getChannelIsMod(this.J.channel), this.J.channel, this.J.getCurrentInstrument(this.Ja), this.K.pitch),
+                this.J.song.getNewNoteVolume(this.J.song.getChannelIsMod(this.J.channel), this.J.channel, this.J.getCurrentInstrument(this.Ia), this.K.pitch),
                 this.J.song.getChannelIsNoise(this.J.channel)
               );
               theNote.continuesLastPattern = continuesLastPattern;
               sequence.append(new ChangeNoteAdded(this.J, pattern, theNote, i));
               this.kg(theNote);
               this.ig = backwards ? start : end;
-              this.jf = this.K.pitch;
-              this.Ob = theNote.pins[backwards ? 0 : 1].size;
+              this.hf = this.K.pitch;
+              this.Nb = theNote.pins[backwards ? 0 : 1].size;
               this.jg = true;
             }
-            let prevPattern = this.sa;
-            this.sa = this.J.getCurrentPattern(this.Ja);
-            if (this.sa != null && this.J.song.getChannelIsMod(this.J.channel) && this.vj && prevPattern != this.sa) {
-              this.sa.notes.sort(function(a4, b) {
+            let prevPattern = this.ra;
+            this.ra = this.J.getCurrentPattern(this.Ia);
+            if (this.ra != null && this.J.song.getChannelIsMod(this.J.channel) && this.vj && prevPattern != this.ra) {
+              this.ra.notes.sort(function(a4, b) {
                 return a4.start == b.start ? a4.pitches[0] - b.pitches[0] : a4.start - b.start;
               });
             }
-          } else if (this.hf && this.yb) {
+          } else if (this.gf && this.xb) {
             sequence.append(new ChangePatternSelection(this.J, 0, 0));
-            const shift = this.$ - this.rc;
+            const shift = this._ - this.qc;
             let shiftedTime = this.K.curNote.chipWaveStartOffset - shift * 100;
-            if (this.sa == null) throw new Error();
+            if (this.ra == null) throw new Error();
             const startOffset = Math.max(shiftedTime, 0);
-            sequence.append(new ChangeNoteStartOffset(this.J, this.sa, startOffset, this.K.curNote));
+            sequence.append(new ChangeNoteStartOffset(this.J, this.ra, startOffset, this.K.curNote));
             this.kg(this.K.curNote);
-          } else if (this.hf) {
+          } else if (this.gf) {
             sequence.append(new ChangePatternSelection(this.J, 0, 0));
-            const shift = (this.$ - this.rc) / this.Aa;
+            const shift = (this._ - this.qc) / this.za;
             const shiftedPin = this.K.curNote.pins[this.K.nearPinIndex];
             let shiftedTime = Math.round((this.K.curNote.start + shiftedPin.time + shift) / minDivision) * minDivision;
             const continuesLastPattern = shiftedTime < 0 && this.J.channel < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount;
             if (shiftedTime < 0) shiftedTime = 0;
             if (shiftedTime > this.J.song.beatsPerBar * Config.partsPerBeat) shiftedTime = this.J.song.beatsPerBar * Config.partsPerBeat;
-            if (this.sa == null) throw new Error();
+            if (this.ra == null) throw new Error();
             if (shiftedTime <= this.K.curNote.start && this.K.nearPinIndex == this.K.curNote.pins.length - 1 || shiftedTime >= this.K.curNote.end && this.K.nearPinIndex == 0) {
-              sequence.append(new ChangeNoteAdded(this.J, this.sa, this.K.curNote, this.K.curIndex, true));
+              sequence.append(new ChangeNoteAdded(this.J, this.ra, this.K.curNote, this.K.curIndex, true));
               this.jg = false;
             } else {
               const start = Math.min(this.K.curNote.start, shiftedTime);
               const end = Math.max(this.K.curNote.end, shiftedTime);
               this.ig = shiftedTime;
-              this.jf = this.K.curNote.pitches[this.K.pitchIndex == -1 ? 0 : this.K.pitchIndex] + this.K.curNote.pins[this.K.nearPinIndex].interval;
-              this.Ob = this.K.curNote.pins[this.K.nearPinIndex].size;
+              this.hf = this.K.curNote.pitches[this.K.pitchIndex == -1 ? 0 : this.K.pitchIndex] + this.K.curNote.pins[this.K.nearPinIndex].interval;
+              this.Nb = this.K.curNote.pins[this.K.nearPinIndex].size;
               this.jg = true;
-              sequence.append(new ChangeNoteTruncate(this.J, this.sa, start, end, this.K.curNote));
+              sequence.append(new ChangeNoteTruncate(this.J, this.ra, start, end, this.K.curNote));
               sequence.append(new ChangePinTime(this.J, this.K.curNote, this.K.nearPinIndex, shiftedTime, continuesLastPattern));
               this.kg(this.K.curNote);
             }
           } else if (this.K.pitchIndex == -1 || this.J.song.getChannelIsMod(this.J.channel)) {
-            if (!this.Ca)
+            if (!this.Ba)
               sequence.append(new ChangePatternSelection(this.J, 0, 0));
             const bendPart = Math.max(
               this.K.curNote.start,
               Math.min(
                 this.K.curNote.end,
-                Math.round(this.$ / (this.Aa * minDivision)) * minDivision
+                Math.round(this._ / (this.za * minDivision)) * minDivision
               )
             ) - this.K.curNote.start;
             let prevPin;
             let nextPin = this.K.curNote.pins[0];
             let bendSize = 0;
             let bendInterval = 0;
-            let cap = this.J.song.getVolumeCap(this.J.song.getChannelIsMod(this.J.channel), this.J.channel, this.J.getCurrentInstrument(this.Ja), this.K.pitch);
+            let cap = this.J.song.getVolumeCap(this.J.song.getChannelIsMod(this.J.channel), this.J.channel, this.J.getCurrentInstrument(this.Ia), this.K.pitch);
             let dragFactorSlow = 25 / Math.pow(cap, 0.4);
             let dragFactorFast = 22 / Math.pow(cap, 0.5);
-            let dragSign = this.eg > this.aa ? 1 : -1;
-            let dragCounts = Math.min(Math.abs(this.eg - this.aa) / dragFactorSlow, 8) + Math.max(0, Math.abs(this.eg - this.aa) / dragFactorFast - 8);
+            let dragSign = this.eg > this.$ ? 1 : -1;
+            let dragCounts = Math.min(Math.abs(this.eg - this.$) / dragFactorSlow, 8) + Math.max(0, Math.abs(this.eg - this.$) / dragFactorFast - 8);
             if (dragCounts > 0) {
-              this.Va = false;
+              this.Ua = false;
             }
             for (let i = 1; i < this.K.curNote.pins.length; i++) {
               prevPin = nextPin;
@@ -40754,14 +40758,14 @@ You should be redirected to the song at:<br /><br />
             if (this.J.song.getChannelIsMod(this.J.channel) && this.controlMode) {
               if (bendPart >= this.K.curNote.pins[this.K.curNote.pins.length - 1].time) {
                 if (this.K.curNote.start + this.K.curNote.pins[this.K.curNote.pins.length - 1].time < this.J.song.beatsPerBar * Config.partsPerBeat) {
-                  for (const note of this.sa.notes) {
+                  for (const note of this.ra.notes) {
                     if (note.start == this.K.curNote.start + this.K.curNote.pins[this.K.curNote.pins.length - 1].time && note.pitches[0] == this.K.curNote.pitches[0]) {
                       sequence.append(new ChangeSizeBend(this.J, note, note.pins[0].time, bendSize, bendInterval, this.shiftMode));
                     }
                   }
                 } else {
                   const nextPattern = this.J.getCurrentPattern(1);
-                  if (nextPattern != null && nextPattern.instruments[0] == this.sa.instruments[0]) {
+                  if (nextPattern != null && nextPattern.instruments[0] == this.ra.instruments[0]) {
                     for (const note of nextPattern.notes) {
                       if (note.start == 0 && note.pitches[0] == this.K.curNote.pitches[0]) {
                         sequence.append(new ChangeSizeBend(this.J, note, note.pins[0].time, bendSize, bendInterval, this.shiftMode));
@@ -40771,14 +40775,14 @@ You should be redirected to the song at:<br /><br />
                 }
               } else if (bendPart <= this.K.curNote.pins[0].time) {
                 if (this.K.curNote.start > 0) {
-                  for (const note of this.sa.notes) {
+                  for (const note of this.ra.notes) {
                     if (note.end == this.K.curNote.start && note.pitches[0] == this.K.curNote.pitches[0]) {
                       sequence.append(new ChangeSizeBend(this.J, note, note.pins[note.pins.length - 1].time, bendSize, bendInterval, this.shiftMode));
                     }
                   }
                 } else {
                   const prevPattern = this.J.getCurrentPattern(-1);
-                  if (prevPattern != null && prevPattern.instruments[0] == this.sa.instruments[0]) {
+                  if (prevPattern != null && prevPattern.instruments[0] == this.ra.instruments[0]) {
                     for (const note of prevPattern.notes) {
                       if (note.end == this.J.song.beatsPerBar * Config.partsPerBeat && note.pitches[0] == this.K.curNote.pitches[0]) {
                         sequence.append(new ChangeSizeBend(this.J, note, note.pins[note.pins.length - 1].time, bendSize, bendInterval, this.shiftMode));
@@ -40789,18 +40793,18 @@ You should be redirected to the song at:<br /><br />
               }
             }
             this.ig = this.K.curNote.start + bendPart;
-            this.jf = this.K.curNote.pitches[this.K.pitchIndex == -1 ? 0 : this.K.pitchIndex] + bendInterval;
-            this.Ob = bendSize;
+            this.hf = this.K.curNote.pitches[this.K.pitchIndex == -1 ? 0 : this.K.pitchIndex] + bendInterval;
+            this.Nb = bendSize;
             this.jg = true;
             sequence.append(new ChangeSizeBend(this.J, this.K.curNote, bendPart, bendSize, bendInterval, this.shiftMode));
             this.kg(this.K.curNote);
           } else {
             sequence.append(new ChangePatternSelection(this.J, 0, 0));
-            this.Ob = this.K.curNote.pins[this.K.nearPinIndex].size;
-            if (this.sa == null) throw new Error();
+            this.Nb = this.K.curNote.pins[this.K.nearPinIndex].size;
+            if (this.ra == null) throw new Error();
             let bendStart;
             let bendEnd;
-            if (this.$ >= this.rc) {
+            if (this._ >= this.qc) {
               bendStart = Math.max(this.K.curNote.start, this.K.part);
               bendEnd = currentPart + minDivision;
             } else {
@@ -40810,10 +40814,10 @@ You should be redirected to the song at:<br /><br />
             if (bendEnd < 0) bendEnd = 0;
             if (bendEnd > this.J.song.beatsPerBar * Config.partsPerBeat) bendEnd = this.J.song.beatsPerBar * Config.partsPerBeat;
             if (bendEnd > this.K.curNote.end) {
-              sequence.append(new ChangeNoteTruncate(this.J, this.sa, this.K.curNote.start, bendEnd, this.K.curNote));
+              sequence.append(new ChangeNoteTruncate(this.J, this.ra, this.K.curNote.start, bendEnd, this.K.curNote));
             }
             if (bendEnd < this.K.curNote.start) {
-              sequence.append(new ChangeNoteTruncate(this.J, this.sa, bendEnd, this.K.curNote.end, this.K.curNote));
+              sequence.append(new ChangeNoteTruncate(this.J, this.ra, bendEnd, this.K.curNote.end, this.K.curNote));
             }
             let minPitch = Number.MAX_VALUE;
             let maxPitch = -Number.MAX_VALUE;
@@ -40824,13 +40828,13 @@ You should be redirected to the song at:<br /><br />
             minPitch -= this.K.curNote.pitches[this.K.pitchIndex];
             maxPitch -= this.K.curNote.pitches[this.K.pitchIndex];
             if (!this.J.song.getChannelIsMod(this.J.channel)) {
-              const bendTo = this.Hh(this.Gh(this.aa), -minPitch, this.wj() - maxPitch);
+              const bendTo = this.Hh(this.Gh(this.$), -minPitch, this.wj() - maxPitch);
               sequence.append(new ChangePitchBend(this.J, this.K.curNote, bendStart, bendEnd, bendTo, this.K.pitchIndex));
-              this.jf = bendTo;
+              this.hf = bendTo;
             } else {
-              const bendTo = this.Hh(this.jf, -minPitch, Config.modCount - 1);
+              const bendTo = this.Hh(this.hf, -minPitch, Config.modCount - 1);
               sequence.append(new ChangePitchBend(this.J, this.K.curNote, bendStart, bendEnd, bendTo, this.K.pitchIndex));
-              this.jf = bendTo;
+              this.hf = bendTo;
             }
             this.kg(this.K.curNote);
             this.ig = bendEnd;
@@ -40838,32 +40842,32 @@ You should be redirected to the song at:<br /><br />
           }
         }
       }
-      if (!(this.da && this.K.valid && continuousState)) {
-        this.$c();
-        this.ra();
+      if (!(this.ca && this.K.valid && continuousState)) {
+        this._c();
+        this.qa();
       }
     }
-    xa = (event) => {
+    wa = (event) => {
       if (!this.K.valid) return;
-      const continuousState = this.J.lastChangeWas(this.ka);
-      if (this.da && continuousState && this.ka != null) {
+      const continuousState = this.J.lastChangeWas(this.ja);
+      if (this.ca && continuousState && this.ja != null) {
         if (this.hg) {
-          this.J.record(this.ka);
-          this.ka = null;
-          if (this.sa != null && this.J.song.getChannelIsMod(this.J.channel)) this.sa.notes.sort(function(a4, b) {
+          this.J.record(this.ja);
+          this.ja = null;
+          if (this.ra != null && this.J.song.getChannelIsMod(this.J.channel)) this.ra.notes.sort(function(a4, b) {
             return a4.start == b.start ? a4.pitches[0] - b.pitches[0] : a4.start - b.start;
           });
-        } else if (this.fg || this.gg || this.Va) {
-          this.Qt(this.ka);
-          this.ka = null;
-        } else if (this.Ca || this.K.curNote == null || !this.ka.isNoop() || this.fg || this.gg || this.hg || this.Va) {
-          this.J.record(this.ka);
-          this.ka = null;
-          if (this.sa != null && this.J.song.getChannelIsMod(this.J.channel)) this.sa.notes.sort(function(a4, b) {
+        } else if (this.fg || this.gg || this.Ua) {
+          this.Qt(this.ja);
+          this.ja = null;
+        } else if (this.Ba || this.K.curNote == null || !this.ja.isNoop() || this.fg || this.gg || this.hg || this.Ua) {
+          this.J.record(this.ja);
+          this.ja = null;
+          if (this.ra != null && this.J.song.getChannelIsMod(this.J.channel)) this.ra.notes.sort(function(a4, b) {
             return a4.start == b.start ? a4.pitches[0] - b.pitches[0] : a4.start - b.start;
           });
         } else {
-          if (this.sa == null) throw new Error();
+          if (this.ra == null) throw new Error();
           const sequence = new ChangeSequence();
           sequence.append(new ChangePatternSelection(this.J, 0, 0));
           if (this.K.pitchIndex == -1) {
@@ -40878,7 +40882,7 @@ You should be redirected to the song at:<br /><br />
             }
           } else {
             if (this.K.curNote.pitches.length == 1) {
-              sequence.append(new ChangeNoteAdded(this.J, this.sa, this.K.curNote, this.K.curIndex, true));
+              sequence.append(new ChangeNoteAdded(this.J, this.ra, this.K.curNote, this.K.curIndex, true));
             } else {
               sequence.append(new ChangePitchAdded(this.J, this.K.curNote, this.K.pitch, this.K.curNote.pitches.indexOf(this.K.pitch), true));
             }
@@ -40886,122 +40890,122 @@ You should be redirected to the song at:<br /><br />
           this.J.record(sequence);
         }
       }
-      this.da = false;
-      this.Ca = false;
+      this.ca = false;
+      this.Ba = false;
       this.fg = false;
       this.gg = false;
       this.hg = false;
       this.Xl = false;
       this.modDragValueLabel.setAttribute("fill", ColorConfig.secondaryText);
-      this.$c();
-      this.ra();
+      this._c();
+      this.qa();
     };
     Qt(change) {
       this.Wl = change;
       this.J.record(this.Wl, this.Xl);
     }
-    ra() {
+    qa() {
       if (this.dg) {
-        if (!this.da || !this.K.valid || !this.Ca || !this.jg || this.Va || this.fg || this.gg || this.hg) {
-          this.ad.setAttribute("visibility", "hidden");
+        if (!this.ca || !this.K.valid || !this.Ba || !this.jg || this.Ua || this.fg || this.gg || this.hg) {
+          this.$c.setAttribute("visibility", "hidden");
           if (!this.editingModLabel) {
             this.modDragValueLabel.style.setProperty("display", "none");
             this.modDragValueLabel.style.setProperty("pointer-events", "none");
             this.modDragValueLabel.setAttribute("contenteditable", "false");
           }
         } else {
-          this.ad.setAttribute("visibility", "visible");
-          const x = this.Aa * this.ig;
-          const y = this.zb(this.jf - this.Jb);
-          const radius = (this.Ha - this.sc) / 2;
+          this.$c.setAttribute("visibility", "visible");
+          const x = this.za * this.ig;
+          const y = this.yb(this.hf - this.Ib);
+          const radius = (this.Ga - this.rc) / 2;
           const width = 80;
           const height = 60;
-          const cap = this.J.song.getVolumeCap(this.J.song.getChannelIsMod(this.J.channel), this.J.channel, this.J.getCurrentInstrument(this.Ja), this.K.pitch);
+          const cap = this.J.song.getVolumeCap(this.J.song.getChannelIsMod(this.J.channel), this.J.channel, this.J.getCurrentInstrument(this.Ia), this.K.pitch);
           let pathString = "";
-          pathString += "M " + prettyNumber(x) + " " + prettyNumber(y - radius * (this.Ob / cap)) + " ";
-          pathString += "L " + prettyNumber(x) + " " + prettyNumber(y - radius * (this.Ob / cap) - height) + " ";
-          pathString += "M " + prettyNumber(x) + " " + prettyNumber(y + radius * (this.Ob / cap)) + " ";
-          pathString += "L " + prettyNumber(x) + " " + prettyNumber(y + radius * (this.Ob / cap) + height) + " ";
-          pathString += "M " + prettyNumber(x) + " " + prettyNumber(y - radius * (this.Ob / cap)) + " ";
-          pathString += "L " + prettyNumber(x + width) + " " + prettyNumber(y - radius * (this.Ob / cap)) + " ";
-          pathString += "M " + prettyNumber(x) + " " + prettyNumber(y + radius * (this.Ob / cap)) + " ";
-          pathString += "L " + prettyNumber(x + width) + " " + prettyNumber(y + radius * (this.Ob / cap)) + " ";
-          pathString += "M " + prettyNumber(x) + " " + prettyNumber(y - radius * (this.Ob / cap)) + " ";
-          pathString += "L " + prettyNumber(x - width) + " " + prettyNumber(y - radius * (this.Ob / cap)) + " ";
-          pathString += "M " + prettyNumber(x) + " " + prettyNumber(y + radius * (this.Ob / cap)) + " ";
-          pathString += "L " + prettyNumber(x - width) + " " + prettyNumber(y + radius * (this.Ob / cap)) + " ";
-          this.ad.setAttribute("d", pathString);
+          pathString += "M " + prettyNumber(x) + " " + prettyNumber(y - radius * (this.Nb / cap)) + " ";
+          pathString += "L " + prettyNumber(x) + " " + prettyNumber(y - radius * (this.Nb / cap) - height) + " ";
+          pathString += "M " + prettyNumber(x) + " " + prettyNumber(y + radius * (this.Nb / cap)) + " ";
+          pathString += "L " + prettyNumber(x) + " " + prettyNumber(y + radius * (this.Nb / cap) + height) + " ";
+          pathString += "M " + prettyNumber(x) + " " + prettyNumber(y - radius * (this.Nb / cap)) + " ";
+          pathString += "L " + prettyNumber(x + width) + " " + prettyNumber(y - radius * (this.Nb / cap)) + " ";
+          pathString += "M " + prettyNumber(x) + " " + prettyNumber(y + radius * (this.Nb / cap)) + " ";
+          pathString += "L " + prettyNumber(x + width) + " " + prettyNumber(y + radius * (this.Nb / cap)) + " ";
+          pathString += "M " + prettyNumber(x) + " " + prettyNumber(y - radius * (this.Nb / cap)) + " ";
+          pathString += "L " + prettyNumber(x - width) + " " + prettyNumber(y - radius * (this.Nb / cap)) + " ";
+          pathString += "M " + prettyNumber(x) + " " + prettyNumber(y + radius * (this.Nb / cap)) + " ";
+          pathString += "L " + prettyNumber(x - width) + " " + prettyNumber(y + radius * (this.Nb / cap)) + " ";
+          this.$c.setAttribute("d", pathString);
         }
       } else {
-        if (!this.na || this.da || !this.K.valid) {
-          this.ad.setAttribute("visibility", "hidden");
+        if (!this.ma || this.ca || !this.K.valid) {
+          this.$c.setAttribute("visibility", "hidden");
           if (!this.editingModLabel) {
             this.modDragValueLabel.style.setProperty("display", "none");
             this.modDragValueLabel.style.setProperty("pointer-events", "none");
             this.modDragValueLabel.setAttribute("contenteditable", "false");
           }
         } else {
-          this.ad.setAttribute("visibility", "visible");
+          this.$c.setAttribute("visibility", "visible");
           if (this.xq()) {
-            const center = this.Aa * this.J.selection.patternSelectionStart;
+            const center = this.za * this.J.selection.patternSelectionStart;
             const left = prettyNumber(center - 4);
             const right = prettyNumber(center + 4);
-            const bottom = this.zb(-0.5);
-            this.ad.setAttribute("d", "M " + left + " 0 L " + left + " " + bottom + " L " + right + " " + bottom + " L " + right + " 0 z");
+            const bottom = this.yb(-0.5);
+            this.$c.setAttribute("d", "M " + left + " 0 L " + left + " " + bottom + " L " + right + " " + bottom + " L " + right + " 0 z");
           } else if (this.yq()) {
-            const center = this.Aa * this.J.selection.patternSelectionEnd;
+            const center = this.za * this.J.selection.patternSelectionEnd;
             const left = prettyNumber(center - 4);
             const right = prettyNumber(center + 4);
-            const bottom = this.zb(-0.5);
-            this.ad.setAttribute("d", "M " + left + " 0 L " + left + " " + bottom + " L " + right + " " + bottom + " L " + right + " 0 z");
+            const bottom = this.yb(-0.5);
+            this.$c.setAttribute("d", "M " + left + " 0 L " + left + " " + bottom + " L " + right + " " + bottom + " L " + right + " 0 z");
           } else if (this.Yl()) {
-            const left = prettyNumber(this.Aa * this.J.selection.patternSelectionStart - 2);
-            const right = prettyNumber(this.Aa * this.J.selection.patternSelectionEnd + 2);
-            const bottom = this.zb(-0.5);
-            this.ad.setAttribute("d", "M " + left + " 0 L " + left + " " + bottom + " L " + right + " " + bottom + " L " + right + " 0 z");
+            const left = prettyNumber(this.za * this.J.selection.patternSelectionStart - 2);
+            const right = prettyNumber(this.za * this.J.selection.patternSelectionEnd + 2);
+            const bottom = this.yb(-0.5);
+            this.$c.setAttribute("d", "M " + left + " 0 L " + left + " " + bottom + " L " + right + " " + bottom + " L " + right + " 0 z");
           } else {
-            this.lg(this.ad, this.K.pitch, this.K.start, this.K.pins, (this.Ha - this.sc) / 2 + 1, true, this.Jb);
+            this.lg(this.$c, this.K.pitch, this.K.start, this.K.pins, (this.Ga - this.rc) / 2 + 1, true, this.Ib);
           }
         }
       }
     }
     Ih() {
       if (this.J.selection.patternSelectionActive) {
-        this.Ib.setAttribute("visibility", "visible");
-        this.Ib.setAttribute("x", String(this.Aa * this.J.selection.patternSelectionStart));
-        this.Ib.setAttribute("width", String(this.Aa * (this.J.selection.patternSelectionEnd - this.J.selection.patternSelectionStart)));
+        this.Hb.setAttribute("visibility", "visible");
+        this.Hb.setAttribute("x", String(this.za * this.J.selection.patternSelectionStart));
+        this.Hb.setAttribute("width", String(this.za * (this.J.selection.patternSelectionEnd - this.J.selection.patternSelectionStart)));
       } else {
-        this.Ib.setAttribute("visibility", "hidden");
+        this.Hb.setAttribute("visibility", "hidden");
       }
     }
     render() {
-      const nextPattern = this.J.getCurrentPattern(this.Ja);
-      if (this.sa != nextPattern) {
+      const nextPattern = this.J.getCurrentPattern(this.Ia);
+      if (this.ra != nextPattern) {
         if (this.J.song.getChannelIsMod(this.J.channel) && this.vj && nextPattern != null) {
           nextPattern.notes.sort(function(a4, b) {
             return a4.start == b.start ? a4.pitches[0] - b.pitches[0] : a4.start - b.start;
           });
         }
-        if (this.sa != null) {
-          this.ka = null;
-          this.xa(null);
+        if (this.ra != null) {
+          this.ja = null;
+          this.wa(null);
         }
       }
-      this.sa = nextPattern;
-      this.ca = this.container.clientWidth;
-      this.ba = this.container.clientHeight;
-      this.Aa = this.ca / (this.J.song.beatsPerBar * Config.partsPerBeat);
-      this.Jb = this.J.channel >= this.J.song.pitchChannelCount ? 0 : this.J.song.channels[this.J.channel].octave * Config.pitchesPerOctave;
+      this.ra = nextPattern;
+      this.ba = this.container.clientWidth;
+      this.aa = this.container.clientHeight;
+      this.za = this.ba / (this.J.song.beatsPerBar * Config.partsPerBeat);
+      this.Ib = this.J.channel >= this.J.song.pitchChannelCount ? 0 : this.J.song.channels[this.J.channel].octave * Config.pitchesPerOctave;
       if (this.J.song.getChannelIsNoise(this.J.channel)) {
-        this.sc = 0;
-        this.mb = Config.drumCount;
+        this.rc = 0;
+        this.lb = Config.drumCount;
       } else if (this.J.song.getChannelIsMod(this.J.channel)) {
-        this.sc = this.Nt;
-        this.mb = Config.modCount;
-        if (this.sa != null) {
-          for (const note of this.sa.notes) {
+        this.rc = this.Nt;
+        this.lb = Config.modCount;
+        if (this.ra != null) {
+          for (const note of this.ra.notes) {
             let pitch = note.pitches[0];
-            let maxHeight = this.J.song.getVolumeCap(true, this.J.channel, this.J.getCurrentInstrument(this.Ja), pitch);
+            let maxHeight = this.J.song.getVolumeCap(true, this.J.channel, this.J.getCurrentInstrument(this.Ia), pitch);
             let maxFoundHeight = 0;
             for (const pin of note.pins) {
               if (pin.size > maxFoundHeight) {
@@ -41016,11 +41020,11 @@ You should be redirected to the song at:<br /><br />
           }
         }
       } else {
-        this.sc = 0;
-        this.mb = this.J.getVisiblePitchCount();
+        this.rc = 0;
+        this.lb = this.J.getVisiblePitchCount();
       }
-      this.Ha = this.ba / this.mb;
-      this.Jb = this.J.channel >= this.J.song.pitchChannelCount ? 0 : this.J.getBaseVisibleOctave(this.J.channel) * Config.pitchesPerOctave;
+      this.Ga = this.aa / this.lb;
+      this.Ib = this.J.channel >= this.J.song.pitchChannelCount ? 0 : this.J.getBaseVisibleOctave(this.J.channel) * Config.pitchesPerOctave;
       if (this.rq != this.J.song.rhythm || this.sq != this.J.song.pitchChannelCount || this.tq != this.J.song.noiseChannelCount || this.uq != this.J.song.modChannelCount) {
         this.rq = this.J.song.rhythm;
         this.sq = this.J.song.pitchChannelCount;
@@ -41028,48 +41032,48 @@ You should be redirected to the song at:<br /><br />
         this.uq = this.J.song.modChannelCount;
         this.resetCopiedPins();
       }
-      this.Nb = this.te[this.J.channel];
-      if (this.nq != this.ca || this.oq != this.ba) {
-        this.nq = this.ca;
-        this.oq = this.ba;
-        this.ff.setAttribute("width", "" + this.ca);
-        this.ff.setAttribute("height", "" + this.ba);
-        this.gf.setAttribute("height", "" + this.ba);
-        this.Ib.setAttribute("y", "0");
-        this.Ib.setAttribute("height", "" + this.ba);
+      this.Mb = this.se[this.J.channel];
+      if (this.nq != this.ba || this.oq != this.aa) {
+        this.nq = this.ba;
+        this.oq = this.aa;
+        this.ef.setAttribute("width", "" + this.ba);
+        this.ef.setAttribute("height", "" + this.aa);
+        this.ff.setAttribute("height", "" + this.aa);
+        this.Hb.setAttribute("y", "0");
+        this.Hb.setAttribute("height", "" + this.aa);
       }
-      const beatWidth = this.ca / this.J.song.beatsPerBar;
-      if (this.pq != beatWidth || this.qq != this.Ha) {
+      const beatWidth = this.ba / this.J.song.beatsPerBar;
+      if (this.pq != beatWidth || this.qq != this.Ga) {
         this.pq = beatWidth;
-        this.qq = this.Ha;
+        this.qq = this.Ga;
         this.zh.setAttribute("width", "" + beatWidth);
-        this.zh.setAttribute("height", "" + this.Ha * Config.pitchesPerOctave);
+        this.zh.setAttribute("height", "" + this.Ga * Config.pitchesPerOctave);
         this.Ah.setAttribute("width", "" + beatWidth);
-        this.Ah.setAttribute("height", "" + this.Ha);
+        this.Ah.setAttribute("height", "" + this.Ga);
         this.ag.setAttribute("width", "" + beatWidth);
-        this.ag.setAttribute("height", "" + this.Ha);
-        this.ag.setAttribute("y", "" + this.sc / 2);
+        this.ag.setAttribute("height", "" + this.Ga);
+        this.ag.setAttribute("y", "" + this.rc / 2);
         this.bg.setAttribute("width", "" + (beatWidth - 2));
-        this.bg.setAttribute("height", "" + (this.Ha - 2));
-        if (this.Ha > this.sc) {
+        this.bg.setAttribute("height", "" + (this.Ga - 2));
+        if (this.Ga > this.rc) {
           this.tj.setAttribute("width", "" + (beatWidth - 2));
-          this.tj.setAttribute("height", "" + (this.Ha - this.sc));
+          this.tj.setAttribute("height", "" + (this.Ga - this.rc));
         }
         for (let j = 0; j < Config.pitchesPerOctave; j++) {
           const rectangle = this.sj[j];
           const y = (Config.pitchesPerOctave - j) % Config.pitchesPerOctave;
           rectangle.setAttribute("width", "" + (beatWidth - 2));
-          rectangle.setAttribute("y", "" + (y * this.Ha + 1));
-          rectangle.setAttribute("height", "" + (this.Ha - 2));
+          rectangle.setAttribute("y", "" + (y * this.Ga + 1));
+          rectangle.setAttribute("height", "" + (this.Ga - 2));
         }
       }
       if (this.vj) {
-        if (!this.da) this.$c();
-        this.ra();
+        if (!this.ca) this._c();
+        this.qa();
         this.Ih();
       }
-      if (this.re != this.J.prefs.showFifth) {
-        this.re = this.J.prefs.showFifth;
+      if (this.qe != this.J.prefs.showFifth) {
+        this.qe = this.J.prefs.showFifth;
         this.sj[7].setAttribute("fill", this.J.prefs.showFifth ? ColorConfig.fifthNote : ColorConfig.pitchBackground);
       }
       for (let j = 0; j < Config.pitchesPerOctave; j++) {
@@ -41077,28 +41081,28 @@ You should be redirected to the song at:<br /><br />
         this.sj[j].style.visibility = scale[j] ? "visible" : "hidden";
       }
       if (this.J.song.getChannelIsNoise(this.J.channel)) {
-        if (!this.ee) {
-          this.ee = true;
-          this.fe = false;
-          this.ff.setAttribute("fill", "url(#patternEditorDrumBackground" + this.Ja + ")");
+        if (!this.de) {
+          this.de = true;
+          this.ee = false;
+          this.ef.setAttribute("fill", "url(#patternEditorDrumBackground" + this.Ia + ")");
         }
       } else if (this.J.song.getChannelIsMod(this.J.channel)) {
-        if (!this.fe) {
-          this.ee = false;
-          this.fe = true;
-          this.ff.setAttribute("fill", "url(#patternEditorModBackground" + this.Ja + ")");
+        if (!this.ee) {
+          this.de = false;
+          this.ee = true;
+          this.ef.setAttribute("fill", "url(#patternEditorModBackground" + this.Ia + ")");
         }
       } else {
-        if (this.ee || this.fe) {
+        if (this.de || this.ee) {
+          this.de = false;
           this.ee = false;
-          this.fe = false;
-          this.ff.setAttribute("fill", "url(#patternEditorNoteBackground" + this.Ja + ")");
+          this.ef.setAttribute("fill", "url(#patternEditorNoteBackground" + this.Ia + ")");
         }
       }
       this.zq();
     }
     zq() {
-      this.Gc = makeEmptyReplacementElement(this.Gc);
+      this.Fc = makeEmptyReplacementElement(this.Fc);
       if (this.J.prefs.showChannels) {
         if (!this.J.song.getChannelIsMod(this.J.channel)) {
           let noteFlashColor = "#ffffff77";
@@ -41106,7 +41110,7 @@ You should be redirected to the song at:<br /><br />
           for (let channel = this.J.song.pitchChannelCount + this.J.song.noiseChannelCount - 1; channel >= 0; channel--) {
             if (channel == this.J.channel || !this.J.song.channels[channel].visible) continue;
             if (this.J.song.getChannelIsNoise(channel) != this.J.song.getChannelIsNoise(this.J.channel)) continue;
-            const pattern2 = this.J.song.getPattern(channel, this.J.bar + this.Ja);
+            const pattern2 = this.J.song.getPattern(channel, this.J.bar + this.Ia);
             if (pattern2 == null) continue;
             const octaveOffset = this.J.getBaseVisibleOctave(channel) * Config.pitchesPerOctave;
             for (const note of pattern2.notes) {
@@ -41114,14 +41118,14 @@ You should be redirected to the song at:<br /><br />
                 let notePath = SVG.path();
                 notePath.setAttribute("fill", ColorConfig.getChannelColor(this.J.song, this.J.song.channels[channel].color, channel, this.J.prefs.fixChannelColorOrder).secondaryNote);
                 notePath.setAttribute("pointer-events", "none");
-                this.lg(notePath, pitch, note.start, note.pins, this.Ha * 0.19, false, octaveOffset);
-                this.Gc.appendChild(notePath);
+                this.lg(notePath, pitch, note.start, note.pins, this.Ga * 0.19, false, octaveOffset);
+                this.Fc.appendChild(notePath);
                 if (this.J.prefs.notesFlashWhenPlayed) {
                   notePath = SVG.path();
                   notePath.setAttribute("fill", noteFlashColor);
                   notePath.setAttribute("pointer-events", "none");
-                  this.lg(notePath, pitch, note.start, note.pins, this.Ha * 0.19, false, octaveOffset);
-                  this.Gc.appendChild(notePath);
+                  this.lg(notePath, pitch, note.start, note.pins, this.Ga * 0.19, false, octaveOffset);
+                  this.Fc.appendChild(notePath);
                   notePath.classList.add("note-flash");
                   notePath.style.opacity = "0";
                   notePath.setAttribute("note-start", String(note.start));
@@ -41134,14 +41138,14 @@ You should be redirected to the song at:<br /><br />
           }
         }
       }
-      if (this.sa != null) {
-        const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument(this.Ja)];
+      if (this.ra != null) {
+        const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument(this.Ia)];
         const chord = instrument.getChord();
         const transition = instrument.getTransition();
         const displayNumberedChords = chord.customInterval || chord.arpeggiates || chord.strumParts > 0 || transition.slides || chord.name == "monophonic";
         let noteFlashColor = "#ffffff";
         if (this.J.prefs.notesFlashWhenPlayed) noteFlashColor = ColorConfig.getComputed("--note-flash");
-        for (const note of this.sa.notes) {
+        for (const note of this.ra.notes) {
           let disabled = false;
           if (this.J.song.getChannelIsMod(this.J.channel)) {
             const modIndex = instrument.modulators[Config.modCount - 1 - note.pitches[0]];
@@ -41155,19 +41159,19 @@ You should be redirected to the song at:<br /><br />
             let colorSecondary = disabled ? ColorConfig.disabledNoteSecondary : ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder).secondaryNote;
             notePath.setAttribute("fill", colorSecondary);
             notePath.setAttribute("pointer-events", "none");
-            this.lg(notePath, pitch, note.start, note.pins, (this.Ha - this.sc) / 2 + 1, false, this.Jb);
-            this.Gc.appendChild(notePath);
+            this.lg(notePath, pitch, note.start, note.pins, (this.Ga - this.rc) / 2 + 1, false, this.Ib);
+            this.Fc.appendChild(notePath);
             notePath = SVG.path();
             notePath.setAttribute("fill", colorPrimary);
             notePath.setAttribute("pointer-events", "none");
-            this.lg(notePath, pitch, note.start, note.pins, (this.Ha - this.sc) / 2 + 1, true, this.Jb);
-            this.Gc.appendChild(notePath);
+            this.lg(notePath, pitch, note.start, note.pins, (this.Ga - this.rc) / 2 + 1, true, this.Ib);
+            this.Fc.appendChild(notePath);
             if (this.J.prefs.notesFlashWhenPlayed && !disabled) {
               notePath = SVG.path();
               notePath.setAttribute("fill", noteFlashColor);
               notePath.setAttribute("pointer-events", "none");
-              this.lg(notePath, pitch, note.start, note.pins, (this.Ha - this.sc) / 2 + 1, true, this.Jb);
-              this.Gc.appendChild(notePath);
+              this.lg(notePath, pitch, note.start, note.pins, (this.Ga - this.rc) / 2 + 1, true, this.Ib);
+              this.Fc.appendChild(notePath);
               notePath.classList.add("note-flash");
               notePath.style.opacity = "0";
               notePath.setAttribute("note-start", String(note.start));
@@ -41177,48 +41181,48 @@ You should be redirected to the song at:<br /><br />
             }
             let indicatorOffset = 2;
             if (note.continuesLastPattern) {
-              const arrowHeight = Math.min(this.Ha, 20);
+              const arrowHeight = Math.min(this.Ga, 20);
               let arrowPath;
-              arrowPath = "M " + prettyNumber(this.Aa * note.start + indicatorOffset) + " " + prettyNumber(this.zb(pitch - this.Jb) - 0.1 * arrowHeight);
-              arrowPath += "L " + prettyNumber(this.Aa * note.start + indicatorOffset) + " " + prettyNumber(this.zb(pitch - this.Jb) + 0.1 * arrowHeight);
-              arrowPath += "L " + prettyNumber(this.Aa * note.start + indicatorOffset + 4) + " " + prettyNumber(this.zb(pitch - this.Jb) + 0.1 * arrowHeight);
-              arrowPath += "L " + prettyNumber(this.Aa * note.start + indicatorOffset + 4) + " " + prettyNumber(this.zb(pitch - this.Jb) + 0.3 * arrowHeight);
-              arrowPath += "L " + prettyNumber(this.Aa * note.start + indicatorOffset + 12) + " " + prettyNumber(this.zb(pitch - this.Jb));
-              arrowPath += "L " + prettyNumber(this.Aa * note.start + indicatorOffset + 4) + " " + prettyNumber(this.zb(pitch - this.Jb) - 0.3 * arrowHeight);
-              arrowPath += "L " + prettyNumber(this.Aa * note.start + indicatorOffset + 4) + " " + prettyNumber(this.zb(pitch - this.Jb) - 0.1 * arrowHeight);
+              arrowPath = "M " + prettyNumber(this.za * note.start + indicatorOffset) + " " + prettyNumber(this.yb(pitch - this.Ib) - 0.1 * arrowHeight);
+              arrowPath += "L " + prettyNumber(this.za * note.start + indicatorOffset) + " " + prettyNumber(this.yb(pitch - this.Ib) + 0.1 * arrowHeight);
+              arrowPath += "L " + prettyNumber(this.za * note.start + indicatorOffset + 4) + " " + prettyNumber(this.yb(pitch - this.Ib) + 0.1 * arrowHeight);
+              arrowPath += "L " + prettyNumber(this.za * note.start + indicatorOffset + 4) + " " + prettyNumber(this.yb(pitch - this.Ib) + 0.3 * arrowHeight);
+              arrowPath += "L " + prettyNumber(this.za * note.start + indicatorOffset + 12) + " " + prettyNumber(this.yb(pitch - this.Ib));
+              arrowPath += "L " + prettyNumber(this.za * note.start + indicatorOffset + 4) + " " + prettyNumber(this.yb(pitch - this.Ib) - 0.3 * arrowHeight);
+              arrowPath += "L " + prettyNumber(this.za * note.start + indicatorOffset + 4) + " " + prettyNumber(this.yb(pitch - this.Ib) - 0.1 * arrowHeight);
               const arrow = SVG.path();
               arrow.setAttribute("d", arrowPath);
               arrow.setAttribute("fill", ColorConfig.invertedText);
-              this.Gc.appendChild(arrow);
+              this.Fc.appendChild(arrow);
               indicatorOffset += 12;
             }
             if (note.pitches.length > 1) {
               if (displayNumberedChords) {
                 const oscillatorLabel = SVG.text();
-                oscillatorLabel.setAttribute("x", "" + prettyNumber(this.Aa * note.start + indicatorOffset));
-                oscillatorLabel.setAttribute("y", "" + prettyNumber(this.zb(pitch - this.Jb)));
+                oscillatorLabel.setAttribute("x", "" + prettyNumber(this.za * note.start + indicatorOffset));
+                oscillatorLabel.setAttribute("y", "" + prettyNumber(this.yb(pitch - this.Ib)));
                 oscillatorLabel.setAttribute("width", "30");
                 oscillatorLabel.setAttribute("fill", ColorConfig.invertedText);
                 oscillatorLabel.setAttribute("text-anchor", "start");
                 oscillatorLabel.setAttribute("dominant-baseline", "central");
                 oscillatorLabel.setAttribute("pointer-events", "none");
                 oscillatorLabel.textContent = "" + (i + 1);
-                this.Gc.appendChild(oscillatorLabel);
+                this.Fc.appendChild(oscillatorLabel);
               }
             }
           }
-          if (this.J.song.getChannelIsMod(this.J.channel) && this.Ca && !this.hf && note == this.K.curNote) {
+          if (this.J.song.getChannelIsMod(this.J.channel) && this.Ba && !this.gf && note == this.K.curNote) {
             this.modDragValueLabel.style.setProperty("display", "");
             this.modDragValueLabel.style.setProperty("pointer-events", "none");
             this.modDragValueLabel.setAttribute("contenteditable", "false");
             this.modDragValueLabel.style.setProperty("color", "#FFFFFF");
-            let setting = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument(this.Ja)].modulators[Config.modCount - 1 - note.pitches[0]];
-            let presValue = this.Ob + Config.modulators[setting].convertRealFactor;
+            let setting = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument(this.Ia)].modulators[Config.modCount - 1 - note.pitches[0]];
+            let presValue = this.Nb + Config.modulators[setting].convertRealFactor;
             let xOffset = +(presValue >= 10) + +(presValue >= 100) + +(presValue < 0) + +(presValue <= -10);
             this.Ul = 8 + xOffset * 8;
-            this.sd = +prettyNumber(Math.max(Math.min(this.ca - 10 - xOffset * 8, this.Aa * this.ig - 4 - xOffset * 4), 2));
-            this.cg = +prettyNumber(this.zb(note.pitches[0] - this.Jb) - 17 - (this.Ha - this.sc) / 2);
-            this.modDragValueLabel.style.setProperty("left", "" + this.sd + "px");
+            this.rd = +prettyNumber(Math.max(Math.min(this.ba - 10 - xOffset * 8, this.za * this.ig - 4 - xOffset * 4), 2));
+            this.cg = +prettyNumber(this.yb(note.pitches[0] - this.Ib) - 17 - (this.Ga - this.rc) / 2);
+            this.modDragValueLabel.style.setProperty("left", "" + this.rd + "px");
             this.modDragValueLabel.style.setProperty("top", "" + this.cg + "px");
             this.modDragValueLabel.textContent = "" + presValue;
           }
@@ -41227,18 +41231,18 @@ You should be redirected to the song at:<br /><br />
       this.J.currentPatternIsDirty = false;
     }
     lg(svgElement, pitch, start, pins, radius, showSize, offset) {
-      const totalWidth = this.Aa * (pins[pins.length - 1].time + pins[0].time);
+      const totalWidth = this.za * (pins[pins.length - 1].time + pins[0].time);
       const endOffset = 0.5 * Math.min(2, totalWidth - 1);
       let nextPin = pins[0];
-      const cap = this.J.song.getVolumeCap(this.J.song.getChannelIsMod(this.J.channel), this.J.channel, this.J.getCurrentInstrument(this.Ja), pitch);
-      let pathString = "M " + prettyNumber(this.Aa * (start + nextPin.time) + endOffset) + " " + prettyNumber(this.zb(pitch - offset) + radius * (showSize ? nextPin.size / cap : 1)) + " ";
+      const cap = this.J.song.getVolumeCap(this.J.song.getChannelIsMod(this.J.channel), this.J.channel, this.J.getCurrentInstrument(this.Ia), pitch);
+      let pathString = "M " + prettyNumber(this.za * (start + nextPin.time) + endOffset) + " " + prettyNumber(this.yb(pitch - offset) + radius * (showSize ? nextPin.size / cap : 1)) + " ";
       for (let i = 1; i < pins.length; i++) {
         let prevPin = nextPin;
         nextPin = pins[i];
-        let prevSide = this.Aa * (start + prevPin.time) + (i == 1 ? endOffset : 0);
-        let nextSide = this.Aa * (start + nextPin.time) - (i == pins.length - 1 ? endOffset : 0);
-        let prevHeight = this.zb(pitch + prevPin.interval - offset);
-        let nextHeight = this.zb(pitch + nextPin.interval - offset);
+        let prevSide = this.za * (start + prevPin.time) + (i == 1 ? endOffset : 0);
+        let nextSide = this.za * (start + nextPin.time) - (i == pins.length - 1 ? endOffset : 0);
+        let prevHeight = this.yb(pitch + prevPin.interval - offset);
+        let nextHeight = this.yb(pitch + nextPin.interval - offset);
         let prevSize = showSize ? prevPin.size / cap : 1;
         let nextSize = showSize ? nextPin.size / cap : 1;
         pathString += "L " + prettyNumber(prevSide) + " " + prettyNumber(prevHeight - radius * prevSize) + " ";
@@ -41249,10 +41253,10 @@ You should be redirected to the song at:<br /><br />
       for (let i = pins.length - 2; i >= 0; i--) {
         let prevPin = nextPin;
         nextPin = pins[i];
-        let prevSide = this.Aa * (start + prevPin.time) - (i == pins.length - 2 ? endOffset : 0);
-        let nextSide = this.Aa * (start + nextPin.time) + (i == 0 ? endOffset : 0);
-        let prevHeight = this.zb(pitch + prevPin.interval - offset);
-        let nextHeight = this.zb(pitch + nextPin.interval - offset);
+        let prevSide = this.za * (start + prevPin.time) - (i == pins.length - 2 ? endOffset : 0);
+        let nextSide = this.za * (start + nextPin.time) + (i == 0 ? endOffset : 0);
+        let prevHeight = this.yb(pitch + prevPin.interval - offset);
+        let nextHeight = this.yb(pitch + nextPin.interval - offset);
         let prevSize = showSize ? prevPin.size / cap : 1;
         let nextSize = showSize ? nextPin.size / cap : 1;
         pathString += "L " + prettyNumber(prevSide) + " " + prettyNumber(prevHeight + radius * prevSize) + " ";
@@ -41263,8 +41267,8 @@ You should be redirected to the song at:<br /><br />
       pathString += "z";
       svgElement.setAttribute("d", pathString);
     }
-    zb(pitch) {
-      return this.Ha * (this.mb - pitch - 0.5);
+    yb(pitch) {
+      return this.Ga * (this.lb - pitch - 0.5);
     }
   };
 
@@ -41274,7 +41278,7 @@ You should be redirected to the song at:<br /><br />
     constructor(_doc) {
       this.J = _doc;
       this.Zl.value = this.J.prefs.pressControlForShortcuts ? "pressControlForShortcuts" : "useCapsLockForNotes";
-      this.Ud.value = this.J.prefs.keyboardLayout;
+      this.Td.value = this.J.prefs.keyboardLayout;
       this.Jh.value = String(this.J.prefs.bassOffset);
       this._l.checked = this.J.prefs.enableMidi;
       this.xj.checked = this.J.prefs.showRecordButton;
@@ -41283,11 +41287,11 @@ You should be redirected to the song at:<br /><br />
       this.bm.checked = this.J.prefs.metronomeCountIn;
       this.cm.checked = this.J.prefs.metronomeWhileRecording;
       setTimeout(() => this.xj.focus());
-      this.ia.addEventListener("click", this.cf);
-      this.fa.addEventListener("click", this.ga);
-      this.container.addEventListener("keydown", this.qa);
+      this.ha.addEventListener("click", this.bf);
+      this.ea.addEventListener("click", this.fa);
+      this.container.addEventListener("keydown", this.pa);
       this.dm();
-      this.Ud.addEventListener("change", this.dm);
+      this.Td.addEventListener("change", this.dm);
       this.Jh.addEventListener("change", this.dm);
     }
     Zl = select7(
@@ -41295,7 +41299,7 @@ You should be redirected to the song at:<br /><br />
       option7({ value: "useCapsLockForNotes" }, "simple shortcuts, use caps lock to play notes"),
       option7({ value: "pressControlForShortcuts" }, "simple notes, press " + EditorConfig.ctrlName + " for shortcuts")
     );
-    Ud = select7(
+    Td = select7(
       { style: "width: 100%;" },
       option7({ value: "wickiHayden" }, "Wicki-Hayden"),
       option7({ value: "songScale" }, "selected song scale"),
@@ -41317,8 +41321,8 @@ You should be redirected to the song at:<br /><br />
     am = input14({ style: "width: 2em; margin-left: 1em;", type: "checkbox" });
     bm = input14({ style: "width: 2em; margin-left: 1em;", type: "checkbox" });
     cm = input14({ style: "width: 2em; margin-left: 1em;", type: "checkbox" });
-    ia = button16({ class: "okayButton", style: "width:45%;" }, "Okay");
-    fa = button16({ class: "cancelButton" });
+    ha = button16({ class: "okayButton", style: "width:45%;" }, "Okay");
+    ea = button16({ class: "cancelButton" });
     container = div16(
       { class: "prompt noSelection recordingSetupPrompt", style: "width: 600px; text-align: right; max-height: 90%;" },
       h216({ style: "align-self: center;" }, "Note Recording Setup"),
@@ -41344,7 +41348,7 @@ You should be redirected to the song at:<br /><br />
         label4(
           { style: "display: flex; flex-direction: row; align-items: center; margin-top: 0.5em; margin-bottom: 0.5em; height: 2em; justify-content: center;" },
           "Keyboard layout:",
-          div16({ class: "selectContainer", style: "width: 50%; margin-left: 1em;" }, this.Ud)
+          div16({ class: "selectContainer", style: "width: 50%; margin-left: 1em;" }, this.Td)
         ),
         this.Kh,
         p5("When not recording, you can use the computer keyboard either for shortcuts (like C and V for copy and paste) or for performing notes, depending on this mode:"),
@@ -41382,26 +41386,26 @@ You should be redirected to the song at:<br /><br />
       ),
       div16(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.ia
+        this.ha
       ),
-      this.fa
+      this.ea
     );
-    ga = () => {
+    fa = () => {
       this.J.undo();
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.cf);
-      this.fa.removeEventListener("click", this.ga);
-      this.container.removeEventListener("keydown", this.qa);
+      this.ha.removeEventListener("click", this.bf);
+      this.ea.removeEventListener("click", this.fa);
+      this.container.removeEventListener("keydown", this.pa);
     };
-    qa = (event) => {
+    pa = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.cf();
+        this.bf();
       }
     };
-    cf = () => {
+    bf = () => {
       this.J.prefs.pressControlForShortcuts = this.Zl.value == "pressControlForShortcuts";
-      this.J.prefs.keyboardLayout = this.Ud.value;
+      this.J.prefs.keyboardLayout = this.Td.value;
       this.J.prefs.bassOffset = Number(this.Jh.value);
       this.J.prefs.enableMidi = this._l.checked;
       this.J.prefs.showRecordButton = this.xj.checked;
@@ -41410,7 +41414,7 @@ You should be redirected to the song at:<br /><br />
       this.J.prefs.metronomeCountIn = this.bm.checked;
       this.J.prefs.metronomeWhileRecording = this.cm.checked;
       this.J.prefs.save();
-      this.ga();
+      this.fa();
     };
     dm = () => {
       while (this.Kh.firstChild) {
@@ -41426,7 +41430,7 @@ You should be redirected to the song at:<br /><br />
         for (let colIndex = 0; colIndex < rowLengths[rowIndex]; colIndex++) {
           const key = div16({ style: `width: 20px; height: 20px; margin: 0 2px; box-sizing: border-box; flex-shrink: 0; display: flex; justify-content: center; align-items: center;` });
           row.appendChild(key);
-          const pitch = KeyboardLayout.keyPosToPitch(this.J, colIndex, 3 - rowIndex, this.Ud.value);
+          const pitch = KeyboardLayout.keyPosToPitch(this.J, colIndex, 3 - rowIndex, this.Td.value);
           if (pitch != null) {
             const scalePitch = pitch % 12;
             if (scale[scalePitch]) {
@@ -41460,8 +41464,8 @@ You should be redirected to the song at:<br /><br />
     J;
     em = null;
     Aq = false;
-    fa = button17({ class: "cancelButton" });
-    ue = div17();
+    ea = button17({ class: "cancelButton" });
+    te = div17();
     Bq = div17({ style: "margin-top: 0.5em; display: none;" }, "There's no custom samples in this song.");
     container = div17(
       { class: "prompt noSelection", style: "width: 350px;" },
@@ -41470,29 +41474,29 @@ You should be redirected to the song at:<br /><br />
         div17(
           { style: "display: flex; flex-direction: column; align-items: center; margin-bottom: 0.5em;" },
           this.Bq,
-          div17({ style: "width: 100%; max-height: 350px; overflow-y: scroll;" }, this.ue)
+          div17({ style: "width: 100%; max-height: 350px; overflow-y: scroll;" }, this.te)
         )
       ),
-      this.fa
+      this.ea
     );
     constructor(_doc) {
       this.J = _doc;
-      this.em = setInterval(() => this.Da(), this.Rt);
-      this.Da();
-      this.fa.addEventListener("click", this.ga);
+      this.em = setInterval(() => this.Ca(), this.Rt);
+      this.Ca();
+      this.ea.addEventListener("click", this.fa);
     }
-    ga = () => {
+    fa = () => {
       this.J.prompt = null;
       this.J.undo();
     };
     cleanUp = () => {
-      while (this.ue.firstChild !== null) {
-        this.ue.removeChild(this.ue.firstChild);
+      while (this.te.firstChild !== null) {
+        this.te.removeChild(this.te.firstChild);
       }
-      this.fa.removeEventListener("click", this.ga);
+      this.ea.removeEventListener("click", this.fa);
       clearInterval(this.em);
     };
-    Da = () => {
+    Ca = () => {
       const hasNoCustomSamples = EditorConfig.customSamples == null;
       if (hasNoCustomSamples) {
         this.Bq.style.display = "";
@@ -41511,8 +41515,8 @@ You should be redirected to the song at:<br /><br />
           break;
         }
       }
-      while (this.ue.firstChild !== null) {
-        this.ue.removeChild(this.ue.firstChild);
+      while (this.te.firstChild !== null) {
+        this.te.removeChild(this.te.firstChild);
       }
       for (let chipWaveIndex = 0; chipWaveIndex < Config.chipWaves.length; chipWaveIndex++) {
         const chipWave = Config.chipWaves[chipWaveIndex];
@@ -41544,7 +41548,7 @@ You should be redirected to the song at:<br /><br />
             loadingStatusDisplay
           )
         );
-        this.ue.appendChild(chipWaveElement);
+        this.te.appendChild(chipWaveElement);
       }
       if (allHaveStoppedChanging) {
         this.Aq = true;
@@ -41561,9 +41565,9 @@ You should be redirected to the song at:<br /><br />
       if (lastStrategy != null) {
         this.gm.value = lastStrategy;
       }
-      this.ia.addEventListener("click", this.la);
-      this.fa.addEventListener("click", this.ga);
-      this.container.addEventListener("keydown", this.qa);
+      this.ha.addEventListener("click", this.ka);
+      this.ea.addEventListener("click", this.fa);
+      this.container.addEventListener("keydown", this.pa);
     }
     gm = select8(
       { style: "width: 100%;" },
@@ -41571,8 +41575,8 @@ You should be redirected to the song at:<br /><br />
       option8({ value: "isgd" }, "is.gd")
       // option({value: "beepboxnet"}, "beepbox.net"),
     );
-    fa = button18({ class: "cancelButton" });
-    ia = button18({ class: "okayButton", style: "width:45%;" }, "Okay");
+    ea = button18({ class: "cancelButton" });
+    ha = button18({ class: "okayButton", style: "width:45%;" }, "Okay");
     container = div18(
       { class: "prompt noSelection", style: "width: 250px;" },
       h218("Configure Shortener"),
@@ -41582,24 +41586,24 @@ You should be redirected to the song at:<br /><br />
       ),
       div18(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.ia
+        this.ha
       ),
-      this.fa
+      this.ea
     );
-    ga = () => {
+    fa = () => {
       this.J.undo();
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.la);
-      this.fa.removeEventListener("click", this.ga);
-      this.container.removeEventListener("keydown", this.qa);
+      this.ha.removeEventListener("click", this.ka);
+      this.ea.removeEventListener("click", this.fa);
+      this.container.removeEventListener("keydown", this.pa);
     };
-    qa = (event) => {
+    pa = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.la();
+        this.ka();
       }
     };
-    la = () => {
+    ka = () => {
       nsLocalStorage_save("shortenerStrategySelect", this.gm.value);
       this.J.prompt = null;
       this.J.undo();
@@ -41611,44 +41615,44 @@ You should be redirected to the song at:<br /><br />
   var SongDurationPrompt = class _SongDurationPrompt {
     constructor(_doc) {
       this.J = _doc;
-      this.tc.value = this.J.song.barCount + "";
-      this.tc.min = Config.barCountMin + "";
-      this.tc.max = Config.barCountMax + "";
+      this.sc.value = this.J.song.barCount + "";
+      this.sc.min = Config.barCountMin + "";
+      this.sc.max = Config.barCountMax + "";
       const lastPosition = nsLocalStorage_get("barCountPosition");
       if (lastPosition != null) {
         this.mg.value = lastPosition;
       }
-      this.tc.select();
-      setTimeout(() => this.tc.focus());
-      this.ia.addEventListener("click", this.la);
-      this.fa.addEventListener("click", this.ga);
-      this.tc.addEventListener("keypress", _SongDurationPrompt.ec);
-      this.tc.addEventListener("blur", _SongDurationPrompt.lb);
-      this.container.addEventListener("keydown", this.qa);
-      this.tc.addEventListener("input", () => {
-        this.Xb.firstChild.textContent = this.$g();
+      this.sc.select();
+      setTimeout(() => this.sc.focus());
+      this.ha.addEventListener("click", this.ka);
+      this.ea.addEventListener("click", this.fa);
+      this.sc.addEventListener("keypress", _SongDurationPrompt.dc);
+      this.sc.addEventListener("blur", _SongDurationPrompt.kb);
+      this.container.addEventListener("keydown", this.pa);
+      this.sc.addEventListener("input", () => {
+        this.Wb.firstChild.textContent = this.$g();
       });
       this.mg.addEventListener("change", () => {
-        this.Xb.firstChild.textContent = this.$g();
+        this.Wb.firstChild.textContent = this.$g();
       });
-      this.Xb.firstChild.textContent = ExportPrompt.samplesToTime(this.J, this.J.synth.getTotalSamples(true, true, 0));
+      this.Wb.firstChild.textContent = ExportPrompt.samplesToTime(this.J, this.J.synth.getTotalSamples(true, true, 0));
     }
-    Xb = div19({ style: "width: 10em;" }, new Text("0:00"));
-    tc = input16({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
+    Wb = div19({ style: "width: 10em;" }, new Text("0:00"));
+    sc = input16({ style: "width: 3em; margin-left: 1em;", type: "number", step: "1" });
     mg = select9(
       { style: "width: 100%;" },
       option9({ value: "end" }, "Apply change at end of song."),
       option9({ value: "beginning" }, "Apply change at beginning of song.")
     );
-    fa = button19({ class: "cancelButton" });
-    ia = button19({ class: "okayButton", style: "width:45%;" }, "Okay");
+    ea = button19({ class: "cancelButton" });
+    ha = button19({ class: "okayButton", style: "width:45%;" }, "Okay");
     container = div19(
       { class: "prompt noSelection", style: "width: 250px;" },
       h219("Song Length"),
       div19(
         { style: "display: flex; flex-direction: row; align-items: center; justify-content: space-between;" },
         "Length:",
-        this.Xb
+        this.Wb
       ),
       div19(
         { style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
@@ -41658,7 +41662,7 @@ You should be redirected to the song at:<br /><br />
           br5(),
           span6({ style: `font-size: smaller; color: ${ColorConfig.secondaryText};` }, "(Multiples of 4 are recommended)")
         ),
-        this.tc
+        this.sc
       ),
       div19(
         { style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
@@ -41666,26 +41670,26 @@ You should be redirected to the song at:<br /><br />
       ),
       div19(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.ia
+        this.ha
       ),
-      this.fa
+      this.ea
     );
-    ga = () => {
+    fa = () => {
       this.J.undo();
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.la);
-      this.fa.removeEventListener("click", this.ga);
-      this.tc.removeEventListener("keypress", _SongDurationPrompt.ec);
-      this.tc.removeEventListener("blur", _SongDurationPrompt.lb);
-      this.container.removeEventListener("keydown", this.qa);
+      this.ha.removeEventListener("click", this.ka);
+      this.ea.removeEventListener("click", this.fa);
+      this.sc.removeEventListener("keypress", _SongDurationPrompt.dc);
+      this.sc.removeEventListener("blur", _SongDurationPrompt.kb);
+      this.container.removeEventListener("keydown", this.pa);
     };
-    qa = (event) => {
+    pa = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.la();
+        this.ka();
       }
     };
-    static ec(event) {
+    static dc(event) {
       const charCode = event.which ? event.which : event.keyCode;
       if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
         event.preventDefault();
@@ -41693,23 +41697,23 @@ You should be redirected to the song at:<br /><br />
       }
       return false;
     }
-    static lb(event) {
+    static kb(event) {
       const input19 = event.target;
-      input19.value = String(_SongDurationPrompt.qc(input19));
+      input19.value = String(_SongDurationPrompt.pc(input19));
     }
-    static qc(input19) {
+    static pc(input19) {
       return Math.floor(Math.max(Number(input19.min), Math.min(Number(input19.max), Number(input19.value))));
     }
     $g() {
       const futureDoc = new SongDocument();
       futureDoc.synth.song?.fromBase64String(this.J.synth.song?.toBase64String() ? this.J.synth.song?.toBase64String() : "");
-      new ChangeBarCount(futureDoc, _SongDurationPrompt.qc(this.tc), this.mg.value == "beginning");
+      new ChangeBarCount(futureDoc, _SongDurationPrompt.pc(this.sc), this.mg.value == "beginning");
       return ExportPrompt.samplesToTime(futureDoc, futureDoc.synth.getTotalSamples(true, true, 0));
     }
-    la = () => {
+    ka = () => {
       nsLocalStorage_save("barCountPosition", this.mg.value);
       const group = new ChangeGroup();
-      group.append(new ChangeBarCount(this.J, _SongDurationPrompt.qc(this.tc), this.mg.value == "beginning"));
+      group.append(new ChangeBarCount(this.J, _SongDurationPrompt.pc(this.sc), this.mg.value == "beginning"));
       this.J.prompt = null;
       this.J.record(group, true);
     };
@@ -41720,7 +41724,7 @@ You should be redirected to the song at:<br /><br />
   var SongRecoveryPrompt = class {
     constructor(_doc) {
       this.J = _doc;
-      this.fa.addEventListener("click", this.ga);
+      this.ea.addEventListener("click", this.fa);
       const songs = SongRecovery.getAllRecoveredSongs();
       if (songs.length == 0) {
         this.hm.appendChild(p6("There are no recovered songs available yet. Try making a song!"));
@@ -41742,7 +41746,7 @@ You should be redirected to the song at:<br /><br />
       }
     }
     hm = div20();
-    fa = button20({ class: "cancelButton" });
+    ea = button20({ class: "cancelButton" });
     container = div20(
       { class: "prompt", style: "width: 300px;" },
       h220("Song Recovery"),
@@ -41752,196 +41756,196 @@ You should be redirected to the song at:<br /><br />
         this.hm,
         p6(`(If "Display Song Data in URL" is enabled in your preferences, then you may also be able to find song versions in your browser history. However, song recovery won't work if you were browsing in private/incognito mode.)`)
       ),
-      this.fa
+      this.ea
     );
-    ga = () => {
+    fa = () => {
       this.J.undo();
     };
     cleanUp = () => {
-      this.fa.removeEventListener("click", this.ga);
+      this.ea.removeEventListener("click", this.fa);
     };
   };
 
   // editor/SpectrumEditor.ts
   var SpectrumEditor = class {
     constructor(_doc, _spectrumIndex, _isPrompt = false) {
-      this._b = _spectrumIndex;
+      this.Zb = _spectrumIndex;
       this.Dl = _isPrompt;
       this.J = _doc;
       this.instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-      this.xh.spectrum = this._b == null ? this.instrument.spectrumWave.spectrum.slice() : this.instrument.drumsetSpectrumWaves[this._b].spectrum.slice();
+      this.xh.spectrum = this.Zb == null ? this.instrument.spectrumWave.spectrum.slice() : this.instrument.drumsetSpectrumWaves[this.Zb].spectrum.slice();
       for (let i = 0; i < Config.spectrumControlPoints; i += Config.spectrumControlPointsPerOctave) {
-        this.uh.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: (i + 1) * this.ca / (Config.spectrumControlPoints + 2) - 1, y: 0, width: 2, height: this.ba }));
+        this.uh.appendChild(SVG.rect({ fill: ColorConfig.tonic, x: (i + 1) * this.ba / (Config.spectrumControlPoints + 2) - 1, y: 0, width: 2, height: this.aa }));
       }
       for (let i = 4; i <= Config.spectrumControlPoints; i += Config.spectrumControlPointsPerOctave) {
-        this.af.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: (i + 1) * this.ca / (Config.spectrumControlPoints + 2) - 1, y: 0, width: 2, height: this.ba }));
+        this.$e.appendChild(SVG.rect({ fill: ColorConfig.fifthNote, x: (i + 1) * this.ba / (Config.spectrumControlPoints + 2) - 1, y: 0, width: 2, height: this.aa }));
       }
       this.storeChange();
-      this.container.addEventListener("mousedown", this.db);
-      document.addEventListener("mousemove", this.Za);
-      document.addEventListener("mouseup", this.xa);
-      this.container.addEventListener("touchstart", this.pb);
-      this.container.addEventListener("touchmove", this.qb);
-      this.container.addEventListener("touchend", this.xa);
-      this.container.addEventListener("touchcancel", this.xa);
+      this.container.addEventListener("mousedown", this.cb);
+      document.addEventListener("mousemove", this.Ya);
+      document.addEventListener("mouseup", this.wa);
+      this.container.addEventListener("touchstart", this.ob);
+      this.container.addEventListener("touchmove", this.pb);
+      this.container.addEventListener("touchend", this.wa);
+      this.container.addEventListener("touchcancel", this.wa);
     }
-    ca = 120;
-    ba = 26;
-    Te = SVG.path({ fill: ColorConfig.uiWidgetBackground, "pointer-events": "none" });
+    ba = 120;
+    aa = 26;
+    Se = SVG.path({ fill: ColorConfig.uiWidgetBackground, "pointer-events": "none" });
     uh = SVG.svg({ "pointer-events": "none" });
-    af = SVG.svg({ "pointer-events": "none" });
+    $e = SVG.svg({ "pointer-events": "none" });
     vh = SVG.path({ fill: "none", stroke: "currentColor", "stroke-width": 2, "pointer-events": "none" });
     im = SVG.path({ fill: "currentColor", "pointer-events": "none" });
-    ha = SVG.svg(
-      { style: `background-color: ${ColorConfig.editorBackground}; touch-action: none; cursor: crosshair;`, width: "100%", height: "100%", viewBox: "0 0 " + this.ca + " " + this.ba, preserveAspectRatio: "none" },
-      this.Te,
+    ga = SVG.svg(
+      { style: `background-color: ${ColorConfig.editorBackground}; touch-action: none; cursor: crosshair;`, width: "100%", height: "100%", viewBox: "0 0 " + this.ba + " " + this.aa, preserveAspectRatio: "none" },
+      this.Se,
       this.uh,
-      this.af,
+      this.$e,
       this.vh,
       this.im
     );
-    container = HTML.div({ class: "spectrum", style: "height: 100%;" }, this.ha);
+    container = HTML.div({ class: "spectrum", style: "height: 100%;" }, this.ga);
+    _ = 0;
     $ = 0;
-    aa = 0;
-    Mb = 0;
-    _c = 0;
-    da = false;
-    ma = null;
+    Lb = 0;
+    Zc = 0;
+    ca = false;
+    la = null;
     wh = "";
-    re = true;
+    qe = true;
     instrument;
-    xh = new SpectrumWave(this._b != null);
-    Fa = 0;
-    Ba = [];
+    xh = new SpectrumWave(this.Zb != null);
+    Ea = 0;
+    Aa = [];
     J;
     storeChange = () => {
       var sameCheck = true;
-      if (this.Ba.length > 0) {
+      if (this.Aa.length > 0) {
         for (var i = 0; i < Config.spectrumControlPoints; i++) {
-          if (this.Ba[this.Fa][i] != this.instrument.spectrumWave.spectrum[i]) {
+          if (this.Aa[this.Ea][i] != this.instrument.spectrumWave.spectrum[i]) {
             sameCheck = false;
             i = Config.spectrumControlPoints;
           }
         }
       }
-      if (sameCheck == false || this.Ba.length == 0) {
-        this.Ba.splice(0, this.Fa);
-        this.Fa = 0;
-        this.Ba.unshift(this.instrument.spectrumWave.spectrum.slice());
-        if (this.Ba.length > 32) {
-          this.Ba.pop();
+      if (sameCheck == false || this.Aa.length == 0) {
+        this.Aa.splice(0, this.Ea);
+        this.Ea = 0;
+        this.Aa.unshift(this.instrument.spectrumWave.spectrum.slice());
+        if (this.Aa.length > 32) {
+          this.Aa.pop();
         }
       }
     };
     undo = () => {
-      if (this.Fa < this.Ba.length - 1) {
-        this.Fa++;
-        const spectrum = this.Ba[this.Fa].slice();
+      if (this.Ea < this.Aa.length - 1) {
+        this.Ea++;
+        const spectrum = this.Aa[this.Ea].slice();
         this.setSpectrumWave(spectrum);
       }
     };
     redo = () => {
-      if (this.Fa > 0) {
-        this.Fa--;
-        const spectrum = this.Ba[this.Fa].slice();
+      if (this.Ea > 0) {
+        this.Ea--;
+        const spectrum = this.Aa[this.Ea].slice();
         this.setSpectrumWave(spectrum);
       }
     };
-    Cc(x) {
-      return (Config.spectrumControlPoints + 2) * x / this.ca - 1;
+    Bc(x) {
+      return (Config.spectrumControlPoints + 2) * x / this.ba - 1;
     }
-    bf(y) {
-      return Config.spectrumMax * (1 - (y - 1) / (this.ba - 2));
+    af(y) {
+      return Config.spectrumMax * (1 - (y - 1) / (this.aa - 2));
     }
-    db = (event) => {
+    cb = (event) => {
       event.preventDefault();
-      this.da = true;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = ((event.clientX || event.pageX) - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = ((event.clientY || event.pageY) - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
+      this.ca = true;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = ((event.clientX || event.pageX) - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = ((event.clientY || event.pageY) - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
       if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.Mb = this.Cc(this.$);
-      this._c = this.bf(this.aa);
-      this.ya();
+      this.Lb = this.Bc(this._);
+      this.Zc = this.af(this.$);
+      this.xa();
+    };
+    ob = (event) => {
+      event.preventDefault();
+      this.ca = true;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.touches[0].clientX - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = (event.touches[0].clientY - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
+      if (isNaN(this.$)) this.$ = 0;
+      this.Lb = this.Bc(this._);
+      this.Zc = this.af(this.$);
+      this.xa();
+    };
+    Ya = (event) => {
+      if (this.container.offsetParent == null) return;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = ((event.clientX || event.pageX) - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = ((event.clientY || event.pageY) - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
+      if (isNaN(this.$)) this.$ = 0;
+      this.xa();
     };
     pb = (event) => {
-      event.preventDefault();
-      this.da = true;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.touches[0].clientX - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = (event.touches[0].clientY - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.Mb = this.Cc(this.$);
-      this._c = this.bf(this.aa);
-      this.ya();
-    };
-    Za = (event) => {
       if (this.container.offsetParent == null) return;
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = ((event.clientX || event.pageX) - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = ((event.clientY || event.pageY) - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
-      if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.ya();
-    };
-    qb = (event) => {
-      if (this.container.offsetParent == null) return;
-      if (!this.da) return;
+      if (!this.ca) return;
       event.preventDefault();
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.touches[0].clientX - boundingRect.left) * this.ca / (boundingRect.right - boundingRect.left);
-      this.aa = (event.touches[0].clientY - boundingRect.top) * this.ba / (boundingRect.bottom - boundingRect.top);
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.touches[0].clientX - boundingRect.left) * this.ba / (boundingRect.right - boundingRect.left);
+      this.$ = (event.touches[0].clientY - boundingRect.top) * this.aa / (boundingRect.bottom - boundingRect.top);
+      if (isNaN(this._)) this._ = 0;
       if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.ya();
+      this.xa();
       this.render();
     };
-    ya() {
-      if (this.da) {
-        const freq = this.Cc(this.$);
-        const amp = this.bf(this.aa);
+    xa() {
+      if (this.ca) {
+        const freq = this.Bc(this._);
+        const amp = this.af(this.$);
         const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-        const spectrumWave = this._b == null ? instrument.spectrumWave : instrument.drumsetSpectrumWaves[this._b];
-        if (freq != this.Mb) {
-          const slope = (amp - this._c) / (freq - this.Mb);
-          const offset = this._c - this.Mb * slope;
-          const lowerFreq = Math.ceil(Math.min(this.Mb, freq));
-          const upperFreq = Math.floor(Math.max(this.Mb, freq));
+        const spectrumWave = this.Zb == null ? instrument.spectrumWave : instrument.drumsetSpectrumWaves[this.Zb];
+        if (freq != this.Lb) {
+          const slope = (amp - this.Zc) / (freq - this.Lb);
+          const offset = this.Zc - this.Lb * slope;
+          const lowerFreq = Math.ceil(Math.min(this.Lb, freq));
+          const upperFreq = Math.floor(Math.max(this.Lb, freq));
           for (let i = lowerFreq; i <= upperFreq; i++) {
             if (i < 0 || i >= Config.spectrumControlPoints) continue;
             spectrumWave.spectrum[i] = Math.max(0, Math.min(Config.spectrumMax, Math.round(i * slope + offset)));
           }
         }
         spectrumWave.spectrum[Math.max(0, Math.min(Config.spectrumControlPoints - 1, Math.round(freq)))] = Math.max(0, Math.min(Config.spectrumMax, Math.round(amp)));
-        this.Mb = freq;
-        this._c = amp;
-        this.ma = new ChangeSpectrum(this.J, instrument, spectrumWave);
-        this.J.setProspectiveChange(this.ma);
+        this.Lb = freq;
+        this.Zc = amp;
+        this.la = new ChangeSpectrum(this.J, instrument, spectrumWave);
+        this.J.setProspectiveChange(this.la);
       }
     }
-    xa = (event) => {
-      if (this.da) {
+    wa = (event) => {
+      if (this.ca) {
         if (!this.Dl) {
-          this.J.record(this.ma);
+          this.J.record(this.la);
         }
         this.storeChange();
-        this.ma = null;
+        this.la = null;
       }
-      this.da = false;
+      this.ca = false;
     };
     getSpectrumWave() {
       const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-      if (this._b == null) {
+      if (this.Zb == null) {
         return instrument.spectrumWave;
       } else {
-        return instrument.drumsetSpectrumWaves[this._b];
+        return instrument.drumsetSpectrumWaves[this.Zb];
       }
     }
     setSpectrumWave(spectrum, saveHistory = false) {
       const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-      if (this._b == null) {
+      if (this.Zb == null) {
         for (let i = 0; i < Config.spectrumControlPoints; i++) {
           instrument.spectrumWave.spectrum[i] = spectrum[i];
         }
@@ -41951,9 +41955,9 @@ You should be redirected to the song at:<br /><br />
         }
       } else {
         for (let i = 0; i < Config.spectrumControlPoints; i++) {
-          instrument.drumsetSpectrumWaves[this._b].spectrum[i] = spectrum[i];
+          instrument.drumsetSpectrumWaves[this.Zb].spectrum[i] = spectrum[i];
         }
-        const spectrumChange = new ChangeSpectrum(this.J, instrument, instrument.drumsetSpectrumWaves[this._b]);
+        const spectrumChange = new ChangeSpectrum(this.J, instrument, instrument.drumsetSpectrumWaves[this.Zb]);
         if (saveHistory) {
           this.J.record(spectrumChange);
         }
@@ -41962,24 +41966,24 @@ You should be redirected to the song at:<br /><br />
     }
     saveSettings() {
       const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-      if (this._b == null || this._b == void 0) {
+      if (this.Zb == null || this.Zb == void 0) {
         return new ChangeSpectrum(this.J, instrument, instrument.spectrumWave);
       } else {
-        return new ChangeSpectrum(this.J, instrument, instrument.drumsetSpectrumWaves[this._b]);
+        return new ChangeSpectrum(this.J, instrument, instrument.drumsetSpectrumWaves[this.Zb]);
       }
     }
     resetToInitial() {
-      this.Ba = [];
-      this.Fa = 0;
+      this.Aa = [];
+      this.Ea = 0;
     }
     render() {
       const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-      const spectrumWave = this._b == null ? instrument.spectrumWave : instrument.drumsetSpectrumWaves[this._b];
+      const spectrumWave = this.Zb == null ? instrument.spectrumWave : instrument.drumsetSpectrumWaves[this.Zb];
       const controlPointToHeight = (point) => {
-        return (1 - point / Config.spectrumMax) * (this.ba - 1) + 1;
+        return (1 - point / Config.spectrumMax) * (this.aa - 1) + 1;
       };
       let lastValue = 0;
-      let path = "M 0 " + prettyNumber(this.ba) + " ";
+      let path = "M 0 " + prettyNumber(this.aa) + " ";
       for (let i = 0; i < Config.spectrumControlPoints; i++) {
         let nextValue = spectrumWave.spectrum[i];
         if (lastValue != 0 || nextValue != 0) {
@@ -41987,23 +41991,23 @@ You should be redirected to the song at:<br /><br />
         } else {
           path += "M ";
         }
-        path += prettyNumber((i + 1) * this.ca / (Config.spectrumControlPoints + 2)) + " " + prettyNumber(controlPointToHeight(nextValue)) + " ";
+        path += prettyNumber((i + 1) * this.ba / (Config.spectrumControlPoints + 2)) + " " + prettyNumber(controlPointToHeight(nextValue)) + " ";
         lastValue = nextValue;
       }
       const lastHeight = controlPointToHeight(lastValue);
       if (lastValue > 0) {
-        path += "L " + (this.ca - 1) + " " + prettyNumber(lastHeight) + " ";
+        path += "L " + (this.ba - 1) + " " + prettyNumber(lastHeight) + " ";
       }
       if (this.wh != path) {
         this.wh = path;
         this.vh.setAttribute("d", path);
-        this.Te.setAttribute("d", path + "L " + this.ca + " " + prettyNumber(lastHeight) + " L " + this.ca + " " + prettyNumber(this.ba) + " L 0 " + prettyNumber(this.ba) + " z ");
-        this.im.setAttribute("d", "M " + this.ca + " " + prettyNumber(lastHeight) + " L " + (this.ca - 4) + " " + prettyNumber(lastHeight - 4) + " L " + (this.ca - 4) + " " + prettyNumber(lastHeight + 4) + " z");
+        this.Se.setAttribute("d", path + "L " + this.ba + " " + prettyNumber(lastHeight) + " L " + this.ba + " " + prettyNumber(this.aa) + " L 0 " + prettyNumber(this.aa) + " z ");
+        this.im.setAttribute("d", "M " + this.ba + " " + prettyNumber(lastHeight) + " L " + (this.ba - 4) + " " + prettyNumber(lastHeight - 4) + " L " + (this.ba - 4) + " " + prettyNumber(lastHeight + 4) + " z");
         this.im.style.display = lastValue > 0 ? "" : "none";
       }
-      if (this.re != this.J.prefs.showFifth) {
-        this.re = this.J.prefs.showFifth;
-        this.af.style.display = this.J.prefs.showFifth ? "" : "none";
+      if (this.qe != this.J.prefs.showFifth) {
+        this.qe = this.J.prefs.showFifth;
+        this.$e.style.display = this.J.prefs.showFifth ? "" : "none";
       }
     }
     // public reassignDoc(_doc: SongDocument) {
@@ -42013,63 +42017,63 @@ You should be redirected to the song at:<br /><br />
   var SpectrumEditorPrompt = class {
     constructor(_doc, _songEditor, _isDrumset) {
       this.J = _doc;
-      this.Eb = _songEditor;
+      this.Db = _songEditor;
       this.Mh = _isDrumset;
-      this.ia.addEventListener("click", this.la);
-      this.fa.addEventListener("click", this.ga);
+      this.ha.addEventListener("click", this.ka);
+      this.ea.addEventListener("click", this.fa);
       this.container.addEventListener("keydown", this.whenKeyPressed);
       this.copyButton.addEventListener("click", this.ch);
       this.pasteButton.addEventListener("click", this.dh);
-      this.ja.addEventListener("click", this.ub);
+      this.ia.addEventListener("click", this.tb);
       this.container.addEventListener("mousemove", () => {
         this.spectrumEditor.render();
-        this.spectrumEditors[this.kf].setSpectrumWave(this.spectrumEditor.getSpectrumWave().spectrum);
+        this.spectrumEditors[this.jf].setSpectrumWave(this.spectrumEditor.getSpectrumWave().spectrum);
       });
       this.container.addEventListener("mousedown", this.spectrumEditor.render);
       this.spectrumEditor.container.addEventListener("mousemove", () => {
         this.spectrumEditor.render();
-        this.spectrumEditors[this.kf].setSpectrumWave(this.spectrumEditor.getSpectrumWave().spectrum);
+        this.spectrumEditors[this.jf].setSpectrumWave(this.spectrumEditor.getSpectrumWave().spectrum);
       });
       this.spectrumEditor.container.addEventListener("mousedown", this.spectrumEditor.render);
       this.updatePlayButton();
       if (this.Mh) {
         for (let i = Config.drumCount - 1; i >= 0; i--) {
           this.spectrumEditors[i] = new SpectrumEditor(this.J, Config.drumCount - 1 - i, true);
-          this.spectrumEditors[i].setSpectrumWave(this.Eb.yj[Config.drumCount - 1 - i].getSpectrumWave().spectrum);
+          this.spectrumEditors[i].setSpectrumWave(this.Db.yj[Config.drumCount - 1 - i].getSpectrumWave().spectrum);
         }
         let colors = ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder);
         for (let i = 0; i < Config.drumCount; i++) {
           let newSpectrumButton = HTML.button({ class: "no-underline", style: "max-width: 2em;" }, "" + (i + 1));
           this.Lh.push(newSpectrumButton);
-          this.ve.appendChild(newSpectrumButton);
+          this.ue.appendChild(newSpectrumButton);
           newSpectrumButton.addEventListener("click", () => {
             this.Nh(i);
           });
         }
         this.Lh[Config.drumCount - 1].classList.add("last-button");
         this.Lh[0].classList.add("selected-instrument");
-        this.ve.style.setProperty("--text-color-lit", colors.primaryNote);
-        this.ve.style.setProperty("--text-color-dim", colors.secondaryNote);
-        this.ve.style.setProperty("--background-color-lit", colors.primaryChannel);
-        this.ve.style.setProperty("--background-color-dim", colors.secondaryChannel);
-        this.ve.style.display = "";
+        this.ue.style.setProperty("--text-color-lit", colors.primaryNote);
+        this.ue.style.setProperty("--text-color-dim", colors.secondaryNote);
+        this.ue.style.setProperty("--background-color-lit", colors.primaryChannel);
+        this.ue.style.setProperty("--background-color-dim", colors.secondaryChannel);
+        this.ue.style.display = "";
         this.spectrumEditor.container.style.display = "";
-        this.spectrumEditor.setSpectrumWave(this.spectrumEditors[this.kf].getSpectrumWave().spectrum);
+        this.spectrumEditor.setSpectrumWave(this.spectrumEditors[this.jf].getSpectrumWave().spectrum);
       } else {
-        this.ve.style.display = "none";
+        this.ue.style.display = "none";
         this.spectrumEditors[0] = this.spectrumEditor;
       }
-      setTimeout(() => this.ja.focus());
+      setTimeout(() => this.ia.focus());
       this.spectrumEditor.render();
     }
     spectrumEditor = new SpectrumEditor(this.J, null, true);
     spectrumEditors = [];
-    kf = 0;
-    ja = HTML.button({ style: "width: 55%;", type: "button" });
+    jf = 0;
+    ia = HTML.button({ style: "width: 55%;", type: "button" });
     Lh = [];
-    ve = HTML.div({ class: "instrument-bar", style: "justify-content: center;" });
-    fa = HTML.button({ class: "cancelButton" });
-    ia = HTML.button({ class: "okayButton", style: "width:45%;" }, "Okay");
+    ue = HTML.div({ class: "instrument-bar", style: "justify-content: center;" });
+    ea = HTML.button({ class: "cancelButton" });
+    ha = HTML.button({ class: "okayButton", style: "width:45%;" }, "Okay");
     copyButton = HTML.button({ style: "width:86px; margin-right: 5px;", class: "copyButton" }, [
       "Copy",
       // Copy icon:
@@ -42091,55 +42095,55 @@ You should be redirected to the song at:<br /><br />
       HTML.h2("Edit Spectrum Instrument"),
       HTML.div(
         { style: "display: flex; width: 55%; align-self: center; flex-direction: row; align-items: center; justify-content: center;" },
-        this.ja
+        this.ia
       ),
-      this.ve,
+      this.ue,
       HTML.div(
         { style: "display: flex; flex-direction: row; align-items: center; justify-content: center; height: 80%" },
         this.spectrumEditor.container
       ),
       HTML.div(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.ia,
+        this.ha,
         this.copyPasteContainer
       ),
-      this.fa
+      this.ea
     );
     Nh = (index) => {
-      this.Lh[this.kf].classList.remove("selected-instrument");
-      this.spectrumEditors[this.kf].setSpectrumWave(this.spectrumEditor.getSpectrumWave().spectrum);
-      this.kf = index;
+      this.Lh[this.jf].classList.remove("selected-instrument");
+      this.spectrumEditors[this.jf].setSpectrumWave(this.spectrumEditor.getSpectrumWave().spectrum);
+      this.jf = index;
       this.Lh[index].classList.add("selected-instrument");
-      this.spectrumEditor.setSpectrumWave(this.spectrumEditors[this.kf].getSpectrumWave().spectrum);
+      this.spectrumEditor.setSpectrumWave(this.spectrumEditors[this.jf].getSpectrumWave().spectrum);
       this.spectrumEditor.render();
     };
-    ub = () => {
-      this.Eb.togglePlay();
+    tb = () => {
+      this.Db.togglePlay();
       this.updatePlayButton();
     };
     updatePlayButton() {
       if (this.J.synth.playing) {
-        this.ja.classList.remove("playButton");
-        this.ja.classList.add("pauseButton");
-        this.ja.title = "Pause (Space)";
-        this.ja.innerText = "Pause";
+        this.ia.classList.remove("playButton");
+        this.ia.classList.add("pauseButton");
+        this.ia.title = "Pause (Space)";
+        this.ia.innerText = "Pause";
       } else {
-        this.ja.classList.remove("pauseButton");
-        this.ja.classList.add("playButton");
-        this.ja.title = "Play (Space)";
-        this.ja.innerText = "Play";
+        this.ia.classList.remove("pauseButton");
+        this.ia.classList.add("playButton");
+        this.ia.title = "Play (Space)";
+        this.ia.innerText = "Play";
       }
     }
-    ga = () => {
+    fa = () => {
       this.J.prompt = null;
       this.J.undo();
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.la);
-      this.fa.removeEventListener("click", this.ga);
+      this.ha.removeEventListener("click", this.ka);
+      this.ea.removeEventListener("click", this.fa);
       this.container.removeEventListener("keydown", this.whenKeyPressed);
       this.spectrumEditor.container.removeEventListener("mousemove", () => this.spectrumEditor.render());
-      this.ja.removeEventListener("click", this.ub);
+      this.ia.removeEventListener("click", this.tb);
     };
     ch = () => {
       const spectrumCopy = this.spectrumEditor.getSpectrumWave();
@@ -42151,9 +42155,9 @@ You should be redirected to the song at:<br /><br />
     };
     whenKeyPressed = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.la();
+        this.ka();
       } else if (event.keyCode == 32) {
-        this.ub();
+        this.tb();
         event.preventDefault();
       } else if (event.keyCode == 90) {
         this.spectrumEditor.undo();
@@ -42183,7 +42187,7 @@ You should be redirected to the song at:<br /><br />
         }
       }
     };
-    la = () => {
+    ka = () => {
       const group = new ChangeGroup();
       for (let i = 0; i < this.spectrumEditors.length; i++) {
         group.append(this.spectrumEditors[i].saveSettings());
@@ -42200,18 +42204,18 @@ You should be redirected to the song at:<br /><br />
       this.J = _doc;
       const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
       this.jm.value = Config.sustainTypeNames[instrument.stringSustainType];
-      setTimeout(() => this.fa.focus());
-      this.ia.addEventListener("click", this.la);
-      this.fa.addEventListener("click", this.ga);
-      this.container.addEventListener("keydown", this.qa);
+      setTimeout(() => this.ea.focus());
+      this.ha.addEventListener("click", this.ka);
+      this.ea.addEventListener("click", this.fa);
+      this.container.addEventListener("keydown", this.pa);
     }
     jm = select11(
       { style: "width: 100%;" },
       option11({ value: "acoustic" }, "(A) Acoustic"),
       option11({ value: "bright" }, "(B) Bright")
     );
-    fa = button21({ class: "cancelButton" });
-    ia = button21({ class: "okayButton", style: "width:45%;" }, "Okay");
+    ea = button21({ class: "cancelButton" });
+    ha = button21({ class: "okayButton", style: "width:45%;" }, "Okay");
     container = div21(
       { class: "prompt", style: "width: 300px;" },
       div21(
@@ -42226,31 +42230,31 @@ You should be redirected to the song at:<br /><br />
       ),
       div21(
         { style: { display: Config.enableAcousticSustain ? "flex" : "none", "flex-direction": "row-reverse", "justify-content": "space-between" } },
-        this.ia
+        this.ha
       ),
-      this.fa
+      this.ea
     );
-    ga = () => {
+    fa = () => {
       this.J.undo();
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.la);
-      this.fa.removeEventListener("click", this.ga);
-      this.container.removeEventListener("keydown", this.qa);
+      this.ha.removeEventListener("click", this.ka);
+      this.ea.removeEventListener("click", this.fa);
+      this.container.removeEventListener("keydown", this.pa);
     };
-    qa = (event) => {
+    pa = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.la();
+        this.ka();
       }
     };
-    la = () => {
+    ka = () => {
       if (Config.enableAcousticSustain) {
         const group = new ChangeGroup();
         group.append(new ChangeStringSustainType(this.J, Config.sustainTypeNames.indexOf(this.jm.value)));
         this.J.prompt = null;
         this.J.record(group, true);
       } else {
-        this.ga();
+        this.fa();
       }
     };
   };
@@ -42263,9 +42267,9 @@ You should be redirected to the song at:<br /><br />
       if (this.lastTheme != null) {
         this.ng.value = this.lastTheme;
       }
-      this.ia.addEventListener("click", this.la);
-      this.fa.addEventListener("click", this.ga);
-      this.container.addEventListener("keydown", this.qa);
+      this.ha.addEventListener("click", this.ka);
+      this.ea.addEventListener("click", this.fa);
+      this.container.addEventListener("keydown", this.pa);
       this.ng.addEventListener("change", this.St);
     }
     ng = select12(
@@ -42327,7 +42331,8 @@ You should be redirected to the song at:<br /><br />
         option12({ value: "abyssbox light" }, "AbyssBox Light"),
         option12({ value: "nepbox" }, "Nepbox"),
         option12({ value: "slarmoosbox" }, "Slarmoo's Box"),
-        option12({ value: "ultrabox dark" }, "UltraBox")
+        option12({ value: "ultrabox dark" }, "UltraBox"),
+        option12({ value: "lemmbox dark" }, "LemmBox Dark")
       ),
       optgroup(
         { label: "Misc" },
@@ -42335,8 +42340,8 @@ You should be redirected to the song at:<br /><br />
         option12({ value: "custom" }, "Custom")
       )
     );
-    fa = button22({ class: "cancelButton" });
-    ia = button22({ class: "okayButton", style: "width:45%;" }, "Okay");
+    ea = button22({ class: "cancelButton" });
+    ha = button22({ class: "okayButton", style: "width:45%;" }, "Okay");
     container = div22(
       { class: "prompt noSelection", style: "width: 220px;" },
       h222("Set Theme"),
@@ -42346,12 +42351,12 @@ You should be redirected to the song at:<br /><br />
       ),
       div22(
         { style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
-        this.ia
+        this.ha
       ),
-      this.fa
+      this.ea
     );
     lastTheme = nsLocalStorage_get("colorTheme");
-    ga = () => {
+    fa = () => {
       if (this.lastTheme != null) {
         ColorConfig.setTheme(this.lastTheme);
       } else {
@@ -42360,16 +42365,16 @@ You should be redirected to the song at:<br /><br />
       this.J.undo();
     };
     cleanUp = () => {
-      this.ia.removeEventListener("click", this.la);
-      this.fa.removeEventListener("click", this.ga);
-      this.container.removeEventListener("keydown", this.qa);
+      this.ha.removeEventListener("click", this.ka);
+      this.ea.removeEventListener("click", this.fa);
+      this.container.removeEventListener("keydown", this.pa);
     };
-    qa = (event) => {
+    pa = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.la();
+        this.ka();
       }
     };
-    la = () => {
+    ka = () => {
       nsLocalStorage_save("colorTheme", this.ng.value);
       this.J.prompt = null;
       this.J.prefs.colorTheme = this.ng.value;
@@ -43297,15 +43302,15 @@ You should be redirected to the song at:<br /><br />
         this.zj
       );
       setTimeout(() => this.zj.focus());
-      this.zj.addEventListener("click", this.ga);
+      this.zj.addEventListener("click", this.fa);
     }
     zj = button23({ class: "cancelButton" });
     container;
-    ga = () => {
+    fa = () => {
       this.J.undo();
     };
     cleanUp = () => {
-      this.zj.removeEventListener("click", this.ga);
+      this.zj.removeEventListener("click", this.fa);
     };
   };
 
@@ -43313,73 +43318,73 @@ You should be redirected to the song at:<br /><br />
   var TrackEditor = class {
     constructor(_doc, _songEditor) {
       this.J = _doc;
-      this.Eb = _songEditor;
+      this.Db = _songEditor;
       window.requestAnimationFrame(this.Fh);
-      this.ha.addEventListener("mousedown", this.db);
-      document.addEventListener("mousemove", this.Za);
+      this.ga.addEventListener("mousedown", this.cb);
+      document.addEventListener("mousemove", this.Ya);
       document.addEventListener("mouseup", this.Yk);
-      this.ha.addEventListener("mouseover", this.mc);
-      this.ha.addEventListener("mouseout", this.nc);
-      this.Pb.addEventListener("change", this.Tt);
-      this.Pb.addEventListener("touchstart", this.Ut);
-      this.Pb.addEventListener("touchmove", this.Vt);
-      this.Pb.addEventListener("touchend", this.Fq);
-      this.Pb.addEventListener("touchcancel", this.Fq);
+      this.ga.addEventListener("mouseover", this.lc);
+      this.ga.addEventListener("mouseout", this.mc);
+      this.Ob.addEventListener("change", this.Tt);
+      this.Ob.addEventListener("touchstart", this.Ut);
+      this.Ob.addEventListener("touchmove", this.Vt);
+      this.Ob.addEventListener("touchend", this.Fq);
+      this.Ob.addEventListener("touchcancel", this.Fq);
       let determinedCursorType = false;
       document.addEventListener("mousedown", () => {
         if (!determinedCursorType) {
-          this.Yc = false;
-          this.ra();
+          this.Xc = false;
+          this.qa();
         }
         determinedCursorType = true;
       }, true);
       document.addEventListener("touchstart", () => {
         if (!determinedCursorType) {
-          this.Yc = true;
-          this.ra();
+          this.Xc = true;
+          this.qa();
         }
         determinedCursorType = true;
       }, true);
-      this.td.selectedIndex = -1;
-      this.td.addEventListener("change", this.Wt);
-      this.td.addEventListener("mousedown", this.Xt);
+      this.sd.selectedIndex = -1;
+      this.sd.addEventListener("change", this.Wt);
+      this.sd.addEventListener("mousedown", this.Xt);
     }
-    td = HTML.select(
+    sd = HTML.select(
       { style: "width: 32px; height: " + Config.barEditorHeight + "px; top: 0px; position: absolute; opacity: 0" },
       HTML.option({ value: "barBefore" }, "Insert Bar Before"),
       HTML.option({ value: "barAfter" }, "Insert Bar After"),
       HTML.option({ value: "deleteBar" }, "Delete This Bar")
     );
-    lf = HTML.div({ style: `display: flex; flex-direction: column; padding-top: ${Config.barEditorHeight}px` });
+    kf = HTML.div({ style: `display: flex; flex-direction: column; padding-top: ${Config.barEditorHeight}px` });
     km = SVG.g();
     Cf = SVG.rect({ fill: ColorConfig.playhead, x: 0, y: 0, width: 4, height: 128 });
-    bd = SVG.rect({ fill: "none", stroke: ColorConfig.hoverPreview, "stroke-width": 2, "pointer-events": "none", x: 1, y: 1, width: 30, height: 30 });
+    ad = SVG.rect({ fill: "none", stroke: ColorConfig.hoverPreview, "stroke-width": 2, "pointer-events": "none", x: 1, y: 1, width: 30, height: 30 });
+    Pd = SVG.path({ fill: ColorConfig.invertedText, stroke: ColorConfig.invertedText, "stroke-width": 1, "pointer-events": "none" });
     Qd = SVG.path({ fill: ColorConfig.invertedText, stroke: ColorConfig.invertedText, "stroke-width": 1, "pointer-events": "none" });
-    Rd = SVG.path({ fill: ColorConfig.invertedText, stroke: ColorConfig.invertedText, "stroke-width": 1, "pointer-events": "none" });
     Cq = SVG.path({ fill: ColorConfig.uiWidgetBackground, stroke: ColorConfig.uiWidgetBackground, "stroke-width": 1, "pointer-events": "none" });
-    Ib = SVG.rect({ class: "dashed-line dash-move", fill: ColorConfig.boxSelectionFill, stroke: ColorConfig.hoverPreview, "stroke-width": 2, "stroke-dasharray": "5, 3", "fill-opacity": "0.4", "pointer-events": "none", visibility: "hidden", x: 1, y: 1, width: 62, height: 62 });
-    ha = SVG.svg(
+    Hb = SVG.rect({ class: "dashed-line dash-move", fill: ColorConfig.boxSelectionFill, stroke: ColorConfig.hoverPreview, "stroke-width": 2, "stroke-dasharray": "5, 3", "fill-opacity": "0.4", "pointer-events": "none", visibility: "hidden", x: 1, y: 1, width: 62, height: 62 });
+    ga = SVG.svg(
       { style: `position: absolute; top: 0;` },
       this.Cq,
-      this.Ib,
+      this.Hb,
       this.km,
-      this.bd,
+      this.ad,
+      this.Pd,
       this.Qd,
-      this.Rd,
       this.Cf
     );
-    Pb = HTML.select({ class: "trackSelectBox", style: "background: none; border: none; appearance: none; border-radius: initial; box-shadow: none; color: transparent; position: absolute; touch-action: none;" });
+    Ob = HTML.select({ class: "trackSelectBox", style: "background: none; border: none; appearance: none; border-radius: initial; box-shadow: none; color: transparent; position: absolute; touch-action: none;" });
     container = HTML.div(
       { class: "noSelection", style: `background-color: ${ColorConfig.editorBackground}; position: relative; overflow: hidden;` },
-      this.lf,
-      this.ha,
-      this.Pb,
-      this.td
+      this.kf,
+      this.ga,
+      this.Ob,
+      this.sd
     );
-    cd = [];
-    Vd = [];
+    bd = [];
+    Ud = [];
+    _ = 0;
     $ = 0;
-    aa = 0;
     //private _lastScrollTime = 0;
     //private _selecting = false;
     //private _selectionStartBar = 0;
@@ -43387,49 +43392,49 @@ You should be redirected to the song at:<br /><br />
     //private _pattern: Pattern | null = null;
     Oh = 0;
     Aj = 0;
-    $b = 0;
-    uc = 0;
-    na = false;
-    Hc = false;
-    Ca = false;
-    pa = 32;
-    Od = -1;
+    _b = 0;
+    tc = 0;
+    ma = false;
+    Gc = false;
+    Ba = false;
+    oa = 32;
+    Nd = -1;
     lm = -1;
     Dq = -1;
     mm = 0;
     Gg = -1;
-    Yc = isMobile;
+    Xc = isMobile;
     Ph = 0;
     Eq = 0;
     Xt = (event) => {
-      this.Ph = Math.floor(Math.min(this.J.song.barCount - 1, Math.max(0, this.$ / this.pa)));
+      this.Ph = Math.floor(Math.min(this.J.song.barCount - 1, Math.max(0, this._ / this.oa)));
     };
     Wt = (event) => {
-      var moveBarOffset = this.td.value == "barBefore" ? 0 : 1;
-      if (this.td.value == "barBefore" || this.td.value == "barAfter") {
+      var moveBarOffset = this.sd.value == "barBefore" ? 0 : 1;
+      if (this.sd.value == "barBefore" || this.sd.value == "barAfter") {
         this.J.bar = this.Ph - 1 + moveBarOffset;
         this.J.selection.resetBoxSelection();
         this.J.selection.insertBars();
         if (this.J.synth.playhead >= this.Ph + moveBarOffset) {
           this.J.synth.playhead++;
-          this.Eb.ud.animatePlayhead();
+          this.Db.td.animatePlayhead();
         }
-      } else if (this.td.value == "deleteBar") {
+      } else if (this.sd.value == "deleteBar") {
         this.J.bar = this.Ph;
         this.J.selection.resetBoxSelection();
         this.J.selection.deleteBars();
         if (this.J.synth.playhead > this.Ph) {
           this.J.synth.playhead--;
-          this.Eb.ud.animatePlayhead();
+          this.Db.td.animatePlayhead();
         }
       }
-      this.td.selectedIndex = -1;
+      this.sd.selectedIndex = -1;
     };
     Tt = () => {
-      this.J.selection.setPattern(this.Pb.selectedIndex);
+      this.J.selection.setPattern(this.Ob.selectedIndex);
     };
     Fh = (timestamp) => {
-      const playhead = this.pa * this.J.synth.playhead - 2;
+      const playhead = this.oa * this.J.synth.playhead - 2;
       if (this.Gg != playhead) {
         this.Gg = playhead;
         this.Cf.setAttribute("x", "" + playhead);
@@ -43437,266 +43442,266 @@ You should be redirected to the song at:<br /><br />
       window.requestAnimationFrame(this.Fh);
     };
     movePlayheadToMouse() {
-      if (this.na) {
-        this.J.synth.playhead = this.$b + this.$ % this.pa / this.pa;
+      if (this.ma) {
+        this.J.synth.playhead = this._b + this._ % this.oa / this.oa;
         return true;
       }
       return false;
     }
     Gq() {
-      this.J.selection.setTrackSelection(this.J.selection.boxSelectionX0, this.$b, this.J.selection.boxSelectionY0, this.uc);
+      this.J.selection.setTrackSelection(this.J.selection.boxSelectionX0, this._b, this.J.selection.boxSelectionY0, this.tc);
       this.J.selection.selectionUpdated();
     }
     Hq(event) {
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = event.touches[0].clientX - boundingRect.left;
-      this.aa = event.touches[0].clientY - boundingRect.top;
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = event.touches[0].clientX - boundingRect.left;
+      this.$ = event.touches[0].clientY - boundingRect.top;
+      if (isNaN(this._)) this._ = 0;
       if (isNaN(this.$)) this.$ = 0;
-      if (isNaN(this.aa)) this.aa = 0;
-      this.$b = Math.floor(Math.min(this.J.song.barCount - 1, Math.max(0, this.$ / this.pa)));
-      this.uc = Math.floor(Math.min(this.J.song.getChannelCount() - 1, Math.max(0, (this.aa - Config.barEditorHeight) / ChannelRow.patternHeight)));
+      this._b = Math.floor(Math.min(this.J.song.barCount - 1, Math.max(0, this._ / this.oa)));
+      this.tc = Math.floor(Math.min(this.J.song.getChannelCount() - 1, Math.max(0, (this.$ - Config.barEditorHeight) / ChannelRow.patternHeight)));
     }
     Ut = (event) => {
-      this.Hc = true;
-      this.Ca = true;
+      this.Gc = true;
+      this.Ba = true;
       this.Hq(event);
-      this.Oh = this.$b;
-      this.Aj = this.uc;
+      this.Oh = this._b;
+      this.Aj = this.tc;
     };
     Vt = (event) => {
       this.Hq(event);
-      if (this.Oh != this.$b || this.Aj != this.uc) {
+      if (this.Oh != this._b || this.Aj != this.tc) {
         event.preventDefault();
       }
-      if (this.Hc) this.Gq();
-      this.ra();
+      if (this.Gc) this.Gq();
+      this.qa();
     };
     Fq = (event) => {
-      this.Hc = false;
-      this.Ca = false;
-      this.ra();
+      this.Gc = false;
+      this.Ba = false;
+      this.qa();
+    };
+    lc = (event) => {
+      if (this.ma) return;
+      this.ma = true;
     };
     mc = (event) => {
-      if (this.na) return;
-      this.na = true;
-    };
-    nc = (event) => {
-      if (!this.na) return;
-      this.na = false;
+      if (!this.ma) return;
+      this.ma = false;
     };
     Iq(event) {
-      const boundingRect = this.ha.getBoundingClientRect();
-      this.$ = (event.clientX || event.pageX) - boundingRect.left;
-      this.aa = (event.clientY || event.pageY) - boundingRect.top;
-      this.$b = Math.floor(Math.min(this.J.song.barCount - 1, Math.max(0, this.$ / this.pa)));
-      this.uc = Math.floor(Math.min(this.J.song.getChannelCount() - 1, Math.max(0, (this.aa - Config.barEditorHeight) / ChannelRow.patternHeight)));
+      const boundingRect = this.ga.getBoundingClientRect();
+      this._ = (event.clientX || event.pageX) - boundingRect.left;
+      this.$ = (event.clientY || event.pageY) - boundingRect.top;
+      this._b = Math.floor(Math.min(this.J.song.barCount - 1, Math.max(0, this._ / this.oa)));
+      this.tc = Math.floor(Math.min(this.J.song.getChannelCount() - 1, Math.max(0, (this.$ - Config.barEditorHeight) / ChannelRow.patternHeight)));
     }
-    db = (event) => {
+    cb = (event) => {
       event.preventDefault();
-      this.Hc = true;
+      this.Gc = true;
       this.Iq(event);
-      this.Oh = this.$b;
-      this.Aj = this.uc;
-      if (this.aa >= Config.barEditorHeight) {
+      this.Oh = this._b;
+      this.Aj = this.tc;
+      if (this.$ >= Config.barEditorHeight) {
         if (event.shiftKey) {
-          this.Ca = true;
-          this.J.selection.setTrackSelection(this.J.selection.boxSelectionX0, this.$b, this.J.selection.boxSelectionY0, this.uc);
+          this.Ba = true;
+          this.J.selection.setTrackSelection(this.J.selection.boxSelectionX0, this._b, this.J.selection.boxSelectionY0, this.tc);
           this.J.selection.selectionUpdated();
         } else {
-          this.Ca = false;
-          if (this.J.channel != this.uc || this.J.bar != this.$b) {
-            this.J.selection.setChannelBar(this.uc, this.$b);
-            this.Ca = true;
+          this.Ba = false;
+          if (this.J.channel != this.tc || this.J.bar != this._b) {
+            this.J.selection.setChannelBar(this.tc, this._b);
+            this.Ba = true;
           }
           this.J.selection.resetBoxSelection();
         }
       }
     };
-    Za = (event) => {
+    Ya = (event) => {
       this.Iq(event);
-      if (this.Hc) {
-        if (this.Oh != this.$b || this.Aj != this.uc) {
-          this.Ca = true;
+      if (this.Gc) {
+        if (this.Oh != this._b || this.Aj != this.tc) {
+          this.Ba = true;
         }
         this.Gq();
       }
-      this.ra();
+      this.qa();
     };
     Yk = (event) => {
-      if (this.Hc && !this.Ca) {
-        if (this.J.channel == this.uc && this.J.bar == this.$b) {
-          const up = (this.aa - Config.barEditorHeight) % ChannelRow.patternHeight < ChannelRow.patternHeight / 2;
+      if (this.Gc && !this.Ba) {
+        if (this.J.channel == this.tc && this.J.bar == this._b) {
+          const up = (this.$ - Config.barEditorHeight) % ChannelRow.patternHeight < ChannelRow.patternHeight / 2;
           const patternCount = this.J.song.patternsPerChannel;
-          this.J.selection.setPattern((this.J.song.channels[this.uc].bars[this.$b] + (up ? 1 : patternCount)) % (patternCount + 1));
+          this.J.selection.setPattern((this.J.song.channels[this.tc].bars[this._b] + (up ? 1 : patternCount)) % (patternCount + 1));
         }
       }
-      this.Hc = false;
-      this.Ca = false;
-      this.ra();
+      this.Gc = false;
+      this.Ba = false;
+      this.qa();
     };
-    ra() {
-      let channel = this.uc;
-      let bar = this.$b;
-      if (this.Yc) {
+    qa() {
+      let channel = this.tc;
+      let bar = this._b;
+      if (this.Xc) {
         bar = this.J.bar;
         channel = this.J.channel;
       }
       const selected = bar == this.J.bar && channel == this.J.channel;
-      const overTrackEditor = this.aa >= Config.barEditorHeight;
-      if (this.Ca && this.Oh != this.$b) {
+      const overTrackEditor = this.$ >= Config.barEditorHeight;
+      if (this.Ba && this.Oh != this._b) {
         var timestamp = Date.now();
         if (timestamp - this.Eq >= 50) {
           if (bar > this.J.barScrollPos + this.J.trackVisibleBars - 1 && this.J.barScrollPos < this.J.song.barCount - this.J.trackVisibleBars) {
-            this.Eb.changeBarScrollPos(1);
+            this.Db.changeBarScrollPos(1);
           }
           if (bar < this.J.barScrollPos && this.J.barScrollPos > 0) {
-            this.Eb.changeBarScrollPos(-1);
+            this.Db.changeBarScrollPos(-1);
           }
           this.Eq = timestamp;
         }
       }
-      if (this.na && !this.Hc && !selected && overTrackEditor) {
-        this.bd.setAttribute("x", "" + (1 + this.pa * bar));
-        this.bd.setAttribute("y", "" + (1 + Config.barEditorHeight + ChannelRow.patternHeight * channel));
-        this.bd.setAttribute("height", "" + (ChannelRow.patternHeight - 2));
-        this.bd.setAttribute("width", "" + (this.pa - 2));
-        this.bd.style.visibility = "visible";
-      } else if ((this.na || this.$ >= bar * this.pa && this.$ < bar * this.pa + this.pa && this.aa > 0) && !overTrackEditor) {
-        this.bd.setAttribute("x", "" + (1 + this.pa * bar));
-        this.bd.setAttribute("y", "1");
-        this.bd.setAttribute("height", "" + (Config.barEditorHeight - 3));
-        this.bd.style.visibility = "visible";
+      if (this.ma && !this.Gc && !selected && overTrackEditor) {
+        this.ad.setAttribute("x", "" + (1 + this.oa * bar));
+        this.ad.setAttribute("y", "" + (1 + Config.barEditorHeight + ChannelRow.patternHeight * channel));
+        this.ad.setAttribute("height", "" + (ChannelRow.patternHeight - 2));
+        this.ad.setAttribute("width", "" + (this.oa - 2));
+        this.ad.style.visibility = "visible";
+      } else if ((this.ma || this._ >= bar * this.oa && this._ < bar * this.oa + this.oa && this.$ > 0) && !overTrackEditor) {
+        this.ad.setAttribute("x", "" + (1 + this.oa * bar));
+        this.ad.setAttribute("y", "1");
+        this.ad.setAttribute("height", "" + (Config.barEditorHeight - 3));
+        this.ad.style.visibility = "visible";
       } else {
-        this.bd.style.visibility = "hidden";
+        this.ad.style.visibility = "hidden";
       }
-      if ((this.na || this.Yc) && selected && overTrackEditor) {
-        const up = (this.aa - Config.barEditorHeight) % ChannelRow.patternHeight < ChannelRow.patternHeight / 2;
-        const center = this.pa * (bar + 0.8);
+      if ((this.ma || this.Xc) && selected && overTrackEditor) {
+        const up = (this.$ - Config.barEditorHeight) % ChannelRow.patternHeight < ChannelRow.patternHeight / 2;
+        const center = this.oa * (bar + 0.8);
         const middle = Config.barEditorHeight + ChannelRow.patternHeight * (channel + 0.5);
         const base = ChannelRow.patternHeight * 0.1;
         const tip = ChannelRow.patternHeight * 0.4;
         const width = ChannelRow.patternHeight * 0.175;
-        this.Qd.setAttribute("fill", up && !this.Yc ? ColorConfig.hoverPreview : ColorConfig.invertedText);
-        this.Rd.setAttribute("fill", !up && !this.Yc ? ColorConfig.hoverPreview : ColorConfig.invertedText);
-        this.Qd.setAttribute("d", `M ${center} ${middle - tip} L ${center + width} ${middle - base} L ${center - width} ${middle - base} z`);
-        this.Rd.setAttribute("d", `M ${center} ${middle + tip} L ${center + width} ${middle + base} L ${center - width} ${middle + base} z`);
+        this.Pd.setAttribute("fill", up && !this.Xc ? ColorConfig.hoverPreview : ColorConfig.invertedText);
+        this.Qd.setAttribute("fill", !up && !this.Xc ? ColorConfig.hoverPreview : ColorConfig.invertedText);
+        this.Pd.setAttribute("d", `M ${center} ${middle - tip} L ${center + width} ${middle - base} L ${center - width} ${middle - base} z`);
+        this.Qd.setAttribute("d", `M ${center} ${middle + tip} L ${center + width} ${middle + base} L ${center - width} ${middle + base} z`);
+        this.Pd.style.visibility = "visible";
         this.Qd.style.visibility = "visible";
-        this.Rd.style.visibility = "visible";
       } else {
+        this.Pd.style.visibility = "hidden";
         this.Qd.style.visibility = "hidden";
-        this.Rd.style.visibility = "hidden";
       }
-      this.Ib.style.left = this.pa * this.J.bar + "px";
-      this.Ib.style.top = Config.barEditorHeight + ChannelRow.patternHeight * this.J.channel + "px";
-      this.Pb.style.left = this.pa * this.J.bar + "px";
-      this.Pb.style.width = this.pa + "px";
-      this.Pb.style.top = Config.barEditorHeight + ChannelRow.patternHeight * this.J.channel + "px";
-      this.Pb.style.height = ChannelRow.patternHeight + "px";
-      this.td.style.left = this.pa * bar + "px";
+      this.Hb.style.left = this.oa * this.J.bar + "px";
+      this.Hb.style.top = Config.barEditorHeight + ChannelRow.patternHeight * this.J.channel + "px";
+      this.Ob.style.left = this.oa * this.J.bar + "px";
+      this.Ob.style.width = this.oa + "px";
+      this.Ob.style.top = Config.barEditorHeight + ChannelRow.patternHeight * this.J.channel + "px";
+      this.Ob.style.height = ChannelRow.patternHeight + "px";
+      this.sd.style.left = this.oa * bar + "px";
       const patternCount = this.J.song.patternsPerChannel + 1;
       for (let i = this.mm; i < patternCount; i++) {
-        this.Pb.appendChild(HTML.option({ value: i }, i));
+        this.Ob.appendChild(HTML.option({ value: i }, i));
       }
       for (let i = patternCount; i < this.mm; i++) {
-        this.Pb.removeChild(this.Pb.lastChild);
+        this.Ob.removeChild(this.Ob.lastChild);
       }
       this.mm = patternCount;
       const selectedPattern = this.J.song.channels[this.J.channel].bars[this.J.bar];
-      if (this.Pb.selectedIndex != selectedPattern) this.Pb.selectedIndex = selectedPattern;
+      if (this.Ob.selectedIndex != selectedPattern) this.Ob.selectedIndex = selectedPattern;
     }
     rerenderChannelColors() {
       for (let y = 0; y < this.J.song.getChannelCount(); y++) {
-        this.lf.removeChild(this.cd[y].container);
+        this.kf.removeChild(this.bd[y].container);
       }
       for (let y = 0; y < this.J.song.getChannelCount(); y++) {
         const channelRow = new ChannelRow(this.J, y, this.J.song.channels[y].color);
         console.log(this.J.song.channels[y].color);
-        this.cd[y] = channelRow;
-        this.lf.appendChild(channelRow.container);
+        this.bd[y] = channelRow;
+        this.kf.appendChild(channelRow.container);
       }
-      this.cd.length = this.J.song.getChannelCount();
-      this.Hc = false;
+      this.bd.length = this.J.song.getChannelCount();
+      this.Gc = false;
       for (let j = 0; j < this.J.song.getChannelCount(); j++) {
-        this.cd[j].render();
+        this.bd[j].render();
       }
     }
     render() {
-      this.pa = this.J.getBarWidth();
-      if (this.cd.length != this.J.song.getChannelCount()) {
-        for (let y = this.cd.length; y < this.J.song.getChannelCount(); y++) {
+      this.oa = this.J.getBarWidth();
+      if (this.bd.length != this.J.song.getChannelCount()) {
+        for (let y = this.bd.length; y < this.J.song.getChannelCount(); y++) {
           const channelRow = new ChannelRow(this.J, y, this.J.song.channels[y].color);
-          this.cd[y] = channelRow;
-          this.lf.appendChild(channelRow.container);
+          this.bd[y] = channelRow;
+          this.kf.appendChild(channelRow.container);
         }
-        for (let y = this.J.song.getChannelCount(); y < this.cd.length; y++) {
-          this.lf.removeChild(this.cd[y].container);
+        for (let y = this.J.song.getChannelCount(); y < this.bd.length; y++) {
+          this.kf.removeChild(this.bd[y].container);
         }
-        this.cd.length = this.J.song.getChannelCount();
-        this.Hc = false;
+        this.bd.length = this.J.song.getChannelCount();
+        this.Gc = false;
       }
       for (let j = 0; j < this.J.song.getChannelCount(); j++) {
-        this.cd[j].render();
+        this.bd[j].render();
       }
-      const editorWidth = this.pa * this.J.song.barCount;
+      const editorWidth = this.oa * this.J.song.barCount;
       if (this.lm != editorWidth) {
         this.lm = editorWidth;
-        this.lf.style.width = editorWidth + "px";
+        this.kf.style.width = editorWidth + "px";
         this.container.style.width = editorWidth + "px";
-        this.ha.setAttribute("width", editorWidth + "");
-        this.Hc = false;
+        this.ga.setAttribute("width", editorWidth + "");
+        this.Gc = false;
         var pathString = "";
         for (let x = 0; x < this.J.song.barCount; x++) {
-          var pathLeft = x * this.pa + 2;
+          var pathLeft = x * this.oa + 2;
           var pathTop = 1;
-          var pathRight = x * this.pa + this.pa - 2;
+          var pathRight = x * this.oa + this.oa - 2;
           var pathBottom = Config.barEditorHeight - 3;
           pathString += `M ${pathLeft} ${pathTop} H ${pathRight} V ${pathBottom} H ${pathLeft} V ${pathTop} Z `;
         }
         this.Cq.setAttribute("d", pathString);
-        if (this.Od < this.J.song.barCount) {
-          this.Vd.length = this.J.song.barCount;
-          for (var pos = this.Od; pos < this.Vd.length; pos++) {
-            this.Vd[pos] = SVG.text({ "font-family": "sans-serif", "font-size": "8px", "text-anchor": "middle", "font-weight": "bold", "x": pos * this.pa + this.pa / 2 + "px", "y": "7px", fill: ColorConfig.secondaryText }, "" + (pos + 1));
+        if (this.Nd < this.J.song.barCount) {
+          this.Ud.length = this.J.song.barCount;
+          for (var pos = this.Nd; pos < this.Ud.length; pos++) {
+            this.Ud[pos] = SVG.text({ "font-family": "sans-serif", "font-size": "8px", "text-anchor": "middle", "font-weight": "bold", "x": pos * this.oa + this.oa / 2 + "px", "y": "7px", fill: ColorConfig.secondaryText }, "" + (pos + 1));
             if (pos % 4 == 0) {
-              this.Vd[pos].setAttribute("fill", ColorConfig.primaryText);
+              this.Ud[pos].setAttribute("fill", ColorConfig.primaryText);
             }
-            this.km.appendChild(this.Vd[pos]);
+            this.km.appendChild(this.Ud[pos]);
           }
-          this.Od = this.J.song.barCount;
-        } else if (this.Od > this.J.song.barCount) {
-          for (var pos = this.Od - 1; pos >= this.J.song.barCount; pos--) {
-            this.km.removeChild(this.Vd[pos]);
+          this.Nd = this.J.song.barCount;
+        } else if (this.Nd > this.J.song.barCount) {
+          for (var pos = this.Nd - 1; pos >= this.J.song.barCount; pos--) {
+            this.km.removeChild(this.Ud[pos]);
           }
-          this.Vd.length = this.J.song.barCount;
-          this.Od = this.J.song.barCount;
+          this.Ud.length = this.J.song.barCount;
+          this.Nd = this.J.song.barCount;
         }
-        for (var pos = 0; pos < this.Vd.length; pos++) {
-          this.Vd[pos].setAttribute("x", pos * this.pa + this.pa / 2 + "px");
+        for (var pos = 0; pos < this.Ud.length; pos++) {
+          this.Ud[pos].setAttribute("x", pos * this.oa + this.oa / 2 + "px");
         }
         this.lm = editorWidth;
-        this.lf.style.width = editorWidth + "px";
+        this.kf.style.width = editorWidth + "px";
         this.container.style.width = editorWidth + "px";
-        this.ha.setAttribute("width", editorWidth + "");
-        this.Hc = false;
+        this.ga.setAttribute("width", editorWidth + "");
+        this.Gc = false;
       }
       const editorHeight = this.J.song.getChannelCount() * ChannelRow.patternHeight;
       if (this.Dq != editorHeight) {
         this.Dq = editorHeight;
-        this.ha.setAttribute("height", "" + (editorHeight + Config.barEditorHeight));
+        this.ga.setAttribute("height", "" + (editorHeight + Config.barEditorHeight));
         this.Cf.setAttribute("height", "" + (editorHeight + Config.barEditorHeight));
         this.container.style.height = editorHeight + Config.barEditorHeight + "px";
       }
-      this.Pb.style.display = this.Yc ? "" : "none";
+      this.Ob.style.display = this.Xc ? "" : "none";
       if (this.J.selection.boxSelectionActive) {
-        this.Ib.setAttribute("x", String(this.pa * this.J.selection.boxSelectionBar + 1));
-        this.Ib.setAttribute("y", String(Config.barEditorHeight + ChannelRow.patternHeight * this.J.selection.boxSelectionChannel + 1));
-        this.Ib.setAttribute("width", String(this.pa * this.J.selection.boxSelectionWidth - 2));
-        this.Ib.setAttribute("height", String(ChannelRow.patternHeight * this.J.selection.boxSelectionHeight - 2));
-        this.Ib.setAttribute("visibility", "visible");
+        this.Hb.setAttribute("x", String(this.oa * this.J.selection.boxSelectionBar + 1));
+        this.Hb.setAttribute("y", String(Config.barEditorHeight + ChannelRow.patternHeight * this.J.selection.boxSelectionChannel + 1));
+        this.Hb.setAttribute("width", String(this.oa * this.J.selection.boxSelectionWidth - 2));
+        this.Hb.setAttribute("height", String(ChannelRow.patternHeight * this.J.selection.boxSelectionHeight - 2));
+        this.Hb.setAttribute("visibility", "visible");
       } else {
-        this.Ib.setAttribute("visibility", "hidden");
+        this.Hb.setAttribute("visibility", "hidden");
       }
-      this.ra();
+      this.qa();
     }
   };
 
@@ -43706,28 +43711,28 @@ You should be redirected to the song at:<br /><br />
     ctx.fillRect(x, y, w, h);
   };
   var VisualLoopControlsHandle = class {
-    nb;
+    mb;
     og;
-    Wd;
+    Vd;
     nm;
     Jq;
     om = 40;
-    da = false;
+    ca = false;
+    lf;
     mf;
-    nf;
-    Ic = null;
+    Hc = null;
     pg;
     Kq;
     canvas = null;
     Lq = null;
     constructor(value, canvasWidth, canvasHeight, viewportX0, viewportX1, validator, whenValueChanges, whenMouseUpHappens, shapeFunction) {
-      this.nb = value;
+      this.mb = value;
       this.og = validator;
-      this.Wd = whenValueChanges;
+      this.Vd = whenValueChanges;
       this.nm = whenMouseUpHappens;
       this.Jq = shapeFunction == null ? defaultShapeFunction : shapeFunction;
-      this.mf = viewportX0;
-      this.nf = viewportX1;
+      this.lf = viewportX0;
+      this.mf = viewportX1;
       this.pg = canvasWidth;
       this.Kq = canvasHeight;
       this.canvas = canvas({ width: this.pg, height: this.Kq, style: "cursor: default; position: static; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; outline: 1px solid var(--ui-widget-background); box-sizing: border-box; width: 100%;" });
@@ -43741,16 +43746,16 @@ You should be redirected to the song at:<br /><br />
       this.canvas.addEventListener("touchcancel", this.Bj);
     }
     update = (newValue) => {
-      this.nb = this.og(newValue);
+      this.mb = this.og(newValue);
     };
     render = () => {
       const cnv = this.canvas;
       const ctx = this.Lq;
       const w = cnv.width;
       const h = cnv.height;
-      const vx0 = this.mf;
-      const vx1 = this.nf;
-      const v = this.nb;
+      const vx0 = this.lf;
+      const vx1 = this.mf;
+      const v = this.mb;
       ctx.clearRect(0, 0, w, h);
       ctx.fillStyle = ColorConfig.getComputed("--loop-accent");
       const bw = this.om;
@@ -43760,85 +43765,85 @@ You should be redirected to the song at:<br /><br />
       this.Jq(cnv, ctx, bx, by, bw, bh);
     };
     updateViewport = (x0, x1) => {
-      this.mf = x0;
-      this.nf = x1;
+      this.lf = x0;
+      this.mf = x1;
     };
     Mq = (event) => {
-      if (!this.da) return;
+      if (!this.ca) return;
       const w = this.pg;
-      const vx0 = this.mf;
-      const vx1 = this.nf;
+      const vx0 = this.lf;
+      const vx1 = this.mf;
       const bounds = this.canvas.getBoundingClientRect();
       const canvasXScale = w / bounds.width;
       const mx = ((event.clientX || event.pageX) - bounds.left) * canvasXScale;
       const wmx = vx0 + mx * (vx1 - vx0) / w;
-      this.nb = this.og(wmx - (this.Ic != null ? this.Ic : 0));
+      this.mb = this.og(wmx - (this.Hc != null ? this.Hc : 0));
       this.render();
-      if (this.Wd) this.Wd(this.nb);
+      if (this.Vd) this.Vd(this.mb);
     };
     Nq = (event) => {
-      this.da = true;
+      this.ca = true;
       const w = this.pg;
-      const vx0 = this.mf;
-      const vx1 = this.nf;
+      const vx0 = this.lf;
+      const vx1 = this.mf;
       const bounds = this.canvas.getBoundingClientRect();
       const canvasXScale = w / bounds.width;
       const mx = ((event.clientX || event.pageX) - bounds.left) * canvasXScale;
       const bw = this.om;
-      const bx0 = (this.nb - vx0) * w / (vx1 - vx0) - bw / 2;
+      const bx0 = (this.mb - vx0) * w / (vx1 - vx0) - bw / 2;
       const bx1 = bx0 + bw;
       if (mx >= bx0 && mx <= bx1) {
-        this.Ic = (mx - (bx0 + bw / 2)) * (vx1 - vx0) / w;
+        this.Hc = (mx - (bx0 + bw / 2)) * (vx1 - vx0) / w;
       }
       const wmx = vx0 + mx * (vx1 - vx0) / w;
-      this.nb = this.og(wmx - (this.Ic != null ? this.Ic : 0));
+      this.mb = this.og(wmx - (this.Hc != null ? this.Hc : 0));
       this.render();
-      if (this.Wd) this.Wd(this.nb);
+      if (this.Vd) this.Vd(this.mb);
     };
     Oq = (event) => {
-      if (!this.da) return;
-      this.da = false;
-      this.Ic = null;
+      if (!this.ca) return;
+      this.ca = false;
+      this.Hc = null;
       this.nm();
     };
     Qq = (event) => {
-      if (!this.da) return;
+      if (!this.ca) return;
       event.preventDefault();
       const w = this.pg;
-      const vx0 = this.mf;
-      const vx1 = this.nf;
+      const vx0 = this.lf;
+      const vx1 = this.mf;
       const bounds = this.canvas.getBoundingClientRect();
       const canvasXScale = w / bounds.width;
       const mx = (event.touches[0].clientX - bounds.left) * canvasXScale;
       const wmx = vx0 + mx * (vx1 - vx0) / w;
-      this.nb = this.og(wmx - (this.Ic != null ? this.Ic : 0));
+      this.mb = this.og(wmx - (this.Hc != null ? this.Hc : 0));
       this.render();
-      if (this.Wd) this.Wd(this.nb);
+      if (this.Vd) this.Vd(this.mb);
     };
     Pq = (event) => {
       event.preventDefault();
-      this.da = true;
+      this.ca = true;
       const w = this.pg;
-      const vx0 = this.mf;
-      const vx1 = this.nf;
+      const vx0 = this.lf;
+      const vx1 = this.mf;
       const bounds = this.canvas.getBoundingClientRect();
       const canvasXScale = w / bounds.width;
       const mx = (event.touches[0].clientX - bounds.left) * canvasXScale;
       const bw = this.om;
-      const bx0 = (this.nb - vx0) * w / (vx1 - vx0) - bw / 2;
+      const bx0 = (this.mb - vx0) * w / (vx1 - vx0) - bw / 2;
       const bx1 = bx0 + bw;
       if (mx >= bx0 && mx <= bx1) {
-        this.Ic = (mx - (bx0 + bw / 2)) * (vx1 - vx0) / w;
+        this.Hc = (mx - (bx0 + bw / 2)) * (vx1 - vx0) / w;
       }
       const wmx = vx0 + mx * (vx1 - vx0) / w;
-      this.nb = this.og(wmx - (this.Ic != null ? this.Ic : 0));
+      this.mb = this.og(wmx - (this.Hc != null ? this.Hc : 0));
       this.render();
-      if (this.Wd) this.Wd(this.nb);
+      if (this.Vd) this.Vd(this.mb);
     };
     Bj = (event) => {
       event.preventDefault();
-      this.da = false;
-      this.Ic = null;
+      this.ca = false;
+      this.Hc = null;
       this.nm();
     };
     cleanUp = () => {
@@ -43852,54 +43857,54 @@ You should be redirected to the song at:<br /><br />
     };
   };
   var VisualLoopControlsPrompt = class {
-    ic = 500;
+    hc = 500;
     Rq = 200;
     pm = 20;
     J;
-    Eb;
-    ea = null;
+    Db;
+    da = null;
     Qh = null;
-    Wa = null;
+    Va = null;
     qm = null;
     rm = null;
     sm = null;
     tm = null;
     um = null;
     Rh = 0;
-    dd = 0;
+    cd = 0;
+    Ic = 0;
     Jc = 0;
-    Kc = 0;
     Sh = false;
-    Ta = 0;
-    cb = 1;
+    Sa = 0;
+    bb = 1;
     Sq = -1.01;
     Tq = 1.01;
-    Ma = 1;
-    Pa = 0;
-    ob = 0;
-    we = false;
+    La = 1;
+    Oa = 0;
+    nb = 0;
+    ve = false;
+    Wa = null;
     Xa = null;
-    Ya = null;
     Uq = (v) => {
-      return Math.max(0, Math.min(this.Wa, Math.floor(v)));
+      return Math.max(0, Math.min(this.Va, Math.floor(v)));
     };
     Vq = (v) => {
-      return Math.max(0, Math.min(this.Wa, Math.min(this.Kc - 2, Math.floor(v))));
+      return Math.max(0, Math.min(this.Va, Math.min(this.Jc - 2, Math.floor(v))));
     };
     Wq = (v) => {
-      return Math.max(0, Math.min(this.Wa, Math.max(this.Jc + 2, Math.floor(v))));
+      return Math.max(0, Math.min(this.Va, Math.max(this.Ic + 2, Math.floor(v))));
     };
-    of = new VisualLoopControlsHandle(
-      this.dd,
-      this.ic,
+    nf = new VisualLoopControlsHandle(
+      this.cd,
+      this.hc,
       this.pm,
-      this.Ta,
-      this.cb,
+      this.Sa,
+      this.bb,
       this.Uq,
       (v) => {
-        this.dd = v;
-        this.ea.chipWaveStartOffset = this.dd;
-        this.vc();
+        this.cd = v;
+        this.da.chipWaveStartOffset = this.cd;
+        this.uc();
         this.Cj();
       },
       () => {
@@ -43919,17 +43924,17 @@ You should be redirected to the song at:<br /><br />
         ctx.fill();
       }
     );
-    pf = new VisualLoopControlsHandle(
-      this.Jc,
-      this.ic,
+    of = new VisualLoopControlsHandle(
+      this.Ic,
+      this.hc,
       this.pm,
-      this.Ta,
-      this.cb,
+      this.Sa,
+      this.bb,
       this.Vq,
       (v) => {
-        this.Jc = v;
-        this.ea.chipWaveLoopStart = this.Jc;
-        this.vc();
+        this.Ic = v;
+        this.da.chipWaveLoopStart = this.Ic;
+        this.uc();
         this.Cj();
       },
       () => {
@@ -43949,17 +43954,17 @@ You should be redirected to the song at:<br /><br />
         ctx.fill();
       }
     );
-    qf = new VisualLoopControlsHandle(
-      this.Kc,
-      this.ic,
+    pf = new VisualLoopControlsHandle(
+      this.Jc,
+      this.hc,
       this.pm,
-      this.Ta,
-      this.cb,
+      this.Sa,
+      this.bb,
       this.Wq,
       (v) => {
-        this.Kc = v;
-        this.ea.chipWaveLoopEnd = this.Kc;
-        this.vc();
+        this.Jc = v;
+        this.da.chipWaveLoopEnd = this.Jc;
+        this.uc();
         this.Cj();
       },
       () => {
@@ -43980,21 +43985,21 @@ You should be redirected to the song at:<br /><br />
       }
     );
     Th = true;
-    Dj = canvas({ width: this.ic, height: this.Rq, style: "cursor: default; position: static; width: 100%;" });
+    Dj = canvas({ width: this.hc, height: this.Rq, style: "cursor: default; position: static; width: 100%;" });
     Xq = null;
-    Na = canvas({ width: this.ic, height: this.Rq, style: "cursor: default; position: absolute; top: 0; left: 0; width: 100%;" });
+    Ma = canvas({ width: this.hc, height: this.Rq, style: "cursor: default; position: absolute; top: 0; left: 0; width: 100%;" });
     Yq = null;
     Yt = div24(
       { style: `position: relative; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; width: 100%; outline: 1px solid ${ColorConfig.uiWidgetBackground};` },
       this.Dj,
-      this.Na
+      this.Ma
     );
-    wc = input17({ style: "width: 100%; flex-grow: 1; margin: 0;", type: "range", min: "0", max: "1", value: "0", step: "0.00001" });
-    Xd = button24(
+    vc = input17({ style: "width: 100%; flex-grow: 1; margin: 0;", type: "range", min: "0", max: "1", value: "0", step: "0.00001" });
+    Wd = button24(
       { type: "button", title: "Zoom In", style: "height: var(--button-size); margin-left: 0.5em;" },
       SVG.svg({ width: "20", height: "20", viewBox: "-10 -10 20 20", "pointer-events": "none", style: "width: 100%; height: 100%;" }, SVG.circle({ cx: -1, cy: -1, r: 6, "stroke-width": 2, stroke: ColorConfig.primaryText, fill: "none" }), SVG.path({ stroke: ColorConfig.primaryText, "stroke-width": 2, d: "M 3 3 L 7 7 M -1 -4 L -1 2 M -4 -1 L 2 -1", fill: "none" }))
     );
-    Yd = button24(
+    Xd = button24(
       { type: "button", title: "Zoom Out", style: "height: var(--button-size); margin-left: 0.5em;" },
       SVG.svg({ width: "20", height: "20", viewBox: "-10 -10 20 20", "pointer-events": "none", style: "width: 100%; height: 100%;" }, SVG.circle({ cx: -1, cy: -1, r: 6, "stroke-width": 2, stroke: ColorConfig.primaryText, fill: "none" }), SVG.path({ stroke: ColorConfig.primaryText, "stroke-width": 2, d: "M 3 3 L 7 7 M -4 -1 L 2 -1", fill: "none" }))
     );
@@ -44006,13 +44011,13 @@ You should be redirected to the song at:<br /><br />
       option13({ value: 2 }, "Play Once"),
       option13({ value: 3 }, "Play Loop Once")
     );
-    Fj = input17({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: this.dd, min: "0", step: "1" });
-    Gj = input17({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: this.Jc, min: "0", step: "1" });
-    Hj = input17({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: this.Kc, min: "0", step: "1" });
+    Fj = input17({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: this.cd, min: "0", step: "1" });
+    Gj = input17({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: this.Ic, min: "0", step: "1" });
+    Hj = input17({ style: "flex-grow: 1; margin-left: 1em; width: 100%;", type: "number", value: this.Jc, min: "0", step: "1" });
     Ij = input17({ type: "checkbox", style: "width: 1em; padding: 0; margin-left: auto; margin-right: auto;" });
-    ed = button24({ style: "width: 55%;", type: "button" });
-    fa = button24({ class: "cancelButton" });
-    ia = button24({ class: "okayButton", style: "width: 25%;" }, "Okay");
+    dd = button24({ style: "width: 55%;", type: "button" });
+    ea = button24({ class: "cancelButton" });
+    ha = button24({ class: "okayButton", style: "width: 25%;" }, "Okay");
     wm = div24(
       { style: "margin-bottom: 0.5em; display: none;" },
       "Sample is loading"
@@ -44025,15 +44030,15 @@ You should be redirected to the song at:<br /><br />
           "You can also zoom by dragging horizontally on the waveform."
         )
       ),
-      this.of.canvas,
+      this.nf.canvas,
       this.Yt,
+      this.of.canvas,
       this.pf.canvas,
-      this.qf.canvas,
       div24(
         { style: "display: flex; flex-direction: row; align-items: center; justify-content: center; margin-bottom: 0.5em;" },
-        this.wc,
+        this.vc,
+        this.Wd,
         this.Xd,
-        this.Yd,
         this.vm
       ),
       div24(
@@ -44065,7 +44070,7 @@ You should be redirected to the song at:<br /><br />
         ),
         div24(
           { style: "width: 100%; display: flex; flex-direction: row; margin-bottom: 0.5em; justify-content: center;" },
-          this.ed
+          this.dd
         )
       )
     );
@@ -44075,19 +44080,19 @@ You should be redirected to the song at:<br /><br />
         h224({ style: "margin-bottom: 0.5em;" }, "Loop Controls"),
         this.wm,
         this.xm,
-        div24({ style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" }, this.ia)
+        div24({ style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" }, this.ha)
       ),
-      this.fa
+      this.ea
     );
     gotMouseUp = false;
     constructor(_doc, _songEditor) {
       this.J = _doc;
-      this.Eb = _songEditor;
+      this.Db = _songEditor;
       this.Xq = this.Dj.getContext("2d");
-      this.Yq = this.Na.getContext("2d");
-      this.ea = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
-      const rawChipWave = Config.rawRawChipWaves[this.ea.chipWave];
-      const customSampleIsLoading = (rawChipWave.isCustomSampled === true || rawChipWave.isSampled == true) && sampleLoadingState.statusTable[this.ea.chipWave] !== 1 /* loaded */;
+      this.Yq = this.Ma.getContext("2d");
+      this.da = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
+      const rawChipWave = Config.rawRawChipWaves[this.da.chipWave];
+      const customSampleIsLoading = (rawChipWave.isCustomSampled === true || rawChipWave.isSampled == true) && sampleLoadingState.statusTable[this.da.chipWave] !== 1 /* loaded */;
       if (customSampleIsLoading) {
         this.wm.style.display = "";
         this.xm.style.display = "none";
@@ -44097,59 +44102,59 @@ You should be redirected to the song at:<br /><br />
         this.xm.style.display = "";
         this.Th = false;
         this.Qh = rawChipWave.samples;
-        this.Wa = this.Qh.length - 1;
-        this.qm = this.ea.chipWaveLoopMode;
-        this.rm = this.ea.chipWaveStartOffset;
-        this.sm = this.ea.chipWaveLoopStart;
-        this.tm = this.ea.chipWaveLoopEnd;
-        this.um = this.ea.chipWavePlayBackwards;
+        this.Va = this.Qh.length - 1;
+        this.qm = this.da.chipWaveLoopMode;
+        this.rm = this.da.chipWaveStartOffset;
+        this.sm = this.da.chipWaveLoopStart;
+        this.tm = this.da.chipWaveLoopEnd;
+        this.um = this.da.chipWavePlayBackwards;
         this.Rh = this.qm;
-        this.dd = this.rm;
-        this.Jc = this.sm;
-        this.Kc = this.tm;
+        this.cd = this.rm;
+        this.Ic = this.sm;
+        this.Jc = this.tm;
         this.Sh = this.um;
-        const verticalBounds = this.Zq(0, this.Wa);
+        const verticalBounds = this.Zq(0, this.Va);
         const maxVerticalBound = Math.max(Math.abs(verticalBounds[0]), Math.abs(verticalBounds[1])) + 0.01;
         verticalBounds[0] = -maxVerticalBound;
         verticalBounds[1] = maxVerticalBound;
-        this.Ta = 0;
-        this.cb = this.Wa;
+        this.Sa = 0;
+        this.bb = this.Va;
         this.Sq = verticalBounds[0];
         this.Tq = verticalBounds[1];
-        this.Ma = this.cb - this.Ta;
-        this.Pa = 0;
-        this.ob = this.Wa - this.Ma;
-        this.of.update(this.dd);
+        this.La = this.bb - this.Sa;
+        this.Oa = 0;
+        this.nb = this.Va - this.La;
+        this.nf.update(this.cd);
+        this.of.update(this.Ic);
         this.pf.update(this.Jc);
-        this.qf.update(this.Kc);
-        this.rf();
+        this.qf();
       }
       this._q();
-      this.Da();
+      this.Ca();
       this.Cj();
-      this.container.addEventListener("keydown", this.qa);
-      this.ia.addEventListener("click", this.la);
-      this.fa.addEventListener("click", this.ga);
-      this.wc.addEventListener("input", this.$q);
-      this.Xd.addEventListener("click", this.ar);
-      this.Yd.addEventListener("click", this.cr);
+      this.container.addEventListener("keydown", this.pa);
+      this.ha.addEventListener("click", this.ka);
+      this.ea.addEventListener("click", this.fa);
+      this.vc.addEventListener("input", this.$q);
+      this.Wd.addEventListener("click", this.ar);
+      this.Xd.addEventListener("click", this.cr);
       this.vm.addEventListener("click", this.dr);
       this.Ej.addEventListener("change", this.er);
       this.Fj.addEventListener("change", this.fr);
       this.Gj.addEventListener("change", this.gr);
       this.Hj.addEventListener("change", this.hr);
       this.Ij.addEventListener("input", this.ir);
-      this.ed.addEventListener("click", this.ym);
+      this.dd.addEventListener("click", this.ym);
       window.addEventListener("mousemove", this.jr);
-      this.Na.addEventListener("mousedown", this.kr);
+      this.Ma.addEventListener("mousedown", this.kr);
       window.addEventListener("mouseup", this.lr);
-      this.Na.addEventListener("touchstart", this.mr);
-      this.Na.addEventListener("touchmove", this.nr);
-      this.Na.addEventListener("touchend", this.Jj);
-      this.Na.addEventListener("touchcancel", this.Jj);
+      this.Ma.addEventListener("touchstart", this.mr);
+      this.Ma.addEventListener("touchmove", this.nr);
+      this.Ma.addEventListener("touchend", this.Jj);
+      this.Ma.addEventListener("touchcancel", this.Jj);
     }
     Zt = (x) => {
-      const n = this.Wa;
+      const n = this.Va;
       if (x >= 0 && x < n) {
         return this.Qh[Math.floor(x)];
       } else {
@@ -44157,7 +44162,7 @@ You should be redirected to the song at:<br /><br />
       }
     };
     Zq = (x0, x1) => {
-      const n = this.Wa;
+      const n = this.Va;
       const a4 = Math.max(0, Math.min(n, Math.ceil(x0)));
       const b = Math.max(0, Math.min(n, Math.ceil(x1)));
       if (a4 >= b) return [0, 0];
@@ -44171,47 +44176,47 @@ You should be redirected to the song at:<br /><br />
       return [y0, y1];
     };
     cleanUp = () => {
+      this.nf.cleanUp();
       this.of.cleanUp();
       this.pf.cleanUp();
-      this.qf.cleanUp();
-      this.container.removeEventListener("keydown", this.qa);
-      this.ia.removeEventListener("click", this.la);
-      this.fa.removeEventListener("click", this.ga);
-      this.wc.removeEventListener("input", this.$q);
-      this.Xd.removeEventListener("click", this.ar);
-      this.Yd.removeEventListener("click", this.cr);
+      this.container.removeEventListener("keydown", this.pa);
+      this.ha.removeEventListener("click", this.ka);
+      this.ea.removeEventListener("click", this.fa);
+      this.vc.removeEventListener("input", this.$q);
+      this.Wd.removeEventListener("click", this.ar);
+      this.Xd.removeEventListener("click", this.cr);
       this.vm.removeEventListener("click", this.dr);
       this.Ej.removeEventListener("change", this.er);
       this.Fj.removeEventListener("change", this.fr);
       this.Gj.removeEventListener("change", this.gr);
       this.Hj.removeEventListener("change", this.hr);
       this.Ij.removeEventListener("input", this.ir);
-      this.ed.removeEventListener("click", this.ym);
-      this.Na.removeEventListener("mousemove", this.jr);
-      this.Na.removeEventListener("mousedown", this.kr);
-      this.Na.removeEventListener("mouseup", this.lr);
-      this.Na.removeEventListener("touchstart", this.mr);
-      this.Na.removeEventListener("touchmove", this.nr);
-      this.Na.removeEventListener("touchend", this.Jj);
-      this.Na.removeEventListener("touchcancel", this.Jj);
+      this.dd.removeEventListener("click", this.ym);
+      this.Ma.removeEventListener("mousemove", this.jr);
+      this.Ma.removeEventListener("mousedown", this.kr);
+      this.Ma.removeEventListener("mouseup", this.lr);
+      this.Ma.removeEventListener("touchstart", this.mr);
+      this.Ma.removeEventListener("touchmove", this.nr);
+      this.Ma.removeEventListener("touchend", this.Jj);
+      this.Ma.removeEventListener("touchcancel", this.Jj);
     };
-    ga = () => {
+    fa = () => {
       this.J.prompt = null;
       this.J.undo();
     };
-    la = () => {
+    ka = () => {
       if (!this.Th) {
         this.J.prompt = null;
-        this.ea.chipWaveLoopMode = this.qm;
-        this.ea.chipWaveStartOffset = this.rm;
-        this.ea.chipWaveLoopStart = this.sm;
-        this.ea.chipWaveLoopEnd = this.tm;
-        this.ea.chipWavePlayBackwards = this.um;
+        this.da.chipWaveLoopMode = this.qm;
+        this.da.chipWaveStartOffset = this.rm;
+        this.da.chipWaveLoopStart = this.sm;
+        this.da.chipWaveLoopEnd = this.tm;
+        this.da.chipWavePlayBackwards = this.um;
         const group = new ChangeGroup();
         group.append(new ChangeChipWaveLoopMode(this.J, this.Rh));
-        group.append(new ChangeChipWaveStartOffset(this.J, this.dd));
-        group.append(new ChangeChipWaveLoopStart(this.J, this.Jc));
-        group.append(new ChangeChipWaveLoopEnd(this.J, this.Kc));
+        group.append(new ChangeChipWaveStartOffset(this.J, this.cd));
+        group.append(new ChangeChipWaveLoopStart(this.J, this.Ic));
+        group.append(new ChangeChipWaveLoopEnd(this.J, this.Jc));
         group.append(new ChangeChipWavePlayBackwards(this.J, this.Sh));
         this.J.record(group, true);
       } else {
@@ -44220,7 +44225,7 @@ You should be redirected to the song at:<br /><br />
       }
     };
     ym = () => {
-      this.Eb.togglePlay();
+      this.Db.togglePlay();
       this._q();
     };
     _t = () => {
@@ -44229,8 +44234,8 @@ You should be redirected to the song at:<br /><br />
       const ctx = this.Xq;
       const w = cnv.width;
       const h = cnv.height;
-      const vx0 = this.Ta;
-      const vx1 = this.cb;
+      const vx0 = this.Sa;
+      const vx1 = this.bb;
       const vy0 = this.Sq;
       const vy1 = this.Tq;
       const sampleWidth = (vx1 - vx0) / w;
@@ -44278,16 +44283,16 @@ You should be redirected to the song at:<br /><br />
         }
       }
     };
-    vc = () => {
-      const cnv = this.Na;
+    uc = () => {
+      const cnv = this.Ma;
       const ctx = this.Yq;
       const w = cnv.width;
       const h = cnv.height;
-      const vx0 = this.Ta;
-      const vx1 = this.cb;
-      const so = this.dd;
-      const ls = this.Jc;
-      const le = this.Kc;
+      const vx0 = this.Sa;
+      const vx1 = this.bb;
+      const so = this.cd;
+      const ls = this.Ic;
+      const le = this.Jc;
       ctx.clearRect(0, 0, w, h);
       ctx.fillStyle = ColorConfig.getComputed("--loop-accent");
       const obx = Math.floor((so - vx0) * w / (vx1 - vx0));
@@ -44305,251 +44310,251 @@ You should be redirected to the song at:<br /><br />
       const lbh = h;
       ctx.fillRect(lbx, lby, lbw, lbh);
       ctx.globalAlpha = 1;
-      if (this.Xa != null && this.Ya != null) {
+      if (this.Wa != null && this.Xa != null) {
         ctx.fillStyle = ColorConfig.getComputed("--box-selection-fill");
         ctx.globalAlpha = 0.5;
-        ctx.fillRect(this.Xa, 0, this.Ya - this.Xa, h);
+        ctx.fillRect(this.Wa, 0, this.Xa - this.Wa, h);
         ctx.globalAlpha = 1;
       }
     };
     Cj = () => {
       this.Ej.value = "" + this.Rh;
-      this.Fj.value = "" + this.dd;
-      this.Gj.value = "" + this.Jc;
-      this.Hj.value = "" + this.Kc;
+      this.Fj.value = "" + this.cd;
+      this.Gj.value = "" + this.Ic;
+      this.Hj.value = "" + this.Jc;
       this.Ij.checked = this.Sh;
     };
     $q = (event) => {
       const rawOffset = Math.max(0, Math.min(1, +event.target.value));
-      const newViewportOffset = Math.max(0, Math.min(this.ob, rawOffset * this.ob));
-      this.Pa = Math.min(this.ob, newViewportOffset);
-      this.wc.value = "" + this.Pa / this.ob;
-      this.Ta = 0 + this.Pa;
-      this.cb = this.Ma + this.Pa;
-      this.rf();
-      this.Da();
+      const newViewportOffset = Math.max(0, Math.min(this.nb, rawOffset * this.nb));
+      this.Oa = Math.min(this.nb, newViewportOffset);
+      this.vc.value = "" + this.Oa / this.nb;
+      this.Sa = 0 + this.Oa;
+      this.bb = this.La + this.Oa;
+      this.qf();
+      this.Ca();
     };
     ar = (event) => {
-      const newViewportWidth = Math.max(1, Math.min(this.Wa, this.Ma / 2));
-      this.Ma = newViewportWidth;
-      this.ob = this.Wa - this.Ma;
-      const centerX = this.Ta + this.ic / 2 * (this.cb - this.Ta) / this.ic;
-      this.Pa = Math.max(0, Math.min(this.ob, centerX - this.ic / 2 * this.Ma / this.ic));
-      this.Ta = 0 + this.Pa;
-      this.cb = this.Ma + this.Pa;
-      this.wc.value = "" + this.Pa / this.ob;
-      this.rf();
-      this.Da();
+      const newViewportWidth = Math.max(1, Math.min(this.Va, this.La / 2));
+      this.La = newViewportWidth;
+      this.nb = this.Va - this.La;
+      const centerX = this.Sa + this.hc / 2 * (this.bb - this.Sa) / this.hc;
+      this.Oa = Math.max(0, Math.min(this.nb, centerX - this.hc / 2 * this.La / this.hc));
+      this.Sa = 0 + this.Oa;
+      this.bb = this.La + this.Oa;
+      this.vc.value = "" + this.Oa / this.nb;
+      this.qf();
+      this.Ca();
     };
     cr = (event) => {
-      const newViewportWidth = Math.max(1, Math.min(this.Wa, this.Ma * 2));
-      this.Ma = newViewportWidth;
-      this.ob = this.Wa - this.Ma;
-      const centerX = this.Ta + this.ic / 2 * (this.cb - this.Ta) / this.ic;
-      this.Pa = Math.max(0, Math.min(this.ob, centerX - this.Dj.width / 2 * this.Ma / this.ic));
-      this.Ta = 0 + this.Pa;
-      this.cb = this.Ma + this.Pa;
-      if (this.Ma === this.Wa) {
-        this.wc.value = "0";
+      const newViewportWidth = Math.max(1, Math.min(this.Va, this.La * 2));
+      this.La = newViewportWidth;
+      this.nb = this.Va - this.La;
+      const centerX = this.Sa + this.hc / 2 * (this.bb - this.Sa) / this.hc;
+      this.Oa = Math.max(0, Math.min(this.nb, centerX - this.Dj.width / 2 * this.La / this.hc));
+      this.Sa = 0 + this.Oa;
+      this.bb = this.La + this.Oa;
+      if (this.La === this.Va) {
+        this.vc.value = "0";
       } else {
-        this.wc.value = "" + this.Pa / this.ob;
+        this.vc.value = "" + this.Oa / this.nb;
       }
-      this.rf();
-      this.Da();
+      this.qf();
+      this.Ca();
     };
     dr = (event) => {
-      const newViewportWidth = this.Wa;
-      this.Ma = newViewportWidth;
-      this.ob = this.Wa - this.Ma;
-      this.Pa = Math.max(0, Math.min(this.ob, 0));
-      this.Ta = 0 + this.Pa;
-      this.cb = this.Ma + this.Pa;
-      if (this.Ma === this.Wa) {
-        this.wc.value = "0";
+      const newViewportWidth = this.Va;
+      this.La = newViewportWidth;
+      this.nb = this.Va - this.La;
+      this.Oa = Math.max(0, Math.min(this.nb, 0));
+      this.Sa = 0 + this.Oa;
+      this.bb = this.La + this.Oa;
+      if (this.La === this.Va) {
+        this.vc.value = "0";
       } else {
-        this.wc.value = "" + this.Pa / this.ob;
+        this.vc.value = "" + this.Oa / this.nb;
       }
-      this.rf();
-      this.Da();
+      this.qf();
+      this.Ca();
     };
     er = (event) => {
       const element = event.target;
       const newValue = +element.value;
       this.Rh = newValue;
-      this.ea.chipWaveLoopMode = this.Rh;
+      this.da.chipWaveLoopMode = this.Rh;
     };
     fr = (event) => {
       const element = event.target;
       const newValue = this.Uq(+element.value);
-      this.dd = newValue;
-      this.ea.chipWaveStartOffset = this.dd;
+      this.cd = newValue;
+      this.da.chipWaveStartOffset = this.cd;
       element.value = "" + newValue;
-      this.of.update(newValue);
-      this.of.render();
-      this.vc();
+      this.nf.update(newValue);
+      this.nf.render();
+      this.uc();
     };
     gr = (event) => {
       const element = event.target;
       const newValue = this.Vq(+element.value);
-      this.Jc = newValue;
-      this.ea.chipWaveLoopStart = this.Jc;
+      this.Ic = newValue;
+      this.da.chipWaveLoopStart = this.Ic;
       element.value = "" + newValue;
-      this.pf.update(newValue);
-      this.pf.render();
-      this.vc();
+      this.of.update(newValue);
+      this.of.render();
+      this.uc();
     };
     hr = (event) => {
       const element = event.target;
       const newValue = this.Wq(+element.value);
-      this.Kc = newValue;
-      this.ea.chipWaveLoopEnd = this.Kc;
+      this.Jc = newValue;
+      this.da.chipWaveLoopEnd = this.Jc;
       element.value = "" + newValue;
-      this.qf.update(newValue);
-      this.qf.render();
-      this.vc();
+      this.pf.update(newValue);
+      this.pf.render();
+      this.uc();
     };
     ir = (event) => {
       const element = event.target;
       const newValue = element.checked;
       this.Sh = newValue;
-      this.ea.chipWavePlayBackwards = this.Sh;
+      this.da.chipWavePlayBackwards = this.Sh;
     };
     jr = (event) => {
-      if (!this.we) return;
-      const w = this.Na.width;
-      const bounds = this.Na.getBoundingClientRect();
-      const canvasXScale = w / bounds.width;
-      const mx = ((event.clientX || event.pageX) - bounds.left) * canvasXScale;
-      this.Ya = mx;
-      this.vc();
-    };
-    kr = (event) => {
-      this.we = true;
-      const w = this.Na.width;
-      const bounds = this.Na.getBoundingClientRect();
+      if (!this.ve) return;
+      const w = this.Ma.width;
+      const bounds = this.Ma.getBoundingClientRect();
       const canvasXScale = w / bounds.width;
       const mx = ((event.clientX || event.pageX) - bounds.left) * canvasXScale;
       this.Xa = mx;
-      this.Ya = mx;
-      this.vc();
+      this.uc();
+    };
+    kr = (event) => {
+      this.ve = true;
+      const w = this.Ma.width;
+      const bounds = this.Ma.getBoundingClientRect();
+      const canvasXScale = w / bounds.width;
+      const mx = ((event.clientX || event.pageX) - bounds.left) * canvasXScale;
+      this.Wa = mx;
+      this.Xa = mx;
+      this.uc();
     };
     lr = (event) => {
-      if (!this.we) return;
+      if (!this.ve) return;
       this.gotMouseUp = true;
       setTimeout(() => {
         this.gotMouseUp = false;
       }, 10);
-      this.we = false;
-      const w = this.Na.width;
-      const vx0 = this.Ta;
-      const vx1 = this.cb;
-      const bounds = this.Na.getBoundingClientRect();
+      this.ve = false;
+      const w = this.Ma.width;
+      const vx0 = this.Sa;
+      const vx1 = this.bb;
+      const bounds = this.Ma.getBoundingClientRect();
       const canvasXScale = w / bounds.width;
       const mx = ((event.clientX || event.pageX) - bounds.left) * canvasXScale;
-      this.Ya = mx;
+      this.Xa = mx;
+      this.Wa = Math.max(0, Math.min(w, this.Wa));
       this.Xa = Math.max(0, Math.min(w, this.Xa));
-      this.Ya = Math.max(0, Math.min(w, this.Ya));
-      if (this.Xa > this.Ya) {
-        const t = this.Xa;
-        this.Xa = this.Ya;
-        this.Ya = t;
+      if (this.Wa > this.Xa) {
+        const t = this.Wa;
+        this.Wa = this.Xa;
+        this.Xa = t;
       }
       let zoomAreaIsTooSmall = false;
-      if (this.Ya - this.Xa > 2) {
-        const wosx0 = vx0 + this.Xa * (vx1 - vx0) / w;
-        const wosx1 = vx0 + this.Ya * (vx1 - vx0) / w;
-        const newViewportWidth = Math.max(1, Math.min(this.Wa, wosx1 - wosx0));
-        this.Ma = newViewportWidth;
-        this.ob = this.Wa - this.Ma;
-        const centerX = vx0 + this.Xa * (this.cb - this.Ta) / this.ic;
-        this.Pa = Math.max(0, Math.min(this.ob, centerX));
-        this.Ta = 0 + this.Pa;
-        this.cb = this.Ma + this.Pa;
-        if (this.Ma === this.Wa) {
-          this.wc.value = "0";
+      if (this.Xa - this.Wa > 2) {
+        const wosx0 = vx0 + this.Wa * (vx1 - vx0) / w;
+        const wosx1 = vx0 + this.Xa * (vx1 - vx0) / w;
+        const newViewportWidth = Math.max(1, Math.min(this.Va, wosx1 - wosx0));
+        this.La = newViewportWidth;
+        this.nb = this.Va - this.La;
+        const centerX = vx0 + this.Wa * (this.bb - this.Sa) / this.hc;
+        this.Oa = Math.max(0, Math.min(this.nb, centerX));
+        this.Sa = 0 + this.Oa;
+        this.bb = this.La + this.Oa;
+        if (this.La === this.Va) {
+          this.vc.value = "0";
         } else {
-          this.wc.value = "" + this.Pa / this.ob;
+          this.vc.value = "" + this.Oa / this.nb;
         }
       } else {
         zoomAreaIsTooSmall = true;
       }
+      this.Wa = null;
       this.Xa = null;
-      this.Ya = null;
       if (!zoomAreaIsTooSmall) {
-        this.rf();
-        this.Da();
+        this.qf();
+        this.Ca();
       }
-      this.vc();
+      this.uc();
     };
     mr = (event) => {
       event.preventDefault();
-      this.we = true;
-      const w = this.Na.width;
-      const bounds = this.Na.getBoundingClientRect();
+      this.ve = true;
+      const w = this.Ma.width;
+      const bounds = this.Ma.getBoundingClientRect();
+      const canvasXScale = w / bounds.width;
+      const mx = (event.touches[0].clientX - bounds.left) * canvasXScale;
+      this.Wa = mx;
+      this.Xa = mx;
+      this.uc();
+    };
+    nr = (event) => {
+      if (!this.ve) return;
+      event.preventDefault();
+      const w = this.Ma.width;
+      const bounds = this.Ma.getBoundingClientRect();
       const canvasXScale = w / bounds.width;
       const mx = (event.touches[0].clientX - bounds.left) * canvasXScale;
       this.Xa = mx;
-      this.Ya = mx;
-      this.vc();
-    };
-    nr = (event) => {
-      if (!this.we) return;
-      event.preventDefault();
-      const w = this.Na.width;
-      const bounds = this.Na.getBoundingClientRect();
-      const canvasXScale = w / bounds.width;
-      const mx = (event.touches[0].clientX - bounds.left) * canvasXScale;
-      this.Ya = mx;
-      this.vc();
+      this.uc();
     };
     Jj = (event) => {
       event.preventDefault();
-      if (!this.we) return;
+      if (!this.ve) return;
       this.gotMouseUp = true;
       setTimeout(() => {
         this.gotMouseUp = false;
       }, 10);
-      this.we = false;
-      const w = this.Na.width;
-      const vx0 = this.Ta;
-      const vx1 = this.cb;
+      this.ve = false;
+      const w = this.Ma.width;
+      const vx0 = this.Sa;
+      const vx1 = this.bb;
+      this.Wa = Math.max(0, Math.min(w, this.Wa));
       this.Xa = Math.max(0, Math.min(w, this.Xa));
-      this.Ya = Math.max(0, Math.min(w, this.Ya));
-      if (this.Xa > this.Ya) {
-        const t = this.Xa;
-        this.Xa = this.Ya;
-        this.Ya = t;
+      if (this.Wa > this.Xa) {
+        const t = this.Wa;
+        this.Wa = this.Xa;
+        this.Xa = t;
       }
       let zoomAreaIsTooSmall = false;
-      if (this.Ya - this.Xa > 2) {
-        const wosx0 = vx0 + this.Xa * (vx1 - vx0) / w;
-        const wosx1 = vx0 + this.Ya * (vx1 - vx0) / w;
-        const newViewportWidth = Math.max(1, Math.min(this.Wa, wosx1 - wosx0));
-        this.Ma = newViewportWidth;
-        this.ob = this.Wa - this.Ma;
-        const centerX = vx0 + this.Xa * (this.cb - this.Ta) / this.ic;
-        this.Pa = Math.max(0, Math.min(this.ob, centerX));
-        this.Ta = 0 + this.Pa;
-        this.cb = this.Ma + this.Pa;
-        if (this.Ma === this.Wa) {
-          this.wc.value = "0";
+      if (this.Xa - this.Wa > 2) {
+        const wosx0 = vx0 + this.Wa * (vx1 - vx0) / w;
+        const wosx1 = vx0 + this.Xa * (vx1 - vx0) / w;
+        const newViewportWidth = Math.max(1, Math.min(this.Va, wosx1 - wosx0));
+        this.La = newViewportWidth;
+        this.nb = this.Va - this.La;
+        const centerX = vx0 + this.Wa * (this.bb - this.Sa) / this.hc;
+        this.Oa = Math.max(0, Math.min(this.nb, centerX));
+        this.Sa = 0 + this.Oa;
+        this.bb = this.La + this.Oa;
+        if (this.La === this.Va) {
+          this.vc.value = "0";
         } else {
-          this.wc.value = "" + this.Pa / this.ob;
+          this.vc.value = "" + this.Oa / this.nb;
         }
       } else {
         zoomAreaIsTooSmall = true;
       }
+      this.Wa = null;
       this.Xa = null;
-      this.Ya = null;
       if (!zoomAreaIsTooSmall) {
-        this.rf();
-        this.Da();
+        this.qf();
+        this.Ca();
       }
-      this.vc();
+      this.uc();
     };
-    qa = (event) => {
+    pa = (event) => {
       if (event.target.tagName != "BUTTON" && event.keyCode == 13) {
-        this.la();
+        this.ka();
       }
       if (event.keyCode == 32) {
         this.ym();
@@ -44558,29 +44563,29 @@ You should be redirected to the song at:<br /><br />
     };
     _q = () => {
       if (this.J.synth.playing) {
-        this.ed.classList.remove("playButton");
-        this.ed.classList.add("pauseButton");
-        this.ed.title = "Pause (Space)";
-        this.ed.innerText = "Pause";
+        this.dd.classList.remove("playButton");
+        this.dd.classList.add("pauseButton");
+        this.dd.title = "Pause (Space)";
+        this.dd.innerText = "Pause";
       } else {
-        this.ed.classList.remove("pauseButton");
-        this.ed.classList.add("playButton");
-        this.ed.title = "Play (Space)";
-        this.ed.innerText = "Play";
+        this.dd.classList.remove("pauseButton");
+        this.dd.classList.add("playButton");
+        this.dd.title = "Play (Space)";
+        this.dd.innerText = "Play";
       }
     };
-    rf = () => {
-      this.of.updateViewport(this.Ta, this.cb);
-      this.pf.updateViewport(this.Ta, this.cb);
-      this.qf.updateViewport(this.Ta, this.cb);
+    qf = () => {
+      this.nf.updateViewport(this.Sa, this.bb);
+      this.of.updateViewport(this.Sa, this.bb);
+      this.pf.updateViewport(this.Sa, this.bb);
     };
-    Da = () => {
+    Ca = () => {
       if (this.Th) return;
       this._t();
+      this.nf.render();
       this.of.render();
       this.pf.render();
-      this.qf.render();
-      this.vc();
+      this.uc();
     };
   };
 
@@ -44632,8 +44637,8 @@ You should be redirected to the song at:<br /><br />
     constructor(canvas3, _doc, _getChange) {
       this.canvas = canvas3;
       this.J = _doc;
-      this.Md = _getChange;
-      canvas3.addEventListener("mousemove", this.df);
+      this.Ld = _getChange;
+      canvas3.addEventListener("mousemove", this.cf);
       canvas3.addEventListener("mousedown", this.zm);
       canvas3.addEventListener("mouseup", this.Uh);
       canvas3.addEventListener("mouseleave", this.Uh);
@@ -44653,7 +44658,7 @@ You should be redirected to the song at:<br /><br />
     newArray;
     renderedArray;
     renderedColor;
-    ma = null;
+    la = null;
     redrawCanvas() {
       const chipData = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()].customChipWave;
       const renderColor = ColorConfig.getComputedChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder).primaryNote;
@@ -44685,7 +44690,7 @@ You should be redirected to the song at:<br /><br />
         this.newArray[x] = y - 26;
       }
     }
-    df = (event) => {
+    cf = (event) => {
       if (this.mouseDown) {
         var x = (event.clientX || event.pageX) - this.canvas.getBoundingClientRect().left;
         var y = Math.floor((event.clientY || event.pageY) - this.canvas.getBoundingClientRect().top);
@@ -44742,25 +44747,25 @@ You should be redirected to the song at:<br /><br />
     };
     zm = (event) => {
       this.mouseDown = true;
-      this.df(event);
+      this.cf(event);
     };
     Uh = () => {
       this.mouseDown = false;
       this.continuousEdit = false;
-      this.Ze();
+      this.Ye();
     };
-    Ze = () => {
-      this.ma = this.Md(this.newArray);
-      this.J.record(this.ma);
-      this.ma = null;
+    Ye = () => {
+      this.la = this.Ld(this.newArray);
+      this.J.record(this.la);
+      this.la = null;
     };
   };
   var CustomAlgorythmCanvas = class {
     constructor(canvas3, _doc, _getChange) {
       this.canvas = canvas3;
       this.J = _doc;
-      this.Md = _getChange;
-      canvas3.addEventListener("mousemove", this.df);
+      this.Ld = _getChange;
+      canvas3.addEventListener("mousemove", this.cf);
       canvas3.addEventListener("mousedown", this.zm);
       canvas3.addEventListener("mouseup", this.Uh);
       canvas3.addEventListener("mouseleave", this.Uh);
@@ -44789,7 +44794,7 @@ You should be redirected to the song at:<br /><br />
     carriers;
     drawArray;
     mode;
-    ma = null;
+    la = null;
     reset() {
       this.redrawCanvas(false);
       this.selected = -1;
@@ -44996,7 +45001,7 @@ You should be redirected to the song at:<br /><br />
       }
       this.drawLines(ctx);
     }
-    df = (event) => {
+    cf = (event) => {
       if (this.mouseDown) {
         var x = (event.clientX || event.pageX) - this.canvas.getBoundingClientRect().left;
         var y = Math.floor((event.clientY || event.pageY) - this.canvas.getBoundingClientRect().top);
@@ -45068,38 +45073,38 @@ You should be redirected to the song at:<br /><br />
     };
     zm = (event) => {
       this.mouseDown = true;
-      this.df(event);
+      this.cf(event);
     };
     Uh = () => {
       this.mouseDown = false;
-      this.Ze();
+      this.Ye();
     };
-    Ze = () => {
-      this.ma = this.Md(this.mode == "algorithm" ? this.newMods : this.feedback, this.carriers, this.mode);
-      this.J.record(this.ma);
-      this.ma = null;
+    Ye = () => {
+      this.la = this.Ld(this.mode == "algorithm" ? this.newMods : this.feedback, this.carriers, this.mode);
+      this.J.record(this.la);
+      this.la = null;
     };
   };
   var SongEditor = class {
     prompt = null;
     J = new SongDocument();
     // @TODO: Maybe this should have the underscore dropped. Also maybe all of these should be initialized in the constructor instead of here, but I'm trying to minimize the diff.
-    Ud = new KeyboardLayout(this.J);
+    Td = new KeyboardLayout(this.J);
     qg = new PatternEditor(this.J, false, -1);
-    ib = new PatternEditor(this.J, true, 0);
+    hb = new PatternEditor(this.J, true, 0);
     rg = new PatternEditor(this.J, false, 1);
-    Pd = new TrackEditor(this.J, this);
+    Od = new TrackEditor(this.J, this);
     Vh = new MuteEditor(this.J, this);
-    ac = new LoopEditor(this.J, this.Pd);
-    rd = new Piano(this.J);
-    sg = new OctaveScrollBar(this.J, this.rd);
-    ja = button25({ class: "playButton", type: "button", title: "Play (Space)" }, span7("Play"));
+    $b = new LoopEditor(this.J, this.Od);
+    qd = new Piano(this.J);
+    sg = new OctaveScrollBar(this.J, this.qd);
+    ia = button25({ class: "playButton", type: "button", title: "Play (Space)" }, span7("Play"));
     Wh = button25({ class: "pauseButton", style: "display: none;", type: "button", title: "Pause (Space)" }, "Pause");
-    Zd = button25({ class: "recordButton", style: "display: none;", type: "button", title: "Record (Ctrl+Space)" }, span7("Record"));
-    sf = button25({ class: "stopButton", style: "display: none;", type: "button", title: "Stop Recording (Space)" }, "Stop Recording");
+    Yd = button25({ class: "recordButton", style: "display: none;", type: "button", title: "Record (Ctrl+Space)" }, span7("Record"));
+    rf = button25({ class: "stopButton", style: "display: none;", type: "button", title: "Stop Recording (Space)" }, "Stop Recording");
     Kj = button25({ class: "prevBarButton", type: "button", title: "Previous Bar (left bracket)" });
     Lj = button25({ class: "nextBarButton", type: "button", title: "Next Bar (right bracket)" });
-    jc = new Slider(input18({ title: "main volume", style: "width: 5em; flex-grow: 1; margin: 0;", type: "range", min: "0", max: "75", value: "50", step: "1" }), this.J, null, false);
+    ic = new Slider(input18({ title: "main volume", style: "width: 5em; flex-grow: 1; margin: 0;", type: "range", min: "0", max: "75", value: "50", step: "1" }), this.J, null, false);
     $t = SVG.rect({ "pointer-events": "none", width: "90%", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetBackground });
     au = SVG.rect({ "pointer-events": "none", width: "90%", height: "50%", x: "5%", y: "25%", fill: ColorConfig.uiWidgetBackground });
     or = SVG.rect({ "pointer-events": "none", height: "50%", width: "0%", x: "5%", y: "25%", fill: "url('#volumeGrad2')" });
@@ -45174,7 +45179,7 @@ You should be redirected to the song at:<br /><br />
       option14({ value: "limiterSettings" }, "Limiter Settings... (\u21E7L)"),
       option14({ value: "addExternal" }, "Add Custom Samples... (\u21E7Q)")
     );
-    xe = select14(
+    we = select14(
       { style: "width: 100%;" },
       option14({ selected: true, disabled: true, hidden: false }, "Preferences"),
       // todo: "hidden" should be true but looks wrong on mac chrome, adds checkmark next to first visible option even though it's not selected. :(
@@ -45213,31 +45218,31 @@ You should be redirected to the song at:<br /><br />
         option14({ value: "customTheme" }, "Custom Theme...")
       )
     );
-    ye = buildOptions2(select14(), Config.scales.map((scale) => scale.name));
-    tf = buildOptions2(select14(), Config.keys.map((key) => key.name).reverse());
+    xe = buildOptions2(select14(), Config.scales.map((scale) => scale.name));
+    sf = buildOptions2(select14(), Config.keys.map((key) => key.name).reverse());
     Xh = input18({ style: "width: 18%;", type: "number", min: Config.octaveMin, max: Config.octaveMax, value: "0" });
     Cm = new Slider(input18({ style: "margin: 0; vertical-align: middle;", type: "range", min: "1", max: "500", value: "160", step: "1" }), this.J, (oldValue, newValue) => new ChangeTempo(this.J, oldValue, newValue), false);
     Yh = input18({ style: "width: 4em; font-size: 80%; margin-left: 0.4em; vertical-align: middle;", type: "number", step: "1" });
-    ze = new FilterEditor(this.J, false, false, true);
-    bu = button25({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px; text-align: center; font-size: smaller;", onclick: () => this._("customSongEQFilterSettings") }, "+");
-    uf = buildOptions2(select14(), Config.rhythms.map((rhythm) => rhythm.name));
+    ye = new FilterEditor(this.J, false, false, true);
+    bu = button25({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px; text-align: center; font-size: smaller;", onclick: () => this.Z("customSongEQFilterSettings") }, "+");
+    tf = buildOptions2(select14(), Config.rhythms.map((rhythm) => rhythm.name));
     Zh = buildPresetOptions(false, "pitchPresetSelect");
     _h = buildPresetOptions(true, "drumPresetSelect");
     Nj = buildOptions2(select14(), Config.algorithms.map((algorithm) => algorithm.name));
-    $h = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("algorithm") }, "Algorithm: "), div25({ class: "selectContainer" }, this.Nj));
-    Sb = [];
+    $h = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("algorithm") }, "Algorithm: "), div25({ class: "selectContainer" }, this.Nj));
+    Rb = [];
     Dm = button25({ type: "button", class: "add-instrument last-button" });
     ug = button25({ type: "button", class: "remove-instrument" });
-    Ae = div25({ class: "instrument-bar" }, this.ug, this.Dm);
-    ai = div25({ class: "selectRow", style: "display: none;" }, span7({ class: "tip", onclick: () => this._("instrumentIndex") }, "Instrument:"), this.Ae);
-    vd = new Slider(input18({ style: "margin: 0; position: sticky;", type: "range", min: Math.floor(-Config.volumeRange / 2), max: Math.floor(Config.volumeRange / 2), value: "0", step: "1" }), this.J, (oldValue, newValue) => new ChangeVolume(this.J, oldValue, newValue), true);
+    ze = div25({ class: "instrument-bar" }, this.ug, this.Dm);
+    ai = div25({ class: "selectRow", style: "display: none;" }, span7({ class: "tip", onclick: () => this.Z("instrumentIndex") }, "Instrument:"), this.ze);
+    ud = new Slider(input18({ style: "margin: 0; position: sticky;", type: "range", min: Math.floor(-Config.volumeRange / 2), max: Math.floor(Config.volumeRange / 2), value: "0", step: "1" }), this.J, (oldValue, newValue) => new ChangeVolume(this.J, oldValue, newValue), true);
     bi = input18({ style: "width: 4em; font-size: 80%", id: "volumeSliderInputBox", type: "number", step: "1", min: Math.floor(-Config.volumeRange / 2), max: Math.floor(Config.volumeRange / 2), value: "0" });
-    cu = div25({ class: "selectRow", style: "height: 1em" }, span7({ class: "tip", style: "font-size: smaller;", onclick: () => this._("instrumentVolume") }, "Volume: "));
+    cu = div25({ class: "selectRow", style: "height: 1em" }, span7({ class: "tip", style: "font-size: smaller;", onclick: () => this.Z("instrumentVolume") }, "Volume: "));
     Em = div25({ class: "selectRow" }, div25(
       {},
       div25({ style: `color: ${ColorConfig.secondaryText};` }, span7({ class: "tip" }, this.cu)),
       div25({ style: `color: ${ColorConfig.secondaryText}; margin-top: -3px;` }, this.bi)
-    ), this.vd.container);
+    ), this.ud.container);
     Oj = buildOptions2(select14(), Config.chipWaves.map((wave) => wave.name));
     Pj = buildOptions2(select14(), Config.chipNoises.map((wave) => wave.name));
     // advloop addition
@@ -45251,165 +45256,165 @@ You should be redirected to the song at:<br /><br />
     Sj = input18({ type: "checkbox", style: "width: 1em; padding: 0; margin-left: 0.4em; margin-right: 4em;" });
     Tj = input18({ type: "checkbox", style: "width: 1em; padding: 0; margin-left: 0.4em; margin-right: 4em;" });
     // advloop addition
-    fd = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("chipWave") }, "Wave: "), div25({ class: "selectContainer" }, this.Oj));
-    Uj = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("chipNoise") }, "Noise: "), div25({ class: "selectContainer" }, this.Pj));
-    du = button25({ style: "margin-left: 0em; padding-left: 0.2em; height: 1.5em; max-width: 12px;", onclick: () => this._("visualLoopControls") }, "+");
-    gd = div25({ class: "selectRow" }, span7({ class: "tip", style: "flex-shrink: 0;", onclick: () => this._("loopControls") }, "Loop Controls: "), this.Qj);
-    Lc = div25({ class: "selectRow" }, span7({ class: "tip", style: "font-size: x-small;", onclick: () => this._("loopMode") }, "Loop Mode: "), div25({ class: "selectContainer" }, this.Rj));
-    Mc = div25({ class: "selectRow" }, span7({ class: "tip", style: "font-size: x-small;", onclick: () => this._("loopStart") }, "Loop Start: "), this.du, span7({ style: "display: flex;" }, this.ci));
-    Nc = div25({ class: "selectRow" }, span7({ class: "tip", style: "font-size: x-small;", onclick: () => this._("loopEnd") }, "Loop End: "), span7({ style: "display: flex;" }, this.di, this.ur));
-    Oc = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("offset") }, "Offset: "), span7({ style: "display: flex;" }, this.ei));
-    Pc = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("backwards") }, "Backwards: "), this.Sj);
+    ed = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("chipWave") }, "Wave: "), div25({ class: "selectContainer" }, this.Oj));
+    Uj = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("chipNoise") }, "Noise: "), div25({ class: "selectContainer" }, this.Pj));
+    du = button25({ style: "margin-left: 0em; padding-left: 0.2em; height: 1.5em; max-width: 12px;", onclick: () => this.Z("visualLoopControls") }, "+");
+    fd = div25({ class: "selectRow" }, span7({ class: "tip", style: "flex-shrink: 0;", onclick: () => this.Z("loopControls") }, "Loop Controls: "), this.Qj);
+    Kc = div25({ class: "selectRow" }, span7({ class: "tip", style: "font-size: x-small;", onclick: () => this.Z("loopMode") }, "Loop Mode: "), div25({ class: "selectContainer" }, this.Rj));
+    Lc = div25({ class: "selectRow" }, span7({ class: "tip", style: "font-size: x-small;", onclick: () => this.Z("loopStart") }, "Loop Start: "), this.du, span7({ style: "display: flex;" }, this.ci));
+    Mc = div25({ class: "selectRow" }, span7({ class: "tip", style: "font-size: x-small;", onclick: () => this.Z("loopEnd") }, "Loop End: "), span7({ style: "display: flex;" }, this.di, this.ur));
+    Nc = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("offset") }, "Offset: "), span7({ style: "display: flex;" }, this.ei));
+    Oc = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("backwards") }, "Backwards: "), this.Sj);
     Fm = new FadeInOutEditor(this.J);
-    hd = div25({ class: "selectRow" }, span7({ class: "tip", style: "flex-shrink: 0;", onclick: () => this._("inStereo") }, "Stereo: "), this.Tj);
-    Gm = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("fadeInOut") }, "Fade:"), this.Fm.container);
+    gd = div25({ class: "selectRow" }, span7({ class: "tip", style: "flex-shrink: 0;", onclick: () => this.Z("inStereo") }, "Stereo: "), this.Tj);
+    Gm = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("fadeInOut") }, "Fade:"), this.Fm.container);
     Vj = buildOptions2(select14(), Config.transitions.map((transition) => transition.name));
-    vr = button25({ style: "margin-left:0em; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this._d(3 /* Transition */) }, "\u25BC");
-    wr = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("transition") }, "Transition:"), this.vr, div25({ class: "selectContainer", style: "width: 52.5%;" }, this.Vj));
+    vr = button25({ style: "margin-left:0em; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this.Zd(3 /* Transition */) }, "\u25BC");
+    wr = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("transition") }, "Transition:"), this.vr, div25({ class: "selectContainer", style: "width: 52.5%;" }, this.Vj));
     Wj = input18({ type: "checkbox", style: "width: 1em; padding: 0; margin-right: 4em;" });
-    eu = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this._("clicklessTransition") }, "\u2023 Clickless:"), this.Wj);
+    eu = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this.Z("clicklessTransition") }, "\u2023 Clickless:"), this.Wj);
     Xj = div25({ class: "editor-controls", style: "display: none;" }, this.eu);
-    $d = select14(option14({ selected: true, disabled: true, hidden: false }));
-    vf = select14(option14({ selected: true, disabled: true, hidden: false }));
+    _d = select14(option14({ selected: true, disabled: true, hidden: false }));
+    uf = select14(option14({ selected: true, disabled: true, hidden: false }));
     // todo: "hidden" should be true but looks wrong on mac chrome, adds checkmark next to first visible option even though it's not selected. :(
     Hm = button25({ style: "font-size: x-small; width: 50%; height: 40%", class: "no-underline", onclick: () => this.xr(true) }, "simple");
     Im = button25({ style: "font-size: x-small; width: 50%; height: 40%", class: "last-button no-underline", onclick: () => this.xr(false) }, "advanced");
-    fi = div25({ class: "selectRow", style: "padding-top: 4px; margin-bottom: 0px;" }, span7({ style: "font-size: x-small;", class: "tip", onclick: () => this._("filterType") }, "Pre EQ Type:"), div25({ class: "instrument-bar" }, this.Hm, this.Im));
+    fi = div25({ class: "selectRow", style: "padding-top: 4px; margin-bottom: 0px;" }, span7({ style: "font-size: x-small;", class: "tip", onclick: () => this.Z("filterType") }, "Pre EQ Type:"), div25({ class: "instrument-bar" }, this.Hm, this.Im));
     gi = new FilterEditor(this.J, true);
-    fu = button25({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px; text-align: center; font-size: smaller;", onclick: () => this._("customNoteFilterSettings") }, "+");
-    Jm = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("noteFilter") }, "Pre EQ:"), this.fu, this.gi.container);
+    fu = button25({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px; text-align: center; font-size: smaller;", onclick: () => this.Z("customNoteFilterSettings") }, "+");
+    Jm = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("noteFilter") }, "Pre EQ:"), this.fu, this.gi.container);
     Km = new Slider(input18({ style: "margin: 0;", type: "range", min: "0", max: Config.filterSimpleCutRange - 1, value: "6", step: "1" }), this.J, (oldValue, newValue) => new ChangeNoteFilterSimpleCut(this.J, oldValue, newValue), false);
-    Lm = div25({ class: "selectRow", title: "Low-pass Filter Cutoff Frequency" }, span7({ class: "tip", onclick: () => this._("filterCutoff") }, "Filter Cut:"), this.Km.container);
+    Lm = div25({ class: "selectRow", title: "Low-pass Filter Cutoff Frequency" }, span7({ class: "tip", onclick: () => this.Z("filterCutoff") }, "Filter Cut:"), this.Km.container);
     Mm = new Slider(input18({ style: "margin: 0;", type: "range", min: "0", max: Config.filterSimplePeakRange - 1, value: "6", step: "1" }), this.J, (oldValue, newValue) => new ChangeNoteFilterSimplePeak(this.J, oldValue, newValue), false);
-    Nm = div25({ class: "selectRow", title: "Low-pass Filter Peak Resonance" }, span7({ class: "tip", onclick: () => this._("filterResonance") }, "Filter Peak:"), this.Mm.container);
+    Nm = div25({ class: "selectRow", title: "Low-pass Filter Peak Resonance" }, span7({ class: "tip", onclick: () => this.Z("filterResonance") }, "Filter Peak:"), this.Mm.container);
     Om = new Slider(input18({ style: "margin: 0;", type: "range", min: "0", max: Config.supersawDynamismMax, value: "0", step: "1" }), this.J, (oldValue, newValue) => new ChangeSupersawDynamism(this.J, oldValue, newValue), false);
-    Yj = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("supersawDynamism") }, "Dynamism:"), this.Om.container);
+    Yj = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("supersawDynamism") }, "Dynamism:"), this.Om.container);
     Pm = new Slider(input18({ style: "margin: 0;", type: "range", min: "0", max: Config.supersawSpreadMax, value: "0", step: "1" }), this.J, (oldValue, newValue) => new ChangeSupersawSpread(this.J, oldValue, newValue), false);
-    Zj = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("supersawSpread") }, "Spread:"), this.Pm.container);
+    Zj = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("supersawSpread") }, "Spread:"), this.Pm.container);
     Qm = new Slider(input18({ style: "margin: 0;", type: "range", min: "0", max: Config.supersawShapeMax, value: "0", step: "1" }), this.J, (oldValue, newValue) => new ChangeSupersawShape(this.J, oldValue, newValue), false);
-    _j = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("supersawShape"), style: "overflow: clip;" }, "Saw/Pulse:"), this.Qm.container);
+    _j = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("supersawShape"), style: "overflow: clip;" }, "Saw/Pulse:"), this.Qm.container);
     hi = new Slider(input18({ style: "margin: 0;", type: "range", min: "1", max: Config.pulseWidthRange, value: "1", step: "1" }), this.J, (oldValue, newValue) => new ChangePulseWidth(this.J, oldValue, newValue), false);
-    yr = button25({ style: "margin-left:53px; position: absolute; margin-top: 15px; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this._d(5 /* PulseWidth */) }, "\u25BC");
+    yr = button25({ style: "margin-left:53px; position: absolute; margin-top: 15px; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this.Zd(5 /* PulseWidth */) }, "\u25BC");
     ii = input18({ style: "width: 4em; font-size: 70%;", id: "pwmSliderInputBox", type: "number", step: "1", min: "1", max: Config.pulseWidthRange, value: "1" });
     $j = div25({ class: "selectRow" }, div25(
       {},
-      span7({ class: "tip", tabindex: "0", style: "height:1em; font-size: smaller; white-space: nowrap;", onclick: () => this._("pulseWidth") }, "Pulse Width:"),
+      span7({ class: "tip", tabindex: "0", style: "height:1em; font-size: smaller; white-space: nowrap;", onclick: () => this.Z("pulseWidth") }, "Pulse Width:"),
       div25({ style: `color: ${ColorConfig.secondaryText}; margin-top: -3px;` }, this.ii)
     ), this.yr, this.hi.container);
     //private readonly _pulseWidthRow = div({ class: "selectRow" }, span({ class: "tip", onclick: () => this._openPrompt("pulseWidth") }, "Pulse Width:"), this._pulseWidthDropdown, this._pulseWidthSlider.container);
     ak = new Slider(input18({ style: "margin: 0;", type: "range", min: "0", max: "99", value: "0", step: "1" }), this.J, (oldValue, newValue) => new ChangeDecimalOffset(this.J, oldValue, 99 - newValue), false);
-    gu = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:10px;", onclick: () => this._("decimalOffset") }, "\u2023 Offset:"), this.ak.container);
+    gu = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:10px;", onclick: () => this.Z("decimalOffset") }, "\u2023 Offset:"), this.ak.container);
     ji = div25({ class: "editor-controls", style: "display: none;" }, this.gu);
     vg = new Slider(input18({ style: "margin: 0;", type: "range", min: "0", max: Config.pitchShiftRange - 1, value: "0", step: "1" }), this.J, (oldValue, newValue) => new ChangePitchShift(this.J, oldValue, newValue), true);
     hu = [div25({ class: "pitchShiftMarker", style: { color: ColorConfig.tonic } }), div25({ class: "pitchShiftMarker", style: { color: ColorConfig.tonic, left: "50%" } }), div25({ class: "pitchShiftMarker", style: { color: ColorConfig.tonic, left: "100%" } })];
     zr = [div25({ class: "pitchShiftMarker", style: { color: ColorConfig.fifthNote, left: 100 * 7 / 24 + "%" } }), div25({ class: "pitchShiftMarker", style: { color: ColorConfig.fifthNote, left: 100 * 19 / 24 + "%" } })];
     iu = div25({ style: "display: flex; position: relative;" }, this.vg.container, div25({ class: "pitchShiftMarkerContainer" }, this.hu, this.zr));
-    Ar = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("pitchShift") }, "Pitch Shift:"), this.iu);
+    Ar = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("pitchShift") }, "Pitch Shift:"), this.iu);
     ki = new Slider(input18({ style: "margin: 0;", type: "range", min: Config.detuneMin - Config.detuneCenter, max: Config.detuneMax - Config.detuneCenter, value: 0, step: "4" }), this.J, (oldValue, newValue) => new ChangeDetune(this.J, oldValue, newValue), true);
     mi = input18({ style: "width: 4em; font-size: 80%; ", id: "detuneSliderInputBox", type: "number", step: "1", min: Config.detuneMin - Config.detuneCenter, max: Config.detuneMax - Config.detuneCenter, value: 0 });
     Rm = div25({ class: "selectRow" }, div25(
       {},
-      span7({ class: "tip", style: "height:1em; font-size: smaller;", onclick: () => this._("detune") }, "Detune: "),
+      span7({ class: "tip", style: "height:1em; font-size: smaller;", onclick: () => this.Z("detune") }, "Detune: "),
       div25({ style: `color: ${ColorConfig.secondaryText}; margin-top: -3px;` }, this.mi)
     ), this.ki.container);
     Sm = new Slider(input18({ style: "margin: 0;", type: "range", min: "0", max: Config.stringSustainRange - 1, value: "0", step: "1" }), this.J, (oldValue, newValue) => new ChangeStringSustain(this.J, oldValue, newValue), false);
-    Br = span7({ class: "tip", onclick: () => this._("stringSustain") }, "Sustain:");
+    Br = span7({ class: "tip", onclick: () => this.Z("stringSustain") }, "Sustain:");
     Tm = div25({ class: "selectRow" }, this.Br, this.Sm.container);
-    Cr = button25({ style: "margin-left:0em; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this._d(6 /* Unison */) }, "\u25BC");
+    Cr = button25({ style: "margin-left:0em; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this.Zd(6 /* Unison */) }, "\u25BC");
     ni = buildOptions2(select14(), Config.unisons.map((unison) => unison.name));
-    Um = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("unison") }, "Unison:"), this.Cr, div25({ class: "selectContainer", style: "width: 61.5%;" }, this.ni));
+    Um = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("unison") }, "Unison:"), this.Cr, div25({ class: "selectContainer", style: "width: 61.5%;" }, this.ni));
     oi = input18({ style: "width: 150%; height: 1.5em; font-size: 80%; margin-left: 0.4em; vertical-align: middle;", id: "unisonVoicesInputBox", type: "number", step: "1", min: Config.unisonVoicesMin, max: Config.unisonVoicesMax, value: 1 });
     ju = div25({ class: "selectRow dropFader" }, div25(
       {},
-      span7({ class: "tip", style: "height:1em; font-size: smaller;", onclick: () => this._("unisonVoices") }, "\u2023 Voices: "),
+      span7({ class: "tip", style: "height:1em; font-size: smaller;", onclick: () => this.Z("unisonVoices") }, "\u2023 Voices: "),
       div25({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, this.oi)
     ));
     pi = input18({ style: "width: 150%; height: 1.5em; font-size: 80%; margin-left: 0.4em; vertical-align: middle;", id: "unisonSpreadInputBox", type: "number", step: "0.001", min: Config.unisonSpreadMin, max: Config.unisonSpreadMax, value: 0 });
     ku = div25({ class: "selectRow dropFader" }, div25(
       {},
-      span7({ class: "tip", style: "height:1em; font-size: smaller;", onclick: () => this._("unisonSpread") }, "\u2023 Spread: "),
+      span7({ class: "tip", style: "height:1em; font-size: smaller;", onclick: () => this.Z("unisonSpread") }, "\u2023 Spread: "),
       div25({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, this.pi)
     ));
     qi = input18({ style: "width: 150%; height: 1.5em; font-size: 80%; margin-left: 0.4em; vertical-align: middle;", id: "unisonOffsetInputBox", type: "number", step: "0.001", min: Config.unisonOffsetMin, max: Config.unisonOffsetMax, value: 0 });
     lu = div25({ class: "selectRow dropFader" }, div25(
       {},
-      span7({ class: "tip", style: "height:1em; font-size: smaller;", onclick: () => this._("unisonOffset") }, "\u2023 Offset: "),
+      span7({ class: "tip", style: "height:1em; font-size: smaller;", onclick: () => this.Z("unisonOffset") }, "\u2023 Offset: "),
       div25({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, this.qi)
     ));
     ri = input18({ style: "width: 150%; height: 1.5em; font-size: 80%; margin-left: 0.4em; vertical-align: middle;", id: "unisonExpressionInputBox", type: "number", step: "0.001", min: Config.unisonExpressionMin, max: Config.unisonExpressionMax, value: 1.4 });
     mu = div25({ class: "selectRow dropFader" }, div25(
       {},
-      span7({ class: "tip", style: "height:1em; font-size: smaller;", onclick: () => this._("unisonExpression") }, "\u2023 Volume: "),
+      span7({ class: "tip", style: "height:1em; font-size: smaller;", onclick: () => this.Z("unisonExpression") }, "\u2023 Volume: "),
       div25({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, this.ri)
     ));
     si = input18({ style: "width: 150%; height: 1.5em; font-size: 80%; margin-left: 0.4em; vertical-align: middle;", id: "unisonSignInputBox", type: "number", step: "0.001", min: Config.unisonSignMin, max: Config.unisonSignMax, value: 1 });
     nu = div25({ class: "selectRow dropFader" }, div25(
       {},
-      span7({ class: "tip", style: "height:1em; font-size: smaller;", onclick: () => this._("unisonSign") }, "\u2023 Sign: "),
+      span7({ class: "tip", style: "height:1em; font-size: smaller;", onclick: () => this.Z("unisonSign") }, "\u2023 Sign: "),
       div25({ style: "color: " + ColorConfig.secondaryText + "; margin-top: -3px;" }, this.si)
     ));
     ti = div25({ class: "editor-controls", style: "display: none; gap: 3px; margin-bottom: 0.5em;" }, this.ju, this.ku, this.lu, this.mu, this.nu);
     wg = buildOptions2(select14({ style: "flex-shrink: 100" }), Config.chords.map((chord) => chord.name));
-    Vm = button25({ style: "margin-left:0em; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this._d(2 /* Chord */) }, "\u25BC");
-    wf = input18({ style: "width: 2.35em; height: 1.5em; font-size: 80%; margin: 0.5em; vertical-align: middle;", id: "unisonSignInputBox", type: "number", step: "1", min: 1, max: Config.maxChordSize, value: 1 });
+    Vm = button25({ style: "margin-left:0em; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this.Zd(2 /* Chord */) }, "\u25BC");
+    vf = input18({ style: "width: 2.35em; height: 1.5em; font-size: 80%; margin: 0.5em; vertical-align: middle;", id: "unisonSignInputBox", type: "number", step: "1", min: 1, max: Config.maxChordSize, value: 1 });
     Wm = div25({ class: "selectContainer", style: "width=100%" }, this.wg);
-    Dr = div25({ class: "selectRow", style: "display: flex; flex-direction: row" }, span7({ class: "tip", onclick: () => this._("chords") }, "Chords:"), this.wf, this.Vm, this.Wm);
+    Dr = div25({ class: "selectRow", style: "display: flex; flex-direction: row" }, span7({ class: "tip", onclick: () => this.Z("chords") }, "Chords:"), this.vf, this.Vm, this.Wm);
     Er = span7({ style: `color: ${ColorConfig.secondaryText}; font-size: smaller; text-overflow: clip;` }, "x1");
     bk = new Slider(input18({ style: "margin: 0;", type: "range", min: "0", max: Config.modulators.dictionary["arp speed"].maxRawVol, value: "0", step: "1" }), this.J, (oldValue, newValue) => new ChangeArpeggioSpeed(this.J, oldValue, newValue), false);
-    ou = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this._("arpeggioSpeed") }, "\u2023 Spd:"), this.Er, this.bk.container);
+    ou = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this.Z("arpeggioSpeed") }, "\u2023 Spd:"), this.Er, this.bk.container);
     ck = input18({ type: "checkbox", style: "width: 1em; padding: 0; margin-right: 4em;" });
-    pu = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this._("twoNoteArpeggio") }, "\u2023 Fast Two-Note:"), this.ck);
-    xf = div25({ class: "editor-controls", style: "display: none;" }, this.ou, this.pu);
+    pu = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this.Z("twoNoteArpeggio") }, "\u2023 Fast Two-Note:"), this.ck);
+    wf = div25({ class: "editor-controls", style: "display: none;" }, this.ou, this.pu);
     ui = buildOptions2(select14(), Config.vibratos.map((vibrato) => vibrato.name));
-    Xm = button25({ style: "margin-left:0em; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this._d(0 /* Vibrato */) }, "\u25BC");
-    Fr = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("vibrato") }, "Vibrato:"), this.Xm, div25({ class: "selectContainer", style: "width: 61.5%;" }, this.ui));
+    Xm = button25({ style: "margin-left:0em; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this.Zd(0 /* Vibrato */) }, "\u25BC");
+    Fr = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("vibrato") }, "Vibrato:"), this.Xm, div25({ class: "selectContainer", style: "width: 61.5%;" }, this.ui));
     dk = new Slider(input18({ style: "margin: 0;", type: "range", min: "0", max: Config.modulators.dictionary["vibrato depth"].maxRawVol, value: "0", step: "1" }), this.J, (oldValue, newValue) => new ChangeVibratoDepth(this.J, oldValue, newValue), false);
-    qu = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this._("vibratoDepth") }, "\u2023 Depth:"), this.dk.container);
+    qu = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this.Z("vibratoDepth") }, "\u2023 Depth:"), this.dk.container);
     Gr = span7({ style: `color: ${ColorConfig.secondaryText}; font-size: smaller; text-overflow: clip;` }, "x1");
     ek = new Slider(input18({ style: "margin: 0; text-overflow: clip;", type: "range", min: "0", max: Config.modulators.dictionary["vibrato speed"].maxRawVol, value: "0", step: "1" }), this.J, (oldValue, newValue) => new ChangeVibratoSpeed(this.J, oldValue, newValue), false);
-    ru = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this._("vibratoSpeed") }, "\u2023 Spd:"), this.Gr, this.ek.container);
+    ru = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this.Z("vibratoSpeed") }, "\u2023 Spd:"), this.Gr, this.ek.container);
     fk = new Slider(input18({ style: "margin: 0;", type: "range", min: "0", max: Config.modulators.dictionary["vibrato delay"].maxRawVol, value: "0", step: "1" }), this.J, (oldValue, newValue) => new ChangeVibratoDelay(this.J, oldValue, newValue), false);
-    su = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this._("vibratoDelay") }, "\u2023 Delay:"), this.fk.container);
+    su = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this.Z("vibratoDelay") }, "\u2023 Delay:"), this.fk.container);
     vi = buildOptions2(select14(), Config.vibratoTypes.map((vibrato) => vibrato.name));
-    tu = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this._("vibratoType") }, "\u2023 Type:"), div25({ class: "selectContainer", style: "width: 61.5%;" }, this.vi));
+    tu = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this.Z("vibratoType") }, "\u2023 Type:"), div25({ class: "selectContainer", style: "width: 61.5%;" }, this.vi));
     wi = div25({ class: "editor-controls", style: `display: none;` }, this.qu, this.ru, this.su, this.tu);
-    yf = div25({ class: "editor-controls" });
+    xf = div25({ class: "editor-controls" });
     gk = buildOptions2(select14(), Config.feedbacks.map((feedback) => feedback.name));
-    xi = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("feedbackType") }, "Feedback:"), div25({ class: "selectContainer" }, this.gk));
+    xi = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("feedbackType") }, "Feedback:"), div25({ class: "selectContainer" }, this.gk));
     Ym = new SpectrumEditor(this.J, null);
-    uu = button25({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px;", onclick: () => this._("spectrumSettings") }, "+");
-    hk = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("spectrum"), style: "font-size: smaller" }, "Spectrum:"), this.uu, this.Ym.container);
+    uu = button25({ style: "margin-left:0em; padding-left:0.2em; height:1.5em; max-width: 12px;", onclick: () => this.Z("spectrumSettings") }, "+");
+    hk = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("spectrum"), style: "font-size: smaller" }, "Spectrum:"), this.uu, this.Ym.container);
     Zm = new HarmonicsEditor(this.J);
-    vu = button25({ style: "padding-left:0.2em; height:1.5em; max-width: 12px;", onclick: () => this._("harmonicsSettings") }, "+");
-    ik = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("harmonics"), style: "font-size: smaller" }, "Harmonics:"), this.vu, this.Zm.container);
+    vu = button25({ style: "padding-left:0.2em; height:1.5em; max-width: 12px;", onclick: () => this.Z("harmonicsSettings") }, "+");
+    ik = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("harmonics"), style: "font-size: smaller" }, "Harmonics:"), this.vu, this.Zm.container);
     //SongEditor.ts
-    envelopeEditor = new EnvelopeEditor(this.J, (id2, submenu, subtype) => this._d(id2, submenu, subtype), (name) => this._(name));
+    envelopeEditor = new EnvelopeEditor(this.J, (id2, submenu, subtype) => this.Zd(id2, submenu, subtype), (name) => this.Z(name));
     Hr = span7({ style: `color: ${ColorConfig.secondaryText}; font-size: smaller; text-overflow: clip;` }, "x1");
     jk = new Slider(input18({ style: "margin: 0;", type: "range", min: "0", max: Config.modulators.dictionary["envelope speed"].maxRawVol, value: "0", step: "1" }), this.J, (oldValue, newValue) => new ChangeEnvelopeSpeed(this.J, oldValue, newValue), false);
-    wu = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this._("envelopeSpeed") }, "\u2023 Spd:"), this.Hr, this.jk.container);
+    wu = div25({ class: "selectRow dropFader" }, span7({ class: "tip", style: "margin-left:4px;", onclick: () => this.Z("envelopeSpeed") }, "\u2023 Spd:"), this.Hr, this.jk.container);
     yi = div25({ class: "editor-controls", style: "display: none;" }, this.wu);
-    Ir = button25({ style: "margin-left:0em; margin-right: 1em; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this._d(7 /* Envelope */) }, "\u25BC");
-    effectEditor = new EffectEditor(this.J, (name, effectIndex) => this._(name, effectIndex));
+    Ir = button25({ style: "margin-left:0em; margin-right: 1em; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this.Zd(7 /* Envelope */) }, "\u25BC");
+    effectEditor = new EffectEditor(this.J, (name, effectIndex) => this.Z(name, effectIndex));
     xg = div25({ class: "editor-controls" });
-    xu = button25({ style: "margin-left:0em; padding-left:0.3em; margin-right:0.5em; height:1.5em; max-width: 16px;", onclick: () => this._("drumsetSettings") }, "+");
-    Ab = div25({ class: "editor-controls" });
+    xu = button25({ style: "margin-left:0em; padding-left:0.3em; margin-right:0.5em; height:1.5em; max-width: 16px;", onclick: () => this.Z("drumsetSettings") }, "+");
+    zb = div25({ class: "editor-controls" });
     Jr;
-    Bb;
+    Ab;
     Kr;
-    Ua;
+    Ta;
     Lr;
-    Cb;
+    Bb;
     Mr;
-    kc;
-    zf;
+    jc;
+    yf;
     kk = buildOptions2(select14(), Config.feedbacks6Op.map((feedback) => feedback.name));
-    lk = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("feedbackType") }, "Feedback:"), div25({ class: "selectContainer" }, this.kk));
+    lk = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("feedbackType") }, "Feedback:"), div25({ class: "selectContainer" }, this.kk));
     Nr = button25({ style: "margin-left:0em; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: (e) => this.yu(e) }, "A");
-    Be = new CustomAlgorythmCanvas(canvas2({ width: 144, height: 144, style: "border:2px solid " + ColorConfig.uiWidgetBackground, id: "customAlgorithmCanvas" }), this.J, (newArray, carry, mode) => new ChangeCustomAlgorythmorFeedback(this.J, newArray, carry, mode));
+    Ae = new CustomAlgorythmCanvas(canvas2({ width: 144, height: 144, style: "border:2px solid " + ColorConfig.uiWidgetBackground, id: "customAlgorithmCanvas" }), this.J, (newArray, carry, mode) => new ChangeCustomAlgorythmorFeedback(this.J, newArray, carry, mode));
     mk = buildOptions2(select14(), Config.algorithms6Op.map((algorithm) => algorithm.name));
     nk = div25(
-      div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("algorithm") }, "Algorithm: "), div25({ class: "selectContainer" }, this.mk)),
-      div25({ style: "height:144px; display:flex; flex-direction: row; align-items:center; justify-content:center;" }, div25({ style: "display:block; width:10px; margin-right: 0.2em" }, this.Nr), div25({ style: "width:144px; height:144px;" }, this.Be.canvas))
+      div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("algorithm") }, "Algorithm: "), div25({ class: "selectContainer" }, this.mk)),
+      div25({ style: "height:144px; display:flex; flex-direction: row; align-items:center; justify-content:center;" }, div25({ style: "display:block; width:10px; margin-right: 0.2em" }, this.Nr), div25({ style: "width:144px; height:144px;" }, this.Ae.canvas))
     );
     //temp
     Or = button25({ style: "max-width:86px; width: 86px;", class: "copyButton", title: "Copy Instrument (\u21E7C)" }, [
@@ -45452,14 +45457,14 @@ You should be redirected to the song at:<br /><br />
       select14({ style: "width: 50%; height:1.5em; text-align: center; text-align-last: center;" }),
       Config.chipWaves.map((wave) => wave.name)
     );
-    Au = button25({ style: "margin-left:0.5em; height:1.5em; max-width: 20px;", onclick: () => this._("customChipSettings") }, "+");
+    Au = button25({ style: "margin-left:0.5em; height:1.5em; max-width: 20px;", onclick: () => this.Z("customChipSettings") }, "+");
     zi = div25({ style: "height:80px; margin-top:10px; margin-bottom:5px" }, [
       div25({ style: "height:54px; display:flex; justify-content:center;" }, [this.pk.canvas]),
       div25({ style: "margin-top:5px; display:flex; justify-content:center;" }, [this.qk, this.Au])
     ]);
     _m = new InputBox(input18({ style: "font-weight:bold; border:none; width: 98%; background-color:${ColorConfig.editorBackground}; color:${ColorConfig.primaryText}; text-align:center", maxlength: "63", type: "text", value: EditorConfig.versionDisplayName }), this.J, (oldValue, newValue) => new ChangeSongTitle(this.J, oldValue, newValue));
     Ai = new Slider(input18({ type: "range", min: "0", max: Config.operatorAmplitudeMax, value: "0", step: "1", title: "Feedback Amplitude" }), this.J, (oldValue, newValue) => new ChangeFeedbackAmplitude(this.J, oldValue, newValue), false);
-    rk = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this._("feedbackVolume") }, "Fdback Vol:"), this.Ai.container);
+    rk = div25({ class: "selectRow" }, span7({ class: "tip", onclick: () => this.Z("feedbackVolume") }, "Fdback Vol:"), this.Ai.container);
     /*
          * @jummbus - my very real, valid reason for cutting this button: I don't like it.
          * 
@@ -45469,12 +45474,12 @@ You should be redirected to the song at:<br /><br />
         );
         */
     sk = button25({ type: "button", class: "add-envelope" });
-    wd = div25(
+    vd = div25(
       { class: "editor-controls" },
       this.wr,
       this.Xj,
       this.Dr,
-      this.xf,
+      this.wf,
       this.Ar,
       this.Rm,
       this.Fr,
@@ -45482,15 +45487,15 @@ You should be redirected to the song at:<br /><br />
     );
     $m = div25(
       { class: "editor-controls" },
-      this.fd,
+      this.ed,
       this.Uj,
-      this.gd,
+      this.fd,
+      this.Kc,
       this.Lc,
       this.Mc,
       this.Nc,
       this.Oc,
-      this.Pc,
-      this.hd,
+      this.gd,
       this.zi,
       this.fi,
       this.Jm,
@@ -45499,7 +45504,7 @@ You should be redirected to the song at:<br /><br />
       this.Gm,
       this.$h,
       this.nk,
-      this.yf,
+      this.xf,
       this.xi,
       this.lk,
       this.rk,
@@ -45517,19 +45522,19 @@ You should be redirected to the song at:<br /><br />
       this.ti,
       div25(
         { style: `padding: 2px 0; margin-left: 2em; display: flex; align-items: center;` },
-        span7({ style: `flex-grow: 1; text-align: center;` }, span7({ class: "tip", onclick: () => this._("mdeffects") }, "Musical Effects")),
-        div25({ class: "effects-menu" }, this.vf)
+        span7({ style: `flex-grow: 1; text-align: center;` }, span7({ class: "tip", onclick: () => this.Z("mdeffects") }, "Musical Effects")),
+        div25({ class: "effects-menu" }, this.uf)
       ),
-      this.wd,
+      this.vd,
       div25(
         { style: `padding: 2px 0; margin-left: 2em; display: flex; align-items: center;` },
-        span7({ style: `flex-grow: 1; text-align: center;` }, span7({ class: "tip", onclick: () => this._("effects") }, "Audio Effects")),
-        div25({ class: "effects-menu" }, this.$d)
+        span7({ style: `flex-grow: 1; text-align: center;` }, span7({ class: "tip", onclick: () => this.Z("effects") }, "Audio Effects")),
+        div25({ class: "effects-menu" }, this._d)
       ),
       this.effectEditor.container,
       div25(
         { style: `padding: 2px 0; margin-left: 2em; display: flex; align-items: center;` },
-        span7({ style: `flex-grow: 1; text-align: center;` }, span7({ class: "tip", onclick: () => this._("envelopes") }, "Envelopes")),
+        span7({ style: `flex-grow: 1; text-align: center;` }, span7({ class: "tip", onclick: () => this.Z("envelopes") }, "Envelopes")),
         this.Ir,
         this.sk
       ),
@@ -45552,21 +45557,21 @@ You should be redirected to the song at:<br /><br />
         this.Rr
       )
     );
-    Af = div25(
+    zf = div25(
       { id: "instrumentSettingsText", style: `padding: 3px 0; max-width: 15em; text-align: center; color: ${ColorConfig.secondaryText};` },
       "Instrument Settings"
     );
     an = div25(
       { class: "selectRow", id: "typeSelectRow" },
-      span7({ class: "tip", onclick: () => this._("instrumentType") }, "Type:"),
+      span7({ class: "tip", onclick: () => this.Z("instrumentType") }, "Type:"),
       div25(
         div25({ class: "pitchSelect" }, this.Zh),
         div25({ class: "drumSelect" }, this._h)
       )
     );
-    lc = div25(
+    kc = div25(
       { class: "editor-controls" },
-      this.Af,
+      this.zf,
       this.ai,
       // these could've been put into _instrumentSettingsGroup as well but I decided not to
       // this._instrumentCopyGroup,
@@ -45578,35 +45583,35 @@ You should be redirected to the song at:<br /><br />
     );
     bn = SVG.path({ d: "M -6 -6 H 6 V 6 H -6 V -6 M -2 -3 L -2 -3 L -1 -4 H 1 V 4 H -1 V -1.2 L -1.2 -1 H -2 V -3 z", fill: ColorConfig.indicatorSecondary, "fill-rule": "evenodd" });
     cn = SVG.path({ d: "M -6 -0.8 H -3.8 V -6 H 0.8 V 4.4 H 2.2 V -0.8 H 6 V 0.8 H 3.8 V 6 H -0.8 V -4.4 H -2.2 V 0.8 H -6 z", fill: ColorConfig.indicatorSecondary });
-    ae = SVG.svg({ style: "width: 92%; height: 1.3em; flex-shrink: 0; position: absolute;", viewBox: "0 0 200 200" }, [
+    $d = SVG.svg({ style: "width: 92%; height: 1.3em; flex-shrink: 0; position: absolute;", viewBox: "0 0 200 200" }, [
       SVG.path({ d: "M90 155 l0 -45 -45 0 c-25 0 -45 -4 -45 -10 0 -5 20 -10 45 -10 l45 0 0 -45 c0 -25 5 -45 10 -45 6 0 10 20 10 45 l0 45 45 0 c25 0 45 5 45 10 0 6 -20 10 -45 10 l -45 0 0 45 c0 25 -4 45 -10 45 -5 0 -10 -20 -10 -45z" }),
       SVG.path({ d: "M42 158 c-15 -15 -16 -38 -2 -38 6 0 10 7 10 15 0 8 7 15 15 15 8 0 15 5 15 10 0 14 -23 13 -38 -2z" }),
       SVG.path({ d: "M120 160 c0 -5 7 -10 15 -10 8 0 15 -7 15 -15 0 -8 5 -15 10 -15 14 0 13 23 -2 38 -15 15 -38 16 -38 2z" }),
       SVG.path({ d: "M32 58 c3 -23 48 -40 48 -19 0 6 -7 11 -15 11 -8 0 -15 7 -15 15 0 8 -5 15 -11 15 -6 0 -9 -10 -7 -22z" }),
       SVG.path({ d: "M150 65 c0 -8 -7 -15 -15 -15 -8 0 -15 -4 -15 -10 0 -14 23 -13 38 2 15 15 16 38 2 38 -5 0 -10 -7 -10 -15z" })
     ]);
-    Bf = div25({ class: "promptContainer", style: "display: none;" });
-    xd = div25({ class: "promptContainerBG", style: "display: none; height: 100%; width: 100%; position: fixed; z-index: 99; overflow-x: hidden; pointer-events: none;" });
-    Xd = button25({ class: "zoomInButton", type: "button", title: "Zoom In" });
-    Yd = button25({ class: "zoomOutButton", type: "button", title: "Zoom Out" });
+    Af = div25({ class: "promptContainer", style: "display: none;" });
+    wd = div25({ class: "promptContainerBG", style: "display: none; height: 100%; width: 100%; position: fixed; z-index: 99; overflow-x: hidden; pointer-events: none;" });
+    Wd = button25({ class: "zoomInButton", type: "button", title: "Zoom In" });
+    Xd = button25({ class: "zoomOutButton", type: "button", title: "Zoom Out" });
     yg = div25(
       { style: "flex: 1; height: 100%; display: flex; overflow: hidden; justify-content: center;" },
       this.qg.container,
-      this.ib.container,
+      this.hb.container,
       this.rg.container
     );
     tk = div25(
       { class: "pattern-area" },
-      this.rd.container,
+      this.qd.container,
       this.yg,
       this.sg.container,
-      this.Xd,
-      this.Yd
+      this.Wd,
+      this.Xd
     );
     dn = div25(
       { class: "trackContainer" },
-      this.Pd.container,
-      this.ac.container
+      this.Od.container,
+      this.$b.container
     );
     Tr = div25({ style: "position: absolute; width: 100%; height: 100%; pointer-events: none;" });
     zg = div25(
@@ -45615,11 +45620,11 @@ You should be redirected to the song at:<br /><br />
       this.dn,
       this.Tr
     );
-    ud = new BarScrollBar(this.J);
+    td = new BarScrollBar(this.J);
     uk = div25(
       { class: "track-area" },
       this.zg,
-      this.ud.container
+      this.td.container
     );
     Di = div25(
       { class: "menu-area" },
@@ -45633,7 +45638,7 @@ You should be redirected to the song at:<br /><br />
       ),
       div25(
         { class: "selectContainer menu preferences" },
-        this.xe
+        this.we
       )
     );
     Ur = div25({ style: `width: 0%; height: 100%; background-color: ${ColorConfig.indicatorPrimary};` });
@@ -45655,37 +45660,37 @@ You should be redirected to the song at:<br /><br />
           div25(
             { style: "margin: 3px 0; position: relative; text-align: center; color: ${ColorConfig.secondaryText};" },
             div25(
-              { class: "tip", style: "flex-shrink: 0; position:absolute; left: 0; top: 0; width: 12px; height: 12px", onclick: () => this._("usedPattern") },
+              { class: "tip", style: "flex-shrink: 0; position:absolute; left: 0; top: 0; width: 12px; height: 12px", onclick: () => this.Z("usedPattern") },
               SVG.svg(
                 { style: "flex-shrink: 0; position: absolute; left: 0; top: 0; pointer-events: none;", width: "12px", height: "12px", "margin-right": "0.5em", viewBox: "-6 -6 12 12" },
                 this.bn
               )
             ),
             div25(
-              { class: "tip", style: "flex-shrink: 0; position: absolute; left: 14px; top: 0; width: 12px; height: 12px", onclick: () => this._("usedInstrument") },
+              { class: "tip", style: "flex-shrink: 0; position: absolute; left: 14px; top: 0; width: 12px; height: 12px", onclick: () => this.Z("usedInstrument") },
               SVG.svg(
                 { style: "flex-shrink: 0; position: absolute; left: 0; top: 0; pointer-events: none;", width: "12px", height: "12px", "margin-right": "1em", viewBox: "-6 -6 12 12" },
                 this.cn
               )
             ),
             "Song Settings",
-            div25({ style: "width: 100%; left: 0; top: -1px; position:absolute; overflow-x:clip;" }, this.ae)
+            div25({ style: "width: 100%; left: 0; top: -1px; position:absolute; overflow-x:clip;" }, this.$d)
           )
         ),
         div25(
           { class: "selectRow" },
-          span7({ class: "tip", onclick: () => this._("scale") }, "Scale: "),
-          div25({ class: "selectContainer" }, this.ye)
+          span7({ class: "tip", onclick: () => this.Z("scale") }, "Scale: "),
+          div25({ class: "selectContainer" }, this.xe)
         ),
         div25(
           { class: "selectRow" },
-          span7({ class: "tip", onclick: () => this._("key") }, "Key: "),
+          span7({ class: "tip", onclick: () => this.Z("key") }, "Key: "),
           this.Xh,
-          div25({ class: "selectContainer" }, this.tf)
+          div25({ class: "selectContainer" }, this.sf)
         ),
         div25(
           { class: "selectRow" },
-          span7({ class: "tip", onclick: () => this._("tempo") }, "Tempo: "),
+          span7({ class: "tip", onclick: () => this.Z("tempo") }, "Tempo: "),
           span7(
             { style: "display: flex;" },
             this.Cm.container,
@@ -45694,22 +45699,22 @@ You should be redirected to the song at:<br /><br />
         ),
         div25(
           { class: "selectRow" },
-          span7({ class: "tip", onclick: () => this._("rhythm") }, "Rhythm: "),
-          div25({ class: "selectContainer" }, this.uf)
+          span7({ class: "tip", onclick: () => this.Z("rhythm") }, "Rhythm: "),
+          div25({ class: "selectContainer" }, this.tf)
         ),
         div25(
           { class: "selectRow" },
-          span7({ class: "tip", onclick: () => this._("songeq") }, span7("Song EQ:")),
+          span7({ class: "tip", onclick: () => this.Z("songeq") }, span7("Song EQ:")),
           this.bu,
-          this.ze.container
+          this.ye.container
         ),
         this.en
       )
     );
-    yd = div25(
+    xd = div25(
       { class: "instrument-settings-area" },
-      this.lc,
-      this.Ab
+      this.kc,
+      this.zb
     );
     Fi = div25(
       { class: "settings-area noSelection" },
@@ -45724,10 +45729,10 @@ You should be redirected to the song at:<br /><br />
         { class: "play-pause-area" },
         div25(
           { class: "playback-bar-controls" },
-          this.ja,
+          this.ia,
           this.Wh,
-          this.Zd,
-          this.sf,
+          this.Yd,
+          this.rf,
           this.Kj,
           this.Lj
         ),
@@ -45736,20 +45741,20 @@ You should be redirected to the song at:<br /><br />
         div25(
           { class: "playback-volume-controls" },
           span7({ class: "volume-speaker" }),
-          this.jc.container
+          this.ic.container
         ),
         this.Sr
       ),
       this.Di,
       this.Ei,
-      this.yd
+      this.xd
     );
     mainLayer = div25(
       { class: "beepboxEditor", tabIndex: "0" },
       this.tk,
       this.uk,
       this.Fi,
-      this.Bf
+      this.Af
     );
     fn = false;
     Vr = null;
@@ -45759,29 +45764,29 @@ You should be redirected to the song at:<br /><br />
     Xr = false;
     Yr = false;
     Zr = false;
-    yb = false;
-    Va = false;
+    xb = false;
+    Ua = false;
     hn = false;
     Ag = [];
-    jd = [];
+    hd = [];
     jn = [];
     _r = [];
     $r = [];
     kn = [];
     Hi = [];
     Cu = [];
-    Ce = [];
+    Be = [];
     yj = [];
     as = [];
-    be = [];
-    De = [];
+    ae = [];
+    Ce = [];
     vk = [];
     wk = false;
     ln = false;
     mn = false;
     nn = false;
     pn = false;
-    Ee = [];
+    De = [];
     qn = false;
     rn = false;
     outVolumeHistoricTimerL = 0;
@@ -45804,33 +45809,33 @@ You should be redirected to the song at:<br /><br />
       if (!("share" in navigator)) {
         this.tg.removeChild(this.tg.querySelector("[value='shareUrl']"));
       }
-      this.ye.appendChild(optgroup2(
+      this.xe.appendChild(optgroup2(
         { label: "Edit" },
         option14({ value: "forceScale" }, "Snap Notes To Scale"),
         option14({ value: "customize" }, "Edit Custom Scale")
       ));
-      this.tf.appendChild(optgroup2(
+      this.sf.appendChild(optgroup2(
         { label: "Edit" },
         option14({ value: "detectKey" }, "Detect Key")
       ));
-      this.uf.appendChild(optgroup2(
+      this.tf.appendChild(optgroup2(
         { label: "Edit" },
         option14({ value: "forceRhythm" }, "Snap Notes To Rhythm")
       ));
       this.ui.appendChild(option14({ hidden: true, value: 5 }, "custom"));
       this.ni.appendChild(option14({ hidden: true, value: Config.unisons.length }, "custom"));
-      this.be = new Array(Config.modulators.length);
+      this.ae = new Array(Config.modulators.length);
       this.vk = new Array(Config.modulators.length);
       for (let i = 0; i < Config.modulators.length; i++) {
-        this.De[i] = [];
-        this.be[i] = [];
+        this.Ce[i] = [];
+        this.ae[i] = [];
         this.vk[i] = [];
       }
-      this.yf.appendChild(div25(
+      this.xf.appendChild(div25(
         { class: "selectRow", style: `color: ${ColorConfig.secondaryText}; height: 1em; margin-top: 0.5em;` },
         div25({ style: "margin-right: .1em; visibility: hidden;" }, "1."),
-        div25({ style: "width: 3em; margin-right: .3em;", class: "tip", onclick: () => this._("operatorFrequency") }, "Freq:"),
-        div25({ class: "tip", onclick: () => this._("operatorVolume") }, "Volume:")
+        div25({ style: "width: 3em; margin-right: .3em;", class: "tip", onclick: () => this.Z("operatorFrequency") }, "Freq:"),
+        div25({ class: "tip", onclick: () => this.Z("operatorVolume") }, "Volume:")
       ));
       for (let i = 0; i < Config.operatorCount + 2; i++) {
         const operatorIndex = i;
@@ -45838,8 +45843,8 @@ You should be redirected to the song at:<br /><br />
         const frequencySelect = buildOptions2(select14({ style: "width: 100%;", title: "Frequency" }), Config.operatorFrequencies.map((freq) => freq.name));
         const amplitudeSlider = new Slider(input18({ type: "range", min: "0", max: Config.operatorAmplitudeMax, value: "0", step: "1", title: "Volume" }), this.J, (oldValue, newValue) => new ChangeOperatorAmplitude(this.J, operatorIndex, oldValue, newValue), false);
         const waveformSelect = buildOptions2(select14({ style: "width: 100%;", title: "Waveform" }), Config.operatorWaves.map((wave) => wave.name));
-        const waveformDropdown = button25({ style: "margin-left:0em; margin-right: 2px; height:1.5em; width: 8px; max-width: 10px; padding: 0px; font-size: 8px;", onclick: () => this._d(4 /* FM */, i) }, "\u25BC");
-        const waveformDropdownHint = span7({ class: "tip", style: "margin-left: 10px;", onclick: () => this._("operatorWaveform") }, "Wave:");
+        const waveformDropdown = button25({ style: "margin-left:0em; margin-right: 2px; height:1.5em; width: 8px; max-width: 10px; padding: 0px; font-size: 8px;", onclick: () => this.Zd(4 /* FM */, i) }, "\u25BC");
+        const waveformDropdownHint = span7({ class: "tip", style: "margin-left: 10px;", onclick: () => this.Z("operatorWaveform") }, "Wave:");
         const waveformPulsewidthSlider = new Slider(input18({ style: "margin-left: 10px; width: 85%;", type: "range", min: "0", max: Config.pwmOperatorWaves.length - 1, value: "0", step: "1", title: "Pulse Width" }), this.J, (oldValue, newValue) => new ChangeOperatorPulseWidth(this.J, operatorIndex, oldValue, newValue), true);
         const waveformDropdownRow = div25(
           { class: "selectRow" },
@@ -45855,18 +45860,18 @@ You should be redirected to the song at:<br /><br />
           div25({ class: "selectContainer", style: "width: 3em; margin-right: .3em;" }, frequencySelect),
           amplitudeSlider.container
         );
-        this.yf.appendChild(row);
+        this.xf.appendChild(row);
         this.Ag[i] = row;
-        this.jd[i] = amplitudeSlider;
+        this.hd[i] = amplitudeSlider;
         this.jn[i] = frequencySelect;
         this._r[i] = waveformDropdown;
         this.kn[i] = waveformDropdownHint;
         this.$r[i] = waveformSelect;
         this.Hi[i] = waveformPulsewidthSlider;
         this.Cu[i] = waveformDropdownRow;
-        this.yf.appendChild(waveformDropdownGroup);
-        this.Ce[i] = waveformDropdownGroup;
-        this.Ee[i] = false;
+        this.xf.appendChild(waveformDropdownGroup);
+        this.Be[i] = waveformDropdownGroup;
+        this.De[i] = false;
         waveformSelect.addEventListener("change", () => {
           this.J.record(new ChangeOperatorWaveform(this.J, operatorIndex, waveformSelect.selectedIndex));
         });
@@ -45877,8 +45882,8 @@ You should be redirected to the song at:<br /><br />
       this.xg.appendChild(
         div25(
           { class: "selectRow" },
-          span7({ class: "tip", onclick: () => this._("drumsetEnvelope") }, "Envelope:"),
-          span7({ class: "tip", onclick: () => this._("drumsetSpectrum") }, "Spectrum:"),
+          span7({ class: "tip", onclick: () => this.Z("drumsetEnvelope") }, "Envelope:"),
+          span7({ class: "tip", onclick: () => this.Z("drumsetSpectrum") }, "Spectrum:"),
           this.xu
         )
       );
@@ -45900,27 +45905,27 @@ You should be redirected to the song at:<br /><br />
         this.xg.appendChild(row);
       }
       this.Jr = [];
-      this.Bb = [];
+      this.Ab = [];
       this.Kr = [];
-      this.Ua = [];
+      this.Ta = [];
       this.Lr = [];
-      this.Cb = [];
+      this.Bb = [];
       this.Mr = [];
-      this.kc = [];
-      this.zf = [];
+      this.jc = [];
+      this.yf = [];
       for (let mod2 = 0; mod2 < Config.modCount; mod2++) {
         let modChannelBox = select14({ style: "width: 100%; color: currentColor; text-overflow:ellipsis;" });
         let modNameRow = div25(
           { class: "operatorRow", style: "height: 1em; margin-bottom: 0.65em;" },
-          div25({ class: "tip", style: "width: 10%; max-width: 5.4em;", id: "modChannelText" + mod2, onclick: () => this._("modChannel") }, "Instr.:"),
+          div25({ class: "tip", style: "width: 10%; max-width: 5.4em;", id: "modChannelText" + mod2, onclick: () => this.Z("modChannel") }, "Instr.:"),
           div25({ class: "selectContainer", style: "width: 35%;" }, modChannelBox)
         );
         let modSetBox = select14();
         let modFilterBox = select14();
         let modEnvelopeBox = select14();
-        let modSetRow = div25({ class: "selectRow", id: "modSettingText" + mod2, style: "margin-bottom: 0.9em; color: currentColor;" }, span7({ class: "tip", onclick: () => this._("modSet") }, "Setting: "), span7({ class: "tip", style: "font-size:x-small;", onclick: () => this._("modSetInfo" + mod2) }, "?"), div25({ class: "selectContainer" }, modSetBox));
-        let modFilterRow = div25({ class: "selectRow", id: "modFilterText" + mod2, style: "margin-bottom: 0.9em; color: currentColor;" }, span7({ class: "tip", onclick: () => this._("modFilter" + mod2) }, "Target: "), div25({ class: "selectContainer" }, modFilterBox));
-        let modEnvelopeRow = div25({ class: "selectRow", id: "modEnvelopeText" + mod2, style: "margin-bottom: 0.9em; color: currentColor;" }, span7({ class: "tip", onclick: () => this._("modEnvelope") }, "Envelope: "), div25({ class: "selectContainer" }, modEnvelopeBox));
+        let modSetRow = div25({ class: "selectRow", id: "modSettingText" + mod2, style: "margin-bottom: 0.9em; color: currentColor;" }, span7({ class: "tip", onclick: () => this.Z("modSet") }, "Setting: "), span7({ class: "tip", style: "font-size:x-small;", onclick: () => this.Z("modSetInfo" + mod2) }, "?"), div25({ class: "selectContainer" }, modSetBox));
+        let modFilterRow = div25({ class: "selectRow", id: "modFilterText" + mod2, style: "margin-bottom: 0.9em; color: currentColor;" }, span7({ class: "tip", onclick: () => this.Z("modFilter" + mod2) }, "Target: "), div25({ class: "selectContainer" }, modFilterBox));
+        let modEnvelopeRow = div25({ class: "selectRow", id: "modEnvelopeText" + mod2, style: "margin-bottom: 0.9em; color: currentColor;" }, span7({ class: "tip", onclick: () => this.Z("modEnvelope") }, "Envelope: "), div25({ class: "selectContainer" }, modEnvelopeBox));
         let modTarget = SVG.svg({ style: "transform: translate(0px, 1px);", width: "1.5em", height: "1em", viewBox: "0 0 200 200" }, [
           SVG.path({ d: "M90 155 l0 -45 -45 0 c-25 0 -45 -4 -45 -10 0 -5 20 -10 45 -10 l45 0 0 -45 c0 -25 5 -45 10 -45 6 0 10 20 10 45 l0 45 45 0 c25 0 45 5 45 10 0 6 -20 10 -45 10 l -45 0 0 45 c0 25 -4 45 -10 45 -5 0 -10 -20 -10 -45z" }),
           SVG.path({ d: "M42 158 c-15 -15 -16 -38 -2 -38 6 0 10 7 10 15 0 8 7 15 15 15 8 0 15 5 15 10 0 14 -23 13 -38 -2z" }),
@@ -45929,33 +45934,33 @@ You should be redirected to the song at:<br /><br />
           SVG.path({ d: "M150 65 c0 -8 -7 -15 -15 -15 -8 0 -15 -4 -15 -10 0 -14 23 -13 38 2 15 15 16 38 2 38 -5 0 -10 -7 -10 -15z" })
         ]);
         this.Jr.push(modNameRow);
-        this.Bb.push(modChannelBox);
+        this.Ab.push(modChannelBox);
         this.Kr.push(modSetRow);
-        this.Ua.push(modSetBox);
+        this.Ta.push(modSetBox);
         this.Lr.push(modFilterRow);
-        this.Cb.push(modFilterBox);
+        this.Bb.push(modFilterBox);
         this.Mr.push(modEnvelopeRow);
-        this.kc.push(modEnvelopeBox);
-        this.zf.push(modTarget);
-        this.Ab.appendChild(div25({ style: "margin: 3px 0; font-weight: bold; margin-bottom: 0.7em; text-align: center; color: " + ColorConfig.secondaryText + "; background: " + ColorConfig.uiWidgetBackground + ";" }, ["Modulator " + (mod2 + 1), modTarget]));
-        this.Ab.appendChild(modNameRow);
-        this.Ab.appendChild(modSetRow);
-        this.Ab.appendChild(modFilterRow);
-        this.Ab.appendChild(modEnvelopeRow);
+        this.jc.push(modEnvelopeBox);
+        this.yf.push(modTarget);
+        this.zb.appendChild(div25({ style: "margin: 3px 0; font-weight: bold; margin-bottom: 0.7em; text-align: center; color: " + ColorConfig.secondaryText + "; background: " + ColorConfig.uiWidgetBackground + ";" }, ["Modulator " + (mod2 + 1), modTarget]));
+        this.zb.appendChild(modNameRow);
+        this.zb.appendChild(modSetRow);
+        this.zb.appendChild(modFilterRow);
+        this.zb.appendChild(modEnvelopeRow);
       }
       this.vg.container.style.setProperty("transform", "translate(0px, 3px)");
       this.vg.container.style.setProperty("width", "100%");
       this.tg.addEventListener("change", this.Du);
       this.Mj.addEventListener("change", this.Eu);
-      this.xe.addEventListener("change", this.Fu);
+      this.we.addEventListener("change", this.Fu);
       this.qk.addEventListener("change", this.Gu);
       this.Yh.addEventListener("change", this.Hu);
-      this.ye.addEventListener("change", this.Iu);
-      this.tf.addEventListener("change", this.Ju);
+      this.xe.addEventListener("change", this.Iu);
+      this.sf.addEventListener("change", this.Ju);
       this.Xh.addEventListener("change", this.Ku);
-      this.uf.addEventListener("change", this.Lu);
+      this.tf.addEventListener("change", this.Lu);
       this.Nj.addEventListener("change", this.Mu);
-      this.Ae.addEventListener("click", this.Nu);
+      this.ze.addEventListener("click", this.Nu);
       this.gk.addEventListener("change", this.Ou);
       this.mk.addEventListener("change", this.Pu);
       this.kk.addEventListener("change", this.Qu);
@@ -45971,84 +45976,84 @@ You should be redirected to the song at:<br /><br />
       this.en.addEventListener("click", this._u);
       this.Pj.addEventListener("change", this.$u);
       this.Vj.addEventListener("change", this.av);
-      this.vf.addEventListener("change", this.bv);
-      this.$d.addEventListener("change", this.cv);
+      this.uf.addEventListener("change", this.bv);
+      this._d.addEventListener("change", this.cv);
       this.ni.addEventListener("change", this.dv);
       this.wg.addEventListener("change", this.ev);
-      this.wf.addEventListener("input", this.fv);
+      this.vf.addEventListener("input", this.fv);
       this.ui.addEventListener("change", this.gv);
       this.vi.addEventListener("change", this.hv);
-      this.ja.addEventListener("click", this.togglePlay);
+      this.ia.addEventListener("click", this.togglePlay);
       this.Wh.addEventListener("click", this.togglePlay);
-      this.Zd.addEventListener("click", this.Fe);
-      this.sf.addEventListener("click", this.Fe);
-      this.Zd.addEventListener("contextmenu", (event) => {
+      this.Yd.addEventListener("click", this.Ee);
+      this.rf.addEventListener("click", this.Ee);
+      this.Yd.addEventListener("contextmenu", (event) => {
         if (event.ctrlKey) {
           event.preventDefault();
-          this.Fe();
+          this.Ee();
         }
       });
-      this.sf.addEventListener("contextmenu", (event) => {
+      this.rf.addEventListener("contextmenu", (event) => {
         if (event.ctrlKey) {
           event.preventDefault();
-          this.Fe();
+          this.Ee();
         }
       });
       this.Kj.addEventListener("click", this.iv);
       this.Lj.addEventListener("click", this.jv);
-      this.jc.input.addEventListener("input", this.kv);
-      this.Xd.addEventListener("click", this.lv);
-      this.Yd.addEventListener("click", this.mv);
+      this.ic.input.addEventListener("input", this.kv);
+      this.Wd.addEventListener("click", this.lv);
+      this.Xd.addEventListener("click", this.mv);
       this.tk.addEventListener("mousedown", this.nv);
       this.uk.addEventListener("mousedown", this.refocusStage);
-      this.jc.container.style.setProperty("flex-grow", "1");
-      this.jc.container.style.setProperty("display", "flex");
+      this.ic.container.style.setProperty("flex-grow", "1");
+      this.ic.container.style.setProperty("display", "flex");
       this.Am.style.setProperty("flex-grow", "1");
       this.Am.style.setProperty("display", "flex");
       this.Bm.style.setProperty("flex-grow", "1");
       this.Bm.style.setProperty("display", "flex");
-      this.jc.container.style.setProperty("--mod-color", ColorConfig.multiplicativeModSlider);
-      this.jc.container.style.setProperty("--mod-border-radius", "50%");
-      this.vd.container.style.setProperty("--mod-color", ColorConfig.multiplicativeModSlider);
-      this.vd.container.style.setProperty("--mod-border-radius", "50%");
+      this.ic.container.style.setProperty("--mod-color", ColorConfig.multiplicativeModSlider);
+      this.ic.container.style.setProperty("--mod-border-radius", "50%");
+      this.ud.container.style.setProperty("--mod-color", ColorConfig.multiplicativeModSlider);
+      this.ud.container.style.setProperty("--mod-border-radius", "50%");
       this.Ai.container.style.setProperty("--mod-color", ColorConfig.multiplicativeModSlider);
       this.Ai.container.style.setProperty("--mod-border-radius", "50%");
       for (let i = 0; i < Config.operatorCount + 2; i++) {
-        this.jd[i].container.style.setProperty("--mod-color", ColorConfig.multiplicativeModSlider);
-        this.jd[i].container.style.setProperty("--mod-border-radius", "50%");
+        this.hd[i].container.style.setProperty("--mod-color", ColorConfig.multiplicativeModSlider);
+        this.hd[i].container.style.setProperty("--mod-border-radius", "50%");
       }
       let thisRef = this;
       for (let mod2 = 0; mod2 < Config.modCount; mod2++) {
-        this.Bb[mod2].addEventListener("change", function() {
+        this.Ab[mod2].addEventListener("change", function() {
           thisRef.ov(mod2);
         });
-        this.Ua[mod2].addEventListener("change", function() {
+        this.Ta[mod2].addEventListener("change", function() {
           thisRef.sn(mod2);
         });
-        this.Cb[mod2].addEventListener("change", function() {
+        this.Bb[mod2].addEventListener("change", function() {
           thisRef.pv(mod2);
         });
-        this.kc[mod2].addEventListener("change", function() {
+        this.jc[mod2].addEventListener("change", function() {
           thisRef.qv(mod2);
         });
-        this.zf[mod2].addEventListener("click", function() {
+        this.yf[mod2].addEventListener("click", function() {
           thisRef.rv(mod2);
         });
       }
-      this.ae.addEventListener("click", function() {
+      this.$d.addEventListener("click", function() {
         thisRef.sv();
       });
       this.tk.addEventListener("mousedown", this.refocusStage);
       this.Fm.container.addEventListener("mousedown", this.refocusStage);
       this.Ym.container.addEventListener("mousedown", this.refocusStage);
       this.gi.container.addEventListener("mousedown", this.refocusStage);
-      this.ze.container.addEventListener("mousedown", this.refocusStage);
+      this.ye.container.addEventListener("mousedown", this.refocusStage);
       this.Zm.container.addEventListener("mousedown", this.refocusStage);
       this.Yh.addEventListener("keydown", this.tv, false);
       this.sk.addEventListener("click", this.uv);
       this.tk.addEventListener("contextmenu", this.cs);
       this.uk.addEventListener("contextmenu", this.cs);
-      this.mainLayer.addEventListener("keydown", this.qa);
+      this.mainLayer.addEventListener("keydown", this.pa);
       this.mainLayer.addEventListener("keyup", this.vv);
       this.mainLayer.addEventListener("focusin", this.wv);
       this.Or.addEventListener("click", this.tn.bind(this));
@@ -46089,28 +46094,28 @@ You should be redirected to the song at:<br /><br />
       this.Wj.addEventListener("input", () => {
         this.J.record(new ChangeClicklessTransition(this.J, this.Wj.checked));
       });
-      this.Bf.addEventListener("click", (event) => {
+      this.Af.addEventListener("click", (event) => {
         if (this.J.prefs.closePromptByClickoff === true) {
           if (this.prompt != null && this.prompt.gotMouseUp === true) return;
-          if (event.target == this.Bf) {
+          if (event.target == this.Af) {
             this.J.undo();
           }
         }
       });
       this.zg.addEventListener("scroll", this.Av, { capture: false, passive: true });
       if (isMobile) {
-        const autoPlayOption = this.xe.querySelector("[value=autoPlay]");
+        const autoPlayOption = this.we.querySelector("[value=autoPlay]");
         autoPlayOption.disabled = true;
         autoPlayOption.setAttribute("hidden", "");
       }
       if (window.screen.availWidth < 710) {
-        const layoutOption = this.xe.querySelector("[value=layout]");
+        const layoutOption = this.we.querySelector("[value=layout]");
         layoutOption.disabled = true;
         layoutOption.setAttribute("hidden", "");
       }
     }
     _u = () => {
-      this._("sampleLoadingStatus");
+      this.Z("sampleLoadingStatus");
     };
     zv(_e) {
       const e = _e;
@@ -46118,17 +46123,17 @@ You should be redirected to the song at:<br /><br />
       this.Ur.style.width = `${percent}%`;
     }
     yu(e) {
-      if (this.Be.mode != "feedback") {
-        this.Be.mode = "feedback";
+      if (this.Ae.mode != "feedback") {
+        this.Ae.mode = "feedback";
         e.target.textContent = "F";
         this.Nr.value = "feedback";
       } else {
-        this.Be.mode = "algorithm";
+        this.Ae.mode = "algorithm";
         e.target.textContent = "A";
       }
-      this.Be.redrawCanvas();
+      this.Ae.redrawCanvas();
     }
-    _d(dropdown, submenu = 0, subtype = null) {
+    Zd(dropdown, submenu = 0, subtype = null) {
       let target = this.Xm;
       let group = this.wi;
       switch (dropdown) {
@@ -46145,7 +46150,7 @@ You should be redirected to the song at:<br /><br />
         case 2 /* Chord */:
           target = this.Vm;
           this.nn = this.nn ? false : true;
-          group = this.xf;
+          group = this.wf;
           break;
         case 3 /* Transition */:
           target = this.vr;
@@ -46154,8 +46159,8 @@ You should be redirected to the song at:<br /><br />
           break;
         case 4 /* FM */:
           target = this._r[submenu];
-          this.Ee[submenu] = this.Ee[submenu] ? false : true;
-          group = this.Ce[submenu];
+          this.De[submenu] = this.De[submenu] ? false : true;
+          group = this.Be[submenu];
           break;
         case 5 /* PulseWidth */:
           target = this.yr;
@@ -46179,14 +46184,14 @@ You should be redirected to the song at:<br /><br />
         if (dropdown == 8 /* EnvelopeSettings */) {
           group.style.display = "flex";
           this.envelopeEditor.rerenderExtraSettings();
-        } else if (group != this.xf) {
+        } else if (group != this.wf) {
           group.style.display = "";
         } else if (instrument.chord == Config.chords.dictionary["arpeggio"].index) {
           group.style.display = "";
           if (instrument.chord == Config.chords.dictionary["arpeggio"].index) {
-            this.xf.style.display = "";
+            this.wf.style.display = "";
           } else {
-            this.xf.style.display = "none";
+            this.wf.style.display = "none";
           }
         }
         for (let i = 0; i < group.children.length; i++) {
@@ -46209,12 +46214,12 @@ You should be redirected to the song at:<br /><br />
     Bv() {
       if (!this.J.synth.playing) {
         this.wk = false;
-        this.ze.render();
+        this.ye.render();
         for (let setting = 0; setting < Config.modulators.length; setting++) {
           for (let index = 0; index <= Config.modulators[setting].maxIndex; index++) {
-            if (this.be[setting][index] == true) {
-              this.be[setting][index] = false;
-              this.De[setting][index] = false;
+            if (this.ae[setting][index] == true) {
+              this.ae[setting][index] = false;
+              this.Ce[setting][index] = false;
               let slider = this.getSliderForModSetting(setting, index);
               if (slider != null) {
                 slider.container.classList.remove("modSlider");
@@ -46266,17 +46271,17 @@ You should be redirected to the song at:<br /><br />
           let instrument2 = this.J.getCurrentInstrument();
           for (let setting = 0; setting < Config.modulators.length; setting++) {
             for (let index = 0; index <= Config.modulators[setting].maxIndex; index++) {
-              this.De[setting][index] = Boolean(this.be[setting][index]);
+              this.Ce[setting][index] = Boolean(this.ae[setting][index]);
               let slider = this.getSliderForModSetting(setting, index);
               if (slider != null) {
-                this.De[setting][index] = updateModSlider(this, slider, setting, this.J.channel, instrument2, index);
+                this.Ce[setting][index] = updateModSlider(this, slider, setting, this.J.channel, instrument2, index);
               }
             }
           }
         } else if (this.wk) {
           for (let setting = 0; setting < Config.modulators.length; setting++) {
             for (let index = 0; index <= Config.modulators[setting].maxIndex; index++) {
-              this.De[setting][index] = false;
+              this.Ce[setting][index] = false;
             }
           }
         }
@@ -46284,18 +46289,18 @@ You should be redirected to the song at:<br /><br />
           let anySliderActive = false;
           for (let setting = 0; setting < Config.modulators.length; setting++) {
             for (let index = 0; index <= Config.modulators[setting].maxIndex; index++) {
-              if (this.De[setting][index] != this.be[setting][index]) {
-                this.be[setting][index] = this.De[setting][index];
+              if (this.Ce[setting][index] != this.ae[setting][index]) {
+                this.ae[setting][index] = this.Ce[setting][index];
                 let slider = this.getSliderForModSetting(setting, index);
                 if (slider != null) {
-                  if (this.be[setting][index] == true) {
+                  if (this.ae[setting][index] == true) {
                     slider.container.classList.add("modSlider");
                   } else {
                     slider.container.classList.remove("modSlider");
                   }
                 }
               }
-              if (this.De[setting][index] == true)
+              if (this.Ce[setting][index] == true)
                 anySliderActive = true;
             }
           }
@@ -46316,13 +46321,13 @@ You should be redirected to the song at:<br /><br />
         case Config.modulators.dictionary["detune"].index:
           return this.ki;
         case Config.modulators.dictionary["fm slider 1"].index:
-          return this.jd[0];
+          return this.hd[0];
         case Config.modulators.dictionary["fm slider 2"].index:
-          return this.jd[1];
+          return this.hd[1];
         case Config.modulators.dictionary["fm slider 3"].index:
-          return this.jd[2];
+          return this.hd[2];
         case Config.modulators.dictionary["fm slider 4"].index:
-          return this.jd[3];
+          return this.hd[3];
         case Config.modulators.dictionary["fm feedback"].index:
           return this.Ai;
         case Config.modulators.dictionary["pulse width"].index:
@@ -46336,11 +46341,11 @@ You should be redirected to the song at:<br /><br />
           for (let i = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i].type == 3 /* distortion */) index = i;
           return this.effectEditor.distortionSliders[index];
         case Config.modulators.dictionary["pre volume"].index:
-          if (!this.be[Config.modulators.dictionary["post volume"].index])
-            return this.vd;
+          if (!this.ae[Config.modulators.dictionary["post volume"].index])
+            return this.ud;
           return null;
         case Config.modulators.dictionary["post volume"].index:
-          return this.vd;
+          return this.ud;
         case Config.modulators.dictionary["vibrato depth"].index:
           return this.dk;
         case Config.modulators.dictionary["vibrato speed"].index:
@@ -46355,7 +46360,7 @@ You should be redirected to the song at:<br /><br />
         case Config.modulators.dictionary["tempo"].index:
           return this.Cm;
         case Config.modulators.dictionary["song volume"].index:
-          return this.jc;
+          return this.ic;
         case Config.modulators.dictionary["post eq cut"].index:
           for (let i = 0; i < instrument.effects.length; i++) if (instrument.effects[i] != null && instrument.effects[i].type == 5 /* eqFilter */) index = i;
           return this.effectEditor.eqFilterSimpleCutSliders[index];
@@ -46401,9 +46406,9 @@ You should be redirected to the song at:<br /><br />
         case Config.modulators.dictionary["sustain"].index:
           return this.Sm;
         case Config.modulators.dictionary["fm slider 5"].index:
-          return this.jd[4];
+          return this.hd[4];
         case Config.modulators.dictionary["fm slider 6"].index:
-          return this.jd[5];
+          return this.hd[5];
         case Config.modulators.dictionary["envelope speed"].index:
           return this.jk;
         case Config.modulators.dictionary["dynamism"].index:
@@ -46440,7 +46445,7 @@ You should be redirected to the song at:<br /><br />
           return null;
       }
     }
-    _(promptName, effectIndex) {
+    Z(promptName, effectIndex) {
       if (effectIndex == void 0) {
         this.J.openPrompt(promptName);
         this.vn(promptName);
@@ -46457,9 +46462,9 @@ You should be redirected to the song at:<br /><br />
           this.J.performance.play();
         }
         this.fn = false;
-        this.xd.style.display = "none";
-        this.Bf.style.display = "none";
-        this.Bf.removeChild(this.prompt.container);
+        this.wd.style.display = "none";
+        this.Af.style.display = "none";
+        this.Af.removeChild(this.prompt.container);
         this.prompt.cleanUp();
         this.prompt = null;
         this.refocusStage();
@@ -46531,7 +46536,7 @@ You should be redirected to the song at:<br /><br />
             this.prompt = new EuclideanRhythmPrompt(this.J);
             break;
           case "customTheme":
-            this.prompt = new CustomThemePrompt(this.J, this.ib, this.uk, document.getElementById("beepboxEditorContainer"));
+            this.prompt = new CustomThemePrompt(this.J, this.hb, this.uk, document.getElementById("beepboxEditorContainer"));
             break;
           case "visualLoopControls":
             this.prompt = new VisualLoopControlsPrompt(this.J, this);
@@ -46560,20 +46565,20 @@ You should be redirected to the song at:<br /><br />
             this.fn = this.J.synth.playing;
             this.J.performance.pause();
           }
-          this.Bf.style.display = "";
+          this.Af.style.display = "";
           if (this.J.prefs.frostedGlassBackground == true) {
-            this.xd.style.display = "";
-            this.xd.style.backgroundColor = "rgba(0,0,0, 0)";
-            this.xd.style.backdropFilter = "brightness(0.9) blur(14px)";
-            this.xd.style.opacity = "1";
+            this.wd.style.display = "";
+            this.wd.style.backgroundColor = "rgba(0,0,0, 0)";
+            this.wd.style.backdropFilter = "brightness(0.9) blur(14px)";
+            this.wd.style.opacity = "1";
           } else {
-            this.xd.style.display = "";
-            this.xd.style.backgroundColor = "var(--editor-background)";
-            this.xd.style.backdropFilter = "";
-            this.xd.style.opacity = "0.5";
+            this.wd.style.display = "";
+            this.wd.style.backgroundColor = "var(--editor-background)";
+            this.wd.style.backdropFilter = "";
+            this.wd.style.opacity = "0.5";
           }
-          this.Bf.appendChild(this.prompt.container);
-          document.body.appendChild(this.xd);
+          this.Af.appendChild(this.prompt.container);
+          document.body.appendChild(this.wd);
         }
       }
     }
@@ -46581,17 +46586,17 @@ You should be redirected to the song at:<br /><br />
       this.mainLayer.focus({ preventScroll: true });
     };
     wv = (event) => {
-      if (this.J.synth.recording && event.target != this.mainLayer && event.target != this.sf && event.target != this.jc.input) {
+      if (this.J.synth.recording && event.target != this.mainLayer && event.target != this.rf && event.target != this.ic.input) {
         this.refocusStage();
       }
     };
     // Refocus stage if a sub-element that needs focus isn't being edited.
     nv = () => {
-      if (!this.ib.editingModLabel)
+      if (!this.hb.editingModLabel)
         this.mainLayer.focus({ preventScroll: true });
     };
     changeBarScrollPos(offset) {
-      this.ud.changePos(offset);
+      this.td.changePos(offset);
     }
     whenUpdated = () => {
       const prefs = this.J.prefs;
@@ -46605,21 +46610,21 @@ You should be redirected to the song at:<br /><br />
           this.J.synth.determineInvalidModulators(channel2.instruments[j]);
         }
       }
-      this.ud.render();
-      this.Pd.render();
+      this.td.render();
+      this.Od.render();
       if (this.J.recalcChannelColors == true) {
-        this.Pd.rerenderChannelColors();
+        this.Od.rerenderChannelColors();
         this.J.recalcChannelColors = false;
       }
       this.Vh.render();
       this.zg.scrollLeft = this.J.barScrollPos * this.J.getBarWidth();
       this.zg.scrollTop = this.J.channelScrollPos * ChannelRow.patternHeight;
-      if (document.activeElement != this.ib.modDragValueLabel && this.ib.editingModLabel) {
-        this.ib.stopEditingModLabel(false);
+      if (document.activeElement != this.hb.modDragValueLabel && this.hb.editingModLabel) {
+        this.hb.stopEditingModLabel(false);
       }
-      this.rd.container.style.display = prefs.showLetters ? "" : "none";
+      this.qd.container.style.display = prefs.showLetters ? "" : "none";
       this.sg.container.style.display = prefs.showScrollBar ? "" : "none";
-      this.ud.container.style.display = this.J.song.barCount > this.J.trackVisibleBars ? "" : "none";
+      this.td.container.style.display = this.J.song.barCount > this.J.trackVisibleBars ? "" : "none";
       this.sr.style.display = this.J.prefs.displayVolumeBar ? "" : "none";
       this.tr.style.display = this.J.prefs.displayVolumeBar ? "" : "none";
       this.Sr.style.display = this.J.prefs.showOscilloscope ? "" : "none";
@@ -46627,7 +46632,7 @@ You should be redirected to the song at:<br /><br />
       this.en.style.display = this.J.prefs.showSampleLoadingStatus ? "" : "none";
       this.Bi.style.display = this.J.prefs.instrumentCopyPaste ? "" : "none";
       this.Ci.style.display = this.J.prefs.instrumentImportExport ? "" : "none";
-      this.yd.style.scrollbarWidth = this.J.prefs.showInstrumentScrollbars ? "" : "none";
+      this.xd.style.scrollbarWidth = this.J.prefs.showInstrumentScrollbars ? "" : "none";
       if (document.getElementById("text-content"))
         document.getElementById("text-content").style.display = this.J.prefs.showDescription ? "" : "none";
       if (this.J.getFullScreen()) {
@@ -46646,28 +46651,28 @@ You should be redirected to the song at:<br /><br />
           beepboxEditorContainer2.style.borderStyle = "";
         }
         this.qg.container.style.width = patternEditorWidth + "px";
-        this.ib.container.style.width = patternEditorWidth + "px";
+        this.hb.container.style.width = patternEditorWidth + "px";
         this.rg.container.style.width = patternEditorWidth + "px";
         this.qg.container.style.flexShrink = "0";
-        this.ib.container.style.flexShrink = "0";
+        this.hb.container.style.flexShrink = "0";
         this.rg.container.style.flexShrink = "0";
         this.qg.container.style.display = "";
         this.rg.container.style.display = "";
         this.qg.render();
         this.rg.render();
+        this.Wd.style.display = this.J.channel < this.J.song.pitchChannelCount ? "" : "none";
         this.Xd.style.display = this.J.channel < this.J.song.pitchChannelCount ? "" : "none";
-        this.Yd.style.display = this.J.channel < this.J.song.pitchChannelCount ? "" : "none";
+        this.Wd.style.right = prefs.showScrollBar ? "24px" : "4px";
         this.Xd.style.right = prefs.showScrollBar ? "24px" : "4px";
-        this.Yd.style.right = prefs.showScrollBar ? "24px" : "4px";
       } else {
-        this.ib.container.style.width = "";
-        this.ib.container.style.flexShrink = "";
+        this.hb.container.style.width = "";
+        this.hb.container.style.flexShrink = "";
         this.qg.container.style.display = "none";
         this.rg.container.style.display = "none";
+        this.Wd.style.display = "none";
         this.Xd.style.display = "none";
-        this.Yd.style.display = "none";
       }
-      this.ib.render();
+      this.hb.render();
       const textOnIcon = ColorConfig.getComputed("--text-enabled-icon");
       const textOffIcon = ColorConfig.getComputed("--text-disabled-icon");
       const textSpacingIcon = ColorConfig.getComputed("--text-spacing-icon");
@@ -46703,12 +46708,12 @@ You should be redirected to the song at:<br /><br />
         textSpacingIcon + "Set Theme...",
         textSpacingIcon + "Custom Theme..."
       ];
-      const technicalOptionGroup = this.xe.children[1];
+      const technicalOptionGroup = this.we.children[1];
       for (let i = 0; i < technicalOptionGroup.children.length; i++) {
         const option15 = technicalOptionGroup.children[i];
         if (option15.textContent != optionCommands[i + 1]) option15.textContent = optionCommands[i + 1];
       }
-      const appearanceOptionGroup = this.xe.children[2];
+      const appearanceOptionGroup = this.we.children[2];
       for (let i = 0; i < appearanceOptionGroup.children.length; i++) {
         const option15 = appearanceOptionGroup.children[i];
         if (option15.textContent != optionCommands[i + technicalOptionGroup.children.length + 2]) option15.textContent = optionCommands[i + technicalOptionGroup.children.length + 2];
@@ -46719,38 +46724,38 @@ You should be redirected to the song at:<br /><br />
       const wasActive = this.mainLayer.contains(document.activeElement);
       const activeElement = document.activeElement;
       const colors = ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder);
-      for (let i = this.vf.childElementCount - 1; i < Config.mdeffectOrder.length; i++) {
-        this.vf.appendChild(option14({ value: i }));
+      for (let i = this.uf.childElementCount - 1; i < Config.mdeffectOrder.length; i++) {
+        this.uf.appendChild(option14({ value: i }));
       }
       for (let i = 0; i < Config.mdeffectOrder.length; i++) {
         let effectFlag = Config.mdeffectOrder[i];
         const selected = (instrument.mdeffects & 1 << effectFlag) != 0;
         const label5 = (selected ? textOnIcon : textOffIcon) + Config.mdeffectNames[effectFlag];
-        const option15 = this.vf.children[i + 1];
+        const option15 = this.uf.children[i + 1];
         if (option15.textContent != label5) option15.textContent = label5;
       }
-      this.$d.selectedIndex = -1;
-      for (let i = this.$d.childElementCount - 1; i < Config.effectOrder.length; i++) {
-        this.$d.appendChild(option14({ value: i }));
+      this._d.selectedIndex = -1;
+      for (let i = this._d.childElementCount - 1; i < Config.effectOrder.length; i++) {
+        this._d.appendChild(option14({ value: i }));
       }
-      this.$d.selectedIndex = -1;
+      this._d.selectedIndex = -1;
       for (let i = 0; i < Config.effectOrder.length; i++) {
         let effectFlag = Config.effectOrder[i];
         const label5 = Config.effectNames[effectFlag];
-        const option15 = this.$d.children[i + 1];
+        const option15 = this._d.children[i + 1];
         if (option15.textContent != label5) option15.textContent = label5;
       }
-      setSelectedValue2(this.ye, this.J.song.scale);
-      this.ye.title = Config.scales[this.J.song.scale].realName;
-      setSelectedValue2(this.tf, Config.keys.length - 1 - this.J.song.key);
+      setSelectedValue2(this.xe, this.J.song.scale);
+      this.xe.title = Config.scales[this.J.song.scale].realName;
+      setSelectedValue2(this.sf, Config.keys.length - 1 - this.J.song.key);
       this.Xh.value = Math.round(this.J.song.octave).toString();
       this.Cm.updateValue(Math.max(0, Math.round(this.J.song.tempo)));
       this.Yh.value = Math.round(this.J.song.tempo).toString();
       this._m.updateValue(this.J.song.title);
       if (this.J.synth.isFilterModActive(false, 0, 0, true)) {
-        this.ze.render(true, this.yb || this.Va);
+        this.ye.render(true, this.xb || this.Ua);
       } else {
-        this.ze.render();
+        this.ye.render();
       }
       this.fi.style.setProperty("--text-color-lit", colors.primaryNote);
       this.fi.style.setProperty("--text-color-dim", colors.secondaryNote);
@@ -46769,27 +46774,27 @@ You should be redirected to the song at:<br /><br />
         this.Lm.style.display = "none";
         this.Nm.style.display = "none";
       }
-      setSelectedValue2(this.uf, this.J.song.rhythm);
+      setSelectedValue2(this.tf, this.J.song.rhythm);
       if (!this.J.song.getChannelIsMod(this.J.channel)) {
         this.$m.style.display = "";
         this.Rm.style.display = "";
         this.Em.style.display = "";
         this.an.style.setProperty("display", "");
         if (prefs.instrumentButtonsAtTop) {
-          this.lc.insertBefore(this.Ci, this.lc.firstChild);
-          this.lc.insertBefore(this.Bi, this.lc.firstChild);
+          this.kc.insertBefore(this.Ci, this.kc.firstChild);
+          this.kc.insertBefore(this.Bi, this.kc.firstChild);
         } else {
-          this.lc.appendChild(this.Bi);
-          this.lc.appendChild(this.Ci);
+          this.kc.appendChild(this.Bi);
+          this.kc.appendChild(this.Ci);
         }
-        this.lc.insertBefore(this.ai, this.lc.firstChild);
-        this.lc.insertBefore(this.Af, this.lc.firstChild);
+        this.kc.insertBefore(this.ai, this.kc.firstChild);
+        this.kc.insertBefore(this.zf, this.kc.firstChild);
         if (this.J.song.channels[this.J.channel].name == "") {
-          this.Af.textContent = "Instrument Settings";
+          this.zf.textContent = "Instrument Settings";
         } else {
-          this.Af.textContent = this.J.song.channels[this.J.channel].name;
+          this.zf.textContent = this.J.song.channels[this.J.channel].name;
         }
-        this.Ab.style.display = "none";
+        this.zb.style.display = "none";
         this.ds(this.J.channel, instrumentIndex);
         if (this.J.song.getChannelIsNoise(this.J.channel)) {
           this.Zh.style.display = "none";
@@ -46805,56 +46810,56 @@ You should be redirected to the song at:<br /><br />
           setSelectedValue2(this.Zh, instrument.preset, true);
         }
         if (instrument.type == 2 /* noise */) {
+          this.ed.style.display = "none";
           this.fd.style.display = "none";
-          this.gd.style.display = "none";
+          this.Kc.style.display = "none";
           this.Lc.style.display = "none";
           this.Mc.style.display = "none";
           this.Nc.style.display = "none";
           this.Oc.style.display = "none";
-          this.Pc.style.display = "none";
-          this.hd.style.display = "none";
+          this.gd.style.display = "none";
           this.Uj.style.display = "";
           setSelectedValue2(this.Pj, instrument.chipNoise, true);
         } else {
           this.Uj.style.display = "none";
         }
         if (instrument.type == 3 /* spectrum */) {
+          this.ed.style.display = "none";
           this.fd.style.display = "none";
-          this.gd.style.display = "none";
+          this.Kc.style.display = "none";
           this.Lc.style.display = "none";
           this.Mc.style.display = "none";
           this.Nc.style.display = "none";
           this.Oc.style.display = "none";
-          this.Pc.style.display = "none";
-          this.hd.style.display = "none";
+          this.gd.style.display = "none";
           this.hk.style.display = "";
           this.Ym.render();
         } else {
           this.hk.style.display = "none";
         }
         if (instrument.type == 5 /* harmonics */ || instrument.type == 7 /* pickedString */) {
+          this.ed.style.display = "none";
           this.fd.style.display = "none";
-          this.gd.style.display = "none";
+          this.Kc.style.display = "none";
           this.Lc.style.display = "none";
           this.Mc.style.display = "none";
           this.Nc.style.display = "none";
           this.Oc.style.display = "none";
-          this.Pc.style.display = "none";
-          this.hd.style.display = "none";
+          this.gd.style.display = "none";
           this.ik.style.display = "flex";
           this.Zm.render();
         } else {
           this.ik.style.display = "none";
         }
         if (instrument.type == 7 /* pickedString */) {
+          this.ed.style.display = "none";
           this.fd.style.display = "none";
-          this.gd.style.display = "none";
+          this.Kc.style.display = "none";
           this.Lc.style.display = "none";
           this.Mc.style.display = "none";
           this.Nc.style.display = "none";
           this.Oc.style.display = "none";
-          this.Pc.style.display = "none";
-          this.hd.style.display = "none";
+          this.gd.style.display = "none";
           this.Tm.style.display = "";
           this.Sm.updateValue(instrument.stringSustain);
           this.Br.textContent = Config.enableAcousticSustain ? "Sustain (" + Config.sustainTypeNames[instrument.stringSustainType].substring(0, 1).toUpperCase() + "):" : "Sustain:";
@@ -46863,14 +46868,14 @@ You should be redirected to the song at:<br /><br />
         }
         if (instrument.type == 4 /* drumset */) {
           this.xg.style.display = "";
+          this.ed.style.display = "none";
           this.fd.style.display = "none";
-          this.gd.style.display = "none";
+          this.Kc.style.display = "none";
           this.Lc.style.display = "none";
           this.Mc.style.display = "none";
           this.Nc.style.display = "none";
           this.Oc.style.display = "none";
-          this.Pc.style.display = "none";
-          this.hd.style.display = "none";
+          this.gd.style.display = "none";
           this.Gm.style.display = "none";
           for (let i = 0; i < Config.drumCount; i++) {
             setSelectedValue2(this.as[i], instrument.drumsetEnvelopes[i]);
@@ -46882,22 +46887,22 @@ You should be redirected to the song at:<br /><br />
           this.Fm.render();
         }
         if (instrument.type == 0 /* chip */) {
+          this.ed.style.display = "";
           this.fd.style.display = "";
-          this.gd.style.display = "";
           if (instrument.isUsingAdvancedLoopControls) {
+            this.Kc.style.display = "";
             this.Lc.style.display = "";
             this.Mc.style.display = "";
             this.Nc.style.display = "";
             this.Oc.style.display = "";
-            this.Pc.style.display = "";
           } else {
+            this.Kc.style.display = "none";
             this.Lc.style.display = "none";
             this.Mc.style.display = "none";
             this.Nc.style.display = "none";
             this.Oc.style.display = "none";
-            this.Pc.style.display = "none";
           }
-          this.hd.style.display = "";
+          this.gd.style.display = "";
           setSelectedValue2(this.Oj, instrument.chipWave);
           this.Qj.checked = instrument.isUsingAdvancedLoopControls ? true : false;
           setSelectedValue2(this.Rj, instrument.chipWaveLoopMode);
@@ -46909,14 +46914,14 @@ You should be redirected to the song at:<br /><br />
         }
         if (instrument.type == 9 /* customChipWave */) {
           this.zi.style.display = "";
+          this.ed.style.display = "none";
           this.fd.style.display = "none";
-          this.gd.style.display = "none";
+          this.Kc.style.display = "none";
           this.Lc.style.display = "none";
           this.Mc.style.display = "none";
           this.Nc.style.display = "none";
           this.Oc.style.display = "none";
-          this.Pc.style.display = "none";
-          this.hd.style.display = "none";
+          this.gd.style.display = "none";
         } else {
           this.zi.style.display = "none";
         }
@@ -46933,14 +46938,14 @@ You should be redirected to the song at:<br /><br />
           this._j.style.display = "none";
         }
         if (instrument.type == 6 /* pwm */ || instrument.type == 8 /* supersaw */) {
+          this.ed.style.display = "none";
           this.fd.style.display = "none";
-          this.gd.style.display = "none";
+          this.Kc.style.display = "none";
           this.Lc.style.display = "none";
           this.Mc.style.display = "none";
           this.Nc.style.display = "none";
           this.Oc.style.display = "none";
-          this.Pc.style.display = "none";
-          this.hd.style.display = "none";
+          this.gd.style.display = "none";
           this.$j.style.display = "";
           this.hi.input.title = prettyNumber(instrument.pulseWidth) + "%";
           this.hi.updateValue(instrument.pulseWidth);
@@ -46952,16 +46957,16 @@ You should be redirected to the song at:<br /><br />
           this.ji.style.display = "none";
         }
         if (instrument.type == 1 /* fm */ || instrument.type == 11 /* fm6op */) {
-          this.yf.style.display = "";
+          this.xf.style.display = "";
           this.rk.style.display = "";
+          this.ed.style.display = "none";
           this.fd.style.display = "none";
-          this.gd.style.display = "none";
+          this.Kc.style.display = "none";
           this.Lc.style.display = "none";
           this.Mc.style.display = "none";
           this.Nc.style.display = "none";
           this.Oc.style.display = "none";
-          this.Pc.style.display = "none";
-          this.hd.style.display = "none";
+          this.gd.style.display = "none";
           setSelectedValue2(this.Nj, instrument.algorithm);
           setSelectedValue2(this.gk, instrument.feedbackType);
           this.Ai.updateValue(instrument.feedbackAmplitude);
@@ -46969,15 +46974,15 @@ You should be redirected to the song at:<br /><br />
             const isCarrier = instrument.type == 1 /* fm */ ? i < Config.algorithms[instrument.algorithm].carrierCount : i < instrument.customAlgorithm.carrierCount;
             this.Ag[i].style.color = isCarrier ? ColorConfig.primaryText : "";
             setSelectedValue2(this.jn[i], instrument.operators[i].frequency);
-            this.jd[i].updateValue(instrument.operators[i].amplitude);
+            this.hd[i].updateValue(instrument.operators[i].amplitude);
             setSelectedValue2(this.$r[i], instrument.operators[i].waveform);
             this.Hi[i].updateValue(instrument.operators[i].pulseWidth);
             this.Hi[i].input.title = "" + Config.pwmOperatorWaves[instrument.operators[i].pulseWidth].name;
-            this.Ce[i].style.color = isCarrier ? ColorConfig.primaryText : "";
+            this.Be[i].style.color = isCarrier ? ColorConfig.primaryText : "";
             const operatorName = (isCarrier ? "Voice " : "Modulator ") + (i + 1);
             this.jn[i].title = operatorName + " Frequency";
-            this.jd[i].input.title = operatorName + (isCarrier ? " Volume" : " Amplitude");
-            this.Ce[i].style.display = this.Ee[i] ? "" : "none";
+            this.hd[i].input.title = operatorName + (isCarrier ? " Volume" : " Amplitude");
+            this.Be[i].style.display = this.De[i] ? "" : "none";
             if (instrument.operators[i].waveform == 2) {
               this.Hi[i].container.style.display = "";
               this.kn[i].style.display = "none";
@@ -46989,13 +46994,13 @@ You should be redirected to the song at:<br /><br />
           if (instrument.type == 11 /* fm6op */) {
             setSelectedValue2(this.mk, instrument.algorithm6Op);
             setSelectedValue2(this.kk, instrument.feedbackType6Op);
-            this.Be.redrawCanvas();
+            this.Ae.redrawCanvas();
             this.nk.style.display = "";
             this.lk.style.display = "";
             this.Ag[4].style.display = "";
             this.Ag[5].style.display = "";
-            this.Ce[4].style.display = this.Ee[4] ? "" : "none";
-            this.Ce[5].style.display = this.Ee[5] ? "" : "none";
+            this.Be[4].style.display = this.De[4] ? "" : "none";
+            this.Be[5].style.display = this.De[5] ? "" : "none";
             this.$h.style.display = "none";
             this.xi.style.display = "none";
           } else {
@@ -47003,8 +47008,8 @@ You should be redirected to the song at:<br /><br />
             this.lk.style.display = "none";
             this.Ag[4].style.display = "none";
             this.Ag[5].style.display = "none";
-            this.Ce[4].style.display = "none";
-            this.Ce[5].style.display = "none";
+            this.Be[4].style.display = "none";
+            this.Be[5].style.display = "none";
             this.xi.style.display = "";
             this.$h.style.display = "";
           }
@@ -47012,33 +47017,33 @@ You should be redirected to the song at:<br /><br />
           this.nk.style.display = "none";
           this.lk.style.display = "none";
           this.$h.style.display = "none";
-          this.yf.style.display = "none";
+          this.xf.style.display = "none";
           this.xi.style.display = "none";
           this.rk.style.display = "none";
         }
         this.hi.input.title = prettyNumber(instrument.pulseWidth) + "%";
-        this.wd.replaceChildren();
+        this.vd.replaceChildren();
         if (effectsIncludeTransition(instrument.mdeffects)) {
-          this.wd.append(this.wr);
-          this.wd.append(this.Xj);
+          this.vd.append(this.wr);
+          this.vd.append(this.Xj);
           if (this.pn) this.Xj.style.display = "";
         }
         if (effectsIncludeChord(instrument.mdeffects)) {
-          this.wd.append(this.Dr);
-          this.wd.append(this.xf);
+          this.vd.append(this.Dr);
+          this.vd.append(this.wf);
           this.Vm.style.display = instrument.chord == Config.chords.dictionary["arpeggio"].index ? "" : "none";
-          this.xf.style.display = instrument.chord == Config.chords.dictionary["arpeggio"].index && this.nn ? "" : "none";
+          this.wf.style.display = instrument.chord == Config.chords.dictionary["arpeggio"].index && this.nn ? "" : "none";
           if (instrument.chord == Config.chords.dictionary["monophonic"].index) {
-            this.wf.value = instrument.monoChordTone + 1 + "";
-            this.wf.style.display = "";
+            this.vf.value = instrument.monoChordTone + 1 + "";
+            this.vf.style.display = "";
             this.Wm.style.width = "52.5%";
           } else {
-            this.wf.style.display = "none";
+            this.vf.style.display = "none";
             this.Wm.style.width = "61.5%";
           }
         }
         if (effectsIncludePitchShift(instrument.mdeffects)) {
-          this.wd.append(this.Ar);
+          this.vd.append(this.Ar);
           this.vg.updateValue(instrument.pitchShift);
           this.vg.input.title = instrument.pitchShift - Config.pitchShiftCenter + " semitone(s)";
           for (const marker of this.zr) {
@@ -47046,13 +47051,13 @@ You should be redirected to the song at:<br /><br />
           }
         }
         if (effectsIncludeDetune(instrument.mdeffects)) {
-          this.wd.append(this.Rm);
+          this.vd.append(this.Rm);
           this.ki.updateValue(instrument.detune - Config.detuneCenter);
           this.ki.input.title = detuneToCents(instrument.detune) + " cent(s)";
         }
         if (effectsIncludeVibrato(instrument.mdeffects)) {
-          this.wd.append(this.Fr);
-          this.wd.append(this.wi);
+          this.vd.append(this.Fr);
+          this.vd.append(this.wi);
           if (this.ln) this.wi.style.display = "";
         }
         if (instrument.type == 0 /* chip */ || instrument.type == 9 /* customChipWave */ || instrument.type == 5 /* harmonics */ || instrument.type == 7 /* pickedString */ || instrument.type == 3 /* spectrum */ || instrument.type == 6 /* pwm */ || instrument.type == 2 /* noise */ || instrument.type == 4 /* drumset */) {
@@ -47086,14 +47091,14 @@ You should be redirected to the song at:<br /><br />
             option15.removeAttribute("hidden");
           }
         }
-        this.lc.style.color = ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder).primaryNote;
+        this.kc.style.color = ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder).primaryNote;
         setSelectedValue2(this.Vj, instrument.transition);
         setSelectedValue2(this.ui, instrument.vibrato);
         setSelectedValue2(this.vi, instrument.vibratoType);
         setSelectedValue2(this.wg, instrument.chord);
         this.ii.value = instrument.pulseWidth + "";
         this.mi.value = instrument.detune - Config.detuneCenter + "";
-        this.vd.updateValue(instrument.volume);
+        this.ud.updateValue(instrument.volume);
         this.bi.value = "" + instrument.volume;
         this.dk.updateValue(Math.round(instrument.vibratoDepth * 25));
         this.fk.updateValue(Math.round(instrument.vibratoDelay));
@@ -47117,7 +47122,7 @@ You should be redirected to the song at:<br /><br />
             this.prompt.customChipCanvas.render();
           }
         }
-        this.xc(channel, instrumentIndex, colors);
+        this.wc(channel, instrumentIndex, colors);
       } else {
         this.ds(this.J.channel, instrumentIndex);
         this.Zh.style.display = "none";
@@ -47125,28 +47130,28 @@ You should be redirected to the song at:<br /><br />
         $("#pitchPresetSelect").parent().hide();
         $("#drumPresetSelect").parent().hide();
         if (prefs.instrumentButtonsAtTop) {
-          this.Ab.insertBefore(this.Ci, this.Ab.firstChild);
-          this.Ab.insertBefore(this.Bi, this.Ab.firstChild);
+          this.zb.insertBefore(this.Ci, this.zb.firstChild);
+          this.zb.insertBefore(this.Bi, this.zb.firstChild);
         } else {
-          this.Ab.appendChild(this.Bi);
-          this.Ab.appendChild(this.Ci);
+          this.zb.appendChild(this.Bi);
+          this.zb.appendChild(this.Ci);
         }
-        this.Ab.insertBefore(this.ai, this.Ab.firstChild);
-        this.Ab.insertBefore(this.Af, this.Ab.firstChild);
+        this.zb.insertBefore(this.ai, this.zb.firstChild);
+        this.zb.insertBefore(this.zf, this.zb.firstChild);
         if (this.J.song.channels[this.J.channel].name == "") {
-          this.Af.textContent = "Modulator Settings";
+          this.zf.textContent = "Modulator Settings";
         } else {
-          this.Af.textContent = this.J.song.channels[this.J.channel].name;
+          this.zf.textContent = this.J.song.channels[this.J.channel].name;
         }
         this.Uj.style.display = "none";
+        this.ed.style.display = "none";
         this.fd.style.display = "none";
-        this.gd.style.display = "none";
+        this.Kc.style.display = "none";
         this.Lc.style.display = "none";
         this.Mc.style.display = "none";
         this.Nc.style.display = "none";
         this.Oc.style.display = "none";
-        this.Pc.style.display = "none";
-        this.hd.style.display = "none";
+        this.gd.style.display = "none";
         this.hk.style.display = "none";
         this.ik.style.display = "none";
         this.xg.style.display = "none";
@@ -47155,15 +47160,15 @@ You should be redirected to the song at:<br /><br />
         this.Zj.style.display = "none";
         this._j.style.display = "none";
         this.$h.style.display = "none";
-        this.yf.style.display = "none";
+        this.xf.style.display = "none";
         this.xi.style.display = "none";
         this.rk.style.display = "none";
         this.$j.style.display = "none";
         this.yi.style.display = "none";
         this.ji.style.display = "none";
         this.ti.style.display = "none";
-        this.Ab.style.display = "";
-        this.Ab.style.color = ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder).primaryNote;
+        this.zb.style.display = "";
+        this.zb.style.color = ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder).primaryNote;
         for (let mod2 = 0; mod2 < Config.modCount; mod2++) {
           let instrument2 = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
           let modChannels = instrument2.modChannels[mod2][0] >= 0 ? instrument2.modChannels[mod2] : [0];
@@ -47180,8 +47185,8 @@ You should be redirected to the song at:<br /><br />
           }
           let totalInstruments = 0;
           for (let i = 0; i < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount; i++) totalInstruments += this.J.song.channels[i].instruments.length;
-          if (this.J.recalcChannelNames || this.J.recalcModChannels || this.Bb[mod2].children.length != 3 + totalInstruments) {
-            while (this.Bb[mod2].firstChild) this.Bb[mod2].remove(0);
+          if (this.J.recalcChannelNames || this.J.recalcModChannels || this.Ab[mod2].children.length != 3 + totalInstruments) {
+            while (this.Ab[mod2].firstChild) this.Ab[mod2].remove(0);
             const channelList = [];
             channelList.push("none");
             channelList.push("song");
@@ -47220,20 +47225,20 @@ You should be redirected to the song at:<br /><br />
                 channelList.push(newString);
               }
             }
-            buildOptions2(this.Bb[mod2], channelList);
+            buildOptions2(this.Ab[mod2], channelList);
             if (instrument2.modChannels[mod2][0] == -1) {
-              this.Bb[mod2].selectedIndex = 1;
+              this.Ab[mod2].selectedIndex = 1;
             } else if (instrument2.modChannels[mod2][0] == -2) {
-              this.Bb[mod2].selectedIndex = 0;
+              this.Ab[mod2].selectedIndex = 0;
             } else if (instrument2.modChannels[mod2].length == 1) {
               let tgtIndex = 0;
               for (let i = 0; i < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount; i++) {
                 for (let j = 0; j < this.J.song.channels[i].instruments.length; j++) {
                   if (i == instrument2.modChannels[mod2][0] && j == instrument2.modInstruments[mod2][0]) {
-                    let stringValue = Array.from(this.Bb[mod2].children)[tgtIndex + 2].textContent;
+                    let stringValue = Array.from(this.Ab[mod2].children)[tgtIndex + 2].textContent;
                     if (stringValue != null) stringValue = stringValue.substr(2);
-                    this.Bb[mod2].appendChild(option14({ selected: false, disabled: true, hidden: true, value: stringValue }, stringValue));
-                    this.Bb[mod2].selectedIndex = this.Bb[mod2].length - 1;
+                    this.Ab[mod2].appendChild(option14({ selected: false, disabled: true, hidden: true, value: stringValue }, stringValue));
+                    this.Ab[mod2].selectedIndex = this.Ab[mod2].length - 1;
                     tgtIndex = -5;
                     break;
                   } else tgtIndex++;
@@ -47241,12 +47246,12 @@ You should be redirected to the song at:<br /><br />
                 if (tgtIndex == -5) break;
               }
             } else {
-              this.Bb[mod2].appendChild(option14({ selected: false, disabled: true, hidden: true, value: "many" }, "many"));
-              this.Bb[mod2].selectedIndex = this.Bb[mod2].length - 1;
+              this.Ab[mod2].appendChild(option14({ selected: false, disabled: true, hidden: true, value: "many" }, "many"));
+              this.Ab[mod2].selectedIndex = this.Ab[mod2].length - 1;
             }
           }
           if (instrument2.modChannels[mod2][0] != -2) {
-            while (this.Ua[mod2].firstChild) this.Ua[mod2].remove(0);
+            while (this.Ta[mod2].firstChild) this.Ta[mod2].remove(0);
             const settingList = [];
             const unusedSettingList = [];
             settingList.push("none");
@@ -47517,41 +47522,41 @@ You should be redirected to the song at:<br /><br />
                 settingList.push("reset envelope");
               }
             }
-            buildOptions2(this.Ua[mod2], settingList);
+            buildOptions2(this.Ta[mod2], settingList);
             if (unusedSettingList.length > 0) {
-              this.Ua[mod2].appendChild(option14({ selected: false, disabled: true, value: "Add Effect" }, "Add Effect"));
-              buildOptions2(this.Ua[mod2], unusedSettingList);
+              this.Ta[mod2].appendChild(option14({ selected: false, disabled: true, value: "Add Effect" }, "Add Effect"));
+              buildOptions2(this.Ta[mod2], unusedSettingList);
             }
             let setIndex = settingList.indexOf(Config.modulators[instrument2.modulators[mod2]].name);
             if (setIndex == -1) {
-              this.Ua[mod2].insertBefore(option14({ value: Config.modulators[instrument2.modulators[mod2]].name, style: "color: red;" }, Config.modulators[instrument2.modulators[mod2]].name), this.Ua[mod2].children[0]);
-              this.Ua[mod2].selectedIndex = 0;
+              this.Ta[mod2].insertBefore(option14({ value: Config.modulators[instrument2.modulators[mod2]].name, style: "color: red;" }, Config.modulators[instrument2.modulators[mod2]].name), this.Ta[mod2].children[0]);
+              this.Ta[mod2].selectedIndex = 0;
               this.sn(mod2, true);
             } else {
-              this.Ua[mod2].selectedIndex = setIndex;
-              this.Ua[mod2].classList.remove("invalidSetting");
+              this.Ta[mod2].selectedIndex = setIndex;
+              this.Ta[mod2].classList.remove("invalidSetting");
               instrument2.invalidModulators[mod2] = false;
             }
-          } else if (this.Ua[mod2].selectedIndex > 0) {
-            this.Ua[mod2].selectedIndex = 0;
+          } else if (this.Ta[mod2].selectedIndex > 0) {
+            this.Ta[mod2].selectedIndex = 0;
             this.sn(mod2);
           }
           if (instrument2.modChannels[mod2][0] < 0) {
             $("#modChannelText" + mod2).get(0).innerText = "Instr.:";
             if (instrument2.modChannels[mod2][0] == -2) {
               $("#modSettingText" + mod2).get(0).style.display = "none";
-              this.Ua[mod2].parentElement.style.display = "none";
+              this.Ta[mod2].parentElement.style.display = "none";
             } else {
               $("#modSettingText" + mod2).get(0).style.display = "";
-              this.Ua[mod2].parentElement.style.display = "";
+              this.Ta[mod2].parentElement.style.display = "";
             }
-            this.zf[mod2].style.setProperty("fill", ColorConfig.uiWidgetFocus);
-            this.zf[mod2].classList.remove("modTarget");
+            this.yf[mod2].style.setProperty("fill", ColorConfig.uiWidgetFocus);
+            this.yf[mod2].classList.remove("modTarget");
           } else {
             $("#modSettingText" + mod2).get(0).style.display = "";
-            this.Ua[mod2].parentElement.style.display = "";
-            this.zf[mod2].style.setProperty("fill", ColorConfig.indicatorPrimary);
-            this.zf[mod2].classList.add("modTarget");
+            this.Ta[mod2].parentElement.style.display = "";
+            this.yf[mod2].style.setProperty("fill", ColorConfig.indicatorPrimary);
+            this.yf[mod2].classList.add("modTarget");
           }
           let filterType = Config.modulators[instrument2.modulators[mod2]].name;
           let useSongEq = filterType == "song eq";
@@ -47595,18 +47600,18 @@ You should be redirected to the song at:<br /><br />
                 dotCount = 0;
               if (useSongEq) {
                 dotCount = this.J.song.eqFilter.controlPointCount;
-                if (this.Cb[mod2].children.length != 1 + dotCount * 2) {
-                  while (this.Cb[mod2].firstChild) this.Cb[mod2].remove(0);
+                if (this.Bb[mod2].children.length != 1 + dotCount * 2) {
+                  while (this.Bb[mod2].firstChild) this.Bb[mod2].remove(0);
                   const dotList = [];
                   dotList.push("morph");
                   for (let i2 = 0; i2 < dotCount; i2++) {
                     dotList.push("dot " + (i2 + 1) + " x");
                     dotList.push("dot " + (i2 + 1) + " y");
                   }
-                  buildOptions2(this.Cb[mod2], dotList);
+                  buildOptions2(this.Bb[mod2], dotList);
                 }
-              } else if (isSimple || this.Cb[mod2].children.length != 1 + dotCount * 2) {
-                while (this.Cb[mod2].firstChild) this.Cb[mod2].remove(0);
+              } else if (isSimple || this.Bb[mod2].children.length != 1 + dotCount * 2) {
+                while (this.Bb[mod2].firstChild) this.Bb[mod2].remove(0);
                 const dotList = [];
                 if (!isSimple)
                   dotList.push("morph");
@@ -47614,20 +47619,20 @@ You should be redirected to the song at:<br /><br />
                   dotList.push("dot " + (i2 + 1) + " x");
                   dotList.push("dot " + (i2 + 1) + " y");
                 }
-                buildOptions2(this.Cb[mod2], dotList);
+                buildOptions2(this.Bb[mod2], dotList);
               }
-              if (isSimple || instrument2.modFilterTypes[mod2] >= this.Cb[mod2].length) {
-                this.Cb[mod2].classList.add("invalidSetting");
+              if (isSimple || instrument2.modFilterTypes[mod2] >= this.Bb[mod2].length) {
+                this.Bb[mod2].classList.add("invalidSetting");
                 instrument2.invalidModulators[mod2] = true;
                 let useName = (instrument2.modFilterTypes[mod2] - 1) % 2 == 1 ? "dot " + (Math.floor((instrument2.modFilterTypes[mod2] - 1) / 2) + 1) + " y" : "dot " + (Math.floor((instrument2.modFilterTypes[mod2] - 1) / 2) + 1) + " x";
                 if (instrument2.modFilterTypes[mod2] == 0)
                   useName = "morph";
-                this.Cb[mod2].insertBefore(option14({ value: useName, style: "color: red;" }, useName), this.Cb[mod2].children[0]);
-                this.Cb[mod2].selectedIndex = 0;
+                this.Bb[mod2].insertBefore(option14({ value: useName, style: "color: red;" }, useName), this.Bb[mod2].children[0]);
+                this.Bb[mod2].selectedIndex = 0;
               } else {
-                this.Cb[mod2].classList.remove("invalidSetting");
+                this.Bb[mod2].classList.remove("invalidSetting");
                 instrument2.invalidModulators[mod2] = false;
-                this.Cb[mod2].selectedIndex = instrument2.modFilterTypes[mod2];
+                this.Bb[mod2].selectedIndex = instrument2.modFilterTypes[mod2];
               }
             }
           } else {
@@ -47648,22 +47653,22 @@ You should be redirected to the song at:<br /><br />
                 }
               }
             }
-            while (this.kc[mod2].firstChild) this.kc[mod2].remove(0);
+            while (this.jc[mod2].firstChild) this.jc[mod2].remove(0);
             const envelopeList = [];
             for (let i = 0; i < envCount; i++) {
               envelopeList.push("envelope " + (i + 1));
             }
-            buildOptions2(this.kc[mod2], envelopeList);
-            if (instrument2.modEnvelopeNumbers[mod2] >= this.kc[mod2].length) {
-              this.kc[mod2].classList.add("invalidSetting");
+            buildOptions2(this.jc[mod2], envelopeList);
+            if (instrument2.modEnvelopeNumbers[mod2] >= this.jc[mod2].length) {
+              this.jc[mod2].classList.add("invalidSetting");
               instrument2.invalidModulators[mod2] = true;
               let useName = "envelope " + instrument2.modEnvelopeNumbers[mod2];
-              this.kc[mod2].insertBefore(option14({ value: useName, style: "color: red;" }, useName), this.kc[mod2].children[0]);
-              this.kc[mod2].selectedIndex = 0;
+              this.jc[mod2].insertBefore(option14({ value: useName, style: "color: red;" }, useName), this.jc[mod2].children[0]);
+              this.jc[mod2].selectedIndex = 0;
             } else {
-              this.kc[mod2].classList.remove("invalidSetting");
+              this.jc[mod2].classList.remove("invalidSetting");
               instrument2.invalidModulators[mod2] = false;
-              this.kc[mod2].selectedIndex = instrument2.modEnvelopeNumbers[mod2];
+              this.jc[mod2].selectedIndex = instrument2.modEnvelopeNumbers[mod2];
             }
           } else {
             $("#modEnvelopeText" + mod2).get(0).style.display = "none";
@@ -47683,36 +47688,36 @@ You should be redirected to the song at:<br /><br />
         this.$m.style.display = "none";
         this.Em.style.display = "none";
         this.an.style.setProperty("display", "none");
-        this.lc.style.color = ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder).primaryNote;
+        this.kc.style.color = ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder).primaryNote;
         if (this.J.channel >= this.J.song.pitchChannelCount + this.J.song.noiseChannelCount) {
-          this.rd.forceRender();
+          this.qd.forceRender();
         }
-        this.xc(channel, instrumentIndex, colors);
+        this.wc(channel, instrumentIndex, colors);
       }
-      this.lc.style.color = colors.primaryNote;
+      this.kc.style.color = colors.primaryNote;
       if (this.J.synth.isFilterModActive(true, this.J.channel, this.J.getCurrentInstrument())) {
-        this.gi.render(true, this.yb || this.Va);
+        this.gi.render(true, this.xb || this.Ua);
       } else {
         this.gi.render();
       }
       if (this.J.synth.isFilterModActive(false, 0, 0, true)) {
-        this.ze.render(true, this.yb || this.Va);
+        this.ye.render(true, this.xb || this.Ua);
       } else {
-        this.ze.render();
+        this.ye.render();
       }
       for (let i = 0; i < this.effectEditor.eqFilterEditors.length; i++) {
         if (this.J.synth.isFilterModActive(false, 0, 0, true)) {
-          this.effectEditor.eqFilterEditors[i].render(true, this.yb || this.Va);
+          this.effectEditor.eqFilterEditors[i].render(true, this.xb || this.Ua);
         } else {
           this.effectEditor.eqFilterEditors[i].render();
         }
       }
-      this.vd.updateValue(instrument.volume);
+      this.ud.updateValue(instrument.volume);
       this.ki.updateValue(instrument.detune - Config.detuneCenter);
       this.ck.checked = instrument.fastTwoNoteArp ? true : false;
       this.Wj.checked = instrument.clicklessTransition ? true : false;
       this.sk.disabled = instrument.envelopeCount >= Config.maxEnvelopeCount;
-      this.jc.updateValue(prefs.volume);
+      this.ic.updateValue(prefs.volume);
       if (wasActive && activeElement != null && activeElement.clientWidth == 0) {
         this.refocusStage();
       }
@@ -47722,14 +47727,14 @@ You should be redirected to the song at:<br /><br />
       }
       if (this.J.addedEffect) {
         const envButtonRect = this.sk.getBoundingClientRect();
-        const instSettingsRect = this.yd.getBoundingClientRect();
+        const instSettingsRect = this.xd.getBoundingClientRect();
         const settingsRect = this.Fi.getBoundingClientRect();
-        this.yd.scrollTop += Math.max(0, envButtonRect.top - (instSettingsRect.top + instSettingsRect.height));
+        this.xd.scrollTop += Math.max(0, envButtonRect.top - (instSettingsRect.top + instSettingsRect.height));
         this.Fi.scrollTop += Math.max(0, envButtonRect.top - (settingsRect.top + settingsRect.height));
         this.J.addedEffect = false;
       }
       if (this.J.addedEnvelope) {
-        this.yd.scrollTop = this.yd.scrollHeight;
+        this.xd.scrollTop = this.xd.scrollHeight;
         this.Fi.scrollTop = this.Fi.scrollHeight;
         this.J.addedEnvelope = false;
       }
@@ -47738,43 +47743,43 @@ You should be redirected to the song at:<br /><br />
     handleModRecording() {
       window.clearTimeout(this.Bg);
       const lastChange = this.J.checkLastChange();
-      if ((this.yb || this.Va) && lastChange != null && this.J.synth.playing) {
-        const changedPatterns = this.ib.setModSettingsForChange(lastChange, this);
+      if ((this.xb || this.Ua) && lastChange != null && this.J.synth.playing) {
+        const changedPatterns = this.hb.setModSettingsForChange(lastChange, this);
         if (this.J.continuingModRecordingChange != null) {
           this.Bg = window.setTimeout(() => {
             this.handleModRecording();
           }, 10);
           this.J.recordingModulators = true;
           if (changedPatterns)
-            this.Pd.render();
+            this.Od.render();
         }
       } else if (this.J.recordingModulators) {
         this.J.recordingModulators = false;
         this.J.record(new ChangeHoldingModRecording(this.J, null, null, null));
       }
     }
-    xc(channel, instrumentIndex, colors) {
+    wc(channel, instrumentIndex, colors) {
       if (this.J.song.layeredInstruments || this.J.song.patternInstruments) {
         this.ai.style.display = "";
-        this.Ae.style.setProperty("--text-color-lit", colors.primaryNote);
-        this.Ae.style.setProperty("--text-color-dim", colors.secondaryNote);
-        this.Ae.style.setProperty("--background-color-lit", colors.primaryChannel);
-        this.Ae.style.setProperty("--background-color-dim", colors.secondaryChannel);
+        this.ze.style.setProperty("--text-color-lit", colors.primaryNote);
+        this.ze.style.setProperty("--text-color-dim", colors.secondaryNote);
+        this.ze.style.setProperty("--background-color-lit", colors.primaryChannel);
+        this.ze.style.setProperty("--background-color-dim", colors.secondaryChannel);
         const maxInstrumentsPerChannel = this.J.song.getMaxInstrumentsPerChannel();
-        while (this.Sb.length < channel.instruments.length) {
-          const instrumentButton = button25(String(this.Sb.length + 1));
-          this.Sb.push(instrumentButton);
-          this.Ae.insertBefore(instrumentButton, this.ug);
+        while (this.Rb.length < channel.instruments.length) {
+          const instrumentButton = button25(String(this.Rb.length + 1));
+          this.Rb.push(instrumentButton);
+          this.ze.insertBefore(instrumentButton, this.ug);
         }
         for (let i = this.gn; i < channel.instruments.length; i++) {
-          this.Sb[i].style.display = "";
+          this.Rb[i].style.display = "";
         }
         for (let i = channel.instruments.length; i < this.gn; i++) {
-          this.Sb[i].style.display = "none";
+          this.Rb[i].style.display = "none";
         }
         this.gn = channel.instruments.length;
-        while (this.Sb.length > maxInstrumentsPerChannel) {
-          this.Ae.removeChild(this.Sb.pop());
+        while (this.Rb.length > maxInstrumentsPerChannel) {
+          this.ze.removeChild(this.Rb.pop());
         }
         this.ug.style.display = channel.instruments.length > Config.instrumentCountMin ? "" : "none";
         this.Dm.style.display = channel.instruments.length < maxInstrumentsPerChannel ? "" : "none";
@@ -47785,39 +47790,39 @@ You should be redirected to the song at:<br /><br />
         }
         if (channel.instruments.length > 1) {
           if (this.Gi != instrumentIndex) {
-            const oldButton = this.Sb[this.Gi];
+            const oldButton = this.Rb[this.Gi];
             if (oldButton != null) oldButton.classList.remove("selected-instrument");
-            const newButton = this.Sb[instrumentIndex];
+            const newButton = this.Rb[instrumentIndex];
             newButton.classList.add("selected-instrument");
             this.Gi = instrumentIndex;
           }
         } else {
-          const oldButton = this.Sb[this.Gi];
+          const oldButton = this.Rb[this.Gi];
           if (oldButton != null) oldButton.classList.remove("selected-instrument");
           this.Gi = -1;
         }
         if (this.J.song.layeredInstruments && this.J.song.patternInstruments && this.J.channel < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount) {
           for (let i = 0; i < channel.instruments.length; i++) {
             if (this.J.recentPatternInstruments[this.J.channel].indexOf(i) != -1) {
-              this.Sb[i].classList.remove("deactivated");
+              this.Rb[i].classList.remove("deactivated");
             } else {
-              this.Sb[i].classList.add("deactivated");
+              this.Rb[i].classList.add("deactivated");
             }
           }
           this.hn = true;
         } else if (this.hn || this.J.channel >= this.J.song.pitchChannelCount + this.J.song.noiseChannelCount) {
           for (let i = 0; i < channel.instruments.length; i++) {
-            this.Sb[i].classList.remove("deactivated");
+            this.Rb[i].classList.remove("deactivated");
           }
           this.hn = false;
         }
         if (this.J.song.layeredInstruments && this.J.song.patternInstruments && channel.instruments.length > 1 && this.J.channel < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount) {
           for (let i = 0; i < channel.instruments.length; i++) {
-            this.Sb[i].classList.remove("no-underline");
+            this.Rb[i].classList.remove("no-underline");
           }
         } else {
           for (let i = 0; i < channel.instruments.length; i++) {
-            this.Sb[i].classList.add("no-underline");
+            this.Rb[i].classList.add("no-underline");
           }
         }
       } else {
@@ -47825,44 +47830,44 @@ You should be redirected to the song at:<br /><br />
       }
     }
     updatePlayButton = () => {
-      if (this.Wr != this.J.synth.playing || this.Xr != this.J.synth.recording || this.Yr != this.J.prefs.showRecordButton || this.Zr != this.yb) {
+      if (this.Wr != this.J.synth.playing || this.Xr != this.J.synth.recording || this.Yr != this.J.prefs.showRecordButton || this.Zr != this.xb) {
         this.Wr = this.J.synth.playing;
         this.Xr = this.J.synth.recording;
         this.Yr = this.J.prefs.showRecordButton;
-        this.Zr = this.yb;
-        if (document.activeElement == this.ja || document.activeElement == this.Wh || document.activeElement == this.Zd || document.activeElement == this.sf) {
+        this.Zr = this.xb;
+        if (document.activeElement == this.ia || document.activeElement == this.Wh || document.activeElement == this.Yd || document.activeElement == this.rf) {
           this.refocusStage();
         }
-        this.ja.style.display = "none";
+        this.ia.style.display = "none";
         this.Wh.style.display = "none";
-        this.Zd.style.display = "none";
-        this.sf.style.display = "none";
+        this.Yd.style.display = "none";
+        this.rf.style.display = "none";
         this.Kj.style.display = "";
         this.Lj.style.display = "";
-        this.ja.classList.remove("shrunk");
-        this.Zd.classList.remove("shrunk");
+        this.ia.classList.remove("shrunk");
+        this.Yd.classList.remove("shrunk");
         this.yg.style.pointerEvents = "";
         this.sg.container.style.pointerEvents = "";
         this.sg.container.style.opacity = "";
         this.dn.style.pointerEvents = "";
-        this.ac.container.style.opacity = "";
-        this.yd.style.pointerEvents = "";
-        this.yd.style.opacity = "";
+        this.$b.container.style.opacity = "";
+        this.xd.style.pointerEvents = "";
+        this.xd.style.opacity = "";
         this.Di.style.pointerEvents = "";
         this.Di.style.opacity = "";
         this.Ei.style.pointerEvents = "";
         this.Ei.style.opacity = "";
         if (this.J.synth.recording) {
-          this.sf.style.display = "";
+          this.rf.style.display = "";
           this.Kj.style.display = "none";
           this.Lj.style.display = "none";
           this.yg.style.pointerEvents = "none";
           this.sg.container.style.pointerEvents = "none";
           this.sg.container.style.opacity = "0.5";
           this.dn.style.pointerEvents = "none";
-          this.ac.container.style.opacity = "0.5";
-          this.yd.style.pointerEvents = "none";
-          this.yd.style.opacity = "0.5";
+          this.$b.container.style.opacity = "0.5";
+          this.xd.style.pointerEvents = "none";
+          this.xd.style.opacity = "0.5";
           this.Di.style.pointerEvents = "none";
           this.Di.style.opacity = "0.5";
           this.Ei.style.pointerEvents = "none";
@@ -47870,14 +47875,14 @@ You should be redirected to the song at:<br /><br />
         } else if (this.J.synth.playing) {
           this.Wh.style.display = "";
         } else if (this.J.prefs.showRecordButton) {
-          this.ja.style.display = "";
-          this.Zd.style.display = "";
-          this.ja.classList.add("shrunk");
-          this.Zd.classList.add("shrunk");
-        } else if (this.yb) {
-          this.Zd.style.display = "";
+          this.ia.style.display = "";
+          this.Yd.style.display = "";
+          this.ia.classList.add("shrunk");
+          this.Yd.classList.add("shrunk");
+        } else if (this.xb) {
+          this.Yd.style.display = "";
         } else {
-          this.ja.style.display = "";
+          this.ia.style.display = "";
         }
       }
       window.requestAnimationFrame(this.updatePlayButton);
@@ -47946,15 +47951,15 @@ You should be redirected to the song at:<br /><br />
         this.cn.style.setProperty("fill", ColorConfig.indicatorSecondary);
       }
       if (modUsed) {
-        this.ae.style.setProperty("display", "");
-        this.ae.style.setProperty("fill", ColorConfig.indicatorPrimary);
-        this.ae.classList.add("modTarget");
+        this.$d.style.setProperty("display", "");
+        this.$d.style.setProperty("fill", ColorConfig.indicatorPrimary);
+        this.$d.classList.add("modTarget");
       } else if (channelIndex < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount) {
-        this.ae.style.setProperty("display", "");
-        this.ae.style.setProperty("fill", ColorConfig.indicatorSecondary);
-        this.ae.classList.remove("modTarget");
+        this.$d.style.setProperty("display", "");
+        this.$d.style.setProperty("fill", ColorConfig.indicatorSecondary);
+        this.$d.classList.remove("modTarget");
       } else {
-        this.ae.style.setProperty("display", "none");
+        this.$d.style.setProperty("display", "none");
       }
     }
     tv = (event) => {
@@ -47994,9 +47999,9 @@ You should be redirected to the song at:<br /><br />
           break;
       }
     };
-    qa = (event) => {
-      this.yb = event.ctrlKey;
-      this.Va = event.shiftKey;
+    pa = (event) => {
+      this.xb = event.ctrlKey;
+      this.Ua = event.shiftKey;
       if (this.prompt) {
         if (this.prompt instanceof CustomChipPrompt || this.prompt instanceof LimiterPrompt || this.prompt instanceof CustomScalePrompt || this.prompt instanceof CustomFilterPrompt) {
           this.prompt.whenKeyPressed(event);
@@ -48006,14 +48011,14 @@ You should be redirected to the song at:<br /><br />
         }
         return;
       }
-      if (document.activeElement == this._m.input || this.ib.editingModLabel || document.activeElement == this.Vh.Hb.input) {
+      if (document.activeElement == this._m.input || this.hb.editingModLabel || document.activeElement == this.Vh.Gb.input) {
         if (event.keyCode == 13 || event.keyCode == 27) {
           this.mainLayer.focus();
-          this.ib.stopEditingModLabel(event.keyCode == 27);
+          this.hb.stopEditingModLabel(event.keyCode == 27);
         }
         return;
       }
-      if (document.activeElement == this.ii || document.activeElement == this.mi || document.activeElement == this.bi || document.activeElement == this.ci || document.activeElement == this.di || document.activeElement == this.ei || document.activeElement == this.Xh || document.activeElement == this.oi || document.activeElement == this.pi || document.activeElement == this.qi || document.activeElement == this.ri || document.activeElement == this.si || document.activeElement == this.wf || this.effectEditor.panSliderInputBoxes.find((element) => element == document.activeElement) || this.envelopeEditor.pitchStartBoxes.find((element) => element == document.activeElement) || this.envelopeEditor.pitchEndBoxes.find((element) => element == document.activeElement) || this.envelopeEditor.perEnvelopeLowerBoundBoxes.find((element) => element == document.activeElement) || this.envelopeEditor.perEnvelopeUpperBoundBoxes.find((element) => element == document.activeElement) || this.envelopeEditor.randomStepsBoxes.find((element) => element == document.activeElement) || this.envelopeEditor.randomStepsBoxes.find((element) => element == document.activeElement) || this.envelopeEditor.LFOStepsBoxes.find((element) => element == document.activeElement)) {
+      if (document.activeElement == this.ii || document.activeElement == this.mi || document.activeElement == this.bi || document.activeElement == this.ci || document.activeElement == this.di || document.activeElement == this.ei || document.activeElement == this.Xh || document.activeElement == this.oi || document.activeElement == this.pi || document.activeElement == this.qi || document.activeElement == this.ri || document.activeElement == this.si || document.activeElement == this.vf || this.effectEditor.panSliderInputBoxes.find((element) => element == document.activeElement) || this.envelopeEditor.pitchStartBoxes.find((element) => element == document.activeElement) || this.envelopeEditor.pitchEndBoxes.find((element) => element == document.activeElement) || this.envelopeEditor.perEnvelopeLowerBoundBoxes.find((element) => element == document.activeElement) || this.envelopeEditor.perEnvelopeUpperBoundBoxes.find((element) => element == document.activeElement) || this.envelopeEditor.randomStepsBoxes.find((element) => element == document.activeElement) || this.envelopeEditor.randomStepsBoxes.find((element) => element == document.activeElement) || this.envelopeEditor.LFOStepsBoxes.find((element) => element == document.activeElement)) {
         if (event.keyCode == 13 || event.keyCode == 27) {
           this.mainLayer.focus();
         }
@@ -48021,14 +48026,14 @@ You should be redirected to the song at:<br /><br />
       }
       if (this.J.synth.recording) {
         if (!event.ctrlKey && !event.metaKey) {
-          this.Ud.handleKeyEvent(event, true);
+          this.Td.handleKeyEvent(event, true);
         }
         if (event.keyCode == 32) {
-          this.Fe();
+          this.Ee();
           event.preventDefault();
           this.refocusStage();
         } else if (event.keyCode == 80 && (event.ctrlKey || event.metaKey)) {
-          this.Fe();
+          this.Ee();
           event.preventDefault();
           this.refocusStage();
         }
@@ -48036,7 +48041,7 @@ You should be redirected to the song at:<br /><br />
       }
       const needControlForShortcuts = this.J.prefs.pressControlForShortcuts != event.getModifierState("CapsLock");
       const canPlayNotes = !event.ctrlKey && !event.metaKey && needControlForShortcuts;
-      if (canPlayNotes) this.Ud.handleKeyEvent(event, true);
+      if (canPlayNotes) this.Td.handleKeyEvent(event, true);
       switch (event.keyCode) {
         case 27:
           if (!event.ctrlKey && !event.metaKey) {
@@ -48045,22 +48050,22 @@ You should be redirected to the song at:<br /><br />
           }
           break;
         case 16:
-          this.ib.shiftMode = true;
+          this.hb.shiftMode = true;
           break;
         case 17:
-          this.ib.controlMode = true;
+          this.hb.controlMode = true;
           break;
         case 32:
           if (event.ctrlKey) {
-            this.Fe();
+            this.Ee();
           } else if (event.shiftKey) {
-            if (this.Pd.movePlayheadToMouse() || this.ib.movePlayheadToMouse()) {
+            if (this.Od.movePlayheadToMouse() || this.hb.movePlayheadToMouse()) {
               if (!this.J.synth.playing) this.J.performance.play();
             }
             if (Math.floor(this.J.synth.playhead) < this.J.synth.loopBarStart || Math.floor(this.J.synth.playhead) > this.J.synth.loopBarEnd) {
               this.J.synth.loopBarStart = -1;
               this.J.synth.loopBarEnd = -1;
-              this.ac.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
+              this.$b.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
             }
           } else {
             this.togglePlay();
@@ -48071,10 +48076,10 @@ You should be redirected to the song at:<br /><br />
         case 80:
           if (canPlayNotes) break;
           if (event.ctrlKey || event.metaKey) {
-            this.Fe();
+            this.Ee();
             this.J.synth.loopBarStart = -1;
             this.J.synth.loopBarEnd = -1;
-            this.ac.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
+            this.$b.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
             event.preventDefault();
             this.refocusStage();
           } else if (canPlayNotes) break;
@@ -48095,7 +48100,7 @@ You should be redirected to the song at:<br /><br />
             this.J.record(new ChangeSong(this.J, ""), false, true);
           } else {
             if (needControlForShortcuts == (event.ctrlKey || event.metaKey)) {
-              this._("songRecovery");
+              this.Z("songRecovery");
             }
           }
           event.preventDefault();
@@ -48123,7 +48128,7 @@ You should be redirected to the song at:<br /><br />
           if (canPlayNotes) break;
           if (needControlForShortcuts == (event.ctrlKey || event.metaKey)) {
             if (event.shiftKey) {
-              this._("beatsPerBar");
+              this.Z("beatsPerBar");
             } else {
               const leftSel = Math.min(this.J.selection.boxSelectionX0, this.J.selection.boxSelectionX1);
               const rightSel = Math.max(this.J.selection.boxSelectionX0, this.J.selection.boxSelectionX1);
@@ -48147,7 +48152,7 @@ You should be redirected to the song at:<br /><br />
                   this.J.selection.setChannelBar(this.J.channel, Math.floor(this.J.synth.playhead));
                 }
               }
-              this.ac.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
+              this.$b.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
             }
           }
           event.preventDefault();
@@ -48166,7 +48171,7 @@ You should be redirected to the song at:<br /><br />
         case 13:
           this.J.synth.loopBarStart = -1;
           this.J.synth.loopBarEnd = -1;
-          this.ac.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
+          this.$b.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
           if ((event.ctrlKey || event.metaKey) && !event.shiftKey) {
             this.J.selection.insertChannel();
           } else if (event.shiftKey) {
@@ -48182,13 +48187,13 @@ You should be redirected to the song at:<br /><br />
         case 8:
           this.J.synth.loopBarStart = -1;
           this.J.synth.loopBarEnd = -1;
-          this.ac.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
+          this.$b.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
           if (event.ctrlKey || event.metaKey) {
             this.J.selection.deleteChannel();
           } else {
             this.J.selection.deleteBars();
           }
-          this.ud.animatePlayhead();
+          this.td.animatePlayhead();
           event.preventDefault();
           break;
         case 65:
@@ -48212,7 +48217,7 @@ You should be redirected to the song at:<br /><br />
           if (event.shiftKey) {
             const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
             if (!instrument.noteFilterType && this.J.channel < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount)
-              this._("customNoteFilterSettings");
+              this.Z("customNoteFilterSettings");
           } else if (event.altKey) {
             const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
             const isAllOpen = this.envelopeEditor.openExtraSettingsDropdowns.every((x) => {
@@ -48225,11 +48230,11 @@ You should be redirected to the song at:<br /><br />
             this.envelopeEditor.rerenderExtraSettings();
             event.preventDefault();
           } else if (event.ctrlKey) {
-            this._("generateEuclideanRhythm");
+            this.Z("generateEuclideanRhythm");
             event.preventDefault();
             break;
           } else if (needControlForShortcuts == (event.ctrlKey || event.metaKey)) {
-            this._("customSongEQFilterSettings");
+            this.Z("customSongEQFilterSettings");
           }
           break;
         case 70:
@@ -48237,7 +48242,7 @@ You should be redirected to the song at:<br /><br />
           if (event.shiftKey) {
             this.J.synth.loopBarStart = -1;
             this.J.synth.loopBarEnd = -1;
-            this.ac.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
+            this.$b.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
             this.J.synth.goToBar(this.J.song.loopStart);
             this.J.synth.snapToBar();
             this.J.synth.initModFilters(this.J.song);
@@ -48251,17 +48256,17 @@ You should be redirected to the song at:<br /><br />
             const operatorCount = instrument.type == 1 /* fm */ ? 4 : 6;
             let isAllOpen = true;
             for (let i = 0; i < operatorCount; i++) {
-              if (!this.Ee[i]) isAllOpen = false;
+              if (!this.De[i]) isAllOpen = false;
             }
             for (let i = 0; i < operatorCount; i++) {
-              if (this.Ee[i] == false && !isAllOpen || isAllOpen)
-                this._d(4 /* FM */, i);
+              if (this.De[i] == false && !isAllOpen || isAllOpen)
+                this.Zd(4 /* FM */, i);
             }
             event.preventDefault();
           } else if (needControlForShortcuts == (event.ctrlKey || event.metaKey)) {
             this.J.synth.loopBarStart = -1;
             this.J.synth.loopBarEnd = -1;
-            this.ac.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
+            this.$b.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
             this.J.synth.snapToStart();
             this.J.synth.initModFilters(this.J.song);
             this.J.synth.computeLatestModValues();
@@ -48281,7 +48286,7 @@ You should be redirected to the song at:<br /><br />
             if (Math.floor(this.J.synth.playhead) < this.J.synth.loopBarStart || Math.floor(this.J.synth.playhead) > this.J.synth.loopBarEnd) {
               this.J.synth.loopBarStart = -1;
               this.J.synth.loopBarEnd = -1;
-              this.ac.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
+              this.$b.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
             }
             if (this.J.prefs.autoFollow) {
               this.J.selection.setChannelBar(this.J.channel, Math.floor(this.J.synth.playhead));
@@ -48331,9 +48336,9 @@ You should be redirected to the song at:<br /><br />
         case 76:
           if (canPlayNotes) break;
           if (event.shiftKey) {
-            this._("limiterSettings");
+            this.Z("limiterSettings");
           } else {
-            this._("barCount");
+            this.Z("barCount");
           }
           break;
         case 77:
@@ -48351,7 +48356,7 @@ You should be redirected to the song at:<br /><br />
           if (event.shiftKey) {
             const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
             if (!instrument.noteFilterType && this.J.channel < this.J.song.pitchChannelCount + this.J.song.noiseChannelCount)
-              this._("customNoteFilterSettings");
+              this.Z("customNoteFilterSettings");
             break;
           } else if (event.ctrlKey) {
             let nextEmpty = 0;
@@ -48390,11 +48395,11 @@ You should be redirected to the song at:<br /><br />
           if (canPlayNotes) break;
           if (needControlForShortcuts == (event.ctrlKey || event.metaKey)) {
             if (event.shiftKey) {
-              this._("addExternal");
+              this.Z("addExternal");
               event.preventDefault();
               break;
             } else {
-              this._("channelSettings");
+              this.Z("channelSettings");
               event.preventDefault();
               break;
             }
@@ -48430,7 +48435,7 @@ You should be redirected to the song at:<br /><br />
             event.preventDefault();
             location.reload();
           } else if (event.ctrlKey || event.metaKey) {
-            this._("export");
+            this.Z("export");
             event.preventDefault();
           } else if (this.J.prefs.enableChannelMuting) {
             if (event.shiftKey) {
@@ -48444,7 +48449,7 @@ You should be redirected to the song at:<br /><br />
         case 79:
           if (canPlayNotes) break;
           if (event.ctrlKey || event.metaKey) {
-            this._("import");
+            this.Z("import");
             event.preventDefault();
           }
           break;
@@ -48461,7 +48466,7 @@ You should be redirected to the song at:<br /><br />
           break;
         case 87:
           if (canPlayNotes) break;
-          this._("moveNotesSideways");
+          this.Z("moveNotesSideways");
           break;
         case 73:
           if (canPlayNotes) break;
@@ -48506,7 +48511,7 @@ You should be redirected to the song at:<br /><br />
             if (Math.floor(this.J.synth.playhead) < this.J.synth.loopBarStart || Math.floor(this.J.synth.playhead) > this.J.synth.loopBarEnd) {
               this.J.synth.loopBarStart = -1;
               this.J.synth.loopBarEnd = -1;
-              this.ac.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
+              this.$b.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
             }
             if (this.J.prefs.autoFollow) {
               this.J.selection.setChannelBar(this.J.channel, Math.floor(this.J.synth.playhead));
@@ -48523,7 +48528,7 @@ You should be redirected to the song at:<br /><br />
             if (Math.floor(this.J.synth.playhead) < this.J.synth.loopBarStart || Math.floor(this.J.synth.playhead) > this.J.synth.loopBarEnd) {
               this.J.synth.loopBarStart = -1;
               this.J.synth.loopBarEnd = -1;
-              this.ac.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
+              this.$b.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
             }
             if (this.J.prefs.autoFollow) {
               this.J.selection.setChannelBar(this.J.channel, Math.floor(this.J.synth.playhead));
@@ -48608,61 +48613,61 @@ You should be redirected to the song at:<br /><br />
         case 48:
           if (canPlayNotes) break;
           this.J.selection.nextDigit("0", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-          this.xc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
+          this.wc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
           event.preventDefault();
           break;
         case 49:
           if (canPlayNotes) break;
           this.J.selection.nextDigit("1", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-          this.xc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
+          this.wc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
           event.preventDefault();
           break;
         case 50:
           if (canPlayNotes) break;
           this.J.selection.nextDigit("2", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-          this.xc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
+          this.wc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
           event.preventDefault();
           break;
         case 51:
           if (canPlayNotes) break;
           this.J.selection.nextDigit("3", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-          this.xc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
+          this.wc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
           event.preventDefault();
           break;
         case 52:
           if (canPlayNotes) break;
           this.J.selection.nextDigit("4", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-          this.xc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
+          this.wc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
           event.preventDefault();
           break;
         case 53:
           if (canPlayNotes) break;
           this.J.selection.nextDigit("5", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-          this.xc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
+          this.wc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
           event.preventDefault();
           break;
         case 54:
           if (canPlayNotes) break;
           this.J.selection.nextDigit("6", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-          this.xc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
+          this.wc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
           event.preventDefault();
           break;
         case 55:
           if (canPlayNotes) break;
           this.J.selection.nextDigit("7", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-          this.xc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
+          this.wc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
           event.preventDefault();
           break;
         case 56:
           if (canPlayNotes) break;
           this.J.selection.nextDigit("8", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-          this.xc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
+          this.wc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
           event.preventDefault();
           break;
         case 57:
           if (canPlayNotes) break;
           this.J.selection.nextDigit("9", needControlForShortcuts != (event.shiftKey || event.ctrlKey || event.metaKey), event.altKey);
-          this.xc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
+          this.wc(this.J.song.channels[this.J.channel], this.J.getCurrentInstrument(), ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
           event.preventDefault();
           break;
         default:
@@ -48678,14 +48683,14 @@ You should be redirected to the song at:<br /><br />
     vv = (event) => {
       this.Vh.onKeyUp(event);
       if (!event.ctrlKey) {
-        this.ib.controlMode = false;
+        this.hb.controlMode = false;
       }
       if (!event.shiftKey) {
-        this.ib.shiftMode = false;
+        this.hb.shiftMode = false;
       }
-      this.yb = event.ctrlKey;
-      this.Va = event.shiftKey;
-      this.Ud.handleKeyEvent(event, false);
+      this.xb = event.ctrlKey;
+      this.Ua = event.shiftKey;
+      this.Td.handleKeyEvent(event, false);
     };
     Eg(text) {
       let nav;
@@ -48710,18 +48715,18 @@ You should be redirected to the song at:<br /><br />
       if (Math.floor(this.J.synth.playhead) < this.J.synth.loopBarStart || Math.floor(this.J.synth.playhead) > this.J.synth.loopBarEnd) {
         this.J.synth.loopBarStart = -1;
         this.J.synth.loopBarEnd = -1;
-        this.ac.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
+        this.$b.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
       }
-      this.ud.animatePlayhead();
+      this.td.animatePlayhead();
     };
     jv = () => {
       this.J.synth.goToNextBar();
       if (Math.floor(this.J.synth.playhead) < this.J.synth.loopBarStart || Math.floor(this.J.synth.playhead) > this.J.synth.loopBarEnd) {
         this.J.synth.loopBarStart = -1;
         this.J.synth.loopBarEnd = -1;
-        this.ac.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
+        this.$b.setLoopAt(this.J.synth.loopBarStart, this.J.synth.loopBarEnd);
       }
-      this.ud.animatePlayhead();
+      this.td.animatePlayhead();
     };
     togglePlay = () => {
       if (this.J.synth.playing) {
@@ -48733,7 +48738,7 @@ You should be redirected to the song at:<br /><br />
         this.J.performance.play();
       }
     };
-    Fe = () => {
+    Ee = () => {
       if (this.J.synth.playing) {
         this.J.performance.pause();
       } else {
@@ -48745,17 +48750,17 @@ You should be redirected to the song at:<br /><br />
       if (this.J.prefs.displayVolumeBar) {
         this.mj();
       }
-      this.ud.animatePlayhead();
+      this.td.animatePlayhead();
       for (let i = 0; i < this.effectEditor.eqFilterEditors.length; i++) {
         if (this.J.synth.isFilterModActive(false, this.J.channel, this.J.getCurrentInstrument())) {
-          this.effectEditor.eqFilterEditors[i].render(true, this.yb || this.Va);
+          this.effectEditor.eqFilterEditors[i].render(true, this.xb || this.Ua);
         }
       }
       if (this.J.synth.isFilterModActive(true, this.J.channel, this.J.getCurrentInstrument())) {
-        this.gi.render(true, this.yb || this.Va);
+        this.gi.render(true, this.xb || this.Ua);
       }
       if (this.J.synth.isFilterModActive(false, 0, 0, true)) {
-        this.ze.render(true, this.yb || this.Va);
+        this.ye.render(true, this.xb || this.Ua);
       }
       window.requestAnimationFrame(this.bs);
     };
@@ -48789,10 +48794,10 @@ You should be redirected to the song at:<br /><br />
       this.rr.setAttribute("x", "" + (8 + Math.min(144, historicOutCapR * 144)));
     }
     kv = () => {
-      if ((this.yb || this.Va) && this.J.synth.playing) {
+      if ((this.xb || this.Ua) && this.J.synth.playing) {
         const prevVol = this.J.prefs.volume;
-        this.J.prefs.volume = Math.round(Number(this.jc.input.value) * 4 / 3);
-        const changedPatterns = this.ib.setModSettingsForChange(null, this);
+        this.J.prefs.volume = Math.round(Number(this.ic.input.value) * 4 / 3);
+        const changedPatterns = this.hb.setModSettingsForChange(null, this);
         const useVol = this.J.prefs.volume;
         window.clearTimeout(this.Bg);
         this.Bg = window.setTimeout(() => {
@@ -48800,11 +48805,11 @@ You should be redirected to the song at:<br /><br />
         }, 10);
         this.J.recordingModulators = true;
         this.J.prefs.volume = prevVol;
-        this.jc.updateValue(this.J.prefs.volume);
+        this.ic.updateValue(this.J.prefs.volume);
         if (changedPatterns)
-          this.Pd.render();
+          this.Od.render();
       } else {
-        this.J.setVolume(Number(this.jc.input.value));
+        this.J.setVolume(Number(this.ic.input.value));
         if (this.J.recordingModulators) {
           this.J.recordingModulators = false;
           this.J.record(new ChangeHoldingModRecording(this.J, null, null, null));
@@ -48812,19 +48817,19 @@ You should be redirected to the song at:<br /><br />
       }
     };
     fs(useVol) {
-      if ((this.yb || this.Va) && this.J.synth.playing) {
+      if ((this.xb || this.Ua) && this.J.synth.playing) {
         const prevVol = this.J.prefs.volume;
         this.J.prefs.volume = useVol;
-        this.ib.setModSettingsForChange(null, this);
+        this.hb.setModSettingsForChange(null, this);
         window.clearTimeout(this.Bg);
         this.Bg = window.setTimeout(() => {
           this.fs(useVol);
         }, 10);
         this.J.recordingModulators = true;
         this.J.prefs.volume = prevVol;
-        this.jc.updateValue(this.J.prefs.volume);
+        this.ic.updateValue(this.J.prefs.volume);
       } else {
-        this.J.setVolume(Number(this.jc.input.value));
+        this.J.setVolume(Number(this.ic.input.value));
         if (this.J.recordingModulators) {
           this.J.recordingModulators = false;
           this.J.record(new ChangeHoldingModRecording(this.J, null, null, null));
@@ -48850,10 +48855,10 @@ You should be redirected to the song at:<br /><br />
       this.refocusStage();
     };
     xv = () => {
-      this._("exportInstrument");
+      this.Z("exportInstrument");
     };
     yv = () => {
-      this._("importInstrument");
+      this.Z("importInstrument");
     };
     xr(toSimple) {
       const channel = this.J.song.channels[this.J.channel];
@@ -48874,45 +48879,45 @@ You should be redirected to the song at:<br /><br />
     };
     Ku = () => {
       this.J.record(new ChangeKeyOctave(this.J, this.J.song.octave, parseInt(this.Xh.value) | 0));
-      this.rd.forceRender();
+      this.qd.forceRender();
     };
     Iu = () => {
-      if (isNaN(this.ye.value)) {
-        switch (this.ye.value) {
+      if (isNaN(this.xe.value)) {
+        switch (this.xe.value) {
           case "forceScale":
             this.J.selection.forceScale();
             break;
           case "customize":
-            this._("customScale");
+            this.Z("customScale");
             break;
         }
         this.J.notifier.changed();
       } else {
-        this.J.record(new ChangeScale(this.J, this.ye.selectedIndex));
+        this.J.record(new ChangeScale(this.J, this.xe.selectedIndex));
       }
     };
     Ju = () => {
-      if (isNaN(this.tf.value)) {
-        switch (this.tf.value) {
+      if (isNaN(this.sf.value)) {
+        switch (this.sf.value) {
           case "detectKey":
             this.J.record(new ChangeDetectKey(this.J));
             break;
         }
         this.J.notifier.changed();
       } else {
-        this.J.record(new ChangeKey(this.J, Config.keys.length - 1 - this.tf.selectedIndex));
+        this.J.record(new ChangeKey(this.J, Config.keys.length - 1 - this.sf.selectedIndex));
       }
     };
     Lu = () => {
-      if (isNaN(this.uf.value)) {
-        switch (this.uf.value) {
+      if (isNaN(this.tf.value)) {
+        switch (this.tf.value) {
           case "forceRhythm":
             this.J.selection.forceRhythm();
             break;
         }
         this.J.notifier.changed();
       } else {
-        this.J.record(new ChangeRhythm(this.J, this.uf.selectedIndex));
+        this.J.record(new ChangeRhythm(this.J, this.tf.selectedIndex));
       }
     };
     gs = () => {
@@ -48956,11 +48961,11 @@ You should be redirected to the song at:<br /><br />
     };
     Qu = () => {
       this.J.record(new Change6OpFeedbackType(this.J, this.kk.selectedIndex));
-      this.Be.reset();
+      this.Ae.reset();
     };
     Pu = () => {
       this.J.record(new Change6OpAlgorithm(this.J, this.mk.selectedIndex));
-      this.Be.reset();
+      this.Ae.reset();
     };
     Nu = (event) => {
       if (event.target == this.Dm) {
@@ -48968,41 +48973,41 @@ You should be redirected to the song at:<br /><br />
       } else if (event.target == this.ug) {
         this.J.record(new ChangeRemoveChannelInstrument(this.J));
       } else {
-        const index = this.Sb.indexOf(event.target);
+        const index = this.Rb.indexOf(event.target);
         if (index != -1) {
           this.J.selection.selectInstrument(index);
         }
         if (this.J.channel >= this.J.song.pitchChannelCount + this.J.song.noiseChannelCount) {
-          this.rd.forceRender();
+          this.qd.forceRender();
         }
-        this.xc(this.J.song.channels[this.J.channel], index, ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
+        this.wc(this.J.song.channels[this.J.channel], index, ColorConfig.getChannelColor(this.J.song, this.J.song.channels[this.J.channel].color, this.J.channel, this.J.prefs.fixChannelColorOrder));
       }
       this.refocusStage();
     };
     ov = (mod2) => {
-      this.J.selection.setModChannel(mod2, this.Bb[mod2].selectedIndex);
-      this.rd.forceRender();
+      this.J.selection.setModChannel(mod2, this.Ab[mod2].selectedIndex);
+      this.qd.forceRender();
     };
     sn = (mod2, invalidIndex = false) => {
       let text = "none";
-      if (this.Ua[mod2].selectedIndex != -1) {
-        text = this.Ua[mod2].children[this.Ua[mod2].selectedIndex].textContent;
+      if (this.Ta[mod2].selectedIndex != -1) {
+        text = this.Ta[mod2].children[this.Ta[mod2].selectedIndex].textContent;
         if (invalidIndex) {
-          this.Ua[mod2].selectedOptions.item(0).style.setProperty("color", "red");
-          this.Ua[mod2].classList.add("invalidSetting");
+          this.Ta[mod2].selectedOptions.item(0).style.setProperty("color", "red");
+          this.Ta[mod2].classList.add("invalidSetting");
           this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()].invalidModulators[mod2] = true;
         } else {
-          this.Ua[mod2].classList.remove("invalidSetting");
+          this.Ta[mod2].classList.remove("invalidSetting");
           this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()].invalidModulators[mod2] = false;
         }
       }
       if (!invalidIndex)
         this.J.selection.setModSetting(mod2, text);
-      this.rd.forceRender();
+      this.qd.forceRender();
     };
     rv = (mod2) => {
-      if (this.Bb[mod2].selectedIndex >= 2) {
-        this.J.selection.setChannelBar(this.Bb[mod2].selectedIndex - 2, this.J.bar);
+      if (this.Ab[mod2].selectedIndex >= 2) {
+        this.J.selection.setChannelBar(this.Ab[mod2].selectedIndex - 2, this.J.bar);
       }
     };
     sv = () => {
@@ -49026,10 +49031,10 @@ You should be redirected to the song at:<br /><br />
       }
     };
     pv = (mod2) => {
-      this.J.selection.setModFilter(mod2, this.Cb[mod2].selectedIndex);
+      this.J.selection.setModFilter(mod2, this.Bb[mod2].selectedIndex);
     };
     qv = (mod2) => {
-      this.J.selection.setModEnvelope(mod2, this.kc[mod2].selectedIndex);
+      this.J.selection.setModEnvelope(mod2, this.jc[mod2].selectedIndex);
     };
     Ru = () => {
       this.J.record(new ChangeChipWave(this.J, this.Oj.selectedIndex));
@@ -49073,9 +49078,9 @@ You should be redirected to the song at:<br /><br />
     bv = () => {
       const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
       const oldValue = instrument.mdeffects;
-      const toggleFlag = Config.mdeffectOrder[this.vf.selectedIndex - 1];
+      const toggleFlag = Config.mdeffectOrder[this.uf.selectedIndex - 1];
       this.J.record(new ChangeToggleMDEffects(this.J, toggleFlag, null));
-      this.vf.selectedIndex = 0;
+      this.uf.selectedIndex = 0;
       if (instrument.mdeffects > oldValue) {
         this.J.addedEffect = true;
       }
@@ -49084,9 +49089,9 @@ You should be redirected to the song at:<br /><br />
     cv = () => {
       const instrument = this.J.song.channels[this.J.channel].instruments[this.J.getCurrentInstrument()];
       const oldValue = instrument.effects;
-      const toggleFlag = Config.effectOrder[this.$d.selectedIndex - 1];
+      const toggleFlag = Config.effectOrder[this._d.selectedIndex - 1];
       this.J.record(new ChangeToggleEffects(this.J, toggleFlag, null));
-      this.$d.selectedIndex = 0;
+      this._d.selectedIndex = 0;
       if (instrument.effects.length > oldValue.length) {
         this.J.addedEffect = true;
       }
@@ -49105,7 +49110,7 @@ You should be redirected to the song at:<br /><br />
       this.J.record(new ChangeChord(this.J, this.wg.selectedIndex));
     };
     fv = () => {
-      this.J.record(new ChangeMonophonicTone(this.J, parseInt(this.wf.value) - 1));
+      this.J.record(new ChangeMonophonicTone(this.J, parseInt(this.vf.value) - 1));
     };
     uv = () => {
       this.J.record(new ChangeAddEnvelope(this.J));
@@ -49138,10 +49143,10 @@ You should be redirected to the song at:<br /><br />
           this.J.record(new ChangeSong(this.J, ""), false, true);
           break;
         case "export":
-          this._("export");
+          this.Z("export");
           break;
         case "import":
-          this._("import");
+          this.Z("import");
           break;
         case "copyUrl":
           this.Eg(new URL("#" + this.J.song.toBase64String(), location.href).href);
@@ -49156,7 +49161,7 @@ You should be redirected to the song at:<br /><br />
           window.open(shortenerStrategy + encodeURIComponent(new URL("#" + this.J.song.toBase64String(), location.href).href));
           break;
         case "configureShortener":
-          this._("configureShortener");
+          this.Z("configureShortener");
           break;
         case "viewPlayer":
           location.href = "player/" + (false ? "index.html" : "") + "#song=" + this.J.song.toBase64String();
@@ -49165,7 +49170,7 @@ You should be redirected to the song at:<br /><br />
           this.Eg(`<iframe width="384" height="60" style="border: none;" src="${new URL("player/#song=" + this.J.song.toBase64String(), location.href).href}"></iframe>`);
           break;
         case "songRecovery":
-          this._("songRecovery");
+          this.Z("songRecovery");
           break;
       }
       this.tg.selectedIndex = 0;
@@ -49215,31 +49220,31 @@ You should be redirected to the song at:<br /><br />
           this.J.selection.duplicatePatterns(false);
           break;
         case "barCount":
-          this._("barCount");
+          this.Z("barCount");
           break;
         case "beatsPerBar":
-          this._("beatsPerBar");
+          this.Z("beatsPerBar");
           break;
         case "moveNotesSideways":
-          this._("moveNotesSideways");
+          this.Z("moveNotesSideways");
           break;
         case "channelSettings":
-          this._("channelSettings");
+          this.Z("channelSettings");
           break;
         case "limiterSettings":
-          this._("limiterSettings");
+          this.Z("limiterSettings");
           break;
         case "generateEuclideanRhythm":
-          this._("generateEuclideanRhythm");
+          this.Z("generateEuclideanRhythm");
           break;
         case "addExternal":
-          this._("addExternal");
+          this.Z("addExternal");
           break;
       }
       this.Mj.selectedIndex = 0;
     };
     Fu = (event) => {
-      switch (this.xe.value) {
+      switch (this.we.value) {
         case "autoPlay":
           this.J.prefs.autoPlay = !this.J.prefs.autoPlay;
           break;
@@ -49288,16 +49293,16 @@ You should be redirected to the song at:<br /><br />
           this.J.prefs.notesFlashWhenPlayed = !this.J.prefs.notesFlashWhenPlayed;
           break;
         case "layout":
-          this._("layout");
+          this.Z("layout");
           break;
         case "colorTheme":
-          this._("theme");
+          this.Z("theme");
           break;
         case "customTheme":
-          this._("customTheme");
+          this.Z("customTheme");
           break;
         case "recordingSetup":
-          this._("recordingSetup");
+          this.Z("recordingSetup");
           break;
         case "showOscilloscope":
           this.J.prefs.showOscilloscope = !this.J.prefs.showOscilloscope;
@@ -49327,7 +49332,7 @@ You should be redirected to the song at:<br /><br />
           this.J.prefs.frostedGlassBackground = !this.J.prefs.frostedGlassBackground;
           break;
       }
-      this.xe.selectedIndex = 0;
+      this.we.selectedIndex = 0;
       this.J.notifier.changed();
       this.J.prefs.save();
     };
@@ -49355,8 +49360,8 @@ You should be redirected to the song at:<br /><br />
         this.pk.newArray[i] = customWaveArray[i];
       }
       this.J.record(new ChangeCustomWave(this.J, customWaveArray));
-      if (+this.vd.input.value != -Config.volumeRange / 2) {
-        this.J.record(new ChangeVolume(this.J, +this.vd.input.value, Math.min(Math.max(-Config.volumeRange / 2 + Math.round(Math.sqrt(Config.chipWaves[index].expression) * Config.volumeRange / 2 + parseInt(this.vd.input.value)), -Config.volumeRange / 2) >> 1, Config.volumeRange / 2)));
+      if (+this.ud.input.value != -Config.volumeRange / 2) {
+        this.J.record(new ChangeVolume(this.J, +this.ud.input.value, Math.min(Math.max(-Config.volumeRange / 2 + Math.round(Math.sqrt(Config.chipWaves[index].expression) * Config.volumeRange / 2 + parseInt(this.ud.input.value)), -Config.volumeRange / 2) >> 1, Config.volumeRange / 2)));
       }
       this.qk.selectedIndex = 0;
       this.J.notifier.changed();

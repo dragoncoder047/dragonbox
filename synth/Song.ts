@@ -4,7 +4,7 @@ import { EditorConfig, Preset } from "../editor/EditorConfig";
 import { Channel } from "./Channel";
 import { Effect } from "./Effect";
 import { FilterControlPoint, FilterSettings } from "./Filter";
-import { Instrument, LegacySettings } from "./Instrument";
+import { Instrument, LegacySettings, AudioBus } from "./Instrument";
 import { makeNotePin, Note, Pattern } from "./Pattern";
 import { Config, Dictionary, DictionaryArray, effectsIncludeChord, effectsIncludeDetune, effectsIncludePitchShift, effectsIncludeTransition, effectsIncludeVibrato, EffectType, Envelope, EnvelopeType, FilterType, InstrumentType, LFOEnvelopeTypes, loadBuiltInSamples, MDEffectType, RandomEnvelopeTypes, SampleLoadedEvent, sampleLoadEvents, sampleLoadingState, SampleLoadingState, SampleLoadingStatus, startLoadingSample, SustainType, toNameMap } from "./SynthConfig";
 import { clamp, parseFloatWithDefault, parseIntWithDefault, secondsToFadeInSetting, ticksToFadeOutSetting, validateRange } from "./utils";
@@ -170,70 +170,70 @@ const enum CharCode {
 }
 
 const enum SongTagCode {
-    beatCount           = CharCode.a, // added in BeepBox URL version 2
-	bars                = CharCode.b, // added in BeepBox URL version 2
-	songEq              = CharCode.c, // added in BeepBox URL version 2 for vibrato, switched to song eq in Slarmoo's Box 1.3
-	fadeInOut           = CharCode.d, // added in BeepBox URL version 3 for transition, switched to fadeInOut in 9
-	loopEnd             = CharCode.e, // added in BeepBox URL version 2
-	noteFilter          = CharCode.f, // added in BeepBox URL version 3
-	barCount            = CharCode.g, // added in BeepBox URL version 3
-	unison              = CharCode.h, // added in BeepBox URL version 2
-	instrumentCount     = CharCode.i, // added in BeepBox URL version 3
-	patternCount        = CharCode.j, // added in BeepBox URL version 3
-	key                 = CharCode.k, // added in BeepBox URL version 2
-	loopStart           = CharCode.l, // added in BeepBox URL version 2
-	reverb              = CharCode.m, // added in BeepBox URL version 5, DEPRECATED
-	channelCount        = CharCode.n, // added in BeepBox URL version 6
-	channelOctave       = CharCode.o, // added in BeepBox URL version 3
-	patterns            = CharCode.p, // added in BeepBox URL version 2
-	effects             = CharCode.q, // added in BeepBox URL version 7
-	rhythm              = CharCode.r, // added in BeepBox URL version 2
-	scale               = CharCode.s, // added in BeepBox URL version 2
-	tempo               = CharCode.t, // added in BeepBox URL version 2
-	preset              = CharCode.u, // added in BeepBox URL version 7
-	volume              = CharCode.v, // added in BeepBox URL version 2
-	wave                = CharCode.w, // added in BeepBox URL version 2
-	supersaw            = CharCode.x, // added in BeepBox URL version 9 ([UB] was used for chip wave but is now DEPRECATED)
-	loopControls        = CharCode.y, // added in BeepBox URL version 7, DEPRECATED, [UB] repurposed for chip wave loop controls
-	drumsetEnvelopes    = CharCode.z, // added in BeepBox URL version 7 for filter envelopes, still used for drumset envelopes
-	algorithm           = CharCode.A, // added in BeepBox URL version 6
-	feedbackAmplitude   = CharCode.B, // added in BeepBox URL version 6
-	chord               = CharCode.C, // added in BeepBox URL version 7, DEPRECATED
-	detune              = CharCode.D, // added in JummBox URL version 3(?) for detune, DEPRECATED
-	envelopes           = CharCode.E, // added in BeepBox URL version 6 for FM operator envelopes, repurposed in 9 for general envelopes.
-	feedbackType        = CharCode.F, // added in BeepBox URL version 6
-	arpeggioSpeed       = CharCode.G, // added in JummBox URL version 3 for arpeggioSpeed, DEPRECATED
-	harmonics           = CharCode.H, // added in BeepBox URL version 7
-	stringSustain       = CharCode.I, // added in BeepBox URL version 9
-//	                    = CharCode.J,
-//	                    = CharCode.K,
-	pan                 = CharCode.L, // added between 8 and 9, DEPRECATED
-	customChipWave      = CharCode.M, // added in JummBox URL version 1(?) for customChipWave
-	songTitle           = CharCode.N, // added in JummBox URL version 1(?) for songTitle
-	limiterSettings     = CharCode.O, // added in JummBox URL version 3(?) for limiterSettings
-	operatorAmplitudes  = CharCode.P, // added in BeepBox URL version 6
-	operatorFrequencies = CharCode.Q, // added in BeepBox URL version 6
-	operatorWaves       = CharCode.R, // added in JummBox URL version 4 for operatorWaves
-	spectrum            = CharCode.S, // added in BeepBox URL version 7
-	startInstrument     = CharCode.T, // added in BeepBox URL version 6
-	channelNames        = CharCode.U, // added in JummBox URL version 4(?) for channelNames
-	feedbackEnvelope    = CharCode.V, // added in BeepBox URL version 6, DEPRECATED
-	pulseWidth          = CharCode.W, // added in BeepBox URL version 7
-	aliases             = CharCode.X, // added in JummBox URL version 4 for aliases, DEPRECATED, [UB] repurposed for PWM decimal offset (DEPRECATED as well)
-//                      = CharCode.Y,
-//	                    = CharCode.Z,
-//	                    = CharCode.NUM_0,
-//	                    = CharCode.NUM_1,
-//	                    = CharCode.NUM_2,
-//	                    = CharCode.NUM_3,
-//	                    = CharCode.NUM_4,
-//	                    = CharCode.NUM_5,
-//	                    = CharCode.NUM_6,
-//	                    = CharCode.NUM_7,
-//	                    = CharCode.NUM_8,
-//	                    = CharCode.NUM_9,
-//	                    = CharCode.DASH,
-//	                    = CharCode.UNDERSCORE,
+    beatCount = CharCode.a, // added in BeepBox URL version 2
+    bars = CharCode.b, // added in BeepBox URL version 2
+    songEq = CharCode.c, // added in BeepBox URL version 2 for vibrato, switched to song eq in Slarmoo's Box 1.3
+    fadeInOut = CharCode.d, // added in BeepBox URL version 3 for transition, switched to fadeInOut in 9
+    loopEnd = CharCode.e, // added in BeepBox URL version 2
+    noteFilter = CharCode.f, // added in BeepBox URL version 3
+    barCount = CharCode.g, // added in BeepBox URL version 3
+    unison = CharCode.h, // added in BeepBox URL version 2
+    instrumentCount = CharCode.i, // added in BeepBox URL version 3
+    patternCount = CharCode.j, // added in BeepBox URL version 3
+    key = CharCode.k, // added in BeepBox URL version 2
+    loopStart = CharCode.l, // added in BeepBox URL version 2
+    reverb = CharCode.m, // added in BeepBox URL version 5, DEPRECATED
+    channelCount = CharCode.n, // added in BeepBox URL version 6
+    channelOctave = CharCode.o, // added in BeepBox URL version 3
+    patterns = CharCode.p, // added in BeepBox URL version 2
+    effects = CharCode.q, // added in BeepBox URL version 7
+    rhythm = CharCode.r, // added in BeepBox URL version 2
+    scale = CharCode.s, // added in BeepBox URL version 2
+    tempo = CharCode.t, // added in BeepBox URL version 2
+    preset = CharCode.u, // added in BeepBox URL version 7
+    volume = CharCode.v, // added in BeepBox URL version 2
+    wave = CharCode.w, // added in BeepBox URL version 2
+    supersaw = CharCode.x, // added in BeepBox URL version 9 ([UB] was used for chip wave but is now DEPRECATED)
+    loopControls = CharCode.y, // added in BeepBox URL version 7, DEPRECATED, [UB] repurposed for chip wave loop controls
+    drumsetEnvelopes = CharCode.z, // added in BeepBox URL version 7 for filter envelopes, still used for drumset envelopes
+    algorithm = CharCode.A, // added in BeepBox URL version 6
+    feedbackAmplitude = CharCode.B, // added in BeepBox URL version 6
+    chord = CharCode.C, // added in BeepBox URL version 7, DEPRECATED
+    detune = CharCode.D, // added in JummBox URL version 3(?) for detune, DEPRECATED
+    envelopes = CharCode.E, // added in BeepBox URL version 6 for FM operator envelopes, repurposed in 9 for general envelopes.
+    feedbackType = CharCode.F, // added in BeepBox URL version 6
+    arpeggioSpeed = CharCode.G, // added in JummBox URL version 3 for arpeggioSpeed, DEPRECATED
+    harmonics = CharCode.H, // added in BeepBox URL version 7
+    stringSustain = CharCode.I, // added in BeepBox URL version 9
+    //	                    = CharCode.J,
+    //	                    = CharCode.K,
+    pan = CharCode.L, // added between 8 and 9, DEPRECATED
+    customChipWave = CharCode.M, // added in JummBox URL version 1(?) for customChipWave
+    songTitle = CharCode.N, // added in JummBox URL version 1(?) for songTitle
+    limiterSettings = CharCode.O, // added in JummBox URL version 3(?) for limiterSettings
+    operatorAmplitudes = CharCode.P, // added in BeepBox URL version 6
+    operatorFrequencies = CharCode.Q, // added in BeepBox URL version 6
+    operatorWaves = CharCode.R, // added in JummBox URL version 4 for operatorWaves
+    spectrum = CharCode.S, // added in BeepBox URL version 7
+    startInstrument = CharCode.T, // added in BeepBox URL version 6
+    channelNames = CharCode.U, // added in JummBox URL version 4(?) for channelNames
+    feedbackEnvelope = CharCode.V, // added in BeepBox URL version 6, DEPRECATED
+    pulseWidth = CharCode.W, // added in BeepBox URL version 7
+    aliases = CharCode.X, // added in JummBox URL version 4 for aliases, DEPRECATED, [UB] repurposed for PWM decimal offset (DEPRECATED as well)
+    //                      = CharCode.Y,
+    //	                    = CharCode.Z,
+    //	                    = CharCode.NUM_0,
+    //	                    = CharCode.NUM_1,
+    //	                    = CharCode.NUM_2,
+    //	                    = CharCode.NUM_3,
+    //	                    = CharCode.NUM_4,
+    //	                    = CharCode.NUM_5,
+    //	                    = CharCode.NUM_6,
+    //	                    = CharCode.NUM_7,
+    //	                    = CharCode.NUM_8,
+    //	                    = CharCode.NUM_9,
+    //	                    = CharCode.DASH,
+    //	                    = CharCode.UNDERSCORE,
 
 }
 
@@ -416,21 +416,22 @@ export class Song {
     noiseChannelCount: number;
     modChannelCount: number;
     readonly channels: Channel[] = [];
-    limitDecay = 4.0;
-    limitRise = 4000.0;
-    compressionThreshold = 1.0;
-    limitThreshold = 1.0;
-    compressionRatio = 1.0;
-    limitRatio = 1.0;
-    masterGain = 1.0;
-    inVolumeCap = 0.0;
-    outVolumeCap = 0.0;
-    outVolumeCapL = 0.0;
-    outVolumeCapR = 0.0;
-    eqFilter = new FilterSettings();
-    eqFilterType = false;
-    eqFilterSimpleCut = Config.filterSimpleCutRange - 1;
-    eqFilterSimplePeak = 0;
+    readonly audioBuses: AudioBus[] = [];
+    limitDecay: number = 4.0;
+    limitRise: number = 4000.0;
+    compressionThreshold: number = 1.0;
+    limitThreshold: number = 1.0;
+    compressionRatio: number = 1.0;
+    limitRatio: number = 1.0;
+    masterGain: number = 1.0;
+    inVolumeCap: number = 0.0;
+    outVolumeCap: number = 0.0;
+    outVolumeCapL: number = 0.0;
+    outVolumeCapR: number = 0.0;
+    eqFilter: FilterSettings = new FilterSettings();
+    eqFilterType: boolean = false;
+    eqFilterSimpleCut: number = Config.filterSimpleCutRange - 1;
+    eqFilterSimplePeak: number = 0;
     eqSubFilters: (FilterSettings | null)[] = [];
     tmpEqFilterStart: FilterSettings | null;
     tmpEqFilterEnd: FilterSettings | null;
@@ -457,7 +458,7 @@ export class Song {
             let currentIndex = instrument.modulators[modCount];
             // For tempo, actually use user defined tempo
             let tempoIndex = Config.modulators.dictionary["tempo"].index;
-            if(currentIndex == tempoIndex) vol = this.tempo - Config.modulators[tempoIndex].convertRealFactor;
+            if (currentIndex == tempoIndex) vol = this.tempo - Config.modulators[tempoIndex].convertRealFactor;
             //for effects and envelopes, use the user defined value of the selected instrument (or the default value if all or active is selected)
             if (!Config.modulators[currentIndex].forSong && instrument.modInstruments[modCount][0] < this.channels[instrument.modChannels[modCount][0]].instruments.length) {
                 let chorusIndex = Config.modulators.dictionary["chorus"].index;
@@ -1236,12 +1237,12 @@ export class Song {
                             buffer.push(base64IntToCharCode[instrument.envelopes[envelopeIndex].pitchEnvelopeStart]);
                             buffer.push(base64IntToCharCode[instrument.envelopes[envelopeIndex].pitchEnvelopeEnd]);
                         }
-                    //random
+                        //random
                     } else if (Config.newEnvelopes[instrument.envelopes[envelopeIndex].envelope].name == "random") {
                         buffer.push(base64IntToCharCode[instrument.envelopes[envelopeIndex].steps]);
                         buffer.push(base64IntToCharCode[instrument.envelopes[envelopeIndex].seed]);
                         buffer.push(base64IntToCharCode[instrument.envelopes[envelopeIndex].waveform]);
-                    //lfo
+                        //lfo
                     } else if (Config.newEnvelopes[instrument.envelopes[envelopeIndex].envelope].name == "lfo") {
                         buffer.push(base64IntToCharCode[instrument.envelopes[envelopeIndex].waveform]);
                         if (instrument.envelopes[envelopeIndex].waveform == LFOEnvelopeTypes.steppedSaw || instrument.envelopes[envelopeIndex].waveform == LFOEnvelopeTypes.steppedTri) {
@@ -1565,7 +1566,7 @@ export class Song {
             fromTheepBox = true
             fromSlarmoosBox = true
             charIndex++;
-        } else if (variantTest == 0x74){ //"t"
+        } else if (variantTest == 0x74) { //"t"
             fromTheepBox = true
             fromSlarmoosBox = true
             charIndex++;
@@ -1586,7 +1587,7 @@ export class Song {
         } else if (variantTest == 0x61) { //"a" Abyssbox does urls the same as ultrabox //not quite anymore, but oh well
             fromUltraBox = true;
             charIndex++;
-        } else if(variantTest == 0x73){ //"s"
+        } else if (variantTest == 0x73) { //"s"
             fromSlarmoosBox = true
             charIndex++;
         } else {
@@ -2173,7 +2174,7 @@ export class Song {
                             newEffect.eqFilterType = false;
                             if (fromJummBox || fromGoldBox || fromUltraBox || fromSlarmoosBox)
                                 typeCheck = base64CharCodeToInt[compressed.charCodeAt(charIndex++)]; // Skip to next to get control point count
-                                const originalControlPointCount = typeCheck;
+                            const originalControlPointCount = typeCheck;
                             newEffect.eqFilter.controlPointCount = clamp(0, Config.filterMaxPoints + 1, originalControlPointCount);
                             for (let i = newEffect.eqFilter.controlPoints.length; i < newEffect.eqFilter.controlPointCount; i++) {
                                 newEffect.eqFilter.controlPoints[i] = new FilterControlPoint();
@@ -2726,6 +2727,7 @@ export class Song {
                     const effectCount = base64CharCodeToInt[compressed.charCodeAt(charIndex++)]
                     if (fromTheepBox) {
                         instrument.effects = [];
+                        let newAudioBus: AudioBus | null = null;
                         for (let i = 0; i < effectCount; i++) { // this for loop caused me a lot of grief... i dont wanna talk about it
                             let newEffect = instrument.addEffect(base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             if (newEffect.type == EffectType.eqFilter) {
@@ -2788,6 +2790,9 @@ export class Song {
                                 newEffect.bitcrusherFreq = clamp(0, Config.bitcrusherFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 newEffect.bitcrusherQuantization = clamp(0, Config.bitcrusherQuantizationRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             }
+                            if (newEffect.type == EffectType.audioBus) {
+                                newAudioBus = new AudioBus;
+                            }
                             if (newEffect.type == EffectType.panning) {
                                 if (fromBeepBox) {
                                     // Beepbox has a panMax of 8 (9 total positions), Jummbox has a panMax of 100 (101 total positions)
@@ -2842,6 +2847,11 @@ export class Song {
                                 newEffect.ringModHzOffset = clamp(Config.rmHzOffsetMin, Config.rmHzOffsetMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             }
                         }
+                        if (newAudioBus != null) {
+                            newAudioBus = instrument.syncAudioBusEffects(newAudioBus as AudioBus);
+                            console.log(newAudioBus.effects);
+                            this.audioBuses.push(newAudioBus);
+                        }
                         instrument.mdeffects = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                     }
                     else {
@@ -2873,7 +2883,7 @@ export class Song {
                     if (effectsIncludeChord(instrument.mdeffects)) {
                         instrument.chord = clamp(0, Config.chords.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                         // Custom arpeggio speed... only in JB, and only if the instrument arpeggiates.
-                        if (instrument.chord == Config.chords.dictionary["arpeggio"].index && (fromJummBox||fromGoldBox||fromUltraBox||fromSlarmoosBox)) {
+                        if (instrument.chord == Config.chords.dictionary["arpeggio"].index && (fromJummBox || fromGoldBox || fromUltraBox || fromSlarmoosBox)) {
                             instrument.arpeggioSpeed = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                             instrument.fastTwoNoteArp = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) ? true : false;
                         }
@@ -2975,7 +2985,7 @@ export class Song {
                 // Pop custom wave values
                 for (let j = 0; j < 64; j++) {
                     instrument.customChipWave[j]
-                    = clamp(-24, 25, base64CharCodeToInt[compressed.charCodeAt(charIndex++)] - 24);
+                        = clamp(-24, 25, base64CharCodeToInt[compressed.charCodeAt(charIndex++)] - 24);
                 }
 
                 let sum = 0.0;
@@ -3199,7 +3209,7 @@ export class Song {
                     let envelopeDiscrete = false;
                     if ((fromJummBox && !beforeSix) || (fromUltraBox && !beforeFive) || (fromSlarmoosBox)) {
                         instrument.envelopeSpeed = clamp(0, Config.modulators.dictionary["envelope speed"].maxRawVol + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                        if(!fromSlarmoosBox || beforeFive) {
+                        if (!fromSlarmoosBox || beforeFive) {
                             envelopeDiscrete = (base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) ? true : false;
                         }
                     }
@@ -3223,7 +3233,7 @@ export class Song {
                         } else if (beforeFour && aa >= 3) aa++; //3 for random
                         let isTremolo2 = false;
                         if ((fromSlarmoosBox && !beforeThree && beforeFour) || updatedEnvelopes) { //remove tremolo2
-                            if(aa == 9) isTremolo2 = true;
+                            if (aa == 9) isTremolo2 = true;
                             aa = slarURL3toURL4Envelope[aa];
                         }
                         const envelope = clamp(0, ((fromSlarmoosBox && !beforeThree || updatedEnvelopes) ? Config.newEnvelopes.length : Config.envelopes.length), aa);
@@ -3246,16 +3256,16 @@ export class Song {
                             } else if (Config.newEnvelopes[envelope].name == "random") {
                                 steps = clamp(1, Config.randomEnvelopeStepsMax + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 seed = clamp(1, Config.randomEnvelopeSeedMax + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                waveform = clamp(0, RandomEnvelopeTypes.length,base64CharCodeToInt[compressed.charCodeAt(charIndex++)]); //we use waveform for the random type as well
+                                waveform = clamp(0, RandomEnvelopeTypes.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]); //we use waveform for the random type as well
                             }
                         }
                         if (fromSlarmoosBox && !beforeThree) {
                             if (Config.newEnvelopes[envelope].name == "pitch") {
                                 if (!instrument.isNoiseInstrument) {
                                     let pitchEnvelopeCompact = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                                    pitchEnvelopeStart = clamp(0, Config.maxPitch+1, pitchEnvelopeCompact * 64 + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                    pitchEnvelopeStart = clamp(0, Config.maxPitch + 1, pitchEnvelopeCompact * 64 + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     pitchEnvelopeCompact = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
-                                    pitchEnvelopeEnd = clamp(0, Config.maxPitch+1, pitchEnvelopeCompact * 64 + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                    pitchEnvelopeEnd = clamp(0, Config.maxPitch + 1, pitchEnvelopeCompact * 64 + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 } else {
                                     pitchEnvelopeStart = clamp(0, Config.drumCount, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     pitchEnvelopeEnd = clamp(0, Config.drumCount, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
@@ -3394,7 +3404,7 @@ export class Song {
                     }
                 }
             }
-            break;
+                break;
             case SongTagCode.bars: {
                 let subStringLength: number;
                 if (beforeThree && fromBeepBox) {
@@ -3647,8 +3657,8 @@ export class Song {
                                     }
                                 } else {
                                     const restLength = (beforeSeven && fromBeepBox)
-                                    ? bits.readLegacyPartDuration() * Config.partsPerBeat / Config.rhythms[this.rhythm].stepsPerBeat
-                                    : bits.readPartDuration();
+                                        ? bits.readLegacyPartDuration() * Config.partsPerBeat / Config.rhythms[this.rhythm].stepsPerBeat
+                                        : bits.readPartDuration();
                                     curPart += restLength;
 
                                 }
@@ -3702,8 +3712,8 @@ export class Song {
                                         pinObj.pitchBend = bits.read(1) == 1;
                                         if (pinObj.pitchBend) shape.bendCount++;
                                         shape.length += (beforeSeven && fromBeepBox)
-                                        ? bits.readLegacyPartDuration() * Config.partsPerBeat / Config.rhythms[this.rhythm].stepsPerBeat
-                                        : bits.readPartDuration();
+                                            ? bits.readLegacyPartDuration() * Config.partsPerBeat / Config.rhythms[this.rhythm].stepsPerBeat
+                                            : bits.readPartDuration();
                                         pinObj.time = shape.length;
                                         if (fromBeepBox) {
                                             pinObj.size = bits.read(2) * 2;

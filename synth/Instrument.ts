@@ -202,6 +202,12 @@ export class HarmonicsWave {
     }
 }
 
+export class AudioBus {
+    public volume: number = 0;
+    public effects: Effect[] = [];
+    public effectCount: number = 0;
+}
+
 export class Instrument {
     type = InstrumentType.chip;
     preset = 0;
@@ -1579,15 +1585,24 @@ export class Instrument {
         return 440.0 * Math.pow(2.0, (pitch - 69.0) / 12.0);
     }
 
+    syncAudioBusEffects(audioBus: AudioBus): AudioBus {
+        let addEffects: number = -1;
+        for (let i: number = 0; i < this.effectCount; i++) {
+            if (addEffects > -1) audioBus.effects[i - addEffects] = this.effects[i];
+            if (this.effects[i].type == EffectType.audioBus) addEffects = i + 1;
+        }
+        return audioBus;
+    }
+
     addEffect(type: EffectType): Effect {
-        let newEffect = new Effect(type);
+        let newEffect: Effect = new Effect(type);
         this.effects.push(newEffect);
         this.effectCount++;
         return newEffect;
     }
 
     removeEffect(type: EffectType): void {
-        for(let i = 0; i < this.effectCount; i++) {
+        for (let i = 0; i < this.effectCount; i++) {
             if (this.effects[i] != null && this.effects[i]!.type == type) {
                 this.effects.splice(i, 1);
                 break;

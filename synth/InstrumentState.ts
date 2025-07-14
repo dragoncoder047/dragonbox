@@ -1,11 +1,12 @@
 // Copyright (c) John Nesky and contributing authors, distributed under the MIT license, see accompanying the LICENSE.md file.
 
 import { Deque } from "./Deque";
+import { Effect } from "./Effect";
 import { EffectState } from "./EffectState";
 import { EnvelopeComputer } from "./EnvelopeComputer";
 import { inverseRealFourierTransform, scaleElementsByFactor } from "./FFT";
 import { warpInfinityToNyquist } from "./filtering";
-import { HarmonicsWave, Instrument, SpectrumWave } from "./Instrument";
+import { HarmonicsWave, Instrument, SpectrumWave, AudioBus } from "./Instrument";
 import { Synth } from "./synth";
 import { Chord, Config, drawNoiseSpectrum, EffectType, EnvelopeComputeIndex, getDrumWave, InstrumentType, performIntegralOld, SustainType, Unison } from "./SynthConfig";
 import { Tone } from "./Tone";
@@ -187,14 +188,14 @@ export class PickedString {
         const allPassRadiansEnd = Math.min(Math.PI, radiansPerSampleEnd * Config.pickedStringDispersionFreqMult * Math.pow(allPassCenter / radiansPerSampleEnd, Config.pickedStringDispersionFreqScale));
         const shelfRadians = 2.0 * Math.PI * Config.pickedStringShelfHz / synth.samplesPerSecond;
         const decayCurveStart = (Math.pow(100.0, stringDecayStart) - 1.0) / 99.0;
-        const decayCurveEnd = (Math.pow(100.0, stringDecayEnd  ) - 1.0) / 99.0;
+        const decayCurveEnd = (Math.pow(100.0, stringDecayEnd) - 1.0) / 99.0;
         const register = sustainType == SustainType.acoustic ? 0.25 : 0.0;
         const registerShelfCenter = 15.6;
         const registerLowpassCenter = 3.0 * synth.samplesPerSecond / 48000;
         //const decayRateStart = Math.pow(0.5, decayCurveStart * shelfRadians / radiansPerSampleStart);
         //const decayRateEnd = Math.pow(0.5, decayCurveEnd   * shelfRadians / radiansPerSampleEnd);
         const decayRateStart = Math.pow(0.5, decayCurveStart * Math.pow(shelfRadians / (radiansPerSampleStart * registerShelfCenter), (1.0 + 2.0 * register)) * registerShelfCenter);
-        const decayRateEnd = Math.pow(0.5, decayCurveEnd   * Math.pow(shelfRadians / (radiansPerSampleEnd   * registerShelfCenter), (1.0 + 2.0 * register)) * registerShelfCenter);
+        const decayRateEnd = Math.pow(0.5, decayCurveEnd * Math.pow(shelfRadians / (radiansPerSampleEnd * registerShelfCenter), (1.0 + 2.0 * register)) * registerShelfCenter);
 
         const expressionDecayStart = Math.pow(decayRateStart, 0.002);
         const expressionDecayEnd = Math.pow(decayRateEnd, 0.002);
@@ -217,22 +218,22 @@ export class PickedString {
             normal, // 2nd order lowpass, rounded corner
             resonant, // 3rd order lowpass, harder corner
         }
-        const brightnessType = <any> sustainType == SustainType.bright ? PickedStringBrightnessType.bright : PickedStringBrightnessType.normal;
+        const brightnessType = <any>sustainType == SustainType.bright ? PickedStringBrightnessType.bright : PickedStringBrightnessType.normal;
         if (brightnessType == PickedStringBrightnessType.bright) {
             const shelfGainStart = Math.pow(decayRateStart, Config.stringDecayRate);
-            const shelfGainEnd = Math.pow(decayRateEnd,   Config.stringDecayRate);
+            const shelfGainEnd = Math.pow(decayRateEnd, Config.stringDecayRate);
             Synth.tempFilterStartCoefficients.highShelf2ndOrder(shelfRadians, shelfGainStart, 0.5);
             Synth.tempFilterEndCoefficients.highShelf2ndOrder(shelfRadians, shelfGainEnd, 0.5);
         } else {
             const cornerHardness = Math.pow(brightnessType == PickedStringBrightnessType.normal ? 0.0 : 1.0, 0.25);
             const lowpass1stOrderCutoffRadiansStart = Math.pow(registerLowpassCenter * registerLowpassCenter * radiansPerSampleStart * 3.3 * 48000 / synth.samplesPerSecond, 0.5 + register) / registerLowpassCenter / Math.pow(decayCurveStart, .5);
-            const lowpass1stOrderCutoffRadiansEnd = Math.pow(registerLowpassCenter * registerLowpassCenter * radiansPerSampleEnd   * 3.3 * 48000 / synth.samplesPerSecond, 0.5 + register) / registerLowpassCenter / Math.pow(decayCurveEnd,   .5);
+            const lowpass1stOrderCutoffRadiansEnd = Math.pow(registerLowpassCenter * registerLowpassCenter * radiansPerSampleEnd * 3.3 * 48000 / synth.samplesPerSecond, 0.5 + register) / registerLowpassCenter / Math.pow(decayCurveEnd, .5);
             const lowpass2ndOrderCutoffRadiansStart = lowpass1stOrderCutoffRadiansStart * Math.pow(2.0, 0.5 - 1.75 * (1.0 - Math.pow(1.0 - cornerHardness, 0.85)));
-            const lowpass2ndOrderCutoffRadiansEnd = lowpass1stOrderCutoffRadiansEnd   * Math.pow(2.0, 0.5 - 1.75 * (1.0 - Math.pow(1.0 - cornerHardness, 0.85)));
+            const lowpass2ndOrderCutoffRadiansEnd = lowpass1stOrderCutoffRadiansEnd * Math.pow(2.0, 0.5 - 1.75 * (1.0 - Math.pow(1.0 - cornerHardness, 0.85)));
             const lowpass2ndOrderGainStart = Math.pow(2.0, -Math.pow(2.0, -Math.pow(cornerHardness, 0.9)));
             const lowpass2ndOrderGainEnd = Math.pow(2.0, -Math.pow(2.0, -Math.pow(cornerHardness, 0.9)));
             Synth.tempFilterStartCoefficients.lowPass2ndOrderButterworth(warpInfinityToNyquist(lowpass2ndOrderCutoffRadiansStart), lowpass2ndOrderGainStart);
-            Synth.tempFilterEndCoefficients  .lowPass2ndOrderButterworth(warpInfinityToNyquist(lowpass2ndOrderCutoffRadiansEnd),   lowpass2ndOrderGainEnd);
+            Synth.tempFilterEndCoefficients.lowPass2ndOrderButterworth(warpInfinityToNyquist(lowpass2ndOrderCutoffRadiansEnd), lowpass2ndOrderGainEnd);
         }
 
         synth.tempFrequencyResponse.analyze(Synth.tempFilterStartCoefficients, centerHarmonicStart);
@@ -343,6 +344,154 @@ export class PickedString {
                 impulsePhase += impulsePhaseDelta;
             }
         }
+    }
+}
+
+export class AudioBusState {
+    public awake: boolean = true;
+    public computed: boolean = false;
+
+    public tonesAddedInThisTick: boolean = true; // Whether any instrument tones are currently active.
+    public flushingDelayLines: boolean = false; // If no tones were active recently, enter a mode where the delay lines are filled with zeros to reset them for later use.
+    public deactivateAfterThisTick: boolean = false; // Whether the instrument is ready to be deactivated because the delay lines, if any, are fully zeroed.
+    public attentuationProgress: number = 0.0; // How long since an active tone introduced an input signal to the delay lines, normalized from 0 to 1 based on how long to wait until the delay lines signal will have audibly dissapated.
+    public flushedSamples: number = 0; // How many delay line samples have been flushed to zero.
+
+    public audioBufferL: Float32Array | null = null;
+    public audioBufferR: Float32Array | null = null;
+
+    public mixVolume: number = 1.0;
+    public mixVolumeDelta: number = 0.0;
+    public effects: EffectState[] = [];
+
+    public delayDuration: number = 0.0;
+    public totalDelaySamples: number = 0.0;
+    public delayInputMult: number = 0.0;
+    public delayInputMultDelta: number = 0.0;
+
+    constructor(audioBufferLength: number) {
+        this.audioBufferL = new Float32Array(audioBufferLength);
+        this.audioBufferR = new Float32Array(audioBufferLength);
+    }
+
+    public allocateNecessaryBuffers(synth: Synth, audioBus: AudioBus, samplesPerTick: number): void {
+        for (let effectIndex: number = 0; effectIndex < audioBus.effects.length; effectIndex++) {
+            if (this.effects[effectIndex] != null) {
+                let effect: Effect = audioBus.effects[effectIndex]!
+                this.effects[effectIndex]!.allocateNecessaryBuffers(synth, audioBus, effect, samplesPerTick);
+            }
+        }
+    }
+
+    public deactivate(): void {
+        for (let effectIndex: number = 0; effectIndex < this.effects.length; effectIndex++) {
+            if (this.effects[effectIndex] != null) this.effects[effectIndex]!.deactivate();
+        }
+
+        //this.awake = false;
+        this.flushingDelayLines = false;
+        this.deactivateAfterThisTick = false;
+        this.attentuationProgress = 0.0;
+        this.flushedSamples = 0;
+    }
+
+    public resetAllEffects(): void {
+        this.deactivate();
+
+        for (let effectIndex: number = 0; effectIndex < this.effects.length; effectIndex++) {
+            if (this.effects[effectIndex] != null) this.effects[effectIndex]!.reset();
+        }
+    }
+
+    public effectsIncludeType(type: EffectType): boolean {
+        for (let i: number = 0; i < this.effects.length; i++) if (this.effects[i] != null && this.effects[i]!.type == type) return true;
+        return false;
+    }
+
+    public getIsStereo(): boolean {
+        return true;
+    }
+
+    public compute(synth: Synth, audioBus: AudioBus, samplesPerTick: number, roundedSamplesPerTick: number, tone: Tone | null, channelIndex: number, instrumentIndex: number): void {
+        this.computed = true;
+
+        const samplesPerSecond: number = synth.samplesPerSecond;
+
+        for (let effectIndex: number = 0; effectIndex < audioBus.effects.length; effectIndex++) {
+            if (this.effects[effectIndex] == null) this.effects[effectIndex] = new EffectState(audioBus.effects[effectIndex]!.type);
+        }
+        this.effects.length = audioBus.effects.length
+
+        this.delayDuration = 0.0;
+        this.totalDelaySamples = 0.0;
+
+        this.allocateNecessaryBuffers(synth, audioBus, samplesPerTick);
+
+        // this is okay, allegedly
+        const envelopeStarts: number[] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+        const envelopeEnds: number[] = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+        //TODO: since audiobuses dont have envelopes, add a failsafe in effectstate.compute specifically to check if there are envelopestarts and ends-- and if there are none, then skip calculating them :p
+
+        for (let effectIndex: number = 0; effectIndex < audioBus.effects.length; effectIndex++) {
+            if (this.effects[effectIndex] != null) {
+                let effect: Effect = audioBus.effects[effectIndex]!
+                this.effects[effectIndex]!.compute(synth, audioBus, effect, this, samplesPerTick, roundedSamplesPerTick, tone, channelIndex, instrumentIndex, envelopeStarts, envelopeEnds);
+            }
+        }
+
+        let mixVolumeEnd: number = 1.0;
+
+        // Check for SONG mod-related volume delta
+        if (synth.isModActive(Config.modulators.dictionary["song volume"].index)) {
+            this.mixVolume *= (synth.getModValue(Config.modulators.dictionary["song volume"].index, undefined, undefined, false)) / 100.0;
+            mixVolumeEnd *= (synth.getModValue(Config.modulators.dictionary["song volume"].index, undefined, undefined, true)) / 100.0;
+        }
+
+        this.mixVolumeDelta = (mixVolumeEnd - this.mixVolume) / roundedSamplesPerTick;
+
+        let delayInputMultStart: number = 1.0;
+        let delayInputMultEnd: number = 1.0;
+
+        //TODO: if the audiobus buffer has no samples in it, tonesAddedInThisTick should be false
+        if (this.tonesAddedInThisTick) {
+            this.attentuationProgress = 0.0;
+            this.flushedSamples = 0;
+            this.flushingDelayLines = false;
+        } else if (!this.flushingDelayLines) {
+            // If this instrument isn't playing tones anymore, the volume can fade out by the
+            // end of the first tick. It's possible for filters and the panning delay line to
+            // continue past the end of the tone but they should have mostly dissipated by the
+            // end of the tick anyway.
+            if (this.attentuationProgress == 0.0) {
+                //eqFilterVolumeEnd = 0.0;
+            } else {
+                //eqFilterVolumeStart = 0.0;
+                //eqFilterVolumeEnd = 0.0;
+            }
+
+            const secondsInTick: number = samplesPerTick / samplesPerSecond;
+            const progressInTick: number = secondsInTick / this.delayDuration;
+            const progressAtEndOfTick: number = this.attentuationProgress + progressInTick;
+            if (progressAtEndOfTick >= 1.0) {
+                delayInputMultEnd = 0.0;
+            }
+
+            this.attentuationProgress = progressAtEndOfTick;
+            if (this.attentuationProgress >= 1.0) {
+                this.flushingDelayLines = true;
+            }
+        } else {
+            delayInputMultStart = 0.0;
+            delayInputMultEnd = 0.0;
+
+            this.flushedSamples += roundedSamplesPerTick;
+            if (this.flushedSamples >= this.totalDelaySamples) {
+                this.deactivateAfterThisTick = true;
+            }
+        }
+
+        this.delayInputMult = delayInputMultStart;
+        this.delayInputMultDelta = (delayInputMultEnd - delayInputMultStart) / roundedSamplesPerTick;
     }
 }
 
@@ -461,7 +610,9 @@ export class InstrumentState {
         this.totalDelaySamples = 0.0;
 
         for (let effectIndex = 0; effectIndex < instrument.effects.length; effectIndex++) {
-            if (this.effects[effectIndex] == null) this.effects[effectIndex] = new EffectState(instrument.effects[effectIndex]!.type);
+            if (this.effects[effectIndex] == null) {
+                this.effects[effectIndex] = new EffectState(instrument.effects[effectIndex]!.type);
+            }
         }
         this.effects.length = instrument.effects.length
 
@@ -501,8 +652,8 @@ export class InstrumentState {
 
         for (let effectIndex = 0; effectIndex < instrument.effects.length; effectIndex++) {
             if (this.effects[effectIndex] != null) {
-                let effect = instrument.effects[effectIndex]!
-                this.effects[effectIndex]!.compute(synth, instrument, effect, this, samplesPerTick, roundedSamplesPerTick, tone, channelIndex, instrumentIndex, envelopeStarts, envelopeEnds);
+                let effect = instrument.effects[effectIndex]
+                this.effects[effectIndex].compute(synth, instrument, effect, this, samplesPerTick, roundedSamplesPerTick, tone, channelIndex, instrumentIndex, envelopeStarts, envelopeEnds);
             }
         }
 
@@ -670,5 +821,9 @@ export class InstrumentState {
     effectsIncludeType(type: EffectType): boolean {
         for (let i = 0; i < this.effects.length; i++) if (this.effects[i] != null && this.effects[i]!.type == type) return true;
         return false;
+    }
+
+    public getIsStereo(): boolean {
+        return this.chipWaveInStereo && (this.type == InstrumentType.chip);
     }
 }

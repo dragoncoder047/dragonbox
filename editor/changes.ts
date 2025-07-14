@@ -1482,6 +1482,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                     { item: "rise", weight: 4 },
                     { item: "fall", weight: 3 },
                 ])].index, true, 0, -1, selectWeightedRandom([{ item: false, weight: 8 }, { item: true, weight: 1 }]), Config.perEnvelopeSpeedIndices[selectCurvedDistribution(1, 63, 40, 20)], envelopeLowerBound, envelopeUpperBound, selectCurvedDistribution(2, 16, 2, 6), selectCurvedDistribution(1, 63, 32, 31),
+                    // @ts-ignore idk why it is erroring, this works
                     selectWeightedRandom([{ item: RandomEnvelopeTypes.time, weight: 8 }, { item: RandomEnvelopeTypes.pitch, weight: 2 }]));
             }
             function normalize(harmonics: number[]): void {
@@ -1546,6 +1547,7 @@ export class ChangeRandomGeneratedInstrument extends Change {
                                 { item: 0.8, weight: 3 },
                                 { item: 0.9, weight: 5 },
                                 { item: 1, weight: 8 }]), selectCurvedDistribution(2, 16, 2, 6), selectCurvedDistribution(1, 63, 32, 31),
+                            // @ts-ignore idk why it is erroring, this works
                             selectWeightedRandom([{ item: RandomEnvelopeTypes.time, weight: 8 }, { item: RandomEnvelopeTypes.pitch, weight: 2 }]));                        
                     }
                 } break;

@@ -215,16 +215,7 @@ class CustomChipCanvas {
         const renderColor = ColorConfig.getComputedChannelColor(this._doc.song, this._doc.song.channels[this._doc.channel].color, this._doc.channel, this._doc.prefs.fixChannelColorOrder).primaryNote;
 
         // Check if the data has changed from the last render.
-        let needsRedraw = false;
-        if (renderColor != this.renderedColor) {
-            needsRedraw = true;
-        } else for (let i = 0; i < 64; i++) {
-            if (chipData[i] != this.renderedArray[i]) {
-                needsRedraw = true;
-                i = 64;
-            }
-        }
-        if (!needsRedraw) {
+        if (!(renderColor != this.renderedColor || chipData.some((d, i) => d != this.renderedArray[i]))) {
             return;
         }
 

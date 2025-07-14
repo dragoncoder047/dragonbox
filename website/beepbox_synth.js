@@ -167,67 +167,6 @@ var beepbox = (() => {
     }
   };
 
-  // node_modules/js-xxhash/dist/esm/xxHash32.js
-  var PRIME32_1 = 2654435761;
-  var PRIME32_2 = 2246822519;
-  var PRIME32_3 = 3266489917;
-  var PRIME32_4 = 668265263;
-  var PRIME32_5 = 374761393;
-  var encoder;
-  function xxHash32(input, seed = 0) {
-    const buffer = typeof input === "string" ? (encoder ??= new TextEncoder()).encode(input) : input;
-    const b = buffer;
-    let acc = seed + PRIME32_5 & 4294967295;
-    let offset = 0;
-    if (b.length >= 16) {
-      const accN = [
-        seed + PRIME32_1 + PRIME32_2 & 4294967295,
-        seed + PRIME32_2 & 4294967295,
-        seed + 0 & 4294967295,
-        seed - PRIME32_1 & 4294967295
-      ];
-      const b2 = buffer;
-      const limit2 = b2.length - 16;
-      let lane = 0;
-      for (offset = 0; (offset & 4294967280) <= limit2; offset += 4) {
-        const i = offset;
-        const laneN0 = b2[i + 0] + (b2[i + 1] << 8);
-        const laneN1 = b2[i + 2] + (b2[i + 3] << 8);
-        const laneNP = laneN0 * PRIME32_2 + (laneN1 * PRIME32_2 << 16);
-        let acc2 = accN[lane] + laneNP & 4294967295;
-        acc2 = acc2 << 13 | acc2 >>> 19;
-        const acc0 = acc2 & 65535;
-        const acc1 = acc2 >>> 16;
-        accN[lane] = acc0 * PRIME32_1 + (acc1 * PRIME32_1 << 16) & 4294967295;
-        lane = lane + 1 & 3;
-      }
-      acc = (accN[0] << 1 | accN[0] >>> 31) + (accN[1] << 7 | accN[1] >>> 25) + (accN[2] << 12 | accN[2] >>> 20) + (accN[3] << 18 | accN[3] >>> 14) & 4294967295;
-    }
-    acc = acc + buffer.length & 4294967295;
-    const limit = buffer.length - 4;
-    for (; offset <= limit; offset += 4) {
-      const i = offset;
-      const laneN0 = b[i + 0] + (b[i + 1] << 8);
-      const laneN1 = b[i + 2] + (b[i + 3] << 8);
-      const laneP = laneN0 * PRIME32_3 + (laneN1 * PRIME32_3 << 16);
-      acc = acc + laneP & 4294967295;
-      acc = acc << 17 | acc >>> 15;
-      acc = (acc & 65535) * PRIME32_4 + ((acc >>> 16) * PRIME32_4 << 16) & 4294967295;
-    }
-    for (; offset < b.length; ++offset) {
-      const lane = b[offset];
-      acc = acc + lane * PRIME32_5;
-      acc = acc << 11 | acc >>> 21;
-      acc = (acc & 65535) * PRIME32_1 + ((acc >>> 16) * PRIME32_1 << 16) & 4294967295;
-    }
-    acc = acc ^ acc >>> 15;
-    acc = ((acc & 65535) * PRIME32_2 & 4294967295) + ((acc >>> 16) * PRIME32_2 << 16);
-    acc = acc ^ acc >>> 13;
-    acc = ((acc & 65535) * PRIME32_3 & 4294967295) + ((acc >>> 16) * PRIME32_3 << 16);
-    acc = acc ^ acc >>> 16;
-    return acc < 0 ? acc + 4294967296 : acc;
-  }
-
   // synth/SynthConfig.ts
   var FilterType = /* @__PURE__ */ ((FilterType2) => {
     FilterType2[FilterType2["lowPass"] = 0] = "lowPass";
@@ -672,7 +611,7 @@ var beepbox = (() => {
     static releaseVal = 0.25;
     static willReloadForCustomSamples = false;
     static jsonFormat = "DragonBox";
-    // public static thurmboxImportUrl = "https://file.garden/ZMQ0Om5nmTe-x2hq/PandoraArchive%20Samples/";
+    // static thurmboxImportUrl = "https://file.garden/ZMQ0Om5nmTe-x2hq/PandoraArchive%20Samples/";
     static scales = toNameMap([
       //   C     Db      D     Eb      E      F     F#      G     Ab      A     Bb      B      C
       { name: "Free", realName: "chromatic", flags: [true, true, true, true, true, true, true, true, true, true, true, true] },
@@ -1075,17 +1014,17 @@ var beepbox = (() => {
       { name: "bow", voices: 9, spread: 6e-3, offset: 0, expression: 0.15, sign: 0.5 }
       //for modbox; voices = riffapp, spread = intervals, offset = offsets, expression = volume, and sign = signs
     ]);
-    static effectNames = ["reverb", "chorus", "panning", "distortion", "bitcrusher", "post eq", "echo", "ring mod", "granular", "gain", "flanger"];
-    static effectDisplayNames = ["Reverb", "Chorus", "Panning", "Distortion", "Bitcrusher", "Post EQ", "Echo", "Ring Mod", "Granular", "Gain", "Flanger"];
-    static effectOrder = [0 /* reverb */, 1 /* chorus */, 2 /* panning */, 3 /* distortion */, 4 /* bitcrusher */, 5 /* eqFilter */, 6 /* echo */, 7 /* ringModulation */, 8 /* granular */, 9 /* gain */, 10 /* flanger */];
-    static effectCount;
+    static effectNames = ["reverb", "chorus", "panning", "distortion", "bitcrusher", "post eq", "echo", "ring mod", "granular", "gain", "flanger", "audio bus"];
+    static effectDisplayNames = ["Reverb", "Chorus", "Panning", "Distortion", "Bitcrusher", "Post EQ", "Echo", "Ring Mod", "Granular", "Gain", "Flanger", "Audio Bus"];
+    static effectOrder = [0 /* reverb */, 1 /* chorus */, 2 /* panning */, 3 /* distortion */, 4 /* bitcrusher */, 5 /* eqFilter */, 6 /* echo */, 7 /* ringModulation */, 8 /* granular */, 9 /* gain */, 10 /* flanger */, 11 /* audioBus */];
+    static effectCount = 12;
     static mdeffectNames = ["pitch shift", "detune", "vibrato", "transition type", "chord type", "note range"];
     static mdeffectOrder = [3 /* transition */, 4 /* chord */, 0 /* pitchShift */, 1 /* detune */, 2 /* vibrato */, 5 /* noteRange */];
-    static mdeffectCount;
+    static mdeffectCount = 6;
     static noteSizeMax = 6;
     static volumeRange = 100;
-    // Beepbox's old volume scale used factor -0.5 and was [0~7] had roughly value 6 = 0.125 power. This new value is chosen to have -21 be the same,
-    // given that the new scale is [-25~25]. This is such that conversion between the scales is roughly equivalent by satisfying (0.5*6 = 0.1428*21)
+    // Beepbox's old volume scale used factor -0.5 and was [0~7] had roughly value 6 = 0.125 power. This new value is chosen to have -42 be the same,
+    // given that the new scale is [-50~50]. This is such that conversion between the scales is roughly equivalent by satisfying (0.5*6 = 0.0714*42)
     static volumeLogScale = 0.0714;
     static gainRangeMult = 2;
     static panCenter = 50;
@@ -1486,14 +1425,14 @@ var beepbox = (() => {
       }
       return wave;
     }
-    // public static generateWhiteNoiseFmWave() {
+    // static generateWhiteNoiseFmWave() {
     // const wave = new Float32Array(Config.sineWaveLength + 1);
     // for (let i = 0; i < Config.sineWaveLength + 1; i++) {
     // wave[i] = Math.random() * 2.0 - 1.0;
     // }
     // return wave;
     // }
-    // public static generateOneBitWhiteNoiseFmWave() {
+    // static generateOneBitWhiteNoiseFmWave() {
     // const wave = new Float32Array(Config.sineWaveLength + 1);
     // for (let i = 0; i < Config.sineWaveLength + 1; i++) {
     // wave[i] = Math.round(Math.random());
@@ -2059,7 +1998,7 @@ var beepbox = (() => {
         newNoteVol: 6,
         forSong: true,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "No Mod Setting",
@@ -2072,7 +2011,7 @@ var beepbox = (() => {
         newNoteVol: 100,
         forSong: true,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "Song Volume",
@@ -2085,7 +2024,7 @@ var beepbox = (() => {
         newNoteVol: Math.ceil((_Config.tempoMax - _Config.tempoMin) / 2),
         forSong: true,
         convertRealFactor: _Config.tempoMin,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "Song Tempo",
@@ -2098,7 +2037,7 @@ var beepbox = (() => {
         newNoteVol: _Config.reverbRange,
         forSong: true,
         convertRealFactor: -_Config.reverbRange,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "Song Reverb",
@@ -2111,7 +2050,7 @@ var beepbox = (() => {
         newNoteVol: 1,
         forSong: true,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "Go To Next Bar",
@@ -2124,7 +2063,7 @@ var beepbox = (() => {
         newNoteVol: Math.ceil(_Config.volumeRange / 2),
         forSong: false,
         convertRealFactor: Math.ceil(-_Config.volumeRange / 2),
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "Instrument Pre Volume",
@@ -2189,7 +2128,7 @@ var beepbox = (() => {
         newNoteVol: 15,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "FM Slider 1",
@@ -2202,7 +2141,7 @@ var beepbox = (() => {
         newNoteVol: 15,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "FM Slider 2",
@@ -2215,7 +2154,7 @@ var beepbox = (() => {
         newNoteVol: 15,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "FM Slider 3",
@@ -2228,7 +2167,7 @@ var beepbox = (() => {
         newNoteVol: 15,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "FM Slider 4",
@@ -2241,7 +2180,7 @@ var beepbox = (() => {
         newNoteVol: 15,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "FM Feedback",
@@ -2254,7 +2193,7 @@ var beepbox = (() => {
         newNoteVol: _Config.pulseWidthRange,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "Pulse Width",
@@ -2267,7 +2206,7 @@ var beepbox = (() => {
         newNoteVol: _Config.detuneCenter,
         forSong: false,
         convertRealFactor: -_Config.detuneCenter,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 1 /* detune */,
         maxIndex: 0,
         promptName: "Instrument Detune",
@@ -2280,7 +2219,7 @@ var beepbox = (() => {
         newNoteVol: 0,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 2 /* vibrato */,
         maxIndex: 0,
         promptName: "Vibrato Depth",
@@ -2293,7 +2232,7 @@ var beepbox = (() => {
         newNoteVol: Math.ceil((_Config.songDetuneMax - _Config.songDetuneMin) / 2),
         forSong: true,
         convertRealFactor: -250,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "Song Detune",
@@ -2306,7 +2245,7 @@ var beepbox = (() => {
         newNoteVol: 0,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 2 /* vibrato */,
         maxIndex: 0,
         promptName: "Vibrato Speed",
@@ -2319,7 +2258,7 @@ var beepbox = (() => {
         newNoteVol: 0,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 2 /* vibrato */,
         maxIndex: 0,
         promptName: "Vibrato Delay",
@@ -2332,7 +2271,7 @@ var beepbox = (() => {
         newNoteVol: 12,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 4 /* chord */,
         maxIndex: 0,
         promptName: "Arpeggio Speed",
@@ -2372,7 +2311,7 @@ var beepbox = (() => {
         newNoteVol: 1,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 4 /* chord */,
         maxIndex: 0,
         promptName: "Reset Arpeggio",
@@ -2385,7 +2324,7 @@ var beepbox = (() => {
         newNoteVol: 0,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "EQ Filter",
@@ -2541,7 +2480,7 @@ var beepbox = (() => {
         newNoteVol: _Config.filterSimpleCutRange - 1,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "EQ Filter Cutoff Frequency",
@@ -2554,7 +2493,7 @@ var beepbox = (() => {
         newNoteVol: 0,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "EQ Filter Peak Gain",
@@ -2593,7 +2532,7 @@ var beepbox = (() => {
         newNoteVol: _Config.pitchShiftCenter,
         forSong: false,
         convertRealFactor: -_Config.pitchShiftCenter,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 0 /* pitchShift */,
         maxIndex: 0,
         promptName: "Pitch Shift",
@@ -2606,7 +2545,7 @@ var beepbox = (() => {
         newNoteVol: 0,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "Picked String Sustain",
@@ -2619,7 +2558,7 @@ var beepbox = (() => {
         newNoteVol: Math.ceil(_Config.volumeRange / 2),
         forSong: false,
         convertRealFactor: Math.ceil(-_Config.volumeRange / 2),
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "Instrument Post Volume",
@@ -2632,7 +2571,7 @@ var beepbox = (() => {
         newNoteVol: 15,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "FM Slider 5",
@@ -2645,7 +2584,7 @@ var beepbox = (() => {
         newNoteVol: 15,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "FM Slider 6",
@@ -2659,7 +2598,7 @@ var beepbox = (() => {
         forSong: false,
         convertRealFactor: 0,
         invertSliderIndicator: true,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "Decimal Offset",
@@ -2672,7 +2611,7 @@ var beepbox = (() => {
         newNoteVol: 12,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "Envelope Speed",
@@ -2699,7 +2638,7 @@ var beepbox = (() => {
         newNoteVol: 0,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "Supersaw Dynamism",
@@ -2712,7 +2651,7 @@ var beepbox = (() => {
         newNoteVol: 0,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "Supersaw Spread",
@@ -2725,7 +2664,7 @@ var beepbox = (() => {
         newNoteVol: 0,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "Supersaw Shape",
@@ -2738,7 +2677,7 @@ var beepbox = (() => {
         newNoteVol: 23,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: this.maxEnvelopeCount - 1,
         promptName: "Individual Envelope Speed",
@@ -2768,7 +2707,7 @@ var beepbox = (() => {
         newNoteVol: 0,
         forSong: true,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: 0,
         promptName: "Song EQ Filter",
@@ -2781,7 +2720,7 @@ var beepbox = (() => {
         newNoteVol: 1,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: this.maxEnvelopeCount - 1,
         promptName: "Reset Envelope",
@@ -2872,7 +2811,7 @@ var beepbox = (() => {
         newNoteVol: 0,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: this.maxEnvelopeCount - 1,
         promptName: "Individual Envelope Lower Bound",
@@ -2885,7 +2824,7 @@ var beepbox = (() => {
         newNoteVol: 10,
         forSong: false,
         convertRealFactor: 0,
-        associatedEffect: 11 /* length */,
+        associatedEffect: 12 /* length */,
         associatedMDEffect: 6 /* length */,
         maxIndex: this.maxEnvelopeCount - 1,
         promptName: "Individual Envelope Upper Bound",
@@ -3150,582 +3089,6 @@ var beepbox = (() => {
     result.dictionary = dictionary;
     return result;
   }
-
-  // synth/EnvelopeComputer.ts
-  var EnvelopeComputer = class _EnvelopeComputer {
-    // "Unscaled" values do not increase with Envelope Speed's timescale factor. Thus they are "real" seconds since the start of the note.
-    // Fade envelopes notably use unscaled values instead of being tied to Envelope Speed.
-    noteSecondsStart = [];
-    noteSecondsStartUnscaled = 0;
-    noteSecondsEnd = [];
-    noteSecondsEndUnscaled = 0;
-    noteTicksStart = 0;
-    noteTicksEnd = 0;
-    noteSizeStart = Config.noteSizeMax;
-    noteSizeEnd = Config.noteSizeMax;
-    prevNoteSize = Config.noteSizeMax;
-    nextNoteSize = Config.noteSizeMax;
-    ba = Config.noteSizeMax;
-    prevNoteSecondsStart = [];
-    prevNoteSecondsStartUnscaled = 0;
-    prevNoteSecondsEnd = [];
-    prevNoteSecondsEndUnscaled = 0;
-    prevNoteTicksStart = 0;
-    prevNoteTicksEnd = 0;
-    ga = Config.noteSizeMax;
-    tickTimeEnd = [];
-    drumsetFilterEnvelopeStart = 0;
-    drumsetFilterEnvelopeEnd = 0;
-    prevSlideStart = false;
-    prevSlideEnd = false;
-    nextSlideStart = false;
-    nextSlideEnd = false;
-    prevSlideRatioStart = 0;
-    prevSlideRatioEnd = 0;
-    nextSlideRatioStart = 0;
-    nextSlideRatioEnd = 0;
-    startPinTickAbsolute = null;
-    startPinTickDefaultPitch = null;
-    startPinTickPitch = null;
-    envelopeStarts = [];
-    envelopeEnds = [];
-    ka = [];
-    ea = 0;
-    lowpassCutoffDecayVolumeCompensation = 1;
-    constructor() {
-      const length = 62 /* length */;
-      for (let i = 0; i < length; i++) {
-        this.envelopeStarts[i] = 1;
-        this.envelopeEnds[i] = 1;
-      }
-      this.reset();
-    }
-    reset() {
-      for (let envelopeIndex = 0; envelopeIndex < Config.maxEnvelopeCount + 1; envelopeIndex++) {
-        this.noteSecondsEnd[envelopeIndex] = 0;
-        this.prevNoteSecondsEnd[envelopeIndex] = 0;
-      }
-      this.noteSecondsEndUnscaled = 0;
-      this.noteTicksEnd = 0;
-      this.ba = Config.noteSizeMax;
-      this.prevNoteSecondsEndUnscaled = 0;
-      this.prevNoteTicksEnd = 0;
-      this.ga = Config.noteSizeMax;
-      this.ea = 0;
-      this.drumsetFilterEnvelopeStart = 0;
-      this.drumsetFilterEnvelopeEnd = 0;
-      this.startPinTickAbsolute = null;
-      this.startPinTickDefaultPitch = null;
-      this.startPinTickPitch = null;
-    }
-    computeEnvelopes(instrument, currentPart, tickTimeStart, tickTimeStartReal, secondsPerTick, tone, timeScale, instrumentState, synth, channelIndex, instrumentIndex) {
-      const secondsPerTickUnscaled = secondsPerTick;
-      const transition = instrument.getTransition();
-      if (tone != null && tone.atNoteStart && !transition.continues && !tone.forceContinueAtStart) {
-        this.prevNoteSecondsEndUnscaled = this.noteSecondsEndUnscaled;
-        this.prevNoteTicksEnd = this.noteTicksEnd;
-        this.ga = this.ba;
-        this.noteSecondsEndUnscaled = 0;
-        this.noteTicksEnd = 0;
-        for (let envelopeIndex = 0; envelopeIndex < Config.maxEnvelopeCount + 1; envelopeIndex++) {
-          this.prevNoteSecondsEnd[envelopeIndex] = this.noteSecondsEnd[envelopeIndex];
-          this.noteSecondsEnd[envelopeIndex] = 0;
-        }
-      }
-      if (tone != null) {
-        if (tone.note != null) {
-          this.ba = tone.note.pins[tone.note.pins.length - 1].size;
-        } else {
-          this.ba = Config.noteSizeMax;
-        }
-      }
-      const tickTimeEnd = [];
-      const tickTimeEndReal = tickTimeStartReal + 1;
-      const noteSecondsStart = [];
-      const noteSecondsStartUnscaled = this.noteSecondsEndUnscaled;
-      const noteSecondsEnd = [];
-      const noteSecondsEndUnscaled = noteSecondsStartUnscaled + secondsPerTickUnscaled;
-      const noteTicksStart = this.noteTicksEnd;
-      const noteTicksEnd = noteTicksStart + 1;
-      const prevNoteSecondsStart = [];
-      const prevNoteSecondsEnd = [];
-      const prevNoteSecondsStartUnscaled = this.prevNoteSecondsEndUnscaled;
-      const prevNoteSecondsEndUnscaled = prevNoteSecondsStartUnscaled + secondsPerTickUnscaled;
-      const prevNoteTicksStart = this.prevNoteTicksEnd;
-      const prevNoteTicksEnd = prevNoteTicksStart + 1;
-      const beatsPerTick = 1 / (Config.ticksPerPart * Config.partsPerBeat);
-      const beatTimeStart = [];
-      const beatTimeEnd = [];
-      let noteSizeStart = this.ba;
-      let noteSizeEnd = this.ba;
-      let prevNoteSize = this.ga;
-      let nextNoteSize = 0;
-      let prevSlideStart = false;
-      let prevSlideEnd = false;
-      let nextSlideStart = false;
-      let nextSlideEnd = false;
-      let prevSlideRatioStart = 0;
-      let prevSlideRatioEnd = 0;
-      let nextSlideRatioStart = 0;
-      let nextSlideRatioEnd = 0;
-      if (tone == null) {
-        this.startPinTickAbsolute = null;
-        this.startPinTickDefaultPitch = null;
-      }
-      if (tone != null && tone.note != null && !tone.passedEndOfNote) {
-        const endPinIndex = tone.note.getEndPinIndex(currentPart);
-        const startPin = tone.note.pins[endPinIndex - 1];
-        const endPin = tone.note.pins[endPinIndex];
-        const startPinTick = (tone.note.start + startPin.time) * Config.ticksPerPart;
-        if (this.startPinTickAbsolute == null || !(transition.continues || transition.slides) && tone.passedEndOfNote) this.startPinTickAbsolute = startPinTick + synth.computeTicksSinceStart(true);
-        if (this.startPinTickDefaultPitch == null || /* (!(transition.continues || transition.slides)) &&*/
-        tone.passedEndOfNote) this.startPinTickDefaultPitch = this.getPitchValue(instrument, tone, instrumentState, false);
-        if (!tone.passedEndOfNote) this.startPinTickPitch = this.getPitchValue(instrument, tone, instrumentState, true);
-        const endPinTick = (tone.note.start + endPin.time) * Config.ticksPerPart;
-        const ratioStart = (tickTimeStartReal - startPinTick) / (endPinTick - startPinTick);
-        const ratioEnd = (tickTimeEndReal - startPinTick) / (endPinTick - startPinTick);
-        noteSizeStart = startPin.size + (endPin.size - startPin.size) * ratioStart;
-        noteSizeEnd = startPin.size + (endPin.size - startPin.size) * ratioEnd;
-        if (transition.slides) {
-          const noteStartTick = tone.noteStartPart * Config.ticksPerPart;
-          const noteEndTick = tone.noteEndPart * Config.ticksPerPart;
-          const noteLengthTicks = noteEndTick - noteStartTick;
-          const maximumSlideTicks = noteLengthTicks * 0.5;
-          const slideTicks = Math.min(maximumSlideTicks, transition.slideTicks);
-          if (tone.prevNote != null && !tone.forceContinueAtStart) {
-            if (tickTimeStartReal - noteStartTick < slideTicks) {
-              prevSlideStart = true;
-              prevSlideRatioStart = 0.5 * (1 - (tickTimeStartReal - noteStartTick) / slideTicks);
-            }
-            if (tickTimeEndReal - noteStartTick < slideTicks) {
-              prevSlideEnd = true;
-              prevSlideRatioEnd = 0.5 * (1 - (tickTimeEndReal - noteStartTick) / slideTicks);
-            }
-          }
-          if (tone.nextNote != null && !tone.forceContinueAtEnd) {
-            nextNoteSize = tone.nextNote.pins[0].size;
-            if (noteEndTick - tickTimeStartReal < slideTicks) {
-              nextSlideStart = true;
-              nextSlideRatioStart = 0.5 * (1 - (noteEndTick - tickTimeStartReal) / slideTicks);
-            }
-            if (noteEndTick - tickTimeEndReal < slideTicks) {
-              nextSlideEnd = true;
-              nextSlideRatioEnd = 0.5 * (1 - (noteEndTick - tickTimeEndReal) / slideTicks);
-            }
-          }
-        }
-      }
-      let lowpassCutoffDecayVolumeCompensation = 1;
-      let usedNoteSize = false;
-      for (let envelopeIndex = 0; envelopeIndex <= instrument.envelopeCount; envelopeIndex++) {
-        let automationTarget;
-        let targetIndex;
-        let envelope;
-        let inverse = false;
-        let isDiscrete = false;
-        let perEnvelopeSpeed = 1;
-        let globalEnvelopeSpeed = 1;
-        let envelopeSpeed = perEnvelopeSpeed * globalEnvelopeSpeed;
-        let perEnvelopeLowerBound = 0;
-        let perEnvelopeUpperBound = 1;
-        let timeSinceStart = 0;
-        let steps = 2;
-        let seed = 2;
-        let waveform = 0 /* sine */;
-        let startPinTickAbsolute = this.startPinTickAbsolute || 0;
-        let defaultPitch = this.startPinTickDefaultPitch || 0;
-        if (envelopeIndex == instrument.envelopeCount) {
-          if (usedNoteSize) break;
-          automationTarget = Config.instrumentAutomationTargets.dictionary["noteVolume"];
-          targetIndex = 0;
-          envelope = Config.newEnvelopes.dictionary["note size"];
-        } else {
-          let envelopeSettings = instrument.envelopes[envelopeIndex];
-          automationTarget = Config.instrumentAutomationTargets[envelopeSettings.target];
-          targetIndex = envelopeSettings.index;
-          envelope = Config.newEnvelopes[envelopeSettings.envelope];
-          inverse = instrument.envelopes[envelopeIndex].inverse;
-          isDiscrete = instrument.envelopes[envelopeIndex].discrete;
-          perEnvelopeSpeed = instrument.envelopes[envelopeIndex].perEnvelopeSpeed;
-          globalEnvelopeSpeed = Math.pow(instrument.envelopeSpeed, 2) / 144;
-          envelopeSpeed = perEnvelopeSpeed * globalEnvelopeSpeed;
-          perEnvelopeLowerBound = instrument.envelopes[envelopeIndex].perEnvelopeLowerBound;
-          perEnvelopeUpperBound = instrument.envelopes[envelopeIndex].perEnvelopeUpperBound;
-          if (synth.isModActive(Config.modulators.dictionary["individual envelope lower bound"].index, channelIndex, instrumentIndex) && instrument.envelopes[envelopeIndex].tempEnvelopeLowerBound != null) {
-            perEnvelopeLowerBound = instrument.envelopes[envelopeIndex].tempEnvelopeLowerBound;
-          }
-          if (synth.isModActive(Config.modulators.dictionary["individual envelope upper bound"].index, channelIndex, instrumentIndex) && instrument.envelopes[envelopeIndex].tempEnvelopeUpperBound != null) {
-            perEnvelopeUpperBound = instrument.envelopes[envelopeIndex].tempEnvelopeUpperBound;
-          }
-          if (!(perEnvelopeLowerBound <= perEnvelopeUpperBound)) {
-            perEnvelopeLowerBound = 0;
-            perEnvelopeUpperBound = 1;
-          }
-          timeSinceStart = synth.computeTicksSinceStart();
-          steps = instrument.envelopes[envelopeIndex].steps;
-          seed = instrument.envelopes[envelopeIndex].seed;
-          if (instrument.envelopes[envelopeIndex].waveform >= (envelope.name == "lfo" ? 7 /* length */ : 4 /* length */)) {
-            instrument.envelopes[envelopeIndex].waveform = 0;
-          }
-          waveform = instrument.envelopes[envelopeIndex].waveform;
-          if (!timeScale[envelopeIndex]) timeScale[envelopeIndex] = 0;
-          const secondsPerTickScaled = secondsPerTick * timeScale[envelopeIndex];
-          if (!tickTimeStart[envelopeIndex]) tickTimeStart[envelopeIndex] = 0;
-          tickTimeEnd[envelopeIndex] = tickTimeStart[envelopeIndex] ? tickTimeStart[envelopeIndex] + timeScale[envelopeIndex] : timeScale[envelopeIndex];
-          noteSecondsStart[envelopeIndex] = this.noteSecondsEnd[envelopeIndex] ? this.noteSecondsEnd[envelopeIndex] : 0;
-          prevNoteSecondsStart[envelopeIndex] = this.prevNoteSecondsEnd[envelopeIndex] ? this.prevNoteSecondsEnd[envelopeIndex] : 0;
-          noteSecondsEnd[envelopeIndex] = noteSecondsStart[envelopeIndex] ? noteSecondsStart[envelopeIndex] + secondsPerTickScaled : secondsPerTickScaled;
-          prevNoteSecondsEnd[envelopeIndex] = prevNoteSecondsStart[envelopeIndex] ? prevNoteSecondsStart[envelopeIndex] + secondsPerTickScaled : secondsPerTickScaled;
-          beatTimeStart[envelopeIndex] = tickTimeStart[envelopeIndex] ? beatsPerTick * tickTimeStart[envelopeIndex] : beatsPerTick;
-          beatTimeEnd[envelopeIndex] = tickTimeEnd[envelopeIndex] ? beatsPerTick * tickTimeEnd[envelopeIndex] : beatsPerTick;
-          if (envelope.type == 1 /* noteSize */) usedNoteSize = true;
-        }
-        const pitch = envelope.type == 2 /* pitch */ ? this.computePitchEnvelope(instrument, envelopeIndex, this.startPinTickPitch || this.getPitchValue(instrument, tone, instrumentState, true)) : 0;
-        if (automationTarget.computeIndex != null) {
-          const computeIndex = automationTarget.computeIndex + targetIndex;
-          let envelopeStart = _EnvelopeComputer.computeEnvelope(envelope, envelopeSpeed, globalEnvelopeSpeed, noteSecondsStartUnscaled, noteSecondsStart[envelopeIndex], beatTimeStart[envelopeIndex], timeSinceStart, noteSizeStart, pitch, inverse, perEnvelopeLowerBound, perEnvelopeUpperBound, false, steps, seed, waveform, defaultPitch, startPinTickAbsolute);
-          if (prevSlideStart) {
-            const other = _EnvelopeComputer.computeEnvelope(envelope, envelopeSpeed, globalEnvelopeSpeed, prevNoteSecondsStartUnscaled, prevNoteSecondsStart[envelopeIndex], beatTimeStart[envelopeIndex], timeSinceStart, prevNoteSize, pitch, inverse, perEnvelopeLowerBound, perEnvelopeUpperBound, false, steps, seed, waveform, defaultPitch, startPinTickAbsolute);
-            envelopeStart += (other - envelopeStart) * prevSlideRatioStart;
-          }
-          if (nextSlideStart) {
-            const other = _EnvelopeComputer.computeEnvelope(envelope, envelopeSpeed, globalEnvelopeSpeed, 0, 0, beatTimeStart[envelopeIndex], timeSinceStart, nextNoteSize, pitch, inverse, perEnvelopeLowerBound, perEnvelopeUpperBound, false, steps, seed, waveform, defaultPitch, startPinTickAbsolute);
-            envelopeStart += (other - envelopeStart) * nextSlideRatioStart;
-          }
-          let envelopeEnd = envelopeStart;
-          if (isDiscrete == false) {
-            envelopeEnd = _EnvelopeComputer.computeEnvelope(envelope, envelopeSpeed, globalEnvelopeSpeed, noteSecondsEndUnscaled, noteSecondsEnd[envelopeIndex], beatTimeEnd[envelopeIndex], timeSinceStart, noteSizeEnd, pitch, inverse, perEnvelopeLowerBound, perEnvelopeUpperBound, false, steps, seed, waveform, defaultPitch, startPinTickAbsolute);
-            if (prevSlideEnd) {
-              const other = _EnvelopeComputer.computeEnvelope(envelope, envelopeSpeed, globalEnvelopeSpeed, prevNoteSecondsEndUnscaled, prevNoteSecondsEnd[envelopeIndex], beatTimeEnd[envelopeIndex], timeSinceStart, prevNoteSize, pitch, inverse, perEnvelopeLowerBound, perEnvelopeUpperBound, false, steps, seed, waveform, defaultPitch, startPinTickAbsolute);
-              envelopeEnd += (other - envelopeEnd) * prevSlideRatioEnd;
-            }
-            if (nextSlideEnd) {
-              const other = _EnvelopeComputer.computeEnvelope(envelope, envelopeSpeed, globalEnvelopeSpeed, 0, 0, beatTimeEnd[envelopeIndex], timeSinceStart, nextNoteSize, pitch, inverse, perEnvelopeLowerBound, perEnvelopeUpperBound, false, steps, seed, waveform, defaultPitch, startPinTickAbsolute);
-              envelopeEnd += (other - envelopeEnd) * nextSlideRatioEnd;
-            }
-          }
-          this.envelopeStarts[computeIndex] *= envelopeStart;
-          this.envelopeEnds[computeIndex] *= envelopeEnd;
-          this.ka[this.ea++] = computeIndex;
-          if (automationTarget.isFilter) {
-            const filterSettings = (
-              /*this._perNote ?*/
-              instrument.tmpNoteFilterStart != null ? instrument.tmpNoteFilterStart : instrument.noteFilter
-            );
-            if (filterSettings.controlPointCount > targetIndex && filterSettings.controlPoints[targetIndex].type == 0 /* lowPass */) {
-              lowpassCutoffDecayVolumeCompensation = Math.max(lowpassCutoffDecayVolumeCompensation, _EnvelopeComputer.getLowpassCutoffDecayVolumeCompensation(envelope, perEnvelopeSpeed));
-            }
-          }
-        }
-      }
-      this.noteSecondsStartUnscaled = noteSecondsStartUnscaled;
-      this.noteSecondsEndUnscaled = noteSecondsEndUnscaled;
-      this.noteTicksStart = noteTicksStart;
-      this.noteTicksEnd = noteTicksEnd;
-      this.prevNoteSecondsStartUnscaled = prevNoteSecondsStartUnscaled;
-      this.prevNoteSecondsEndUnscaled = prevNoteSecondsEndUnscaled;
-      this.prevNoteTicksStart = prevNoteTicksStart;
-      this.prevNoteTicksEnd = prevNoteTicksEnd;
-      for (let envelopeIndex = 0; envelopeIndex < Config.maxEnvelopeCount + 1; envelopeIndex++) {
-        this.noteSecondsStart[envelopeIndex] = noteSecondsStart[envelopeIndex];
-        this.noteSecondsEnd[envelopeIndex] = noteSecondsEnd[envelopeIndex];
-        this.prevNoteSecondsStart[envelopeIndex] = prevNoteSecondsStart[envelopeIndex];
-        this.prevNoteSecondsEnd[envelopeIndex] = prevNoteSecondsEnd[envelopeIndex];
-      }
-      this.prevNoteSize = prevNoteSize;
-      this.nextNoteSize = nextNoteSize;
-      this.noteSizeStart = noteSizeStart;
-      this.noteSizeEnd = noteSizeEnd;
-      this.prevSlideStart = prevSlideStart;
-      this.prevSlideEnd = prevSlideEnd;
-      this.nextSlideStart = nextSlideStart;
-      this.nextSlideEnd = nextSlideEnd;
-      this.prevSlideRatioStart = prevSlideRatioStart;
-      this.prevSlideRatioEnd = prevSlideRatioEnd;
-      this.nextSlideRatioStart = nextSlideRatioStart;
-      this.nextSlideRatioEnd = nextSlideRatioEnd;
-      this.lowpassCutoffDecayVolumeCompensation = lowpassCutoffDecayVolumeCompensation;
-    }
-    clearEnvelopes() {
-      for (let envelopeIndex = 0; envelopeIndex < this.ea; envelopeIndex++) {
-        const computeIndex = this.ka[envelopeIndex];
-        this.envelopeStarts[computeIndex] = 1;
-        this.envelopeEnds[computeIndex] = 1;
-      }
-      this.ea = 0;
-    }
-    static computeEnvelope(envelope, perEnvelopeSpeed, globalEnvelopeSpeed, unspedTime, time, beats, timeSinceStart, noteSize, pitch, inverse, perEnvelopeLowerBound, perEnvelopeUpperBound, isDrumset = false, steps, seed, waveform, defaultPitch, notePinStart) {
-      const envelopeSpeed = isDrumset ? envelope.speed : 1;
-      const boundAdjust = perEnvelopeUpperBound - perEnvelopeLowerBound;
-      switch (envelope.type) {
-        case 0 /* none */:
-          return perEnvelopeUpperBound;
-        case 1 /* noteSize */:
-          if (!inverse) {
-            return Synth.noteSizeToVolumeMult(noteSize) * boundAdjust + perEnvelopeLowerBound;
-          } else {
-            return perEnvelopeUpperBound - Synth.noteSizeToVolumeMult(noteSize) * boundAdjust;
-          }
-        case 2 /* pitch */:
-          return pitch;
-        case 3 /* pseudorandom */:
-          const hashMax = 4294967295;
-          const step = steps;
-          switch (waveform) {
-            case 0 /* time */:
-              if (step <= 1) return 1;
-              const timeHash = xxHash32((perEnvelopeSpeed == 0 ? 0 : Math.floor(timeSinceStart * perEnvelopeSpeed / 256)) + "", seed);
-              if (inverse) {
-                return perEnvelopeUpperBound - boundAdjust * (step / (step - 1)) * Math.floor(timeHash * step / (hashMax + 1)) / step;
-              } else {
-                return boundAdjust * (step / (step - 1)) * Math.floor(timeHash * step / (hashMax + 1)) / step + perEnvelopeLowerBound;
-              }
-            case 1 /* pitch */:
-              const pitchHash = xxHash32(defaultPitch + "", seed);
-              if (inverse) {
-                return perEnvelopeUpperBound - boundAdjust * pitchHash / (hashMax + 1);
-              } else {
-                return boundAdjust * pitchHash / (hashMax + 1) + perEnvelopeLowerBound;
-              }
-            case 2 /* note */:
-              if (step <= 1) return 1;
-              const noteHash = xxHash32(notePinStart + "", seed);
-              if (inverse) {
-                return perEnvelopeUpperBound - boundAdjust * (step / (step - 1)) * Math.floor(noteHash * step / (hashMax + 1)) / step;
-              } else {
-                return boundAdjust * (step / (step - 1)) * Math.floor(noteHash * step / (hashMax + 1)) / step + perEnvelopeLowerBound;
-              }
-            case 3 /* timeSmooth */:
-              const timeHashA = xxHash32((perEnvelopeSpeed == 0 ? 0 : Math.floor(timeSinceStart * perEnvelopeSpeed / 256)) + "", seed);
-              const timeHashB = xxHash32((perEnvelopeSpeed == 0 ? 0 : Math.floor((timeSinceStart * perEnvelopeSpeed + 256) / 256)) + "", seed);
-              const weightedAverage = timeHashA * (1 - timeSinceStart * perEnvelopeSpeed / 256 % 1) + timeHashB * (timeSinceStart * perEnvelopeSpeed / 256 % 1);
-              if (inverse) {
-                return perEnvelopeUpperBound - boundAdjust * weightedAverage / (hashMax + 1);
-              } else {
-                return boundAdjust * weightedAverage / (hashMax + 1) + perEnvelopeLowerBound;
-              }
-            default:
-              throw new Error("Unrecognized operator envelope waveform type: " + waveform);
-          }
-        case 6 /* twang */:
-          if (inverse) {
-            return perEnvelopeUpperBound - boundAdjust * (1 / (1 + time * envelopeSpeed));
-          } else {
-            return boundAdjust / (1 + time * envelopeSpeed) + perEnvelopeLowerBound;
-          }
-        case 7 /* swell */:
-          if (inverse) {
-            return boundAdjust / (1 + time * envelopeSpeed) + perEnvelopeLowerBound;
-          } else {
-            return perEnvelopeUpperBound - boundAdjust / (1 + time * envelopeSpeed);
-          }
-        case 8 /* lfo */:
-          switch (waveform) {
-            case 0 /* sine */:
-              if (inverse) {
-                return perEnvelopeUpperBound / 2 + boundAdjust * Math.cos(beats * 2 * Math.PI * envelopeSpeed) * 0.5 + perEnvelopeLowerBound / 2;
-              } else {
-                return perEnvelopeUpperBound / 2 - boundAdjust * Math.cos(beats * 2 * Math.PI * envelopeSpeed) * 0.5 + perEnvelopeLowerBound / 2;
-              }
-            case 1 /* square */:
-              if (inverse) {
-                return Math.cos(beats * 2 * Math.PI * envelopeSpeed + 3 * Math.PI / 2) < 0 ? perEnvelopeUpperBound : perEnvelopeLowerBound;
-              } else {
-                return Math.cos(beats * 2 * Math.PI * envelopeSpeed + 3 * Math.PI / 2) < 0 ? perEnvelopeLowerBound : perEnvelopeUpperBound;
-              }
-            case 2 /* triangle */:
-              if (inverse) {
-                return perEnvelopeUpperBound / 2 - boundAdjust / Math.PI * Math.asin(Math.sin(Math.PI / 2 + beats * Math.PI * 2 * envelopeSpeed)) + perEnvelopeLowerBound / 2;
-              } else {
-                return perEnvelopeUpperBound / 2 + boundAdjust / Math.PI * Math.asin(Math.sin(Math.PI / 2 + beats * Math.PI * 2 * envelopeSpeed)) + perEnvelopeLowerBound / 2;
-              }
-            case 3 /* sawtooth */:
-              if (inverse) {
-                return perEnvelopeUpperBound - beats * envelopeSpeed % 1 * boundAdjust;
-              } else {
-                return beats * envelopeSpeed % 1 * boundAdjust + perEnvelopeLowerBound;
-              }
-            case 4 /* trapezoid */:
-              let trap = 0;
-              if (inverse) {
-                trap = perEnvelopeUpperBound / 2 - boundAdjust * 2 / Math.PI * Math.asin(Math.sin(Math.PI / 2 + beats * Math.PI * 2 * envelopeSpeed)) + perEnvelopeLowerBound / 2;
-              } else {
-                trap = perEnvelopeUpperBound / 2 + boundAdjust * 2 / Math.PI * Math.asin(Math.sin(Math.PI / 2 + beats * Math.PI * 2 * envelopeSpeed)) + perEnvelopeLowerBound / 2;
-              }
-              return Math.max(perEnvelopeLowerBound, Math.min(perEnvelopeUpperBound, trap));
-            case 5 /* steppedSaw */:
-              if (steps <= 1) return 1;
-              let saw = beats * envelopeSpeed % 1;
-              if (inverse) {
-                return perEnvelopeUpperBound - Math.floor(saw * steps) * boundAdjust / (steps - 1);
-              } else {
-                return Math.floor(saw * steps) * boundAdjust / (steps - 1) + perEnvelopeLowerBound;
-              }
-            case 6 /* steppedTri */:
-              if (steps <= 1) return 1;
-              let tri = 0.5 + (inverse ? -1 : 1) * (1 / Math.PI) * Math.asin(Math.sin(Math.PI / 2 + beats * Math.PI * 2 * envelopeSpeed));
-              return Math.round(tri * (steps - 1)) * boundAdjust / (steps - 1) + perEnvelopeLowerBound;
-            default:
-              throw new Error("Unrecognized operator envelope waveform type: " + waveform);
-          }
-        case 9 /* tremolo2 */:
-          if (inverse) {
-            return perEnvelopeUpperBound / 4 + boundAdjust * Math.cos(beats * 2 * Math.PI * envelopeSpeed) * 0.25 + perEnvelopeLowerBound / 4;
-          } else {
-            return 0.5 + perEnvelopeUpperBound / 4 - boundAdjust * Math.cos(beats * 2 * Math.PI * envelopeSpeed) * 0.25 - perEnvelopeLowerBound / 4;
-          }
-        case 4 /* punch */:
-          if (inverse) {
-            return Math.max(0, perEnvelopeUpperBound + 1 - Math.max(1 - perEnvelopeLowerBound, 1 - perEnvelopeUpperBound - unspedTime * globalEnvelopeSpeed * 10));
-          } else {
-            return Math.max(1 + perEnvelopeLowerBound, 1 + perEnvelopeUpperBound - unspedTime * globalEnvelopeSpeed * 10);
-          }
-        case 5 /* flare */:
-          const attack = 0.25 / Math.sqrt(envelopeSpeed * perEnvelopeSpeed);
-          if (inverse) {
-            return perEnvelopeUpperBound - boundAdjust * (unspedTime < attack ? unspedTime / attack : 1 / (1 + (unspedTime - attack) * envelopeSpeed * perEnvelopeSpeed));
-          } else {
-            return boundAdjust * (unspedTime < attack ? unspedTime / attack : 1 / (1 + (unspedTime - attack) * envelopeSpeed * perEnvelopeSpeed)) + perEnvelopeLowerBound;
-          }
-        case 10 /* decay */:
-          if (inverse) {
-            return perEnvelopeUpperBound - boundAdjust * Math.pow(2, -envelopeSpeed * time);
-          } else {
-            return boundAdjust * Math.pow(2, -envelopeSpeed * time) + perEnvelopeLowerBound;
-          }
-        case 14 /* blip */:
-          if (inverse) {
-            return perEnvelopeUpperBound - boundAdjust * +(unspedTime < 0.25 / Math.sqrt(envelopeSpeed * perEnvelopeSpeed));
-          } else {
-            return boundAdjust * +(unspedTime < 0.25 / Math.sqrt(envelopeSpeed * perEnvelopeSpeed)) + perEnvelopeLowerBound;
-          }
-        case 11 /* wibble */:
-          let temp = 0.5 - Math.cos(beats * envelopeSpeed) * 0.5;
-          temp = 1 / (1 + time * (envelopeSpeed - temp / (1.5 / envelopeSpeed)));
-          temp = temp > 0 ? temp : 0;
-          if (inverse) {
-            return perEnvelopeUpperBound - boundAdjust * temp;
-          } else {
-            return boundAdjust * temp + perEnvelopeLowerBound;
-          }
-        case 12 /* linear */: {
-          let lin = 1 - time / (16 / envelopeSpeed);
-          lin = lin > 0 ? lin : 0;
-          if (inverse) {
-            return perEnvelopeUpperBound - boundAdjust * lin;
-          } else {
-            return boundAdjust * lin + perEnvelopeLowerBound;
-          }
-        }
-        case 13 /* rise */: {
-          let lin = time / (16 / envelopeSpeed);
-          lin = lin < 1 ? lin : 1;
-          if (inverse) {
-            return perEnvelopeUpperBound - boundAdjust * lin;
-          } else {
-            return boundAdjust * lin + perEnvelopeLowerBound;
-          }
-        }
-        case 15 /* fall */: {
-          if (inverse) {
-            return Math.min(Math.max(perEnvelopeLowerBound, perEnvelopeUpperBound - boundAdjust * Math.sqrt(Math.max(1 - envelopeSpeed * time / 2, 0))), perEnvelopeUpperBound);
-          } else {
-            return Math.max(perEnvelopeLowerBound, boundAdjust * Math.sqrt(Math.max(1 - envelopeSpeed * time / 2, 0)) + perEnvelopeLowerBound);
-          }
-        }
-        default:
-          throw new Error("Unrecognized operator envelope type.");
-      }
-    }
-    getPitchValue(instrument, tone, instrumentState, calculateBends = true) {
-      if (tone && tone.pitchCount >= 1) {
-        const chord = instrument.getChord();
-        const arpeggiates = chord.arpeggiates;
-        const monophonic = chord.name == "monophonic";
-        const arpeggio = Math.floor(instrumentState.arpTime / Config.ticksPerArpeggio);
-        const tonePitch = tone.pitches[arpeggiates ? getArpeggioPitchIndex(tone.pitchCount, instrument.fastTwoNoteArp, arpeggio) : monophonic ? instrument.monoChordTone : 0];
-        if (calculateBends) {
-          return tone.lastInterval != tonePitch ? tonePitch + tone.lastInterval : tonePitch;
-        } else {
-          return tonePitch;
-        }
-      }
-      return 0;
-    }
-    computePitchEnvelope(instrument, index, pitch = 0) {
-      let startNote = 0;
-      let endNote = Config.maxPitch;
-      let inverse = false;
-      let envelopeLowerBound = 0;
-      let envelopeUpperBound = 1;
-      if (instrument.isNoiseInstrument) {
-        endNote = Config.drumCount - 1;
-      }
-      if (index < instrument.envelopeCount && index !== -2) {
-        startNote = instrument.envelopes[index].pitchEnvelopeStart;
-        endNote = instrument.envelopes[index].pitchEnvelopeEnd;
-        inverse = instrument.envelopes[index].inverse;
-        envelopeLowerBound = instrument.envelopes[index].perEnvelopeLowerBound;
-        envelopeUpperBound = instrument.envelopes[index].perEnvelopeUpperBound;
-      }
-      if (startNote > endNote) {
-        startNote = 0;
-        endNote = instrument.isNoiseInstrument ? Config.drumCount - 1 : Config.maxPitch;
-      }
-      const range = endNote - startNote + 1;
-      if (!inverse) {
-        if (pitch <= startNote) {
-          return envelopeLowerBound;
-        } else if (pitch >= endNote) {
-          return envelopeUpperBound;
-        } else {
-          return (pitch - startNote) * (envelopeUpperBound - envelopeLowerBound) / range + envelopeLowerBound;
-        }
-      } else {
-        if (pitch <= startNote) {
-          return envelopeUpperBound;
-        } else if (pitch >= endNote) {
-          return envelopeLowerBound;
-        } else {
-          return envelopeUpperBound - (pitch - startNote) * (envelopeUpperBound - envelopeLowerBound) / range;
-        }
-      }
-    }
-    static getLowpassCutoffDecayVolumeCompensation(envelope, perEnvelopeSpeed = 1) {
-      if (envelope.type == 10 /* decay */) return 1.25 + 0.025 * /*envelope.speed */
-      perEnvelopeSpeed;
-      if (envelope.type == 6 /* twang */) return 1 + 0.02 * /*envelope.speed */
-      perEnvelopeSpeed;
-      return 1;
-    }
-    computeDrumsetEnvelopes(instrument, drumsetFilterEnvelope, beatsPerPart, partTimeStart, partTimeEnd) {
-      const pitch = 1;
-      function computeDrumsetEnvelope(unspedTime, time, beats, noteSize) {
-        return _EnvelopeComputer.computeEnvelope(drumsetFilterEnvelope, 1, 1, unspedTime, time, beats, 0, noteSize, pitch, false, 0, 1, true, 2, 2, 0 /* sine */, pitch, 0);
-      }
-      let drumsetFilterEnvelopeStart = computeDrumsetEnvelope(this.noteSecondsStartUnscaled, this.noteSecondsStartUnscaled, beatsPerPart * partTimeStart, this.noteSizeStart);
-      if (this.prevSlideStart) {
-        const other = computeDrumsetEnvelope(this.prevNoteSecondsStartUnscaled, this.prevNoteSecondsStartUnscaled, beatsPerPart * partTimeStart, this.prevNoteSize);
-        drumsetFilterEnvelopeStart += (other - drumsetFilterEnvelopeStart) * this.prevSlideRatioStart;
-      }
-      if (this.nextSlideStart) {
-        const other = computeDrumsetEnvelope(0, 0, beatsPerPart * partTimeStart, this.nextNoteSize);
-        drumsetFilterEnvelopeStart += (other - drumsetFilterEnvelopeStart) * this.nextSlideRatioStart;
-      }
-      let drumsetFilterEnvelopeEnd = drumsetFilterEnvelopeStart;
-      drumsetFilterEnvelopeEnd = computeDrumsetEnvelope(this.noteSecondsEndUnscaled, this.noteSecondsEndUnscaled, beatsPerPart * partTimeEnd, this.noteSizeEnd);
-      if (this.prevSlideEnd) {
-        const other = computeDrumsetEnvelope(this.prevNoteSecondsEndUnscaled, this.prevNoteSecondsEndUnscaled, beatsPerPart * partTimeEnd, this.prevNoteSize);
-        drumsetFilterEnvelopeEnd += (other - drumsetFilterEnvelopeEnd) * this.prevSlideRatioEnd;
-      }
-      if (this.nextSlideEnd) {
-        const other = computeDrumsetEnvelope(0, 0, beatsPerPart * partTimeEnd, this.nextNoteSize);
-        drumsetFilterEnvelopeEnd += (other - drumsetFilterEnvelopeEnd) * this.nextSlideRatioEnd;
-      }
-      this.drumsetFilterEnvelopeStart = drumsetFilterEnvelopeStart;
-      this.drumsetFilterEnvelopeEnd = drumsetFilterEnvelopeEnd;
-    }
-  };
 
   // synth/filtering.ts
   var FilterCoefficients = class {
@@ -4275,6 +3638,7 @@ var beepbox = (() => {
     type = 0 /* reverb */;
     wetDryMix = 0.5;
     send = 1;
+    audioBusIndex = 0;
     eqFilter = new FilterSettings();
     eqFilterType = false;
     eqFilterSimpleCut = Config.filterSimpleCutRange - 1;
@@ -4282,9 +3646,9 @@ var beepbox = (() => {
     eqSubFilters = [];
     tmpEqFilterStart;
     tmpEqFilterEnd;
-    //public envelopes: EnvelopeSettings[] = [];
-    //public envelopeCount = 0;
-    //public envelopeSpeed = 12;
+    // envelopes: EnvelopeSettings[] = [];
+    // envelopeCount = 0;
+    // envelopeSpeed = 12;
     gain = Config.volumeRange / 2;
     pan = Config.panCenter;
     panDelay = 0;
@@ -4705,6 +4069,11 @@ var beepbox = (() => {
       for (const point of this.harmonics) hash = hash * hashMult + point >>> 0;
       this.hash = hash;
     }
+  };
+  var AudioBus = class {
+    volume = 0;
+    effects = [];
+    effectCount = 0;
   };
   var Instrument = class {
     type = 0 /* chip */;
@@ -5829,6 +5198,14 @@ var beepbox = (() => {
     static frequencyFromPitch(pitch) {
       return 440 * Math.pow(2, (pitch - 69) / 12);
     }
+    syncAudioBusEffects(audioBus) {
+      let addEffects = -1;
+      for (let i = 0; i < this.effectCount; i++) {
+        if (addEffects > -1) audioBus.effects[i - addEffects] = this.effects[i];
+        if (this.effects[i].type == 11 /* audioBus */) addEffects = i + 1;
+      }
+      return audioBus;
+    }
     addEffect(type) {
       let newEffect = new Effect(type);
       this.effects.push(newEffect);
@@ -5986,6 +5363,7 @@ var beepbox = (() => {
   };
   var EffectState = class {
     type = 0 /* reverb */;
+    audioBusIndex = 0;
     eqFilterVolume = 1;
     eqFilterVolumeDelta = 0;
     granularMix = 1;
@@ -6267,6 +5645,7 @@ var beepbox = (() => {
     compute(synth, instrument, effect, instrumentState, samplesPerTick, roundedSamplesPerTick, tone, channelIndex, instrumentIndex, envelopeStarts, envelopeEnds) {
       const samplesPerSecond = synth.samplesPerSecond;
       this.type = effect.type;
+      const usesAudioBus = effect.type == 11 /* audioBus */;
       const usesGranular = effect.type == 8 /* granular */;
       const usesRingModulation = effect.type == 7 /* ringModulation */;
       const usesDistortion = effect.type == 3 /* distortion */;
@@ -6286,6 +5665,9 @@ var beepbox = (() => {
         this.granularMaximumGrains == Math.floor(this.granularMaximumGrains);
       }
       this.allocateNecessaryBuffers(synth, instrument, effect, samplesPerTick);
+      if (usesAudioBus) {
+        this.audioBusIndex = effect.audioBusIndex;
+      }
       if (usesGranular) {
         this.granularMix = effect.granular / Config.granularRange;
         this.computeGrains = true;
@@ -6730,6 +6112,643 @@ var beepbox = (() => {
     }
   };
 
+  // node_modules/js-xxhash/dist/esm/xxHash32.js
+  var PRIME32_1 = 2654435761;
+  var PRIME32_2 = 2246822519;
+  var PRIME32_3 = 3266489917;
+  var PRIME32_4 = 668265263;
+  var PRIME32_5 = 374761393;
+  var encoder;
+  function xxHash32(input, seed = 0) {
+    const buffer = typeof input === "string" ? (encoder ??= new TextEncoder()).encode(input) : input;
+    const b = buffer;
+    let acc = seed + PRIME32_5 & 4294967295;
+    let offset = 0;
+    if (b.length >= 16) {
+      const accN = [
+        seed + PRIME32_1 + PRIME32_2 & 4294967295,
+        seed + PRIME32_2 & 4294967295,
+        seed + 0 & 4294967295,
+        seed - PRIME32_1 & 4294967295
+      ];
+      const b2 = buffer;
+      const limit2 = b2.length - 16;
+      let lane = 0;
+      for (offset = 0; (offset & 4294967280) <= limit2; offset += 4) {
+        const i = offset;
+        const laneN0 = b2[i + 0] + (b2[i + 1] << 8);
+        const laneN1 = b2[i + 2] + (b2[i + 3] << 8);
+        const laneNP = laneN0 * PRIME32_2 + (laneN1 * PRIME32_2 << 16);
+        let acc2 = accN[lane] + laneNP & 4294967295;
+        acc2 = acc2 << 13 | acc2 >>> 19;
+        const acc0 = acc2 & 65535;
+        const acc1 = acc2 >>> 16;
+        accN[lane] = acc0 * PRIME32_1 + (acc1 * PRIME32_1 << 16) & 4294967295;
+        lane = lane + 1 & 3;
+      }
+      acc = (accN[0] << 1 | accN[0] >>> 31) + (accN[1] << 7 | accN[1] >>> 25) + (accN[2] << 12 | accN[2] >>> 20) + (accN[3] << 18 | accN[3] >>> 14) & 4294967295;
+    }
+    acc = acc + buffer.length & 4294967295;
+    const limit = buffer.length - 4;
+    for (; offset <= limit; offset += 4) {
+      const i = offset;
+      const laneN0 = b[i + 0] + (b[i + 1] << 8);
+      const laneN1 = b[i + 2] + (b[i + 3] << 8);
+      const laneP = laneN0 * PRIME32_3 + (laneN1 * PRIME32_3 << 16);
+      acc = acc + laneP & 4294967295;
+      acc = acc << 17 | acc >>> 15;
+      acc = (acc & 65535) * PRIME32_4 + ((acc >>> 16) * PRIME32_4 << 16) & 4294967295;
+    }
+    for (; offset < b.length; ++offset) {
+      const lane = b[offset];
+      acc = acc + lane * PRIME32_5;
+      acc = acc << 11 | acc >>> 21;
+      acc = (acc & 65535) * PRIME32_1 + ((acc >>> 16) * PRIME32_1 << 16) & 4294967295;
+    }
+    acc = acc ^ acc >>> 15;
+    acc = ((acc & 65535) * PRIME32_2 & 4294967295) + ((acc >>> 16) * PRIME32_2 << 16);
+    acc = acc ^ acc >>> 13;
+    acc = ((acc & 65535) * PRIME32_3 & 4294967295) + ((acc >>> 16) * PRIME32_3 << 16);
+    acc = acc ^ acc >>> 16;
+    return acc < 0 ? acc + 4294967296 : acc;
+  }
+
+  // synth/EnvelopeComputer.ts
+  var EnvelopeComputer = class _EnvelopeComputer {
+    // "Unscaled" values do not increase with Envelope Speed's timescale factor. Thus they are "real" seconds since the start of the note.
+    // Fade envelopes notably use unscaled values instead of being tied to Envelope Speed.
+    noteSecondsStart = [];
+    noteSecondsStartUnscaled = 0;
+    noteSecondsEnd = [];
+    noteSecondsEndUnscaled = 0;
+    noteTicksStart = 0;
+    noteTicksEnd = 0;
+    noteSizeStart = Config.noteSizeMax;
+    noteSizeEnd = Config.noteSizeMax;
+    prevNoteSize = Config.noteSizeMax;
+    nextNoteSize = Config.noteSizeMax;
+    ba = Config.noteSizeMax;
+    prevNoteSecondsStart = [];
+    prevNoteSecondsStartUnscaled = 0;
+    prevNoteSecondsEnd = [];
+    prevNoteSecondsEndUnscaled = 0;
+    prevNoteTicksStart = 0;
+    prevNoteTicksEnd = 0;
+    ga = Config.noteSizeMax;
+    tickTimeEnd = [];
+    drumsetFilterEnvelopeStart = 0;
+    drumsetFilterEnvelopeEnd = 0;
+    prevSlideStart = false;
+    prevSlideEnd = false;
+    nextSlideStart = false;
+    nextSlideEnd = false;
+    prevSlideRatioStart = 0;
+    prevSlideRatioEnd = 0;
+    nextSlideRatioStart = 0;
+    nextSlideRatioEnd = 0;
+    startPinTickAbsolute = null;
+    startPinTickDefaultPitch = null;
+    startPinTickPitch = null;
+    envelopeStarts = [];
+    envelopeEnds = [];
+    ka = [];
+    ea = 0;
+    lowpassCutoffDecayVolumeCompensation = 1;
+    constructor() {
+      const length = 62 /* length */;
+      for (let i = 0; i < length; i++) {
+        this.envelopeStarts[i] = 1;
+        this.envelopeEnds[i] = 1;
+      }
+      this.reset();
+    }
+    reset() {
+      for (let envelopeIndex = 0; envelopeIndex < Config.maxEnvelopeCount + 1; envelopeIndex++) {
+        this.noteSecondsEnd[envelopeIndex] = 0;
+        this.prevNoteSecondsEnd[envelopeIndex] = 0;
+      }
+      this.noteSecondsEndUnscaled = 0;
+      this.noteTicksEnd = 0;
+      this.ba = Config.noteSizeMax;
+      this.prevNoteSecondsEndUnscaled = 0;
+      this.prevNoteTicksEnd = 0;
+      this.ga = Config.noteSizeMax;
+      this.ea = 0;
+      this.drumsetFilterEnvelopeStart = 0;
+      this.drumsetFilterEnvelopeEnd = 0;
+      this.startPinTickAbsolute = null;
+      this.startPinTickDefaultPitch = null;
+      this.startPinTickPitch = null;
+    }
+    computeEnvelopes(instrument, currentPart, tickTimeStart, tickTimeStartReal, secondsPerTick, tone, timeScale, instrumentState, synth, channelIndex, instrumentIndex) {
+      const secondsPerTickUnscaled = secondsPerTick;
+      const transition = instrument.getTransition();
+      if (tone != null && tone.atNoteStart && !transition.continues && !tone.forceContinueAtStart) {
+        this.prevNoteSecondsEndUnscaled = this.noteSecondsEndUnscaled;
+        this.prevNoteTicksEnd = this.noteTicksEnd;
+        this.ga = this.ba;
+        this.noteSecondsEndUnscaled = 0;
+        this.noteTicksEnd = 0;
+        for (let envelopeIndex = 0; envelopeIndex < Config.maxEnvelopeCount + 1; envelopeIndex++) {
+          this.prevNoteSecondsEnd[envelopeIndex] = this.noteSecondsEnd[envelopeIndex];
+          this.noteSecondsEnd[envelopeIndex] = 0;
+        }
+      }
+      if (tone != null) {
+        if (tone.note != null) {
+          this.ba = tone.note.pins[tone.note.pins.length - 1].size;
+        } else {
+          this.ba = Config.noteSizeMax;
+        }
+      }
+      const tickTimeEnd = [];
+      const tickTimeEndReal = tickTimeStartReal + 1;
+      const noteSecondsStart = [];
+      const noteSecondsStartUnscaled = this.noteSecondsEndUnscaled;
+      const noteSecondsEnd = [];
+      const noteSecondsEndUnscaled = noteSecondsStartUnscaled + secondsPerTickUnscaled;
+      const noteTicksStart = this.noteTicksEnd;
+      const noteTicksEnd = noteTicksStart + 1;
+      const prevNoteSecondsStart = [];
+      const prevNoteSecondsEnd = [];
+      const prevNoteSecondsStartUnscaled = this.prevNoteSecondsEndUnscaled;
+      const prevNoteSecondsEndUnscaled = prevNoteSecondsStartUnscaled + secondsPerTickUnscaled;
+      const prevNoteTicksStart = this.prevNoteTicksEnd;
+      const prevNoteTicksEnd = prevNoteTicksStart + 1;
+      const beatsPerTick = 1 / (Config.ticksPerPart * Config.partsPerBeat);
+      const beatTimeStart = [];
+      const beatTimeEnd = [];
+      let noteSizeStart = this.ba;
+      let noteSizeEnd = this.ba;
+      let prevNoteSize = this.ga;
+      let nextNoteSize = 0;
+      let prevSlideStart = false;
+      let prevSlideEnd = false;
+      let nextSlideStart = false;
+      let nextSlideEnd = false;
+      let prevSlideRatioStart = 0;
+      let prevSlideRatioEnd = 0;
+      let nextSlideRatioStart = 0;
+      let nextSlideRatioEnd = 0;
+      if (tone == null) {
+        this.startPinTickAbsolute = null;
+        this.startPinTickDefaultPitch = null;
+      }
+      if (tone != null && tone.note != null && !tone.passedEndOfNote) {
+        const endPinIndex = tone.note.getEndPinIndex(currentPart);
+        const startPin = tone.note.pins[endPinIndex - 1];
+        const endPin = tone.note.pins[endPinIndex];
+        const startPinTick = (tone.note.start + startPin.time) * Config.ticksPerPart;
+        if (this.startPinTickAbsolute == null || !(transition.continues || transition.slides) && tone.passedEndOfNote) this.startPinTickAbsolute = startPinTick + synth.computeTicksSinceStart(true);
+        if (this.startPinTickDefaultPitch == null || /* (!(transition.continues || transition.slides)) &&*/
+        tone.passedEndOfNote) this.startPinTickDefaultPitch = this.getPitchValue(instrument, tone, instrumentState, false);
+        if (!tone.passedEndOfNote) this.startPinTickPitch = this.getPitchValue(instrument, tone, instrumentState, true);
+        const endPinTick = (tone.note.start + endPin.time) * Config.ticksPerPart;
+        const ratioStart = (tickTimeStartReal - startPinTick) / (endPinTick - startPinTick);
+        const ratioEnd = (tickTimeEndReal - startPinTick) / (endPinTick - startPinTick);
+        noteSizeStart = startPin.size + (endPin.size - startPin.size) * ratioStart;
+        noteSizeEnd = startPin.size + (endPin.size - startPin.size) * ratioEnd;
+        if (transition.slides) {
+          const noteStartTick = tone.noteStartPart * Config.ticksPerPart;
+          const noteEndTick = tone.noteEndPart * Config.ticksPerPart;
+          const noteLengthTicks = noteEndTick - noteStartTick;
+          const maximumSlideTicks = noteLengthTicks * 0.5;
+          const slideTicks = Math.min(maximumSlideTicks, transition.slideTicks);
+          if (tone.prevNote != null && !tone.forceContinueAtStart) {
+            if (tickTimeStartReal - noteStartTick < slideTicks) {
+              prevSlideStart = true;
+              prevSlideRatioStart = 0.5 * (1 - (tickTimeStartReal - noteStartTick) / slideTicks);
+            }
+            if (tickTimeEndReal - noteStartTick < slideTicks) {
+              prevSlideEnd = true;
+              prevSlideRatioEnd = 0.5 * (1 - (tickTimeEndReal - noteStartTick) / slideTicks);
+            }
+          }
+          if (tone.nextNote != null && !tone.forceContinueAtEnd) {
+            nextNoteSize = tone.nextNote.pins[0].size;
+            if (noteEndTick - tickTimeStartReal < slideTicks) {
+              nextSlideStart = true;
+              nextSlideRatioStart = 0.5 * (1 - (noteEndTick - tickTimeStartReal) / slideTicks);
+            }
+            if (noteEndTick - tickTimeEndReal < slideTicks) {
+              nextSlideEnd = true;
+              nextSlideRatioEnd = 0.5 * (1 - (noteEndTick - tickTimeEndReal) / slideTicks);
+            }
+          }
+        }
+      }
+      let lowpassCutoffDecayVolumeCompensation = 1;
+      let usedNoteSize = false;
+      for (let envelopeIndex = 0; envelopeIndex <= instrument.envelopeCount; envelopeIndex++) {
+        let automationTarget;
+        let targetIndex;
+        let envelope;
+        let inverse = false;
+        let isDiscrete = false;
+        let perEnvelopeSpeed = 1;
+        let globalEnvelopeSpeed = 1;
+        let envelopeSpeed = perEnvelopeSpeed * globalEnvelopeSpeed;
+        let perEnvelopeLowerBound = 0;
+        let perEnvelopeUpperBound = 1;
+        let timeSinceStart = 0;
+        let steps = 2;
+        let seed = 2;
+        let waveform = 0 /* sine */;
+        let startPinTickAbsolute = this.startPinTickAbsolute || 0;
+        let defaultPitch = this.startPinTickDefaultPitch || 0;
+        if (envelopeIndex == instrument.envelopeCount) {
+          if (usedNoteSize) break;
+          automationTarget = Config.instrumentAutomationTargets.dictionary["noteVolume"];
+          targetIndex = 0;
+          envelope = Config.newEnvelopes.dictionary["note size"];
+        } else {
+          let envelopeSettings = instrument.envelopes[envelopeIndex];
+          automationTarget = Config.instrumentAutomationTargets[envelopeSettings.target];
+          targetIndex = envelopeSettings.index;
+          envelope = Config.newEnvelopes[envelopeSettings.envelope];
+          inverse = instrument.envelopes[envelopeIndex].inverse;
+          isDiscrete = instrument.envelopes[envelopeIndex].discrete;
+          perEnvelopeSpeed = instrument.envelopes[envelopeIndex].perEnvelopeSpeed;
+          globalEnvelopeSpeed = Math.pow(instrument.envelopeSpeed, 2) / 144;
+          envelopeSpeed = perEnvelopeSpeed * globalEnvelopeSpeed;
+          perEnvelopeLowerBound = instrument.envelopes[envelopeIndex].perEnvelopeLowerBound;
+          perEnvelopeUpperBound = instrument.envelopes[envelopeIndex].perEnvelopeUpperBound;
+          if (synth.isModActive(Config.modulators.dictionary["individual envelope lower bound"].index, channelIndex, instrumentIndex) && instrument.envelopes[envelopeIndex].tempEnvelopeLowerBound != null) {
+            perEnvelopeLowerBound = instrument.envelopes[envelopeIndex].tempEnvelopeLowerBound;
+          }
+          if (synth.isModActive(Config.modulators.dictionary["individual envelope upper bound"].index, channelIndex, instrumentIndex) && instrument.envelopes[envelopeIndex].tempEnvelopeUpperBound != null) {
+            perEnvelopeUpperBound = instrument.envelopes[envelopeIndex].tempEnvelopeUpperBound;
+          }
+          if (!(perEnvelopeLowerBound <= perEnvelopeUpperBound)) {
+            perEnvelopeLowerBound = 0;
+            perEnvelopeUpperBound = 1;
+          }
+          timeSinceStart = synth.computeTicksSinceStart();
+          steps = instrument.envelopes[envelopeIndex].steps;
+          seed = instrument.envelopes[envelopeIndex].seed;
+          if (instrument.envelopes[envelopeIndex].waveform >= (envelope.name == "lfo" ? 7 /* length */ : 4 /* length */)) {
+            instrument.envelopes[envelopeIndex].waveform = 0;
+          }
+          waveform = instrument.envelopes[envelopeIndex].waveform;
+          if (!timeScale[envelopeIndex]) timeScale[envelopeIndex] = 0;
+          const secondsPerTickScaled = secondsPerTick * timeScale[envelopeIndex];
+          if (!tickTimeStart[envelopeIndex]) tickTimeStart[envelopeIndex] = 0;
+          tickTimeEnd[envelopeIndex] = tickTimeStart[envelopeIndex] ? tickTimeStart[envelopeIndex] + timeScale[envelopeIndex] : timeScale[envelopeIndex];
+          noteSecondsStart[envelopeIndex] = this.noteSecondsEnd[envelopeIndex] ? this.noteSecondsEnd[envelopeIndex] : 0;
+          prevNoteSecondsStart[envelopeIndex] = this.prevNoteSecondsEnd[envelopeIndex] ? this.prevNoteSecondsEnd[envelopeIndex] : 0;
+          noteSecondsEnd[envelopeIndex] = noteSecondsStart[envelopeIndex] ? noteSecondsStart[envelopeIndex] + secondsPerTickScaled : secondsPerTickScaled;
+          prevNoteSecondsEnd[envelopeIndex] = prevNoteSecondsStart[envelopeIndex] ? prevNoteSecondsStart[envelopeIndex] + secondsPerTickScaled : secondsPerTickScaled;
+          beatTimeStart[envelopeIndex] = tickTimeStart[envelopeIndex] ? beatsPerTick * tickTimeStart[envelopeIndex] : beatsPerTick;
+          beatTimeEnd[envelopeIndex] = tickTimeEnd[envelopeIndex] ? beatsPerTick * tickTimeEnd[envelopeIndex] : beatsPerTick;
+          if (envelope.type == 1 /* noteSize */) usedNoteSize = true;
+        }
+        const pitch = envelope.type == 2 /* pitch */ ? this.computePitchEnvelope(instrument, envelopeIndex, this.startPinTickPitch || this.getPitchValue(instrument, tone, instrumentState, true)) : 0;
+        if (automationTarget.computeIndex != null) {
+          const computeIndex = automationTarget.computeIndex + targetIndex;
+          let envelopeStart = _EnvelopeComputer.computeEnvelope(envelope, envelopeSpeed, globalEnvelopeSpeed, noteSecondsStartUnscaled, noteSecondsStart[envelopeIndex], beatTimeStart[envelopeIndex], timeSinceStart, noteSizeStart, pitch, inverse, perEnvelopeLowerBound, perEnvelopeUpperBound, false, steps, seed, waveform, defaultPitch, startPinTickAbsolute);
+          if (prevSlideStart) {
+            const other = _EnvelopeComputer.computeEnvelope(envelope, envelopeSpeed, globalEnvelopeSpeed, prevNoteSecondsStartUnscaled, prevNoteSecondsStart[envelopeIndex], beatTimeStart[envelopeIndex], timeSinceStart, prevNoteSize, pitch, inverse, perEnvelopeLowerBound, perEnvelopeUpperBound, false, steps, seed, waveform, defaultPitch, startPinTickAbsolute);
+            envelopeStart += (other - envelopeStart) * prevSlideRatioStart;
+          }
+          if (nextSlideStart) {
+            const other = _EnvelopeComputer.computeEnvelope(envelope, envelopeSpeed, globalEnvelopeSpeed, 0, 0, beatTimeStart[envelopeIndex], timeSinceStart, nextNoteSize, pitch, inverse, perEnvelopeLowerBound, perEnvelopeUpperBound, false, steps, seed, waveform, defaultPitch, startPinTickAbsolute);
+            envelopeStart += (other - envelopeStart) * nextSlideRatioStart;
+          }
+          let envelopeEnd = envelopeStart;
+          if (isDiscrete == false) {
+            envelopeEnd = _EnvelopeComputer.computeEnvelope(envelope, envelopeSpeed, globalEnvelopeSpeed, noteSecondsEndUnscaled, noteSecondsEnd[envelopeIndex], beatTimeEnd[envelopeIndex], timeSinceStart, noteSizeEnd, pitch, inverse, perEnvelopeLowerBound, perEnvelopeUpperBound, false, steps, seed, waveform, defaultPitch, startPinTickAbsolute);
+            if (prevSlideEnd) {
+              const other = _EnvelopeComputer.computeEnvelope(envelope, envelopeSpeed, globalEnvelopeSpeed, prevNoteSecondsEndUnscaled, prevNoteSecondsEnd[envelopeIndex], beatTimeEnd[envelopeIndex], timeSinceStart, prevNoteSize, pitch, inverse, perEnvelopeLowerBound, perEnvelopeUpperBound, false, steps, seed, waveform, defaultPitch, startPinTickAbsolute);
+              envelopeEnd += (other - envelopeEnd) * prevSlideRatioEnd;
+            }
+            if (nextSlideEnd) {
+              const other = _EnvelopeComputer.computeEnvelope(envelope, envelopeSpeed, globalEnvelopeSpeed, 0, 0, beatTimeEnd[envelopeIndex], timeSinceStart, nextNoteSize, pitch, inverse, perEnvelopeLowerBound, perEnvelopeUpperBound, false, steps, seed, waveform, defaultPitch, startPinTickAbsolute);
+              envelopeEnd += (other - envelopeEnd) * nextSlideRatioEnd;
+            }
+          }
+          this.envelopeStarts[computeIndex] *= envelopeStart;
+          this.envelopeEnds[computeIndex] *= envelopeEnd;
+          this.ka[this.ea++] = computeIndex;
+          if (automationTarget.isFilter) {
+            const filterSettings = (
+              /*this._perNote ?*/
+              instrument.tmpNoteFilterStart != null ? instrument.tmpNoteFilterStart : instrument.noteFilter
+            );
+            if (filterSettings.controlPointCount > targetIndex && filterSettings.controlPoints[targetIndex].type == 0 /* lowPass */) {
+              lowpassCutoffDecayVolumeCompensation = Math.max(lowpassCutoffDecayVolumeCompensation, _EnvelopeComputer.getLowpassCutoffDecayVolumeCompensation(envelope, perEnvelopeSpeed));
+            }
+          }
+        }
+      }
+      this.noteSecondsStartUnscaled = noteSecondsStartUnscaled;
+      this.noteSecondsEndUnscaled = noteSecondsEndUnscaled;
+      this.noteTicksStart = noteTicksStart;
+      this.noteTicksEnd = noteTicksEnd;
+      this.prevNoteSecondsStartUnscaled = prevNoteSecondsStartUnscaled;
+      this.prevNoteSecondsEndUnscaled = prevNoteSecondsEndUnscaled;
+      this.prevNoteTicksStart = prevNoteTicksStart;
+      this.prevNoteTicksEnd = prevNoteTicksEnd;
+      for (let envelopeIndex = 0; envelopeIndex < Config.maxEnvelopeCount + 1; envelopeIndex++) {
+        this.noteSecondsStart[envelopeIndex] = noteSecondsStart[envelopeIndex];
+        this.noteSecondsEnd[envelopeIndex] = noteSecondsEnd[envelopeIndex];
+        this.prevNoteSecondsStart[envelopeIndex] = prevNoteSecondsStart[envelopeIndex];
+        this.prevNoteSecondsEnd[envelopeIndex] = prevNoteSecondsEnd[envelopeIndex];
+      }
+      this.prevNoteSize = prevNoteSize;
+      this.nextNoteSize = nextNoteSize;
+      this.noteSizeStart = noteSizeStart;
+      this.noteSizeEnd = noteSizeEnd;
+      this.prevSlideStart = prevSlideStart;
+      this.prevSlideEnd = prevSlideEnd;
+      this.nextSlideStart = nextSlideStart;
+      this.nextSlideEnd = nextSlideEnd;
+      this.prevSlideRatioStart = prevSlideRatioStart;
+      this.prevSlideRatioEnd = prevSlideRatioEnd;
+      this.nextSlideRatioStart = nextSlideRatioStart;
+      this.nextSlideRatioEnd = nextSlideRatioEnd;
+      this.lowpassCutoffDecayVolumeCompensation = lowpassCutoffDecayVolumeCompensation;
+    }
+    clearEnvelopes() {
+      for (let envelopeIndex = 0; envelopeIndex < this.ea; envelopeIndex++) {
+        const computeIndex = this.ka[envelopeIndex];
+        this.envelopeStarts[computeIndex] = 1;
+        this.envelopeEnds[computeIndex] = 1;
+      }
+      this.ea = 0;
+    }
+    static computeEnvelope(envelope, perEnvelopeSpeed, globalEnvelopeSpeed, unspedTime, time, beats, timeSinceStart, noteSize, pitch, inverse, perEnvelopeLowerBound, perEnvelopeUpperBound, isDrumset = false, steps, seed, waveform, defaultPitch, notePinStart) {
+      const envelopeSpeed = isDrumset ? envelope.speed : 1;
+      const boundAdjust = perEnvelopeUpperBound - perEnvelopeLowerBound;
+      switch (envelope.type) {
+        case 0 /* none */:
+          return perEnvelopeUpperBound;
+        case 1 /* noteSize */:
+          if (!inverse) {
+            return Synth.noteSizeToVolumeMult(noteSize) * boundAdjust + perEnvelopeLowerBound;
+          } else {
+            return perEnvelopeUpperBound - Synth.noteSizeToVolumeMult(noteSize) * boundAdjust;
+          }
+        case 2 /* pitch */:
+          return pitch;
+        case 3 /* pseudorandom */:
+          const hashMax = 4294967295;
+          const step = steps;
+          switch (waveform) {
+            case 0 /* time */:
+              if (step <= 1) return 1;
+              const timeHash = xxHash32((perEnvelopeSpeed == 0 ? 0 : Math.floor(timeSinceStart * perEnvelopeSpeed / 256)) + "", seed);
+              if (inverse) {
+                return perEnvelopeUpperBound - boundAdjust * (step / (step - 1)) * Math.floor(timeHash * step / (hashMax + 1)) / step;
+              } else {
+                return boundAdjust * (step / (step - 1)) * Math.floor(timeHash * step / (hashMax + 1)) / step + perEnvelopeLowerBound;
+              }
+            case 1 /* pitch */:
+              const pitchHash = xxHash32(defaultPitch + "", seed);
+              if (inverse) {
+                return perEnvelopeUpperBound - boundAdjust * pitchHash / (hashMax + 1);
+              } else {
+                return boundAdjust * pitchHash / (hashMax + 1) + perEnvelopeLowerBound;
+              }
+            case 2 /* note */:
+              if (step <= 1) return 1;
+              const noteHash = xxHash32(notePinStart + "", seed);
+              if (inverse) {
+                return perEnvelopeUpperBound - boundAdjust * (step / (step - 1)) * Math.floor(noteHash * step / (hashMax + 1)) / step;
+              } else {
+                return boundAdjust * (step / (step - 1)) * Math.floor(noteHash * step / (hashMax + 1)) / step + perEnvelopeLowerBound;
+              }
+            case 3 /* timeSmooth */:
+              const timeHashA = xxHash32((perEnvelopeSpeed == 0 ? 0 : Math.floor(timeSinceStart * perEnvelopeSpeed / 256)) + "", seed);
+              const timeHashB = xxHash32((perEnvelopeSpeed == 0 ? 0 : Math.floor((timeSinceStart * perEnvelopeSpeed + 256) / 256)) + "", seed);
+              const weightedAverage = timeHashA * (1 - timeSinceStart * perEnvelopeSpeed / 256 % 1) + timeHashB * (timeSinceStart * perEnvelopeSpeed / 256 % 1);
+              if (inverse) {
+                return perEnvelopeUpperBound - boundAdjust * weightedAverage / (hashMax + 1);
+              } else {
+                return boundAdjust * weightedAverage / (hashMax + 1) + perEnvelopeLowerBound;
+              }
+            default:
+              throw new Error("Unrecognized operator envelope waveform type: " + waveform);
+          }
+        case 6 /* twang */:
+          if (inverse) {
+            return perEnvelopeUpperBound - boundAdjust * (1 / (1 + time * envelopeSpeed));
+          } else {
+            return boundAdjust / (1 + time * envelopeSpeed) + perEnvelopeLowerBound;
+          }
+        case 7 /* swell */:
+          if (inverse) {
+            return boundAdjust / (1 + time * envelopeSpeed) + perEnvelopeLowerBound;
+          } else {
+            return perEnvelopeUpperBound - boundAdjust / (1 + time * envelopeSpeed);
+          }
+        case 8 /* lfo */:
+          switch (waveform) {
+            case 0 /* sine */:
+              if (inverse) {
+                return perEnvelopeUpperBound / 2 + boundAdjust * Math.cos(beats * 2 * Math.PI * envelopeSpeed) * 0.5 + perEnvelopeLowerBound / 2;
+              } else {
+                return perEnvelopeUpperBound / 2 - boundAdjust * Math.cos(beats * 2 * Math.PI * envelopeSpeed) * 0.5 + perEnvelopeLowerBound / 2;
+              }
+            case 1 /* square */:
+              if (inverse) {
+                return Math.cos(beats * 2 * Math.PI * envelopeSpeed + 3 * Math.PI / 2) < 0 ? perEnvelopeUpperBound : perEnvelopeLowerBound;
+              } else {
+                return Math.cos(beats * 2 * Math.PI * envelopeSpeed + 3 * Math.PI / 2) < 0 ? perEnvelopeLowerBound : perEnvelopeUpperBound;
+              }
+            case 2 /* triangle */:
+              if (inverse) {
+                return perEnvelopeUpperBound / 2 - boundAdjust / Math.PI * Math.asin(Math.sin(Math.PI / 2 + beats * Math.PI * 2 * envelopeSpeed)) + perEnvelopeLowerBound / 2;
+              } else {
+                return perEnvelopeUpperBound / 2 + boundAdjust / Math.PI * Math.asin(Math.sin(Math.PI / 2 + beats * Math.PI * 2 * envelopeSpeed)) + perEnvelopeLowerBound / 2;
+              }
+            case 3 /* sawtooth */:
+              if (inverse) {
+                return perEnvelopeUpperBound - beats * envelopeSpeed % 1 * boundAdjust;
+              } else {
+                return beats * envelopeSpeed % 1 * boundAdjust + perEnvelopeLowerBound;
+              }
+            case 4 /* trapezoid */:
+              let trap = 0;
+              if (inverse) {
+                trap = perEnvelopeUpperBound / 2 - boundAdjust * 2 / Math.PI * Math.asin(Math.sin(Math.PI / 2 + beats * Math.PI * 2 * envelopeSpeed)) + perEnvelopeLowerBound / 2;
+              } else {
+                trap = perEnvelopeUpperBound / 2 + boundAdjust * 2 / Math.PI * Math.asin(Math.sin(Math.PI / 2 + beats * Math.PI * 2 * envelopeSpeed)) + perEnvelopeLowerBound / 2;
+              }
+              return Math.max(perEnvelopeLowerBound, Math.min(perEnvelopeUpperBound, trap));
+            case 5 /* steppedSaw */:
+              if (steps <= 1) return 1;
+              let saw = beats * envelopeSpeed % 1;
+              if (inverse) {
+                return perEnvelopeUpperBound - Math.floor(saw * steps) * boundAdjust / (steps - 1);
+              } else {
+                return Math.floor(saw * steps) * boundAdjust / (steps - 1) + perEnvelopeLowerBound;
+              }
+            case 6 /* steppedTri */:
+              if (steps <= 1) return 1;
+              let tri = 0.5 + (inverse ? -1 : 1) * (1 / Math.PI) * Math.asin(Math.sin(Math.PI / 2 + beats * Math.PI * 2 * envelopeSpeed));
+              return Math.round(tri * (steps - 1)) * boundAdjust / (steps - 1) + perEnvelopeLowerBound;
+            default:
+              throw new Error("Unrecognized operator envelope waveform type: " + waveform);
+          }
+        case 9 /* tremolo2 */:
+          if (inverse) {
+            return perEnvelopeUpperBound / 4 + boundAdjust * Math.cos(beats * 2 * Math.PI * envelopeSpeed) * 0.25 + perEnvelopeLowerBound / 4;
+          } else {
+            return 0.5 + perEnvelopeUpperBound / 4 - boundAdjust * Math.cos(beats * 2 * Math.PI * envelopeSpeed) * 0.25 - perEnvelopeLowerBound / 4;
+          }
+        case 4 /* punch */:
+          if (inverse) {
+            return Math.max(0, perEnvelopeUpperBound + 1 - Math.max(1 - perEnvelopeLowerBound, 1 - perEnvelopeUpperBound - unspedTime * globalEnvelopeSpeed * 10));
+          } else {
+            return Math.max(1 + perEnvelopeLowerBound, 1 + perEnvelopeUpperBound - unspedTime * globalEnvelopeSpeed * 10);
+          }
+        case 5 /* flare */:
+          const attack = 0.25 / Math.sqrt(envelopeSpeed * perEnvelopeSpeed);
+          if (inverse) {
+            return perEnvelopeUpperBound - boundAdjust * (unspedTime < attack ? unspedTime / attack : 1 / (1 + (unspedTime - attack) * envelopeSpeed * perEnvelopeSpeed));
+          } else {
+            return boundAdjust * (unspedTime < attack ? unspedTime / attack : 1 / (1 + (unspedTime - attack) * envelopeSpeed * perEnvelopeSpeed)) + perEnvelopeLowerBound;
+          }
+        case 10 /* decay */:
+          if (inverse) {
+            return perEnvelopeUpperBound - boundAdjust * Math.pow(2, -envelopeSpeed * time);
+          } else {
+            return boundAdjust * Math.pow(2, -envelopeSpeed * time) + perEnvelopeLowerBound;
+          }
+        case 14 /* blip */:
+          if (inverse) {
+            return perEnvelopeUpperBound - boundAdjust * +(unspedTime < 0.25 / Math.sqrt(envelopeSpeed * perEnvelopeSpeed));
+          } else {
+            return boundAdjust * +(unspedTime < 0.25 / Math.sqrt(envelopeSpeed * perEnvelopeSpeed)) + perEnvelopeLowerBound;
+          }
+        case 11 /* wibble */:
+          let temp = 0.5 - Math.cos(beats * envelopeSpeed) * 0.5;
+          temp = 1 / (1 + time * (envelopeSpeed - temp / (1.5 / envelopeSpeed)));
+          temp = temp > 0 ? temp : 0;
+          if (inverse) {
+            return perEnvelopeUpperBound - boundAdjust * temp;
+          } else {
+            return boundAdjust * temp + perEnvelopeLowerBound;
+          }
+        case 12 /* linear */: {
+          let lin = 1 - time / (16 / envelopeSpeed);
+          lin = lin > 0 ? lin : 0;
+          if (inverse) {
+            return perEnvelopeUpperBound - boundAdjust * lin;
+          } else {
+            return boundAdjust * lin + perEnvelopeLowerBound;
+          }
+        }
+        case 13 /* rise */: {
+          let lin = time / (16 / envelopeSpeed);
+          lin = lin < 1 ? lin : 1;
+          if (inverse) {
+            return perEnvelopeUpperBound - boundAdjust * lin;
+          } else {
+            return boundAdjust * lin + perEnvelopeLowerBound;
+          }
+        }
+        case 15 /* fall */: {
+          if (inverse) {
+            return Math.min(Math.max(perEnvelopeLowerBound, perEnvelopeUpperBound - boundAdjust * Math.sqrt(Math.max(1 - envelopeSpeed * time / 2, 0))), perEnvelopeUpperBound);
+          } else {
+            return Math.max(perEnvelopeLowerBound, boundAdjust * Math.sqrt(Math.max(1 - envelopeSpeed * time / 2, 0)) + perEnvelopeLowerBound);
+          }
+        }
+        default:
+          throw new Error("Unrecognized operator envelope type.");
+      }
+    }
+    getPitchValue(instrument, tone, instrumentState, calculateBends = true) {
+      if (tone && tone.pitchCount >= 1) {
+        const chord = instrument.getChord();
+        const arpeggiates = chord.arpeggiates;
+        const monophonic = chord.name == "monophonic";
+        const arpeggio = Math.floor(instrumentState.arpTime / Config.ticksPerArpeggio);
+        const tonePitch = tone.pitches[arpeggiates ? getArpeggioPitchIndex(tone.pitchCount, instrument.fastTwoNoteArp, arpeggio) : monophonic ? instrument.monoChordTone : 0];
+        if (calculateBends) {
+          return tone.lastInterval != tonePitch ? tonePitch + tone.lastInterval : tonePitch;
+        } else {
+          return tonePitch;
+        }
+      }
+      return 0;
+    }
+    computePitchEnvelope(instrument, index, pitch = 0) {
+      let startNote = 0;
+      let endNote = Config.maxPitch;
+      let inverse = false;
+      let envelopeLowerBound = 0;
+      let envelopeUpperBound = 1;
+      if (instrument.isNoiseInstrument) {
+        endNote = Config.drumCount - 1;
+      }
+      if (index < instrument.envelopeCount && index !== -2) {
+        startNote = instrument.envelopes[index].pitchEnvelopeStart;
+        endNote = instrument.envelopes[index].pitchEnvelopeEnd;
+        inverse = instrument.envelopes[index].inverse;
+        envelopeLowerBound = instrument.envelopes[index].perEnvelopeLowerBound;
+        envelopeUpperBound = instrument.envelopes[index].perEnvelopeUpperBound;
+      }
+      if (startNote > endNote) {
+        startNote = 0;
+        endNote = instrument.isNoiseInstrument ? Config.drumCount - 1 : Config.maxPitch;
+      }
+      const range = endNote - startNote + 1;
+      if (!inverse) {
+        if (pitch <= startNote) {
+          return envelopeLowerBound;
+        } else if (pitch >= endNote) {
+          return envelopeUpperBound;
+        } else {
+          return (pitch - startNote) * (envelopeUpperBound - envelopeLowerBound) / range + envelopeLowerBound;
+        }
+      } else {
+        if (pitch <= startNote) {
+          return envelopeUpperBound;
+        } else if (pitch >= endNote) {
+          return envelopeLowerBound;
+        } else {
+          return envelopeUpperBound - (pitch - startNote) * (envelopeUpperBound - envelopeLowerBound) / range;
+        }
+      }
+    }
+    static getLowpassCutoffDecayVolumeCompensation(envelope, perEnvelopeSpeed = 1) {
+      if (envelope.type == 10 /* decay */) return 1.25 + 0.025 * /*envelope.speed */
+      perEnvelopeSpeed;
+      if (envelope.type == 6 /* twang */) return 1 + 0.02 * /*envelope.speed */
+      perEnvelopeSpeed;
+      return 1;
+    }
+    computeDrumsetEnvelopes(instrument, drumsetFilterEnvelope, beatsPerPart, partTimeStart, partTimeEnd) {
+      const pitch = 1;
+      function computeDrumsetEnvelope(unspedTime, time, beats, noteSize) {
+        return _EnvelopeComputer.computeEnvelope(drumsetFilterEnvelope, 1, 1, unspedTime, time, beats, 0, noteSize, pitch, false, 0, 1, true, 2, 2, 0 /* sine */, pitch, 0);
+      }
+      let drumsetFilterEnvelopeStart = computeDrumsetEnvelope(this.noteSecondsStartUnscaled, this.noteSecondsStartUnscaled, beatsPerPart * partTimeStart, this.noteSizeStart);
+      if (this.prevSlideStart) {
+        const other = computeDrumsetEnvelope(this.prevNoteSecondsStartUnscaled, this.prevNoteSecondsStartUnscaled, beatsPerPart * partTimeStart, this.prevNoteSize);
+        drumsetFilterEnvelopeStart += (other - drumsetFilterEnvelopeStart) * this.prevSlideRatioStart;
+      }
+      if (this.nextSlideStart) {
+        const other = computeDrumsetEnvelope(0, 0, beatsPerPart * partTimeStart, this.nextNoteSize);
+        drumsetFilterEnvelopeStart += (other - drumsetFilterEnvelopeStart) * this.nextSlideRatioStart;
+      }
+      let drumsetFilterEnvelopeEnd = drumsetFilterEnvelopeStart;
+      drumsetFilterEnvelopeEnd = computeDrumsetEnvelope(this.noteSecondsEndUnscaled, this.noteSecondsEndUnscaled, beatsPerPart * partTimeEnd, this.noteSizeEnd);
+      if (this.prevSlideEnd) {
+        const other = computeDrumsetEnvelope(this.prevNoteSecondsEndUnscaled, this.prevNoteSecondsEndUnscaled, beatsPerPart * partTimeEnd, this.prevNoteSize);
+        drumsetFilterEnvelopeEnd += (other - drumsetFilterEnvelopeEnd) * this.prevSlideRatioEnd;
+      }
+      if (this.nextSlideEnd) {
+        const other = computeDrumsetEnvelope(0, 0, beatsPerPart * partTimeEnd, this.nextNoteSize);
+        drumsetFilterEnvelopeEnd += (other - drumsetFilterEnvelopeEnd) * this.nextSlideRatioEnd;
+      }
+      this.drumsetFilterEnvelopeStart = drumsetFilterEnvelopeStart;
+      this.drumsetFilterEnvelopeEnd = drumsetFilterEnvelopeEnd;
+    }
+  };
+
   // synth/FFT.ts
   function scaleElementsByFactor(array, factor) {
     for (let i = 0; i < array.length; i++) {
@@ -7098,6 +7117,118 @@ var beepbox = (() => {
       }
     }
   };
+  var AudioBusState = class {
+    awake = true;
+    computed = false;
+    tonesAddedInThisTick = true;
+    // Whether any instrument tones are currently active.
+    flushingDelayLines = false;
+    // If no tones were active recently, enter a mode where the delay lines are filled with zeros to reset them for later use.
+    deactivateAfterThisTick = false;
+    // Whether the instrument is ready to be deactivated because the delay lines, if any, are fully zeroed.
+    attentuationProgress = 0;
+    // How long since an active tone introduced an input signal to the delay lines, normalized from 0 to 1 based on how long to wait until the delay lines signal will have audibly dissapated.
+    flushedSamples = 0;
+    // How many delay line samples have been flushed to zero.
+    audioBufferL = null;
+    audioBufferR = null;
+    mixVolume = 1;
+    mixVolumeDelta = 0;
+    effects = [];
+    delayDuration = 0;
+    totalDelaySamples = 0;
+    delayInputMult = 0;
+    delayInputMultDelta = 0;
+    constructor(audioBufferLength) {
+      this.audioBufferL = new Float32Array(audioBufferLength);
+      this.audioBufferR = new Float32Array(audioBufferLength);
+    }
+    allocateNecessaryBuffers(synth, audioBus, samplesPerTick) {
+      for (let effectIndex = 0; effectIndex < audioBus.effects.length; effectIndex++) {
+        if (this.effects[effectIndex] != null) {
+          let effect = audioBus.effects[effectIndex];
+          this.effects[effectIndex].allocateNecessaryBuffers(synth, audioBus, effect, samplesPerTick);
+        }
+      }
+    }
+    deactivate() {
+      for (let effectIndex = 0; effectIndex < this.effects.length; effectIndex++) {
+        if (this.effects[effectIndex] != null) this.effects[effectIndex].deactivate();
+      }
+      this.flushingDelayLines = false;
+      this.deactivateAfterThisTick = false;
+      this.attentuationProgress = 0;
+      this.flushedSamples = 0;
+    }
+    resetAllEffects() {
+      this.deactivate();
+      for (let effectIndex = 0; effectIndex < this.effects.length; effectIndex++) {
+        if (this.effects[effectIndex] != null) this.effects[effectIndex].reset();
+      }
+    }
+    effectsIncludeType(type) {
+      for (let i = 0; i < this.effects.length; i++) if (this.effects[i] != null && this.effects[i].type == type) return true;
+      return false;
+    }
+    getIsStereo() {
+      return true;
+    }
+    compute(synth, audioBus, samplesPerTick, roundedSamplesPerTick, tone, channelIndex, instrumentIndex) {
+      this.computed = true;
+      const samplesPerSecond = synth.samplesPerSecond;
+      for (let effectIndex = 0; effectIndex < audioBus.effects.length; effectIndex++) {
+        if (this.effects[effectIndex] == null) this.effects[effectIndex] = new EffectState(audioBus.effects[effectIndex].type);
+      }
+      this.effects.length = audioBus.effects.length;
+      this.delayDuration = 0;
+      this.totalDelaySamples = 0;
+      this.allocateNecessaryBuffers(synth, audioBus, samplesPerTick);
+      const envelopeStarts = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+      const envelopeEnds = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+      for (let effectIndex = 0; effectIndex < audioBus.effects.length; effectIndex++) {
+        if (this.effects[effectIndex] != null) {
+          let effect = audioBus.effects[effectIndex];
+          this.effects[effectIndex].compute(synth, audioBus, effect, this, samplesPerTick, roundedSamplesPerTick, tone, channelIndex, instrumentIndex, envelopeStarts, envelopeEnds);
+        }
+      }
+      let mixVolumeEnd = 1;
+      if (synth.isModActive(Config.modulators.dictionary["song volume"].index)) {
+        this.mixVolume *= synth.getModValue(Config.modulators.dictionary["song volume"].index, void 0, void 0, false) / 100;
+        mixVolumeEnd *= synth.getModValue(Config.modulators.dictionary["song volume"].index, void 0, void 0, true) / 100;
+      }
+      this.mixVolumeDelta = (mixVolumeEnd - this.mixVolume) / roundedSamplesPerTick;
+      let delayInputMultStart = 1;
+      let delayInputMultEnd = 1;
+      if (this.tonesAddedInThisTick) {
+        this.attentuationProgress = 0;
+        this.flushedSamples = 0;
+        this.flushingDelayLines = false;
+      } else if (!this.flushingDelayLines) {
+        if (this.attentuationProgress == 0) {
+        } else {
+        }
+        const secondsInTick = samplesPerTick / samplesPerSecond;
+        const progressInTick = secondsInTick / this.delayDuration;
+        const progressAtEndOfTick = this.attentuationProgress + progressInTick;
+        if (progressAtEndOfTick >= 1) {
+          delayInputMultEnd = 0;
+        }
+        this.attentuationProgress = progressAtEndOfTick;
+        if (this.attentuationProgress >= 1) {
+          this.flushingDelayLines = true;
+        }
+      } else {
+        delayInputMultStart = 0;
+        delayInputMultEnd = 0;
+        this.flushedSamples += roundedSamplesPerTick;
+        if (this.flushedSamples >= this.totalDelaySamples) {
+          this.deactivateAfterThisTick = true;
+        }
+      }
+      this.delayInputMult = delayInputMultStart;
+      this.delayInputMultDelta = (delayInputMultEnd - delayInputMultStart) / roundedSamplesPerTick;
+    }
+  };
   var InstrumentState = class _InstrumentState {
     awake = false;
     // Whether the instrument's effects-processing loop should continue.
@@ -7208,7 +7339,9 @@ var beepbox = (() => {
       this.delayDuration = 0;
       this.totalDelaySamples = 0;
       for (let effectIndex = 0; effectIndex < instrument.effects.length; effectIndex++) {
-        if (this.effects[effectIndex] == null) this.effects[effectIndex] = new EffectState(instrument.effects[effectIndex].type);
+        if (this.effects[effectIndex] == null) {
+          this.effects[effectIndex] = new EffectState(instrument.effects[effectIndex].type);
+        }
       }
       this.effects.length = instrument.effects.length;
       this.allocateNecessaryBuffers(synth, instrument, samplesPerTick);
@@ -7382,6 +7515,9 @@ var beepbox = (() => {
     effectsIncludeType(type) {
       for (let i = 0; i < this.effects.length; i++) if (this.effects[i] != null && this.effects[i].type == type) return true;
       return false;
+    }
+    getIsStereo() {
+      return this.chipWaveInStereo && this.type == 0 /* chip */;
     }
   };
 
@@ -8253,6 +8389,7 @@ var beepbox = (() => {
     noiseChannelCount;
     modChannelCount;
     channels = [];
+    audioBuses = [];
     limitDecay = 4;
     limitRise = 4e3;
     compressionThreshold = 1;
@@ -10212,13 +10349,14 @@ var beepbox = (() => {
           {
             const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
             if (beforeNine && fromBeepBox || (fromJummBox && beforeFive || beforeFour && fromGoldBox)) {
-              instrument.addEffect(base64CharCodeToInt[compressed.charCodeAt(charIndex++)] & (1 << 11 /* length */) - 1);
+              instrument.addEffect(base64CharCodeToInt[compressed.charCodeAt(charIndex++)] & (1 << 12 /* length */) - 1);
               const legacySettings = legacySettingsCache[instrumentChannelIterator][instrumentIndexIterator];
               instrument.convertLegacySettings(legacySettings, forceSimpleFilter);
             } else {
               const effectCount = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
               if (fromTheepBox) {
                 instrument.effects = [];
+                let newAudioBus = null;
                 for (let i2 = 0; i2 < effectCount; i2++) {
                   let newEffect = instrument.addEffect(base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                   if (newEffect.type == 5 /* eqFilter */) {
@@ -10278,6 +10416,9 @@ var beepbox = (() => {
                     newEffect.bitcrusherFreq = clamp(0, Config.bitcrusherFreqRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     newEffect.bitcrusherQuantization = clamp(0, Config.bitcrusherQuantizationRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                   }
+                  if (newEffect.type == 11 /* audioBus */) {
+                    newAudioBus = new AudioBus();
+                  }
                   if (newEffect.type == 2 /* panning */) {
                     if (fromBeepBox) {
                       newEffect.pan = clamp(0, Config.panMax + 1, Math.round(base64CharCodeToInt[compressed.charCodeAt(charIndex++)] * (Config.panMax / 8)));
@@ -10327,6 +10468,11 @@ var beepbox = (() => {
                     newEffect.ringModPulseWidth = clamp(0, Config.pulseWidthRange, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                     newEffect.ringModHzOffset = clamp(Config.rmHzOffsetMin, Config.rmHzOffsetMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                   }
+                }
+                if (newAudioBus != null) {
+                  newAudioBus = instrument.syncAudioBusEffects(newAudioBus);
+                  console.log(newAudioBus.effects);
+                  this.audioBuses.push(newAudioBus);
                 }
                 instrument.mdeffects = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
               } else {
@@ -10975,7 +11121,7 @@ var beepbox = (() => {
                         songReverbIndex = mod;
                       }
                     }
-                    if (jumfive && Config.modulators[instrument.modulators[mod]].associatedEffect != 11 /* length */) {
+                    if (jumfive && Config.modulators[instrument.modulators[mod]].associatedEffect != 12 /* length */) {
                       this.channels[instrument.modChannels[mod][0]].instruments[instrument.modInstruments[mod][0]].addEffect(Config.modulators[instrument.modulators[mod]].associatedEffect);
                     }
                   }
@@ -12279,6 +12425,9 @@ var beepbox = (() => {
             }
           }
         }
+        for (const audioBusState of this.audioBuses) {
+          audioBusState.resetAllEffects();
+        }
       }
     }
     initModFilters(song) {
@@ -12314,6 +12463,11 @@ var beepbox = (() => {
             instrumentState.arpTime = 0;
             instrumentState.updateWaves(instrument, this.samplesPerSecond);
             instrumentState.allocateNecessaryBuffers(this, instrument, samplesPerTick);
+            for (let effectIndex = 0; effectIndex < instrument.effects.length; effectIndex++) {
+              const effect = instrument.effects[effectIndex];
+              const bufferSize = this.anticipatePoorPerformance ? this.preferLowerLatency ? 2048 : 4096 : this.preferLowerLatency ? 512 : 2048;
+              if (effect.type == 11 /* audioBus */) this.audioBuses[effect.audioBusIndex] = new AudioBusState(bufferSize);
+            }
           }
         }
       }
@@ -12518,7 +12672,7 @@ var beepbox = (() => {
             const tgtEffect = tgtInstrument.effects[0];
             if (tgtInstrument == null) continue;
             const str = Config.modulators[instrument.modulators[mod]].name;
-            if (!(Config.modulators[instrument.modulators[mod]].associatedEffect != 11 /* length */ && !tgtInstrument.effectsIncludeType(Config.modulators[instrument.modulators[mod]].associatedEffect)) && !(Config.modulators[instrument.modulators[mod]].associatedMDEffect != 6 /* length */ && !(tgtInstrument.mdeffects & 1 << Config.modulators[instrument.modulators[mod]].associatedMDEffect)) || tgtInstrument.type != 1 /* fm */ && tgtInstrument.type != 11 /* fm6op */ && (str == "fm slider 1" || str == "fm slider 2" || str == "fm slider 3" || str == "fm slider 4" || str == "fm feedback") || tgtInstrument.type != 11 /* fm6op */ && (str == "fm slider 5" || str == "fm slider 6") || tgtInstrument.type != 6 /* pwm */ && tgtInstrument.type != 8 /* supersaw */ && (str == "pulse width" || str == "decimal offset") || tgtInstrument.type != 8 /* supersaw */ && (str == "dynamism" || str == "spread" || str == "saw shape") || !tgtInstrument.getChord().arpeggiates && (str == "arp speed" || str == "reset arp") || tgtEffect.eqFilterType && str == "post eq" || !tgtEffect.eqFilterType && (str == "post eq cut" || str == "post eq peak") || str == "post eq" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(false) || tgtInstrument.noteFilterType && str == "pre eq" || !tgtInstrument.noteFilterType && (str == "pre eq cut" || str == "pre eq peak") || str == "pre eq" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(true)) {
+            if (!(Config.modulators[instrument.modulators[mod]].associatedEffect != 12 /* length */ && !tgtInstrument.effectsIncludeType(Config.modulators[instrument.modulators[mod]].associatedEffect)) && !(Config.modulators[instrument.modulators[mod]].associatedMDEffect != 6 /* length */ && !(tgtInstrument.mdeffects & 1 << Config.modulators[instrument.modulators[mod]].associatedMDEffect)) || tgtInstrument.type != 1 /* fm */ && tgtInstrument.type != 11 /* fm6op */ && (str == "fm slider 1" || str == "fm slider 2" || str == "fm slider 3" || str == "fm slider 4" || str == "fm feedback") || tgtInstrument.type != 11 /* fm6op */ && (str == "fm slider 5" || str == "fm slider 6") || tgtInstrument.type != 6 /* pwm */ && tgtInstrument.type != 8 /* supersaw */ && (str == "pulse width" || str == "decimal offset") || tgtInstrument.type != 8 /* supersaw */ && (str == "dynamism" || str == "spread" || str == "saw shape") || !tgtInstrument.getChord().arpeggiates && (str == "arp speed" || str == "reset arp") || tgtEffect.eqFilterType && str == "post eq" || !tgtEffect.eqFilterType && (str == "post eq cut" || str == "post eq peak") || str == "post eq" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(false) || tgtInstrument.noteFilterType && str == "pre eq" || !tgtInstrument.noteFilterType && (str == "pre eq cut" || str == "pre eq peak") || str == "pre eq" && Math.floor((instrument.modFilterTypes[mod] + 1) / 2) > tgtInstrument.getLargestControlPointCount(true)) {
               instrument.invalidModulators[mod] = false;
               i = tgtInstrumentList.length;
             }
@@ -12602,6 +12756,7 @@ var beepbox = (() => {
     channels = [];
     tonePool = new Deque();
     tempMatchedPitchTones = Array(Config.maxChordSize).fill(null);
+    audioBuses = [];
     startedMetronome = false;
     metronomeSamplesRemaining = -1;
     metronomeAmplitude = 0;
@@ -12907,6 +13062,9 @@ var beepbox = (() => {
           for (const instrumentState of channelState.instruments) {
             instrumentState.resetAllEffects();
           }
+        }
+        for (const audioBusState of this.audioBuses) {
+          audioBusState.resetAllEffects();
         }
       }
     }
@@ -13299,6 +13457,7 @@ var beepbox = (() => {
         if (this.wantToSkip) {
           let barVisited = skippedBars.includes(this.bar);
           if (barVisited && bufferIndex == firstSkippedBufferIndex) {
+            this.resetEffects();
             this.pause();
             return;
           }
@@ -13377,6 +13536,19 @@ var beepbox = (() => {
             } else {
               instrumentState.nextVibratoTime += useVibratoSpeed * 0.1 * (partTimeEnd - partTimeStart);
             }
+          }
+        }
+        for (let audioBusIndex = 0; audioBusIndex < this.audioBuses.length; audioBusIndex++) {
+          const audioBus = song.audioBuses[audioBusIndex];
+          const audioBusState = this.audioBuses[audioBusIndex];
+          if (audioBusState.awake) {
+            if (!audioBusState.computed || true) {
+              audioBusState.compute(this, audioBus, samplesPerTick, Math.ceil(samplesPerTick), null, 0, 0);
+            }
+            audioBusState.computed = false;
+            this.tempInstrumentSampleBufferL = audioBusState.audioBufferL;
+            this.tempInstrumentSampleBufferR = audioBusState.audioBufferR;
+            _Synth.effectsSynth(this, outputDataL, outputDataR, bufferIndex, runLength, audioBusState);
           }
         }
         if (this.enableMetronome || this.countInMetronome) {
@@ -15816,7 +15988,8 @@ var beepbox = (() => {
       const usesReverb = instrumentState.effectsIncludeType(0 /* reverb */);
       const usesGranular = instrumentState.effectsIncludeType(8 /* granular */);
       const usesRingModulation = instrumentState.effectsIncludeType(7 /* ringModulation */);
-      const isStereo = instrumentState.chipWaveInStereo && (instrumentState.synthesizer == _Synth.loopableChipSynth || instrumentState.synthesizer == _Synth.chipSynth);
+      const usesAudioBus = instrumentState.effectsIncludeType(11 /* audioBus */);
+      const isStereo = instrumentState.getIsStereo();
       let signature = "";
       for (let i of instrumentState.effects) {
         if (i != null) {
@@ -15842,6 +16015,13 @@ var beepbox = (() => {
 
                 let delayInputMult = +instrumentState.delayInputMult;
                 const delayInputMultDelta = +instrumentState.delayInputMultDelta;`;
+        }
+        if (usesAudioBus) {
+          effectsSource += `
+
+                let audioBus = [];
+                let audioBusBufferL = [];
+                let audioBusBufferR = [];`;
         }
         if (usesEqFilter) {
           effectsSource += `
@@ -15964,7 +16144,7 @@ var beepbox = (() => {
                 let flangerTapDeltaL = [];
                 let flangerTapDeltaR = [];
 
-                let flangerTapRatioL = []; // you don't know how happy i am that this variable exists
+                let flangerTapRatioL = [];
                 let flangerTapRatioR = [];
                 let flangerTapLA = [];
                 let flangerTapLB = [];
@@ -16194,7 +16374,14 @@ var beepbox = (() => {
                 effectState = instrumentState.effects[` + i + `];
                 effectIndex = ` + i + `;
                 `;
-          if (usesGranular && effectState.type == 8 /* granular */) {
+          if (usesAudioBus && effectState.type == 11 /* audioBus */) {
+            effectsSource += `
+
+                    audioBus[effectIndex] = effectState.audioBusIndex;
+                    audioBusBufferL[effectIndex] = synth.audioBuses[audioBus[effectIndex]].audioBufferL;
+                    audioBusBufferR[effectIndex] = synth.audioBuses[audioBus[effectIndex]].audioBufferR;
+                    `;
+          } else if (usesGranular && effectState.type == 8 /* granular */) {
             effectsSource += `
 
                     granularWet[effectIndex] = effectState.granularMix;
@@ -16430,7 +16617,16 @@ var beepbox = (() => {
 
                 effectIndex = ` + i + `;
                 `;
-          if (usesBitcrusher && effectState.type == 4 /* bitcrusher */) {
+          if (usesAudioBus && effectState.type == 11 /* audioBus */) {
+            effectsSource += `
+
+                    audioBusBufferL[effectIndex][sampleIndex] = sampleL;
+                    audioBusBufferR[effectIndex][sampleIndex] = sampleR;
+                    sampleL = 0.0;
+                    sampleR = 0.0;
+                    continue;
+                    `;
+          } else if (usesBitcrusher && effectState.type == 4 /* bitcrusher */) {
             effectsSource += `
 
                     bitcrusherPhase[effectIndex] += bitcrusherPhaseDelta[effectIndex];

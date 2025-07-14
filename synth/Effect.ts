@@ -8,16 +8,17 @@ export class Effect {
 	wetDryMix = 0.5;
 	send = 1;
 
-	eqFilter = new FilterSettings();
-	eqFilterType = false;
-	eqFilterSimpleCut = Config.filterSimpleCutRange - 1;
-	eqFilterSimplePeak = 0;
+	audioBusIndex: number = 0;
+	eqFilter: FilterSettings = new FilterSettings();
+	eqFilterType: boolean = false;
+	eqFilterSimpleCut: number = Config.filterSimpleCutRange - 1;
+	eqFilterSimplePeak: number = 0;
 	eqSubFilters: (FilterSettings | null)[] = [];
 	tmpEqFilterStart: FilterSettings | null;
 	tmpEqFilterEnd: FilterSettings | null;
-	//public envelopes: EnvelopeSettings[] = [];
-	//public envelopeCount = 0;
-	//public envelopeSpeed = 12;
+	// envelopes: EnvelopeSettings[] = [];
+	// envelopeCount = 0;
+	// envelopeSpeed = 12;
 
 	gain = Config.volumeRange / 2;
 	pan = Config.panCenter;

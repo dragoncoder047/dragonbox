@@ -124,6 +124,7 @@ export const enum EffectType {
     granular,
     gain,
     flanger,
+    audioBus,
     length,
 }
 
@@ -900,7 +901,7 @@ export class Config {
     static willReloadForCustomSamples = false;
 
     static jsonFormat = "DragonBox";
-    // public static thurmboxImportUrl = "https://file.garden/ZMQ0Om5nmTe-x2hq/PandoraArchive%20Samples/";
+    // static thurmboxImportUrl = "https://file.garden/ZMQ0Om5nmTe-x2hq/PandoraArchive%20Samples/";
 
     static readonly scales: DictionaryArray<Scale> = toNameMap([
 
@@ -1222,17 +1223,17 @@ export class Config {
 
         //for modbox; voices = riffapp, spread = intervals, offset = offsets, expression = volume, and sign = signs
     ]);
-    static readonly effectNames: ReadonlyArray<string> = ["reverb", "chorus", "panning", "distortion", "bitcrusher", "post eq", "echo", "ring mod", "granular", "gain", "flanger"];
-    static readonly effectDisplayNames: ReadonlyArray<string> = ["Reverb", "Chorus", "Panning", "Distortion", "Bitcrusher", "Post EQ", "Echo", "Ring Mod", "Granular", "Gain", "Flanger"];
-    static readonly effectOrder: ReadonlyArray<EffectType> = [EffectType.reverb, EffectType.chorus, EffectType.panning, EffectType.distortion, EffectType.bitcrusher, EffectType.eqFilter, EffectType.echo, EffectType.ringModulation, EffectType.granular, EffectType.gain, EffectType.flanger];
-    static readonly effectCount: 11
+    static readonly effectNames: ReadonlyArray<string> = ["reverb", "chorus", "panning", "distortion", "bitcrusher", "post eq", "echo", "ring mod", "granular", "gain", "flanger", "audio bus"];
+    static readonly effectDisplayNames: ReadonlyArray<string> = ["Reverb", "Chorus", "Panning", "Distortion", "Bitcrusher", "Post EQ", "Echo", "Ring Mod", "Granular", "Gain", "Flanger", "Audio Bus"];
+    static readonly effectOrder: ReadonlyArray<EffectType> = [EffectType.reverb, EffectType.chorus, EffectType.panning, EffectType.distortion, EffectType.bitcrusher, EffectType.eqFilter, EffectType.echo, EffectType.ringModulation, EffectType.granular, EffectType.gain, EffectType.flanger, EffectType.audioBus];
+    static readonly effectCount = 12;
     static readonly mdeffectNames: ReadonlyArray<string> = ["pitch shift", "detune", "vibrato", "transition type", "chord type", "note range"];
     static readonly mdeffectOrder: ReadonlyArray<MDEffectType> = [MDEffectType.transition, MDEffectType.chord, MDEffectType.pitchShift, MDEffectType.detune, MDEffectType.vibrato, MDEffectType.noteRange];
-    static readonly mdeffectCount: 6
+    static readonly mdeffectCount = 6;
     static readonly noteSizeMax = 6;
     static readonly volumeRange = 100;
-    // Beepbox's old volume scale used factor -0.5 and was [0~7] had roughly value 6 = 0.125 power. This new value is chosen to have -21 be the same,
-    // given that the new scale is [-25~25]. This is such that conversion between the scales is roughly equivalent by satisfying (0.5*6 = 0.1428*21)
+    // Beepbox's old volume scale used factor -0.5 and was [0~7] had roughly value 6 = 0.125 power. This new value is chosen to have -42 be the same,
+    // given that the new scale is [-50~50]. This is such that conversion between the scales is roughly equivalent by satisfying (0.5*6 = 0.0714*42)
     static readonly volumeLogScale = 0.0714;
     static readonly gainRangeMult = 2;
     static readonly panCenter = 50;
@@ -1629,14 +1630,14 @@ export class Config {
         }
         return wave;
     }
-    // public static generateWhiteNoiseFmWave() {
+    // static generateWhiteNoiseFmWave() {
     // const wave = new Float32Array(Config.sineWaveLength + 1);
     // for (let i = 0; i < Config.sineWaveLength + 1; i++) {
     // wave[i] = Math.random() * 2.0 - 1.0;
     // }
     // return wave;
     // }
-    // public static generateOneBitWhiteNoiseFmWave() {
+    // static generateOneBitWhiteNoiseFmWave() {
     // const wave = new Float32Array(Config.sineWaveLength + 1);
     // for (let i = 0; i < Config.sineWaveLength + 1; i++) {
     // wave[i] = Math.round(Math.random());
